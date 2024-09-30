@@ -1,0 +1,49 @@
+.fern-header-container {
+  margin-left: 32px;
+  margin-right: 32px;
+  margin-top: 16px;
+}
+
+.fern-header {
+  border-radius: 0.4rem; 
+}
+
+.fern-sidebar-container {
+  padding-top: 30px !important;
+}
+
+.fern-button:not(.disabled).filled.primary {
+  border: none;
+  color: rgb(255, 255, 255);
+  background: linear-gradient(rgb(204, 56, 255) 0%, rgb(122, 53, 203) 100%);
+  box-shadow: rgba(255, 255, 255, 0.4) 0px 0px 3px 0px inset, rgba(204, 56, 255, 0.5) 0px 0px 10px 0px;
+  border-radius: 7px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  height: 32px;
+}
+
+.fern-button:not(.disabled).filled.primary:hover {
+  background: linear-gradient(rgb(207, 66, 255) 0%, rgb(127, 61, 205) 100%);
+}
+
+.fern-button:not(.disabled).filled.primary svg {
+  display: none;
+}
+
+.fern-button:not(.disabled).filled.primary .fern-button-text {
+  margin: 10px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.fern-background {
+  background-image: radial-gradient(circle closest-side, #cc38ff 24%, #06080b00) !important;
+  z-index: -1 !important;
+  opacity: .5 !important;
+  filter: blur(200px) !important;
+}
+
+.fern-header {
+  background-color: #ffffff0d !important; 
+}

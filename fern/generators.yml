@@ -1,0 +1,16 @@
+api: 
+  path: ./openapi/openapi.json
+  overrides: ./openapi/overrides.yml
+groups:
+  python-sdk:
+    generators:
+      - name: fernapi/fern-python-sdk
+        version: 4.2.7
+        output:
+          location: pypi
+          package-name: "paradex"
+        #   token: ${PYPI_TOKEN}
+        github:
+          repository: fern-demo/paradex-python-sdk
+        config:
+          client_class_name: Paradex

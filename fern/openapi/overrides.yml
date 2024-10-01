@@ -224,3 +224,9 @@ x-fern-pagination:
   cursor: $request.cursor
   next_cursor: $response.next
   results: $response.results
+  
+servers:
+  - url: https://api.prod.paradex.trade/v1
+    x-fern-server-name: Production
+  - url: https://api.testnet.paradex.trade/v1
+    x-fern-server-name: Testnet

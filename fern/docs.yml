@@ -21,7 +21,7 @@ navbar-links:
   - type: github
     value: https://github.com/tradeparadex/paradex-py
   - type: filled
-    text: Log in to Veryfi
+    text: Log in to Paradex
     url: https://buildwithfern.com/contact
 layout: 
   header-height: 72px
@@ -38,7 +38,7 @@ typography:
     path: ./assets/HarmonyOS_Sans_Bold.woff2
 logo:
   dark: ./assets/image.png
-  height: 40
+  height: 125
 favicon: ./assets/logo.jpeg
 colors:
   accent-primary: 

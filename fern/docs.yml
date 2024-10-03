@@ -1,22 +1,40 @@
 instances:
   - url: https://paradex.docs.buildwithfern.com
 title: Paradex | Documentation
+tabs: 
+  guides: 
+    display-name: Guides
+    icon: book
+  reference: 
+    display-name: API Reference
+    icon: code
+    slug: reference
 navigation:
-  - section: Getting Started
-    contents: 
-      - page: What is Paradex?
-        slug: what-is-paradex
-        path: ./pages/what-is-paradex.mdx
-      - section: Release Notes
-        path: ./pages/overview.mdx
+  - tab: guides
+    layout: 
+      - section: Getting Started
         contents: 
-          - page: v1.62
-            path: ./pages/v1.62.mdx
-          - page: v1.61
-            path: ./pages/v1.61.mdx
-  - api: API Reference
-    snippets: 
-      python: paradex
+          - page: What is Paradex?
+            slug: what-is-paradex
+            icon: crystal-ball
+            path: ./pages/what-is-paradex.mdx
+          - section: Release Notes
+            icon: clock
+            path: ./pages/overview.mdx
+            contents: 
+              - page: v1.62
+                path: ./pages/v1.62.mdx
+              - page: v1.61
+                path: ./pages/v1.61.mdx
+  - tab: reference
+    layout:
+      - api: WebSockets
+        api-name: asyncapi
+      - api: API Reference
+        api-name: openapi
+        flattened: true
+        snippets: 
+          python: paradex
 navbar-links:
   - type: github
     value: https://github.com/tradeparadex/paradex-py
@@ -25,6 +43,8 @@ navbar-links:
     url: https://buildwithfern.com/contact
 layout: 
   header-height: 72px
+  searchbar-placement: header
+  tabs-placement: header
 typography: 
   bodyFont:
     name: HarmonyOS
@@ -37,14 +57,18 @@ typography:
     name: HarmonyOS
     path: ./assets/HarmonyOS_Sans_Bold.woff2
 logo:
-  dark: ./assets/image.png
-  height: 40
+  light: ./assets/logo-light.svg
+  dark: ./assets/logo-dark.svg
+  height: 30
 favicon: ./assets/logo.jpeg
 colors:
   accent-primary: 
     dark: '#cc38ff'
+    light: '#cc38ff'
   background: 
-    dark: '#06080b'
-  header-background: 
-    dark: '#06080b'
+    dark: '#000000'
+    light: '#ffffff'
+  # header-background: 
+  #   dark: '#000000'
+  #   light: '#ffffff'
 css: ./assets/styles.css

@@ -39,7 +39,7 @@ navbar-links:
   - type: github
     value: https://github.com/tradeparadex/paradex-py
   - type: filled
-    text: Log in to Veryfi
+    text: Log in to Paradex
     url: https://buildwithfern.com/contact
 layout: 
   header-height: 72px

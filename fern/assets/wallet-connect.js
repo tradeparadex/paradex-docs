@@ -1,6 +1,6 @@
 function render() { 
   function insertButton() {
-    const targetDiv = document.getElementById('radix-:r0:');
+    const targetDiv = document.querySelector('.bg-background-translucent.backdrop-blur-2xl');
     
     const authButton = targetDiv.querySelector('.danger');
     

@@ -6,12 +6,8 @@ function render() {
     
     const walletConnectButton = targetDiv.querySelector('#wallet-connect-button');
     
-    if (authButton && !walletConnectButton) {        
-      const authArea = document.getElementById('radix-:rfl:');
-      
-      if (authArea) {
-        const dropdown = authArea.querySelector('.fern-dropdown');
-        
+    if (authButton && !walletConnectButton) {              
+      const dropdown = targetDiv.querySelector('.fern-dropdown');
         if (dropdown) {
           const buttonArea = dropdown.querySelector('.justify-end');
           
@@ -26,7 +22,6 @@ function render() {
           }
         }
       }
-    }
   }
   
   function closeModal(modal) {

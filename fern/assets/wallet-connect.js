@@ -39,6 +39,7 @@ function render() {
       modal.style.left = '0';
       modal.style.width = '100%';
       modal.style.height = '100%';
+      modal.style.zIndex = '999999';
       modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
       modal.style.display = 'flex';
       modal.style.justifyContent = 'center';

@@ -1,0 +1,198 @@
+asyncapi: 2.6.0
+info:
+  title: WebSocket channels
+  version: ''
+  description: |
+    Channels that can be subscribed to to get real time updates by
+    using <a href="#subscribe">subscribe</a>.
+channels:
+  orders/{market_symbol}:
+    summary: 'Private websocket channel to receive order updates'
+    parameters:
+      market_symbol:
+        description: Either the symbol of the market (any open market returned by `GET /markets`) or `"ALL"` to subscribe for updates to all markets
+        schema:
+          type: string
+    bindings:
+      ws:
+        headers:
+          type: object
+          properties:
+            Authorization:
+              type: string
+              description: 'API Key'
+    subscribe:
+      summary: 'Private websocket channel to receive order updates'
+      message:
+        name: order
+        title: Order (Private)
+        payload:
+          type: object
+          additionalProperties: false
+          properties:
+            account:
+              description: Account identifier (user's account address)
+              type: string
+              example: 0x4638e3041366aa71720be63e32e53e1223316c7f0d56f7aa617542ed1e7512x
+            cancel_reason:
+              description: Reason for order cancellation if it was closed by cancel
+              type: string
+              enum:
+                - USER_CANCELED
+                - NOT_ENOUGH_MARGIN
+                - EMPTY_MARKET
+                - POST_ONLY_WOULD_CROSS
+                - REMAINING_IOC_CANCEL
+                - UNEXPECTED_FAILURE
+                - DELEVERAGE
+                - IN_LIQUIDATION
+                - SELF_TRADE
+                - ASSET_UNAVAILABLE
+                - ASSET_EXPIRED
+                - MARKET_NOT_OPEN
+                - ORDER_TYPE_INVALID
+                - PRICE_NOT_AVAILABLE
+                - EXPIRED
+                - PRICE_OUTSIDE_BANDS
+                - TIMEOUT
+                - ORDER_EXCEEDS_POSITION_LIMIT
+                - REDUCE_ONLY_WILL_INCREASE
+            client_id:
+              description: Client id passed on order creation
+              type: string
+              example: x1234
+            created_at:
+              description: Order creation time in milliseconds
+              type: integer
+              example: 1696291200000
+            id:
+              description: Unique order identifier assigned by exchange
+              type: string
+              example: '123456'
+            instruction:
+              description: Order instruction type, either "GTC", "IOC", or "POST_ONLY"
+              type: string
+              enum:
+                - GTC
+                - POST_ONLY
+                - IOC
+            last_updated_at:
+              description: Order last update time in milliseconds.  No changes once status=CLOSED
+              type: integer
+              example: 1696291200000
+            market:
+              $ref: '#/components/schemas/properties/MarketSymbol'
+            price:
+              description: Order limit price
+              type: string
+              example: '26000.5'
+            remaining_size:
+              description: Remaining size of the order
+              type: string
+              example: '0'
+            side:
+              $ref: '#/components/schemas/properties/OrderSide'
+            size:
+              description: Order size
+              type: string
+              example: '0.05'
+            status:
+              description: Order status
+              type: string
+              enum:
+                - NEW
+                - OPEN
+                - CLOSED
+            timestamp:
+              description: Order signature timestamp
+              $ref: '#/components/schemas/properties/timestamp'
+            type:
+              description: Order type
+              type: string
+              enum:
+                - MARKET
+                - LIMIT
+                - STOP_MARKET
+                - STOP_LIMIT
+            seq_no:
+              description: Sequence number of the order updates. WebSocket and REST responses use independently generated seq_no per event.
+              type: integer
+              example: 20784
+            avg_fill_price:
+              description: Average fill price of the order
+              type: string
+              example: '26000'
+            received_at:
+              description: Order received time in milliseconds
+              type: integer
+              example: 1696291200000
+            published_at:
+              description: Order published time in milliseconds
+              type: integer
+              example: 1696291200000
+            flags:
+              description: Order flags
+              type: array
+              items:
+                type: string
+            trigger_price:
+              description: Trigger price for stop order
+              type: string
+              example: '26000.5'
+components:
+  parameters:
+    market_symbol:
+      description:
+        Symbol of the market (any open market returned by `GET /markets`)
+      schema:
+        type: string
+    market_symbol_or_all:
+      description:
+        Either the symbol of the market (any open market returned by `GET /markets`) or `"ALL"` to subscribe for updates to all markets
+      schema:
+        type: string
+    program_name:
+      description: Name of the program to subscribe to for updates
+      schema:
+        type: string
+        enum:
+          - Maker
+          - Fee
+    refresh_rate:
+      description: Rate of sending updates
+      schema:
+        type: string
+        enum:
+          - 50ms
+          - 100ms
+  schemas:
+    properties:
+      MarketSymbol:
+        type: string
+        description: Symbol of the market
+      OrderSide:
+        type: string
+        description: Order side
+        enum:
+          - BUY
+          - SELL
+      timestamp:
+        type: number
+        format: Unix Timestamp (ms)
+        example: 1681462770114
+    deltas:
+      type: object
+      properties:
+        side:
+          type: string
+          enum:
+            - BUY
+            - SELL
+        price:
+          type: string
+          minimum: 0
+          example: 1234.12
+        size:
+          type: string
+          minimum: 0
+          example: 12.12

@@ -1,0 +1,147 @@
+asyncapi: 2.6.0
+info:
+  title: WebSocket channels
+  version: ''
+  description: |
+    Channels that can be subscribed to to get real time updates by
+    using <a href="#subscribe">subscribe</a>.
+channels:
+  fills/{market_symbol}:
+    summary: 'Private websocket channel to receive details of fills for specific account'
+    parameters:
+      market_symbol:
+        description: Either the symbol of the market (any open market returned by `GET /markets`) or `"ALL"` to subscribe for updates to all markets
+        schema:
+          type: string
+    bindings:
+      ws:
+        headers:
+          type: object
+          properties:
+            Authorization:
+              type: string
+              description: 'API Key'
+    subscribe:
+      summary: 'Private websocket channel to receive details of fills for specific account'
+      message:
+        name: fill
+        title: Fill
+        payload:
+          type: object
+          description: 'Fill Details'
+          additionalProperties: false
+          properties:
+            client_id:
+              description: Unique client assigned ID for the order.
+              type: string
+              example: 'x1234'
+            created_at:
+              description: Fill time in milliseconds.
+              type: integer
+              example: 1696291200000
+            fee:
+              description: Fee paid by the user in fee_currency
+              type: string
+              example: '7.56'
+            fee_currency:
+              description: Asset that fee is charged in
+              type: string
+              enum:
+                - USDC
+            id:
+              description: Unique ID of the fill
+              type: string
+              example: '8615262148007718462'
+            liquidity:
+              description: Maker or Taker
+              type: string
+              enum:
+                - TAKER
+                - MAKER
+            market:
+              $ref: '#/components/schemas/properties/MarketSymbol'
+            order_id:
+              description: Order ID assigned by exchange
+              type: string
+              example: '1681462103821101699438490000'
+            price:
+              description: Price at which order was filled
+              type: string
+              example: '30000.12'
+            side:
+              $ref: '#/components/schemas/properties/OrderSide'
+            size:
+              description: Size of the fill
+              type: string
+              example: '0.5'
+            remaining_size:
+              description: Remaining size of the order
+              type: string
+              example: '0.7'
+            seq_no:
+              description: Sequence number of the fill
+              type: integer
+              example: 20784
+            fill_type:
+              description: Type of fill
+              type: string
+              enum:
+                - FILL
+                - LIQUIDATION
+components:
+  parameters:
+    market_symbol:
+      description:
+        Symbol of the market (any open market returned by `GET /markets`)
+      schema:
+        type: string
+    market_symbol_or_all:
+      description:
+        Either the symbol of the market (any open market returned by `GET /markets`) or `"ALL"` to subscribe for updates to all markets
+      schema:
+        type: string
+    program_name:
+      description: Name of the program to subscribe to for updates
+      schema:
+        type: string
+        enum:
+          - Maker
+          - Fee
+    refresh_rate:
+      description: Rate of sending updates
+      schema:
+        type: string
+        enum:
+          - 50ms
+          - 100ms
+  schemas:
+    properties:
+      MarketSymbol:
+        type: string
+        description: Symbol of the market
+      OrderSide:
+        type: string
+        description: Order side
+        enum:
+          - BUY
+          - SELL
+      timestamp:
+        type: number
+        format: Unix Timestamp (ms)
+        example: 1681462770114
+    deltas:
+      type: object
+      properties:
+        side:
+          type: string
+          enum:
+            - BUY
+            - SELL
+        price:
+          type: string
+          minimum: 0
+          example: 1234.12
+        size:
+          type: string
+          minimum: 0
+          example: 12.12

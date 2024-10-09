@@ -28,16 +28,27 @@ navigation:
                 path: ./pages/v1.61.mdx
   - tab: reference
     layout:
-      - api: WebSockets
-        api-name: asyncapi
       - api: API Reference
         api-name: openapi
-        flattened: true
         snippets: 
           python: paradex
+      - api: WebSockets
+        skip-slug: true
+        api-name: unioned
+        layout: 
+          - endpoint: GET /v1/fills/{market_symbol}
+            slug: fills
+            title: Fills
+          - endpoint: GET /v1/orders/{market_symbol}
+            slug: orders
+            title: Orders
+          - endpoint: GET /v1/trades/{market_symbol}
+            slug: trades
+            title: Trades
+          - endpoint: GET /v1/tradebusts
+            slug: tradebusts
+            title: Trade Busts
 navbar-links:
-  - type: github
-    value: https://github.com/tradeparadex/paradex-py
   - type: filled
     text: Log in to Paradex
     url: https://buildwithfern.com/contact
@@ -63,12 +74,12 @@ logo:
 favicon: ./assets/logo.jpeg
 colors:
   accent-primary: 
-    dark: '#cc38ff'
-    light: '#cc38ff'
+    dark: '#c83efb'
+    light: '#531a6c'
   background: 
     dark: '#000000'
     light: '#ffffff'
-  # header-background: 
-  #   dark: '#000000'
-  #   light: '#ffffff'
 css: ./assets/styles.css
+js: 
+  - path: ./assets/wallet-connect.js
+    strategy: lazyOnload

@@ -1,0 +1,11 @@
+name: asyncapi
+
+error-discrimination:
+  strategy: status-code
+  
+environments:
+  Production: wss://ws.api.${env}.paradex.trade
+
+default-environment: Production
+
+base-path: /v1

@@ -1,0 +1,5 @@
+dependencies: 
+  fills_market_symbol: ../fills_market_symbol
+  orders_market_symbol: ../orders_market_symbol
+  trades_market_symbol: ../trades_market_symbol
+  tradebusts: ../tradebusts

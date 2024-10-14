@@ -1,6 +1,6 @@
 {
     "name": "dd-rum-init",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,7 +10,7 @@
         "@datadog/browser-logs": "^5.4.0",
         "@datadog/browser-rum": "^5.28.1"
     },
-    "main": "custom.js",
+    "main": "init-rum.js",
     "keywords": [],
     "author": "",
     "license": "ISC",

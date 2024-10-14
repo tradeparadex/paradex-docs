@@ -83,3 +83,4 @@ css: ./assets/styles.css
 js: 
   - path: ./assets/wallet-connect.js
     strategy: lazyOnload
+  - path: ./dist/dd-rum.js

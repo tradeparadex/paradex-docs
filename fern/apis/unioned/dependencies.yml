@@ -1,5 +1,3 @@
 dependencies: 
-  fills_market_symbol: ../fills_market_symbol
-  orders_market_symbol: ../orders_market_symbol
-  trades_market_symbol: ../trades_market_symbol
-  tradebusts: ../tradebusts
+  private_ws: ../private_ws
+  public_ws: ../public_ws

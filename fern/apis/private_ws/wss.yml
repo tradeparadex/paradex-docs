@@ -4,10 +4,14 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: wss://ws.api.${env}.paradex.trade
+  - url: wss://ws.api.prod.paradex.trade
     description: Production WebSocket Server
     protocol: wss
     x-fern-server-name: Production
+  - url: wss://ws.api.tradenet.paradex.trade
+    description: Tradenet WebSocket Server
+    protocol: wss
+    x-fern-server-name: Tradenet
 
 x-fern-base-path: /v1
 

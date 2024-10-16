@@ -36,7 +36,7 @@ navigation:
         skip-slug: true
         api-name: unioned
         layout: 
-          - endpoint: GET /v1/fills/{market_symbol}
+          - endpoint: GET /v1
             slug: fills
             title: Fills
           - endpoint: GET /v1/orders/{market_symbol}

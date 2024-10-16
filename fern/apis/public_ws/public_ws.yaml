@@ -6,7 +6,7 @@ info:
     Channels that can be subscribed to get real-time updates by
     using <a href="#subscribe">subscribe</a>.
 channels:
-  '':
+  v1:
     summary: 'Private websocket channel to receive details of fills for a specific account'
     bindings:
       ws:
@@ -43,7 +43,7 @@ components:
         type: object
         properties:
           id:
-            
+            $ref: '#/components/schemas/id'
           jsonrpc:
             $ref: '#/components/schemas/jsonrpc'
           method:

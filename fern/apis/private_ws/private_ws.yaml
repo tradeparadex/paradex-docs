@@ -43,7 +43,7 @@ components:
         type: object
         properties:
           id:
-            
+            $ref: '#/components/schemas/id'
           jsonrpc:
             $ref: '#/components/schemas/jsonrpc'
           method:

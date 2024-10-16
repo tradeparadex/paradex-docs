@@ -37,17 +37,11 @@ navigation:
         api-name: unioned
         layout: 
           - endpoint: GET /v1
-            slug: fills
-            title: Fills
-          - endpoint: GET /v1/orders/{market_symbol}
-            slug: orders
-            title: Orders
-          - endpoint: GET /v1/trades/{market_symbol}
-            slug: trades
-            title: Trades
-          - endpoint: GET /v1/tradebusts
-            slug: tradebusts
-            title: Trade Busts
+            slug: private_ws
+            title: Private
+          - endpoint: GET /v1/v1
+            slug: public_ws
+            title: Public
 navbar-links:
   - type: filled
     text: Log in to Paradex

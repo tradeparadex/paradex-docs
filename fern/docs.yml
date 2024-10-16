@@ -37,11 +37,8 @@ navigation:
         api-name: unioned
         layout: 
           - endpoint: GET /v1
-            slug: private_ws
-            title: Private
-          - endpoint: GET /v1/v1
-            slug: public_ws
-            title: Public
+            slug: ws
+            title: V1 WebSockets
 navbar-links:
   - type: filled
     text: Log in to Paradex

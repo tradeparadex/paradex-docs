@@ -13,7 +13,5 @@ servers:
     protocol: wss
     x-fern-server-name: Tradenet
 
-x-fern-base-path: /v1
-
 paths: {}
 components: {}

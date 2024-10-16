@@ -6,8 +6,8 @@ info:
     Channels that can be subscribed to get real-time updates by
     using <a href="#subscribe">subscribe</a>.
 channels:
-  '':
-    summary: 'Private websocket channel to receive details of fills for a specific account'
+  /v1:
+    description: 'Private websocket channel to receive details of fills for a specific account'
     bindings:
       ws:
         headers:
@@ -24,6 +24,7 @@ channels:
           - $ref: '#/components/messages/Authorize'
           - $ref: '#/components/messages/FillsSubscribe'
           - $ref: '#/components/messages/OrdersMarketSymbolSubscribe'
+          - $ref: '#/components/messages/MarketsSummarySubscribe'
     subscribe:
       summary: 'Subscribe to private websocket channel to receive details of fills for specific account'
       operationId: subscribeFills
@@ -41,6 +42,12 @@ components:
       summary: 'Authorization message'
       payload:
         type: object
+        title: Authorize
+        required:
+          - id
+          - jsonrpc
+          - method
+          - params
         properties:
           id:
             $ref: '#/components/schemas/id'
@@ -53,6 +60,8 @@ components:
           params:
             description: 'Parameters to pass to the method'
             type: object
+            required:
+              - bearer
             properties:
               bearer:
                 type: string
@@ -62,14 +71,18 @@ components:
       name: fills
       title: Fills
       messageId: FillsSubscribe
-      summary: 'Fill Details'
+      summary: 'Fill Details (Requires Authorization)'
       payload:
         type: object
+        title: Fills
+        required:
+          - id
+          - jsonrpc
+          - method
+          - params
         properties:
           id:
-            description: 'ID of the message'
-            type: number
-            example: 1
+            $ref: '#/components/schemas/id'
           jsonrpc:
             $ref: '#/components/schemas/jsonrpc'
           method:
@@ -79,6 +92,8 @@ components:
           params:
             description: 'Parameters to pass to the method'
             type: object
+            required:
+              - channel
             properties:
               channel:
                 description: 'fills.{market_symbol}'
@@ -91,6 +106,7 @@ components:
       title: Fill
       payload:
         type: object
+        title: Fill
         description: 'Fill Details'
         additionalProperties: false
         properties:
@@ -154,16 +170,20 @@ components:
 
     OrdersMarketSymbolSubscribe:
       name: orders_market_symbol
-      title: Orders Market Symbol
+      title: 'Orders Market Symbol'
       messageId: OrdersMarketSymbolSubscribe
-      summary: 'Orders Details'
+      summary: 'Orders Details (Requires Authorization)'
       payload:
         type: object
+        title: OrdersMarketSymbol
+        required:
+          - id
+          - jsonrpc
+          - method
+          - params
         properties:
           id:
-            description: 'ID of the message'
-            type: number
-            example: 1
+            $ref: '#/components/schemas/id'
           jsonrpc:
             $ref: '#/components/schemas/jsonrpc'
           method:
@@ -173,6 +193,8 @@ components:
           params:
             description: 'Parameters to pass to the method'
             type: object
+            required:
+              - channel
             properties:
               channel:
                 description: 'orders.{market_symbol}'
@@ -185,6 +207,7 @@ components:
       title: Order (Private)
       payload:
         type: object
+        title: Order
         additionalProperties: false
         properties:
           account:
@@ -296,6 +319,39 @@ components:
             description: Trigger price for stop order
             type: string
             example: '26000.5'
+  
+    MarketsSummarySubscribe:
+      name: markets_summary
+      title: Markets Summary
+      messageId: MarketsSummarySubscribe
+      summary: 'Markets Summary'
+      payload:
+        type: object
+        title: MarketsSummary
+        required:
+          - id
+          - jsonrpc
+          - method
+          - params
+        properties:
+          id:
+            $ref: '#/components/schemas/id'
+          jsonrpc:
+            $ref: '#/components/schemas/jsonrpc'
+          method:
+            description: 'Method to call'
+            enum:
+              - subscribe
+          params:
+            description: 'Parameters to pass to the method'
+            type: object
+            required:
+              - channel
+            properties:
+              channel:
+                description: 'markets_summary'
+                enum:
+                  - markets_summary
 
   parameters:
     market_symbol:

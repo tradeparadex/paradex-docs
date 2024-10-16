@@ -1,3 +1,2 @@
 dependencies: 
-  private_ws: ../private_ws
-  public_ws: ../public_ws
+  ws_v1: ../ws_v1

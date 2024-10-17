@@ -1,0 +1,156 @@
+asyncapi: 2.6.0
+info:
+  title: WebSocket channels
+  version: ''
+  description: |
+    Channels that can be subscribed to get real-time updates by
+    using <a href="#subscribe">subscribe</a>.
+channels:
+  /v1:
+    description: 'Private websocket channel to receive details of fills for a specific account'
+    bindings:
+      ws:
+        headers:
+          type: object
+          properties:
+            Authorization:
+              type: string
+              description: 'API Key'
+    publish:
+      summary: 'Publish to private websocket channel to receive details of fills for specific account'
+      operationId: publishFills
+      message:
+        oneOf:
+          - $ref: '#/components/messages/MarketsSummarySubscribe'
+          - $ref: '#/components/messages/BboMarketSymbolSubscribe'
+
+components:
+  messages:
+    MarketsSummarySubscribe:
+      name: markets_summary
+      title: Markets Summary
+      messageId: MarketsSummarySubscribe
+      summary: 'Markets Summary'
+      payload:
+        type: object
+        title: MarketsSummary
+        required:
+          - id
+          - jsonrpc
+          - method
+          - params
+        properties:
+          id:
+            $ref: '#/components/schemas/id'
+          jsonrpc:
+            $ref: '#/components/schemas/jsonrpc'
+          method:
+            description: 'Method to call'
+            enum:
+              - subscribe
+          params:
+            description: 'Parameters to pass to the method'
+            type: object
+            required:
+              - channel
+            properties:
+              channel:
+                description: 'markets_summary'
+                enum:
+                  - markets_summary
+    BboMarketSymbolSubscribe:
+      name: bbo_market_symbol
+      title: BBO Market Symbol
+      messageId: BboMarketSymbolSubscribe
+      summary: 'BBO Market Symbol'
+      payload:
+        type: object
+        title: BboMarketSymbol
+        required:
+          - id
+          - jsonrpc
+          - method
+          - params
+        properties:
+          id:
+            $ref: '#/components/schemas/id'
+          jsonrpc:
+            $ref: '#/components/schemas/jsonrpc'
+          method:
+            description: 'Method to call'
+            enum:
+              - subscribe
+          params:
+            description: 'Parameters to pass to the method'
+            type: object
+            required:
+              - channel
+            properties:
+              channel:
+                description: 'bbo.{market_symbol}'
+                enum:
+                  - bbo.ETH-USD-PERP
+                  - bbo.BTC-USD-PERP
+  parameters:
+    market_symbol:
+      description: Symbol of the market (any open market returned by `GET /markets`)
+      schema:
+        type: string
+    market_symbol_or_all:
+      description: Either the symbol of the market (any open market returned by `GET /markets`) or `"ALL"` to subscribe for updates to all markets
+      schema:
+        type: string
+    program_name:
+      description: Name of the program to subscribe to for updates
+      schema:
+        type: string
+        enum:
+          - Maker
+          - Fee
+    refresh_rate:
+      description: Rate of sending updates
+      schema:
+        type: string
+        enum:
+          - 50ms
+          - 100ms
+  schemas:
+    properties:
+      MarketSymbol:
+        type: string
+        description: Symbol of the market
+      OrderSide:
+        type: string
+        description: Order side
+        enum:
+          - BUY
+          - SELL
+      timestamp:
+        type: number
+        format: Unix Timestamp (ms)
+        example: 1681462770114
+    deltas:
+      type: object
+      properties:
+        side:
+          type: string
+          enum:
+            - BUY
+            - SELL
+        price:
+          type: string
+          minimum: 0
+          example: 1234.12
+        size:
+          type: string
+          minimum: 0
+          example: 12.12
+    jsonrpc:
+      description: 'JSON-RPC version'
+      type: string
+      enum:
+        - '2.0'
+    id:
+      description: 'ID of the message'
+      type: number
+      example: 1

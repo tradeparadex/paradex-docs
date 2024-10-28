@@ -39,6 +39,8 @@ navigation:
           - endpoint: GET /v1
             slug: private-ws
             title: Private WebSocket
+        playground:
+          limit-websocket-messages-per-connection: 17
       - api: Public WebSockets
         skip-slug: true
         api-name: public_ws
@@ -46,6 +48,8 @@ navigation:
           - endpoint: GET /v1
             slug: public-ws
             title: Public WebSocket
+        playground:
+          limit-websocket-messages-per-connection: 17
 navbar-links:
   - type: filled
     text: Log in to Paradex

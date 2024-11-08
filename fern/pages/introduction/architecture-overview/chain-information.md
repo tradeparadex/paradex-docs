@@ -1,0 +1,20 @@
+---
+description: How to find out information on the Paradex Chain
+---
+
+# ⛓️ Chain Information
+
+Paradex shows up-to-date chain information at [https://app.paradex.trade/status](https://app.paradex.trade/status) like the following:
+
+<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption><p>*Note that this may not be the current information! Please go to the status linked above to see current information</p></figcaption></figure>
+
+You can also check out sites like [L2Beat](https://l2beat.com/scaling/projects/paradex) to see more information on our chain, smart contracts, locked volume, etc.
+
+## Chain Decimals
+
+1. **Decimal Precision**: In Starknet's Cairo language, we can't use decimal numbers directly. Instead, we use a fixed precision of 8 decimal places. This means we multiply all numbers by (`10^8`) to turn them into whole numbers.
+2. **Example**: Say the price of something, like `ETH-USD-PERP`, is `$3,309.33`. To put this on the blockchain, we multiply it by (`10^8`) to get (`330,933,000,000`). This way, we can work with whole numbers instead of decimals.
+3. **Order Signature Generation**: When we create signatures for orders, we use these converted whole numbers. It ensures that all calculations on the blockchain are accurate and consistent.
+4. **User Interface and Libraries**: Most of the time, our code takes care of these conversions for you. But if you're writing code, you need to remember to convert your numbers to the right precision for generating correct order signatures. This does **not** apply to any API values.
+
+This approach helps keep things simple and consistent across different parts of the blockchain system, making sure everyone's on the same page when it comes to handling fractional values.

@@ -3,7 +3,7 @@ instances:
 title: Paradex | Documentation
 tabs: 
   guides: 
-    display-name: Guides
+    display-name: Documentation
     icon: book
   reference: 
     display-name: API Reference
@@ -18,14 +18,23 @@ navigation:
             slug: what-is-paradex
             icon: crystal-ball
             path: ./pages/what-is-paradex.mdx
-          - section: Release Notes
-            icon: clock
-            path: ./pages/overview.mdx
-            contents: 
-              - page: v1.62
-                path: ./pages/v1.62.mdx
-              - page: v1.61
-                path: ./pages/v1.61.mdx
+      - section: Release Notes
+        icon: clock
+        path: ./pages/overview.mdx
+        contents: 
+          - page: v1.68
+            path: ./pages/release-notes/v1.68.md
+          - page: v1.67
+            path: ./pages/release-notes/v1.67.md
+          - section: Archive
+            icon: archive
+            path: ./pages/release-notes/archive/archive.mdx
+            contents:
+              - page: v1.65
+                path: ./pages/release-notes/archive/v1.65.md
+              - page: v1.64
+                path: ./pages/release-notes/archive/v1.64.md
+
   - tab: reference
     layout:
       - api: API Reference

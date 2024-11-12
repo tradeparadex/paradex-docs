@@ -1,0 +1,76 @@
+# 🪪 Wallet Integration
+
+## **Paradex Integration**
+
+Paradex, a [Starknet Appchain](starknet-first-appchain.md), incorporates separate public/private keys from your connected wallet (ie: Ethereum L1). To interact with Paradex, here's a simplified overview:
+
+1. **Key Generation**: visit the Paradex UI running in your browser. When you sign the Onboarding message, it will deterministically generate your private Paradex keys based on a signature from your connected wallet. Wallets that supports deterministic signing are supported. Importantly, this process ensures that you can regenerate your Paradex keys using the same connected wallet. Your Paradex keys are never transmitted to Paradex servers or any external location; they remain securely stored in your browser.
+2. **Transaction Signing**: Your private Paradex key is employed to sign any transactions you authorize on Layer 2. The UI running on your machine automatically performs these signatures when required.
+3. **Starknet Wallets (Beta)**: We're extending our key generation flow to support wallets from Starknet, including [Argent X](https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb) and [Braavos](https://chrome.google.com/webstore/detail/braavos-wallet/jnlgamecbpmbajjfhmmmlhejkemejdma). This will allow users coming from the Starknet ecosystem to trade on Paradex. We're working on a deeper integration with our wallet partners to eventually store keys directly within the wallet itself, offering enhanced security compared to browser storage.
+
+## Paradex internal wallet
+
+### Why did we decide to build a Paradex wallet internal to our app?
+
+We wanted to provide our clients with the simplest possible onboarding experience. Our solution was to allow our customers to operate on Paradex while only having to care about their Ethereum wallet, which they are already familiar with. We did not want users to have to manage a separate Paradex wallet, but instead be able to use a wallet they are comfortable with, such as MetaMask. This reduces complexity, as they would have to manage an Ethereum wallet anyway in order to interact with Paradex.
+
+<figure><img src="../../.gitbook/assets/image (11).png" alt=""><figcaption><p><em>MetaMask was our wallet of choice that would allow us to provide a simple experience to our users.</em></p></figcaption></figure>
+
+### How the internal wallet works
+
+#### How the Paradex private key is generated
+
+Remember that in order to make changes to the blockchain, the transaction doing so must be signed by a private key and that private key must belong to the user and to the user only.
+
+So how do we generate the same private key to the same user over and over?
+
+I'll answer that with a question: What's the one thing that a MetaMask user can do that we can verify that only they and no one else have done?
+
+The answer: A signature!
+
+Why a signature?
+
+1. It's based off of the user's private key on Ethereum, which in turn is based off of the recovery phrase provided to them by MetaMask, which we know can be used to recreate the wallet on a different device, therefore allowing the same private key to sign on different devices.
+2. Only the user is capable of generating that signature given that they are (presumably) the only holder of that private key.
+
+But it's not just any signature.
+
+We need the user to be able to generate the exact same signature over and over otherwise, again, they will lose their funds. The way we do that is by always asking the user to sign the same thing every time.
+
+There we have it: some bytes that only the user themself can generate repeatedly in any device that they choose to use.
+
+#### How the Paradex private key is generated based off of an Ethereum signature?
+
+This is where some slightly advanced cryptography comes in.
+
+The signature itself can't be the user's private key on Paradex because the private key must be compatible with a [Stark-friendly elliptic curve](https://docs.starkware.co/starkex/crypto/stark-curve.html).
+
+<figure><img src="../../.gitbook/assets/image (19).png" alt=""><figcaption></figcaption></figure>
+
+Converting arbitrary inputs into a private key is done with a KDF or [Key Derivation Function](https://en.wikipedia.org/wiki/Key\_derivation\_function). The KDF takes the input and does a series of transformations to it in order to convert it to a key in a deterministic way.
+
+Of course we relied on the StarkWare team as the cryptography specialists to provide us with the KDF that would do what we needed in a secure way.
+
+Finally, this gave us the key (no pun intended) to allow our users to interact with Paradex by only having a MetaMask wallet.
+
+#### How the Paradex private key is stored
+
+You must be asking yourself how secure is this private key, right?
+
+It's as secure as the user's computer. The private key never leaves RAM and is sandboxed to the browser tab running the app. This means that only the user's machine can sign transactions on Paradex and only while that machine is running. It's not stored anywhere else and is never sent in a request. The moment the app closed the private key goes away.
+
+#### How is “remember me” possible?
+
+If “Remember Me” is checked when connecting the wallet, the Ethereum Signature used to derive the Paradex private key is stored in the browser’s Local Storage. As with the private key, this signature never leaves the user's browser, but allows the user to automatically authenticate on loading the app without requiring interactions with their wallet. Users can opt-out of the Remember Me feature during Sign-In (Connect Wallet), so that the Ethereum Signature is not stored in the user's browser Local Storage.
+
+#### Clock Synchronization
+
+You should update the date and time on your device to be set automatically, to avoid issues when signing requests (e.g. during Onboarding/Authentication).\
+See [MacOS documentation](https://support.apple.com/en-gb/guide/mac-help/mchlp2996/mac) or [Windows documentation](https://support.microsoft.com/en-us/windows/how-to-set-your-time-and-time-zone-dfaa7122-479f-5b98-2a7b-fa0b6e01b261)
+
+### References
+
+***
+
+* [https://www.starknet.io/en](https://www.starknet.io/en)
+* [https://www.starknet.io/en/learn/what-is-starknet](https://www.starknet.io/en/learn/what-is-starknet)

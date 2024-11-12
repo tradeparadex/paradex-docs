@@ -1,0 +1,18 @@
+# 🈵 Position Limit
+
+A submitted order is rejected if it can potentially increase the client's position beyond the position limit of the instrument.
+
+The order is only accepted if the following condition holds :
+
+$$
+\small\text{Submitted Order Size}+\text{Size of Same-Side Open Orders}+\text{Open Position Side}*\text{Open Position Size}\\\leq \text{Position Limit}
+$$
+
+**Example :**
+
+* **ETH-USD-PERP Position Limit = 1000 ETH**
+* A user has an open **SHORT** position of size **900 ETH** and no open orders initially
+
+\-> Any **SELL order** with size higher than **100 ETH** (**= 1000 - 900**) will be rejected
+
+\-> Any **BUY order** with size higher than **1900 ETH (= 1000 + 900)** will be rejected

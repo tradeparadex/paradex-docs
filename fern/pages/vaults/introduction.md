@@ -1,0 +1,44 @@
+# 🗒️ Introduction
+
+## What are Vaults?
+
+Vaults are smart contract-based asset pools in the DeFi ecosystem where investors deposit collateral assets (currently, only USDC is supported ) and receive Vault Tokens representing their share.&#x20;
+
+These pooled assets are managed by Vault Operators who employ trading strategies—currently focusing on perpetual futures only—to generate returns for depositors.
+
+
+
+## Who should use Vaults?
+
+* An Investor looking for higher yields or returns? -> Become a Vault Depositor
+* An Asset Manager looking for more capital base? -> Become a Vault Operator _**\[Coming Soon]**_
+
+Discover how vaults are designed to help you achieve financial freedom.
+
+
+
+## Benefits for Investors (Vault Depositors)
+
+1. **Access to Professional Trading Strategies**\
+   Benefit from experienced vault operators who employ sophisticated strategies across various markets.
+2. **Potential for Enhanced Returns**\
+   Pooling your assets with others allows participation in more scalable trading strategies not typically accessible to individual investors.
+3. **Greater Diversification of Strategies**\
+   Invest your funds across multiple vaults of different risk profiles to achieve diversification benefits.
+4. **Transparent and Secure Management**\
+   Vault operations are governed by smart contracts on the blockchain, providing full transparency and allowing you to monitor your assets at any time.
+
+
+
+## Benefits for Asset Managers (Vault Owners)  _\[Coming Soon]_
+
+1. **Access to Larger Capital Pools**\
+   Manage significant pooled assets from multiple depositors, enabling you to execute larger trades and enhance profit potential.
+2. **Configurable Parameters**\
+   Set profit-sharing percentages between 0% and 20% to attract investors and reward your expertise. Operators can configure other parameters like the lockup period and the max TVL
+3. **Protection of Trading Strategies**\
+   The off-chain order book ensures privacy and protects your strategies from being compromised by front-running, ensuring trades are executed without external manipulation.
+4. **Operational Efficiency**\
+   Streamlined vault management with simplified withdrawals and automated processes reduces administrative overhead.
+5. **Reputation Building**\
+   Successfully managing a vault and delivering consistent returns builds credibility, attracting more depositors and opening doors within the DeFi ecosystem.

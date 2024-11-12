@@ -1,0 +1,85 @@
+---
+icon: tombstone-blank
+---
+
+# Socialized Losses
+
+## Context
+
+Socialized Losses happen when Paradex Insurance Fund is bankrupt due to large amounts of unprofitable liquidations. Paradex is built to minimize the probability of such an event but it can still happen. In this case the exchange would have insufficient USDC funds to meet withdrawal requests for all client funds.
+
+During periods of insufficient capitalization Paradex applies Socialized Loss charge to all withdrawals. Socialized Loss Factor represents how much percentage each withdrawal will be charged at current point in time in order to offset the loss. Only users who withdraw during those "shortfall" periods are affected by Socialized Losses.
+
+Once the Insurance Fund is re-capitalized (though profitable liquidations or fund transfer) Paradex stops applying Socialized Loss charge to withdrawals.
+
+## Definitions
+
+### Account Bankruptcy Amount
+
+For a given trading account, USDC Settlement Balance represents the USDC balance that this account would have if all its open positions were closed at current Mark Price :
+
+$$
+\small\text{Account USDC Settlement Balance}=\text{Account USDC Balance}+\frac{\text{Account Unrealized PnL}}{\text{USDC Oracle Price}}
+$$
+
+Since Paradex currently only accepts USDC as collateral, this is equal to the [Account Value](margin-term-reference.md#account-value-usd) expressed in USDC, i.e. : $$\frac{\text{Account Value}}{\text{USDC Oracle Price}}$$
+
+The Bankruptcy Amount of an account is equal to :
+
+$$
+\text{Bankruptcy Amount}=\max(0,~-\text{Account USDC Settlement Balance})
+$$
+
+i.e. Bankruptcy Amount is positive only if account will be bankrupt at current Mark prices. Otherwise it is zero.
+
+### Exchange Bankruptcy Amount
+
+The exchange Bankruptcy Amount is equal to :
+
+$$
+\begin{split} \small\text{Exchange Bankruptcy Amount}=\max(0&,~\text{Total Users Bankruptcy Amount}\\ &-\text{Insurance Fund USDC Balance}) \end{split}
+$$
+
+### Socialized Loss Factor
+
+$$
+\small\text{Socialized Loss Factor}=\frac{\text{Exchange Bankruptcy Amount}}{\text{Total Exchange USDC Balance + \text{Exchange Bankruptcy Amount}}}
+$$
+
+If Exchange Bankruptcy Amount is positive (i.e. Insurance fund has negative value or shortfall from bankrupt user accounts is higher than Insurance Fund value), Socialized Loss Factor is greater than 0 and all withdrawals will be penalized by this factor.
+
+Only withdrawals are subject to socialized loss penalty, users who do not withdraw are not affected
+
+##
+
+## **Example**
+
+**Insurance Fund has initially 1'000 UDSC balance and no open positions.**
+
+**There are three traders on the exchange : Alice, Bob and Charlie. Each of them has a 1'000 USDC balance. The oracle price of USDC is 1 USD.**
+
+Therefore. the Total Exchange USDC Balance is $$4'000$$
+
+**Alice buys 50 XYZ-USD-PERP against Bob at a 100 USD**
+
+**The Mark Price of XYZ-USD-PERP suddenly crashes down to 40**
+
+Alice now has an [Unrealized PnL](margin-term-reference.md#unrealized-pnl-usd) of : $$50 * (40-100)=-3'000 ~\text{USD}$$
+
+and has a negative [Account Value](margin-term-reference.md#account-value-usd) (bankrupt account) of $$1'000-3'000=-2'000~\text{USD}$$
+
+Therefore, Alice [Bankruptcy Amount](socialized-losses.md#account-bankruptcy-amount) is 2'000 USDC and the [Exchange Bankruptcy Amount](socialized-losses.md#exchange-bankruptcy-amount) is $$2'000-1'000=1'000~\text{USDC}$$
+
+The [Socialized Loss Factor](socialized-losses.md#socialized-loss-factor) is then equal to $$\frac{1'000}{4'000}=25\%$$
+
+Charlie withdraws 500 USDC : The Insurance Fund receives $$25\%*500=125~\text{USDC}$$ and Charlie's withdrawal address receives $$75\%*500=375~\text{USDC}$$
+
+**The Insurance Fund takes over Alice account.** Note that Bankruptcy Amount is unchanged (1'000 USDC)
+
+**The Mark Price of XYZ-USD-PERP quickly moves up to 70**
+
+Now the Insurance Fund position (taken over from Alice) only has $$50*(70-100)=-1'500~\text{USD}$$ Unrealized PnL. This means that the Insurance Fund is not bankrupt anymore and has $$2'000-1'500=+500~\text{USD}$$
+
+This brings the Exchange Bankruptcy Amount to 0 and the Socialized Loss Factor to 0%.
+
+Therefore, withdrawals are now no longer subject to any loss.

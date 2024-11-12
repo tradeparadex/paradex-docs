@@ -34,6 +34,10 @@ navigation:
                 path: ./pages/release-notes/archive/v1.65.md
               - page: v1.64
                 path: ./pages/release-notes/archive/v1.64.md
+              - page: v1.63
+                path: ./pages/release-notes/archive/v1.63.md
+              - page: v1.62
+                path: ./pages/release-notes/archive/v1.62.md
 
   - tab: reference
     layout:

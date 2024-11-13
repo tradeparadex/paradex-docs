@@ -3,7 +3,7 @@ title: 🪪 Wallet Integration
 ---
 ## **Paradex Integration**
 
-Paradex, a [Starknet Appchain](starknet-first-appchain.md), incorporates separate public/private keys from your connected wallet (ie: Ethereum L1). To interact with Paradex, here's a simplified overview:
+Paradex, a [Starknet Appchain](starknet-first-appchain.mdx), incorporates separate public/private keys from your connected wallet (ie: Ethereum L1). To interact with Paradex, here's a simplified overview:
 
 1. **Key Generation**: visit the Paradex UI running in your browser. When you sign the Onboarding message, it will deterministically generate your private Paradex keys based on a signature from your connected wallet. Wallets that supports deterministic signing are supported. Importantly, this process ensures that you can regenerate your Paradex keys using the same connected wallet. Your Paradex keys are never transmitted to Paradex servers or any external location; they remain securely stored in your browser.
 2. **Transaction Signing**: Your private Paradex key is employed to sign any transactions you authorize on Layer 2. The UI running on your machine automatically performs these signatures when required.

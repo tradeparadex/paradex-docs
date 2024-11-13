@@ -18,6 +18,46 @@ navigation:
             slug: what-is-paradex
             icon: crystal-ball
             path: ./pages/what-is-paradex.mdx
+          - page: Roadmap
+            slug: roadmap
+            icon: crystal-ball
+            path: ./pages/introduction/roadmap.mdx
+          - section: Architecture Overview
+            contents:
+            - page: Starknet First Appchain
+              slug: starknet-first-appchain
+              icon: crystal-ball
+              path: ./pages/introduction/architecture-overview/starknet-first-appchain.mdx
+            - page: Chain Information
+              slug: chain-information
+              icon: crystal-ball
+              path: ./pages/introduction/architecture-overview/chain-information.mdx
+            - page: Bridges & Audits
+              slug: bridges-and-audits
+              icon: crystal-ball
+              path: ./pages/introduction/architecture-overview/bridges-and-audits.mdx
+            - page: Wallet Integration
+              slug: wallet-integration
+              icon: crystal-ball
+              path: ./pages/introduction/architecture-overview/wallet-integration.mdx
+            - page: Server Location
+              slug: server-location
+              icon: crystal-ball
+              path: ./pages/introduction/architecture-overview/server-location.mdx
+            - page: Global IP Addresses
+              slug: global-ip-addresses
+              icon: crystal-ball
+              path: ./pages/introduction/architecture-overview/global-ip-addresses.mdx
+          - section: Install Mobile / Desktop App
+            contents:
+            - page: Mobile App
+              slug: mobile-app
+              icon: crystal-ball
+              path: ./pages/introduction/install-our-app/mobile.mdx              
+            - page: Desktop App
+              slug: desktop-app
+              icon: crystal-ball
+              path: ./pages/introduction/install-our-app/desktop.mdx
       - section: Vaults
         contents:
           - page: Introduction
@@ -28,6 +68,24 @@ navigation:
             slug: key-features
             icon: crystal-ball
             path: ./pages/vaults/key-features.mdx
+          - section: Tutorials
+            contents:
+              - page: Create a Vault
+                slug: create-a-vault
+                icon: crystal-ball
+                path: ./pages/vaults/tutorials/create-a-vault.mdx
+              - page: Close Your Vault
+                slug: close-your-vault
+                icon: crystal-ball
+                path: ./pages/vaults/tutorials/close-your-vault.mdx
+              - page: Desposit
+                slug: vault-deposit
+                icon: crystal-ball
+                path: ./pages/vaults/tutorials/deposit.mdx
+              - page: Withdrawal
+                slug: vault-withdrawal
+                icon: crystal-ball
+                path: ./pages/vaults/tutorials/withdrawal.mdx
           - page: FAQs
             slug: faq
             icon: crystal-ball

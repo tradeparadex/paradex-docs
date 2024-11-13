@@ -1,5 +1,6 @@
-# 🪪 Wallet Integration
-
+---
+title: 🪪 Wallet Integration
+---
 ## **Paradex Integration**
 
 Paradex, a [Starknet Appchain](starknet-first-appchain.md), incorporates separate public/private keys from your connected wallet (ie: Ethereum L1). To interact with Paradex, here's a simplified overview:
@@ -13,8 +14,9 @@ Paradex, a [Starknet Appchain](starknet-first-appchain.md), incorporates separat
 ### Why did we decide to build a Paradex wallet internal to our app?
 
 We wanted to provide our clients with the simplest possible onboarding experience. Our solution was to allow our customers to operate on Paradex while only having to care about their Ethereum wallet, which they are already familiar with. We did not want users to have to manage a separate Paradex wallet, but instead be able to use a wallet they are comfortable with, such as MetaMask. This reduces complexity, as they would have to manage an Ethereum wallet anyway in order to interact with Paradex.
-
-<figure><img src="../../.gitbook/assets/image (11).png" alt=""><figcaption><p><em>MetaMask was our wallet of choice that would allow us to provide a simple experience to our users.</em></p></figcaption></figure>
+<Frame caption="MetaMask was our wallet of choice that would allow us to provide a simple experience to our users.">
+<img src="../../../assets/image (11).png" alt=""/>
+</Frame>
 
 ### How the internal wallet works
 
@@ -45,7 +47,7 @@ This is where some slightly advanced cryptography comes in.
 
 The signature itself can't be the user's private key on Paradex because the private key must be compatible with a [Stark-friendly elliptic curve](https://docs.starkware.co/starkex/crypto/stark-curve.html).
 
-<figure><img src="../../.gitbook/assets/image (19).png" alt=""><figcaption></figcaption></figure>
+<img src="../../../assets/image (19).png" alt=""/>
 
 Converting arbitrary inputs into a private key is done with a KDF or [Key Derivation Function](https://en.wikipedia.org/wiki/Key\_derivation\_function). The KDF takes the input and does a series of transformations to it in order to convert it to a key in a deterministic way.
 

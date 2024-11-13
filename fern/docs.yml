@@ -18,6 +18,88 @@ navigation:
             slug: what-is-paradex
             icon: crystal-ball
             path: ./pages/what-is-paradex.mdx
+      - section: Vaults
+        contents:
+          - page: Introduction
+            slug: vaults-introduction
+            icon: crystal-ball
+            path: ./pages/vaults/introduction.mdx
+          - page: Key Features
+            slug: key-features
+            icon: crystal-ball
+            path: ./pages/vaults/key-features.mdx
+          - page: FAQs
+            slug: faq
+            icon: crystal-ball
+            path: ./pages/vaults/faqs.mdx
+      - section: Points & Referrals
+        contents:
+          - link: Xperience Points
+            icon: crystal-ball
+            href: https://www.paradex.trade/paradexblog/xp-warzone-season-1-has-arrived
+          - section: Referral Program
+            contents:
+              - page: Example Calculations
+                slug: example-calculations
+                icon: crystal-ball
+                path: ./pages/points-and-referrals/referral-program/example-calculations.mdx
+      - section: Accounts
+        contents:
+          - page: Wallet Overview
+            slug: wallet-overview
+            icon: crystal-ball
+            path: ./pages/accounts/overview.mdx
+          - page: Transfers
+            slug: transfers
+            icon: crystal-ball
+            path: ./pages/accounts/transfers.mdx
+
+
+      - section: Trading
+        contents: 
+        - section: Placing Orders
+          contents: 
+          - section: Order Types
+            contents:
+              - page: Limit Order
+                slug: limit-order
+                icon: crystal-ball
+                path: ./pages/trading/placing-orders/order-types/limit-order.mdx
+              - page: Market Order
+                slug: market-order
+                icon: crystal-ball
+                path: ./pages/trading/placing-orders/order-types/market-order.mdx
+              - page: Scaled Order
+                slug: scaled-order
+                icon: crystal-ball
+                path: ./pages/trading/placing-orders/order-types/scaled-order.mdx
+              - page: Stop Order
+                slug: stop-order
+                icon: crystal-ball
+                path: ./pages/trading/placing-orders/order-types/stop-orders.mdx
+              - page: TWAP Order
+                slug: twap-order
+                icon: crystal-ball
+                path: ./pages/trading/placing-orders/order-types/twap-order.mdx
+              - page: TP/SL
+                slug: tpsl-order
+                icon: crystal-ball
+                path: ./pages/trading/placing-orders/order-types/tp-sl.mdx
+
+
+        - page: Trading Fees
+          slug: trading-fees
+          icon: crystal-ball
+          path: ./pages/trading/trading-fees.mdx
+        - page: Moblile Access Guide
+          slug: mobile-access-guide
+          icon: crystal-ball
+          path: ./pages/trading/mobile-access-guide.mdx
+        - page: Margin Calculator
+          slug: margin-calculator
+          icon: crystal-ball
+          path: ./pages/trading/margin-calculator.mdx
+
       - section: Release Notes
         icon: clock
         path: ./pages/overview.mdx
@@ -34,10 +116,6 @@ navigation:
                 path: ./pages/release-notes/archive/v1.65.md
               - page: v1.64
                 path: ./pages/release-notes/archive/v1.64.md
-              - page: v1.63
-                path: ./pages/release-notes/archive/v1.63.md
-              - page: v1.62
-                path: ./pages/release-notes/archive/v1.62.md
 
   - tab: reference
     layout:

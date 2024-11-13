@@ -1,7 +1,0 @@
-# 🔒 Security Lockdown
-
-Paradex has following controls to manage funds security
-
-1. Block L1 Deposits
-2. Limit L1 Withdrawals
-3. Limit L2 Withdrawals

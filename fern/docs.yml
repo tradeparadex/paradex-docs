@@ -49,6 +49,10 @@ navigation:
             slug: wallet-overview
             icon: crystal-ball
             path: ./pages/accounts/overview.mdx
+          - page: Sub-accounts
+            slug: sub-accounts
+            icon: crystal-ball
+            path: ./pages/accounts/sub-accounts.mdx
           - page: Transfers
             slug: transfers
             icon: crystal-ball
@@ -99,6 +103,21 @@ navigation:
           slug: margin-calculator
           icon: crystal-ball
           path: ./pages/trading/margin-calculator.mdx
+
+      - section: Security
+        contents:
+          - page: Security Lockdown
+            slug: security-lockdown
+            icon: crystal-ball
+            path: ./pages/security/security-lockdown.mdx
+          - page: Guardian Keys
+            slug: guardian-keys
+            icon: crystal-ball
+            path: ./pages/security/guardian-keys.mdx
+          - page: Bug Bounty
+            slug: bug-bounty
+            icon: crystal-ball
+            path: ./pages/security/bug-bounty.mdx
 
       - section: Release Notes
         icon: clock

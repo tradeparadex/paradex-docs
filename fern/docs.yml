@@ -60,6 +60,8 @@ navigation:
               slug: desktop-app
               icon: desktop
               path: ./pages/introduction/install-our-app/desktop.mdx
+              
+              
       - section: Vaults
         contents:
           - page: Introduction
@@ -93,6 +95,8 @@ navigation:
             slug: faq
             icon: question
             path: ./pages/vaults/faqs.mdx
+            
+            
       - section: Points & Referrals
         contents:
           - link: Xperience Points
@@ -105,6 +109,8 @@ navigation:
               slug: example-calculations
               icon: calculator
               path: ./pages/points-and-referrals/referral-program/example-calculations.mdx
+              
+              
       - section: Accounts
         contents:
           - page: Wallet Overview
@@ -134,6 +140,8 @@ navigation:
             slug: transfers
             icon: money-bill-transfer
             path: ./pages/accounts/transfers.mdx
+            
+            
       - section: Trading
         contents: 
         - section: Placing Orders
@@ -165,8 +173,6 @@ navigation:
                 slug: tpsl-order
                 icon: crystal-ball
                 path: ./pages/trading/placing-orders/order-types/tp-sl.mdx
-
-
         - page: Trading Fees
           slug: trading-fees
           icon: credit-card
@@ -179,6 +185,63 @@ navigation:
           slug: margin-calculator
           icon: calculator-simple
           path: ./pages/trading/margin-calculator.mdx
+
+
+      - section: Developer Portal
+        contents:
+        - section: General Information
+          icon: info
+          contents: 
+          - page: API Server Location
+            slug: api-server-location
+            icon: location-dot
+            path: ./pages/developer-portal/general-information/api-server-location.mdx
+          - page: API URLs
+            slug: browser
+            icon: pin
+            path: ./pages/developer-portal/general-information/api-urls.mdx
+          - page: API Quick Start
+            slug: api-quick-start
+            icon: bolt
+            path: ./pages/developer-portal/general-information/api-quick-start.mdx
+          - page: Authentication
+            slug: authentication
+            icon: bolt
+            path: ./pages/developer-portal/general-information/authentication.mdx
+          - section: Rate Limits
+            icon: monitor-waveform
+            contents: 
+            - page: API
+              slug: api-connection
+              icon: chart-network
+              path: ./pages/developer-portal/general-information/rate-limits/api.mdx
+            - page: Websocket
+              slug: websocket-connection
+              icon: bars-staggered
+              path: ./pages/developer-portal/general-information/rate-limits/websocket.mdx
+            - page: Open Orders per Account
+              slug: open-orders-per-account
+              icon: memo-pad
+              path: ./pages/developer-portal/general-information/rate-limits/open-orders-per-account.mdx
+            - page: Common Questions
+              slug: common-questions
+              icon: memo-pad
+              path: ./pages/developer-portal/general-information/rate-limits/common-questions.mdx
+          - link: Paradex Github
+            href: https://github.com/tradeparadex    
+          - link: Paradex CLI
+            href: https://github.com/tradeparadex/paradex-cli/
+          - link: Code Samples
+            href: https://github.com/tradeparadex/code-samples
+          - link: Python SDK
+            href: https://tradeparadex.github.io/paradex-py/
+          - link: CCXT Integration
+            href: https://docs.ccxt.com/#/exchanges/paradex
+          - page: Benchmarks
+            slug: benchmarks
+            icon: chart-simple
+            path: ./pages/developer-portal/benchmarks.mdx
+
 
       - section: Security
         contents:
@@ -245,6 +308,8 @@ navigation:
             slug: trade-busts
             icon: wave
             path: ./pages/risk-system/trade-busts.mdx
+            
+            
       - section: Advanced Trading Features
         contents:
           - page: Self Trade Prevention
@@ -255,6 +320,8 @@ navigation:
             slug: receive-window
             icon: window
             path: ./pages/advanced-trading-features/receive-window.mdx
+            
+            
       - section: Instruments Guide
         contents:
         - section: Futures
@@ -267,6 +334,11 @@ navigation:
               slug: aave-usd-perp
               icon: crystal-ball
               path: ./pages/instruments-guide/futures/tier-2/aave-usd-perp.mdx
+            - page: ADA-USD-PERP
+              slug: ada-usd-perp
+              icon: crystal-ball
+              path: ./pages/instruments-guide/futures/tier-2/ada-usd-perp.mdx
+
       - section: Ecosystem Partners
         contents:
         - section: Starknet Wallets

@@ -20,106 +20,124 @@ navigation:
             path: ./pages/what-is-paradex.mdx
           - page: Roadmap
             slug: roadmap
-            icon: crystal-ball
+            icon: map
             path: ./pages/introduction/roadmap.mdx
           - section: Architecture Overview
+            icon: building
             contents:
             - page: Starknet First Appchain
               slug: starknet-first-appchain
-              icon: crystal-ball
+              icon: computer
               path: ./pages/introduction/architecture-overview/starknet-first-appchain.mdx
             - page: Chain Information
               slug: chain-information
-              icon: crystal-ball
+              icon: link-horizontal-slash
               path: ./pages/introduction/architecture-overview/chain-information.mdx
             - page: Bridges & Audits
               slug: bridges-and-audits
-              icon: crystal-ball
+              icon: lock
               path: ./pages/introduction/architecture-overview/bridges-and-audits.mdx
             - page: Wallet Integration
               slug: wallet-integration
-              icon: crystal-ball
+              icon: id-card
               path: ./pages/introduction/architecture-overview/wallet-integration.mdx
             - page: Server Location
               slug: server-location
-              icon: crystal-ball
+              icon: location-pin
               path: ./pages/introduction/architecture-overview/server-location.mdx
             - page: Global IP Addresses
               slug: global-ip-addresses
-              icon: crystal-ball
+              icon: globe
               path: ./pages/introduction/architecture-overview/global-ip-addresses.mdx
           - section: Install Mobile / Desktop App
+            icon: cloud-arrow-down
             contents:
             - page: Mobile App
               slug: mobile-app
-              icon: crystal-ball
+              icon: mobile-screen
               path: ./pages/introduction/install-our-app/mobile.mdx              
             - page: Desktop App
               slug: desktop-app
-              icon: crystal-ball
+              icon: desktop
               path: ./pages/introduction/install-our-app/desktop.mdx
       - section: Vaults
         contents:
           - page: Introduction
             slug: vaults-introduction
-            icon: crystal-ball
+            icon: memo-pad
             path: ./pages/vaults/introduction.mdx
           - page: Key Features
             slug: key-features
-            icon: crystal-ball
+            icon: gift
             path: ./pages/vaults/key-features.mdx
           - section: Tutorials
+            icon: person-chalkboard
             contents:
               - page: Create a Vault
                 slug: create-a-vault
-                icon: crystal-ball
+                icon: vault
                 path: ./pages/vaults/tutorials/create-a-vault.mdx
               - page: Close Your Vault
                 slug: close-your-vault
-                icon: crystal-ball
+                icon: vault
                 path: ./pages/vaults/tutorials/close-your-vault.mdx
               - page: Desposit
                 slug: vault-deposit
-                icon: crystal-ball
+                icon: vault
                 path: ./pages/vaults/tutorials/deposit.mdx
               - page: Withdrawal
                 slug: vault-withdrawal
-                icon: crystal-ball
+                icon: vault
                 path: ./pages/vaults/tutorials/withdrawal.mdx
           - page: FAQs
             slug: faq
-            icon: crystal-ball
+            icon: question
             path: ./pages/vaults/faqs.mdx
       - section: Points & Referrals
         contents:
           - link: Xperience Points
-            icon: crystal-ball
+            icon: wand-magic-sparkles
             href: https://www.paradex.trade/paradexblog/xp-warzone-season-1-has-arrived
           - section: Referral Program
+            icon: handshake
             contents:
-              - page: Example Calculations
-                slug: example-calculations
-                icon: crystal-ball
-                path: ./pages/points-and-referrals/referral-program/example-calculations.mdx
+            - page: Example Calculations
+              slug: example-calculations
+              icon: calculator
+              path: ./pages/points-and-referrals/referral-program/example-calculations.mdx
       - section: Accounts
         contents:
           - page: Wallet Overview
             slug: wallet-overview
-            icon: crystal-ball
+            icon: wallet
             path: ./pages/accounts/overview.mdx
+          - section: Deposits And Withdrawals
+            icon: building-columns
+            contents:
+              - page: Ethereum Wallets
+                slug: ethereum-wallets
+                icon: ethereum
+                path: ./pages/accounts/deposits-and-withdrawals/ethereum-wallets.mdx
+              - page: Starknet Wallets
+                slug: starknet-wallets
+                icon: square
+                path: ./pages/accounts/deposits-and-withdrawals/starknet-wallets.mdx
+              - page: Cross Chain Bridging
+                slug: cross-chain-bridging
+                icon: bridge
+                path: ./pages/accounts/deposits-and-withdrawals/cross-chain-bridging.mdx
           - page: Sub-accounts
             slug: sub-accounts
-            icon: crystal-ball
+            icon: receipt
             path: ./pages/accounts/sub-accounts.mdx
           - page: Transfers
             slug: transfers
-            icon: crystal-ball
+            icon: money-bill-transfer
             path: ./pages/accounts/transfers.mdx
-
-
       - section: Trading
         contents: 
         - section: Placing Orders
+          icon: users-gear
           contents: 
           - section: Order Types
             contents:
@@ -151,31 +169,128 @@ navigation:
 
         - page: Trading Fees
           slug: trading-fees
-          icon: crystal-ball
+          icon: credit-card
           path: ./pages/trading/trading-fees.mdx
-        - page: Moblile Access Guide
+        - page: Mobile Access Guide
           slug: mobile-access-guide
-          icon: crystal-ball
+          icon: mobile
           path: ./pages/trading/mobile-access-guide.mdx
         - page: Margin Calculator
           slug: margin-calculator
-          icon: crystal-ball
+          icon: calculator-simple
           path: ./pages/trading/margin-calculator.mdx
 
       - section: Security
         contents:
           - page: Security Lockdown
             slug: security-lockdown
-            icon: crystal-ball
+            icon: lock-keyhole
             path: ./pages/security/security-lockdown.mdx
           - page: Guardian Keys
             slug: guardian-keys
-            icon: crystal-ball
+            icon: shield
             path: ./pages/security/guardian-keys.mdx
           - page: Bug Bounty
             slug: bug-bounty
-            icon: crystal-ball
+            icon: bug
             path: ./pages/security/bug-bounty.mdx
+
+      - section: Risk System
+        contents:
+          - page: Paradex Margin System
+            slug: paradex-risk-system
+            icon: alien-8bit
+            path: ./pages/risk-system/paradex-risk-system.mdx
+          - page: Margin Term Reference
+            slug: margin-term-reference
+            icon: book-open
+            path: ./pages/risk-system/margin-term-reference.mdx
+          - page: Paradex Risk Checks
+            slug: paradex-risk-checks
+            icon: magnifying-glass
+            path: ./pages/risk-system/paradex-risk-checks.mdx
+          - page: Mark Price Calculation
+            slug: mark-price-calculation
+            icon: abacus
+            path: ./pages/risk-system/mark-price-calculation.mdx
+          - page: Cross Margin Requirement
+            slug: cross-margin-requirement
+            icon: scale-balanced
+            path: ./pages/risk-system/cross-margin-requirement.mdx
+          - page: Price Bands
+            slug: price-bands
+            icon: dollar-sign
+            path: ./pages/risk-system/price-bands.mdx
+          - page: Position Limit
+            slug: position-limit
+            icon: hand
+            path: ./pages/risk-system/position-limit.mdx
+          - page: Funding Mechanism
+            slug: funding-mechanism
+            icon: bag-seedling
+            path: ./pages/risk-system/funding-mechanism.mdx
+          - page: Deleveraging
+            slug: deleveraging
+            icon: skull-crossbones
+            path: ./pages/risk-system/deleveraging.mdx
+          - page: Liquidations
+            slug: liquidations
+            icon: droplet
+            path: ./pages/risk-system/liquidations.mdx
+          - page: Socialized Losses
+            slug: socialized-losses
+            icon: share-nodes
+            path: ./pages/risk-system/socialized-losses.mdx
+          - page: Trade Flow And Busts
+            slug: trade-busts
+            icon: wave
+            path: ./pages/risk-system/trade-busts.mdx
+      - section: Advanced Trading Features
+        contents:
+          - page: Self Trade Prevention
+            slug: self-trade-prevention
+            icon: stop
+            path: ./pages/advanced-trading-features/self-trade-prevention.mdx
+          - page: Receive Window
+            slug: receive-window
+            icon: window
+            path: ./pages/advanced-trading-features/receive-window.mdx
+      - section: Instruments Guide
+        contents:
+        - section: Futures
+          icon: display-chart-up
+          contents: 
+          - section: Tier 2
+            icon: medal
+            contents:
+            - page: AAVE-USD-PERP
+              slug: aave-usd-perp
+              icon: crystal-ball
+              path: ./pages/instruments-guide/futures/tier-2/aave-usd-perp.mdx
+      - section: Ecosystem Partners
+        contents:
+        - section: Starknet Wallets
+          contents: 
+          - link: Argent
+            icon: wallet
+            href: https://www.argent.xyz/
+          - link: Bravos
+            icon: wallet
+            href: https://braavos.app/
+        - section: Cross Chain Bridges
+          contents: 
+          - link: rhino.fi
+            icon: link
+            href: https://rhino.fi/
+          - link: Layerswap
+            icon: link
+            href: https://layerswap.io/
+        - section: Price Oracles
+          contents: 
+          - link: Pyth
+            icon: link
+            href: https://pyth.network/
+            
 
       - section: Release Notes
         icon: clock

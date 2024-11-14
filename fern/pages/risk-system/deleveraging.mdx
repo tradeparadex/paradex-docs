@@ -1,5 +1,6 @@
-# ☠️ Deleveraging
-
+---
+title: ☠️ Deleveraging
+---
 ## Mechanism
 
 The deleveraging process is a periodic check for accounts with open orders to determine if the account has sufficient value to maintain those orders.
@@ -10,9 +11,9 @@ This prevents those orders from being matched resulting in a fill that is likely
 
 The main objective of deleveraging is to prevent orders from resulting in invalid fills
 
-This check compares the [Account Value](margin-term-reference.md#account-value-usd) to the [Initial Margin Requirement](margin-term-reference.md#margin-requirement) (check [here](cross-margin-requirement.md#initial-margin-requirement-imr) how IMR is calculated in Cross Margin Mode).
+This check compares the [Account Value](margin-term-reference#account-value-usd) to the [Initial Margin Requirement](margin-term-reference#margin-requirement) (check [here](cross-margin-requirement#initial-margin-requirement-imr) how IMR is calculated in Cross Margin Mode).
 
-* If $$\text{Account Value}<\text{Account IMR}$$, **Account Deleveraging** kicks in :
+* If $$\text{Account Value} < \text{Account IMR}$$, **Account Deleveraging** kicks in :
   * All orders that do not offset an open position on the same instrument (i.e. the account does not have an open position in this instrument **or** has an open position on the same side as the open order) are cancelled since these non-offsetting
   * Order offsetting an open position (opposite side) are not cancelled unless the cumulative size of those orders exceeds the position size, in which case the most passive orders are cancelled until the remaining cumulative size of offsetting orders is equal or lower than the position size
 

@@ -1,4 +1,6 @@
-# 📖 Margin Term Reference
+---
+title: 📖 Margin Term Reference
+---
 
 ## **Definitions**
 
@@ -33,7 +35,7 @@ where $$\text{Position Cost}$$ is a signed number and $$\text{Average Entry Pric
 
 ### _**Accrued Funding (USD)**_
 
-This refers to the unrealized Funding _accrued on open perpetual positions since account’s last trade in those positions_. When the account executes a trade in an existing open perpetual position, any accrued funding on this position is realized (i.e. account’s USDC balance is updated) and Funding PnL of this position is reset to 0. For more details on funding mechanism, please refer to the [Funding Mechanism](funding-mechanism.md) page
+This refers to the unrealized Funding _accrued on open perpetual positions since account’s last trade in those positions_. When the account executes a trade in an existing open perpetual position, any accrued funding on this position is realized (i.e. account’s USDC balance is updated) and Funding PnL of this position is reset to 0. For more details on funding mechanism, please refer to the [Funding Mechanism](funding-mechanism) page
 
 ### _**Unrealized PnL (USD)**_
 
@@ -63,7 +65,7 @@ $$
     Note that the Account IMR calculated off-chain is more conservative than the Position IMR. Therefore, orders submitted from the cloud to the chain are very unlikely to be rejected.
 * _**Account Maintenance Margin Requirement (USD)**_ - The MMR is the minimum account value required for the account not to be available for liquidation
 
-_Note :_ Calculation of IMR and MMR in a cross-margin account can be found in the [Cross Margin Requirement](cross-margin-requirement.md) page
+_Note :_ Calculation of IMR and MMR in a cross-margin account can be found in the [Cross Margin Requirement](cross-margin-requirement) page
 
 ### _**Free Collateral Balance (USD)**_
 

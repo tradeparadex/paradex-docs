@@ -1,8 +1,7 @@
 ---
+title: 💰 Funding Mechanism
 description: An overview of how Paradex's unique continuous funding mechanism works
 ---
-
-# 💰 Funding Mechanism
 
 ## Mechanism
 
@@ -22,7 +21,7 @@ $$
 
 ### Funding Rate
 
-The **Funding Rate** is derived from [**Fair Basis**](mark-price-calculation.md#steps-to-calculate-the-fair-basis-and-the-mark-price) by applying interest rate clamping and by constraining the resulting value to the interval \[ − 𝑀 , + 𝑀 ] where M is the Maximum Funding Rate.
+The **Funding Rate** is derived from [**Fair Basis**](mark-price-calculation#steps-to-calculate-the-fair-basis-and-the-mark-price) by applying interest rate clamping and by constraining the resulting value to the interval \[ − 𝑀 , + 𝑀 ] where M is the Maximum Funding Rate.
 
 $$
 \text{Funding Rate}=\text{capped}\big(\text{Fair Basis} + \text{clamp}\big(\text{Interest Rate}, \text{Fair Basis}, \text{Clamp Rate}\big)\big)
@@ -44,7 +43,7 @@ Current values for the above settings are:
 * Clamp Rate = 0.05%
 * Maximum Funding Rate = 0.05
 
-<figure><img src="../.gitbook/assets/image (66).png" alt=""><figcaption></figcaption></figure>
+<img src="../../assets/image (66).png" alt=""/>
 
 ### Funding Index
 

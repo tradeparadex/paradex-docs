@@ -227,20 +227,34 @@ navigation:
               slug: common-questions
               icon: memo-pad
               path: ./pages/developer-portal/general-information/rate-limits/common-questions.mdx
-          - link: Paradex Github
-            href: https://github.com/tradeparadex    
-          - link: Paradex CLI
-            href: https://github.com/tradeparadex/paradex-cli/
-          - link: Code Samples
-            href: https://github.com/tradeparadex/code-samples
-          - link: Python SDK
-            href: https://tradeparadex.github.io/paradex-py/
-          - link: CCXT Integration
-            href: https://docs.ccxt.com/#/exchanges/paradex
-          - page: Benchmarks
-            slug: benchmarks
-            icon: chart-simple
-            path: ./pages/developer-portal/benchmarks.mdx
+        - section: Mainnet Documentation
+          icon: rocket
+          contents: 
+          - link: Websocket Documentation
+            href: https://docs.api.prod.paradex.trade/#websocket-json-rpc-api
+          - link: Paradex REST API (Previous format)
+            href: https://docs.api.prod.paradex.trade/#paradex-rest-api
+        - section: Testnet Documentation
+          icon: pen
+          contents: 
+          - link: Websocket Documentation
+            href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
+          - link: Paradex REST API (Previous format)
+            href: https://docs.api.testnet.paradex.trade/#paradex-rest-api
+        - link: Paradex Github
+          href: https://github.com/tradeparadex    
+        - link: Paradex CLI
+          href: https://github.com/tradeparadex/paradex-cli/
+        - link: Code Samples
+          href: https://github.com/tradeparadex/code-samples
+        - link: Python SDK
+          href: https://tradeparadex.github.io/paradex-py/
+        - link: CCXT Integration
+          href: https://docs.ccxt.com/#/exchanges/paradex
+        - page: Benchmarks
+          slug: benchmarks
+          icon: chart-simple
+          path: ./pages/developer-portal/benchmarks.mdx
 
 
       - section: Security

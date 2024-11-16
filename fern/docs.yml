@@ -346,11 +346,11 @@ navigation:
             contents:
             - page: BTC-USD-PERP
               slug: btc-usd-perp
-              icon: crystal-ball
+              icon: btc
               path: ./pages/instruments-guide/futures/tier-1/btc-usd-perp.mdx
             - page: ETH-USD-PERP
               slug: eth-usd-perp
-              icon: crystal-ball
+              icon: ethereum
               path: ./pages/instruments-guide/futures/tier-1/eth-usd-perp.mdx
             - page: SOL-USD-PERP
               slug: sol-usd-perp

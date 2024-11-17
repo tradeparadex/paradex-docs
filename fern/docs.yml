@@ -457,12 +457,12 @@ navigation:
           - page: v1.67
             path: ./pages/release-notes/v1.67.md
           - section: Archive
-            path: ./pages/release-notes/archive/archive.mdx
+            path: ./pages/release-notes/archive.mdx
             contents:
               - page: v1.65
-                path: ./pages/release-notes/archive/v1.65.md
+                path: ./pages/release-notes/v1.65.md
               - page: v1.64
-                path: ./pages/release-notes/archive/v1.64.md
+                path: ./pages/release-notes/v1.64.md
 
   - tab: reference
     layout:
@@ -486,7 +486,7 @@ navigation:
           - endpoint: GET /v1/tradebusts
             slug: tradebusts
             title: Trade Busts
-            
+
 layout: 
   header-height: 72px
   searchbar-placement: header

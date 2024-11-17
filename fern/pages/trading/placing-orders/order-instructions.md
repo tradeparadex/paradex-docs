@@ -109,7 +109,7 @@ Scenario 3: If the trader submits a Reduce-only Limit Sell Order of 1 ETH @ $4,7
 A post-only order is a type of limit order that ensures the trader pays only the maker fees and doesn't take liquidity from the market. If such an order would immediately match with an existing order, it gets canceled instead of executed. This ensures the trader's order goes into the order book, maintaining the position of a market maker rather than a taker, thereby benefiting from lower fees and contributing to market liquidity.
 
 {% hint style="info" %}
-Post-only orders&#x20;
+Post-only orders
 
 * Can only be placed with Limit orders and Stop Limit orders.
 * Will always result in Maker trades.

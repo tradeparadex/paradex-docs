@@ -4,23 +4,23 @@
 
 #### **Price Tick Size**
 
-* This is the smallest increment by which the price of an instrument can change.&#x20;
+* This is the smallest increment by which the price of an instrument can change.
 
 #### **Order Size Increment**
 
-* This refers to the minimum step by which the quantity of an order can increase or decrease.&#x20;
+* This refers to the minimum step by which the quantity of an order can increase or decrease.
 * Order Size Increment is specified in the instrument's Base Currency.
 
 #### **Minimum Order Value**
 
-* This is the smallest order USD value allowed to be placed on the order book. This helps to increase our average trade value to ensure gas fee efficiency when processing trades.&#x20;
+* This is the smallest order USD value allowed to be placed on the order book. This helps to increase our average trade value to ensure gas fee efficiency when processing trades.
 * The value of an order is calculated by multiplying the order size by the mark price.
 * Order Size Increment is specified in USD.
 * **Exception:** A user may place a [Reduce-only Order](order-instructions.md#reduce-only) that is below the Minimum Order Value if its matches the size of an offsetting position.
 
 #### **Maximum Order Size**
 
-* The largest number of contracts that one can buy or sell in a single order.&#x20;
+* The largest number of contracts that one can buy or sell in a single order.
 
 #### **Maximum Number of Open Orders**
 

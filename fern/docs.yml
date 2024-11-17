@@ -459,10 +459,18 @@ navigation:
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.66
+                path: ./pages/release-notes/v1.66.md
               - page: v1.65
                 path: ./pages/release-notes/v1.65.md
               - page: v1.64
                 path: ./pages/release-notes/v1.64.md
+              - page: v1.63
+                path: ./pages/release-notes/v1.63.md
+              - page: v1.62
+                path: ./pages/release-notes/v1.62.md
+              - page: v1.61
+                path: ./pages/release-notes/v1.61.md
 
   - tab: reference
     layout:

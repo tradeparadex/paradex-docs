@@ -32,7 +32,7 @@ Only applies to synthetic balances. Represents the position entry cost - amount 
 * **Example 1 :** long position of 1 ETH-USD-PERP bought at $2,000 with USDC/USD=1 has position cost of 2,000 USDC.
 * **Example 2 :** short position of 1 ETH-USD-PERP sold at $2,000 with USDC/USD=0.8 has position cost of -2,500 USDC.
 
-### _**Unrealized PnL (USD)**_&#x20;
+### _**Unrealized PnL (USD)**_
 
 Determines how much money an account will receive if open positions are closed at oracle price
 
@@ -52,7 +52,7 @@ $$
 
 *   _**Account Initial Margin Requirement (USD) -**_ When submitting a new order, the account is subject to a minimum value defined by the initial margin requirement. Note that the cloud and the chain calculate different initial margin requirements for an account :
 
-    * Account IMR (including open orders) - This is calculated off-chain (on cloud) and incorporates both open positions and open/pending orders.&#x20;
+    * Account IMR (including open orders) - This is calculated off-chain (on cloud) and incorporates both open positions and open/pending orders.
     * Position IMR (only including open positions) - This is calculated on-chain for validation of incoming trades.
 
     Note that the Account IMR calculated off-chain is more conservative than the Position IMR. Therefore, orders submitted from the cloud to the chain are very unlikely to be rejected.

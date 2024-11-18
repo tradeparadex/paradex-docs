@@ -3188,11 +3188,11 @@
                 "ErrorCodeString_SignerMismatch": "#nosec G101"
             },
             "x-enum-varnames": [
-                "ErrorCode_Validation",
-                "ErrorCode_Binding",
-                "ErrorCode_InternalError",
-                "ErrorCode_NotFound",
-                "ErrorCode_ServiceUnavailable",
+                "VALIDATION_ERROR",
+                "BINDING_ERROR",
+                "INTERNAL_ERROR",
+                "NOT_FOUND",
+                "SERVICE_UNAVAILABLE",
                 "ErrorCodeString_InvalidParameter",
                 "ErrorCodeString_OrderIdNotFound",
                 "ErrorCodeString_OrderIsClosed",

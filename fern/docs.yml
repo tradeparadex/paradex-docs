@@ -8,7 +8,7 @@ tabs:
   guides: 
     display-name: Documentation
   reference: 
-    display-name: API Reference
+    display-name: Production API Reference
     slug: reference
 navigation:
   - tab: guides
@@ -476,24 +476,6 @@ navigation:
     layout:
       - api: API Reference
         api-name: openapi
-        snippets: 
-          python: paradex
-      - api: WebSockets
-        skip-slug: true
-        api-name: unioned
-        layout: 
-          - endpoint: GET /v1/fills/{market_symbol}
-            slug: fills
-            title: Fills
-          - endpoint: GET /v1/orders/{market_symbol}
-            slug: orders
-            title: Orders
-          - endpoint: GET /v1/trades/{market_symbol}
-            slug: trades
-            title: Trades
-          - endpoint: GET /v1/tradebusts
-            slug: tradebusts
-            title: Trade Busts
 
 layout: 
   header-height: 72px

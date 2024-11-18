@@ -130,7 +130,7 @@ navigation:
                   path: ./pages/trading/placing-orders/order-types/scaled-order.mdx
                 - page: Stop Order
                   slug: stop-order
-                  path: ./pages/trading/placing-orders/order-types/stop-orders.mdx
+                  path: ./pages/trading/placing-orders/order-types/stop-order.mdx
                 - page: TWAP Order
                   slug: twap-order
                   path: ./pages/trading/placing-orders/order-types/twap-order.mdx

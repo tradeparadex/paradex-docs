@@ -115,27 +115,33 @@ navigation:
       - section: Trading
         contents: 
         - section: Placing Orders
+          path: ./pages/trading/placing-orders/placing-orders.mdx
           contents: 
-          - section: Order Types
-            contents:
-              - page: Limit Order
-                slug: limit-order
-                path: ./pages/trading/placing-orders/order-types/limit-order.mdx
-              - page: Market Order
-                slug: market-order
-                path: ./pages/trading/placing-orders/order-types/market-order.mdx
-              - page: Scaled Order
-                slug: scaled-order
-                path: ./pages/trading/placing-orders/order-types/scaled-order.mdx
-              - page: Stop Order
-                slug: stop-order
-                path: ./pages/trading/placing-orders/order-types/stop-orders.mdx
-              - page: TWAP Order
-                slug: twap-order
-                path: ./pages/trading/placing-orders/order-types/twap-order.mdx
-              - page: TP/SL
-                slug: tpsl-order
-                path: ./pages/trading/placing-orders/order-types/tp-sl.mdx
+            - section: Order Types
+              contents:
+                - page: Limit Order
+                  slug: limit-order
+                  path: ./pages/trading/placing-orders/order-types/limit-order.mdx
+                - page: Market Order
+                  slug: market-order
+                  path: ./pages/trading/placing-orders/order-types/market-order.mdx
+                - page: Scaled Order
+                  slug: scaled-order
+                  path: ./pages/trading/placing-orders/order-types/scaled-order.mdx
+                - page: Stop Order
+                  slug: stop-order
+                  path: ./pages/trading/placing-orders/order-types/stop-orders.mdx
+                - page: TWAP Order
+                  slug: twap-order
+                  path: ./pages/trading/placing-orders/order-types/twap-order.mdx
+                - page: TP/SL
+                  slug: tpsl-order
+                  path: ./pages/trading/placing-orders/order-types/tp-sl.mdx
+            - page: Order Instuctions
+              path: ./pages/trading/placing-orders/order-instructions.mdx
+              slug: order-instructions
+              
+        
         - page: Trading Fees
           slug: trading-fees
           path: ./pages/trading/trading-fees.mdx
@@ -449,7 +455,7 @@ navigation:
             
 
       - section: Release Notes
-        path: ./pages/overview.mdx
+        path: ./pages/release-notes/overview.mdx
         contents: 
           - page: v1.68
             path: ./pages/release-notes/v1.68.md
@@ -470,6 +476,58 @@ navigation:
                 path: ./pages/release-notes/v1.62.md
               - page: v1.61
                 path: ./pages/release-notes/v1.61.md
+              - page: v1.60
+                path: ./pages/release-notes/v1.60.md
+              - page: v1.59
+                path: ./pages/release-notes/v1.59.md
+              - page: v1.58
+                path: ./pages/release-notes/v1.58.md
+              - page: v1.57
+                path: ./pages/release-notes/v1.57.md
+              - page: v1.56
+                path: ./pages/release-notes/v1.56.md
+              - page: v1.55
+                path: ./pages/release-notes/v1.55.md
+              - page: v1.54
+                path: ./pages/release-notes/v1.54.md
+              - page: v1.53
+                path: ./pages/release-notes/v1.53.md
+              - page: v1.52
+                path: ./pages/release-notes/v1.52.md
+              - page: v1.51
+                path: ./pages/release-notes/v1.51.md
+              - page: v1.50
+                path: ./pages/release-notes/v1.50.md
+              - page: v1.49
+                path: ./pages/release-notes/v1.49.md
+              - page: v1.48
+                path: ./pages/release-notes/v1.48.md
+              - page: v1.47
+                path: ./pages/release-notes/v1.47.md
+              - page: v1.46
+                path: ./pages/release-notes/v1.46.md
+              - page: v1.45
+                path: ./pages/release-notes/v1.45.md
+              - page: v1.44
+                path: ./pages/release-notes/v1.44.md
+              - page: v1.43
+                path: ./pages/release-notes/v1.43.md
+              - page: v1.42
+                path: ./pages/release-notes/v1.42.md
+              - page: v1.41
+                path: ./pages/release-notes/v1.41.md
+              - page: v1.39
+                path: ./pages/release-notes/v1.39.md
+              - page: v1.38
+                path: ./pages/release-notes/v1.38.md
+              - page: v1.37
+                path: ./pages/release-notes/v1.37.md
+              - page: v1.36
+                path: ./pages/release-notes/v1.36.md
+              - page: v1.35
+                path: ./pages/release-notes/v1.35.md
+              - page: v1.34
+                path: ./pages/release-notes/v1.34.md
 
   - tab: api
     layout:
@@ -477,7 +535,7 @@ navigation:
         contents:
           - api: REST Endpoints
             api-name: prod
-            slug: rest
+            slug: prod
             display-errors: true
         slug: prod
       - section: Testnet API Reference

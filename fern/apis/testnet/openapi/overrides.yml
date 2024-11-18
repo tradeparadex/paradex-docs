@@ -6,11 +6,6 @@ paths:
       x-fern-sdk-method-name: get
       x-fern-examples:
         - code-samples:
-          - sdk: curl
-            code: |
-              curl -X GET https://api.testnet.paradex.trade/v1/account \
-              -H 'Accept: application/json' \
-              -H 'Authorization: Bearer {JWT}'
           - sdk: python
             code: |
               import requests
@@ -22,10 +17,34 @@ paths:
               r = requests.get('https://api.testnet.paradex.trade/v1/account', headers = headers)
 
               print(r.json())
+          - sdk: curl
+            code: |
+              curl -X GET https://api.testnet.paradex.trade/v1/account \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+          
+          - sdk: javascript
+            code: |
+              const headers = {
+                'Accept':'application/json',
+                'Authorization':'Bearer {JWT}'
+              };
+
+              fetch('https://api.testnet.paradex.trade/v1/account',
+              {
+                method: 'GET',
+
+                headers: headers
+              })
+              .then(function(res) {
+                  return res.json();
+              }).then(function(body) {
+                  console.log(body);
+              });
+
           - sdk: go
             code: |
               package main
-
               import (
                     "bytes"
                     "net/http"
@@ -46,14 +65,38 @@ paths:
                   resp, err := client.Do(req)
                   // ...
               }
+  /account/info:
+    get:
+      x-fern-sdk-group-name:
+        - account
+      x-fern-sdk-method-name: getInfo
+      x-fern-examples:
+        - code-samples:
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer {JWT}'
+              }
+
+              r = requests.get('https://api.testnet.paradex.trade/v1/account/info', headers = headers)
+
+              print(r.json())
+          - sdk: curl
+            code: |
+              curl -X GET https://api.testnet.paradex.trade/v1/account/info \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+          
           - sdk: javascript
             code: |
               const headers = {
-              'Accept':'application/json',
-              'Authorization':'Bearer {JWT}'
+                'Accept':'application/json',
+                'Authorization':'Bearer {JWT}'
               };
 
-              fetch('https://api.testnet.paradex.trade/v1/account',
+              fetch('https://api.testnet.paradex.trade/v1/account/info',
               {
                 method: 'GET',
 
@@ -64,36 +107,328 @@ paths:
               }).then(function(body) {
                   console.log(body);
               });
-  /account/info:
-    get:
-      x-fern-sdk-group-name:
-        - account
-      x-fern-sdk-method-name: getInfo
+
+          - sdk: go
+            code: |
+              package main
+              import (
+                    "bytes"
+                    "net/http"
+              )
+
+              func main() {
+
+                  headers := map[string][]string{
+                      "Accept": []string{"application/json"},
+                      "Authorization": []string{"Bearer {JWT}"},
+                  }
+
+                  data := bytes.NewBuffer([]byte{jsonReq})
+                  req, err := http.NewRequest("GET", "https://api.testnet.paradex.trade/v1/account/info", data)
+                  req.Header = headers
+
+                  client := &http.Client{}
+                  resp, err := client.Do(req)
+                  // ...
+              }
+
   /account/profile:
     get:
       x-fern-sdk-group-name:
         - account
       x-fern-sdk-method-name: getProfile
+      x-fern-examples:
+        - code-samples:
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer {JWT}'
+              }
+
+              r = requests.get('https://api.testnet.paradex.trade/v1/account/profile', headers = headers)
+
+              print(r.json())
+          - sdk: curl
+            code: |
+              curl -X GET https://api.testnet.paradex.trade/v1/account/profile \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+          
+          - sdk: javascript
+            code: |
+              const headers = {
+                'Accept':'application/json',
+                'Authorization':'Bearer {JWT}'
+              };
+
+              fetch('https://api.testnet.paradex.trade/v1/account/profile',
+              {
+                method: 'GET',
+
+                headers: headers
+              })
+              .then(function(res) {
+                  return res.json();
+              }).then(function(body) {
+                  console.log(body);
+              });
+
+          - sdk: go
+            code: |
+              package main
+              import (
+                    "bytes"
+                    "net/http"
+              )
+
+              func main() {
+
+                  headers := map[string][]string{
+                      "Accept": []string{"application/json"},
+                      "Authorization": []string{"Bearer {JWT}"},
+                  }
+
+                  data := bytes.NewBuffer([]byte{jsonReq})
+                  req, err := http.NewRequest("GET", "https://api.testnet.paradex.trade/v1/account/profile", data)
+                  req.Header = headers
+
+                  client := &http.Client{}
+                  resp, err := client.Do(req)
+                  // ...
+              }
+
   /account/profile/referral_code:
     post:
       x-fern-sdk-group-name:
         - account
       x-fern-sdk-method-name: update-profile-referral-code
+      x-fern-examples:
+        - code-samples:
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer {JWT}'
+              }
+
+              r = requests.post('https://api.testnet.paradex.trade/v1/account/profile/referral_code', headers = headers)
+
+              print(r.json())
+          - sdk: curl
+            code: |
+              curl -X POST https://api.testnet.paradex.trade/v1/account/profile/referral_code \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+          
+          - sdk: javascript
+            code: |
+              const headers = {
+                'Accept':'application/json',
+                'Authorization':'Bearer {JWT}'
+              };
+
+              fetch('https://api.testnet.paradex.trade/v1/account/profile/referral_code',
+              {
+                method: 'POST',
+
+                headers: headers
+              })
+              .then(function(res) {
+                  return res.json();
+              }).then(function(body) {
+                  console.log(body);
+              });
+
+
+          - sdk: go
+            code: |
+              package main
+              import (
+                    "bytes"
+                    "net/http"
+              )
+
+              func main() {
+
+                  headers := map[string][]string{
+                      "Accept": []string{"application/json"},
+                      "Authorization": []string{"Bearer {JWT}"},
+                  }
+
+                  data := bytes.NewBuffer([]byte{jsonReq})
+                  req, err := http.NewRequest("POST", "https://api.testnet.paradex.trade/v1/account/profile/referral_code", data)
+                  req.Header = headers
+
+                  client := &http.Client{}
+                  resp, err := client.Do(req)
+                  // ...
+              }
+
   /account/profile/username:
     post:
       x-fern-sdk-group-name:
         - account
       x-fern-sdk-method-name: update-profile-username
+      x-fern-examples:
+        - code-samples:
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer {JWT}'
+              }
+
+              r = requests.post('https://api.testnet.paradex.trade/v1/account/profile/username', headers = headers)
+
+              print(r.json())
+          - sdk: curl
+            code: |
+              curl -X POST https://api.testnet.paradex.trade/v1/account/profile/username \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+          
+          - sdk: javascript
+            code: |
+              const headers = {
+                'Accept':'application/json',
+                'Authorization':'Bearer {JWT}'
+              };
+
+              fetch('https://api.testnet.paradex.trade/v1/account/profile/username',
+              {
+                method: 'POST',
+
+                headers: headers
+              })
+              .then(function(res) {
+                  return res.json();
+              }).then(function(body) {
+                  console.log(body);
+              });
+
+
+          - sdk: go
+            code: |
+              package main
+              import (
+                    "bytes"
+                    "net/http"
+              )
+
+              func main() {
+
+                  headers := map[string][]string{
+                      "Accept": []string{"application/json"},
+                      "Authorization": []string{"Bearer {JWT}"},
+                  }
+
+                  data := bytes.NewBuffer([]byte{jsonReq})
+                  req, err := http.NewRequest("POST", "https://api.testnet.paradex.trade/v1/account/profile/username", data)
+                  req.Header = headers
+
+                  client := &http.Client{}
+                  resp, err := client.Do(req)
+                  // ...
+              }
+
   /account/subaccounts:
     get:
       x-fern-sdk-group-name:
         - account
       x-fern-sdk-method-name: get-sub-accounts
+      x-fern-examples:
+        - code-samples:
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer {JWT}'
+              }
+
+              r = requests.get('https://api.testnet.paradex.trade/v1/account/subaccounts', headers = headers)
+
+              print(r.json())
+          - sdk: curl
+            code: |
+              curl -X GET https://api.testnet.paradex.trade/v1/account/subaccounts \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+          
+
   /algo/orders:
     get:
       x-fern-sdk-group-name:
         - algos
       x-fern-sdk-method-name: get-open-orders
+      x-fern-examples:
+        - code-samples:
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer {JWT}'
+              }
+
+              r = requests.get('https://api.testnet.paradex.trade/v1/algo/orders', headers = headers)
+
+              print(r.json())
+          - sdk: curl
+            code: |
+              curl -X GET https://api.testnet.paradex.trade/v1/algo/orders \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+          
+          - sdk: javascript
+            code: |
+              const headers = {
+                'Accept':'application/json',
+                'Authorization':'Bearer {JWT}'
+              };
+
+              fetch('https://api.testnet.paradex.trade/v1/algo/orders',
+              {
+                method: 'GET',
+
+                headers: headers
+              })
+              .then(function(res) {
+                  return res.json();
+              }).then(function(body) {
+                  console.log(body);
+              });
+
+
+
+          - sdk: go
+            code: |
+              package main
+              import (
+                    "bytes"
+                    "net/http"
+              )
+
+              func main() {
+
+                  headers := map[string][]string{
+                      "Accept": []string{"application/json"},
+                      "Authorization": []string{"Bearer {JWT}"},
+                  }
+
+                  data := bytes.NewBuffer([]byte{jsonReq})
+                  req, err := http.NewRequest("GET", "https://api.testnet.paradex.trade/v1/algo/orders", data)
+                  req.Header = headers
+
+                  client := &http.Client{}
+                  resp, err := client.Do(req)
+                  // ...
+              }
+
     post:
       x-fern-sdk-group-name:
         - algos

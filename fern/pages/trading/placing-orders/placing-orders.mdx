@@ -1,0 +1,41 @@
+---
+title: 👩‍💻 Placing Orders
+---
+
+## Order Parameters
+
+#### **Price Tick Size**
+
+* This is the smallest increment by which the price of an instrument can change.
+
+#### **Order Size Increment**
+
+* This refers to the minimum step by which the quantity of an order can increase or decrease.
+* Order Size Increment is specified in the instrument's Base Currency.
+
+#### **Minimum Order Value**
+
+* This is the smallest order USD value allowed to be placed on the order book. This helps to increase our average trade value to ensure gas fee efficiency when processing trades.
+* The value of an order is calculated by multiplying the order size by the mark price.
+* Order Size Increment is specified in USD.
+* **Exception:** A user may place a [Reduce-only Order](order-instructions.mdx#reduce-only) that is below the Minimum Order Value if its matches the size of an offsetting position.
+
+#### **Maximum Order Size**
+
+* The largest number of contracts that one can buy or sell in a single order.
+
+#### **Maximum Number of Open Orders**
+
+* This is a cap on the number of open orders a trader can have at one time.
+
+## Order Types
+
+You may create the following Order Types on Paradex
+
+
+***
+
+## Order Instructions
+
+The following order instructions are supported for the orders that you wish to place.
+

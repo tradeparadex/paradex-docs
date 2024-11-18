@@ -18,11 +18,11 @@ jobs:
         env:
           FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
         run: |
-          OUTPUT=$(fern generate --docs --preview 2>&1) || true
-          echo "$OUTPUT"
-          URL=$(echo "$OUTPUT" | grep -oP 'Published docs to \K.*(?= \()')
+          PROD=$(fern generate --docs --instance https://paradex.docs.buildwithfern.com --preview 2>&1) || true
+          echo "$PROD"
+          URL=$(echo "$PROD" | grep -oP 'Published docs to \K.*(?= \()')
           echo "Preview URL: $URL"
-          echo "🌿 Preview your docs: $URL" > preview_url.txt
+          echo "🚀 Preview prod docs: $URL" > preview_url.txt
 
       - name: Comment URL in PR
         uses: thollander/actions-comment-pull-request@v2.4.3

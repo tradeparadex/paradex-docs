@@ -288,8 +288,8 @@ x-fern-pagination:
   results: $response.results
   
 servers:
-  - url: https://api.prod.paradex.trade/v1
-    x-fern-server-name: Production
+  - url: https://api.testnet.paradex.trade/v1
+    x-fern-server-name: Testnet
     
 security:
   - BearerAuth: []

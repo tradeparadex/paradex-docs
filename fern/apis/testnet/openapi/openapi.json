@@ -11,9 +11,9 @@
         "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
         "title": "Paradex REST API",
         "contact": {},
-        "version": "1.83.0"
+        "version": "1.83.1"
     },
-    "host": "api.prod.paradex.trade",
+    "host": "api.testnet.paradex.trade",
     "basePath": "/v1",
     "paths": {
         "/account": {
@@ -4011,10 +4011,20 @@
                     "type": "string",
                     "example": "30130.15"
                 },
+                "ask_iv": {
+                    "description": "Ask implied volatility, for options",
+                    "type": "string",
+                    "example": "0.2"
+                },
                 "bid": {
                     "description": "Best bid price",
                     "type": "string",
                     "example": "30112.22"
+                },
+                "bid_iv": {
+                    "description": "Bid implied volatility, for options",
+                    "type": "string",
+                    "example": "0.2"
                 },
                 "created_at": {
                     "description": "Market summary creation time",
@@ -4029,6 +4039,11 @@
                     "description": "[8 hour funding rate](https://docs.paradex.trade/risk-system/funding-mechanism#funding-rate)",
                     "type": "string",
                     "example": "0.3"
+                },
+                "last_iv": {
+                    "description": "Last traded price implied volatility, for options",
+                    "type": "string",
+                    "example": "0.2"
                 },
                 "last_traded_price": {
                     "description": "Last traded price",

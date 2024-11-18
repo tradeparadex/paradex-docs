@@ -9,7 +9,6 @@ tabs:
     display-name: Documentation
   api: 
     display-name: API Reference
-    slug: api-reference
 navigation:
   - tab: docs
     layout: 
@@ -474,13 +473,20 @@ navigation:
 
   - tab: api
     layout:
-      - section: Production
+      - section: Production API Reference
         contents:
-          - api: API Reference
+          - api: REST Endpoints
             api-name: prod
-            skip-slug: true
+            slug: rest
             display-errors: true
-            flattened: true
+        slug: prod
+      - section: Testnet API Reference
+        contents:
+          - api: REST Endpoints
+            api-name: testnet
+            slug: rest
+            display-errors: true
+        slug: testnet
 
 layout: 
   header-height: 72px

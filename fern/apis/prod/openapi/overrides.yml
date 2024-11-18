@@ -4,6 +4,67 @@ paths:
       x-fern-sdk-group-name:
         - account
       x-fern-sdk-method-name: get
+      x-fern-examples:
+        - code-samples:
+          - sdk: curl
+            code: |
+              curl -X GET https://api.testnet.paradex.trade/v1/account \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer {JWT}'
+              }
+
+              r = requests.get('https://api.testnet.paradex.trade/v1/account', headers = headers)
+
+              print(r.json())
+          - sdk: go
+            code: |
+              package main
+
+              import (
+                    "bytes"
+                    "net/http"
+              )
+
+              func main() {
+
+                  headers := map[string][]string{
+                      "Accept": []string{"application/json"},
+                      "Authorization": []string{"Bearer {JWT}"},
+                  }
+
+                  data := bytes.NewBuffer([]byte{jsonReq})
+                  req, err := http.NewRequest("GET", "https://api.testnet.paradex.trade/v1/account", data)
+                  req.Header = headers
+
+                  client := &http.Client{}
+                  resp, err := client.Do(req)
+                  // ...
+              }
+          - sdk: javascript
+            code: |
+              const headers = {
+              'Accept':'application/json',
+              'Authorization':'Bearer {JWT}'
+              };
+
+              fetch('https://api.testnet.paradex.trade/v1/account',
+              {
+                method: 'GET',
+
+                headers: headers
+              })
+              .then(function(res) {
+                  return res.json();
+              }).then(function(body) {
+                  console.log(body);
+              });
+
   /account/info:
     get:
       x-fern-sdk-group-name:

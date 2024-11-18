@@ -5,13 +5,13 @@ instances:
     custom-domain: https://docs.dev.paradex.trade
 title: Paradex | Documentation
 tabs: 
-  guides: 
+  docs: 
     display-name: Documentation
-  reference: 
+  api: 
     display-name: API Reference
-    slug: reference
+    slug: api-reference
 navigation:
-  - tab: guides
+  - tab: docs
     layout: 
       - section: Getting Started
         contents: 
@@ -472,10 +472,15 @@ navigation:
               - page: v1.61
                 path: ./pages/release-notes/v1.61.md
 
-  - tab: reference
+  - tab: api
     layout:
-      - api: API Reference
-        api-name: openapi
+      - section: Production
+        contents:
+          - api: API Reference
+            api-name: prod
+            skip-slug: true
+            display-errors: true
+            flattened: true
 
 layout: 
   header-height: 72px

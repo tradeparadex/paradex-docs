@@ -5,11 +5,11 @@ instances:
     custom-domain: https://docs.dev.paradex.trade
 title: Paradex | Documentation
 tabs: 
-  docs: 
+  guides: 
     display-name: Documentation
-  api: 
+  reference: 
     display-name: API Reference
-    slug: api
+    slug: reference
 navigation:
   - tab: guides
     layout: 

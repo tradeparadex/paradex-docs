@@ -1,3 +1,5 @@
 api: 
   path: ./openapi/openapi.json
   overrides: ./openapi/overrides.yml
+  playground:
+    environments: []

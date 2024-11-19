@@ -1,5 +1,6 @@
 ---
 title: 🌊 Trade Flow & Busts
+hide-feedback: true
 ---
 
 Paradex is a hybrid trading system with off-chain (cloud) and on-chain components. The matching engine runs on the cloud. The users interact with it by submitting orders. The cloud assesses if the order causes the account to exceed risk limits (account value must not be below initial margin requirement) in which case cloud rejects the order. This check relies on the composition of the portfolio (collateral + positions + orders) as well as market data (e.g. external oracle price, funding data etc).

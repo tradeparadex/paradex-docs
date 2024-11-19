@@ -604,17 +604,204 @@ paths:
       x-fern-sdk-method-name: Trades
       x-fern-sdk-group-name:
         - trades
+      x-fern-examples:
+        - code-samples:
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+              }
+                
+              r = requests.get('https://api.testnet.paradex.trade/v1/trades', params={
+              'market': 'BTC-USD-PERP'
+              }, headers = headers)
+
+              print(r.json())
+
+          - sdk: curl
+            code: |
+              curl -X GET https://api.testnet.paradex.trade/v1/trades?market=BTC-USD-PERP \
+              -H 'Accept: application/json'
+
+          - sdk: javascript
+            code: |
+              const headers = {
+                'Accept':'application/json'
+              };
+
+              fetch('https://api.testnet.paradex.trade/v1/trades?market=BTC-USD-PERP',
+              {
+                method: 'GET',
+                
+                headers: headers
+              })
+              .then(function(res) {
+                  return res.json();
+              }).then(function(body) {
+                  console.log(body);
+              });
+
+          - sdk: go
+            code: |
+              package main
+              import (
+                    "bytes"
+                    "net/http"
+              )
+
+              func main() {
+
+                   headers := map[string][]string{
+                      "Accept": []string{"application/json"},
+                  }
+
+                  data := bytes.NewBuffer([]byte{jsonReq})
+                  req, err := http.NewRequest("GET", "https://api.testnet.paradex.trade/v1/trades", data)
+                  req.Header = headers
+
+                  client := &http.Client{}
+                  resp, err := client.Do(req)
+                  // ...
+              }        
+
       x-fern-pagination: true
   /transactions:
     get:
       x-fern-sdk-group-name:
         - account
+      x-fern-examples:
+        - code-samples:
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer {JWT}'
+              }
+              
+              r = requests.get('https://api.testnet.paradex.trade/v1/transactions', headers = headers)
+
+              print(r.json())
+
+          - sdk: curl
+            code: |
+              curl -X GET https://api.testnet.paradex.trade/v1/transactions \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+
+          - sdk: javascript
+            code: |
+              const headers = {
+                'Accept':'application/json',
+                'Authorization':'Bearer {JWT}'
+              };
+
+              fetch('https://api.testnet.paradex.trade/v1/transactions',
+              {
+                method: 'GET',
+
+                headers: headers
+              })
+              .then(function(res) {
+                  return res.json();
+              }).then(function(body) {
+                  console.log(body);
+              });
+
+          - sdk: go
+            code: |
+              package main
+              import (
+                    "bytes"
+                    "net/http"
+              )
+
+              func main() {
+
+                  headers := map[string][]string{
+                      "Accept": []string{"application/json"},
+                      "Authorization": []string{"Bearer {JWT}"},
+                  }
+
+                  data := bytes.NewBuffer([]byte{jsonReq})
+                  req, err := http.NewRequest("GET", "https://api.testnet.paradex.trade/v1/transactions", data)
+                  req.Header = headers
+
+                  client := &http.Client{}
+                  resp, err := client.Do(req)
+                  // ...
+              }        
       x-fern-sdk-method-name: transactions
       x-fern-pagination: true
   /transfers:
     get:
       x-fern-sdk-group-name:
         - transfers
+      x-fern-examples:
+        - code-samples:
+          - sdk: python
+            code: |
+              import requests
+              headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer {JWT}'
+              }
+              
+              r = requests.get('https://api.testnet.paradex.trade/v1/transfers', headers = headers)
+
+              print(r.json())
+
+          - sdk: curl
+            code: |
+              curl -X GET https://api.testnet.paradex.trade/v1/transfers \
+              -H 'Accept: application/json' \
+              -H 'Authorization: Bearer {JWT}'
+
+          - sdk: javascript
+            code: |
+              const headers = {
+                'Accept':'application/json',
+                'Authorization':'Bearer {JWT}'
+              };
+
+              fetch('https://api.testnet.paradex.trade/v1/transfers',
+              {
+                method: 'GET',
+
+                headers: headers
+              })
+              .then(function(res) {
+                  return res.json();
+              }).then(function(body) {
+                  console.log(body);
+              });
+
+
+
+          - sdk: go
+            code: |
+              package main
+              import (
+                    "bytes"
+                    "net/http"
+              )
+
+              func main() {
+
+                  headers := map[string][]string{
+                      "Accept": []string{"application/json"},
+                      "Authorization": []string{"Bearer {JWT}"},
+                  }
+
+                  data := bytes.NewBuffer([]byte{jsonReq})
+                  req, err := http.NewRequest("GET", "https://api.testnet.paradex.trade/v1/transfers", data)
+                  req.Header = headers
+
+                  client := &http.Client{}
+                  resp, err := client.Do(req)
+                  // ...
+              }
       x-fern-sdk-method-name: get
       x-fern-pagination: true
 x-fern-pagination:

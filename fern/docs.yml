@@ -515,8 +515,6 @@ navigation:
             api-name: prod
             skip-slug: true
             display-errors: true
-            playground:
-              environments: []
           - link: Websocket Documentation
             href: https://docs.api.prod.paradex.trade/#websocket-json-rpc-api
         slug: prod
@@ -527,7 +525,7 @@ navigation:
             skip-slug: true
             display-errors: true
             playground:
-              environments: []
+              environments:
           - link: Websocket Documentation
             href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
         slug: testnet

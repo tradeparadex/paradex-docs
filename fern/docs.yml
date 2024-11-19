@@ -22,6 +22,7 @@ navigation:
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
           - section: Architecture Overview
+            path: ./pages/introduction/architecture-overview/overview.mdx
             contents:
             - page: Starknet First Appchain
               slug: starknet-first-appchain
@@ -83,6 +84,7 @@ navigation:
           - link: Xperience Points
             href: https://www.paradex.trade/paradexblog/xp-warzone-season-1-has-arrived
           - section: Referral Program
+            path: ./pages/points-and-referrals/referral-program/overview.mdx
             contents:
             - page: Example Calculations
               slug: example-calculations

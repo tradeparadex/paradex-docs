@@ -524,8 +524,6 @@ navigation:
             api-name: testnet
             skip-slug: true
             display-errors: true
-            playground:
-              environments:
           - link: Websocket Documentation
             href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
         slug: testnet

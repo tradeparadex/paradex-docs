@@ -531,19 +531,53 @@ navigation:
 
   - tab: api
     layout:
+      - section: General Information
+        path: ./pages/developer-portal/general-information/intro.mdx
+        contents:
+          - page: API Server Location
+            slug: api-server-location
+            path: ./pages/developer-portal/general-information/api-server-location.mdx
+          - page: API URLs
+            slug: api-urls
+            path: ./pages/developer-portal/general-information/api-urls.mdx
+          - page: API Quick Start
+            slug: api-quick-start
+            path: ./pages/developer-portal/general-information/api-quick-start.mdx
+          - page: Authentication
+            slug: authentication
+            path: ./pages/developer-portal/general-information/authentication.mdx
+          - section: Rate Limits
+            path: ./pages/developer-portal/general-information/rate-limits/rate-limits.mdx
+            contents:
+              - page: API
+                slug: api
+                path: ./pages/developer-portal/general-information/rate-limits/api.mdx
+              - page: Websocket
+                slug: websocket
+                path: ./pages/developer-portal/general-information/rate-limits/websocket.mdx
+              - page: Open Orders per Account
+                slug: open-orders-per-account
+                path: ./pages/developer-portal/general-information/rate-limits/open-orders-per-account.mdx
+              - page: Common Questions
+                slug: common-questions
+                path: ./pages/developer-portal/general-information/rate-limits/common-questions.mdx
       - section: Production API Reference
         contents:
           - api: REST Endpoints
             api-name: prod
-            slug: prod
+            skip-slug: true
             display-errors: true
+          - link: Websocket Documentation
+            href: https://docs.api.prod.paradex.trade/#websocket-json-rpc-api
         slug: prod
       - section: Testnet API Reference
         contents:
           - api: REST Endpoints
             api-name: testnet
-            slug: rest
+            skip-slug: true
             display-errors: true
+          - link: Websocket Documentation
+            href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
         slug: testnet
 
 layout: 

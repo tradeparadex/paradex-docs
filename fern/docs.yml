@@ -152,64 +152,6 @@ navigation:
           slug: margin-calculator
           path: ./pages/trading/margin-calculator.mdx
 
-
-      - section: Developer Portal
-        contents:
-        - section: General Information
-          contents: 
-          - page: API Server Location
-            slug: api-server-location
-            path: ./pages/developer-portal/general-information/api-server-location.mdx
-          - page: API URLs
-            slug: browser
-            path: ./pages/developer-portal/general-information/api-urls.mdx
-          - page: API Quick Start
-            slug: api-quick-start
-            path: ./pages/developer-portal/general-information/api-quick-start.mdx
-          - page: Authentication
-            slug: authentication
-            path: ./pages/developer-portal/general-information/authentication.mdx
-          - section: Rate Limits
-            contents: 
-            - page: API
-              slug: api-connection
-              path: ./pages/developer-portal/general-information/rate-limits/api.mdx
-            - page: Websocket
-              slug: websocket-connection
-              path: ./pages/developer-portal/general-information/rate-limits/websocket.mdx
-            - page: Open Orders per Account
-              slug: open-orders-per-account
-              path: ./pages/developer-portal/general-information/rate-limits/open-orders-per-account.mdx
-            - page: Common Questions
-              slug: common-questions
-              path: ./pages/developer-portal/general-information/rate-limits/common-questions.mdx
-        - section: Mainnet Documentation
-          contents: 
-          - link: Websocket Documentation
-            href: https://docs.api.prod.paradex.trade/#websocket-json-rpc-api
-          - link: Paradex REST API (Previous format)
-            href: https://docs.api.prod.paradex.trade/#paradex-rest-api
-        - section: Testnet Documentation
-          contents: 
-          - link: Websocket Documentation
-            href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
-          - link: Paradex REST API (Previous format)
-            href: https://docs.api.testnet.paradex.trade/#paradex-rest-api
-        - link: Paradex Github
-          href: https://github.com/tradeparadex    
-        - link: Paradex CLI
-          href: https://github.com/tradeparadex/paradex-cli/
-        - link: Code Samples
-          href: https://github.com/tradeparadex/code-samples
-        - link: Python SDK
-          href: https://tradeparadex.github.io/paradex-py/
-        - link: CCXT Integration
-          href: https://docs.ccxt.com/#/exchanges/paradex
-        - page: Benchmarks
-          slug: benchmarks
-          path: ./pages/developer-portal/benchmarks.mdx
-
-
       - section: Security
         contents:
           - page: Security Lockdown
@@ -561,6 +503,9 @@ navigation:
               - page: Common Questions
                 slug: common-questions
                 path: ./pages/developer-portal/general-information/rate-limits/common-questions.mdx
+          - page: Benchmarks
+            slug: benchmarks
+            path: ./pages/developer-portal/benchmarks.mdx
       - section: Production API Reference
         contents:
           - api: REST Endpoints
@@ -579,6 +524,18 @@ navigation:
           - link: Websocket Documentation
             href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
         slug: testnet
+      - section: Useful Resources
+        contents:
+        - link: Paradex Github
+          href: https://github.com/tradeparadex    
+        - link: Paradex CLI
+          href: https://github.com/tradeparadex/paradex-cli/
+        - link: Code Samples
+          href: https://github.com/tradeparadex/code-samples
+        - link: Python SDK
+          href: https://tradeparadex.github.io/paradex-py/
+        - link: CCXT Integration
+          href: https://docs.ccxt.com/#/exchanges/paradex
 
 layout: 
   header-height: 72px

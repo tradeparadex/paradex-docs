@@ -402,13 +402,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents: 
+          - page: v1.69
+            path: ./pages/release-notes/v1.69.md
           - page: v1.68
             path: ./pages/release-notes/v1.68.md
-          - page: v1.67
-            path: ./pages/release-notes/v1.67.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.67
+                path: ./pages/release-notes/v1.67.md
               - page: v1.66
                 path: ./pages/release-notes/v1.66.md
               - page: v1.65

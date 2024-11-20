@@ -2,7 +2,6 @@ instances:
   - url: https://paradex.docs.buildwithfern.com
     custom-domain: https://docs.paradex.trade
   - url: https://paradex-dev.docs.buildwithfern.com
-    custom-domain: https://docs.dev.paradex.trade
 title: Paradex | Documentation
 
 tabs: 

@@ -5,11 +5,78 @@ hide-feedback: true
 
 ## Calling a public endpoint
 
-To dive right in you can start by trying a call to one of Paradex's public endpoints, [`GET /markets`](https://docs.api.prod.paradex.trade/#list-available-markets) :
+To dive right in you can start by trying a call to one of Paradex's public endpoints:
 
-<Info>
-[https://api.testnet.paradex.trade/swagger/doc.yaml](https://api.testnet.paradex.trade/swagger/doc.yaml)
-</Info>
+<section class="fern-endpoint-content">
+<header class="space-y-1 pb-2 pt-8">
+  <div class="flex items-center justify-between">
+    <span>
+      <h1 class="fern-page-heading">List available markets</h1>
+    </span>
+  </div>
+  <div class="fern-x-overflow flex min-w-0 max-w-full shrink flex-col items-start">
+    <div class="flex items-center gap-1 pr-2 max-w-full">
+      <span class="fern-tag large green-subtle uppercase mt-0.5">GET</span>
+      <div class="flex items-center">
+        <span class="inline-flex shrink items-baseline  py-0.5 px-1 rounded-md cursor-default">
+          <button data-state="closed">
+            <span class="font-mono text-sm">
+              <span class="whitespace-nowrap max-sm:hidden">
+                <span class="max-sm:hidden">
+                  <span class="whitespace-nowrap max-sm:hidden font-mono">
+                    <span class="t-muted p-0 text-sm hover:shadow-lg">https://api.testnet.paradex.trade/v1</span>
+                  </span>
+                </span>
+              </span>
+              <span class="text-faded">/</span>
+              <span class="whitespace-nowrap text-faded">markets</span>
+            </span>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+<div class="text-base leading-6 break-words max-w-none prose dark:prose-invert prose-base">
+      <p>Get markets static data component</p>
+    </div>
+</header>
+<div class="two-column-container">
+<div class="column colmun-wide">
+<div class="flex min-w-0 max-w-content-width flex-1 flex-col pt-8 md:py-8" style="min-height: 810px;">
+  <div class="flex max-w-full flex-1 flex-col gap-12">
+    <div id="/api-reference/testnet/markets/get-markets#request.query" class="scroll-mt-content">
+      <h3 class="relative mt-0 flex items-center mb-3" data-state="closed">Query parameters</h3>
+      <div>
+        <div>
+          <div class="h-px bg-border-default"></div>
+          <div id="/api-reference/testnet/markets/get-markets#request.query.market" class="scroll-mt-content-padded relative flex flex-col gap-2 py-3">
+            <span class="inline-flex items-baseline gap-2" data-state="closed">
+              <span class="fern-api-property-key">market</span>
+              <span class="fern-api-property-meta">
+                <span>string</span>
+                <span>Optional</span>
+              </span>
+            </span>
+            <div class="!t-muted break-words max-w-none prose dark:prose-invert prose-sm dark:prose-invert-sm">
+              <p>Market Name - example: BTC-USD-PERP</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="column column-narrow">
+<aside class="fern-endpoint-content-right">
+<div class="fern-endpoint-code-snippets">
+<EndpointRequestSnippet endpoint='GET /markets'/>
+<EndpointResponseSnippet endpoint='GET /markets'/>
+</div>
+</aside>
+</div>
+</div>
+</section>
 
 ## Interacting with private endpoint
 

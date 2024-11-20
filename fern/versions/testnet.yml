@@ -1,0 +1,472 @@
+tabs: 
+  guides: 
+    display-name: Documentation
+  reference: 
+    display-name: API Reference
+    slug: reference
+navigation:
+  - tab: guides
+    layout: 
+      - section: Getting Started
+        contents: 
+          - page: What is Paradex?
+            slug: what-is-paradex
+            path: ../pages/what-is-paradex.mdx
+          - page: Roadmap
+            slug: roadmap
+            path: ../pages/introduction/roadmap.mdx
+          - section: Architecture Overview
+            contents:
+            - page: Starknet First Appchain
+              slug: starknet-first-appchain
+              path: ../pages/introduction/architecture-overview/starknet-first-appchain.mdx
+            - page: Chain Information
+              slug: chain-information
+              path: ../pages/introduction/architecture-overview/chain-information.mdx
+            - page: Bridges & Audits
+              slug: bridges-and-audits
+              path: ../pages/introduction/architecture-overview/bridges-and-audits.mdx
+            - page: Wallet Integration
+              slug: wallet-integration
+              path: ../pages/introduction/architecture-overview/wallet-integration.mdx
+            - page: Server Location
+              slug: server-location
+              path: ../pages/introduction/architecture-overview/server-location.mdx
+            - page: Global IP Addresses
+              slug: global-ip-addresses
+              path: ../pages/introduction/architecture-overview/global-ip-addresses.mdx
+          - section: Install Mobile / Desktop App
+            contents:
+            - page: Mobile App
+              slug: mobile-app
+              path: ../pages/introduction/install-our-app/mobile.mdx              
+            - page: Desktop App
+              slug: desktop-app
+              path: ../pages/introduction/install-our-app/desktop.mdx
+              
+              
+      - section: Vaults
+        contents:
+          - page: Introduction
+            slug: vaults-introduction
+            path: ../pages/vaults/introduction.mdx
+          - page: Key Features
+            slug: key-features
+            path: ../pages/vaults/key-features.mdx
+          - section: Tutorials
+            contents:
+              - page: Create a Vault
+                slug: create-a-vault
+                path: ../pages/vaults/tutorials/create-a-vault.mdx
+              - page: Close Your Vault
+                slug: close-your-vault
+                path: ../pages/vaults/tutorials/close-your-vault.mdx
+              - page: Desposit
+                slug: vault-deposit
+                path: ../pages/vaults/tutorials/deposit.mdx
+              - page: Withdrawal
+                slug: vault-withdrawal
+                path: ../pages/vaults/tutorials/withdrawal.mdx
+          - page: FAQs
+            slug: faq
+            path: ../pages/vaults/faqs.mdx
+            
+            
+      - section: Points & Referrals
+        contents:
+          - link: Xperience Points
+            href: https://www.paradex.trade/paradexblog/xp-warzone-season-1-has-arrived
+          - section: Referral Program
+            contents:
+            - page: Example Calculations
+              slug: example-calculations
+              path: ../pages/points-and-referrals/referral-program/example-calculations.mdx
+              
+              
+      - section: Accounts
+        contents:
+          - page: Wallet Overview
+            slug: wallet-overview
+            path: ../pages/accounts/overview.mdx
+          - section: Deposits And Withdrawals
+            contents:
+              - page: Ethereum Wallets
+                slug: ethereum-wallets
+                path: ../pages/accounts/deposits-and-withdrawals/ethereum-wallets.mdx
+              - page: Starknet Wallets
+                slug: starknet-wallets
+                path: ../pages/accounts/deposits-and-withdrawals/starknet-wallets.mdx
+              - page: Cross Chain Bridging
+                slug: cross-chain-bridging
+                path: ../pages/accounts/deposits-and-withdrawals/cross-chain-bridging.mdx
+          - page: Sub-accounts
+            slug: sub-accounts
+            path: ../pages/accounts/sub-accounts.mdx
+          - page: Transfers
+            slug: transfers
+            path: ../pages/accounts/transfers.mdx
+            
+            
+      - section: Trading
+        contents: 
+        - section: Placing Orders
+          contents: 
+          - section: Order Types
+            contents:
+              - page: Limit Order
+                slug: limit-order
+                path: ../pages/trading/placing-orders/order-types/limit-order.mdx
+              - page: Market Order
+                slug: market-order
+                path: ../pages/trading/placing-orders/order-types/market-order.mdx
+              - page: Scaled Order
+                slug: scaled-order
+                path: ../pages/trading/placing-orders/order-types/scaled-order.mdx
+              - page: Stop Order
+                slug: stop-order
+                path: ../pages/trading/placing-orders/order-types/stop-orders.mdx
+              - page: TWAP Order
+                slug: twap-order
+                path: ../pages/trading/placing-orders/order-types/twap-order.mdx
+              - page: TP/SL
+                slug: tpsl-order
+                path: ../pages/trading/placing-orders/order-types/tp-sl.mdx
+        - page: Trading Fees
+          slug: trading-fees
+          path: ../pages/trading/trading-fees.mdx
+        - page: Mobile Access Guide
+          slug: mobile-access-guide
+          path: ../pages/trading/mobile-access-guide.mdx
+        - page: Margin Calculator
+          slug: margin-calculator
+          path: ../pages/trading/margin-calculator.mdx
+
+
+      - section: Developer Portal
+        contents:
+        - section: General Information
+          contents: 
+          - page: API Server Location
+            slug: api-server-location
+            path: ../pages/developer-portal/general-information/api-server-location.mdx
+          - page: API URLs
+            slug: browser
+            path: ../pages/developer-portal/general-information/api-urls.mdx
+          - page: API Quick Start
+            slug: api-quick-start
+            path: ../pages/developer-portal/general-information/api-quick-start.mdx
+          - page: Authentication
+            slug: authentication
+            path: ../pages/developer-portal/general-information/authentication.mdx
+          - section: Rate Limits
+            contents: 
+            - page: API
+              slug: api-connection
+              path: ../pages/developer-portal/general-information/rate-limits/api.mdx
+            - page: Websocket
+              slug: websocket-connection
+              path: ../pages/developer-portal/general-information/rate-limits/websocket.mdx
+            - page: Open Orders per Account
+              slug: open-orders-per-account
+              path: ../pages/developer-portal/general-information/rate-limits/open-orders-per-account.mdx
+            - page: Common Questions
+              slug: common-questions
+              path: ../pages/developer-portal/general-information/rate-limits/common-questions.mdx
+        - section: Mainnet Documentation
+          contents: 
+          - link: Websocket Documentation
+            href: https://docs.api.prod.paradex.trade/#websocket-json-rpc-api
+          - link: Paradex REST API (Previous format)
+            href: https://docs.api.prod.paradex.trade/#paradex-rest-api
+        - section: Testnet Documentation
+          contents: 
+          - link: Websocket Documentation
+            href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
+          - link: Paradex REST API (Previous format)
+            href: https://docs.api.testnet.paradex.trade/#paradex-rest-api
+        - link: Paradex Github
+          href: https://github.com/tradeparadex    
+        - link: Paradex CLI
+          href: https://github.com/tradeparadex/paradex-cli/
+        - link: Code Samples
+          href: https://github.com/tradeparadex/code-samples
+        - link: Python SDK
+          href: https://tradeparadex.github.io/paradex-py/
+        - link: CCXT Integration
+          href: https://docs.ccxt.com/#/exchanges/paradex
+        - page: Benchmarks
+          slug: benchmarks
+          path: ../pages/developer-portal/benchmarks.mdx
+
+
+      - section: Security
+        contents:
+          - page: Security Lockdown
+            slug: security-lockdown
+            path: ../pages/security/security-lockdown.mdx
+          - page: Guardian Keys
+            slug: guardian-keys
+            path: ../pages/security/guardian-keys.mdx
+          - page: Bug Bounty
+            slug: bug-bounty
+            path: ../pages/security/bug-bounty.mdx
+
+      - section: Risk System
+        contents:
+          - page: Paradex Margin System
+            slug: paradex-risk-system
+            path: ../pages/risk-system/paradex-risk-system.mdx
+          - page: Margin Term Reference
+            slug: margin-term-reference
+            path: ../pages/risk-system/margin-term-reference.mdx
+          - page: Paradex Risk Checks
+            slug: paradex-risk-checks
+            path: ../pages/risk-system/paradex-risk-checks.mdx
+          - page: Mark Price Calculation
+            slug: mark-price-calculation
+            path: ../pages/risk-system/mark-price-calculation.mdx
+          - page: Cross Margin Requirement
+            slug: cross-margin-requirement
+            path: ../pages/risk-system/cross-margin-requirement.mdx
+          - page: Price Bands
+            slug: price-bands
+            path: ../pages/risk-system/price-bands.mdx
+          - page: Position Limit
+            slug: position-limit
+            path: ../pages/risk-system/position-limit.mdx
+          - page: Funding Mechanism
+            slug: funding-mechanism
+            path: ../pages/risk-system/funding-mechanism.mdx
+          - page: Deleveraging
+            slug: deleveraging
+            path: ../pages/risk-system/deleveraging.mdx
+          - page: Liquidations
+            slug: liquidations
+            path: ../pages/risk-system/liquidations.mdx
+          - page: Socialized Losses
+            slug: socialized-losses
+            path: ../pages/risk-system/socialized-losses.mdx
+          - page: Trade Flow And Busts
+            slug: trade-busts
+            path: ../pages/risk-system/trade-busts.mdx
+            
+            
+      - section: Advanced Trading Features
+        contents:
+          - page: Self Trade Prevention
+            slug: self-trade-prevention
+            path: ../pages/advanced-trading-features/self-trade-prevention.mdx
+          - page: Receive Window
+            slug: receive-window
+            path: ../pages/advanced-trading-features/receive-window.mdx
+            
+            
+      - section: Instruments Guide
+        contents:
+        - section: Futures
+          contents: 
+          - section: Tier 1
+            contents:
+            - page: BTC-USD-PERP
+              slug: btc-usd-perp
+              path: ../pages/instruments-guide/futures/tier-1/btc-usd-perp.mdx
+            - page: ETH-USD-PERP
+              slug: eth-usd-perp
+              path: ../pages/instruments-guide/futures/tier-1/eth-usd-perp.mdx
+            - page: SOL-USD-PERP
+              slug: sol-usd-perp
+              path: ../pages/instruments-guide/futures/tier-1/sol-usd-perp.mdx
+          - section: Tier 2
+            contents:
+            - page: AAVE-USD-PERP
+              slug: aave-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/aave-usd-perp.mdx
+            - page: ADA-USD-PERP
+              slug: ada-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/ada-usd-perp.mdx
+            - page: AEVO-USD-PERP
+              slug: aevo-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/aevo-usd-perp.mdx
+            - page: APT-USD-PERP
+              slug: apt-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/apt-usd-perp.mdx
+            - page: ARB-USD-PERP
+              slug: arb-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/arb-usd-perp.mdx
+            - page: AVAX-USD-PERP
+              slug: avax-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/avax-usd-perp.mdx
+            - page: BNB-USD-PERP
+              slug: bnb-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx
+            - page: DOGE-USD-PERP
+              slug: doge-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/doge-usd-perp.mdx
+            - page: DOT-USD-PERP
+              slug: dot-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/dot-usd-perp.mdx
+            - page: DRIFT-USD-PERP
+              slug: drift-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/drift-usd-perp.mdx
+            - page: DYDX-USD-PERP
+              slug: dydx-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/dydx-usd-perp.mdx
+            - page: ENA-USD-PERP
+              slug: ena-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/ena-usd-perp.mdx
+            - page: FIL-USD-PERP
+              slug: fil-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/fil-usd-perp.mdx
+            - page: FLOW-USD-PERP
+              slug: flow-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/flow-usd-perp.mdx
+            - page: FTM-USD-PERP
+              slug: ftm-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/ftm-usd-perp.mdx
+            - page: GMX-USD-PERP
+              slug: gmx-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/gmx-usd-perp.mdx
+            - page: GOAT-USD-PERP
+              slug: goat-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/goat-usd-perp.mdx
+            - page: INJ-USD-PERP
+              slug: inj-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx
+            - page: JTO-USD-PERP
+              slug: jto-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/jto-usd-perp.mdx
+            - page: JUP-USD-PERP
+              slug: jup-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/jup-usd-perp.mdx
+            - page: kBONK-USD-PERP
+              slug: kbonk-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/kbonk-usd-perp.mdx
+            - page: kpepe-USD-PERP
+              slug: kpepe-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/kpepe-usd-perp.mdx
+            - page: kSHIB-USD-PERP
+              slug: kshib-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/kshib-usd-perp.mdx
+            - page: LDO-USD-PERP
+              slug: ldo-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/ldo-usd-perp.mdx
+            - page: LINK-USD-PERP
+              slug: link-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/link-usd-perp.mdx
+            - page: MEW-USD-PERP
+              slug: mew-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/mew-usd-perp.mdx
+            - page: MOODENG-USD-PERP
+              slug: moodeng-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
+            - page: NEAR-USD-PERP
+              slug: near-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/near-usd-perp.mdx
+            - page: ONDO-USD-PERP
+              slug: ondo-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/ondo-usd-perp.mdx
+            - page: OP-USD-PERP
+              slug: op-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/op-usd-perp.mdx
+            - page: ORDI-USD-PERP
+              slug: ordi-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/ordi-usd-perp.mdx
+            - page: PENDLE-USD-PERP
+              slug: pendle-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/pendle-usd-perp.mdx
+            - page: PYTH-USD-PERP
+              slug: pyth-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/pyth-usd-perp.mdx
+            - page: RUNE-USD-PERP
+              slug: rune-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/rune-usd-perp.mdx
+            - page: SCR-USD-PERP
+              slug: scr-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/scr-usd-perp.mdx
+            - page: SEI-USD-PERP
+              slug: sei-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/sei-usd-perp.mdx
+            - page: STRK-USD-PERP
+              slug: strk-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/strk-usd-perp.mdx
+            - page: STX-USD-PERP
+              slug: stx-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/stx-usd-perp.mdx
+            - page: SUI-USD-PERP
+              slug: sui-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/sui-usd-perp.mdx
+            - page: TAO-USD-PERP
+              slug: tao-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/tao-usd-perp.mdx
+            - page: TIA-USD-PERP
+              slug: tia-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/tia-usd-perp.mdx
+            - page: TON-USD-PERP
+              slug: ton-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/ton-usd-perp.mdx
+            - page: TRB-USD-PERP
+              slug: trb-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/trb-usd-perp.mdx
+            - page: TRX-USD-PERP
+              slug: trx-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/trx-usd-perp.mdx
+            - page: WIF-USD-PERP
+              slug: wif-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/wif-usd-perp.mdx
+            - page: WLD-USD-PERP
+              slug: wld-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/wld-usd-perp.mdx
+            - page: XRP-USD-PERP
+              slug: xrp-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx
+            - page: ZRO-USD-PERP
+              slug: zro-usd-perp
+              path: ../pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
+
+      - section: Ecosystem Partners
+        contents:
+        - section: Starknet Wallets
+          contents: 
+          - link: Argent
+            href: https://www.argent.xyz/
+          - link: Bravos
+            href: https://braavos.app/
+        - section: Cross Chain Bridges
+          contents: 
+          - link: rhino.fi
+            href: https://rhino.fi/
+          - link: Layerswap
+            href: https://layerswap.io/
+        - section: Price Oracles
+          contents: 
+          - link: Pyth
+            href: https://pyth.network/
+            
+
+      - section: Release Notes
+        path: ../pages/overview.mdx
+        contents: 
+          - page: v1.68
+            path: ../pages/release-notes/v1.68.md
+          - page: v1.67
+            path: ../pages/release-notes/v1.67.md
+          - section: Archive
+            path: ../pages/release-notes/archive.mdx
+            contents:
+              - page: v1.66
+                path: ../pages/release-notes/v1.66.md
+              - page: v1.65
+                path: ../pages/release-notes/v1.65.md
+              - page: v1.64
+                path: ../pages/release-notes/v1.64.md
+              - page: v1.63
+                path: ../pages/release-notes/v1.63.md
+              - page: v1.62
+                path: ../pages/release-notes/v1.62.md
+              - page: v1.61
+                path: ../pages/release-notes/v1.61.md
+
+  - tab: reference
+    layout:
+      - api: API Reference (Testnet)
+        api-name: openapi

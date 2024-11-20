@@ -382,6 +382,7 @@ navigation:
       - section: Ecosystem Partners
         contents:
         - section: Starknet Wallets
+          path: ./pages/ecosystem-partners/starknet-wallets/starknet.mdx
           contents: 
           - link: Argent
             href: https://www.argent.xyz/

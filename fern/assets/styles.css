@@ -1,19 +1,3 @@
-.fern-sidebar-link-container[data-state=active] .fern-sidebar-link {
-  background-color: #302F38;
-}
-
-.fern-sidebar-link-container[data-state=active] {
-  color: #ffffff;
-}
-
-.fern-scroll-area-thumb {
-  background-color: #302F38;
-}
-
-.fern-card {
-  background-color: #181C20;
-}
-
 .fern-button:not(.disabled).filled.primary {
   font-weight: 500;
 }
@@ -21,21 +5,4 @@
 :is(.light) .fern-background {
   background-image: radial-gradient(49.63% 57.02% at 58.99% -7.2%, rgba(81, 24, 108, 0.1) 39.4%, rgba(0, 0, 0, 0) 100%) !important;
   z-index: -1 !important;
-}
-
-.two-column-container {
-  display: flex;
-  gap: 25px;
-}
-
-.column {
-  flex: 1;
-}
-
-.column-wide {
-  flex: 100;
-}
-
-.column-narrow {
-  flex: 1;
 }

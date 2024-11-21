@@ -1,11 +1,14 @@
 .fern-sidebar-link-container[data-state=active] .fern-sidebar-link {
   background-color: #302F38;
+}
 
 .fern-sidebar-link-container[data-state=active] {
   color: #ffffff;
+}
 
 .fern-scroll-area-thumb {
   background-color: #302F38;
+}
 
 .fern-card {
   background-color: #181C20;

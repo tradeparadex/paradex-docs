@@ -565,10 +565,8 @@ favicon: ./assets/logo.jpeg
 colors:
   accent-primary: 
     dark: '#c83efb'
-    light: '#531a6c'
   background: 
     dark: '#000000'
-    light: '#ffffff'
 css: ./assets/styles.css
 #js: 
 #  - path: ./assets/wallet-connect.js

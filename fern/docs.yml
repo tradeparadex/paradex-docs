@@ -562,12 +562,13 @@ logo:
   light: ./assets/logo-light.svg
   dark: ./assets/logo-dark.svg
   height: 30
+  href: https://app.paradex.trade
 favicon: ./assets/logo.jpeg
 colors:
   accent-primary: 
     dark: '#c83efb'
   background: 
-    dark: '#000000'
+    dark: '#0b0e12'
 css: ./assets/styles.css
 #js: 
 #  - path: ./assets/wallet-connect.js

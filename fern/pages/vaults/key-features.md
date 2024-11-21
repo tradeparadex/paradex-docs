@@ -3,7 +3,7 @@
 ## Types of Vaults
 
 * Protocol Vault
-* Community Vaults : _**Coming soon**_
+* Community Vaults
 
 ## Vault Parameters
 

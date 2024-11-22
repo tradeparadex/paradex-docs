@@ -68,7 +68,7 @@ navigation:
               - page: Close Your Vault
                 slug: close-your-vault
                 path: ./pages/vaults/tutorials/close-your-vault.mdx
-              - page: Desposit
+              - page: Deposit
                 slug: vault-deposit
                 path: ./pages/vaults/tutorials/deposit.mdx
               - page: Withdrawal

@@ -12,6 +12,7 @@
 
 .fern-card {
   background-color: #181C20;
+}
 
 .fern-button:not(.disabled).filled.primary {
   font-weight: 500;

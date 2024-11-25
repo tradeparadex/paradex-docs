@@ -518,6 +518,7 @@ navigation:
             api-name: prod_rest
             skip-slug: true
             display-errors: true
+            flattened: true
           - link: Websocket Documentation
             href: https://docs.api.prod.paradex.trade/#websocket-json-rpc-api
         slug: prod
@@ -527,6 +528,7 @@ navigation:
             api-name: testnet_rest
             skip-slug: true
             display-errors: true
+            flattened: true
           - link: Websocket Documentation
             href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
         slug: testnet

@@ -36,7 +36,10 @@ i.e. Bankruptcy Amount is positive only if account will be bankrupt at current M
 The exchange Bankruptcy Amount is equal to :
 
 $$
-\begin{split} \small\text{Exchange Bankruptcy Amount}=\max(0&,~\text{Total Users Bankruptcy Amount}\\ &-\text{Insurance Fund USDC Balance}) \end{split}
+\begin{align*} 
+&\text{Exchange Bankruptcy Amount}= \\
+&\max(0,\small\text{Total Users Bankruptcy Amount}-\small\text{Insurance Fund USDC Balance})
+\end{align*}
 $$
 
 ### Socialized Loss Factor

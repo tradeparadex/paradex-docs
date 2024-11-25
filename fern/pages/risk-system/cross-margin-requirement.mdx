@@ -25,16 +25,23 @@ The initial margin fractions (IMF) are increasing functions of the notional (i.e
 
 For _**perpetual positions**_, the initial margin fractions $$\text{IMF}_\text{buy}$$ and $$\text{IMF}_\text{sell}$$ are calculated as :
 
-$$
-\small\text{IMF}_\text{buy/sell}(D_j)=\max\bigg(\text{Base IMF}\\~,~\text{IMF Factor}~*~\sqrt{\max\Big(\text{Open Size}_\text{buy/sell}(D_j)*\text{Mark Price}(D_j)-\text{IMF~Shift},0\Big)} \bigg)
-$$
+$
+\begin{aligned}
+& \text{IMF}_\text{buy/sell}(D_j)= \\
+& \\
+& \small\max\Biggl(~\small\text{Base IMF}~,~\small\text{IMF Factor}~*~\sqrt{\max\bigl(\small\text{Open Size}_\text{buy/sell}(D_j)*\small\text{Mark Price}(D_j)-\small\text{IMF~Shift},0\bigr)}~\Biggr)
+\end{aligned}
+$
 
 i.e. the Initial Margin Fraction (which is the inverse if the Maximum Allowed Initial Leverage) increases as a square root of USD Notional for large notionals.
 
 **Position IMF** is similar to the **IMF** but excludes open orders :
 
 $$
-\small\text{Position IMF}(D_j)=\max\bigg(\text{Base IMF}\\~,~\text{IMF Factor}*\sqrt{\max\Big(\text{Position Size}(D_j)*\text{Mark Price}(D_j)-\text{IMF~Shift},0\Big)} \bigg)
+\begin{aligned}
+& \text{Position IMF}(D_j)= \\
+& \max\Biggl(~\small\text{Base IMF}~,~\small\text{IMF Factor}*\sqrt{\max\bigl(\small\text{Position Size}(D_j)*\small\text{Mark Price}(D_j)-\small\text{IMF~Shift},0\bigr)}~\Biggr)
+\end{aligned}
 $$
 
 The **Maintenance Margin Fraction** $$\text{MMF}$$ is proportional to position initial margin fraction:

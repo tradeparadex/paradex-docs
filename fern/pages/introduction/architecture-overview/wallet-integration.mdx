@@ -50,7 +50,7 @@ The signature itself can't be the user's private key on Paradex because the priv
 
 <img src="../../../assets/image (19).png" alt=""/>
 
-Converting arbitrary inputs into a private key is done with a KDF or [Key Derivation Function](https://en.wikipedia.org/wiki/Key\_derivation\_function). The KDF takes the input and does a series of transformations to it in order to convert it to a key in a deterministic way.
+Converting arbitrary inputs into a private key is done with a KDF or [Key Derivation Function](https://en.wikipedia.org/wiki/Key_derivation_function). The KDF takes the input and does a series of transformations to it in order to convert it to a key in a deterministic way.
 
 Of course we relied on the StarkWare team as the cryptography specialists to provide us with the KDF that would do what we needed in a secure way.
 
@@ -64,7 +64,7 @@ It's as secure as the user's computer. The private key never leaves RAM and is s
 
 #### How is “remember me” possible?
 
-If “Remember Me” is checked when connecting the wallet, the Ethereum Signature used to derive the Paradex private key is stored in the browser’s Local Storage. As with the private key, this signature never leaves the user's browser, but allows the user to automatically authenticate on loading the app without requiring interactions with their wallet. Users can opt-out of the Remember Me feature during Sign-In (Connect Wallet), so that the Ethereum Signature is not stored in the user's browser Local Storage.
+If “Remember Me” is checked when connecting the wallet, the Ethereum Signature used to derive the Paradex private key is stored in the browser's Local Storage. As with the private key, this signature never leaves the user's browser, but allows the user to automatically authenticate on loading the app without requiring interactions with their wallet. Users can opt-out of the Remember Me feature during Sign-In (Connect Wallet), so that the Ethereum Signature is not stored in the user's browser Local Storage.
 
 #### Clock Synchronization
 

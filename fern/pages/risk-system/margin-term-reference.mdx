@@ -36,21 +36,24 @@ where $$\text{Position Cost}$$ is a signed number and $$\text{Average Entry Pric
 
 ### _**Accrued Funding (USD)**_
 
-This refers to the unrealized Funding _accrued on open perpetual positions since account’s last trade in those positions_. When the account executes a trade in an existing open perpetual position, any accrued funding on this position is realized (i.e. account’s USDC balance is updated) and Funding PnL of this position is reset to 0. For more details on funding mechanism, please refer to the [Funding Mechanism](funding-mechanism) page
+This refers to the unrealized Funding _accrued on open perpetual positions since accounts last trade in those positions_. When the account executes a trade in an existing open perpetual position, any accrued funding on this position is realized (i.e. accounts USDC balance is updated) and Funding PnL of this position is reset to 0. For more details on funding mechanism, please refer to the [Funding Mechanism](funding-mechanism) page
 
 ### _**Unrealized PnL (USD)**_
 
 Unrealized PnL on a derivative asset position determines how much money an account will receive if the corresponding position is closed at mark price :
 
 $$
-\small\text{Unrealized PnL}=\sum\limits_{j=1}^{m} \bigg(\text{Position Notional}(D_j)-\text{Position Cost}(D_j)*\text{USDC Oracle Price}\\+\text{Accrued Funding}(D_j)\bigg)
+\begin{align*}
+& \underline{\textbf{Unrealized PnL}}= \\
+& \sum\limits_{j=1}^{m} \bigg(\small\text{Position Notional}(D_j)-\small\text{Position Cost}(D_j)*\small\text{USDC Oracle Price}+\small\text{Accrued Funding}(D_j)\bigg)
+\end{align*}
 $$
 
 where $$D_j,~j\in[1..m]$$ are derivative assets where the account has an open position
 
 ### _**Account Value (USD)**_
 
-Also called margin balance. This value is a key component in margin checks and represents the account’s token assets value in USD if we close all open positions at their mark (fair) price.
+Also called margin balance. This value is a key component in margin checks and represents the accounts token assets value in USD if we close all open positions at their mark (fair) price.
 
 $$
 \text{Account Value}=\text{Collateral Value}+\text{Unrealized PnL}

@@ -25,20 +25,23 @@ $$
 The **Funding Rate** is derived from [**Fair Basis**](mark-price-calculation#steps-to-calculate-the-fair-basis-and-the-mark-price) by applying interest rate clamping and by constraining the resulting value to the interval \[ − 𝑀 , + 𝑀 ] where M is the Maximum Funding Rate.
 
 $$
-\text{Funding Rate}=\text{capped}\big(\text{Fair Basis} + \text{clamp}\big(\text{Interest Rate}, \text{Fair Basis}, \text{Clamp Rate}\big)\big)
+\begin{aligned}
+& \text{Funding Rate}=\text{capped}\Bigl(\text{Fair Basis} + \text{clamp}\bigl(\text{Interest Rate}, \text{Fair Basis}, \text{Clamp Rate}\big)\Bigr) \\
+& ~\\
+& \large\text{and} \\
+& ~\\
+& \text{clamp}\bigl(\text{Interest Rate}, \text{Fair Basis}, \text{Clamp Rate}\bigr) = \\
+& \min\Bigl(\max\bigl(\text{Interest Rate}-\text{Fair Basis},~-~\text{Clamp Rate}\bigr),~+~\text{Clamp Rate}\Bigr)
+& ~\\
+& ~\\
+& \text{capped}(x) = \text{max}(−~\text{Maximum Funding Rate}, \text{min}(x, \text{Maximum Funding Rate}))
+& ~\\
+& ~\\
+\end{aligned}
 $$
 
-and
 
-$$
-\text{clamp}\big(\text{Interest Rate}, \text{Fair Basis}, \text{Clamp Rate}\big) =\\~~~~~~~~~\min\big(\max\big(\text{Interest Rate}-\text{Fair Basis},~-\text{Clamp Rate}\big),~~+\text{Clamp Rate}\big)
-$$
-
-$$
-\text{capped}\big(x\big) = \text{max}(−\text{Maximum Funding Rate}, \text{min}(x, \text{Maximum Funding Rate}))
-$$
-
-Current values for the above settings are:
+**Current values for the above settings are:**
 
 * Interest Rate = 0.01%
 * Clamp Rate = 0.05%
@@ -59,7 +62,10 @@ The **Funding Premium** is updated along with the mark price (every 5 seconds). 
 At any point in time, the **Current Funding Index** can be calculated as :
 
 $$
-\text{Current Funding Index}=\text{Last Cached Funding Index}\\+\text{Funding Premium}*\frac{\text{current timestamp}-\text{cached timestamp}}{8*3600}
+\begin{aligned}
+& {\textbf{Current Funding Index}}~=\\
+& \small\text{Last Cached Funding Index}~+~\small\text{Funding Premium}*\frac{\text{current timestamp}-\text{cached timestamp}}{8*3600}
+\end{aligned}
 $$
 
 where timestamps are expressed in seconds.
@@ -69,7 +75,10 @@ where timestamps are expressed in seconds.
 The **Accrued (Unrealized) Funding** of an open perpetual position depends on the change in the funding index since its last cached value (from last trade) :
 
 $$
-\text{Accrued Funding PnL}=-\text{Perpetual Position Size}\\*~(\text{Current Funding Index - Cached Funding Index})*\text{USDC Oracle Price}
+\begin{align*}
+& {\textbf{Accrued Funding PnL}}~=\\
+& ~-~\small\text{Perpetual Position Size}~*~(\small\text{Current Funding Index - Cached Funding Index})*\small\text{USDC Oracle Price}
+\end{align*}
 $$
 
 where **Perpetual Position Size** is a signed position size (positive in case of a long position, negative in case of short position)
@@ -77,7 +86,10 @@ where **Perpetual Position Size** is a signed position size (positive in case of
 Whenever the account updates an existing perpetual position, accrued funding is realised :
 
 $$
-\text{Funding Realized PnL}=-\text{Previous Perpetual Position Size}\\*~(\text{Current Funding Index - Cached Funding Index})
+\begin{align*}
+& {\textbf{Funding Realized PnL}}~=\\
+& -~\text{Previous Perpetual Position Size}~*~(\text{Current Funding Index - Cached Funding Index})
+\end{align*}
 $$
 
 ## **Example**
@@ -98,10 +110,21 @@ Therefore : $$\text{Funding Premium}_\text{ XYZ-USD-PERP}(t_0)=\frac{\text{Mark~
 * For example simplicity, we assume prices stay unchanged for 1 hour, i.e. the Funding Premium remains the same :
 
 $$
-\begin{split} \text{Funding Index}_\text{ XYZ-USD-PERP}(t_0+1~\text{hour} )&=\text{Funding Index}_\text{ XYZ-USD-PERP}(t_0 )\\ &~+\frac{1}{8}*\text{Funding Premium}_\text{ XYZ-USD-PERP}(t_0)\\ &=1’000+\frac{12}{8}\\ &=1’001.5~\text{USDC} \end{split}
+\begin{align*}
+& {\small\textbf{Funding Index}_\text{ XYZ-USD-PERP}(t_0+1~\small\text{hour})} \\
+& =\small\text{Funding Index}_\text{ XYZ-USD-PERP}(t_0 )~+~\frac{\small\text{Funding Premium}_\text{XYZ-USD-PERP}(t_0)}{8}\\ 
+& =1000+\frac{12}{8} \\
+& =1001.5~\text{USDC}
+& ~\\
+\end{align*}
 $$
 
-Within the past hour, Alice accrued a **Funding Loss** equal to : $$50*(1'001.5-1'000.0)=75~\text{USDC}$$
+Within the past hour, Alice accrued a **Funding Loss** equal to:
+$$
+\begin{align*}
+50*(1'001.5-1'000.0)=75~\text{USDC}
+\end{align*}
+$$
 
 Note that this negative PnL affects Alice's account value but is not reflected in the USDC balance until Alice's next $$\text{XYZ-USD-PERP}$$ trade.
 

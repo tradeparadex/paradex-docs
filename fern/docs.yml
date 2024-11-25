@@ -515,7 +515,7 @@ navigation:
       - section: Production API Reference
         contents:
           - api: REST Endpoints
-            api-name: prod
+            api-name: prod_rest
             skip-slug: true
             display-errors: true
           - link: Websocket Documentation
@@ -524,7 +524,7 @@ navigation:
       - section: Testnet API Reference
         contents:
           - api: REST Endpoints
-            api-name: testnet
+            api-name: testnet_rest
             skip-slug: true
             display-errors: true
           - api: Private WebSocket Channels

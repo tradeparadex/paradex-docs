@@ -527,6 +527,12 @@ navigation:
             api-name: testnet
             skip-slug: true
             display-errors: true
+          - api: Private WebSocket Channels
+            api-name: testnet_ws_private
+            skip-slug: true
+          - api: Public WebSocket Channels
+            api-name: testnet_ws_public
+            skip-slug: true
           - link: Websocket Documentation
             href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
         slug: testnet

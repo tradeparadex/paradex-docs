@@ -1,0 +1,13 @@
+openapi: 3.0.0
+info:
+  title: Paradex WebSocket API
+  version: "1.0.0"
+
+servers:
+  - url: wss://ws.api.testnet.paradex.trade
+    description: Testnet WebSocket Server
+    protocol: wss
+    x-fern-server-name: Testnet
+
+paths: {}
+components: {}

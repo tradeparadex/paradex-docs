@@ -1,0 +1,55 @@
+---
+title: FAQs
+hide-feedback: true
+---
+
+ 
+<Accordion title="Can anyone create a Vault?">
+Currently, individual users are not able to create a vault or become a vault owner on Paradex. This feature will be coming soon, so stay tuned for more information!
+</Accordion>
+
+ 
+<Accordion title="What is the difference between a vault owner and a vault operator?">
+A vault owner is the account that controls the vault and receives a share of the profits. A vault operator is a specialized account that has access to the deposited funds and is responsible for trading to generate returns.
+</Accordion>
+
+<Accordion title="How are profits distributed in a vault?">
+Profits are distributed based on the vault's profit share structure. A percentage goes to the vault owner, while the rest is distributed among depositors proportional to their share in the vault.
+</Accordion>
+
+<Accordion title="What is the minimum owner share?">
+The minimum owner share is the percentage of the vault that must be maintained by the vault owner. This ensures the owner has "skin in the game" and aligns their interests with other depositors.
+</Accordion>
+ 
+<Accordion title="How long after my deposit can I withdraw my funds?">
+Because withdrawal transactions cannot be performed in the same block as a deposit, there is currently around a **5 minute** window where you will not be able to withdraw fund immediately after deposit. This is the time that is required to created this new block for the withdrawal transaction.
+Otherwise, the time is also limited by the [Lockup Period](https://docs.paradex.trade/vaults/tutorials/withdrawal#note-you-will-not-be-able-to-withdraw-from-the-vault-if-your-minimum-lockup-period-of-not-over-yet) that is configured for the Vault. This can be found just above the Deposit button with the other Vault status.
+</Accordion>
+ 
+<Accordion title="How is the performance of a vault calculated?">
+Vault performance is calculated based on the change in the vault's total value over time. This includes trading profits, losses, and any fees incurred.
+</Accordion>
+ 
+<Accordion title="Are there any fees associated with using vaults?">
+Fees may vary depending on the specific vault. Typically, there's a profit share for the vault owner. Always check the vault's details for specific fee information.
+</Accordion>
+
+<Accordion title="How secure are Paradex Vaults?">
+Paradex Vaults are built with robust security measures, including role-based access control and multi-signature approvals. However, as with any DeFi product, there are inherent risks, and users should do their own research before participating.
+</Accordion>
+
+<Accordion title="How can I monitor my vault's performance?">
+Paradex provides detailed analytics for vault operations. You can see an overview from your Portfolio and also get a more detailed analysis by clicking on the vault from the [main vaults page](https://app.paradex.trade/vaults).
+</Accordion>
+
+<Accordion title="Will I gain any XP from depositing funds into Vaults?">
+Yes, XP will be awarded to your account on a Weekly basis. Vaults earn Fee, Maker, OI, and TVL XP just like any normal accounts. These XP earnt will then be distributed to depositors every Friday as Vaults XP. Deposit in Vaults with an active XP boost for a higher earn rate.
+</Accordion>
+
+<Accordion title="How can my vault's PnL be positive but its ROI is negative? (or vice-versa)">
+The ROI is calculated based on the Vault's current token price divided by the initial token price (which is $1).
+
+The P&L and ROI of the Vault could be different due to differences in a Vault's TVL at different time periods
+
+A Vault's P&L could be positive due to higher returns on a higher TVL base (somebody had deposited money in the Vault), but negative in ROI because it had negative returns on a smaller TVL base.
+</Accordion> 

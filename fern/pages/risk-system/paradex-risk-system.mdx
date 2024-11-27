@@ -1,0 +1,29 @@
+---
+title: Paradex Margin System
+hide-feedback: true
+---
+#### Margin modes
+
+Paradex currently only supports **Cross Margin (XM)** mode.
+
+There will be no “isolated margin” mode. In order to open an isolated position, the user can create a new separate account to trade a single instrument.
+
+#### Instrument types
+
+All instruments are quoted and valued in USD.
+
+Paradex currently supports only USDC as a collateral asset. You have to deposit USDC on your wallet to trade and all PnL accrued or charged to your wallet will be in USDC.
+
+#### Margin checks
+
+In order to minimise solvency risk and prevent possible market manipulations during the course of trading, Paradex engine performs following margin checks on client accounts:
+
+* **Initial margin check** - validates that account can take more risk. If this check fails then client's action increasing account's risk is rejected. **For example:**
+  1. User sends a new order
+  2. Users requests a withdrawal which would increase account leverage.
+* **Maintenance margin check** - determines if an account is close to bankruptcy. If this check fails the account positions and balances will be liquidated.
+
+Regardless of the specific use case, all margin checks can be described as a comparison of the **Account Value** against some **Margin Requirement**
+
+* **Account Value** is equal to the **USD** collateral value plus any unrealised Pnl from all open positions of this account. Since unrealised PnL is calculated on account level, the user benefits from _**PnL offsetting among all account's positions**_ which contributes to capital efficiency. Please refer to [Margin Term Reference](margin-term-reference) for more details about the calculation of Account Value and other important related risk metrics.
+* **Margin requirement** is an assessment of the account's overall risk and is expressed in **USD**. It depends both on the account's open positions as well as exchange-level parameters. The calculation of this requirement is defined by the [Cross Margin Requirement ](cross-margin-requirement)methodology

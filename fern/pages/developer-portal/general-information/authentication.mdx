@@ -1,0 +1,37 @@
+---
+title: Authentication
+hide-feedback: true
+---
+
+Your software will have to authenticate itself when:
+
+1. You onboard your wallet using automatic onboarding code
+2. You generate JWT (see below) for a private Rest API call or subscription to a private WebSocket
+3. You send order to Paradex
+
+## What is JWT
+
+Paradex uses [JSON Web Tokens (JWTs)](https://jwt.io/introduction) to authenticate users.
+
+JWTs are a secure way to transmit information between parties as they are signed by the sender, which allows the recipient to verify the authenticity of the message.
+
+> **For security reasons JWTs used in Paradex's authentication mechanism expire every 5 minutes.** **It is not possible to extend the expiration.**
+
+This means that users will need to **re-authenticate** regularly in order to always have a fresh JWT readily available.
+
+Paradex recommends refreshing JWT well before expiry (e.g., after 3 minutes) to allow multiple retry attempts while still having a valid JWT.
+
+This will help you to avoid interruptions in making REST API calls.
+
+When using **WebSocket** connections, after the initial authentication, users do not need to re-authenticate again for the lifetime of the connection.
+
+[See more regarding Paradex JWT mechanism](https://docs.api.prod.paradex.trade/#get-jwt).
+
+
+
+## Benefits of using JWT
+
+The benefits of using JWT for authentication:
+
+* **Security**: JWTs are signed by the issuer, which allows the recipient to verify the authenticity of the message.
+* **Efficiency**: JWTs are small and lightweight, which makes them efficient to transmit over the network.

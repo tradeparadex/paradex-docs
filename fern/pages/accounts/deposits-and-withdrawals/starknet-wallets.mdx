@@ -1,0 +1,18 @@
+---
+title: Starknet Wallets
+hide-feedback: true
+---
+\
+Your Paradex account lives on the Paradex chain, separate from the public Starknet ecosystem. To support Starknet ecosystem users, we have extended our [wallet integration](../../getting-started/architecture-overview/wallet-integration). This ensures seamless integration and secure access for users transitioning between Paradex and Starknet. Funding of your Paradex account from a Starknet Wallet must be done via our [Cross Chain Bridging partners](cross-chain-bridging).
+
+## Supported Accounts
+
+Starknet accounts are smart contracts that allow users to change their underlying signer. Paradex relies on deterministic ECDSA signatures to generate your Paradex private key. We have added checks to ensure account type compatibility before onboarding.
+
+<Warning>
+Changing the signer can result in an inability to generate the same private key for your account. We recommend users back up their Paradex private key to ensure secure access to their accounts.
+</Warning>
+
+
+
+<table><thead><tr><th width="182">Account contract</th><th width="100">Support</th><th>Comments</th></tr></thead><tbody><tr><td>Argent Account <code>v0.3.0</code></td><td><code>yes</code></td><td><ul><li>Changing guardians does not cause issues</li><li>Can change ownership: user can lose access to account</li></ul></td></tr><tr><td>Argent Account <code>v0.3.1</code></td><td><code>yes</code></td><td><ul><li>Changing guardians does not cause issues</li><li>Can change ownership: user can lose access to account</li></ul></td></tr><tr><td>Argent Account <code>v0.4.0</code></td><td><code>yes</code></td><td><ul><li>Changing guardians does not cause issues</li><li>Can change ownership: user can lose access to account</li><li>Only <code>Starknet</code> signers are supported</li><li><code>Secp256k1</code>, <code>Secp256r1</code>, <code>Eip191</code> and <code>Webauthn</code> signers are not supported.</li></ul></td></tr><tr><td>Argent Multicall</td><td><code>no</code></td><td>Subject to key rotation</td></tr><tr><td>Argent Multisig <code>v0.1.0</code></td><td><code>no</code></td><td>Subject to key rotation</td></tr><tr><td>Argent Multisig <code>v0.1.1</code></td><td><code>no</code></td><td>Subject to key rotation</td></tr><tr><td>Argent Multisig <code>v0.2.0</code></td><td><code>no</code></td><td>Subject to key rotation</td></tr><tr><td>Braavos Multi Owner Account <code>v1.0.0</code></td><td><code>yes</code></td><td><p>• Can change signers: user can lose access to account</p><p>• Not supported when multi-sig is enabled</p><p>• Only Stark signer is supported</p><p>• <code>secp256r1</code> and <code>webauthn</code> signer types are not supported</p></td></tr></tbody></table>

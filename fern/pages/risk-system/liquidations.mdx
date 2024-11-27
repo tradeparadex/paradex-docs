@@ -1,0 +1,109 @@
+---
+title: Liquidations
+subtitle: A summary of Paradex liquidation mechanism
+hide-feedback: true
+---
+
+## Liquidation Process
+
+When an account's Margin Ratio goes above 100% during the periodic [Health Check](paradex-risk-checks#health-check), the account will enter Liquidation.
+
+Paradex employs **Partial Liquidation** of unhealthy accounts and attempts to minimise impact on the user's assets and positions while minimising the platform risk.
+
+All positions are reduced by the same fraction called **Liquidation Share**. A corresponding **Liquidation Penalty** is paid from the user's collateral to the insurance fund.
+
+$$
+\text{Liquidation Penalty}=\text{Liquidation Share}~*~\text{Liquidation Fee}~*~\text{MMR}
+$$
+
+The minimum **Liquidation Share** is pre-calculated such that the Margin Ratio is reduced below **90%** This parameter aims to move the account sufficiently away from the liquidation level. The **Liquidation Share** is a multiple of **20%**.
+
+The **Liquidation Fee** is set to **70%**. This means that the liquidation penalty is 70% of the MMR in case of a full liquidation of positions.
+
+### **Example**
+
+Alice has the following portfolio :
+
+* **Long 0.1 BTC-USD-PERP** with an entry price of **60,000**
+* **Short 1 ETH-USD-PERP** with an entry price of **3,000**
+* **1,000 USDC** collateral
+
+Assuming :
+
+* **Maintenance Margin Fraction (MMF) = 1%** for both **BTC-USD-PERP and ETH-USD-PERP**
+* BTC-USD-PERP mark price drops to 54,800 and the ETH-USD-PERP mark price goes up to 3,400
+
+<table><thead><tr><th width="168"></th><th width="214">Unrealized PnL</th><th>MMR (Maintenance Margin Requirement)</th></tr></thead><tbody><tr><td>BTC-USD-PERP</td><td>0.1 * (54,800 - 60,000) = <strong>-520 USD</strong></td><td>1% * 0.1 * 54,800 = <strong>54.8 USD</strong></td></tr><tr><td>ETH-USD-PERP</td><td>-1 * (3,400 - 3,000) = <strong>-400 USD</strong></td><td>1% * 1 * 3,400 = <strong>34 USD</strong></td></tr><tr><td><strong>Total</strong></td><td><strong>-920 USD</strong></td><td><strong>88.8 USD</strong></td></tr></tbody></table>
+
+Alice's Account Value = 1,000 - 920 = 80 USD < MMR = 88.8 USD
+
+The following table illustrates how the optimal liquidation share is calculated by predicting the new margin ratio depending on the liquidation share :
+
+| Liquidation Share | New MMR | Liquidation Penalty | New Account Value | New Margin Ratio |
+| ----------------- | ------- | ------------------- | ----------------- | ---------------- |
+| 20%               | 71.04   | 8.88                | 71.12             | 99.9%            |
+| 40%               | 53.28   | 17.76               | 62.24             | 85.6%            |
+| 60%               | 35.52   | 26.64               | 53.36             | 66.6%            |
+| 80%               | 17.76   | 35.52               | 44.48             | 39.9%            |
+
+In this example, the insurance fund will liquidate 40% of the user's positions to bring the account's Margin Ratio below 90% and will receive 17.76 USDC as a liquidation penalty
+
+Alice realized a loss of 40% \* 920 = 368 USD and is left with 1,000 - 368 - 17.76 = 614.24 USDC collateral
+
+Alice is also left with a long 0.06 BTC-USD-PERP and a short 0.6 ETH-USD-PERP positions
+
+The margin ratio of Alice is now 85.6% and the insurance fund only took 17.76/88.8=20% of the account value to perform this liquidation and make the account healthy again.
+
+Note that this process can result in a full liquidation in the event where the remaining collateral after a 100% liquidation of positions is not sufficient to pay the liquidation penalty.
+
+The liquidated positions as well as the liquidation penalty are transferred over to the **Insurance Fund** upon liquidation.
+
+## Insurance Fund
+
+The Insurance Fund closes the acquired positions in the market, incurring any losses from adverse price movements against the position.
+
+You can see the balance of Paradex's Insurance Fund **on cloud** [_**here**_](https://api.prod.paradex.trade/v1/insurance)_**.**_
+
+The Insurance Fund serves as a backstop to minimise the risk of socialized losses. It prevents the propagation of risk from bankrupt accounts toward the rest of the market.
+
+## Tutorial: Checking Insurance Fund Balance on Paraclear Contract
+
+<Info>
+The insurance fund on the Paraclear contract holds funds to cover losses in case of liquidation. It doesn't show its balance on the Voyager app because the funds are not held in the USDC contract itself.
+</Info>
+
+Here's how you can check the balance **on-chain** :
+
+1. **Go to Paraclear Contract:**\
+   Open the following link to access the Paraclear contract on the Voyager platform: [Paraclear Contract on Voyager](https://voyager.prod.paradex.trade/contract/0x03ca9388f8d4e04adecbd7b06b9b24a33030a593522248a7bddd87afc0b61a0c)
+2.  **Switch to the "Read Contract" Tab:**
+
+    Once on the contract page, navigate to the "Read Contract" tab at the top of the interface. This tab allows you to access read-only contract functions that display on-chain data.
+3. **Find the `getTokenAssetBalance` Function**:\
+   Scroll down to find the function named `getTokenAssetBalance`. This function will return the balance of a specific token for a given address.
+4.  **Input the Required Addresses:**\
+    In the first input field, enter the insurance fund address:
+
+    `0x78d1acdc72fcacd35325402740fca2f7065fd680e59b950326a344710bcd687`
+
+    In the second input field, enter the USDC token address:
+
+    `0x7348407ebad690fec0cc8597e87dc16ef7b269a655ff72587dafff83d462be2`
+5. **Query the Balance:**\
+   After entering the addresses, click the "Query" button. This will execute the function and return the balance of the insurance fund in USDC tokens.
+6.  **Understand the Result:**\
+    The returned value will be the balance of the insurance fund in USDC tokens. The precision of the returned value is 8 decimals, meaning the number you see has 8 decimal places.
+
+    Note that USDC has a precision of 6 decimals. To get the actual balance, you'll need to adjust for this. For example, if the result is 1000000000, the balance would be 10 USDC
+
+> **Example:**
+>
+> \- Insurance fund address: 0x78d1acdc72fcacd35325402740fca2f7065fd680e59b950326a344710bcd687
+>
+> \- USDC token address: 0x7348407ebad690fec0cc8597e87dc16ef7b269a655ff72587dafff83d462be2
+>
+> Once the query is performed, if the returned value is 1000000000, the actual USDC balance of the insurance fund is 10 USDC.
+
+## Socialized Losses
+
+When Paradex Insurance Fund is bankrupt due to large amounts of unprofitable liquidations, [Socialised Losses](socialized-losses) will occur as a last level of backstop.

@@ -568,6 +568,13 @@ navbar-links:
     text: Launch Exchange
     rounded: true
     url: https://app.paradex.trade
+
+redirects:
+  - source: "/:folder/:slug"
+    destination: "/documentation/:folder/:slug"
+  - source: "/developer-portal/:folder/:slug"
+    destination: "/api-reference/:folder/:slug"
+
 layout: 
   header-height: 72px
   searchbar-placement: header

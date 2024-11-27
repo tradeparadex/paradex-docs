@@ -563,7 +563,11 @@ navigation:
           href: https://tradeparadex.github.io/paradex-py/
         - link: CCXT Integration
           href: https://docs.ccxt.com/#/exchanges/paradex
-
+navbar-links:
+  - type: filled
+    text: Launch Exchange
+    rounded: true
+    url: https://app.paradex.trade
 layout: 
   header-height: 72px
   searchbar-placement: header

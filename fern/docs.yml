@@ -5,16 +5,16 @@ instances:
     custom-domain: https://docs.staging.paradex.trade
 title: Paradex | Documentation
 
-tabs: 
-  docs: 
+tabs:
+  docs:
     display-name: Documentation
-  api: 
+  api:
     display-name: API Reference
 navigation:
   - tab: docs
-    layout: 
+    layout:
       - section: Getting Started
-        contents: 
+        contents:
           - page: What is Paradex?
             slug: what-is-paradex
             path: ./pages/what-is-paradex.mdx
@@ -46,12 +46,12 @@ navigation:
             contents:
             - page: Mobile App
               slug: mobile-app
-              path: ./pages/introduction/install-our-app/mobile.mdx              
+              path: ./pages/introduction/install-our-app/mobile.mdx
             - page: Desktop App
               slug: desktop-app
               path: ./pages/introduction/install-our-app/desktop.mdx
-              
-              
+
+
       - section: Vaults
         contents:
           - page: Introduction
@@ -77,8 +77,8 @@ navigation:
           - page: FAQs
             slug: faq
             path: ./pages/vaults/faqs.mdx
-            
-            
+
+
       - section: Points & Referrals
         contents:
           - link: Xperience Points
@@ -89,8 +89,8 @@ navigation:
             - page: Example Calculations
               slug: example-calculations
               path: ./pages/points-and-referrals/referral-program/example-calculations.mdx
-              
-              
+
+
       - section: Accounts
         contents:
           - page: Wallet Overview
@@ -113,13 +113,13 @@ navigation:
           - page: Transfers
             slug: transfers
             path: ./pages/accounts/transfers.mdx
-            
-            
+
+
       - section: Trading
-        contents: 
+        contents:
         - section: Placing Orders
           path: ./pages/trading/placing-orders/placing-orders.mdx
-          contents: 
+          contents:
             - section: Order Types
               contents:
                 - page: Limit Order
@@ -143,8 +143,8 @@ navigation:
             - page: Order Instuctions
               path: ./pages/trading/placing-orders/order-instructions.mdx
               slug: order-instructions
-              
-        
+
+
         - page: Trading Fees
           slug: trading-fees
           path: ./pages/trading/trading-fees.mdx
@@ -205,8 +205,8 @@ navigation:
           - page: Trade Flow And Busts
             slug: trade-busts
             path: ./pages/risk-system/trade-busts.mdx
-            
-            
+
+
       - section: Advanced Trading Features
         contents:
           - page: Self Trade Prevention
@@ -215,12 +215,12 @@ navigation:
           - page: Receive Window
             slug: receive-window
             path: ./pages/advanced-trading-features/receive-window.mdx
-            
-            
+
+
       - section: Instruments Guide
         contents:
         - section: Futures
-          contents: 
+          contents:
           - section: Tier 1
             contents:
             - page: BTC-USD-PERP
@@ -401,25 +401,25 @@ navigation:
         contents:
         - section: Starknet Wallets
           path: ./pages/ecosystem-partners/starknet-wallets/starknet.mdx
-          contents: 
+          contents:
           - link: Argent
             href: https://www.argent.xyz/
           - link: Bravos
             href: https://braavos.app/
         - section: Cross Chain Bridges
-          contents: 
+          contents:
           - link: rhino.fi
             href: https://rhino.fi/
           - link: Layerswap
             href: https://layerswap.io/
         - section: Price Oracles
-          contents: 
+          contents:
           - link: Pyth
             href: https://pyth.network/
-            
+
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
-        contents: 
+        contents:
           - page: v1.70
             path: ./pages/release-notes/v1.70.md
           - page: v1.69
@@ -554,7 +554,7 @@ navigation:
       - section: Useful Resources
         contents:
         - link: Paradex Github
-          href: https://github.com/tradeparadex    
+          href: https://github.com/tradeparadex
         - link: Paradex CLI
           href: https://github.com/tradeparadex/paradex-cli/
         - link: Code Samples
@@ -595,14 +595,14 @@ redirects:
   - source: "/developer-portal/:folder/:slug"
     destination: "/api-reference/:folder/:slug"
 
-layout: 
+layout:
   header-height: 72px
   searchbar-placement: header
   tabs-placement: header
-typography: 
+typography:
   bodyFont:
     name: HarmonyOS
-    paths: 
+    paths:
       - path: ./assets/HarmonyOS_Sans_Regular.woff2
         weight: 400
       - path: ./assets/HarmonyOS_Sans_Medium.woff2
@@ -613,16 +613,16 @@ typography:
 logo:
   light: ./assets/logo-light.svg
   dark: ./assets/logo-dark.svg
-  height: 30
+  height: 24
   href: https://app.paradex.trade
 favicon: ./assets/logo.jpeg
 colors:
-  accent-primary: 
-    dark: '#c83efb'
-  background: 
+  accent-primary:
+    dark: '#cc38ff'
+  background:
     dark: '#0b0e12'
 css: ./assets/styles.css
-#js: 
+#js:
 #  - path: ./assets/wallet-connect.js
 #    strategy: lazyOnload
 #  - path: ./dist/dd-rum.js

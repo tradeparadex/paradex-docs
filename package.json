@@ -1,0 +1,12 @@
+{
+  "name": "paradex-docs",
+  "version": "1.0.0",
+  "repository": "https://github.com/tradeparadex/paradex-docs.git",
+  "private": true,
+  "scripts": {
+    "dev": "fern docs dev"
+  },
+  "devDependencies": {
+    "fern-api": "^0.45.1"
+  }
+}

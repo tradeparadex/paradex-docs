@@ -4,34 +4,40 @@ title: Key Features
 
 ## Types of Vaults
 
-* Protocol Vault
-* Community Vaults
+- Protocol Vault
+- Community Vaults
 
 ## Vault Parameters
 
 _Configurable by the vault owner :_
 
-* Maximum TVL
-* Profit Share (between 0% and 20%)
-* Lockup Period (between 1 and 4 days)
+- Maximum TVL
+- Profit Share (between 0% and 20%)
+- Lockup Period (between 1 and 4 days)
 
 _Global Parameters :_
 
-* Minimum Owner Share (5%) : The owner is restricted from withdrawal if that reduces their share below 5%. This increases the performance incentive for the owner
+- Minimum Owner Share (5%) : The owner is restricted from withdrawal if that
+  reduces their share below 5%. This increases the performance incentive for the
+  owner
 
 ## Vault Tokens
 
-Depositing into the vault results in minting Vault Tokens for the depositor. The user can monitor the price of this asset which depends on the value of the vault and its total supply in tokens.
+When a user invests funds in a vault, this will trigger minting Vault Tokens for
+the investor. The user can monitor the price of this asset which depends on the
+value of the vault and its total supply in tokens.
 
-Currently, vault tokens do not count as collateral and do not contribute to account value since Paradex does not support multi-collateral yet.
+Currently, vault tokens do not count as collateral and do not contribute to
+account value since Paradex does not support multi-collateral yet.
 
+## Sell into Auxiliary Accounts
 
+The process of selling vault tokens is designed to be efficient and fair by
+minimising the impact on other users of the vault.
 
-## Withdrawal into Auxiliary Accounts
+A share of each position of the vault is moved to an auxiliary account for a
+unwind. This protects other users of the vault from any unwind cost regardless
+of market conditions and the sold amount.
 
-The process of withdrawing from the vault is designed to be efficient and fair by minimising the impact on other users of the vault.
-
-A share of each position of the vault is moved to an auxiliary account for a unwind. This protects other users of the vault from any unwind cost regardless of market conditions and the withdrawn amount.
-
-The unwind process within the auxiliary account tries to minimise slippage for the withdrawer by gradually closing the positions on the market.
-
+The unwind process within the auxiliary account tries to minimise slippage for
+the seller by gradually closing the positions on the market.

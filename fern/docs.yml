@@ -75,9 +75,9 @@ navigation:
               - page: Withdrawal
                 slug: vault-withdrawal
                 path: ./pages/vaults/tutorials/withdrawal.mdx
-          - page: FAQs
-            slug: faq
-            path: ./pages/vaults/faqs.mdx
+              - page: FAQs
+                slug: faq
+                path: ./pages/vaults/faqs.mdx
 
 
       - section: Points & Referrals

@@ -8,5 +8,6 @@
   },
   "devDependencies": {
     "fern-api": "^0.45.1"
-  }
+  },
+  "packageManager": "yarn@4.5.3"
 }

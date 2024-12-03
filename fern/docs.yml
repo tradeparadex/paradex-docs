@@ -4,8 +4,6 @@ instances:
   - url: https://paradex-dev.docs.buildwithfern.com
     custom-domain: https://docs.staging.paradex.trade
 title: Paradex | Documentation
-announcement:
-  message: "⚡️⚡️⚡️⚡️ <a href='/documentation/accounts/deposits-and-withdrawals/ethereum-wallets'>**1-Step Withdrawals Now Active!!!**</a> ⚡️⚡️⚡️⚡️"
 tabs:
   docs:
     display-name: Documentation

@@ -1,6 +1,6 @@
 # Paradex Docs
 
-This is where the Paradex Fern docs live!
+This is where all docs for Paradex docs live!
 
 ## Contributing
 

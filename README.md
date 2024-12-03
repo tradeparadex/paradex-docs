@@ -1,10 +1,13 @@
 # Paradex Docs
 
-Welcome to the Paradex documentation repository! This is where all the documentation for Paradex lives.
+Welcome to the Paradex documentation repository! 
+This is where all the documentation for Paradex lives.
 
 ## Contributing
 
-We welcome contributions from the community! Follow the steps below to get started.
+We welcome contributions from the community! Follow the steps below to get started. 
+
+You can also choose to simply [submit an issue](https://github.com/tradeparadex/paradex-docs/issues/new/choose) and the team would be more than happy to look into this for you!
 
 ### Prerequisites
 

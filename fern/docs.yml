@@ -422,13 +422,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.72
+            path: ./pages/release-notes/v1.72.md
           - page: v1.71
             path: ./pages/release-notes/v1.71.md
-          - page: v1.70
-            path: ./pages/release-notes/v1.70.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.70
+                path: ./pages/release-notes/v1.70.md
               - page: v1.69
                 path: ./pages/release-notes/v1.69.md
               - page: v1.68

@@ -418,6 +418,8 @@ navigation:
           contents:
           - link: Pyth
             href: https://pyth.network/
+          - link: Stork
+            href: https://stork.network/
 
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx

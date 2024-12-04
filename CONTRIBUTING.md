@@ -63,7 +63,7 @@ Visit the URL in your browser to see the documentation.
     git push origin my-feature-branch
     ```
 
-5. **Open a pull request on GitHub.
+5. **Open a pull request on GitHub.**
 
 ## Additional Resources
 - [Paradex Documentation](https://docs.paradex.trade)

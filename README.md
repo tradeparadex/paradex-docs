@@ -36,4 +36,4 @@ Paradex is a decentralized trading platform that allows users to trade digital a
 We welcome contributions from the community!
 
 - To submit an issue, please use the [issue tracker](https://github.com/tradeparadex/paradex-docs/issues/new/choose).
-- For more detailed guidelines, please refer to the [CONTRIBUTING](CONTRIBUTING.md) file.
+- For more detailed guidelines, please refer to our [Contribution Guide](CONTRIBUTING.md) .

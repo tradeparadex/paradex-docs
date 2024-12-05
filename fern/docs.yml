@@ -392,6 +392,9 @@ navigation:
             - page: XLM-USD-PERP
               slug: xlm-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/xlm-usd-perp.mdx
+            - page: XMR-USD-PERP
+              slug: xmr-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/xmr-usd-perp.mdx
             - page: XRP-USD-PERP
               slug: xrp-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx

@@ -1,0 +1,87 @@
+---
+title: Slippage
+hide-feedback: true
+---
+
+Slippage refers to the difference between the expected price of a trade and the actual price at which the trade is executed. It occurs most commonly in markets with high volatility or low liquidity.
+
+---
+
+## Understanding Slippage  
+When you place an order on any exchange, the price you see before execution is not always the price you will get. The final execution price can change due to other trades occurring in the market before your order is fully processed. This price deviation is known as slippage.  
+
+Slippage can be positive or negative:  
+- **Positive Slippage**: You receive a better price than expected.  
+- **Negative Slippage**: You receive a worse price than expected.  
+
+---
+
+## Factors Influencing Slippage  
+1. **Market Volatility**  
+   In highly volatile markets, prices can change rapidly, increasing the likelihood of slippage.  
+
+2. **Liquidity Depth**  
+   Trades involving large volumes relative to the available liquidity in the order book are more prone to slippage.
+
+3. **Order Type**  
+   - **Market Orders**: Execute immediately but are more vulnerable to slippage, as they prioritize speed over price.  
+   - **Limit Orders**: Allow you to set a specific price, eliminating slippage risk but reducing the likelihood of immediate execution.
+
+---
+
+## Max Slippage  
+
+**Max slippage** defines the largest acceptable price deviation from the mark price. During execution, an order will be canceled if the price exceeds the slippage limit or falls outside the Market Price Band.
+
+---
+
+## Example of Slippage in Perpetual Futures  
+
+Let's say you want to go long on a perpetual futures contract for ETH/USDT:  
+
+### Scenario 1: Market Buy Order (Long)  
+- **Mark Price**: $3,500  
+
+You place a market buy order for 1 ETH.  
+- If your order executes at **$3,495**, this represents **positive slippage**, as you entered the trade at a better price.  
+- On the other hand, if your order executes at **$3,505**, the **$5 difference** from the Mark Price is the **negative slippage**, as you paid slightly more than expected.  
+
+---
+
+### Scenario 2: Market Sell Order (Short)  
+- **Mark Price**: $3,500  
+
+You place a market sell order for 1 ETH.  
+- If your order executes at **$3,505**, this represents **positive slippage**, as you exited the trade at a higher price than expected.  
+- Conversely, if your order executes at **$3,495**, the **$5 difference** is the **negative slippage**, as you received slightly less than expected.  
+
+--- 
+
+### Steps to Update Max Slippage  
+1. Navigate to the **Trade** section of the UI
+
+2. Locate the **Order** section, and click on the Max Slippage value
+
+<Frame>
+  <img src="../../assets/Slippage-1.png" alt="" />
+</Frame>
+
+3. Some markets have max cap of slippage percentage (In this case BTC-USD-PERP has max slippage of 2%)
+
+<Frame>
+  <img src="../../assets/Slippage-2.png" alt="" />
+</Frame>
+
+4. Adjust the slippage tolerance to your preferred percentage (e.g., 0.01 - 2)
+
+<Frame>
+  <img src="../../assets/Slippage-3.png" alt="" />
+</Frame>
+
+5. Click confirm to save the slippage setting
+
+<Frame>
+  <img src="../../assets/Slippage-4.png" alt="" />
+</Frame>
+
+By setting an appropriate max slippage value, you ensure your trades execute within your acceptable price range, protecting you from unfavorable price movements.  

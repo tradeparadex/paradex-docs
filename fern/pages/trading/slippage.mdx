@@ -31,7 +31,7 @@ Slippage can be positive or negative:
 
 ## Max Slippage  
 
-**Max slippage** defines the largest acceptable price deviation from the mark price. During execution, an order will be canceled if the price exceeds the slippage limit or falls outside the Market Price Band.
+**Max slippage** defines the largest acceptable price deviation from the mark price. During execution, an order will be canceled if the price exceeds the slippage limit or falls outside the market [Price Bands](https://docs.paradex.trade/documentation/risk-system/price-bands).
 
 ---
 
@@ -40,20 +40,20 @@ Slippage can be positive or negative:
 Let's say you want to go long on a perpetual futures contract for ETH/USDT:  
 
 ### Scenario 1: Market Buy Order (Long)  
-- **Mark Price**: $3,500  
+- **Mark Price**: \$3,500  
 
 You place a market buy order for 1 ETH.  
-- If your order executes at **$3,495**, this represents **positive slippage**, as you entered the trade at a better price.  
-- On the other hand, if your order executes at **$3,505**, the **$5 difference** from the Mark Price is the **negative slippage**, as you paid slightly more than expected.  
+- If your order executes at \$3,495, this represents **positive slippage**, as you entered the trade at a better price.  
+- On the other hand, if your order executes at \$3,505, the \$5 difference from the Mark Price is the **negative slippage**, as you paid slightly more than expected.  
 
 ---
 
 ### Scenario 2: Market Sell Order (Short)  
-- **Mark Price**: $3,500  
+- **Mark Price**: \$3,500  
 
 You place a market sell order for 1 ETH.  
-- If your order executes at **$3,505**, this represents **positive slippage**, as you exited the trade at a higher price than expected.  
-- Conversely, if your order executes at **$3,495**, the **$5 difference** is the **negative slippage**, as you received slightly less than expected.  
+- If your order executes at \$3,505, this represents **positive slippage**, as you exited the trade at a higher price than expected.  
+- Conversely, if your order executes at \$3,495, the \$5 difference is the **negative slippage**, as you received slightly less than expected.  
 
 --- 
 
@@ -72,7 +72,7 @@ You place a market sell order for 1 ETH.
   <img src="../../assets/Slippage-2.png" alt="" />
 </Frame>
 
-4. Adjust the slippage tolerance to your preferred percentage (e.g., 0.01 - 2)
+4. Adjust the slippage tolerance to your preferred percentage. You can use decimals as well as long as it is within max slippage of each market, example : 0.5% works since it is below 2% for BTC-USD-PERP.
 
 <Frame>
   <img src="../../assets/Slippage-3.png" alt="" />

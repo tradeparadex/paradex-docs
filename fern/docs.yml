@@ -1,8 +1,18 @@
 instances:
   - url: https://paradex.docs.buildwithfern.com
     custom-domain: https://docs.paradex.trade
+    edit-this-page:
+      github:
+        owner: tradeparadex
+        repo: paradex-docs
+        branch: main
   - url: https://paradex-dev.docs.buildwithfern.com
     custom-domain: https://docs.staging.paradex.trade
+    edit-this-page:
+      github:
+        owner: tradeparadex
+        repo: paradex-docs
+        branch: main
 title: Paradex | Documentation
 tabs:
   docs:

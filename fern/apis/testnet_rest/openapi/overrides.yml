@@ -1371,24 +1371,6 @@ paths:
 
   /markets:
     get:
-      description: |
-        Get markets static data component
-      produces:
-        - application/json
-      tags:
-        - Markets
-      summary: List available markets
-      operationId: get-markets
-      parameters:
-        - type: string
-          description: 'Market Name - example: BTC-USD-PERP'
-          name: market
-          in: query
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/responses.GetMarkets'
       x-fern-sdk-group-name:
         - markets
       x-fern-sdk-method-name: get-markets

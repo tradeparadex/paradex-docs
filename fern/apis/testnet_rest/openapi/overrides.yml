@@ -1393,7 +1393,62 @@ paths:
         - markets
       x-fern-sdk-method-name: get-markets
       x-fern-examples:
-        - code-samples:
+        - response:
+            body:
+              results:
+              - asset_kind: PERP
+                base_currency: ETH
+                chain_details:
+                  collateral_address: '0x1234567890'
+                  contract_address: '0x1234567890'
+                  fee_account_address: '0x1234567890'
+                  fee_maker: '0.01'
+                  fee_taker: '0.01'
+                  insurance_fund_address: '0x1234567890'
+                  liquidation_fee: '0.01'
+                  oracle_address: '0x1234567890'
+                  symbol: ETH-USD-PERP
+                clamp_rate: '0.05'
+                delta1_cross_margin_params:
+                  imf_base: '0.11'
+                  imf_factor: '0'
+                  imf_shift: '0'
+                  mmf_factor: '0.51'
+                expiry_at: 0
+                interest_rate: '0.01'
+                market_kind: cross
+                max_funding_rate: '0.05'
+                max_funding_rate_change: '0.0005'
+                max_open_orders: 100
+                max_order_size: '100'
+                max_tob_spread: '0.2'
+                min_notional: '10'
+                open_at: 0
+                option_cross_margin_params:
+                  imf:
+                    long_itm: '0.2'
+                    premium_multiplier: '1.2'
+                    short_itm: '0.4'
+                    short_otm: '0.25'
+                    short_put_cap: '0.5'
+                  mmf:
+                    long_itm: '0.2'
+                    premium_multiplier: '1.2'
+                    short_itm: '0.4'
+                    short_otm: '0.25'
+                    short_put_cap: '0.5'
+                option_type: PUT
+                oracle_ewma_factor: '0.2'
+                order_size_increment: '0.001'
+                position_limit: '500'
+                price_bands_width: '0.05'
+                price_feed_id: GVXRSBjFk6e6J3NbVPXohDJetcTjaeeuykUpbQF8UoMU
+                price_tick_size: '0.01'
+                quote_currency: USD
+                settlement_currency: USDC
+                strike_price: '66500'
+                symbol: ETH-USD-PERP
+          code-samples:
           - sdk: python
             code: |
               import requests
@@ -3121,79 +3176,6 @@ paths:
               }
       x-fern-sdk-method-name: get
       x-fern-pagination: true
-definitions:
-  responses.GetMarkets:
-    type: object
-    properties:
-      results:
-        description: List of available active markets
-        type: array
-        items:
-          $ref: '#/definitions/responses.MarketResp'
-  responses.MarketResp:
-    type: object
-    properties:
-      asset_kind:
-        description: Type of asset
-        type: string
-        example: PERP
-      base_currency:
-        description: Base currency of the market pair
-        type: string
-        example: ETH
-      option_cross_margin_params:
-        description: Option Cross margin parameters
-        allOf:
-          - $ref: '#/definitions/responses.PerpetualOptionCrossMarginParams'
-  responses.PerpetualOptionCrossMarginParams:
-    type: object
-    properties:
-      imf:
-        type: object
-        properties:
-          long_itm:
-            description: Margin fraction for long ITM options
-            type: string
-            example: '0.2'
-          premium_multiplier:
-            description: Multiplier for margin fraction for premium
-            type: string
-            example: '1.2'
-          short_itm:
-            description: Margin fraction for short ITM options
-            type: string
-            example: '0.4'
-          short_otm:
-            description: Margin fraction for short OTM options
-            type: string
-            example: '0.25'
-          short_put_cap:
-            description: Cap for margin fraction for short put options
-            type: string
-            example: '0.5'
-      mmf:
-        type: object
-        properties:
-          long_itm:
-            description: Margin fraction for long ITM options
-            type: string
-            example: '0.2'
-          premium_multiplier:
-            description: Multiplier for margin fraction for premium
-            type: string
-            example: '1.2'
-          short_itm:
-            description: Margin fraction for short ITM options
-            type: string
-            example: '0.4'
-          short_otm:
-            description: Margin fraction for short OTM options
-            type: string
-            example: '0.25'
-          short_put_cap:
-            description: Cap for margin fraction for short put options
-            type: string
-            example: '0.5'
 x-fern-pagination:
   cursor: $request.cursor
   next_cursor: $response.next

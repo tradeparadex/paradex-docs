@@ -1371,6 +1371,24 @@ paths:
 
   /markets:
     get:
+      description: |
+        Get markets static data component
+      produces:
+        - application/json
+      tags:
+        - Markets
+      summary: List available markets
+      operationId: get-markets
+      parameters:
+        - type: string
+          description: 'Market Name - example: BTC-USD-PERP'
+          name: market
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.GetMarkets'
       x-fern-sdk-group-name:
         - markets
       x-fern-sdk-method-name: get-markets
@@ -3103,6 +3121,79 @@ paths:
               }
       x-fern-sdk-method-name: get
       x-fern-pagination: true
+definitions:
+  responses.GetMarkets:
+    type: object
+    properties:
+      results:
+        description: List of available active markets
+        type: array
+        items:
+          $ref: '#/definitions/responses.MarketResp'
+  responses.MarketResp:
+    type: object
+    properties:
+      asset_kind:
+        description: Type of asset
+        type: string
+        example: PERP
+      base_currency:
+        description: Base currency of the market pair
+        type: string
+        example: ETH
+      option_cross_margin_params:
+        description: Option Cross margin parameters
+        allOf:
+          - $ref: '#/definitions/responses.PerpetualOptionCrossMarginParams'
+  responses.PerpetualOptionCrossMarginParams:
+    type: object
+    properties:
+      imf:
+        type: object
+        properties:
+          long_itm:
+            description: Margin fraction for long ITM options
+            type: string
+            example: '0.2'
+          premium_multiplier:
+            description: Multiplier for margin fraction for premium
+            type: string
+            example: '1.2'
+          short_itm:
+            description: Margin fraction for short ITM options
+            type: string
+            example: '0.4'
+          short_otm:
+            description: Margin fraction for short OTM options
+            type: string
+            example: '0.25'
+          short_put_cap:
+            description: Cap for margin fraction for short put options
+            type: string
+            example: '0.5'
+      mmf:
+        type: object
+        properties:
+          long_itm:
+            description: Margin fraction for long ITM options
+            type: string
+            example: '0.2'
+          premium_multiplier:
+            description: Multiplier for margin fraction for premium
+            type: string
+            example: '1.2'
+          short_itm:
+            description: Margin fraction for short ITM options
+            type: string
+            example: '0.4'
+          short_otm:
+            description: Margin fraction for short OTM options
+            type: string
+            example: '0.25'
+          short_put_cap:
+            description: Cap for margin fraction for short put options
+            type: string
+            example: '0.5'
 x-fern-pagination:
   cursor: $request.cursor
   next_cursor: $response.next

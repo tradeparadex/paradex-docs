@@ -330,12 +330,18 @@ navigation:
             - page: LINK-USD-PERP
               slug: link-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/link-usd-perp.mdx
+            - page: ME-USD-PERP
+              slug: me-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/me-usd-perp.mdx
             - page: MEW-USD-PERP
               slug: mew-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/mew-usd-perp.mdx
             - page: MOODENG-USD-PERP
               slug: moodeng-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
+            - page: MOVE-USD-PERP
+              slug: move-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/move-usd-perp.mdx
             - page: NEAR-USD-PERP
               slug: near-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/near-usd-perp.mdx

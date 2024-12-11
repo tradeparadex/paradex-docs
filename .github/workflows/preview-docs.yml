@@ -18,7 +18,7 @@ jobs:
         env:
           FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
         run: |
-          PROD=$(fern generate --docs --instance https://paradex.docs.buildwithfern.com --preview 2>&1) || true
+          PROD=$(fern generate --docs --instance https://paradex.docs.buildwithfern.com --preview --log-level debug 2>&1) || true
           echo "$PROD"
           URL=$(echo "$PROD" | grep -oP 'Published docs to \K.*(?= \()')
           echo "Preview URL: $URL"

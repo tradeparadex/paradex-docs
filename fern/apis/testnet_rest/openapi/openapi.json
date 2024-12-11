@@ -11,7 +11,7 @@
         "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
         "title": "Paradex REST API",
         "contact": {},
-        "version": "1.83.1"
+        "version": "1.83.4"
     },
     "host": "api.testnet.paradex.trade",
     "basePath": "/v1",
@@ -3179,20 +3179,22 @@
                 "VAULT_LIMIT_REACHED",
                 "BATCH_SIZE_OUT_OF_RANGE",
                 "ISOLATED_MARKET_ACCOUNT_MISMATCH",
+                "NO_ACCESS_TO_MARKET",
                 "POINTS_SUMMARY_NOT_FOUND",
                 "ALGO_ID_NOT_FOUND",
                 "INVALID_DERIVATION_PATH",
-                "PROFILE_STATS_NOT_FOUND"
+                "PROFILE_STATS_NOT_FOUND",
+                "CHAIN_GAS_NOT_FOUND"
             ],
             "x-enum-comments": {
                 "ErrorCodeString_SignerMismatch": "#nosec G101"
             },
             "x-enum-varnames": [
-                "VALIDATION_ERROR",
-                "BINDING_ERROR",
-                "INTERNAL_ERROR",
-                "NOT_FOUND",
-                "SERVICE_UNAVAILABLE",
+                "ErrorCode_Validation",
+                "ErrorCode_Binding",
+                "ErrorCode_InternalError",
+                "ErrorCode_NotFound",
+                "ErrorCode_ServiceUnavailable",
                 "ErrorCodeString_InvalidParameter",
                 "ErrorCodeString_OrderIdNotFound",
                 "ErrorCodeString_OrderIsClosed",
@@ -3237,10 +3239,12 @@
                 "ErrorCodeString_VaultLimitReached",
                 "ErrorCodeString_BatchSizeOutOfRange",
                 "ErrorCodeString_IsolatedMarketAccountMismatch",
+                "ErrorCodeString_NoAccessToMarket",
                 "ErrorCodeString_PointsSummaryNotFound",
                 "ErrorCodeString_AlgoIdNotFound",
                 "ErrorCodeString_InvalidDerivationPath",
-                "ErrorCodeString_ProfileStatsNotFound"
+                "ErrorCodeString_ProfileStatsNotFound",
+                "ErrorCodeString_ChainGasNotFound"
             ]
         },
         "responses.ErrorResponse": {
@@ -3946,6 +3950,14 @@
                     "type": "integer",
                     "example": 0
                 },
+                "option_cross_margin_params": {
+                    "description": "Option Cross margin parameters",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/responses.PerpetualOptionCrossMarginParams"
+                        }
+                    ]
+                },
                 "option_type": {
                     "description": "Type of option (PUT or CALL)",
                     "type": "string",
@@ -4040,6 +4052,11 @@
                     "type": "string",
                     "example": "0.3"
                 },
+                "future_funding_rate": {
+                    "description": "Future funding rate, for options",
+                    "type": "string",
+                    "example": "0.3"
+                },
                 "last_iv": {
                     "description": "Last traded price implied volatility, for options",
                     "type": "string",
@@ -4049,6 +4066,11 @@
                     "description": "Last traded price",
                     "type": "string",
                     "example": "30109.53"
+                },
+                "mark_iv": {
+                    "description": "Mark implied volatility, for options",
+                    "type": "string",
+                    "example": "0.2"
                 },
                 "mark_price": {
                     "description": "[Mark price](https://docs.paradex.trade/risk-system/mark-price-calculation)",
@@ -4292,6 +4314,47 @@
                 "OrderTypeStopLossLimit"
             ]
         },
+        "responses.PerpetualOptionCrossMarginParams": {
+            "type": "object",
+            "properties": {
+                "imf": {
+                    "$ref": "#/definitions/responses.PerpetualOptionMarginParams"
+                },
+                "mmf": {
+                    "$ref": "#/definitions/responses.PerpetualOptionMarginParams"
+                }
+            }
+        },
+        "responses.PerpetualOptionMarginParams": {
+            "type": "object",
+            "properties": {
+                "long_itm": {
+                    "description": "Margin fraction for long ITM options",
+                    "type": "string",
+                    "example": "0.2"
+                },
+                "premium_multiplier": {
+                    "description": "Multiplier for margin fraction for premium",
+                    "type": "string",
+                    "example": "1.2"
+                },
+                "short_itm": {
+                    "description": "Margin fraction for short ITM options",
+                    "type": "string",
+                    "example": "0.4"
+                },
+                "short_otm": {
+                    "description": "Margin fraction for short OTM options",
+                    "type": "string",
+                    "example": "0.25"
+                },
+                "short_put_cap": {
+                    "description": "Cap for margin fraction for short put options",
+                    "type": "string",
+                    "example": "0.5"
+                }
+            }
+        },
         "responses.PointsResp": {
             "type": "object",
             "properties": {
@@ -4432,6 +4495,10 @@
                     "description": "Market for position",
                     "type": "string",
                     "example": "BTC-USD-PERP"
+                },
+                "realized_positional_pnl": {
+                    "description": "Realized PnL of the position",
+                    "type": "string"
                 },
                 "seq_no": {
                     "description": "Unique increasing number (non-sequential) that is assigned to this position update. Can be used to deduplicate multiple feeds",
@@ -4616,6 +4683,16 @@
                 },
                 "l1_operator_address": {
                     "description": "Address of Starknet L1 operator",
+                    "type": "string",
+                    "example": "0x63e762538C70442758Fd622116d817761c94FD6A"
+                },
+                "l1_withdraw_relayer_address": {
+                    "description": "Address of L1 Withdraw Relayer",
+                    "type": "string",
+                    "example": "0x63e762538C70442758Fd622116d817761c94FD6A"
+                },
+                "l2_withdraw_relayer_address": {
+                    "description": "Address of L2 Withdraw Relayer",
                     "type": "string",
                     "example": "0x63e762538C70442758Fd622116d817761c94FD6A"
                 },
@@ -4867,14 +4944,16 @@
                 "WITHDRAWAL",
                 "UNWINDING",
                 "VAULT_DEPOSIT",
-                "VAULT_WITHDRAWAL"
+                "VAULT_WITHDRAWAL",
+                "AUTO_WITHDRAWAL"
             ],
             "x-enum-varnames": [
                 "TransferKindDeposit",
                 "TransferKindWithdrawal",
                 "TransferKindUnwinding",
                 "TransferKindVaultDeposit",
-                "TransferKindVaultWithdrawal"
+                "TransferKindVaultWithdrawal",
+                "TransferKindAutoWithdrawal"
             ]
         },
         "responses.TransferResult": {
@@ -4890,6 +4969,11 @@
                     "description": "Transferred amount",
                     "type": "string",
                     "example": "100"
+                },
+                "auto_withdrawal_fee": {
+                    "description": "Fee for auto withdrawal in USDC",
+                    "type": "string",
+                    "example": "4.5"
                 },
                 "bridge": {
                     "description": "Bridge used for the transfer",

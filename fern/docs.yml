@@ -638,5 +638,5 @@ colors:
   accent-primary:
     dark: '#c83efb'
   background:
-    dark: '#0b0e12'
+    dark: '#181c20'
 css: ./assets/styles.css

@@ -1,20 +1,24 @@
 instances:
   - url: https://paradex.docs.buildwithfern.com
     custom-domain: https://docs.paradex.trade
+    edit-this-page:
+      github:
+        owner: tradeparadex
+        repo: paradex-docs
+        branch: main
   - url: https://paradex-dev.docs.buildwithfern.com
     custom-domain: https://docs.staging.paradex.trade
 title: Paradex | Documentation
-
-tabs: 
-  docs: 
+tabs:
+  docs:
     display-name: Documentation
-  api: 
+  api:
     display-name: API Reference
 navigation:
   - tab: docs
-    layout: 
+    layout:
       - section: Getting Started
-        contents: 
+        contents:
           - page: What is Paradex?
             slug: what-is-paradex
             path: ./pages/what-is-paradex.mdx
@@ -46,12 +50,12 @@ navigation:
             contents:
             - page: Mobile App
               slug: mobile-app
-              path: ./pages/introduction/install-our-app/mobile.mdx              
+              path: ./pages/introduction/install-our-app/mobile.mdx
             - page: Desktop App
               slug: desktop-app
               path: ./pages/introduction/install-our-app/desktop.mdx
-              
-              
+
+
       - section: Vaults
         contents:
           - page: Introduction
@@ -77,8 +81,8 @@ navigation:
           - page: FAQs
             slug: faq
             path: ./pages/vaults/faqs.mdx
-            
-            
+
+
       - section: Points & Referrals
         contents:
           - link: Xperience Points
@@ -89,8 +93,8 @@ navigation:
             - page: Example Calculations
               slug: example-calculations
               path: ./pages/points-and-referrals/referral-program/example-calculations.mdx
-              
-              
+
+
       - section: Accounts
         contents:
           - page: Wallet Overview
@@ -113,13 +117,13 @@ navigation:
           - page: Transfers
             slug: transfers
             path: ./pages/accounts/transfers.mdx
-            
-            
+
+
       - section: Trading
-        contents: 
+        contents:
         - section: Placing Orders
           path: ./pages/trading/placing-orders/placing-orders.mdx
-          contents: 
+          contents:
             - section: Order Types
               contents:
                 - page: Limit Order
@@ -143,11 +147,14 @@ navigation:
             - page: Order Instuctions
               path: ./pages/trading/placing-orders/order-instructions.mdx
               slug: order-instructions
-              
-        
+
+
         - page: Trading Fees
           slug: trading-fees
           path: ./pages/trading/trading-fees.mdx
+        - page: Slippage
+          slug: slippage
+          path: ./pages/trading/slippage.mdx
         - page: Mobile Access Guide
           slug: mobile-access-guide
           path: ./pages/trading/mobile-access-guide.mdx
@@ -205,8 +212,8 @@ navigation:
           - page: Trade Flow And Busts
             slug: trade-busts
             path: ./pages/risk-system/trade-busts.mdx
-            
-            
+
+
       - section: Advanced Trading Features
         contents:
           - page: Self Trade Prevention
@@ -215,12 +222,12 @@ navigation:
           - page: Receive Window
             slug: receive-window
             path: ./pages/advanced-trading-features/receive-window.mdx
-            
-            
+
+
       - section: Instruments Guide
         contents:
         - section: Futures
-          contents: 
+          contents:
           - section: Tier 1
             contents:
             - page: BTC-USD-PERP
@@ -255,6 +262,9 @@ navigation:
             - page: BNB-USD-PERP
               slug: bnb-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx
+            - page: CRV-USD-PERP
+              slug: crv-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx
             - page: DOGE-USD-PERP
               slug: doge-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/doge-usd-perp.mdx
@@ -288,6 +298,9 @@ navigation:
             - page: GOAT-USD-PERP
               slug: goat-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/goat-usd-perp.mdx
+            - page: HYPE-USD-PERP
+              slug: hype-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
             - page: INJ-USD-PERP
               slug: inj-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx
@@ -315,12 +328,18 @@ navigation:
             - page: LINK-USD-PERP
               slug: link-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/link-usd-perp.mdx
+            - page: ME-USD-PERP
+              slug: me-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/me-usd-perp.mdx
             - page: MEW-USD-PERP
               slug: mew-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/mew-usd-perp.mdx
             - page: MOODENG-USD-PERP
               slug: moodeng-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
+            - page: MOVE-USD-PERP
+              slug: move-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/move-usd-perp.mdx
             - page: NEAR-USD-PERP
               slug: near-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/near-usd-perp.mdx
@@ -390,6 +409,9 @@ navigation:
             - page: XLM-USD-PERP
               slug: xlm-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/xlm-usd-perp.mdx
+            - page: XMR-USD-PERP
+              slug: xmr-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/xmr-usd-perp.mdx
             - page: XRP-USD-PERP
               slug: xrp-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx
@@ -401,32 +423,40 @@ navigation:
         contents:
         - section: Starknet Wallets
           path: ./pages/ecosystem-partners/starknet-wallets/starknet.mdx
-          contents: 
+          contents:
           - link: Argent
             href: https://www.argent.xyz/
           - link: Bravos
             href: https://braavos.app/
         - section: Cross Chain Bridges
-          contents: 
+          contents:
           - link: rhino.fi
             href: https://rhino.fi/
           - link: Layerswap
             href: https://layerswap.io/
         - section: Price Oracles
-          contents: 
+          contents:
           - link: Pyth
             href: https://pyth.network/
-            
+          - link: Stork
+            href: https://stork.network/
+
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
-        contents: 
-          - page: v1.70
-            path: ./pages/release-notes/v1.70.md
-          - page: v1.69
-            path: ./pages/release-notes/v1.69.md
+        contents:
+          - page: v1.73
+            path: ./pages/release-notes/v1.73.md
+          - page: v1.72
+            path: ./pages/release-notes/v1.72.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.71
+                path: ./pages/release-notes/v1.71.md
+              - page: v1.70
+                path: ./pages/release-notes/v1.70.md
+              - page: v1.69
+                path: ./pages/release-notes/v1.69.md
               - page: v1.68
                 path: ./pages/release-notes/v1.68.md
               - page: v1.67
@@ -554,7 +584,7 @@ navigation:
       - section: Useful Resources
         contents:
         - link: Paradex Github
-          href: https://github.com/tradeparadex    
+          href: https://github.com/tradeparadex
         - link: Paradex CLI
           href: https://github.com/tradeparadex/paradex-cli/
         - link: Code Samples
@@ -595,14 +625,14 @@ redirects:
   - source: "/instruments-guide/:path*"
     destination: "/documentation/instruments-guide/:path*"
 
-layout: 
+layout:
   header-height: 72px
   searchbar-placement: header
   tabs-placement: header
-typography: 
+typography:
   bodyFont:
     name: HarmonyOS
-    paths: 
+    paths:
       - path: ./assets/HarmonyOS_Sans_Regular.woff2
         weight: 400
       - path: ./assets/HarmonyOS_Sans_Medium.woff2
@@ -617,12 +647,8 @@ logo:
   href: https://app.paradex.trade
 favicon: ./assets/logo.jpeg
 colors:
-  accent-primary: 
+  accent-primary:
     dark: '#c83efb'
-  background: 
-    dark: '#0b0e12'
+  background:
+    dark: '#181c20'
 css: ./assets/styles.css
-#js: 
-#  - path: ./assets/wallet-connect.js
-#    strategy: lazyOnload
-#  - path: ./dist/dd-rum.js

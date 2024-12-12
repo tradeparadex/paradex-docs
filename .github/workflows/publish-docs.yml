@@ -19,4 +19,4 @@ jobs:
       - name: Publish Docs
         env:
           FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
-        run: fern generate --docs --instance https://paradex.docs.buildwithfern.com --log-level debug
+        run: fern generate --docs --instance https://paradex.docs.buildwithfern.com

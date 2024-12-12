@@ -594,6 +594,8 @@ redirects:
     destination: "/documentation/release-notes/:slug"
   - source: "/developer-portal/:folder/:slug"
     destination: "/api-reference/:folder/:slug"
+  - source: "/instruments-guide/:path*"
+    destination: "/documentation/instruments-guide/:path*"
 
 layout: 
   header-height: 72px

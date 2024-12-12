@@ -586,8 +586,6 @@ redirects:
     destination: "/documentation/risk-system/:slug"
   - source: "/advanced-trading-features/:slug"
     destination: "/documentation/advanced-trading-features/:slug"
-  - source: "/instruments-guide/:slug"
-    destination: "/documentation/instruments-guide/:slug"
   - source: "/ecosystem-partners/:slug"
     destination: "/documentation/ecosystem-partners/:slug"
   - source: "/release-notes/:slug"

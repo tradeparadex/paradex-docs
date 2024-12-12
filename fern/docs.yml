@@ -72,12 +72,12 @@ navigation:
               - page: Close Your Vault
                 slug: close-your-vault
                 path: ./pages/vaults/tutorials/close-your-vault.mdx
-              - page: Buy Vault Tokens
-                slug: buy-vault-tokens
-                path: ./pages/vaults/tutorials/buy-vault-tokens.mdx
-              - page: Sell Vault Tokens
-                slug: sell-vault-tokens
-                path: ./pages/vaults/tutorials/sell-vault-tokens.mdx
+              - page: Deposit
+                slug: vault-deposit
+                path: ./pages/vaults/tutorials/deposit.mdx
+              - page: Withdrawal
+                slug: vault-withdrawal
+                path: ./pages/vaults/tutorials/withdrawal.mdx
           - page: FAQs
             slug: faq
             path: ./pages/vaults/faqs.mdx
@@ -624,10 +624,6 @@ redirects:
     destination: "/documentation/release-notes/:slug"
   - source: "/developer-portal/:folder/:slug"
     destination: "/api-reference/:folder/:slug"
-  - source: "/documentation/vaults/tutorials/deposit"
-    destination: "/documentation/vaults/tutorials/buy-vault-tokens"
-  - source: "/documentation/vaults/tutorials/withdrawal"
-    destination: "/documentation/vaults/tutorials/sell-vault-tokens"
 
 layout:
   header-height: 72px

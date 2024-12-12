@@ -624,6 +624,8 @@ redirects:
     destination: "/api-reference/:folder/:slug*"
   - source: "/instruments-guide/:path*"
     destination: "/documentation/instruments-guide/:path*"
+  - source: "/introduction/readme"
+    destination: "/documentation/getting-started/what-is-paradex"
 
 layout:
   header-height: 72px

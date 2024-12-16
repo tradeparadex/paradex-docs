@@ -1,3 +1,4 @@
 api: 
   path: ./openapi/openapi.json
   overrides: ./openapi/overrides.yml
+  origin: https://api.testnet.paradex.trade/swagger/doc.json

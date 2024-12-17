@@ -20,8 +20,8 @@ jobs:
       - name: Build DD RUM Client with secrets
         working-directory: ./datadog-rum
         env: 
-          VITE_DATADOG_APP_ID: ${{ secrets.VITE_DATADOG_APP_ID }}
-          VITE_DATADOG_CLIENT_TOKEN: ${{ secrets.VITE_DATADOG_CLIENT_TOKEN }}
+          VITE_DATADOG_APP_ID: "'${{ secrets.VITE_DATADOG_APP_ID }}'"
+          VITE_DATADOG_CLIENT_TOKEN: "'${{ secrets.VITE_DATADOG_CLIENT_TOKEN }}'"
         run: npm run build
 
       - name: Install Fern

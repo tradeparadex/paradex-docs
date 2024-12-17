@@ -13,6 +13,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install RUM Dependencies
+        working-directory: ./datadog-rum
+        run: npm install
+
+      - name: Build DD RUM Client with secrets
+        working-directory: ./datadog-rum
+        env: 
+          VITE_DATADOG_APP_ID: "'${{ secrets.VITE_DATADOG_APP_ID }}'"
+          VITE_DATADOG_CLIENT_TOKEN: "'${{ secrets.VITE_DATADOG_CLIENT_TOKEN }}'"
+        run: npm run build
+
       - name: Install Fern
         run: npm install -g fern-api
 

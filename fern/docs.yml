@@ -654,3 +654,5 @@ colors:
   background:
     dark: '#181c20'
 css: ./assets/styles.css
+js: 
+  - path: ./dist/dd-rum.js

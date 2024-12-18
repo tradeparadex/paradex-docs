@@ -5346,6 +5346,11 @@
                     "type": "string",
                     "example": "1"
                 },
+                "min_owner_share_percentage": {
+                    "description": "Minimum share percentage (0-100) the vault owner must maintain on the vault",
+                    "type": "string",
+                    "example": "5"
+                },
                 "vault_factory_address": {
                     "description": "Address of the vault factory contract",
                     "type": "string",

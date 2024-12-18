@@ -444,13 +444,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.74
+            path: ./pages/release-notes/v1.74.md
           - page: v1.73
             path: ./pages/release-notes/v1.73.md
-          - page: v1.72
-            path: ./pages/release-notes/v1.72.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.72
+                path: ./pages/release-notes/v1.72.md
               - page: v1.71
                 path: ./pages/release-notes/v1.71.md
               - page: v1.70

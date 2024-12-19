@@ -213,6 +213,12 @@ navigation:
             slug: trade-busts
             path: ./pages/risk-system/trade-busts.mdx
 
+      - section: Perpetual Options
+        contents:
+          - page: FAQs
+            slug: faqs
+            path: ./pages/options/faqs.mdx
+
 
       - section: Advanced Trading Features
         contents:

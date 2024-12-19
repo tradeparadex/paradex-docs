@@ -161,6 +161,9 @@ navigation:
         - page: Margin Calculator
           slug: margin-calculator
           path: ./pages/trading/margin-calculator.mdx
+        - page: Testnet FAQs
+          slug: testnet-faqs
+          path: ./pages/trading/testnet.mdx
 
       - section: Security
         contents:

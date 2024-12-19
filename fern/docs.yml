@@ -240,6 +240,9 @@ navigation:
             - page: ADA-USD-PERP
               slug: ada-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ada-usd-perp.mdx
+            - page: AERO-USD-PERP
+              slug: aero-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/aero-usd-perp.mdx
             - page: AEVO-USD-PERP
               slug: aevo-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/aevo-usd-perp.mdx
@@ -249,12 +252,18 @@ navigation:
             - page: ARB-USD-PERP
               slug: arb-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/arb-usd-perp.mdx
+            - page: ARKM-USD-PERP
+              slug: arkm-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/arkm-usd-perp.mdx
             - page: AVAX-USD-PERP
               slug: avax-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/avax-usd-perp.mdx
             - page: BNB-USD-PERP
               slug: bnb-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx
+            - page: CHILLGUY-USD-PERP
+              slug: chillguy-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/chillguy-usd-perp.mdx
             - page: DOGE-USD-PERP
               slug: doge-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/doge-usd-perp.mdx
@@ -315,6 +324,9 @@ navigation:
             - page: MOODENG-USD-PERP
               slug: moodeng-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
+            - page: MSATS-USD-PERP
+              slug: msats-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/msats-usd-perp.mdx
             - page: NEAR-USD-PERP
               slug: near-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/near-usd-perp.mdx
@@ -330,6 +342,9 @@ navigation:
             - page: PENDLE-USD-PERP
               slug: pendle-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pendle-usd-perp.mdx
+            - page: PENGU-USD-PERP
+              slug: pengu-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/pengu-usd-perp.mdx
             - page: PYTH-USD-PERP
               slug: pyth-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pyth-usd-perp.mdx

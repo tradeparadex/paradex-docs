@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.85.2"
+    "version": "1.85.3"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -1720,6 +1720,44 @@
         }
       }
     },
+    "/referrals/qr-code": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Returns a QR code image containing the user's referral link",
+        "produces": [
+          "image/png"
+        ],
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Get Referral QR Code",
+        "operationId": "get-referral-qr-code",
+        "responses": {
+          "200": {
+            "description": "QR code image",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
     "/referrals/summary": {
       "get": {
         "security": [
@@ -2315,6 +2353,12 @@
             "name": "address",
             "in": "query",
             "required": true
+          },
+          {
+            "type": "string",
+            "description": "Vault Strategy Address",
+            "name": "strategy",
+            "in": "query"
           }
         ],
         "responses": {
@@ -3165,6 +3209,7 @@
         "VAULT_OPERATOR_ALREADY_ONBOARDED",
         "VAULT_NAME_IN_USE",
         "VAULT_NOT_FOUND",
+        "VAULT_STRATEGY_NOT_FOUND",
         "VAULT_LIMIT_REACHED",
         "BATCH_SIZE_OUT_OF_RANGE",
         "ISOLATED_MARKET_ACCOUNT_MISMATCH",
@@ -3225,6 +3270,7 @@
         "ErrorCodeString_VaultOperatorAlreadyOnboarded",
         "ErrorCodeString_VaultNameInUse",
         "ErrorCodeString_VaultNotFound",
+        "ErrorCodeString_VaultStrategyNotFound",
         "ErrorCodeString_VaultLimitReached",
         "ErrorCodeString_BatchSizeOutOfRange",
         "ErrorCodeString_IsolatedMarketAccountMismatch",

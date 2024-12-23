@@ -1,0 +1,42 @@
+---
+title: Introduction to Perpetual Options
+---
+
+Paradex Perpetual Options are defined by :
+
+- **Underlying Asset :** For example BTC
+- **Quote Asset :** All Paradex instruments are quoted in USD
+- **Strike Price**
+- **Option Type**
+    - C → Call Option
+    - P → Put Option
+
+Example : BTC-USD-101000-C represents a Perpetual BTC Call Option with a 101,000 Strike Price
+
+Paradex Perpetual Options are perpetual instruments where the long positions continuously pay the short positions funding that depends on the time value of the option, where the time value is the difference between the mark price of the option and the intrinsic value of the option ( *= Mark Price - Intrinsic Value*)
+
+The Intrinsic Value corresponds to the payoff of a European Option
+
+- It is equal to :
+    
+    $\max(\text{Spot Price}-\text{Strike Price},~0)$ for ***Call Options***
+    
+    $\max(\text{Strike Price}-\text{Spot Price},~0)$ for ***Put Options***
+    
+
+Example :
+
+Spot Price = $100,000
+
+- BTC-USD-101000-C has an Intrinsic Value equal to zero since Spot Price < Strike Price
+    
+    Assuming the Mark Price of BTC-USD-101000-C is $500, the Time Value is also **$500**
+    
+- BTC-USD-101000-P has an Intrinsic Value equal to Strike Price - Spot Price = $1,000
+    
+    Assuming the Mark Price of BTC-USD-101000-P is $1,490, the Time Value is also **$490**
+    
+
+Unlike futures, where the funding rate reflects only the cost of leverage, the funding rate for perpetual options reflects both the cost of leverage (adjusted for delta) plus the cost of convexity. 
+
+This a simple framework for perpetual traders because the funding rate is well understood for options. So this product is well suited for the universe of perpetual futures traders that want leverage but don’t want to deal with downside, and are willing to pay a little extra in funding for this insurance.

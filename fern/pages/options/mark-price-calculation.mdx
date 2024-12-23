@@ -1,0 +1,15 @@
+---
+title: Mark Price Calculation
+---
+The price of a Perpetual Option depends on :
+
+- Type of the option (call/put)
+- Spot Oracle Price of the underlying asset
+- Strike Price of the option
+- The Implied Volatility of the underlying asset (Mark IV)
+- Interest Rate : This is derived from Paradex Futures Funding Rate
+- The funding period of the option (8 hours)
+
+The price is calculated using the Black Scholes formula for perpetual options with continuous funding
+
+Paradex keeps track of a Mark IV (IV refers to Implied Volatility). Mark IV is a smooth function of best bid/ask, last trade, mid price as well as an external IV calibrated from Deribit dated options. The Mark IV is designed to reflect a fair estimate of implied volatility even when the option is illiquid.

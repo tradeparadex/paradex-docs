@@ -315,6 +315,9 @@ navigation:
             - page: EIGEN-USD-PERP
               slug: eigen-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/eigen-usd-perp.mdx
+            - page: FARTCOIN-USD-PERP
+              slug: fartcoin-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/fartcoin-usd-perp.mdx
             - page: FIL-USD-PERP
               slug: fil-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/fil-usd-perp.mdx
@@ -336,6 +339,9 @@ navigation:
             - page: INJ-USD-PERP
               slug: inj-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx
+            - page: IO-USD-PERP
+              slug: io-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/io-usd-perp.mdx
             - page: JTO-USD-PERP
               slug: jto-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/jto-usd-perp.mdx

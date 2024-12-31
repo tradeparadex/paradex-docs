@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.86.1"
+    "version": "1.86.3"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -3262,7 +3262,8 @@
         "ALGO_ID_NOT_FOUND",
         "INVALID_DERIVATION_PATH",
         "PROFILE_STATS_NOT_FOUND",
-        "INVALID_CHAIN"
+        "INVALID_CHAIN",
+        "INVALID_LAYERSWAP_SWAP"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -3323,7 +3324,8 @@
         "ErrorCodeString_AlgoIdNotFound",
         "ErrorCodeString_InvalidDerivationPath",
         "ErrorCodeString_ProfileStatsNotFound",
-        "ErrorCodeString_InvalidChain"
+        "ErrorCodeString_InvalidChain",
+        "ErrorCodeString_InvalidLayerswapSwap"
       ]
     },
     "responses.ErrorResponse": {

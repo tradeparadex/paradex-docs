@@ -3395,6 +3395,11 @@
           "type": "string",
           "example": "30000.12"
         },
+        "realized_pnl": {
+          "description": "Realized PnL of the fill",
+          "type": "string",
+          "example": "7.56"
+        },
         "remaining_size": {
           "description": "Remaining size of the order",
           "type": "string",

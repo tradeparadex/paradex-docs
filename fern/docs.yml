@@ -491,13 +491,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.76
+            path: ./pages/release-notes/v1.76.md
           - page: v1.75
             path: ./pages/release-notes/v1.75.md
-          - page: v1.74
-            path: ./pages/release-notes/v1.74.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.74
+                path: ./pages/release-notes/v1.74.md
               - page: v1.73
                 path: ./pages/release-notes/v1.73.md
               - page: v1.72

@@ -288,9 +288,6 @@ navigation:
             - page: ARB-USD-PERP
               slug: arb-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/arb-usd-perp.mdx
-            - page: ARKM-USD-PERP
-              slug: arkm-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/arkm-usd-perp.mdx
             - page: AVAX-USD-PERP
               slug: avax-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/avax-usd-perp.mdx
@@ -330,9 +327,6 @@ navigation:
             - page: FLOW-USD-PERP
               slug: flow-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/flow-usd-perp.mdx
-            - page: FTM-USD-PERP
-              slug: ftm-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/ftm-usd-perp.mdx
             - page: GMX-USD-PERP
               slug: gmx-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/gmx-usd-perp.mdx
@@ -381,9 +375,6 @@ navigation:
             - page: MOODENG-USD-PERP
               slug: moodeng-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
-            - page: MSATS-USD-PERP
-              slug: msats-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/msats-usd-perp.mdx
             - page: MOVE-USD-PERP
               slug: move-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/move-usd-perp.mdx

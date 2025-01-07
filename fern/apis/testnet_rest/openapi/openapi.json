@@ -3278,7 +3278,8 @@
         "INVALID_DERIVATION_PATH",
         "PROFILE_STATS_NOT_FOUND",
         "INVALID_CHAIN",
-        "INVALID_LAYERSWAP_SWAP"
+        "INVALID_LAYERSWAP_SWAP",
+        "SOCIAL_USERNAME_IN_USE"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -3340,7 +3341,8 @@
         "ErrorCodeString_InvalidDerivationPath",
         "ErrorCodeString_ProfileStatsNotFound",
         "ErrorCodeString_InvalidChain",
-        "ErrorCodeString_InvalidLayerswapSwap"
+        "ErrorCodeString_InvalidLayerswapSwap",
+        "ErrorCodeString_SocialUsernameInUse"
       ]
     },
     "responses.ErrorResponse": {

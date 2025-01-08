@@ -1,0 +1,50 @@
+## Contract Specifications
+
+| Features                      | Value                                                |
+| ----------------------------- | ---------------------------------------------------- |
+| Product Type                  | Perpetual Option                                     |
+| Symbol                        | BTC-USD-_{Strike}_-_{Type}_ (e.g. `BTC-USD-60000`-C) |
+| Settlement Currency           | USDC                                                 |
+| Base Currency                 | BTC                                                  |
+| Quote Currency                | USD                                                  |
+| Price Tick Size               | 0.01 USD                                             |
+| Order Size Increment          | 0.001 BTC                                            |
+| Minimum Order Value           | 50 USD                                               |
+| Maximum Order Size            | 100 BTC                                              |
+| Maximum Number of Open Orders | 100                                                  |
+| Position Limit                | 10 BTC                                               |
+| Spot Band Factor              | 30%                                                  |
+| IV Band Factor                | 30%                                                  |
+| Funding Clamping Rate         | 2%                                                   |
+| Strike Listing Range          | 10%                                                  |
+| Strike Delisting Range        | 25%                                                  |
+
+## Mark Price Parameters
+
+| Parameter      | Value |
+| -------------- | ----- |
+| IV EWMA Factor | 20%   |
+| Max IV         | 500%  |
+
+## [Cross Margin Parameters](/documentation/risk-system/cross-margin-requirement#margin-fractions)
+
+| Parameter              | Value |
+| ---------------------- | ----- |
+| Premium Multiplier IMF | 110%  |
+| Long ITM IMF           | 20%   |
+| Short ITM IMF          | 15%   |
+| Short OTM IMF          | 10%   |
+| Short Put Cap IMF      | 50%   |
+| Premium Multiplier MMF | 90%   |
+| Long ITM IMF           | 10%   |
+| Short ITM IMF          | 7.5%  |
+| Short OTM MMF          | 7.5%  |
+| Short Put Cap MMF      | 50%   |
+
+IMF = Initial Margin Fraction
+
+MMF = Maintenance Margin Fraction
+
+**Order Value →** Order Size x Spot Oracle Price (i.e. underlying spot notional)
+
+**Spot/IV Band Factors →** As opposed to perpetual futures where we have 1 single price band factor, 2 factors are needed (both spot and IV are shocked to get the price band)

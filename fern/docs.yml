@@ -501,7 +501,7 @@ navigation:
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
-              - page: v1.74
+              - page: v1.75
                 path: ./pages/release-notes/v1.75.md
               - page: v1.74
                 path: ./pages/release-notes/v1.74.md

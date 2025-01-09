@@ -172,9 +172,13 @@ navigation:
         - page: Trading Fees
           slug: trading-fees
           path: ./pages/trading/trading-fees.mdx
-        - page: Slippage
-          slug: slippage
-          path: ./pages/trading/slippage.mdx
+        - section: Slippage
+          slug: slippage-overview
+          path: ./pages/trading/slippage-overview.mdx
+          contents:
+            - page: How to Change Max Slippage
+              slug: slippage
+              path: ./pages/trading/slippage.mdx
         - page: Mobile Access Guide
           slug: mobile-access-guide
           path: ./pages/trading/mobile-access-guide.mdx

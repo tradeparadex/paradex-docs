@@ -1,0 +1,66 @@
+---
+title: Overview of Price Impact and Slippage
+---
+
+## What is Price Impact?
+
+Price impact measures how much a trade affects the market price of an asset. Factors such as liquidity, order book depth, and trade size play a role in determining price impact. A high price impact means your trade could significantly alter the market price.
+
+<Accordion title="Example"> 
+Imagine you want to purchase \$10,000 worth of a cryptocurrency using a Market Order. If the market lacks sufficient liquidity to fill your entire order at the current price, parts of your trade might execute at higher prices. In this case, instead of receiving \$10,000 worth of cryptocurrency, you might end up with only \$9,850 due to price impact.
+</Accordion>
+---
+
+## What is Slippage?
+
+Slippage refers to the difference between the expected price of a trade and the actual price at which the trade is executed.
+
+When you place an order on any exchange, the price you see before execution is not always the price you will get. 
+The final execution price can change due to other trades occurring in the market before your order is fully processed. 
+
+Slippage can be positive or negative:  
+- **Positive Slippage**: You receive a better price than expected.  
+- **Negative Slippage**: You receive a worse price than expected.  
+
+<Accordion title="Scenario 1: Market Buy Order (Long)">  
+- **Mark Price**: \$3,500  
+
+You place a market buy order for 1 ETH.  
+- If your order executes at \$3,495, this represents **positive slippage**, as you entered the trade at a better price.  
+- On the other hand, if your order executes at \$3,505, the \$5 difference from the Mark Price is the **negative slippage**, as you paid slightly more than expected.  
+</Accordion>
+
+<Accordion title="Scenario 2: Market Sell Order (Short)">
+- **Mark Price**: \$3,500  
+
+You place a market sell order for 1 ETH.  
+- If your order executes at \$3,505, this represents **positive slippage**, as you exited the trade at a higher price than expected.  
+- Conversely, if your order executes at \$3,495, the \$5 difference is the **negative slippage**, as you received slightly less than expected.  
+
+</Accordion>
+
+---
+
+## Factors Influencing Slippage  
+1. **Market Volatility**  
+   In highly volatile markets, prices can change rapidly, increasing the likelihood of slippage.  
+
+2. **Liquidity Depth**  
+   Trades involving large volumes relative to the available liquidity in the order book are more prone to slippage.
+
+3. **Order Type**  
+   - **Market Orders**: Execute immediately but are more vulnerable to slippage, as they prioritize speed over price.  
+   - **Limit Orders**: Allow you to set a specific price, eliminating slippage risk but reducing the likelihood of immediate execution.
+
+---
+
+## Minimizing Price Impact and Slippage
+
+To reduce exposure to price impact and slippage, one possibility is using **Limit Orders** instead of Market Orders.
+
+### Limit Orders
+A [Limit Order](./placing-orders/order-types/limit-order) allows you to specify the price at which you want to buy or sell an asset. 
+The trade will only execute if the market price reaches your desired level. While Limit Orders might not fill immediately or completely, they provide greater control over the execution price, protecting you from adverse price movements.
+
+### Market Orders
+[Market Orders](./placing-orders/order-types/market-order) execute instantly at the current market price, which can leave you vulnerable to high price impact and slippage, especially for large orders or in illiquid markets.

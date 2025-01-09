@@ -54,6 +54,9 @@ navigation:
             - page: Desktop App
               slug: desktop-app
               path: ./pages/introduction/install-our-app/desktop.mdx
+          - page: Official Links 
+            slug: official-links
+            path: ./pages/introduction/official-links.mdx
 
 
       - section: Vaults

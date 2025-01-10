@@ -1,0 +1,60 @@
+---
+title: Price Impact and Slippage
+---
+
+## What is Price Impact?
+
+Price impact refers to how much the price of an asset moves due to a trader's order consuming liquidity at various price levels in the order book.
+
+### Mechanism
+- An orderbook consists of **limit orders** at various prices. The best available price for a buyer is the lowest ask, and for a seller, it's the highest bid.
+- When you place a **market order**, it consumes liquidity starting from the best available price and moves deeper into the order book as necessary to fulfill the order.
+- The larger the market order, the more price levels it will sweep, leading to a greater price impact.
+---
+
+## What is Slippage?
+
+Slippage is the deviation between the expected price of a trade (based on the top of the orderbook) and the actual average price at which the trade is executed.
+
+### Mechanism
+    - Slippage occurs due to **price impact** (trading across multiple price levels in the book) and/or **market conditions**like volatility.
+    - The key factors affecting slippage are:
+        1. **Order Size**: Larger orders consume more of the orderbook, resulting in more slippage.
+        2. **Market Liquidity**: Thin orderbooks with low volume at each price level exacerbate slippage.
+        3. **Volatility**: Rapid price changes during execution can lead to unexpected outcomes.
+
+<Accordion title="Example">
+| Price Level | Ask Price | Ask Size |
+|-------------|-----------|----------|
+| 1           | 100,000   | 10       |
+| 2           | 100,010   | 5        |
+| 3           | 100,030   | 10       |
+
+If I submit a market order of size 20, I will get the following fills :
+
+- 10 at a price of 100,000
+- 5 at a price of 100,010
+- 5 at a price of 100,030
+
+The price impact in this case was $30. 
+
+The average fill price is :
+
+(100,000 * 10 + 100,010 * 5 + 100,030 * 5) / 20 = 100,010
+
+So the slippage relative to best ask price was $10
+</Accordion>
+---
+
+## How can I minimize my slippage?
+
+- **Limit Orders**:
+    - Place [limit orders](./placing-orders/order-types/limit-order) at desired prices to avoid price impact and control slippage.
+    - Note: This risks the order not being filled if the market doesn’t reach your limit price.
+- **Order Splitting**:
+    - Break large orders into smaller chunks and execute them over time to reduce price impact.
+    - [TWAP](./placing-orders/order-types/twap-order) (Time-Weighted Average Price) can help to do this in an automated way
+- **Use Market Depth**:
+    - Analyze the orderbook depth to estimate how much liquidity is available at each price level before placing large orders.
+- **Set [Maximum Slippage](./price-impact-and-slippage/slippage)** :
+    - Define a maximum acceptable slippage to avoid orders executing at unexpectedly poor prices.

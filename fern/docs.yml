@@ -172,8 +172,8 @@ navigation:
         - page: Trading Fees
           slug: trading-fees
           path: ./pages/trading/trading-fees.mdx
-        - section: Slippage
-          slug: slippage-overview
+        - section: Price Impact and Slippage
+          slug: price-impact-and-slippage
           path: ./pages/trading/slippage-overview.mdx
           contents:
             - page: How to Change Max Slippage

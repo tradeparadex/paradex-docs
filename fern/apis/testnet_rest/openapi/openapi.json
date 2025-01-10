@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.86.4"
+    "version": "1.86.6"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -4008,6 +4008,11 @@
           "type": "integer",
           "example": 0
         },
+        "funding_period_hours": {
+          "description": "Funding period in hours",
+          "type": "number",
+          "example": 8
+        },
         "interest_rate": {
           "description": "Interest rate",
           "type": "string",
@@ -4215,10 +4220,14 @@
     "responses.OrderFlag": {
       "type": "string",
       "enum": [
-        "REDUCE_ONLY"
+        "REDUCE_ONLY",
+        "STOP_CONDITION_BELOW_TRIGGER",
+        "STOP_CONDITION_ABOVE_TRIGGER"
       ],
       "x-enum-varnames": [
-        "FlagsReduceOnly"
+        "FlagsReduceOnly",
+        "FlagsStopConditionBelowTrigger",
+        "FlagsStopConditionAboveTrigger"
       ]
     },
     "responses.OrderInstruction": {

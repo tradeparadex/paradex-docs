@@ -2,8 +2,7 @@
 title: Funding Mechanism
 ---
 
-
-The **Funding Period** is the period over which the Funding Premium is paid, where the Funding Premium is the USDC equivalent of the option price for out-of-money options (and more generally Time Value = Mark Price - Intrinsic Value). The Funding Premium refers to an amount that is continuously paid over 8 hours (assuming no price changes)
+The **Funding Period** is the period over which the Funding Premium is paid, where the Funding Premium is the USDC equivalent of the option price for out-of-money options (and more generally Time Value = Mark Price - Intrinsic Value). The Funding Premium refers to an amount that is continuously paid over 24 hours (assuming no price changes)
 
 Example :
 
@@ -11,10 +10,10 @@ Spot Price = \$100,000
 
 1 USDC = 1 USD
 
-Funding Period = 8 hours
+Funding Period = 24 hours
 
 BTC-USD-101000-C has a price of \$500. Since the option is out-of-money (i.e. zero intrinsic value), the time value is also \$500. This corresponds to a **Funding Premium** of 500 USDC.
 
-If Alice buys 5 BTC-USD-101000-C. ***After 1 hour*** and if market prices are unchanged, Alice will have a Funding PnL of -5 * (500 * 1 / 8) = \$312.5
+If Alice buys 5 BTC-USD-101000-C. **_After 1 hour_** and if market prices are unchanged, Alice will have a Funding PnL of -5 _ (500 _ 1 / 24) = \$104.17
 
 Similar to Paradex Perpetual Futures, funding is continuously accrued as unrealized PnL and is realized whenever the position is updated.

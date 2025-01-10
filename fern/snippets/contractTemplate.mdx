@@ -1,33 +1,33 @@
-
 ## Contract Specifications
 
-| Features                     | Value                  |
-| ---------------------------- | ---------------------- |
-| Product Type                 | {productType}          |
-| Settlement Currency          | {settlementCurrency}   |
-| Base Currency                | {baseCurrency}         |
-| Quote Currency               | {quoteCurrency}        |
-| Price Tick Size              | {tickSize}             |
-| Order Size Increment         | {orderSizeIncrement}   |
-| Minimum Order Value          | {minOrderValue}        |
-| Maximum Order Size           | {maxOrderSize}         |
-| Maximum Number of Open Orders| {maxOpenOrders}        |
-| Position Limit               | {positionLimit}        |
-| [Price Band Factor](https://docs.paradex.trade/risk-system/price-bands) | {priceBandFactor} |
-| Funding Clamping Rate        | {fundingClampingRate}  |
+| Features                                                                | Value                 |
+| ----------------------------------------------------------------------- | --------------------- |
+| Product Type                                                            | {productType}         |
+| Settlement Currency                                                     | {settlementCurrency}  |
+| Base Currency                                                           | {baseCurrency}        |
+| Quote Currency                                                          | {quoteCurrency}       |
+| Funding Period                                                          | {fundingPeriod}       |
+| Price Tick Size                                                         | {tickSize}            |
+| Order Size Increment                                                    | {orderSizeIncrement}  |
+| Minimum Order Value                                                     | {minOrderValue}       |
+| Maximum Order Size                                                      | {maxOrderSize}        |
+| Maximum Number of Open Orders                                           | {maxOpenOrders}       |
+| Position Limit                                                          | {positionLimit}       |
+| [Price Band Factor](https://docs.paradex.trade/risk-system/price-bands) | {priceBandFactor}     |
+| Funding Clamping Rate                                                   | {fundingClampingRate} |
 
 ## Mark Price Parameters
 
-| Parameter      | Value    |
-| -------------- | -------- |
+| Parameter                                                                       | Value        |
+| ------------------------------------------------------------------------------- | ------------ |
 | [EWMA Factor](../../../risk-system/mark-price-calculation#funding-rate-formula) | {ewmaFactor} |
 
 ## [Cross Margin Parameters](/documentation/risk-system/cross-margin-requirement#margin-fractions)
 
-| Parameter      | Value    |
-| -------------- | -------- |
-| Base <span style="cursor: pointer;" title="Initial Margin Fraction">IMF</span>   | {imf}    |
-| <span style="cursor: pointer;" title="Maintenance Margin Fraction">MMF</span> Factor | {mmf}    |
+| Parameter                                                                            | Value |
+| ------------------------------------------------------------------------------------ | ----- |
+| Base <span style="cursor: pointer;" title="Initial Margin Fraction">IMF</span>       | {imf} |
+| <span style="cursor: pointer;" title="Maintenance Margin Fraction">MMF</span> Factor | {mmf} |
 
 IMF = Initial Margin Fraction
 

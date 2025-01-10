@@ -54,6 +54,9 @@ navigation:
             - page: Desktop App
               slug: desktop-app
               path: ./pages/introduction/install-our-app/desktop.mdx
+          - page: Official Links 
+            slug: official-links
+            path: ./pages/introduction/official-links.mdx
 
 
       - section: Vaults
@@ -82,7 +85,7 @@ navigation:
             slug: faq
             path: ./pages/vaults/faqs.mdx
       
-      - section: Perpetual Options
+      - section: Perpetual Options (Closed Beta)
         contents:
           - page: Introduction
             slug: intro
@@ -469,7 +472,11 @@ navigation:
             - page: ZRO-USD-PERP
               slug: zro-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
-
+        - section: Options (Closed Beta)
+          contents:
+            - page: BTC
+              slug: btc
+              path: ./pages/instruments-guide/options/btc.mdx
       - section: Ecosystem Partners
         contents:
         - section: Starknet Wallets
@@ -495,13 +502,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.77
+            path: ./pages/release-notes/v1.77.md
           - page: v1.76
             path: ./pages/release-notes/v1.76.md
-          - page: v1.75
-            path: ./pages/release-notes/v1.75.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.75
+                path: ./pages/release-notes/v1.75.md
               - page: v1.74
                 path: ./pages/release-notes/v1.74.md
               - page: v1.73

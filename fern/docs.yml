@@ -373,6 +373,9 @@ navigation:
             - page: LINK-USD-PERP
               slug: link-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/link-usd-perp.mdx
+            - page: LTC-USD-PERP
+              slug: ltc-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/ltc-usd-perp.mdx
             - page: ME-USD-PERP
               slug: me-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/me-usd-perp.mdx
@@ -451,6 +454,9 @@ navigation:
             - page: USUAL-USD-PERP
               slug: usual-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/usual-usd-perp.mdx
+            - page: VIRTUAL-USD-PERP
+              slug: virtual-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/virtual-usd-perp.mdx
             - page: WIF-USD-PERP
               slug: wif-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/wif-usd-perp.mdx

@@ -86,6 +86,7 @@ navigation:
             path: ./pages/vaults/faqs.mdx
       
       - section: Perpetual Options (Closed Beta)
+        slug: perpetual-options
         contents:
           - page: Introduction
             slug: intro
@@ -678,8 +679,6 @@ redirects:
     destination: "/documentation/getting-started/:slug*"
   - source: "/vaults/:slug*"
     destination: "/documentation/vaults/:slug*"
-  - source: "/documentation/perpetual-options/:slug*"
-    destination: "/documentation/perpetual-options-closed-beta/:slug*"
   - source: "/point-and-referrals/:slug*"
     destination: "/documentation/points-referrals/:slug*"
   - source: "/accounts/:slug*"

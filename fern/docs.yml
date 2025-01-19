@@ -389,6 +389,9 @@ navigation:
             - page: MOODENG-USD-PERP
               slug: moodeng-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
+            - page: MORPHO-USD-PERP
+              slug: morpho-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/morpho-usd-perp.mdx
             - page: MOVE-USD-PERP
               slug: move-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/move-usd-perp.mdx
@@ -449,6 +452,9 @@ navigation:
             - page: TRB-USD-PERP
               slug: trb-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/trb-usd-perp.mdx
+            - page: TRUMP-USD-PERP
+              slug: trump-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/trump-usd-perp.mdx
             - page: TRX-USD-PERP
               slug: trx-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/trx-usd-perp.mdx

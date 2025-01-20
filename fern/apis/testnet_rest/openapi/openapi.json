@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.86.6"
+    "version": "1.87.0"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -1693,6 +1693,76 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/responses.GetPositionsResp"
+            }
+          }
+        }
+      }
+    },
+    "/positions-history": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Get all positions owned by current user\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "List closed positions history",
+        "operationId": "get-positions-with-filter",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Returns the ‘next’ paginated page.",
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "End Time (unix time millisecond)",
+            "name": "end_at",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "example": "BTC-USD-PERP",
+            "name": "market",
+            "in": "query"
+          },
+          {
+            "maximum": 5000,
+            "minimum": 1,
+            "type": "integer",
+            "default": 100,
+            "description": "Limit the number of responses in the page",
+            "name": "page_size",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "LONG",
+              "SHORT"
+            ],
+            "type": "string",
+            "name": "side",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Start Time (unix time millisecond)",
+            "name": "start_at",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.GetPositionsHistoryResp"
             }
           }
         }
@@ -3697,6 +3767,27 @@
         }
       }
     },
+    "responses.GetPositionsHistoryResp": {
+      "type": "object",
+      "properties": {
+        "next": {
+          "description": "The pointer to fetch next set of records (null if there are no records left)",
+          "type": "string",
+          "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
+        },
+        "prev": {
+          "description": "The pointer to fetch previous set of records (null if there are no records left)",
+          "type": "string",
+          "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/responses.PositionResp"
+          }
+        }
+      }
+    },
     "responses.GetPositionsResp": {
       "type": "object",
       "properties": {
@@ -3876,6 +3967,26 @@
           "items": {
             "$ref": "#/definitions/responses.VaultResp"
           }
+        }
+      }
+    },
+    "responses.Greeks": {
+      "type": "object",
+      "properties": {
+        "delta": {
+          "description": "Market Delta",
+          "type": "string",
+          "example": "1"
+        },
+        "gamma": {
+          "description": "Market Gamma",
+          "type": "string",
+          "example": "0.2"
+        },
+        "vega": {
+          "description": "Market Vega",
+          "type": "string",
+          "example": "0.2"
         }
       }
     },
@@ -4151,7 +4262,7 @@
           "type": "integer"
         },
         "delta": {
-          "description": "Market Delta",
+          "description": "Deprecated: Use greeks.delta instead",
           "type": "string",
           "example": "1"
         },
@@ -4164,6 +4275,14 @@
           "description": "Future funding rate, for options",
           "type": "string",
           "example": "0.3"
+        },
+        "greeks": {
+          "description": "Greeks",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.Greeks"
+            }
+          ]
         },
         "last_iv": {
           "description": "Last traded price implied volatility, for options",
@@ -4565,10 +4684,20 @@
           "type": "string",
           "example": "29001.34"
         },
+        "average_exit_price": {
+          "description": "Average exit price",
+          "type": "string",
+          "example": "29001.34"
+        },
         "cached_funding_index": {
           "description": "Position cached funding index",
           "type": "string",
           "example": "1234.3"
+        },
+        "closed_at": {
+          "description": "Position closed time",
+          "type": "integer",
+          "example": 1681493939981
         },
         "cost": {
           "description": "Position cost",
@@ -4579,6 +4708,11 @@
           "description": "Position cost in USD",
           "type": "string",
           "example": "-10005.4623"
+        },
+        "created_at": {
+          "description": "Position creation time",
+          "type": "integer",
+          "example": 1681493939981
         },
         "id": {
           "description": "Unique string ID for the position",

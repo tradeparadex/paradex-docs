@@ -109,8 +109,12 @@ navigation:
 
       - section: Points & Referrals
         contents:
-          - link: Xperience Points
-            href: https://www.paradex.trade/paradexblog/xp-warzone-season-1-has-arrived
+          - section: Xperience Points
+            path: ./pages/points-and-referrals/referral-program/overview.mdx
+            contents:
+              - page: Earn XP
+                slug: earn
+                path: ./pages/points-and-referrals/referral-program/overview.mdx
           - section: Referral Program
             path: ./pages/points-and-referrals/referral-program/overview.mdx
             contents:

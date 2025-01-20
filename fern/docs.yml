@@ -109,15 +109,9 @@ navigation:
 
       - section: Points & Referrals
         contents:
-          - section: Xperience Points
+          - page: Xperience Points
+            slug: xp
             path: ./pages/points-and-referrals/xp/overview.mdx
-            contents:
-              - page: Earn XP
-                slug: earn
-                path: ./pages/points-and-referrals/xp/earn.mdx
-              - page: XP Seasons
-                slug: seasons
-                path: ./pages/points-and-referrals/xp/seasons.mdx
           - section: Referral Program
             path: ./pages/points-and-referrals/referral-program/overview.mdx
             contents:

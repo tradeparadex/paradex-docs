@@ -111,15 +111,11 @@ navigation:
         contents:
           - page: Xperience Points
             slug: xp
-            path: ./pages/points-and-referrals/xp/overview.mdx
-          - section: Referral Program
-            path: ./pages/points-and-referrals/referral-program/overview.mdx
-            contents:
-            - page: Example Calculations
-              slug: example-calculations
-              path: ./pages/points-and-referrals/referral-program/example-calculations.mdx
-
-
+            path: ./pages/points-and-referrals/xp.mdx
+          - page: Referral Program
+            path: ./pages/points-and-referrals/referrals.mdx
+          - page: Affiliate Program
+            path: ./pages/points-and-referrals/affiliate.mdx
       - section: Accounts
         contents:
           - page: Wallet Overview

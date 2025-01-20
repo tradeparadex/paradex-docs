@@ -383,6 +383,9 @@ navigation:
             - page: ME-USD-PERP
               slug: me-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/me-usd-perp.mdx
+            - page: MELANIA-USD-PERP
+              slug: melania-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/melania-usd-perp.mdx
             - page: MEW-USD-PERP
               slug: mew-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/mew-usd-perp.mdx

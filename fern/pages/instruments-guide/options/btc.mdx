@@ -110,7 +110,22 @@ Note that margin requirements for a short put option are capped by : $\text{shor
 _Example :_ Spot Price = 100 and User is short 1 put option :
 
 - OTM Put Option with Strike = 40 and Option Mark Price = 25
-  - IMR = min(short_otm_imf _ Spot Price, short_put_cap_imf _ Strike Price) = min(25, 20) = 20
-  - MMR = min(short_otm_mmf _ Spot Price, short_put_cap_mmf _ Strike Price) = min(12.5, 20) = 12.5
+  - IMR = min(short*otm_imf * Spot Price, short*put_cap_imf * Strike Price) = min(25, 20) = 20
+  - MMR = min(short*otm_mmf * Spot Price, short*put_cap_mmf * Strike Price) = min(12.5, 20) = 12.5
 
 The plots below show the call and put margin requirement charts across different strikes :
+
+<Frame caption="Call Option Margin Requirement">
+  <img
+    src="../../../../assets/call-option-margin-requirement.png"
+    alt=""
+    width="375"
+  />
+</Frame>
+<Frame caption="Put Option Margin Requirement">
+  <img
+    src="../../../../assets/put-option-margin-requirement.png"
+    alt=""
+    width="375"
+  />
+</Frame>

@@ -34,7 +34,7 @@ _Note :_ The parameter values above are examples. The parameters will be configu
 
 _Example :_ Spot Price = 100 and User is long 1 option :
 
-If Option Mark Price = 10 → IMR = Option Mark Price = $11 and MMR = $10
+If Option Mark Price = 10 → IMR = Option Mark Price = $10 and MMR = $5
 
 If Option Mark Price = 30 → IMR = 20% x Spot Price = $20 and MMR = 10% x Spot Price = $10
 
@@ -54,22 +54,22 @@ $$
 
 _Example :_ Spot Price = 100 and User is short 1 option :
 
-- OTM Call Option with Strike Price = 105
+- OTM Call Option with Strike Price = 106
   - OTM Amount = $5
-  - IMR = max(40-5, 25) = 35
-  - MMR = max(20-5, 12.5) = 15
-- ITM Put Option with Strike Price = 105
+  - IMR = max(15-6, 10) = 10
+  - MMR = max(7.5-6, 5) = 5
+- ITM Put Option with Strike Price = 106
   - OTM Amount = $0
-  - IMR = max(40, 25) = 40
-  - MMR = max(20, 12.5) = 20
+  - IMR = max(15, 10) = 15
+  - MMR = max(7.5, 5) = 7.5
 
 Note that margin requirements for a short put option are capped by : $\text{short\_put\_cap}*\text{Strike Price}$. This is a protection for put margin requirement from being excessively high compared to the strike price which is the maximum theoretical price of the put option.
 
 _Example :_ Spot Price = 100 and User is short 1 put option :
 
 - OTM Put Option with Strike = 40 and Option Mark Price = 25
-  - IMR = min(short*otm_imf * Spot Price, short*put_cap_imf * Strike Price) = min(25, 20) = 20
-  - MMR = min(short*otm_mmf * Spot Price, short*put_cap_mmf * Strike Price) = min(12.5, 20) = 12.5
+  - IMR = min(short_otm_imf * Spot Price, short_put_cap_imf * Strike Price) = min(10, 20) = 10
+  - MMR = min(short_otm_mmf * Spot Price, short_put_cap_mmf * Strike Price) = min(5, 20) = 5
 
 The plots below show the call and put margin requirement charts across different strikes :
 

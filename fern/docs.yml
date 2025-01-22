@@ -507,11 +507,11 @@ navigation:
             path: ./pages/release-notes/v1.79.md
           - page: v1.78
             path: ./pages/release-notes/v1.78.md
-          - page: v1.77
-            path: ./pages/release-notes/v1.77.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.77
+                path: ./pages/release-notes/v1.77.md
               - page: v1.76
                 path: ./pages/release-notes/v1.76.md
               - page: v1.75

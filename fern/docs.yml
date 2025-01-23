@@ -407,6 +407,9 @@ navigation:
             - page: PENDLE-USD-PERP
               slug: pendle-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pendle-usd-perp.mdx
+            - page: POPCAT-USD-PERP
+              slug: popcat-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/popcat-usd-perp.mdx
             - page: PYTH-USD-PERP
               slug: pyth-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pyth-usd-perp.mdx

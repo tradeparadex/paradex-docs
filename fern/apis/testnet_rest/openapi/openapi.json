@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.87.0"
+    "version": "1.87.1"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -1650,7 +1650,7 @@
           },
           {
             "type": "string",
-            "description": "Program Name - example: Maker, Fee",
+            "description": "Program Name - example: Maker",
             "name": "program",
             "in": "path",
             "required": true
@@ -1660,7 +1660,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/responses.GetPoints"
+              "$ref": "#/definitions/responses.GetPointsData"
             }
           },
           "404": {
@@ -3328,6 +3328,7 @@
         "GEO_IP_BLOCK",
         "ETHEREUM_ADDRESS_BLOCKED",
         "PROGRAM_NOT_FOUND",
+        "PROGRAM_NOT_SUPPORTED",
         "INVALID_DASHBOARD",
         "MARKET_NOT_OPEN",
         "INVALID_REFERRAL_CODE",
@@ -3391,6 +3392,7 @@
         "ErrorCodeString_GeoIPBlock",
         "ErrorCodeString_EthAddressBlocked",
         "ErrorCodeString_ProgramNotFound",
+        "ErrorCodeString_ProgramNotSupported",
         "ErrorCodeString_InvalidDashboard",
         "ErrorCodeString_MarketNotOpen",
         "ErrorCodeString_InvalidReferralCode",
@@ -3755,7 +3757,7 @@
         }
       }
     },
-    "responses.GetPoints": {
+    "responses.GetPointsData": {
       "type": "object",
       "properties": {
         "results": {
@@ -4644,16 +4646,6 @@
           "type": "string",
           "example": "0.0123"
         },
-        "total_accrued_points": {
-          "description": "Total points accrued by the wallet for this market and program since the start of the program",
-          "type": "string",
-          "example": "1.234"
-        },
-        "total_distributed_points": {
-          "description": "Total points distributed across wallets for this market and program since the start of the program",
-          "type": "string",
-          "example": "150.231"
-        },
         "total_market_score": {
           "description": "Total sum of all wallets scores for this market and program",
           "type": "string",
@@ -4665,7 +4657,7 @@
           "example": 1696291200000
         },
         "wallet_score": {
-          "description": "Wallet score based on which the points share is calculated. This will be the LP Score if program=Maker or Fee Score if program=Fee",
+          "description": "Wallet score based on which the points share is calculated. This will be the LP Score if program=Maker",
           "type": "string",
           "example": "123.45"
         }

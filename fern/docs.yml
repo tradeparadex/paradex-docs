@@ -129,9 +129,9 @@ navigation:
               - page: Starknet Wallets
                 slug: starknet-wallets
                 path: ./pages/accounts/deposits-and-withdrawals/starknet-wallets.mdx
-              - page: Email Wallets
-                slug: email-wallets
-                path: ./pages/accounts/deposits-and-withdrawals/email-wallets.mdx
+              - page: Email and Social Wallets
+                slug: email-social-wallets
+                path: ./pages/accounts/deposits-and-withdrawals/email-social-wallets.mdx
               - page: Cross Chain Bridging
                 slug: cross-chain-bridging
                 path: ./pages/accounts/deposits-and-withdrawals/cross-chain-bridging.mdx

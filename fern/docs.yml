@@ -290,6 +290,9 @@ navigation:
             - page: AIXBT-USD-PERP
               slug: aixbt-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/aixbt-usd-perp.mdx
+            - page: ANIME-USD-PERP
+              slug: anime-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/anime-usd-perp.mdx
             - page: APT-USD-PERP
               slug: apt-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/apt-usd-perp.mdx
@@ -452,6 +455,9 @@ navigation:
             - page: USUAL-USD-PERP
               slug: usual-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/usual-usd-perp.mdx
+            - page: VINE-USD-PERP
+              slug: vine-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/vine-usd-perp.mdx
             - page: VIRTUAL-USD-PERP
               slug: virtual-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/virtual-usd-perp.mdx

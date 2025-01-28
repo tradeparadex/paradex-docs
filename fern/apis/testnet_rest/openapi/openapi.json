@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.87.1"
+    "version": "1.87.2"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -1617,54 +1617,6 @@
           },
           "400": {
             "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          }
-        }
-      }
-    },
-    "/points_data/{market}/{program}": {
-      "get": {
-        "security": [
-          {
-            "BearerToken": []
-          }
-        ],
-        "description": "Get latest points data for requester's account\n",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Points"
-        ],
-        "summary": "List latest points data",
-        "operationId": "get-points-data",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Market Name - example: BTC-USD-PERP, ALL",
-            "name": "market",
-            "in": "path",
-            "required": true
-          },
-          {
-            "type": "string",
-            "description": "Program Name - example: Maker",
-            "name": "program",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/responses.GetPointsData"
-            }
-          },
-          "404": {
-            "description": "Not Found",
             "schema": {
               "$ref": "#/definitions/responses.ApiError"
             }
@@ -3757,18 +3709,6 @@
         }
       }
     },
-    "responses.GetPointsData": {
-      "type": "object",
-      "properties": {
-        "results": {
-          "description": "List of available active markets",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/responses.PointsResp"
-          }
-        }
-      }
-    },
     "responses.GetPositionsHistoryResp": {
       "type": "object",
       "properties": {
@@ -4585,81 +4525,6 @@
           "description": "Cap for margin fraction for short put options",
           "type": "string",
           "example": "0.5"
-        }
-      }
-    },
-    "responses.PointsResp": {
-      "type": "object",
-      "properties": {
-        "maker_volume_score": {
-          "description": "Maker volume score (only applicable for Maker program)",
-          "type": "string",
-          "example": "0"
-        },
-        "market": {
-          "description": "Symbol of the market",
-          "type": "string",
-          "example": "ETH-USD-PERP"
-        },
-        "market_pool_share": {
-          "description": "Share of the market from the pool's points",
-          "type": "string",
-          "example": "0.56"
-        },
-        "pool": {
-          "description": "Pool name, Tier1 (BTC, ETH) or Tier2 (SOL)",
-          "type": "string",
-          "example": "Tier1"
-        },
-        "previous_updated_at": {
-          "description": "Previous update timestamp in milliseconds",
-          "type": "integer",
-          "example": 1696291100000
-        },
-        "program": {
-          "description": "Program name, Maker or Fee",
-          "type": "string",
-          "example": "Maker"
-        },
-        "quote_quality": {
-          "description": "Quote quality (only applicable for Maker program)",
-          "type": "string",
-          "example": "71.643"
-        },
-        "sample_ask_quote_quality": {
-          "description": "Sample ask quote quality to assess quote quality on ask side (only applicable for Maker program)",
-          "type": "string",
-          "example": "673.746"
-        },
-        "sample_bid_quote_quality": {
-          "description": "Sample bid quote quality to assess quote quality on bid side (only applicable for Maker program)",
-          "type": "string",
-          "example": "82.998"
-        },
-        "sample_quote_quality": {
-          "description": "Sample quote quality calculated from bid and ask quote quality (only applicable for Maker program)",
-          "type": "string",
-          "example": "260.222"
-        },
-        "score_share": {
-          "description": "Score share of the wallet for this market and program for the current interval",
-          "type": "string",
-          "example": "0.0123"
-        },
-        "total_market_score": {
-          "description": "Total sum of all wallets scores for this market and program",
-          "type": "string",
-          "example": "1003.65"
-        },
-        "updated_at": {
-          "description": "Last update timestamp in milliseconds",
-          "type": "integer",
-          "example": 1696291200000
-        },
-        "wallet_score": {
-          "description": "Wallet score based on which the points share is calculated. This will be the LP Score if program=Maker",
-          "type": "string",
-          "example": "123.45"
         }
       }
     },

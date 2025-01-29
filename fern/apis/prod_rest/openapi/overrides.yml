@@ -22,7 +22,7 @@ paths:
               curl -X GET https://api.prod.paradex.trade/v1/account \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -88,7 +88,7 @@ paths:
               curl -X GET https://api.prod.paradex.trade/v1/account/info \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -157,7 +157,7 @@ paths:
               -H 'Content-Type: application/json' \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
           - sdk: javascript
             code: |
               const inputBody = {
@@ -229,7 +229,7 @@ paths:
               curl -X GET https://api.prod.paradex.trade/v1/account/profile \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -296,7 +296,7 @@ paths:
               curl -X POST https://api.prod.paradex.trade/v1/account/profile/referral_code \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -364,7 +364,7 @@ paths:
               curl -X POST https://api.prod.paradex.trade/v1/account/profile/username \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -432,7 +432,7 @@ paths:
               curl -X GET https://api.prod.paradex.trade/v1/account/subaccounts \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
 
   /algo/orders:
     get:
@@ -457,7 +457,7 @@ paths:
               curl -X GET https://api.prod.paradex.trade/v1/algo/orders \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -527,7 +527,7 @@ paths:
               -H 'Content-Type: application/json' \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
           - sdk: javascript
             code: |
               const inputBody = {
@@ -609,7 +609,7 @@ paths:
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -677,7 +677,7 @@ paths:
               curl -X GET https://api.prod.paradex.trade/v1/algo/orders/{algo_id} \
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -745,7 +745,7 @@ paths:
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -821,7 +821,7 @@ paths:
               -H 'PARADEX-TIMESTAMP: string' \
               -H 'PARADEX-SIGNATURE-EXPIRATION: string'
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -897,7 +897,7 @@ paths:
               -H 'Accept: application/json' \
               -H 'Authorization: Bearer {JWT}'
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -965,7 +965,7 @@ paths:
              curl -X GET https://api.prod.paradex.trade/v1/bbo/{market} \
               -H 'Accept: application/json'
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -1036,7 +1036,7 @@ paths:
                 -H 'Authorization: Bearer {JWT}'
 
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -1110,7 +1110,7 @@ paths:
 
 
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -1183,7 +1183,7 @@ paths:
 
 
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -1254,7 +1254,7 @@ paths:
 
 
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -1595,7 +1595,7 @@ paths:
               -H 'PARADEX-STARKNET-ACCOUNT: string' \
               -H 'PARADEX-STARKNET-SIGNATURE: string'
 
-          
+
           - sdk: javascript
             code: |
               const inputBody = {
@@ -1672,7 +1672,7 @@ paths:
              curl -X GET https://api.prod.paradex.trade/v1/orderbook/{market} \
               -H 'Accept: application/json'
 
-          
+
           - sdk: javascript
             code: |
               const headers = {
@@ -1727,7 +1727,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/orders', headers = headers)
 
               print(r.json())
@@ -1779,7 +1779,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: get-open-orders
     post:
@@ -1795,7 +1795,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.post('https://api.prod.paradex.trade/v1/orders', headers = headers)
 
               print(r.json())
@@ -1869,7 +1869,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: new
     delete:
@@ -1884,7 +1884,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.delete('https://api.prod.paradex.trade/v1/orders', headers = headers)
 
               print(r.json())
@@ -1936,7 +1936,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: cancelAll
   /orders-history:
@@ -1952,7 +1952,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/orders-history', headers = headers)
 
               print(r.json())
@@ -2004,7 +2004,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: get-orders
       x-fern-pagination: true
@@ -2022,7 +2022,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.post('https://api.prod.paradex.trade/v1/orders/batch', headers = headers)
 
               print(r.json())
@@ -2096,7 +2096,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: batch
   /orders/by_client_id/{client_id}:
@@ -2112,7 +2112,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/orders/by_client_id/{client_id}', headers = headers)
 
               print(r.json())
@@ -2164,7 +2164,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: getByClientId
     delete:
@@ -2179,7 +2179,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.delete('https://api.prod.paradex.trade/v1/orders/by_client_id/{client_id}', headers = headers)
 
               print(r.json())
@@ -2231,7 +2231,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: cancelByClientId
   /orders/{order_id}:
@@ -2247,7 +2247,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/orders/{order_id}', headers = headers)
 
               print(r.json())
@@ -2299,7 +2299,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: get
     delete:
@@ -2314,7 +2314,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.delete('https://api.prod.paradex.trade/v1/orders/{order_id}', headers = headers)
 
               print(r.json())
@@ -2366,77 +2366,9 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: cancel
-  /points_data/{market}/{program}:
-    get:
-      x-fern-sdk-group-name:
-        - points
-      x-fern-examples:
-        - code-samples:
-          - sdk: python
-            code: |
-              import requests
-              headers = {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer {JWT}'
-              }
-              
-              r = requests.get('https://api.prod.paradex.trade/v1/points_data/{market}/{program}', headers = headers)
-
-              print(r.json())
-
-          - sdk: curl
-            code: |
-              curl -X GET https://api.prod.paradex.trade/v1/points_data/{market}/{program} \
-              -H 'Accept: application/json' \
-              -H 'Authorization: Bearer {JWT}'
-
-          - sdk: javascript
-            code: |
-              const headers = {
-                'Accept':'application/json',
-                'Authorization':'Bearer {JWT}'
-              };
-
-              fetch('https://api.prod.paradex.trade/v1/points_data/{market}/{program}',
-              {
-                method: 'GET',
-
-                headers: headers
-              })
-              .then(function(res) {
-                  return res.json();
-              }).then(function(body) {
-                  console.log(body);
-              });
-
-          - sdk: go
-            code: |
-              package main
-              import (
-                    "bytes"
-                    "net/http"
-              )
-
-              func main() {
-
-                  headers := map[string][]string{
-                      "Accept": []string{"application/json"},
-                      "Authorization": []string{"Bearer {JWT}"},
-                  }
-
-                  data := bytes.NewBuffer([]byte{jsonReq})
-                  req, err := http.NewRequest("GET", "https://api.prod.paradex.trade/v1/points_data/{market}/{program}", data)
-                  req.Header = headers
-
-                  client := &http.Client{}
-                  resp, err := client.Do(req)
-                  // ...
-              }        
-
-      x-fern-sdk-method-name: get-data
   /positions:
     get:
       x-fern-sdk-group-name:
@@ -2450,7 +2382,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/positions', headers = headers)
 
               print(r.json())
@@ -2502,7 +2434,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: get-positions
   /referrals/config:
@@ -2517,7 +2449,7 @@ paths:
               headers = {
                 'Accept': 'application/json'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/referrals/config', headers = headers)
 
               print(r.json())
@@ -2525,7 +2457,7 @@ paths:
           - sdk: curl
             code: |
               curl -X GET https://api.prod.paradex.trade/v1/referrals/config \
-              -H 'Accept: application/json' 
+              -H 'Accept: application/json'
 
           - sdk: javascript
             code: |
@@ -2566,7 +2498,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: get-config
   /referrals/summary:
@@ -2582,7 +2514,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/referrals/summary', headers = headers)
 
               print(r.json())
@@ -2634,7 +2566,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: get-summary
   /system/config:
@@ -2698,7 +2630,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
       x-fern-sdk-method-name: getConfig
   /system/state:
     get:
@@ -2761,7 +2693,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
       x-fern-sdk-method-name: getState
   /system/time:
     get:
@@ -2824,7 +2756,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: getTimeUnixMilliseconds
   /tradebusts:
@@ -2840,7 +2772,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/tradebusts', headers = headers)
 
               print(r.json())
@@ -2892,7 +2824,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-sdk-method-name: tradebusts
       x-fern-pagination: true
@@ -2909,7 +2841,7 @@ paths:
               headers = {
                 'Accept': 'application/json',
               }
-                
+
               r = requests.get('https://api.prod.paradex.trade/v1/trades', params={
               'market': 'BTC-USD-PERP'
               }, headers = headers)
@@ -2930,7 +2862,7 @@ paths:
               fetch('https://api.prod.paradex.trade/v1/trades?market=BTC-USD-PERP',
               {
                 method: 'GET',
-                
+
                 headers: headers
               })
               .then(function(res) {
@@ -2960,7 +2892,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
 
       x-fern-pagination: true
   /transactions:
@@ -2976,7 +2908,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/transactions', headers = headers)
 
               print(r.json())
@@ -3028,7 +2960,7 @@ paths:
                   client := &http.Client{}
                   resp, err := client.Do(req)
                   // ...
-              }        
+              }
       x-fern-sdk-method-name: transactions
       x-fern-pagination: true
   /transfers:
@@ -3044,7 +2976,7 @@ paths:
                 'Accept': 'application/json',
                 'Authorization': 'Bearer {JWT}'
               }
-              
+
               r = requests.get('https://api.prod.paradex.trade/v1/transfers', headers = headers)
 
               print(r.json())
@@ -3105,10 +3037,10 @@ x-fern-pagination:
   cursor: $request.cursor
   next_cursor: $response.next
   results: $response.results
-  
+
 servers:
   - url: https://api.prod.paradex.trade/v1
     x-fern-server-name: Production
-    
+
 security:
   - BearerAuth: []

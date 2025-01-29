@@ -42,7 +42,7 @@ channels:
                 - ORDER_TYPE_INVALID
                 - PRICE_NOT_AVAILABLE
                 - EXPIRED
-                - PRICE_OUTSIDE_BANDS
+                - EXCEEDS_MAX_SLIPPAGE
                 - TIMEOUT
                 - ORDER_EXCEEDS_POSITION_LIMIT
                 - REDUCE_ONLY_WILL_INCREASE
@@ -222,6 +222,10 @@ channels:
               enum:
                 - FILL
                 - LIQUIDATION
+            realized_pnl:
+              description: Realized P&L of the fill
+              type: string
+              example: '1234.3'
   positions:
     subscribe:
       summary: 'Private websocket channel to receive updates when position is changed'
@@ -302,6 +306,20 @@ channels:
               description: Leverage of the position
               type: string
               example: '12.234'
+            realized_positional_pnl:
+              description: Realized positional P&L of the position
+              type: string
+              example: '1234.3'
+            average_exit_price:
+              description: Average exit price of the position
+              type: string
+              example: "30001.34"
+            created_at:
+              description: Position creation time in milliseconds.
+              type: integer
+            closed_at:
+              description: Position closed time in milliseconds.
+              type: integer
   funding_data.{market_symbol}:
     parameters:
       market_symbol:
@@ -426,6 +444,39 @@ channels:
               description: 'Price change rate in the last 24 hours'
               type: string
               example: '0.03'
+            bid_iv:
+              description: 'Bid implied volatility for options'
+              type: string
+              example: '0.19'
+            ask_iv:
+              description: 'Ask implied volatility for options'
+              type: string
+              example: '0.21'
+            last_iv:
+              description: 'Last traded price implied volatility for options'
+              type: string
+              example: '0.2'
+            delta:
+              deprecated: true
+              description: 'Market Delta'
+              type: string
+              example: '0.15'
+            greeks:
+              type: object
+              description: "Greeks for the market"
+              properties:
+                delta:
+                  description: "Market Delta"
+                  type: string
+                  example: '0.15'
+                gamma:
+                  description: 'Market Gamma'
+                  type: string
+                  example: '0.0004'
+                vega:
+                  description: 'Market Vega'
+                  type: string
+                  example: '24.8'
   account:
     subscribe:
       summary: 'Private websocket channel for receiving updates of account status'
@@ -646,14 +697,16 @@ channels:
               description: Socialized loss factor, ratio of funds withheld on withdrawal
               type: string
               example: '0.0001'
-  order_book.{market_symbol}.snapshot@15@{refresh_rate}:
+  order_book.{market_symbol}.snapshot@15@{refresh_rate}[@{price_tick}]:
     parameters:
       market_symbol:
         $ref: '#/components/parameters/market_symbol'
       refresh_rate:
         $ref: '#/components/parameters/refresh_rate'
+      price_tick:
+        $ref: '#/components/parameters/price_tick'
     subscribe:
-      summary: 'Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms'
+      summary: 'Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick'
       message:
         name: order_book.snapshot
         title: Order Book Snapshot
@@ -894,87 +947,6 @@ channels:
               description: Unix Millisecond timestamp at which the event occurred
               type: integer
               example: 1696291200000
-  points_data.{market_symbol}.{program_name}:
-    parameters:
-      market_symbol:
-        $ref: '#/components/parameters/market_symbol_or_all'
-      program_name:
-        $ref: '#/components/parameters/program_name'
-    subscribe:
-      summary: 'Private websocket to receive points data updates'
-      message:
-        name: points
-        title: Points update (Private)
-        payload:
-          type: object
-          additionalProperties: false
-          properties:
-            program:
-              description: Name of the program
-              type: string
-              enum:
-                - Maker
-                - Fee
-            pool:
-              description: Name of the pool
-              type: string
-              enum:
-                - Tier1
-                - Tier2
-            market:
-              $ref: '#/components/schemas/properties/MarketSymbol'
-            quote_quality:
-              description: Quote quality (only applicable for Maker program)
-              type: string
-              example: "71.643"
-            sample_ask_quote_quality:
-              description: Sample ask quote quality to assess quote quality on ask side (only applicable for Maker program)
-              type: string
-              example: "673.746"
-            sample_bid_quote_quality:
-              description: Sample bid quote quality to assess quote quality on bid side (only applicable for Maker program)
-              type: string
-              example: "82.998"
-            sample_quote_quality:
-              description: Sample quote quality calculated from bid and ask quote quality (only applicable for Maker program)
-              type: string
-              example: "260.222"
-            maker_volume_score:
-              description: Maker volume score (only applicable for Maker program)
-              type: string
-              example: '4130.46221867'
-            wallet_score:
-              description: Wallet score based on which the points share is calculated. This will be the LP Score if program=Maker or Fee Score if program=Fee
-              type: string
-              example: '0.984124075723888'
-            total_market_score:
-              description: Total sum of all wallets scores for this market and program
-              type: string
-              example: '1668006.90800659'
-            score_share:
-              description: Score share of the wallet for this market and program for the current interval
-              type: string
-              example: '0.00000059'
-            market_pool_share:
-              description: Share of the market from the pool's points
-              type: string
-              example: '0.63520031'
-            total_accrued_points:
-              description: Total points accrued by the wallet for this market and program since the start of the program
-              type: string
-              example: '18.38593175'
-            total_distributed_points:
-              description: Total points distributed across wallets for this market and program since the start of the program
-              type: string
-              example: '144542.3740861'
-            updated_at:
-              description: Last update timestamp
-              type: integer
-              example: 1696291200000
-            previous_updated_at:
-              description: Previous update timestamp
-              type: integer
-              example: 1696291100000
 components:
   parameters:
     market_symbol:
@@ -1001,6 +973,30 @@ components:
         enum:
           - 50ms
           - 100ms
+    price_tick:
+      description: Optional price tick parameter for grouping order book prices, valid values are below.
+      schema:
+        type: string
+        enum:
+          - '0_0000001'
+          - '0_0000005'
+          - '0_000001'
+          - '0_000005'
+          - '0_00001'
+          - '0_00005'
+          - '0_0001'
+          - '0_0005'
+          - '0_001'
+          - '0_005'
+          - '0_01'
+          - '0_05'
+          - '0_1'
+          - '0_5'
+          - '1'
+          - '5'
+          - '10'
+          - '50'
+          - '100'
   schemas:
     properties:
       MarketSymbol:

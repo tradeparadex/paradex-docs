@@ -11,7 +11,7 @@
         "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
         "title": "Paradex REST API",
         "contact": {},
-        "version": "1.83.0"
+        "version": "1.87.2"
     },
     "host": "api.prod.paradex.trade",
     "basePath": "/v1",
@@ -1010,6 +1010,11 @@
                     },
                     {
                         "type": "string",
+                        "name": "price_kind",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "resolution in minutes: 1, 3, 5, 15, 30, 60",
                         "name": "resolution",
                         "in": "query",
@@ -1617,54 +1622,6 @@
                 }
             }
         },
-        "/points_data/{market}/{program}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerToken": []
-                    }
-                ],
-                "description": "Get latest points data for requester's account\n",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Points"
-                ],
-                "summary": "List latest points data",
-                "operationId": "get-points-data",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Market Name - example: BTC-USD-PERP, ALL",
-                        "name": "market",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Program Name - example: Maker, Fee",
-                        "name": "program",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/responses.GetPoints"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/responses.ApiError"
-                        }
-                    }
-                }
-            }
-        },
         "/positions": {
             "get": {
                 "security": [
@@ -1691,6 +1648,76 @@
                 }
             }
         },
+        "/positions-history": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Get all positions owned by current user\n",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "List closed positions history",
+                "operationId": "get-positions-with-filter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Returns the ‘next’ paginated page.",
+                        "name": "cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "End Time (unix time millisecond)",
+                        "name": "end_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "BTC-USD-PERP",
+                        "name": "market",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 5000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 100,
+                        "description": "Limit the number of responses in the page",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "LONG",
+                            "SHORT"
+                        ],
+                        "type": "string",
+                        "name": "side",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Start Time (unix time millisecond)",
+                        "name": "start_at",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.GetPositionsHistoryResp"
+                        }
+                    }
+                }
+            }
+        },
         "/referrals/config": {
             "get": {
                 "description": "Get referral program config data\n",
@@ -1711,6 +1738,44 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ApiError"
+                        }
+                    }
+                }
+            }
+        },
+        "/referrals/qr-code": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Returns a QR code image containing the user's referral link",
+                "produces": [
+                    "image/png"
+                ],
+                "tags": [
+                    "Referrals"
+                ],
+                "summary": "Get Referral QR Code",
+                "operationId": "get-referral-qr-code",
+                "responses": {
+                    "200": {
+                        "description": "QR code image",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ApiError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/responses.ApiError"
                         }
@@ -2212,6 +2277,48 @@
                 }
             }
         },
+        "/vaults/balance": {
+            "get": {
+                "description": "Get spot balance of a vault\n",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Vaults"
+                ],
+                "summary": "Get vault balances",
+                "operationId": "vaults-get-balance",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vault Address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Vault Strategy Address",
+                        "name": "strategy",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.GetBalancesResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ApiError"
+                        }
+                    }
+                }
+            }
+        },
         "/vaults/config": {
             "get": {
                 "description": "Get vaults global configuration.\n",
@@ -2260,14 +2367,30 @@
                     },
                     {
                         "type": "string",
-                        "description": "Type of data: pnl or value",
+                        "description": "Vault Strategy Address",
+                        "name": "strategy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "pnl",
+                            "value",
+                            "price"
+                        ],
+                        "type": "string",
+                        "description": "Type of data",
                         "name": "type",
                         "in": "query",
                         "required": true
                     },
                     {
+                        "enum": [
+                            "alltime",
+                            "1h",
+                            "8h"
+                        ],
                         "type": "string",
-                        "description": "Resolution of data: alltime, 1h or 8h",
+                        "description": "Resolution of data",
                         "name": "resolution",
                         "in": "query",
                         "required": true
@@ -2307,6 +2430,12 @@
                         "name": "address",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Vault Strategy Address",
+                        "name": "strategy",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -2360,42 +2489,6 @@
                 }
             }
         },
-        "/vaults/trades": {
-            "get": {
-                "description": "Get trades related to the given vault.\n",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Vaults"
-                ],
-                "summary": "Get vault trades",
-                "operationId": "vaults-get-trades",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Vault Address",
-                        "name": "address",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/responses.VaultTradesResp"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/responses.ApiError"
-                        }
-                    }
-                }
-            }
-        },
         "/vaults/transfers": {
             "get": {
                 "description": "Get deposits and withdrawals related to the given vault.\n",
@@ -2434,6 +2527,20 @@
         }
     },
     "definitions": {
+        "message.DiscordProfile": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "message.OwnedNft": {
             "type": "object",
             "properties": {
@@ -2730,18 +2837,23 @@
                 "",
                 "main",
                 "subaccount",
-                "vault_operator"
+                "vault_operator",
+                "vault_sub_operator"
             ],
             "x-enum-varnames": [
                 "AccountKindUnspecified",
                 "AccountKindMain",
                 "AccountKindSubaccount",
-                "AccountKindVaultOperator"
+                "AccountKindVaultOperator",
+                "AccountKindVaultSubOperator"
             ]
         },
         "responses.AccountProfileResp": {
             "type": "object",
             "properties": {
+                "discord": {
+                    "$ref": "#/definitions/message.DiscordProfile"
+                },
                 "is_username_private": {
                     "type": "boolean",
                     "example": true
@@ -3166,6 +3278,7 @@
                 "GEO_IP_BLOCK",
                 "ETHEREUM_ADDRESS_BLOCKED",
                 "PROGRAM_NOT_FOUND",
+                "PROGRAM_NOT_SUPPORTED",
                 "INVALID_DASHBOARD",
                 "MARKET_NOT_OPEN",
                 "INVALID_REFERRAL_CODE",
@@ -3176,23 +3289,28 @@
                 "VAULT_OPERATOR_ALREADY_ONBOARDED",
                 "VAULT_NAME_IN_USE",
                 "VAULT_NOT_FOUND",
+                "VAULT_STRATEGY_NOT_FOUND",
                 "VAULT_LIMIT_REACHED",
                 "BATCH_SIZE_OUT_OF_RANGE",
                 "ISOLATED_MARKET_ACCOUNT_MISMATCH",
+                "NO_ACCESS_TO_MARKET",
                 "POINTS_SUMMARY_NOT_FOUND",
                 "ALGO_ID_NOT_FOUND",
                 "INVALID_DERIVATION_PATH",
-                "PROFILE_STATS_NOT_FOUND"
+                "PROFILE_STATS_NOT_FOUND",
+                "INVALID_CHAIN",
+                "INVALID_LAYERSWAP_SWAP",
+                "SOCIAL_USERNAME_IN_USE"
             ],
             "x-enum-comments": {
                 "ErrorCodeString_SignerMismatch": "#nosec G101"
             },
             "x-enum-varnames": [
-                "VALIDATION_ERROR",
-                "BINDING_ERROR",
-                "INTERNAL_ERROR",
-                "NOT_FOUND",
-                "SERVICE_UNAVAILABLE",
+                "ErrorCode_Validation",
+                "ErrorCode_Binding",
+                "ErrorCode_InternalError",
+                "ErrorCode_NotFound",
+                "ErrorCode_ServiceUnavailable",
                 "ErrorCodeString_InvalidParameter",
                 "ErrorCodeString_OrderIdNotFound",
                 "ErrorCodeString_OrderIsClosed",
@@ -3224,6 +3342,7 @@
                 "ErrorCodeString_GeoIPBlock",
                 "ErrorCodeString_EthAddressBlocked",
                 "ErrorCodeString_ProgramNotFound",
+                "ErrorCodeString_ProgramNotSupported",
                 "ErrorCodeString_InvalidDashboard",
                 "ErrorCodeString_MarketNotOpen",
                 "ErrorCodeString_InvalidReferralCode",
@@ -3234,13 +3353,18 @@
                 "ErrorCodeString_VaultOperatorAlreadyOnboarded",
                 "ErrorCodeString_VaultNameInUse",
                 "ErrorCodeString_VaultNotFound",
+                "ErrorCodeString_VaultStrategyNotFound",
                 "ErrorCodeString_VaultLimitReached",
                 "ErrorCodeString_BatchSizeOutOfRange",
                 "ErrorCodeString_IsolatedMarketAccountMismatch",
+                "ErrorCodeString_NoAccessToMarket",
                 "ErrorCodeString_PointsSummaryNotFound",
                 "ErrorCodeString_AlgoIdNotFound",
                 "ErrorCodeString_InvalidDerivationPath",
-                "ErrorCodeString_ProfileStatsNotFound"
+                "ErrorCodeString_ProfileStatsNotFound",
+                "ErrorCodeString_InvalidChain",
+                "ErrorCodeString_InvalidLayerswapSwap",
+                "ErrorCodeString_SocialUsernameInUse"
             ]
         },
         "responses.ErrorResponse": {
@@ -3309,6 +3433,11 @@
                     "description": "Price at which order was filled",
                     "type": "string",
                     "example": "30000.12"
+                },
+                "realized_pnl": {
+                    "description": "Realized PnL of the fill",
+                    "type": "string",
+                    "example": "7.56"
                 },
                 "remaining_size": {
                     "description": "Remaining size of the order",
@@ -3578,14 +3707,23 @@
                 }
             }
         },
-        "responses.GetPoints": {
+        "responses.GetPositionsHistoryResp": {
             "type": "object",
             "properties": {
+                "next": {
+                    "description": "The pointer to fetch next set of records (null if there are no records left)",
+                    "type": "string",
+                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
+                },
+                "prev": {
+                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
+                    "type": "string",
+                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
+                },
                 "results": {
-                    "description": "List of available active markets",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/responses.PointsResp"
+                        "$ref": "#/definitions/responses.PositionResp"
                     }
                 }
             }
@@ -3772,6 +3910,26 @@
                 }
             }
         },
+        "responses.Greeks": {
+            "type": "object",
+            "properties": {
+                "delta": {
+                    "description": "Market Delta",
+                    "type": "string",
+                    "example": "1"
+                },
+                "gamma": {
+                    "description": "Market Gamma",
+                    "type": "string",
+                    "example": "0.2"
+                },
+                "vega": {
+                    "description": "Market Vega",
+                    "type": "string",
+                    "example": "0.2"
+                }
+            }
+        },
         "responses.InsuranceAccountResp": {
             "type": "object",
             "properties": {
@@ -3901,6 +4059,11 @@
                     "type": "integer",
                     "example": 0
                 },
+                "funding_period_hours": {
+                    "description": "Funding period in hours",
+                    "type": "number",
+                    "example": 8
+                },
                 "interest_rate": {
                     "description": "Interest rate",
                     "type": "string",
@@ -3945,6 +4108,14 @@
                     "description": "Market open time in milliseconds",
                     "type": "integer",
                     "example": 0
+                },
+                "option_cross_margin_params": {
+                    "description": "Option Cross margin parameters",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/responses.PerpetualOptionCrossMarginParams"
+                        }
+                    ]
                 },
                 "option_type": {
                     "description": "Type of option (PUT or CALL)",
@@ -4011,17 +4182,27 @@
                     "type": "string",
                     "example": "30130.15"
                 },
+                "ask_iv": {
+                    "description": "Ask implied volatility, for options",
+                    "type": "string",
+                    "example": "0.2"
+                },
                 "bid": {
                     "description": "Best bid price",
                     "type": "string",
                     "example": "30112.22"
+                },
+                "bid_iv": {
+                    "description": "Bid implied volatility, for options",
+                    "type": "string",
+                    "example": "0.2"
                 },
                 "created_at": {
                     "description": "Market summary creation time",
                     "type": "integer"
                 },
                 "delta": {
-                    "description": "Market Delta",
+                    "description": "Deprecated: Use greeks.delta instead",
                     "type": "string",
                     "example": "1"
                 },
@@ -4030,10 +4211,33 @@
                     "type": "string",
                     "example": "0.3"
                 },
+                "future_funding_rate": {
+                    "description": "Future funding rate, for options",
+                    "type": "string",
+                    "example": "0.3"
+                },
+                "greeks": {
+                    "description": "Greeks",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/responses.Greeks"
+                        }
+                    ]
+                },
+                "last_iv": {
+                    "description": "Last traded price implied volatility, for options",
+                    "type": "string",
+                    "example": "0.2"
+                },
                 "last_traded_price": {
                     "description": "Last traded price",
                     "type": "string",
                     "example": "30109.53"
+                },
+                "mark_iv": {
+                    "description": "Mark implied volatility, for options",
+                    "type": "string",
+                    "example": "0.2"
                 },
                 "mark_price": {
                     "description": "[Mark price](https://docs.paradex.trade/risk-system/mark-price-calculation)",
@@ -4075,10 +4279,14 @@
         "responses.OrderFlag": {
             "type": "string",
             "enum": [
-                "REDUCE_ONLY"
+                "REDUCE_ONLY",
+                "STOP_CONDITION_BELOW_TRIGGER",
+                "STOP_CONDITION_ABOVE_TRIGGER"
             ],
             "x-enum-varnames": [
-                "FlagsReduceOnly"
+                "FlagsReduceOnly",
+                "FlagsStopConditionBelowTrigger",
+                "FlagsStopConditionAboveTrigger"
             ]
         },
         "responses.OrderInstruction": {
@@ -4277,88 +4485,44 @@
                 "OrderTypeStopLossLimit"
             ]
         },
-        "responses.PointsResp": {
+        "responses.PerpetualOptionCrossMarginParams": {
             "type": "object",
             "properties": {
-                "maker_volume_score": {
-                    "description": "Maker volume score (only applicable for Maker program)",
+                "imf": {
+                    "$ref": "#/definitions/responses.PerpetualOptionMarginParams"
+                },
+                "mmf": {
+                    "$ref": "#/definitions/responses.PerpetualOptionMarginParams"
+                }
+            }
+        },
+        "responses.PerpetualOptionMarginParams": {
+            "type": "object",
+            "properties": {
+                "long_itm": {
+                    "description": "Margin fraction for long ITM options",
                     "type": "string",
-                    "example": "0"
+                    "example": "0.2"
                 },
-                "market": {
-                    "description": "Symbol of the market",
+                "premium_multiplier": {
+                    "description": "Multiplier for margin fraction for premium",
                     "type": "string",
-                    "example": "ETH-USD-PERP"
+                    "example": "1.2"
                 },
-                "market_pool_share": {
-                    "description": "Share of the market from the pool's points",
+                "short_itm": {
+                    "description": "Margin fraction for short ITM options",
                     "type": "string",
-                    "example": "0.56"
+                    "example": "0.4"
                 },
-                "pool": {
-                    "description": "Pool name, Tier1 (BTC, ETH) or Tier2 (SOL)",
+                "short_otm": {
+                    "description": "Margin fraction for short OTM options",
                     "type": "string",
-                    "example": "Tier1"
+                    "example": "0.25"
                 },
-                "previous_updated_at": {
-                    "description": "Previous update timestamp in milliseconds",
-                    "type": "integer",
-                    "example": 1696291100000
-                },
-                "program": {
-                    "description": "Program name, Maker or Fee",
+                "short_put_cap": {
+                    "description": "Cap for margin fraction for short put options",
                     "type": "string",
-                    "example": "Maker"
-                },
-                "quote_quality": {
-                    "description": "Quote quality (only applicable for Maker program)",
-                    "type": "string",
-                    "example": "71.643"
-                },
-                "sample_ask_quote_quality": {
-                    "description": "Sample ask quote quality to assess quote quality on ask side (only applicable for Maker program)",
-                    "type": "string",
-                    "example": "673.746"
-                },
-                "sample_bid_quote_quality": {
-                    "description": "Sample bid quote quality to assess quote quality on bid side (only applicable for Maker program)",
-                    "type": "string",
-                    "example": "82.998"
-                },
-                "sample_quote_quality": {
-                    "description": "Sample quote quality calculated from bid and ask quote quality (only applicable for Maker program)",
-                    "type": "string",
-                    "example": "260.222"
-                },
-                "score_share": {
-                    "description": "Score share of the wallet for this market and program for the current interval",
-                    "type": "string",
-                    "example": "0.0123"
-                },
-                "total_accrued_points": {
-                    "description": "Total points accrued by the wallet for this market and program since the start of the program",
-                    "type": "string",
-                    "example": "1.234"
-                },
-                "total_distributed_points": {
-                    "description": "Total points distributed across wallets for this market and program since the start of the program",
-                    "type": "string",
-                    "example": "150.231"
-                },
-                "total_market_score": {
-                    "description": "Total sum of all wallets scores for this market and program",
-                    "type": "string",
-                    "example": "1003.65"
-                },
-                "updated_at": {
-                    "description": "Last update timestamp in milliseconds",
-                    "type": "integer",
-                    "example": 1696291200000
-                },
-                "wallet_score": {
-                    "description": "Wallet score based on which the points share is calculated. This will be the LP Score if program=Maker or Fee Score if program=Fee",
-                    "type": "string",
-                    "example": "123.45"
+                    "example": "0.5"
                 }
             }
         },
@@ -4375,10 +4539,20 @@
                     "type": "string",
                     "example": "29001.34"
                 },
+                "average_exit_price": {
+                    "description": "Average exit price",
+                    "type": "string",
+                    "example": "29001.34"
+                },
                 "cached_funding_index": {
                     "description": "Position cached funding index",
                     "type": "string",
                     "example": "1234.3"
+                },
+                "closed_at": {
+                    "description": "Position closed time",
+                    "type": "integer",
+                    "example": 1681493939981
                 },
                 "cost": {
                     "description": "Position cost",
@@ -4389,6 +4563,11 @@
                     "description": "Position cost in USD",
                     "type": "string",
                     "example": "-10005.4623"
+                },
+                "created_at": {
+                    "description": "Position creation time",
+                    "type": "integer",
+                    "example": 1681493939981
                 },
                 "id": {
                     "description": "Unique string ID for the position",
@@ -4417,6 +4596,10 @@
                     "description": "Market for position",
                     "type": "string",
                     "example": "BTC-USD-PERP"
+                },
+                "realized_positional_pnl": {
+                    "description": "Realized PnL of the position",
+                    "type": "string"
                 },
                 "seq_no": {
                     "description": "Unique increasing number (non-sequential) that is assigned to this position update. Can be used to deduplicate multiple feeds",
@@ -4569,6 +4752,16 @@
                 "STPModeExpireBoth"
             ]
         },
+        "responses.Strategy": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "Contract address of the sub-operator",
+                    "type": "string",
+                    "example": "0x1234567890abcdef"
+                }
+            }
+        },
         "responses.SystemConfigResponse": {
             "type": "object",
             "properties": {
@@ -4601,6 +4794,16 @@
                 },
                 "l1_operator_address": {
                     "description": "Address of Starknet L1 operator",
+                    "type": "string",
+                    "example": "0x63e762538C70442758Fd622116d817761c94FD6A"
+                },
+                "l1_withdraw_relayer_address": {
+                    "description": "Address of L1 Withdraw Relayer",
+                    "type": "string",
+                    "example": "0x63e762538C70442758Fd622116d817761c94FD6A"
+                },
+                "l2_withdraw_relayer_address": {
+                    "description": "Address of L2 Withdraw Relayer",
                     "type": "string",
                     "example": "0x63e762538C70442758Fd622116d817761c94FD6A"
                 },
@@ -4852,14 +5055,16 @@
                 "WITHDRAWAL",
                 "UNWINDING",
                 "VAULT_DEPOSIT",
-                "VAULT_WITHDRAWAL"
+                "VAULT_WITHDRAWAL",
+                "AUTO_WITHDRAWAL"
             ],
             "x-enum-varnames": [
                 "TransferKindDeposit",
                 "TransferKindWithdrawal",
                 "TransferKindUnwinding",
                 "TransferKindVaultDeposit",
-                "TransferKindVaultWithdrawal"
+                "TransferKindVaultWithdrawal",
+                "TransferKindAutoWithdrawal"
             ]
         },
         "responses.TransferResult": {
@@ -4875,6 +5080,11 @@
                     "description": "Transferred amount",
                     "type": "string",
                     "example": "100"
+                },
+                "auto_withdrawal_fee": {
+                    "description": "Fee for auto withdrawal in USDC",
+                    "type": "string",
+                    "example": "4.5"
                 },
                 "bridge": {
                     "description": "Bridge used for the transfer",
@@ -5152,6 +5362,13 @@
                         }
                     ],
                     "example": "ACTIVE"
+                },
+                "strategies": {
+                    "description": "Strategies of the vault",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/responses.Strategy"
+                    }
                 },
                 "token_address": {
                     "description": "LP token address",

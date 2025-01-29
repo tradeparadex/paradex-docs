@@ -305,6 +305,9 @@ navigation:
             - page: BNB-USD-PERP
               slug: bnb-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx
+            - page: BOME-USD-PERP
+              slug: bome-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/bome-usd-perp.mdx
             - page: CHILLGUY-USD-PERP
               slug: chillguy-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/chillguy-usd-perp.mdx
@@ -338,6 +341,9 @@ navigation:
             - page: GOAT-USD-PERP
               slug: goat-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/goat-usd-perp.mdx
+            - page: GRASS-USD-PERP
+              slug: grass-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/grass-usd-perp.mdx
             - page: HYPE-USD-PERP
               slug: hype-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
@@ -380,6 +386,9 @@ navigation:
             - page: MEW-USD-PERP
               slug: mew-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/mew-usd-perp.mdx
+            - page: MKR-USD-PERP
+              slug: mkr-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/mkr-usd-perp.mdx
             - page: MOODENG-USD-PERP
               slug: moodeng-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
@@ -410,6 +419,12 @@ navigation:
             - page: PENDLE-USD-PERP
               slug: pendle-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pendle-usd-perp.mdx
+            - page: PEOPLE-USD-PERP
+              slug: people-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/people-usd-perp.mdx
+            - page: PNUT-USD-PERP
+              slug: pnut-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/pnut-usd-perp.mdx
             - page: POPCAT-USD-PERP
               slug: popcat-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/popcat-usd-perp.mdx
@@ -452,6 +467,9 @@ navigation:
             - page: TRX-USD-PERP
               slug: trx-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/trx-usd-perp.mdx
+            - page: UNI-USD-PERP
+              slug: uni-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/uni-usd-perp.mdx
             - page: USUAL-USD-PERP
               slug: usual-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/usual-usd-perp.mdx

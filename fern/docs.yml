@@ -694,6 +694,8 @@ navigation:
           href: https://github.com/tradeparadex/code-samples
         - link: Python SDK
           href: https://tradeparadex.github.io/paradex-py/
+        - link: Rust SDK
+          href: https://crates.io/crates/paradex
         - link: CCXT Integration
           href: https://docs.ccxt.com/#/exchanges/paradex
 navbar-links:

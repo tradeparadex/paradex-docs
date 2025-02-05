@@ -57,6 +57,9 @@ navigation:
           - page: Official Links 
             slug: official-links
             path: ./pages/introduction/official-links.mdx
+          - page: Community Projects
+            slug: community-projects
+            path: ./pages/introduction/community-projects.mdx
 
 
       - section: Vaults

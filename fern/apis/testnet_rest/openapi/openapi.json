@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.87.2"
+    "version": "1.88.0"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -3436,6 +3436,11 @@
           "type": "string",
           "example": "30000.12"
         },
+        "realized_funding": {
+          "description": "Realized funding of the fill",
+          "type": "string",
+          "example": "7.56"
+        },
         "realized_pnl": {
           "description": "Realized PnL of the fill",
           "type": "string",
@@ -4600,7 +4605,7 @@
           "example": "BTC-USD-PERP"
         },
         "realized_positional_pnl": {
-          "description": "Realized PnL of the position",
+          "description": "Realized PnL including both positional PnL and funding payments. Reset to 0 when position is closed or flipped.",
           "type": "string"
         },
         "seq_no": {

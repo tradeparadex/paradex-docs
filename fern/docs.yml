@@ -302,6 +302,9 @@ navigation:
             - page: AVAX-USD-PERP
               slug: avax-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/avax-usd-perp.mdx
+            - page: BERA-USD-PERP
+              slug: bera-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/bera-usd-perp.mdx
             - page: BNB-USD-PERP
               slug: bnb-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx

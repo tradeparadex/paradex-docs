@@ -89,6 +89,97 @@
         }
       }
     },
+    "/account/leverage": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Get leverage configuration for an account and market",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get account leverage configuration",
+        "operationId": "get-account-leverage",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Market Name - example: BTC-USD-PERP",
+            "name": "market",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/message.AccountLeverageConfig"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Set leverage configuration for an account and market",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "Set leverage configuration",
+        "operationId": "upsert-account-leverage",
+        "parameters": [
+          {
+            "description": "Leverage Configuration",
+            "name": "config",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.AccountLeverageRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/message.AccountLeverageConfig"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
     "/account/profile": {
       "get": {
         "security": [
@@ -2529,6 +2620,23 @@
     }
   },
   "definitions": {
+    "message.AccountLeverageConfig": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "string"
+        },
+        "leverage": {
+          "type": "integer"
+        },
+        "margin_type": {
+          "$ref": "#/definitions/message.MarginType"
+        },
+        "market": {
+          "type": "string"
+        }
+      }
+    },
     "message.DiscordProfile": {
       "type": "object",
       "properties": {
@@ -2542,6 +2650,17 @@
           "type": "string"
         }
       }
+    },
+    "message.MarginType": {
+      "type": "integer",
+      "enum": [
+        0,
+        1
+      ],
+      "x-enum-varnames": [
+        "MarginType_CROSS",
+        "MarginType_ISOLATED"
+      ]
     },
     "message.OwnedNft": {
       "type": "object",
@@ -2577,6 +2696,31 @@
         },
         "username": {
           "type": "string"
+        }
+      }
+    },
+    "requests.AccountLeverageRequest": {
+      "type": "object",
+      "required": [
+        "leverage",
+        "margin_type",
+        "market"
+      ],
+      "properties": {
+        "leverage": {
+          "description": "Leverage value (1 up to market's maximum leverage)",
+          "type": "integer",
+          "example": 10
+        },
+        "margin_type": {
+          "description": "Margin type (CROSS or ISOLATED)",
+          "type": "string",
+          "example": "CROSS"
+        },
+        "market": {
+          "description": "Market for which leverage is configured",
+          "type": "string",
+          "example": "BTC-USD-PERP"
         }
       }
     },

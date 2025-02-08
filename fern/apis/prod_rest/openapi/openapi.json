@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.88.0"
+    "version": "1.88.1"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -1883,7 +1883,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Get latest referree data for requester's account\n",
+        "description": "Get latest referee data for requester's account\n",
         "produces": [
           "application/json"
         ],
@@ -4838,16 +4838,6 @@
           "description": "Minimum volume required to be eligible for Program",
           "type": "string",
           "example": "0.123"
-        },
-        "points_bonus_rate": {
-          "description": "Points bonus rate for the referer",
-          "type": "string",
-          "example": "0.1"
-        },
-        "points_bonus_volume_cap": {
-          "description": "Volume cap for points bonus",
-          "type": "string",
-          "example": "30000000"
         },
         "referral_type": {
           "description": "Referral type",

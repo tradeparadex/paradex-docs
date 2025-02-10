@@ -470,6 +470,9 @@ navigation:
             - page: TRX-USD-PERP
               slug: trx-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/trx-usd-perp.mdx
+            - page: TST-USD-PERP
+              slug: tst-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/tst-usd-perp.mdx
             - page: UNI-USD-PERP
               slug: uni-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/uni-usd-perp.mdx

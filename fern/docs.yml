@@ -371,6 +371,9 @@ navigation:
             - page: kSHIB-USD-PERP
               slug: kshib-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/kshib-usd-perp.mdx
+            - page: LAYER-USD-PERP
+              slug: layer-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/layer-usd-perp.mdx
             - page: LDO-USD-PERP
               slug: ldo-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ldo-usd-perp.mdx

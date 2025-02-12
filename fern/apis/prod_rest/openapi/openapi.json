@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.89.0"
+    "version": "1.89.1"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -89,22 +89,22 @@
         }
       }
     },
-    "/account/leverage": {
+    "/account/margin": {
       "get": {
         "security": [
           {
             "BearerToken": []
           }
         ],
-        "description": "Get leverage configuration for an account and market",
+        "description": "Get margin configuration for an account and market",
         "produces": [
           "application/json"
         ],
         "tags": [
           "Account"
         ],
-        "summary": "Get account leverage configuration",
-        "operationId": "get-account-leverage",
+        "summary": "Get account margin configuration",
+        "operationId": "get-account-margin",
         "parameters": [
           {
             "type": "string",
@@ -118,7 +118,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/message.AccountLeverageConfig"
+              "$ref": "#/definitions/message.AccountMarginConfig"
             }
           },
           "400": {
@@ -134,14 +134,16 @@
             }
           }
         }
-      },
+      }
+    },
+    "/account/margin/{market}": {
       "post": {
         "security": [
           {
             "BearerToken": []
           }
         ],
-        "description": "Set leverage configuration for an account and market",
+        "description": "Set margin configuration for an account and market",
         "consumes": [
           "application/json"
         ],
@@ -151,16 +153,23 @@
         "tags": [
           "Account"
         ],
-        "summary": "Set leverage configuration",
-        "operationId": "upsert-account-leverage",
+        "summary": "Set margin configuration",
+        "operationId": "upsert-account-margin",
         "parameters": [
           {
-            "description": "Leverage Configuration",
+            "type": "string",
+            "description": "Market Name - example: BTC-USD-PERP",
+            "name": "market",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Margin Configuration",
             "name": "config",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/requests.AccountLeverageRequest"
+              "$ref": "#/definitions/requests.AccountMarginRequest"
             }
           }
         ],
@@ -168,7 +177,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/message.AccountLeverageConfig"
+              "$ref": "#/definitions/message.AccountMarginConfig"
             }
           },
           "400": {
@@ -2620,7 +2629,7 @@
     }
   },
   "definitions": {
-    "message.AccountLeverageConfig": {
+    "message.AccountMarginConfig": {
       "type": "object",
       "properties": {
         "account": {
@@ -2699,12 +2708,11 @@
         }
       }
     },
-    "requests.AccountLeverageRequest": {
+    "requests.AccountMarginRequest": {
       "type": "object",
       "required": [
         "leverage",
-        "margin_type",
-        "market"
+        "margin_type"
       ],
       "properties": {
         "leverage": {
@@ -2716,11 +2724,6 @@
           "description": "Margin type (CROSS or ISOLATED)",
           "type": "string",
           "example": "CROSS"
-        },
-        "market": {
-          "description": "Market for which leverage is configured",
-          "type": "string",
-          "example": "BTC-USD-PERP"
         }
       }
     },

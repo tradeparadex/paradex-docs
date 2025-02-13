@@ -356,9 +356,6 @@ navigation:
             - page: IO-USD-PERP
               slug: io-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/io-usd-perp.mdx
-            - page: IP-USD-PERP
-              slug: ip-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/ip-usd-perp.mdx
             - page: JTO-USD-PERP
               slug: jto-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/jto-usd-perp.mdx

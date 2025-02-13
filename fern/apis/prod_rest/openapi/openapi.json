@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.89.0"
+    "version": "1.90.0"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -89,22 +89,22 @@
         }
       }
     },
-    "/account/leverage": {
+    "/account/margin": {
       "get": {
         "security": [
           {
             "BearerToken": []
           }
         ],
-        "description": "Get leverage configuration for an account and market",
+        "description": "Get margin configuration for an account and market",
         "produces": [
           "application/json"
         ],
         "tags": [
           "Account"
         ],
-        "summary": "Get account leverage configuration",
-        "operationId": "get-account-leverage",
+        "summary": "Get account margin configuration",
+        "operationId": "get-account-margin",
         "parameters": [
           {
             "type": "string",
@@ -118,7 +118,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/message.AccountLeverageConfig"
+              "$ref": "#/definitions/message.AccountMarginConfig"
             }
           },
           "400": {
@@ -134,14 +134,16 @@
             }
           }
         }
-      },
+      }
+    },
+    "/account/margin/{market}": {
       "post": {
         "security": [
           {
             "BearerToken": []
           }
         ],
-        "description": "Set leverage configuration for an account and market",
+        "description": "Set margin configuration for an account and market",
         "consumes": [
           "application/json"
         ],
@@ -151,16 +153,23 @@
         "tags": [
           "Account"
         ],
-        "summary": "Set leverage configuration",
-        "operationId": "upsert-account-leverage",
+        "summary": "Set margin configuration",
+        "operationId": "upsert-account-margin",
         "parameters": [
           {
-            "description": "Leverage Configuration",
+            "type": "string",
+            "description": "Market Name - example: BTC-USD-PERP",
+            "name": "market",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Margin Configuration",
             "name": "config",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/requests.AccountLeverageRequest"
+              "$ref": "#/definitions/requests.AccountMarginRequest"
             }
           }
         ],
@@ -168,7 +177,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/message.AccountLeverageConfig"
+              "$ref": "#/definitions/message.AccountMarginConfig"
             }
           },
           "400": {
@@ -636,7 +645,7 @@
     },
     "/auth": {
       "post": {
-        "description": "Authenticate using signed payload to get a JWT for usage in other endpoints\n\nThere are multiple valid headers required to be sent as part of this request.\n\nFor onboarding examples, refer to `go`, `java` and `python` code in [code-samples](https://github.com/tradeparadex/code-samples).\n\n#### StarkNet Message Hash and Signature\n\nInspired by [EIP-712](https://eips.ethereum.org/EIPS/eip-712),\n(a standard for hashing and signing typed structured data)\nthe encoding of an off-chain message is defined as:\n\n`signed_data = Enc[PREFIX_MESSAGE, domain_separator, account, hash_struct(message)]`\n\nwhere:\n\n- `PREFIX_MESSAGE = \"StarkNet Message\"`\n- `domain_separator` is defined as the `hash_struct` of the StarkNetDomain struct:\n  * Struct contains: `name`, `chainId` and `version`\n  * `chainId` is can be obtained calling `GET /system/config`\n- `account` is the StarkNet account address\n- The message to be hashed is represented as a struct\n  * `hash_struct(message) = Enc[type_hash(MyStruct), Enc[param1], ..., Enc[paramN]]`\n  * where `type_hash` is defined as in EIP-712 (but using `selector` instead of `keccak`)\n  * More details on StarkNet - [Hash Functions](https://docs.starknet.io/documentation/architecture_and_concepts/Hashing/hash-functions/)\n\nIn case of more complex structure of object, you have to work in the spirit of EIP-712.\nThis json structure has 4 mandatory items: `types`, `primaryType`, `domain` and `message`.\nThese items are designed to be able to be an interface with a wallet.\nAt sign request, the wallet will display:\n\n- `message` will be displayed at the bottom of the wallet display,\nshowing clearly (not in hex) the message to sign.\nIts structure has to be in accordance with the type listed in primaryType,\ndefined in types.\n- `domain` will be shown above the message.\nIts structure has to be in accordance with `StarkNetDomain`.\n\nThe predefined types that you can use :\n\n- `felt` : for an integer on 251 bits.\n- `felt*` : for an array of felt.\n- `string` : for a shortString of 31 ASCII characters max.\n- `selector` : for a name of a smart contract function.\n- `merkletree` : for a Root of a Merkle tree, calculated with the provided data.\n\nSpecification details: [Signing transactions and off-chain messages](https://github.com/argentlabs/argent-x/discussions/14)\n\n#### Message Hash Sample Code\n\nFor a complete `message_hash` example, refer to `python` code in [code-samples](https://github.com/tradeparadex/code-samples).\n\n> Examples:\n\n```json\n{\n  \"paradex-signature-expiration\": 1682364556,\n  \"paradex-starknet-account\": \"0x129f3dc1b8962d8a87abc692424c78fda963ade0e1cd17bf3d1c26f8d41ee7a\",\n  \"paradex-starknet-signature\": [\n    \"1381323390094460587764867648394252677239485992175346764030313478865763678671\",\n    \"396490140510115262427678549757564216013606350105112805717359873954984880589\"\n  ],\n  \"paradex-timestamp\": 1681759756\n}\n```\n",
+        "description": "Authenticate using signed payload to get a JWT for usage in other endpoints\n\nThere are multiple valid headers required to be sent as part of this request.\n\nFor onboarding examples, refer to `go`, `java` and `python` code in [code-samples](https://github.com/tradeparadex/code-samples).\n\n#### StarkNet Message Hash and Signature\n\nInspired by [EIP-712](https://eips.ethereum.org/EIPS/eip-712),\n(a standard for hashing and signing typed structured data)\nthe encoding of an off-chain message is defined as:\n\n`signed_data = Enc[PREFIX_MESSAGE, domain_separator, account, hash_struct(message)]`\n\nwhere:\n\n- `PREFIX_MESSAGE = \"StarkNet Message\"`\n- `domain_separator` is defined as the `hash_struct` of the StarkNetDomain struct:\n  * Struct contains: `name`, `chainId` and `version`\n  * `chainId` is can be obtained calling `GET /system/config`\n- `account` is the StarkNet account address\n- The message to be hashed is represented as a struct\n  * `hash_struct(message) = Enc[type_hash(MyStruct), Enc[param1], ..., Enc[paramN]]`\n  * where `type_hash` is defined as in EIP-712 (but using `selector` instead of `keccak`)\n  * More details on StarkNet - [Hash Functions](https://docs.starknet.io/architecture-and-concepts/cryptography/#hash_functions)\n\nIn case of more complex structure of object, you have to work in the spirit of EIP-712.\nThis json structure has 4 mandatory items: `types`, `primaryType`, `domain` and `message`.\nThese items are designed to be able to be an interface with a wallet.\nAt sign request, the wallet will display:\n\n- `message` will be displayed at the bottom of the wallet display,\nshowing clearly (not in hex) the message to sign.\nIts structure has to be in accordance with the type listed in primaryType,\ndefined in types.\n- `domain` will be shown above the message.\nIts structure has to be in accordance with `StarkNetDomain`.\n\nThe predefined types that you can use :\n\n- `felt` : for an integer on 251 bits.\n- `felt*` : for an array of felt.\n- `string` : for a shortString of 31 ASCII characters max.\n- `selector` : for a name of a smart contract function.\n- `merkletree` : for a Root of a Merkle tree, calculated with the provided data.\n\nSpecification details: [Signing transactions and off-chain messages](https://github.com/argentlabs/argent-x/discussions/14)\n\n#### Message Hash Sample Code\n\nFor a complete `message_hash` example, refer to `python` code in [code-samples](https://github.com/tradeparadex/code-samples).\n\n> Examples:\n\n```json\n{\n  \"paradex-signature-expiration\": 1682364556,\n  \"paradex-starknet-account\": \"0x129f3dc1b8962d8a87abc692424c78fda963ade0e1cd17bf3d1c26f8d41ee7a\",\n  \"paradex-starknet-signature\": [\n    \"1381323390094460587764867648394252677239485992175346764030313478865763678671\",\n    \"396490140510115262427678549757564216013606350105112805717359873954984880589\"\n  ],\n  \"paradex-timestamp\": 1681759756\n}\n```\n",
         "produces": [
           "application/json"
         ],
@@ -2620,7 +2629,7 @@
     }
   },
   "definitions": {
-    "message.AccountLeverageConfig": {
+    "message.AccountMarginConfig": {
       "type": "object",
       "properties": {
         "account": {
@@ -2699,12 +2708,11 @@
         }
       }
     },
-    "requests.AccountLeverageRequest": {
+    "requests.AccountMarginRequest": {
       "type": "object",
       "required": [
         "leverage",
-        "margin_type",
-        "market"
+        "margin_type"
       ],
       "properties": {
         "leverage": {
@@ -2716,11 +2724,6 @@
           "description": "Margin type (CROSS or ISOLATED)",
           "type": "string",
           "example": "CROSS"
-        },
-        "market": {
-          "description": "Market for which leverage is configured",
-          "type": "string",
-          "example": "BTC-USD-PERP"
         }
       }
     },
@@ -4219,6 +4222,11 @@
           "description": "Interest rate",
           "type": "string",
           "example": "0.01"
+        },
+        "iv_bands_width": {
+          "description": "IV Bands Width",
+          "type": "string",
+          "example": "0.05"
         },
         "market_kind": {
           "description": "Type of market - always 'cross'",

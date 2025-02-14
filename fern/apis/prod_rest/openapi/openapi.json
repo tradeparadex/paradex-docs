@@ -4330,6 +4330,17 @@
           "description": "Market symbol",
           "type": "string",
           "example": "ETH-USD-PERP"
+        },
+        "tags": {
+          "description": "Market tags",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "MEME",
+            "DEFI"
+          ]
         }
       }
     },

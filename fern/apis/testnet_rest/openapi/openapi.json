@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.90.0"
+    "version": "1.90.1"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -2977,6 +2977,11 @@
           "description": "Starknet public key",
           "type": "string",
           "example": "0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d"
+        },
+        "username": {
+          "description": "Username of the account",
+          "type": "string",
+          "example": "username"
         }
       }
     },
@@ -4923,6 +4928,11 @@
           "description": "Contract address of the sub-operator",
           "type": "string",
           "example": "0x1234567890abcdef"
+        },
+        "name": {
+          "description": "Strategy name",
+          "type": "string",
+          "example": "Alpha Strategy"
         }
       }
     },

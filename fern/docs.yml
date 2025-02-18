@@ -413,6 +413,9 @@ navigation:
             - page: NEIRO-USD-PERP
               slug: neiro-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/neiro-usd-perp.mdx
+            - page: OM-USD-PERP
+              slug: om-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/om-usd-perp.mdx
             - page: ONDO-USD-PERP
               slug: ondo-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ondo-usd-perp.mdx
@@ -545,14 +548,16 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.83
+            path: ./pages/release-notes/v1.83.md
           - page: v1.82
             path: ./pages/release-notes/v1.82.md
-          - page: v1.81
-            path: ./pages/release-notes/v1.81.md
           
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.81
+                path: ./pages/release-notes/v1.81.md
               - page: v1.80
                 path: ./pages/release-notes/v1.80.md
               - page: v1.79

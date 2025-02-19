@@ -353,9 +353,6 @@ navigation:
             - page: INJ-USD-PERP
               slug: inj-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx
-            - page: IO-USD-PERP
-              slug: io-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/io-usd-perp.mdx
             - page: IP-USD-PERP
               slug: ip-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ip-usd-perp.mdx
@@ -386,9 +383,6 @@ navigation:
             - page: LTC-USD-PERP
               slug: ltc-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ltc-usd-perp.mdx
-            - page: ME-USD-PERP
-              slug: me-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/me-usd-perp.mdx
             - page: MELANIA-USD-PERP
               slug: melania-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/melania-usd-perp.mdx
@@ -431,9 +425,6 @@ navigation:
             - page: PENDLE-USD-PERP
               slug: pendle-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pendle-usd-perp.mdx
-            - page: PEOPLE-USD-PERP
-              slug: people-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/people-usd-perp.mdx
             - page: PNUT-USD-PERP
               slug: pnut-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pnut-usd-perp.mdx
@@ -512,9 +503,6 @@ navigation:
             - page: XRP-USD-PERP
               slug: xrp-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx
-            - page: ZEREBRO-USD-PERP
-              slug: zerebro-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/zerebro-usd-perp.mdx
             - page: ZRO-USD-PERP
               slug: zro-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx

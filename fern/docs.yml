@@ -362,6 +362,9 @@ navigation:
             - page: JUP-USD-PERP
               slug: jup-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/jup-usd-perp.mdx
+            - page: KAITO-USD-PERP
+              slug: kaito-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/kaito-usd-perp.mdx
             - page: kBONK-USD-PERP
               slug: kbonk-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/kbonk-usd-perp.mdx

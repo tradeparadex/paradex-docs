@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.90.1"
+    "version": "1.90.2"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -1820,33 +1820,6 @@
         }
       }
     },
-    "/referrals/config": {
-      "get": {
-        "description": "Get referral program config data\n",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Referrals"
-        ],
-        "summary": "Get referral config",
-        "operationId": "get-referral-config",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/responses.GetReferralConfig"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          }
-        }
-      }
-    },
     "/referrals/qr-code": {
       "get": {
         "security": [
@@ -3025,6 +2998,9 @@
         "programs_eligibility": {
           "$ref": "#/definitions/responses.ProgramsEligibility"
         },
+        "referral": {
+          "$ref": "#/definitions/responses.ReferralConfigResp"
+        },
         "referral_code": {
           "type": "string",
           "example": "cryptofox8"
@@ -3894,18 +3870,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/responses.PositionResp"
-          }
-        }
-      }
-    },
-    "responses.GetReferralConfig": {
-      "type": "object",
-      "properties": {
-        "results": {
-          "description": "List of referral config",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/responses.ReferralConfigResp"
           }
         }
       }
@@ -4866,6 +4830,21 @@
           "description": "Minimum volume required to be eligible for Program",
           "type": "string",
           "example": "0.123"
+        },
+        "name": {
+          "description": "Referral name",
+          "type": "string",
+          "example": "Referral"
+        },
+        "points_bonus_rate": {
+          "description": "Points bonus rate for the referee",
+          "type": "string",
+          "example": "0.1"
+        },
+        "points_bonus_volume_cap": {
+          "description": "Volume cap for points bonus",
+          "type": "string",
+          "example": "1000000000"
         },
         "referral_type": {
           "description": "Referral type",

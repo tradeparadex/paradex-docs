@@ -4520,6 +4520,14 @@
           "type": "string",
           "example": "0"
         },
+        "request_info": {
+          "description": "Request info for modify order",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.RequestInfo"
+            }
+          ]
+        },
         "seq_no": {
           "description": "Unique increasing number (non-sequential) that is assigned to this order update and changes on every order update. Can be used to deduplicate multiple feeds. WebSocket and REST responses use independently generated seq_no per event.",
           "type": "integer",
@@ -4879,6 +4887,27 @@
           "description": "Total volume traded by referee",
           "type": "string",
           "example": "0.123"
+        }
+      }
+    },
+    "responses.RequestInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Request id",
+          "type": "string"
+        },
+        "message": {
+          "description": "Error message for failed requests",
+          "type": "string"
+        },
+        "request_type": {
+          "description": "Type of request (MODIFY_ORDER)",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status of modify order request",
+          "type": "string"
         }
       }
     },

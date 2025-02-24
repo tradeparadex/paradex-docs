@@ -440,6 +440,9 @@ navigation:
             - page: RUNE-USD-PERP
               slug: rune-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/rune-usd-perp.mdx
+            - page: S-USD-PERP
+              slug: s-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/s-usd-perp.mdx
             - page: SAND-USD-PERP
               slug: sand-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/sand-usd-perp.mdx

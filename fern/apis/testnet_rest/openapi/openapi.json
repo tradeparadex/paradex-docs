@@ -64,6 +64,58 @@
         }
       }
     },
+    "/account/history": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Respond with requester's account information\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get account history",
+        "operationId": "get-account-history",
+        "parameters": [
+          {
+            "enum": [
+              "pnl",
+              "value",
+              "volume"
+            ],
+            "type": "string",
+            "description": "Type of data",
+            "name": "type",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.AccountHistoricalDataResp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
     "/account/info": {
       "get": {
         "security": [
@@ -2906,6 +2958,25 @@
       "properties": {
         "max_slippage": {
           "type": "string"
+        }
+      }
+    },
+    "responses.AccountHistoricalDataResp": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Ordered list of datapoints",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "timestamps": {
+          "description": "Ordered list of timestamps",
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
         }
       }
     },

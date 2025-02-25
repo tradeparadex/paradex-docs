@@ -57,7 +57,9 @@ navigation:
           - page: Official Links 
             slug: official-links
             path: ./pages/introduction/official-links.mdx
-
+          - page: Community Projects
+            slug: community-projects
+            path: ./pages/introduction/community-projects.mdx
 
       - section: Vaults
         contents:
@@ -714,6 +716,8 @@ navigation:
           href: https://tradeparadex.github.io/paradex-py/
         - link: CCXT Integration
           href: https://docs.ccxt.com/#/exchanges/paradex
+        - link: Community Projects
+          href: /documentation/getting-started/community-projects
 navbar-links:
   - type: filled
     text: Launch Exchange

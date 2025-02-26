@@ -64,6 +64,58 @@
         }
       }
     },
+    "/account/history": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Respond with requester's account information\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get account history",
+        "operationId": "get-account-history",
+        "parameters": [
+          {
+            "enum": [
+              "pnl",
+              "value",
+              "volume"
+            ],
+            "type": "string",
+            "description": "Type of data",
+            "name": "type",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.AccountHistoricalDataResp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
     "/account/info": {
       "get": {
         "security": [
@@ -2612,7 +2664,7 @@
           "type": "integer"
         },
         "margin_type": {
-          "$ref": "#/definitions/message.MarginType"
+          "$ref": "#/definitions/messagesv1.MarginType"
         },
         "market": {
           "type": "string"
@@ -2632,17 +2684,6 @@
           "type": "string"
         }
       }
-    },
-    "message.MarginType": {
-      "type": "integer",
-      "enum": [
-        0,
-        1
-      ],
-      "x-enum-varnames": [
-        "MarginType_CROSS",
-        "MarginType_ISOLATED"
-      ]
     },
     "message.OwnedNft": {
       "type": "object",
@@ -2680,6 +2721,17 @@
           "type": "string"
         }
       }
+    },
+    "messagesv1.MarginType": {
+      "type": "integer",
+      "enum": [
+        0,
+        1
+      ],
+      "x-enum-varnames": [
+        "MarginType_CROSS",
+        "MarginType_ISOLATED"
+      ]
     },
     "requests.AccountMarginRequest": {
       "type": "object",
@@ -2906,6 +2958,25 @@
       "properties": {
         "max_slippage": {
           "type": "string"
+        }
+      }
+    },
+    "responses.AccountHistoricalDataResp": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Ordered list of datapoints",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "timestamps": {
+          "description": "Ordered list of timestamps",
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
         }
       }
     },

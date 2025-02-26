@@ -278,9 +278,6 @@ navigation:
             - page: ADA-USD-PERP
               slug: ada-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ada-usd-perp.mdx
-            - page: AERO-USD-PERP
-              slug: aero-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/aero-usd-perp.mdx
             - page: AEVO-USD-PERP
               slug: aevo-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/aevo-usd-perp.mdx
@@ -437,9 +434,15 @@ navigation:
             - page: PYTH-USD-PERP
               slug: pyth-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pyth-usd-perp.mdx
+            - page: RAY-USD-PERP
+              slug: ray-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/ray-usd-perp.mdx
             - page: RUNE-USD-PERP
               slug: rune-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/rune-usd-perp.mdx
+            - page: S-USD-PERP
+              slug: s-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/s-usd-perp.mdx
             - page: SAND-USD-PERP
               slug: sand-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/sand-usd-perp.mdx

@@ -13,29 +13,10 @@ info:
         name: Proprietary
 servers:
     production:
-        url: wss://ws.api.prod.paradex.trade/v1?
+        url: wss://ws.api.prod.paradex.trade/v1
         protocol: wss
         description: Production WebSocket server
 channels:
-    Order Book (Delta):
-        parameters:
-            market_symbol:
-                $ref: '#/components/parameters/market_symbol'
-                description: Symbol of the market (any open market returned by `GET /markets`)
-                schema:
-                    type: string
-        subscribe:
-            summary: Public websocket channel for incremental updates of orderbook for the subscribed market
-            message:
-                name: pricebookupdate
-                title: PriceBookUpdate
-                payload:
-                    $ref: '#/components/schemas/ResponsesPriceBookUpdate'
-                summary: Public websocket channel for incremental updates of orderbook for the subscribed market
-                description: Public websocket channel for incremental updates of orderbook for the subscribed market
-                tags:
-                    - name: market
-        x-fern-display-name: order_book.{market_symbol}.deltas
     account:
         subscribe:
             summary: Private websocket channel for receiving updates of account status
@@ -48,8 +29,8 @@ channels:
                 description: Subscribe to account messages
                 tags:
                     - name: account
-        x-fern-display-name: account
-    balance_events:
+        x-fern-display-name: SUB account
+    /balance_events:
         subscribe:
             summary: Private websocket channel to receive PnL calculation data
             message:
@@ -62,7 +43,7 @@ channels:
                 tags:
                     - name: account
         x-fern-display-name: balance_events
-    bbo:
+    /bbo.{market_symbol}:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
@@ -81,7 +62,7 @@ channels:
                 tags:
                     - name: market
         x-fern-display-name: bbo.{market_symbol}
-    fills:
+    /fills.{market_symbol}:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
@@ -100,7 +81,7 @@ channels:
                 tags:
                     - name: trading
         x-fern-display-name: fills.{market_symbol}
-    funding_data:
+    /funding_data.{market_symbol}:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
@@ -120,7 +101,7 @@ channels:
                     - name: market
                     - name: funding
         x-fern-display-name: funding_data.{market_symbol}
-    funding_payments:
+    /funding_payments.{market_symbol}:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
@@ -139,7 +120,7 @@ channels:
                 tags:
                     - name: funding
         x-fern-display-name: funding_payments.{market_symbol}
-    markets_summary:
+    /markets_summary:
         subscribe:
             summary: Public websocket channel for updates of available markets
             message:
@@ -152,7 +133,26 @@ channels:
                 tags:
                     - name: market
         x-fern-display-name: markets_summary
-    order_book:
+    /order_book.{market_symbol}.deltas:
+        parameters:
+            market_symbol:
+                $ref: '#/components/parameters/market_symbol'
+                description: Symbol of the market (any open market returned by `GET /markets`)
+                schema:
+                    type: string
+        subscribe:
+            summary: Public websocket channel for incremental updates of orderbook for the subscribed market
+            message:
+                name: pricebookupdate
+                title: PriceBookUpdate
+                payload:
+                    $ref: '#/components/schemas/ResponsesPriceBookUpdate'
+                summary: Public websocket channel for incremental updates of orderbook for the subscribed market
+                description: Public websocket channel for incremental updates of orderbook for the subscribed market
+                tags:
+                    - name: market
+        x-fern-display-name: order_book.{market_symbol}.deltas
+    /order_book.{market_symbol}.snapshot@15@{refresh_rate}[@{price_tick}]:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
@@ -196,7 +196,7 @@ channels:
                 tags:
                     - name: market
         x-fern-display-name: order_book.{market_symbol}.snapshot@15@{refresh_rate}[@{price_tick}]
-    orders:
+    /orders.{market_symbol}:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
@@ -215,7 +215,7 @@ channels:
                 tags:
                     - name: trading
         x-fern-display-name: orders.{market_symbol}
-    positions:
+    /positions:
         subscribe:
             summary: Private websocket channel to receive updates when position is changed
             message:
@@ -228,7 +228,7 @@ channels:
                 tags:
                     - name: trading
         x-fern-display-name: positions
-    tradebusts:
+    /tradebusts:
         subscribe:
             summary: Private websocket channel to receive fills that are busted by a blockchain
             message:
@@ -241,7 +241,7 @@ channels:
                 tags:
                     - name: trading
         x-fern-display-name: tradebusts
-    trades:
+    /trades.{market_symbol}:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
@@ -260,7 +260,7 @@ channels:
                 tags:
                     - name: market
         x-fern-display-name: trades.{market_symbol}
-    transaction:
+    /transaction:
         subscribe:
             summary: Private websocket channel for receiving transaction details of fills
             message:
@@ -273,7 +273,7 @@ channels:
                 tags:
                     - name: account
         x-fern-display-name: transaction
-    transfers:
+    /transfers:
         subscribe:
             summary: Websocket channel for receiving transfer updates
             message:

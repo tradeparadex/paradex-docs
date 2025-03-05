@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.90.2"
+    "version": "1.91.1"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -1739,6 +1739,54 @@
           }
         }
       },
+      "put": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Modify an existing open order by changing its price and/or size.\nThe modified order maintains its original order ID.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Modify order",
+        "operationId": "orders-modify",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Order Id",
+            "name": "order_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Modify Order Request",
+            "name": "order_request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.ModifyOrderRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.OrderResp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      },
       "delete": {
         "security": [
           {
@@ -1797,76 +1845,6 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/responses.GetPositionsResp"
-            }
-          }
-        }
-      }
-    },
-    "/positions-history": {
-      "get": {
-        "security": [
-          {
-            "BearerToken": []
-          }
-        ],
-        "description": "Get all positions owned by current user\n",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Account"
-        ],
-        "summary": "List closed positions history",
-        "operationId": "get-positions-with-filter",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Returns the ‘next’ paginated page.",
-            "name": "cursor",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "description": "End Time (unix time millisecond)",
-            "name": "end_at",
-            "in": "query"
-          },
-          {
-            "type": "string",
-            "example": "BTC-USD-PERP",
-            "name": "market",
-            "in": "query"
-          },
-          {
-            "maximum": 5000,
-            "minimum": 1,
-            "type": "integer",
-            "default": 100,
-            "description": "Limit the number of responses in the page",
-            "name": "page_size",
-            "in": "query"
-          },
-          {
-            "enum": [
-              "LONG",
-              "SHORT"
-            ],
-            "type": "string",
-            "name": "side",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "description": "Start Time (unix time millisecond)",
-            "name": "start_at",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/responses.GetPositionsHistoryResp"
             }
           }
         }
@@ -2849,6 +2827,58 @@
           "description": "Public key of vault operator",
           "type": "string",
           "example": "0x1234567890abcdef"
+        }
+      }
+    },
+    "requests.ModifyOrderRequest": {
+      "type": "object",
+      "required": [
+        "id",
+        "market",
+        "price",
+        "side",
+        "signature",
+        "signature_timestamp",
+        "size",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "description": "Order ID to be modified",
+          "type": "string"
+        },
+        "market": {
+          "description": "Market for which order is modified",
+          "type": "string",
+          "example": "BTC-USD-PERP"
+        },
+        "price": {
+          "description": "Existing or modified price of the order",
+          "type": "string",
+          "example": "29500.12"
+        },
+        "side": {
+          "description": "Existing side of the order",
+          "type": "string",
+          "example": "BUY"
+        },
+        "signature": {
+          "description": "Order Payload signed with STARK Private Key",
+          "type": "string"
+        },
+        "signature_timestamp": {
+          "description": "Timestamp of order creation, used for signature verification",
+          "type": "integer"
+        },
+        "size": {
+          "description": "Existing or modified size of the order",
+          "type": "string",
+          "example": "1.213"
+        },
+        "type": {
+          "description": "Existing type of the order",
+          "type": "string",
+          "example": "LIMIT"
         }
       }
     },
@@ -3911,27 +3941,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/responses.OrderResp"
-          }
-        }
-      }
-    },
-    "responses.GetPositionsHistoryResp": {
-      "type": "object",
-      "properties": {
-        "next": {
-          "description": "The pointer to fetch next set of records (null if there are no records left)",
-          "type": "string",
-          "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-        },
-        "prev": {
-          "description": "The pointer to fetch previous set of records (null if there are no records left)",
-          "type": "string",
-          "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-        },
-        "results": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/responses.PositionResp"
           }
         }
       }

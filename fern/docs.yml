@@ -732,8 +732,13 @@ navigation:
             path: ./pages/websockets/code-examples.mdx
       - section: Production WebSockets Reference
         contents:
-          - api: REST Endpoints
-            api-name: prod_ws
+          - api: Production WebSockets
+            api-name: prod_ws_account
+            skip-slug: true
+            display-errors: true
+            flattened: true
+          - api: Production WebSockets
+            api-name: prod_ws_balance_events
             skip-slug: true
             display-errors: true
             flattened: true

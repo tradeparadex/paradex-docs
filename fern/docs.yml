@@ -437,6 +437,9 @@ navigation:
             - page: RAY-USD-PERP
               slug: ray-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ray-usd-perp.mdx
+            - page: RED-USD-PERP
+              slug: red-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/red-usd-perp.mdx
             - page: RUNE-USD-PERP
               slug: rune-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/rune-usd-perp.mdx

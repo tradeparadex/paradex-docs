@@ -323,6 +323,9 @@ navigation:
             - page: DYDX-USD-PERP
               slug: dydx-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/dydx-usd-perp.mdx
+            - page: ELX-USD-PERP
+              slug: elx-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/elx-usd-perp.mdx
             - page: ENA-USD-PERP
               slug: ena-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ena-usd-perp.mdx
@@ -437,6 +440,9 @@ navigation:
             - page: RAY-USD-PERP
               slug: ray-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ray-usd-perp.mdx
+            - page: RED-USD-PERP
+              slug: red-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/red-usd-perp.mdx
             - page: RUNE-USD-PERP
               slug: rune-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/rune-usd-perp.mdx

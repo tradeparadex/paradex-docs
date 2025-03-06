@@ -323,9 +323,6 @@ navigation:
             - page: DYDX-USD-PERP
               slug: dydx-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/dydx-usd-perp.mdx
-            - page: ELX-USD-PERP
-              slug: elx-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/elx-usd-perp.mdx
             - page: ENA-USD-PERP
               slug: ena-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ena-usd-perp.mdx

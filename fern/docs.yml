@@ -548,13 +548,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.86
+            path: ./pages/release-notes/v1.86.md
           - page: v1.85
             path: ./pages/release-notes/v1.85.md
-          - page: v1.84
-            path: ./pages/release-notes/v1.84.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.84
+                path: ./pages/release-notes/v1.84.md
               - page: v1.83
                 path: ./pages/release-notes/v1.83.md
               - page: v1.82

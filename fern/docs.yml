@@ -329,6 +329,9 @@ navigation:
             - page: EIGEN-USD-PERP
               slug: eigen-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/eigen-usd-perp.mdx
+            - page: ELX-USD-PERP
+              slug: elx-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/elx-usd-perp.mdx
             - page: FARTCOIN-USD-PERP
               slug: fartcoin-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/fartcoin-usd-perp.mdx

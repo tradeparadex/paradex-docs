@@ -11,9 +11,9 @@ This section provides an overview of the speed of order signature in currently i
 ### Code
 
 * [Benchmarking code for Go, Java, Python, TypeScript](https://github.com/tradeparadex/code-samples)
-* [Rust implementation](https://github.com/xJonathanLEI/starknet-rs/blob/master/starknet-crypto/benches/ecdsa_sign.rs)
+* [Rust implementation](https://github.com/tradeparadex/paradex-rs)
 * [C++ implementation](https://github.com/tradeparadex/starknet-signing-cpp)
 
 ### Benchmarking Results
 
-<table><thead><tr><th width="134">Language</th><th width="253">Signature lib</th><th width="198">Signatures / second</th><th>Signature latency (ms)</th></tr></thead><tbody><tr><td>Go </td><td>Go <code>gnark-crypto</code></td><td>1430</td><td>0.7</td></tr><tr><td>Python  </td><td>Rust <code>starknet-crypto-py</code></td><td>182</td><td>5</td></tr><tr><td>Python </td><td>C++ <code>crypto-cpp-py</code></td><td>8</td><td>119</td></tr><tr><td>Java</td><td>JVM <code>StarknetCurve</code></td><td>182</td><td>5</td></tr><tr><td>Java</td><td>C++ <code>crypto-cpp</code></td><td>8</td><td>119</td></tr><tr><td>TypeScript</td><td>JS <code>starknet.js</code></td><td>50</td><td>20</td></tr><tr><td>Rust</td><td></td><td>5000</td><td>0.2</td></tr><tr><td>C++</td><td></td><td>2500</td><td>0.4</td></tr></tbody></table>
+<table><thead><tr><th width="134">Language</th><th width="253">Signature lib</th><th width="198">Signatures / second</th><th>Signature latency (ms)</th></tr></thead><tbody><tr><td>Go </td><td>Go <code>gnark-crypto</code></td><td>1430</td><td>0.7</td></tr><tr><td>Python  </td><td>Rust <code>starknet-crypto-py</code></td><td>182</td><td>5</td></tr><tr><td>Python </td><td>C++ <code>crypto-cpp-py</code></td><td>8</td><td>119</td></tr><tr><td>Java</td><td>JVM <code>StarknetCurve</code></td><td>182</td><td>5</td></tr><tr><td>Java</td><td>C++ <code>crypto-cpp</code></td><td>8</td><td>119</td></tr><tr><td>TypeScript</td><td>JS <code>starknet.js</code></td><td>50</td><td>20</td></tr><tr><td>Rust</td><td>Rust <code>paradex-rs</code></td><td>2000</td><td>0.5</td></tr><tr><td>C++ (Starknet Signature Only)</td><td></td><td>2500</td><td>0.4</td></tr></tbody></table>

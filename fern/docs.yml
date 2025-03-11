@@ -777,7 +777,7 @@ logo:
   dark: ./assets/logo-dark.svg
   height: 30
   href: https://app.paradex.trade
-favicon: ./assets/logo.jpeg
+favicon: ./assets/logo.png
 colors:
   accent-primary:
     dark: '#c83efb'

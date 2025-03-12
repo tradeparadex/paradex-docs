@@ -1,17 +1,40 @@
-.fern-sidebar-link-container[data-state=active] .fern-sidebar-link {
-  background-color: #302F38;
+:root {
+  --black: #000000;
+  --white: #ffffff;
+
+  /* Interface colors */
+  --gray-darkest: #0b0e12;
+  --gray-darker: #181c20;
+  --gray-dark: #302f38;
+
+  /* Core colors */
+  --purple: #cc38ff;
+  --red: #ff005c;
+  --green: #00ee91;
+  --yellow: #ffcb23;
+  --orange: #fa9400;
+
+  /* Gradients only */
+  --yellow-gradient: #fddd78;
+  --yellow-gradient-dark: #fdd34c;
+  --purple-gradient: #de7fff;
+  --purple-gradient-dark: #7a35cb;
 }
 
-.fern-sidebar-link-container[data-state=active] {
-  color: #ffffff;
+.fern-sidebar-link-container[data-state="active"] .fern-sidebar-link {
+  background-color: var(--gray-dark);
+}
+
+.fern-sidebar-link-container[data-state="active"] {
+  color: var(--white);
 }
 
 .fern-scroll-area-thumb {
-  background-color: #302F38;
+  background-color: var(--gray-dark);
 }
 
 .fern-card {
-  background-color: #181C20;
+  background-color: var(--gray-darker);
 }
 
 .fern-button:not(.disabled).filled.primary {
@@ -19,7 +42,11 @@
 }
 
 :is(.light) .fern-background {
-  background-image: radial-gradient(49.63% 57.02% at 58.99% -7.2%, rgba(81, 24, 108, 0.1) 39.4%, rgba(0, 0, 0, 0) 100%) !important;
+  background-image: radial-gradient(
+    49.63% 57.02% at 58.99% -7.2%,
+    var(--purple-gradient) 39.4%,
+    var(--black) 100%
+  ) !important;
   z-index: -1 !important;
 }
 
@@ -30,3 +57,6 @@
 a[id*="playground-button"] {
   display: none;
  }
+.prdx--text-purple {
+  color: var(--purple);
+}

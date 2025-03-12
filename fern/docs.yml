@@ -58,7 +58,7 @@ navigation:
             - page: Desktop App
               slug: desktop-app
               path: ./pages/introduction/install-our-app/desktop.mdx
-          - page: Official Links 
+          - page: Official Links
             slug: official-links
             path: ./pages/introduction/official-links.mdx
 
@@ -96,7 +96,7 @@ navigation:
           - page: FAQs
             slug: faq
             path: ./pages/vaults/faqs.mdx
-      
+
       - section: Perpetual Options (Closed Beta)
         slug: perpetual-options
         contents:
@@ -821,7 +821,7 @@ typography:
 logo:
   light: ./assets/logo-light.svg
   dark: ./assets/logo-dark.svg
-  height: 30
+  height: 20
   href: https://app.paradex.trade
 favicon: ./assets/logo.png
 colors:
@@ -830,5 +830,5 @@ colors:
   background:
     dark: '#181c20'
 css: ./assets/styles.css
-js: 
+js:
   - path: ./dist/dd-rum.js

@@ -13,7 +13,9 @@ tabs:
   docs:
     display-name: Documentation
   api:
-    display-name: API Reference
+    display-name: REST API Reference
+  websockets:
+    display-name: WebSockets Reference
 navigation:
   - tab: docs
     layout:
@@ -706,8 +708,6 @@ navigation:
             skip-slug: true
             display-errors: true
             flattened: true
-          - link: Websocket Documentation
-            href: https://docs.api.prod.paradex.trade/#websocket-json-rpc-api
         slug: prod
       - section: Testnet API Reference
         contents:
@@ -716,8 +716,6 @@ navigation:
             skip-slug: true
             display-errors: true
             flattened: true
-          - link: Websocket Documentation
-            href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
         slug: testnet
       - section: Useful Resources
         contents:
@@ -731,6 +729,27 @@ navigation:
           href: https://tradeparadex.github.io/paradex-py/
         - link: CCXT Integration
           href: https://docs.ccxt.com/#/exchanges/paradex
+  - tab: websockets
+    layout:
+      - section: WebSockets Reference
+        contents:
+          - page: Introduction
+            path: ./pages/websockets/introduction.mdx
+          - page: Authentication
+            path: ./pages/websockets/connection-authentication.mdx
+          - page: Subscription Channels
+            path: ./pages/websockets/subscription-channels.mdx
+          - page: Error Handling
+            path: ./pages/websockets/error-handling.mdx
+          - page: Code Examples
+            path: ./pages/websockets/code-examples.mdx
+          - section: WebSockets Channels
+            contents:
+              - api: WS Endpoints
+                api-name: prod_ws
+                skip-slug: true
+                display-errors: true
+                flattened: true
 navbar-links:
   - type: filled
     text: Launch Exchange

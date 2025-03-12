@@ -1,0 +1,72 @@
+---
+title: WebSocket API
+---
+
+The Paradex WebSocket API provides real-time market data and account updates. WebSockets allow for a persistent connection between the client and server, enabling efficient two-way communication.
+
+## Server URLs
+
+| Environment | WebSocket URL |
+|-------------|--------------|
+| Testnet (Sepolia) | wss://ws.api.testnet.paradex.trade/v1 |
+| Mainnet | wss://ws.api.prod.paradex.trade/v1 |
+
+## Public vs Private Channels
+
+The Paradex WebSocket API provides two types of channels:
+
+- **Public Channels**: Publish information about the exchange that is not specific to a particular account. Examples include market summary, order book, trades, etc. You do not need to authenticate to subscribe to public channels.
+
+- **Private Channels**: Publish information about a particular account. You need to authenticate to subscribe to private channels.
+
+## Establishing a Connection
+
+To establish a WebSocket connection, you can use various programming languages and libraries. When running Python-based code, Python 3.10+ is recommended.
+
+### Example in Python
+
+```python
+import websocket
+import json
+
+websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
+
+# Define a callback to check connection success
+def on_open(ws):
+    print('Connected')
+
+# Connect to the WebSocket server
+ws = websocket.WebSocketApp(websocket_url, on_open=on_open)
+
+# Wait for a response
+ws.run_forever()
+```
+
+Upon successful connection, you should see:
+
+```
+Connected
+```
+
+## Maintaining a Connection
+
+Paradex has implemented ping/pong functionality as part of the WebSocket specification. This works at the protocol level:
+
+- The server sends a ping message every 55 seconds
+- The client must respond with a pong within 5 seconds
+- Upon receiving the pong, the connection is renewed for 60 seconds
+- If the server doesn't receive a pong within the 5-second window, the connection is terminated
+
+Most modern WebSocket libraries and frameworks automatically handle ping/pong messages. If you're using older libraries or building a WebSocket client from scratch, you may need to implement this functionality manually.
+
+To display incoming ping messages, you can use the following wscat command:
+
+```bash
+wscat -P -w 120 -c wss://ws.api.testnet.paradex.trade/v1 -x '{"id":1,"jsonrpc":"2.0","method":"subscribe","params":{"channel":"markets_summary"}}' | grep "ping"
+```
+
+## Next Steps
+
+- Learn how to [authenticate your WebSocket connection](./connection-authentication.mdx)
+- Explore [available channels and subscription methods](./subscription-channels.mdx)
+- Understand [error handling](./error-handling.mdx) for WebSocket connections 

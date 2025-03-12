@@ -13,7 +13,11 @@ tabs:
   docs:
     display-name: Documentation
   api:
-    display-name: API Reference
+    display-name: REST API Reference
+    slug: api-reference
+  websockets:
+    display-name: WebSocket API Reference
+    slug: websocket-reference
 navigation:
   - tab: docs
     layout:
@@ -669,13 +673,13 @@ navigation:
       - section: General Information
         path: ./pages/developer-portal/general-information/intro.mdx
         contents:
-          - page: API Server Location
-            slug: api-server-location
-            path: ./pages/developer-portal/general-information/api-server-location.mdx
-          - page: API URLs
+          - page: Server Location
+            slug: server-location
+            path: ./pages/developer-portal/general-information/server-location.mdx
+          - page: Server URLs
             slug: api-urls
             path: ./pages/developer-portal/general-information/api-urls.mdx
-          - page: API Quick Start
+          - page: Quick Start
             slug: api-quick-start
             path: ./pages/developer-portal/general-information/api-quick-start.mdx
           - page: Authentication
@@ -687,9 +691,6 @@ navigation:
               - page: API
                 slug: api
                 path: ./pages/developer-portal/general-information/rate-limits/api.mdx
-              - page: Websocket
-                slug: websocket
-                path: ./pages/developer-portal/general-information/rate-limits/websocket.mdx
               - page: Open Orders per Account
                 slug: open-orders-per-account
                 path: ./pages/developer-portal/general-information/rate-limits/open-orders-per-account.mdx
@@ -706,8 +707,7 @@ navigation:
             skip-slug: true
             display-errors: true
             flattened: true
-          - link: Websocket Documentation
-            href: https://docs.api.prod.paradex.trade/#websocket-json-rpc-api
+            paginated: true
         slug: prod
       - section: Testnet API Reference
         contents:
@@ -716,9 +716,47 @@ navigation:
             skip-slug: true
             display-errors: true
             flattened: true
-          - link: Websocket Documentation
-            href: https://docs.api.testnet.paradex.trade/#websocket-json-rpc-api
+            paginated: true
         slug: testnet
+      - section: Useful Resources
+        contents:
+        - link: Paradex Github
+          href: https://github.com/tradeparadex
+        - link: Paradex CLI
+          href: https://github.com/tradeparadex/paradex-cli/
+        - link: Code Samples
+          href: https://github.com/tradeparadex/code-samples
+        - link: Python SDK
+          href: https://tradeparadex.github.io/paradex-py/
+        - link: CCXT Integration
+          href: https://docs.ccxt.com/#/exchanges/paradex
+  - tab: websockets
+    layout:
+      - section: General Information
+        path: ./pages/websockets/landing.mdx
+        contents:
+          - page: Introduction
+            path: ./pages/websockets/introduction.mdx
+          - page: Server Location
+            path: ./pages/websockets/server-location.mdx
+          - page: Authentication
+            path: ./pages/websockets/connection-authentication.mdx
+          - page: Subscription Channels
+            path: ./pages/websockets/subscription-channels.mdx
+          - page: Error Handling
+            path: ./pages/websockets/error-handling.mdx
+          - page: Code Examples
+            path: ./pages/websockets/code-examples.mdx
+          - page: Rate Limits
+            path: ./pages/websockets/rate-limits.mdx
+      - section: WebSocket Channels
+        contents:
+          - api: WS Endpoints
+            api-name: prod_ws
+            skip-slug: true
+            display-errors: true
+            flattened: true
+            paginated: true
       - section: Useful Resources
         contents:
         - link: Paradex Github

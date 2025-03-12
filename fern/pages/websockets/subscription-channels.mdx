@@ -1,0 +1,199 @@
+---
+title:Subscription Channels
+---
+
+The Paradex WebSocket API allows you to subscribe to various channels to receive real-time updates. This page explains how to subscribe and unsubscribe from channels.
+
+## Subscribing to Channels
+
+To receive updates from a specific channel, you need to subscribe to it. Multiple calls to subscribe can be made, each for a different channel.
+
+**Note**: Subscribing to the same channel more than once will return an error.
+
+### Subscribe Request
+
+To subscribe to a channel, send a message with the following format:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "subscribe",
+  "params": {
+    "channel": "CHANNEL_NAME"
+  },
+  "id": 1
+}
+```
+
+### Subscribe Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| channel | string | Channel name | Yes |
+
+### Subscribe Response
+
+Upon successful subscription, you will receive a response similar to:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "channel": "CHANNEL_NAME"
+  },
+  "usIn": 1682556415569005368,
+  "usDiff": 1291796,
+  "id": 1
+}
+```
+
+### Subscribe Response Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| channel | string | Channel name | Yes |
+
+## Unsubscribing from Channels
+
+To stop receiving updates from a specific channel, you need to unsubscribe from it.
+
+**Note**: Unsubscribing from a channel that you are not subscribed to will return an error.
+
+### Unsubscribe Request
+
+To unsubscribe from a channel, send a message with the following format:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "unsubscribe",
+  "params": {
+    "channel": "CHANNEL_NAME"
+  },
+  "id": 2
+}
+```
+
+### Unsubscribe Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| channel | string | Channel name | Yes |
+
+### Unsubscribe Response
+
+Upon successful unsubscription, you will receive a response similar to:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "channel": "CHANNEL_NAME"
+  },
+  "usIn": 1682556415569005368,
+  "usDiff": 1291796,
+  "id": 2
+}
+```
+
+### Unsubscribe Response Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| channel | string | Channel name | Yes |
+
+## Example: Subscribing to a Channel
+
+Here's a complete example of how to subscribe to the `trades.ETH-USD-PERP` channel using Python:
+
+```python
+import websocket
+import json
+
+websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
+
+# Define the message to send
+auth = {
+  "jsonrpc": "2.0",
+  "method": "auth",
+  "params": {
+    "bearer": "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
+  },
+  "id": 0
+}
+message = {
+  "jsonrpc": "2.0",
+  "method": "subscribe",
+  "params": {
+    "channel": "trades.ETH-USD-PERP"
+  },
+  "id": 1
+}
+
+# Define a callback to check connection success
+def on_open(ws):
+    # Auth first
+    ws.send(json.dumps(auth))
+    # Send the message
+    ws.send(json.dumps(message))
+
+# Define a callback to handle the response
+def on_message(ws, message):
+    response = json.loads(message)
+    print(response)
+
+# Connect to the WebSocket server
+ws = websocket.WebSocketApp(websocket_url, on_open=on_open, on_message=on_message)
+
+# Wait for a response
+ws.run_forever()
+```
+
+## Example: Unsubscribing from a Channel
+
+Here's a complete example of how to unsubscribe from the `trades.ETH-USD-PERP` channel using Python:
+
+```python
+import websocket
+import json
+
+websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
+
+# Define the message to send
+auth = {
+  "jsonrpc": "2.0",
+  "method": "auth",
+  "params": {
+    "bearer": "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
+  },
+  "id": 0
+}
+message = {
+  "jsonrpc": "2.0",
+  "method": "unsubscribe",
+  "params": {
+    "channel": "trades.ETH-USD-PERP"
+  },
+  "id": 2
+}
+
+# Define a callback to check connection success
+def on_open(ws):
+    # Auth first
+    ws.send(json.dumps(auth))
+    # Send the message
+    ws.send(json.dumps(message))
+
+# Define a callback to handle the response
+def on_message(ws, message):
+    response = json.loads(message)
+    print(response)
+
+# Connect to the WebSocket server
+ws = websocket.WebSocketApp(websocket_url, on_open=on_open, on_message=on_message)
+
+# Wait for a response
+ws.run_forever()
+```
+
+Refer to the WebSocket Channels documentation for a list of supported channels. 

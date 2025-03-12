@@ -1,0 +1,95 @@
+---
+title: Authentication
+---
+
+To access private channels in the Paradex WebSocket API, you must authenticate your connection. This page explains how to authenticate your WebSocket connection using a JWT token.
+
+## Authentication Process
+
+Authentication is required to subscribe to private channels. The JWT (bearer) token is obtained from the `POST /auth` endpoint of the REST API.
+
+**Important**: After the initial authentication, you do not need to re-authenticate your WebSocket connection for the lifetime of the connection.
+
+### Authentication Request
+
+To authenticate your WebSocket connection, send an authentication message with the following format:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "auth",
+  "params": {
+    "bearer": "YOUR_JWT_TOKEN"
+  },
+  "id": 0
+}
+```
+
+### Authentication Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| bearer | string | JWT token | Yes |
+
+### Authentication Response
+
+Upon successful authentication, you will receive a response similar to:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {},
+  "usIn": 1682556415569005368,
+  "usDiff": 1291796,
+  "id": 0
+}
+```
+
+## Example: Authenticating a WebSocket Connection
+
+Here's a complete example of how to authenticate a WebSocket connection using Python:
+
+```python
+import websocket
+import json
+
+websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
+
+# Define the message to send
+message = {
+  "jsonrpc": "2.0",
+  "method": "auth",
+  "params": {
+    "bearer": "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
+  },
+  "id": 0
+}
+
+# Define a callback to check connection success
+def on_open(ws):
+    # Send the message
+    ws.send(json.dumps(message))
+
+# Define a callback to handle the response
+def on_message(ws, message):
+    response = json.loads(message)
+    print(response)
+
+# Connect to the WebSocket server
+ws = websocket.WebSocketApp(websocket_url, on_open=on_open, on_message=on_message)
+
+# Wait for a response
+ws.run_forever()
+```
+
+## Authentication Errors
+
+If authentication fails, you will receive an error response. Common authentication errors include:
+
+| Error Code | Description |
+|------------|-------------|
+| 40110 | Malformed Bearer Token |
+| 40111 | Invalid Bearer Token |
+| 40112 | Geo IP blocked |
+
+For more information on error handling, see the [Error Handling](./error-handling.mdx) section. 

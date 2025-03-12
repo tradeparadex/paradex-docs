@@ -1,0 +1,122 @@
+---
+title: Error Handling
+---
+
+The Paradex WebSocket API uses JSON-RPC 2.0 for communication, which includes standardized error handling. This page explains the error format and common error codes.
+
+## Error Message Format
+
+When an error occurs, the WebSocket API returns an error message with the following format:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "error": { 
+    "code": -32601, 
+    "message": "method does not exist" 
+  },
+  "usIn": 1710522972729581,
+  "usOut": 1710522972729618,
+  "usDiff": 37,
+  "id": 4
+}
+```
+
+### Error Object Properties
+
+| Property | Type | Description | Required |
+|----------|------|-------------|----------|
+| code | number | Error code | Yes |
+| message | string | Short explanation | Yes |
+| data | string | Extra details | No |
+
+## Error Codes
+
+The Paradex WebSocket API uses standard JSON-RPC error codes as well as custom error codes.
+
+### Standard JSON-RPC Error Codes
+
+Error codes from -32768 to -32000 are pre-defined errors per the JSON-RPC specification:
+
+| Code | Description |
+|------|-------------|
+| -32700 | Parse error |
+| -32600 | Invalid request |
+| -32601 | Method not found |
+| -32602 | Invalid parameters |
+| -32603 | Internal error |
+
+### Paradex-Specific Error Codes
+
+Other errors are specific to the Paradex WebSocket API:
+
+| Code | Description |
+|------|-------------|
+| 100 | Method error |
+| 40110 | Malformed Bearer Token |
+| 40111 | Invalid Bearer Token |
+| 40112 | Geo IP blocked |
+
+## Common Error Scenarios
+
+### Authentication Errors
+
+Authentication errors occur when there are issues with the JWT token:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "error": { 
+    "code": 40111, 
+    "message": "Invalid Bearer Token" 
+  },
+  "usIn": 1710522972729581,
+  "usOut": 1710522972729618,
+  "usDiff": 37,
+  "id": 0
+}
+```
+
+### Subscription Errors
+
+Subscription errors occur when there are issues with channel subscriptions:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "error": { 
+    "code": -32602, 
+    "message": "Invalid parameters" 
+  },
+  "usIn": 1710522972729581,
+  "usOut": 1710522972729618,
+  "usDiff": 37,
+  "id": 1
+}
+```
+
+### Method Errors
+
+Method errors occur when an invalid method is called:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "error": { 
+    "code": -32601, 
+    "message": "method does not exist" 
+  },
+  "usIn": 1710522972729581,
+  "usOut": 1710522972729618,
+  "usDiff": 37,
+  "id": 4
+}
+```
+
+## Best Practices for Error Handling
+
+1. **Check Error Codes**: Always check the error code to understand the type of error
+2. **Log Errors**: Log all errors for debugging purposes
+3. **Implement Retry Logic**: For transient errors, implement retry logic with exponential backoff
+4. **Handle Authentication Errors**: If you receive an authentication error, regenerate your JWT token and reconnect
+5. **Validate Parameters**: Ensure all parameters are valid before sending requests 

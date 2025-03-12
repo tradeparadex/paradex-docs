@@ -676,10 +676,10 @@ navigation:
           - page: Server Location
             slug: server-location
             path: ./pages/developer-portal/general-information/server-location.mdx
-          - page: API URLs
+          - page: Server URLs
             slug: api-urls
             path: ./pages/developer-portal/general-information/api-urls.mdx
-          - page: API Quick Start
+          - page: Quick Start
             slug: api-quick-start
             path: ./pages/developer-portal/general-information/api-quick-start.mdx
           - page: Authentication

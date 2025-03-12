@@ -58,6 +58,14 @@ navigation:
             slug: official-links
             path: ./pages/introduction/official-links.mdx
 
+      - section: Paradex Chain
+        contents:
+          - page: Introduction
+          - slug: paradex-chain-introduction
+          - path: ./pages/paradex-chain/introduction.mdx
+          - page: Testnet
+          - slug: paradex-chain-testnet
+          - path: ./pages/paradex-chain/testnet.mdx
 
       - section: Vaults
         contents:

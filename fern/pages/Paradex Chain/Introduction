@@ -1,0 +1,15 @@
+---
+title: Introduction
+---
+
+## What is the Paradex Chain?
+
+Built on the SN Stack, Paradex Chain is a general-purpose smart contract platform powered by CairoVM. It shares state with Paradex Exchange, enabling a fully composable, high-throughput execution environment where on-chain applications can seamlessly interact with the deep liquidity infrastructure we’ve built over the past year.
+
+## Technical Bits
+
+The CairoVM is a specialized virtual machine designed specifically for Validity Proof systems (ZK-Rollups), and is free from the constraints of EVM-based architectures. Smart contracts are written in Cairo, a Rust-like language designed to maximize the efficiency of STARK-proof-based computation for scaling Ethereum. Effective immediately, Cairo developers get:
+
+- Full Starknet Compatibility: Deploy your SN contracts by simply updating RPC endpoints
+- Simplified Deployment: No protocol-level changes required
+- Mature Tooling: Use all existing Starknet ecosystem tooling including Hardhat, Starkli etc.

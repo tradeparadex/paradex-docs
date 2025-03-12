@@ -58,6 +58,14 @@ navigation:
             slug: official-links
             path: ./pages/introduction/official-links.mdx
 
+      - section: Paradex Chain
+        contents:
+          - page: Introduction
+            slug: paradex-chain-introduction
+            path: ./pages/paradex-chain/introduction.mdx
+          - page: Testnet
+            slug: paradex-chain-testnet
+            path: ./pages/paradex-chain/testnet.mdx
 
       - section: Vaults
         contents:
@@ -278,9 +286,6 @@ navigation:
             - page: ADA-USD-PERP
               slug: ada-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ada-usd-perp.mdx
-            - page: AERO-USD-PERP
-              slug: aero-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/aero-usd-perp.mdx
             - page: AEVO-USD-PERP
               slug: aevo-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/aevo-usd-perp.mdx
@@ -332,6 +337,9 @@ navigation:
             - page: EIGEN-USD-PERP
               slug: eigen-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/eigen-usd-perp.mdx
+            - page: ELX-USD-PERP
+              slug: elx-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/elx-usd-perp.mdx
             - page: FARTCOIN-USD-PERP
               slug: fartcoin-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/fartcoin-usd-perp.mdx
@@ -353,15 +361,18 @@ navigation:
             - page: INJ-USD-PERP
               slug: inj-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx
-            - page: IO-USD-PERP
-              slug: io-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/io-usd-perp.mdx
+            - page: IP-USD-PERP
+              slug: ip-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/ip-usd-perp.mdx
             - page: JTO-USD-PERP
               slug: jto-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/jto-usd-perp.mdx
             - page: JUP-USD-PERP
               slug: jup-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/jup-usd-perp.mdx
+            - page: KAITO-USD-PERP
+              slug: kaito-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/kaito-usd-perp.mdx
             - page: kBONK-USD-PERP
               slug: kbonk-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/kbonk-usd-perp.mdx
@@ -371,6 +382,9 @@ navigation:
             - page: kSHIB-USD-PERP
               slug: kshib-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/kshib-usd-perp.mdx
+            - page: LAYER-USD-PERP
+              slug: layer-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/layer-usd-perp.mdx
             - page: LDO-USD-PERP
               slug: ldo-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ldo-usd-perp.mdx
@@ -380,9 +394,6 @@ navigation:
             - page: LTC-USD-PERP
               slug: ltc-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ltc-usd-perp.mdx
-            - page: ME-USD-PERP
-              slug: me-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/me-usd-perp.mdx
             - page: MELANIA-USD-PERP
               slug: melania-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/melania-usd-perp.mdx
@@ -407,6 +418,9 @@ navigation:
             - page: NEIRO-USD-PERP
               slug: neiro-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/neiro-usd-perp.mdx
+            - page: OM-USD-PERP
+              slug: om-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/om-usd-perp.mdx
             - page: ONDO-USD-PERP
               slug: ondo-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ondo-usd-perp.mdx
@@ -422,9 +436,6 @@ navigation:
             - page: PENDLE-USD-PERP
               slug: pendle-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pendle-usd-perp.mdx
-            - page: PEOPLE-USD-PERP
-              slug: people-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/people-usd-perp.mdx
             - page: PNUT-USD-PERP
               slug: pnut-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pnut-usd-perp.mdx
@@ -434,9 +445,18 @@ navigation:
             - page: PYTH-USD-PERP
               slug: pyth-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pyth-usd-perp.mdx
+            - page: RAY-USD-PERP
+              slug: ray-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/ray-usd-perp.mdx
+            - page: RED-USD-PERP
+              slug: red-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/red-usd-perp.mdx
             - page: RUNE-USD-PERP
               slug: rune-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/rune-usd-perp.mdx
+            - page: S-USD-PERP
+              slug: s-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/s-usd-perp.mdx
             - page: SAND-USD-PERP
               slug: sand-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/sand-usd-perp.mdx
@@ -470,6 +490,9 @@ navigation:
             - page: TRX-USD-PERP
               slug: trx-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/trx-usd-perp.mdx
+            - page: TST-USD-PERP
+              slug: tst-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/tst-usd-perp.mdx
             - page: UNI-USD-PERP
               slug: uni-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/uni-usd-perp.mdx
@@ -500,9 +523,6 @@ navigation:
             - page: XRP-USD-PERP
               slug: xrp-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx
-            - page: ZEREBRO-USD-PERP
-              slug: zerebro-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/zerebro-usd-perp.mdx
             - page: ZRO-USD-PERP
               slug: zro-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
@@ -536,14 +556,21 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
-          - page: v1.82
-            path: ./pages/release-notes/v1.82.md
-          - page: v1.81
-            path: ./pages/release-notes/v1.81.md
-          
+          - page: v1.86
+            path: ./pages/release-notes/v1.86.md
+          - page: v1.85
+            path: ./pages/release-notes/v1.85.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.84
+                path: ./pages/release-notes/v1.84.md
+              - page: v1.83
+                path: ./pages/release-notes/v1.83.md
+              - page: v1.82
+                path: ./pages/release-notes/v1.82.md
+              - page: v1.81
+                path: ./pages/release-notes/v1.81.md
               - page: v1.80
                 path: ./pages/release-notes/v1.80.md
               - page: v1.79
@@ -758,7 +785,7 @@ logo:
   dark: ./assets/logo-dark.svg
   height: 30
   href: https://app.paradex.trade
-favicon: ./assets/logo.jpeg
+favicon: ./assets/logo.png
 colors:
   accent-primary:
     dark: '#c83efb'

@@ -1,4 +1,5 @@
-api: 
-  path: ./openapi/openapi.json
-  overrides: ./openapi/overrides.yml
-  origin: https://api.prod.paradex.trade/swagger/doc.json
+api:
+  specs:
+    - openapi: ./openapi/openapi.json
+      overrides: ./openapi/overrides.yml
+      origin: https://api.prod.paradex.trade/swagger/doc.json

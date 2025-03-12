@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API. Bear in mind that this is still a work in\nprogress so all feedback is welcome.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.88.1"
+    "version": "1.91.1"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -64,6 +64,58 @@
         }
       }
     },
+    "/account/history": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Respond with requester's account information\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get account history",
+        "operationId": "get-account-history",
+        "parameters": [
+          {
+            "enum": [
+              "pnl",
+              "value",
+              "volume"
+            ],
+            "type": "string",
+            "description": "Type of data",
+            "name": "type",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.AccountHistoricalDataResp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
     "/account/info": {
       "get": {
         "security": [
@@ -89,22 +141,22 @@
         }
       }
     },
-    "/account/leverage": {
+    "/account/margin": {
       "get": {
         "security": [
           {
             "BearerToken": []
           }
         ],
-        "description": "Get leverage configuration for an account and market",
+        "description": "Get margin configuration for an account and market",
         "produces": [
           "application/json"
         ],
         "tags": [
           "Account"
         ],
-        "summary": "Get account leverage configuration",
-        "operationId": "get-account-leverage",
+        "summary": "Get account margin configuration",
+        "operationId": "get-account-margin",
         "parameters": [
           {
             "type": "string",
@@ -118,7 +170,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/message.AccountLeverageConfig"
+              "$ref": "#/definitions/message.AccountMarginConfig"
             }
           },
           "400": {
@@ -134,14 +186,16 @@
             }
           }
         }
-      },
+      }
+    },
+    "/account/margin/{market}": {
       "post": {
         "security": [
           {
             "BearerToken": []
           }
         ],
-        "description": "Set leverage configuration for an account and market",
+        "description": "Set margin configuration for an account and market",
         "consumes": [
           "application/json"
         ],
@@ -151,16 +205,23 @@
         "tags": [
           "Account"
         ],
-        "summary": "Set leverage configuration",
-        "operationId": "upsert-account-leverage",
+        "summary": "Set margin configuration",
+        "operationId": "upsert-account-margin",
         "parameters": [
           {
-            "description": "Leverage Configuration",
+            "type": "string",
+            "description": "Market Name - example: BTC-USD-PERP",
+            "name": "market",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Margin Configuration",
             "name": "config",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/requests.AccountLeverageRequest"
+              "$ref": "#/definitions/requests.AccountMarginRequest"
             }
           }
         ],
@@ -168,7 +229,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/message.AccountLeverageConfig"
+              "$ref": "#/definitions/message.AccountMarginConfig"
             }
           },
           "400": {
@@ -636,7 +697,7 @@
     },
     "/auth": {
       "post": {
-        "description": "Authenticate using signed payload to get a JWT for usage in other endpoints\n\nThere are multiple valid headers required to be sent as part of this request.\n\nFor onboarding examples, refer to `go`, `java` and `python` code in [code-samples](https://github.com/tradeparadex/code-samples).\n\n#### StarkNet Message Hash and Signature\n\nInspired by [EIP-712](https://eips.ethereum.org/EIPS/eip-712),\n(a standard for hashing and signing typed structured data)\nthe encoding of an off-chain message is defined as:\n\n`signed_data = Enc[PREFIX_MESSAGE, domain_separator, account, hash_struct(message)]`\n\nwhere:\n\n- `PREFIX_MESSAGE = \"StarkNet Message\"`\n- `domain_separator` is defined as the `hash_struct` of the StarkNetDomain struct:\n  * Struct contains: `name`, `chainId` and `version`\n  * `chainId` is can be obtained calling `GET /system/config`\n- `account` is the StarkNet account address\n- The message to be hashed is represented as a struct\n  * `hash_struct(message) = Enc[type_hash(MyStruct), Enc[param1], ..., Enc[paramN]]`\n  * where `type_hash` is defined as in EIP-712 (but using `selector` instead of `keccak`)\n  * More details on StarkNet - [Hash Functions](https://docs.starknet.io/documentation/architecture_and_concepts/Hashing/hash-functions/)\n\nIn case of more complex structure of object, you have to work in the spirit of EIP-712.\nThis json structure has 4 mandatory items: `types`, `primaryType`, `domain` and `message`.\nThese items are designed to be able to be an interface with a wallet.\nAt sign request, the wallet will display:\n\n- `message` will be displayed at the bottom of the wallet display,\nshowing clearly (not in hex) the message to sign.\nIts structure has to be in accordance with the type listed in primaryType,\ndefined in types.\n- `domain` will be shown above the message.\nIts structure has to be in accordance with `StarkNetDomain`.\n\nThe predefined types that you can use :\n\n- `felt` : for an integer on 251 bits.\n- `felt*` : for an array of felt.\n- `string` : for a shortString of 31 ASCII characters max.\n- `selector` : for a name of a smart contract function.\n- `merkletree` : for a Root of a Merkle tree, calculated with the provided data.\n\nSpecification details: [Signing transactions and off-chain messages](https://github.com/argentlabs/argent-x/discussions/14)\n\n#### Message Hash Sample Code\n\nFor a complete `message_hash` example, refer to `python` code in [code-samples](https://github.com/tradeparadex/code-samples).\n\n> Examples:\n\n```json\n{\n  \"paradex-signature-expiration\": 1682364556,\n  \"paradex-starknet-account\": \"0x129f3dc1b8962d8a87abc692424c78fda963ade0e1cd17bf3d1c26f8d41ee7a\",\n  \"paradex-starknet-signature\": [\n    \"1381323390094460587764867648394252677239485992175346764030313478865763678671\",\n    \"396490140510115262427678549757564216013606350105112805717359873954984880589\"\n  ],\n  \"paradex-timestamp\": 1681759756\n}\n```\n",
+        "description": "Authenticate using signed payload to get a JWT for usage in other endpoints\n\nThere are multiple valid headers required to be sent as part of this request.\n\nFor onboarding examples, refer to `go`, `java` and `python` code in [code-samples](https://github.com/tradeparadex/code-samples).\n\n#### StarkNet Message Hash and Signature\n\nInspired by [EIP-712](https://eips.ethereum.org/EIPS/eip-712),\n(a standard for hashing and signing typed structured data)\nthe encoding of an off-chain message is defined as:\n\n`signed_data = Enc[PREFIX_MESSAGE, domain_separator, account, hash_struct(message)]`\n\nwhere:\n\n- `PREFIX_MESSAGE = \"StarkNet Message\"`\n- `domain_separator` is defined as the `hash_struct` of the StarkNetDomain struct:\n  * Struct contains: `name`, `chainId` and `version`\n  * `chainId` is can be obtained calling `GET /system/config`\n- `account` is the StarkNet account address\n- The message to be hashed is represented as a struct\n  * `hash_struct(message) = Enc[type_hash(MyStruct), Enc[param1], ..., Enc[paramN]]`\n  * where `type_hash` is defined as in EIP-712 (but using `selector` instead of `keccak`)\n  * More details on StarkNet - [Hash Functions](https://docs.starknet.io/architecture-and-concepts/cryptography/#hash_functions)\n\nIn case of more complex structure of object, you have to work in the spirit of EIP-712.\nThis json structure has 4 mandatory items: `types`, `primaryType`, `domain` and `message`.\nThese items are designed to be able to be an interface with a wallet.\nAt sign request, the wallet will display:\n\n- `message` will be displayed at the bottom of the wallet display,\nshowing clearly (not in hex) the message to sign.\nIts structure has to be in accordance with the type listed in primaryType,\ndefined in types.\n- `domain` will be shown above the message.\nIts structure has to be in accordance with `StarkNetDomain`.\n\nThe predefined types that you can use :\n\n- `felt` : for an integer on 251 bits.\n- `felt*` : for an array of felt.\n- `string` : for a shortString of 31 ASCII characters max.\n- `selector` : for a name of a smart contract function.\n- `merkletree` : for a Root of a Merkle tree, calculated with the provided data.\n\nSpecification details: [Signing transactions and off-chain messages](https://github.com/argentlabs/argent-x/discussions/14)\n\n#### Message Hash Sample Code\n\nFor a complete `message_hash` example, refer to `python` code in [code-samples](https://github.com/tradeparadex/code-samples).\n\n> Examples:\n\n```json\n{\n  \"paradex-signature-expiration\": 1682364556,\n  \"paradex-starknet-account\": \"0x129f3dc1b8962d8a87abc692424c78fda963ade0e1cd17bf3d1c26f8d41ee7a\",\n  \"paradex-starknet-signature\": [\n    \"1381323390094460587764867648394252677239485992175346764030313478865763678671\",\n    \"396490140510115262427678549757564216013606350105112805717359873954984880589\"\n  ],\n  \"paradex-timestamp\": 1681759756\n}\n```\n",
         "produces": [
           "application/json"
         ],
@@ -1678,6 +1739,54 @@
           }
         }
       },
+      "put": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Modify an existing open order by changing its price and/or size.\nThe modified order maintains its original order ID.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Modify order",
+        "operationId": "orders-modify",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Order Id",
+            "name": "order_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Modify Order Request",
+            "name": "order_request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.ModifyOrderRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.OrderResp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      },
       "delete": {
         "security": [
           {
@@ -1736,103 +1845,6 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/responses.GetPositionsResp"
-            }
-          }
-        }
-      }
-    },
-    "/positions-history": {
-      "get": {
-        "security": [
-          {
-            "BearerToken": []
-          }
-        ],
-        "description": "Get all positions owned by current user\n",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Account"
-        ],
-        "summary": "List closed positions history",
-        "operationId": "get-positions-with-filter",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Returns the ‘next’ paginated page.",
-            "name": "cursor",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "description": "End Time (unix time millisecond)",
-            "name": "end_at",
-            "in": "query"
-          },
-          {
-            "type": "string",
-            "example": "BTC-USD-PERP",
-            "name": "market",
-            "in": "query"
-          },
-          {
-            "maximum": 5000,
-            "minimum": 1,
-            "type": "integer",
-            "default": 100,
-            "description": "Limit the number of responses in the page",
-            "name": "page_size",
-            "in": "query"
-          },
-          {
-            "enum": [
-              "LONG",
-              "SHORT"
-            ],
-            "type": "string",
-            "name": "side",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "description": "Start Time (unix time millisecond)",
-            "name": "start_at",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/responses.GetPositionsHistoryResp"
-            }
-          }
-        }
-      }
-    },
-    "/referrals/config": {
-      "get": {
-        "description": "Get referral program config data\n",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Referrals"
-        ],
-        "summary": "Get referral config",
-        "operationId": "get-referral-config",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/responses.GetReferralConfig"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
             }
           }
         }
@@ -2620,7 +2632,7 @@
     }
   },
   "definitions": {
-    "message.AccountLeverageConfig": {
+    "message.AccountMarginConfig": {
       "type": "object",
       "properties": {
         "account": {
@@ -2630,7 +2642,7 @@
           "type": "integer"
         },
         "margin_type": {
-          "$ref": "#/definitions/message.MarginType"
+          "$ref": "#/definitions/messagesv1.MarginType"
         },
         "market": {
           "type": "string"
@@ -2650,17 +2662,6 @@
           "type": "string"
         }
       }
-    },
-    "message.MarginType": {
-      "type": "integer",
-      "enum": [
-        0,
-        1
-      ],
-      "x-enum-varnames": [
-        "MarginType_CROSS",
-        "MarginType_ISOLATED"
-      ]
     },
     "message.OwnedNft": {
       "type": "object",
@@ -2699,12 +2700,22 @@
         }
       }
     },
-    "requests.AccountLeverageRequest": {
+    "messagesv1.MarginType": {
+      "type": "integer",
+      "enum": [
+        0,
+        1
+      ],
+      "x-enum-varnames": [
+        "MarginType_CROSS",
+        "MarginType_ISOLATED"
+      ]
+    },
+    "requests.AccountMarginRequest": {
       "type": "object",
       "required": [
         "leverage",
-        "margin_type",
-        "market"
+        "margin_type"
       ],
       "properties": {
         "leverage": {
@@ -2716,11 +2727,6 @@
           "description": "Margin type (CROSS or ISOLATED)",
           "type": "string",
           "example": "CROSS"
-        },
-        "market": {
-          "description": "Market for which leverage is configured",
-          "type": "string",
-          "example": "BTC-USD-PERP"
         }
       }
     },
@@ -2821,6 +2827,58 @@
           "description": "Public key of vault operator",
           "type": "string",
           "example": "0x1234567890abcdef"
+        }
+      }
+    },
+    "requests.ModifyOrderRequest": {
+      "type": "object",
+      "required": [
+        "id",
+        "market",
+        "price",
+        "side",
+        "signature",
+        "signature_timestamp",
+        "size",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "description": "Order ID to be modified",
+          "type": "string"
+        },
+        "market": {
+          "description": "Market for which order is modified",
+          "type": "string",
+          "example": "BTC-USD-PERP"
+        },
+        "price": {
+          "description": "Existing or modified price of the order",
+          "type": "string",
+          "example": "29500.12"
+        },
+        "side": {
+          "description": "Existing side of the order",
+          "type": "string",
+          "example": "BUY"
+        },
+        "signature": {
+          "description": "Order Payload signed with STARK Private Key",
+          "type": "string"
+        },
+        "signature_timestamp": {
+          "description": "Timestamp of order creation, used for signature verification",
+          "type": "integer"
+        },
+        "size": {
+          "description": "Existing or modified size of the order",
+          "type": "string",
+          "example": "1.213"
+        },
+        "type": {
+          "description": "Existing type of the order",
+          "type": "string",
+          "example": "LIMIT"
         }
       }
     },
@@ -2933,6 +2991,25 @@
         }
       }
     },
+    "responses.AccountHistoricalDataResp": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Ordered list of datapoints",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "timestamps": {
+          "description": "Ordered list of timestamps",
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
     "responses.AccountInfoResponse": {
       "type": "object",
       "properties": {
@@ -2974,6 +3051,11 @@
           "description": "Starknet public key",
           "type": "string",
           "example": "0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d"
+        },
+        "username": {
+          "description": "Username of the account",
+          "type": "string",
+          "example": "username"
         }
       }
     },
@@ -3016,6 +3098,9 @@
         },
         "programs_eligibility": {
           "$ref": "#/definitions/responses.ProgramsEligibility"
+        },
+        "referral": {
+          "$ref": "#/definitions/responses.ReferralConfigResp"
         },
         "referral_code": {
           "type": "string",
@@ -3396,7 +3481,8 @@
         "INVALID_REQUEST_PARAMETER",
         "ORDER_ID_NOT_FOUND",
         "ORDER_IS_CLOSED",
-        "ORDER_IS_NOT_OPEN_YET",
+        "ORDER_IS_NOT_OPEN",
+        "INVALID_ORDER_SIZE",
         "CLIENT_ORDER_ID_NOT_FOUND",
         "DUPLICATED_CLIENT_ID",
         "INVALID_PRICE_PRECISION",
@@ -3460,7 +3546,8 @@
         "ErrorCodeString_InvalidParameter",
         "ErrorCodeString_OrderIdNotFound",
         "ErrorCodeString_OrderIsClosed",
-        "ErrorCodeString_OrderIsNotOpenYet",
+        "ErrorCodeString_OrderIsNotOpen",
+        "ErrorCodeString_InvalidSizeForModifyOrder",
         "ErrorCodeString_ClientOrderIdNotFound",
         "ErrorCodeString_DuplicatedClientOrderId",
         "ErrorCodeString_InvalidPricePrecision",
@@ -3858,27 +3945,6 @@
         }
       }
     },
-    "responses.GetPositionsHistoryResp": {
-      "type": "object",
-      "properties": {
-        "next": {
-          "description": "The pointer to fetch next set of records (null if there are no records left)",
-          "type": "string",
-          "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-        },
-        "prev": {
-          "description": "The pointer to fetch previous set of records (null if there are no records left)",
-          "type": "string",
-          "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-        },
-        "results": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/responses.PositionResp"
-          }
-        }
-      }
-    },
     "responses.GetPositionsResp": {
       "type": "object",
       "properties": {
@@ -3886,18 +3952,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/responses.PositionResp"
-          }
-        }
-      }
-    },
-    "responses.GetReferralConfig": {
-      "type": "object",
-      "properties": {
-        "results": {
-          "description": "List of referral config",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/responses.ReferralConfigResp"
           }
         }
       }
@@ -4220,6 +4274,11 @@
           "type": "string",
           "example": "0.01"
         },
+        "iv_bands_width": {
+          "description": "IV Bands Width",
+          "type": "string",
+          "example": "0.05"
+        },
         "market_kind": {
           "description": "Type of market - always 'cross'",
           "type": "string",
@@ -4322,6 +4381,17 @@
           "description": "Market symbol",
           "type": "string",
           "example": "ETH-USD-PERP"
+        },
+        "tags": {
+          "description": "Market tags",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "MEME",
+            "DEFI"
+          ]
         }
       }
     },
@@ -4531,6 +4601,14 @@
           "description": "Remaining size of the order",
           "type": "string",
           "example": "0"
+        },
+        "request_info": {
+          "description": "Request info for modify order",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.RequestInfo"
+            }
+          ]
         },
         "seq_no": {
           "description": "Unique increasing number (non-sequential) that is assigned to this order update and changes on every order update. Can be used to deduplicate multiple feeds. WebSocket and REST responses use independently generated seq_no per event.",
@@ -4748,6 +4826,10 @@
           "type": "string",
           "example": "BTC-USD-PERP"
         },
+        "realized_positional_funding_pnl": {
+          "description": "Realized Funding PnL for the position. Reset to 0 when position is closed or flipped.",
+          "type": "string"
+        },
         "realized_positional_pnl": {
           "description": "Realized PnL including both positional PnL and funding payments. Reset to 0 when position is closed or flipped.",
           "type": "string"
@@ -4839,6 +4921,21 @@
           "type": "string",
           "example": "0.123"
         },
+        "name": {
+          "description": "Referral name",
+          "type": "string",
+          "example": "Referral"
+        },
+        "points_bonus_rate": {
+          "description": "Points bonus rate for the referee",
+          "type": "string",
+          "example": "0.1"
+        },
+        "points_bonus_volume_cap": {
+          "description": "Volume cap for points bonus",
+          "type": "string",
+          "example": "1000000000"
+        },
         "referral_type": {
           "description": "Referral type",
           "type": "string",
@@ -4875,6 +4972,27 @@
         }
       }
     },
+    "responses.RequestInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Request id",
+          "type": "string"
+        },
+        "message": {
+          "description": "Error message for failed requests",
+          "type": "string"
+        },
+        "request_type": {
+          "description": "Type of request (MODIFY_ORDER)",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status of modify order request",
+          "type": "string"
+        }
+      }
+    },
     "responses.STPMode": {
       "type": "string",
       "enum": [
@@ -4900,6 +5018,11 @@
           "description": "Contract address of the sub-operator",
           "type": "string",
           "example": "0x1234567890abcdef"
+        },
+        "name": {
+          "description": "Strategy name",
+          "type": "string",
+          "example": "Alpha Strategy"
         }
       }
     },

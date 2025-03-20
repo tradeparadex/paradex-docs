@@ -18,6 +18,8 @@ tabs:
   websockets:
     display-name: WebSocket API Reference
     slug: websocket-reference
+announcement:
+  message: 'This is a test change for Seb who is amazing!'
 navigation:
   - tab: docs
     layout:

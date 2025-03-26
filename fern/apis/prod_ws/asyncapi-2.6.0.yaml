@@ -450,6 +450,79 @@ channels:
                         - id
         x-fern-display-name: SUB funding_payments
         x-fern-address: ""
+    /funding_rate_comparison.ALL@{refresh_rate}:
+        parameters:
+            refresh_rate:
+                $ref: '#/components/parameters/refresh_rate'
+        subscribe:
+            summary: Public websocket channel for funding rate comparisons across exchanges
+            message:
+                name: fundingratecomparisonresp
+                title: FundingRateComparisonResp
+                payload:
+                    type: object
+                    properties:
+                        jsonrpc:
+                            type: string
+                            enum: ["2.0"]
+                        method:
+                            type: string
+                            enum: ["subscription"]
+                        params:
+                            type: object
+                            properties:
+                                channel:
+                                    type: string
+                                    pattern: ^funding_rate_comparison\.(?:[A-Z0-9]+-[A-Z0-9]+-[A-Z0-9]+|ALL)$
+                                    examples:
+                                        - "funding_rate_comparison.BTC-USD-PERP"
+                                        - "funding_rate_comparison.ALL"
+                                data:
+                                    $ref: '#/components/schemas/ResponsesFundingRateComparisonResp'
+                            required:
+                                - channel
+                                - data
+                    required:
+                        - jsonrpc
+                        - method
+                        - params
+                summary: Public websocket channel for funding rate comparisons across exchanges
+                description: Subscribe to funding rate comparison messages.
+                tags:
+                    - name: funding
+            x-fern-display-name: SUB funding_rate_comparison
+        publish:
+            message:
+                name: fundingresp
+                title: FundingRateComparisonResp
+                payload:
+                    type: object
+                    properties:
+                        jsonrpc:
+                            type: string
+                            enum: ["2.0"]
+                        method:
+                            type: string
+                            enum: ["subscribe"]
+                        params:
+                            type: object
+                            properties:
+                                channel:
+                                    type: string
+                                    pattern: ^funding_rate_comparison@(500ms|1000ms)$
+                                    examples:
+                                        - "funding_payments.ALL@500ms"
+                            required:
+                                - channel
+                        id:
+                            type: integer
+                            description: Client-generated request identifier
+                    required:
+                        - jsonrpc
+                        - method
+                        - params
+                        - id
+
     /markets_summary:
         description: Public websocket channel for updates of available markets
         subscribe:
@@ -1389,6 +1462,36 @@ components:
                 - fill_id
                 - created_at
             type: object
+        ResponsesFundingRateComparisonResp:
+            additionalProperties: false
+            properties:
+                asset_kind:
+                    description: Asset kind
+                    example: ASSET_KIND_PERPETUAL_FUTURE
+                    type: string
+                hourly_funding_rate:
+                    description: Hourly funding rate
+                    example: "0.0001"
+                    type: string
+                last_updated_at:
+                    description: Last updated timestamp in milliseconds
+                    example: "1681375481000"
+                    type: integer
+                source:
+                    description: Source of the funding rate
+                    example: SOURCE_PARADEX
+                    type: string
+                symbol:
+                    description: Market symbol
+                    example: BTC-USD-PERP
+                    type: string
+            required:
+                - asset_kind
+                - symbol
+                - source
+                - last_updated_at
+                - hourly_funding_rate
+            type: object
         ResponsesMarketSummaryResp:
             additionalProperties: false
             properties:
@@ -2126,6 +2229,13 @@ components:
             title: PositionResp
             summary: Private websocket channel to receive updates when position is changed
             description: Subscribe to position messages
+            tags:
+                - name: trading
+        ResponsesFundingRateComparisonResp:
+            name: fundingratecomparisonresp
+            title: FundingRateComparisonResp
+            summary: Public websocket channel for funding rate comparisons across exchanges
+            description: Subscribe to funding rate comparison messages.
             tags:
                 - name: trading
         ResponsesPriceBookUpdate:

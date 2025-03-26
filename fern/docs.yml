@@ -213,6 +213,9 @@ navigation:
           - page: Guardian Keys
             slug: guardian-keys
             path: ./pages/security/guardian-keys.mdx
+          - page: Audits & Pentests
+            slug: audit-pentests
+            path: ./pages/security/audit-pentests.mdx
           - page: Bug Bounty
             slug: bug-bounty
             path: ./pages/security/bug-bounty.mdx

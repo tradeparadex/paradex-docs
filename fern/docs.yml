@@ -446,6 +446,9 @@ navigation:
             - page: PENDLE-USD-PERP
               slug: pendle-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pendle-usd-perp.mdx
+            - page: PLUME-USD-PERP
+              slug: plume-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/plume-usd-perp.mdx
             - page: PNUT-USD-PERP
               slug: pnut-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/pnut-usd-perp.mdx

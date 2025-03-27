@@ -428,6 +428,9 @@ navigation:
             - page: NEIRO-USD-PERP
               slug: neiro-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/neiro-usd-perp.mdx
+            - page: NIL-USD-PERP
+              slug: nil-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/nil-usd-perp.mdx
             - page: OM-USD-PERP
               slug: om-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/om-usd-perp.mdx

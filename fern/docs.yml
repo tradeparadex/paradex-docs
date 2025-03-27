@@ -524,6 +524,9 @@ navigation:
             - page: VVV-USD-PERP
               slug: vvv-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/vvv-usd-perp.mdx
+            - page: WAL-USD-PERP
+              slug: wal-usd-perp
+              path: ./pages/instruments-guide/futures/tier-2/wal-usd-perp.mdx            
             - page: WIF-USD-PERP
               slug: wif-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/wif-usd-perp.mdx

@@ -1,146 +1,103 @@
 ---
 title: Cross Margin Requirement
 ---
-## Setup
+# Cross Margin Requirement
 
-A portfolio using **Cross Margin mode** with positions in $$m$$ derivative assets $$\small\{D_1,...,D_m\}$$
-
-For each synthetic asset $$\small\{D_1,...,D_m\}$$ :
-
-* Open position of size $$n_P$$ (positive if long, negative if short position)
-* A set of open **buy** orders with total size of $$\small n_B\ge0$$
-* A set of open **sell** orders with total size of $$\small n_S\ge0$$
-
-## **Open sizes**
-
-* $$\small\text{Position Size}_\text{long}=\max(n_P,~0)$$ : absolute size of **Long** position.
-* $$\small\text{Position Size}_\text{short}=\max(-n_P, ~0)$$ : absolute size of **Short** position.
-* Buy open size : $$\small\text{Open Size}_\text{buy}=\max(n_B+n_P,~0)$$ : potential absolute long position size if all buy orders are filled immediately
-* Sell open size : $$\small\text{Open Size}_\text{sell}=\max(n_S-n_P,~0)$$ : potential absolute short position size if all sell orders are filled immediately
-
-## **Margin Fractions**
-
-The initial margin fractions (IMF) are increasing functions of the notional (i.e. the maximum allowed leverage decreases with higher notional).
-
-For _**perpetual positions**_, the initial margin fractions $$\text{IMF}_\text{buy}$$ and $$\text{IMF}_\text{sell}$$ are calculated as :
-
-$
-\begin{aligned}
-& \text{IMF}_\text{buy/sell}(D_j)= \\
-& \\
-& \small\max\Biggl(~\small\text{Base IMF}~,~\small\text{IMF Factor}~*~\sqrt{\max\bigl(\small\text{Open Size}_\text{buy/sell}(D_j)*\small\text{Mark Price}(D_j)-\small\text{IMF~Shift},0\bigr)}~\Biggr)
-\end{aligned}
-$
-
-i.e. the Initial Margin Fraction (which is the inverse if the Maximum Allowed Initial Leverage) increases as a square root of USD Notional for large notionals.
-
-**Position IMF** is similar to the **IMF** but excludes open orders :
+In Cross Margin, the account margin requirement is the total sum of margin requirements across markets :
 
 $$
-\begin{aligned}
-& \text{Position IMF}(D_j)= \\
-& \max\Biggl(~\small\text{Base IMF}~,~\small\text{IMF Factor}*\sqrt{\max\bigl(\small\text{Position Size}(D_j)*\small\text{Mark Price}(D_j)-\small\text{IMF~Shift},0\bigr)}~\Biggr)
-\end{aligned}
+\text{Account Margin Requirement}~=~\sum\limits_{\text{market}~m}\text{Margin Requirement}(m)
 $$
 
-The **Maintenance Margin Fraction** $$\text{MMF}$$ is proportional to position initial margin fraction:
+where $\text{Margin Requirement}$ can refer to **Initial Margin Requirement (IMR)** or **Maintenance Margin Requirement (MMR)**
+
+# Initial Margin Requirement (IMR)
+
+## Open Size
+
+Open size represents the maximum position size the account can have if all orders on one side or the other are filled :
+
+- $\text{Buy open size} = \max(0,~\text{Total size of buy orders} + \text{Signed position size})$
+- $\text{Sell open size} = \max(0,~\text{Total size of sell orders} - \text{Signed position size})$
+
+where the position sign is positive for a long position and negative for a short position
+
+## IMR Breakdown
+
+$\text{IMR}(m)$ is the account IMR for market $m$ and is composed of :
+
+- $\text{Net IMR}$: This is a fraction of the Open Size value in USD. The fraction is called IMF (Initial Margin Fraction) and is equal to 1 / Leverage. The leverage is set by default to the market maximum leverage but can be updated to a lower level by the user.
+- $\text{Fee Provision}$: This is a provision for the amount of entry/exit fees that the account is expected to pay based on open position/orders.
+- $\text{Open Loss}$: This is a provision for orders that are aggressive relative to the mark price and are expected to lead to immediate unrealized loss after they are filled
 
 $$
-\small\text{MMF}(D_j)=\text{MMF Factor}*\text{Position IMF}(D_j)
+\text{IMR}(m)=\text{Net IMR}(m)+\text{Fee Provision}(m)+\text{Open Loss}(m)
 $$
 
-The plots below show the example of margin fractions for ETH-USD-PERP :
+## Net IMR
 
-<Frame caption="ETH-USD-PERP Margin Fractions (%) as functions of USD Notional">
-<img src="../../assets/Screenshot 2024-06-25 at 13.32.41.png" alt="" width="563"/>
-</Frame>
+For perpetual futures, the IMR for each side (buy/sell) is calculated as :
 
-<Frame caption="ETH-USD-PERP Maximum Leverage as a function of USD Notional">
-<img src="../../assets/Screenshot 2024-06-25 at 13.32.54.png" alt="" width="563"/>
-</Frame>
+- $\text{Buy Initial Margin Requirement (IMR)} = \text{Buy open size * IMF}*\text{Mark Price}$
+- $\text{Sell Initial Margin Requirement (IMR)} = \text{Sell open size * IMF}*\text{Mark Price}$
 
-The margin fractions can be translated into the margin requirements below. Since the margin fractions increase for large notionals, the margin requirements increase non-linearly for those notionals :
-
-<Frame caption="ETH-USD-PERP Margin Requirements (USD) as a function of USD Notional">
-<img src="../../assets/Screenshot 2024-06-25 at 13.33.05.png" alt="" width="563"/>
-</Frame>
-
-## **Fee Provision**
-
-Given the conservative fee rate :
+The Market Net IMR is equal to:
 
 $$
-\small\text{Fee Rate}=\max\Big(\text{Account Maker Fee Rate},~\text{Account Taker Fee Rate}\Big)
+\text{Market Net IMR}=\max(\text{Buy IMR},~\text{Sell IMR})
 $$
 
-For a given synthetic asset $$D_j$$ :
+Example : 
+
+User has :
+
+- Short 1 BTC-USD-PERP (the signed position size is -1 BTC)
+- 3 Buy BTC-USD-PERP open orders
+- 2 Sell BTC-USD-PERP open orders
+
+Assuming :
+
+- BTC-USD-PERP IMF = 2%
+- BTC-USD-PERP Mark Price is 90,000 USD
+
+Buy open size = 3 - 1 = 2 BTC
+
+Sell open size = 2 + 1 = 3 BTC
+
+This user’s IMR for BTC-USD-PERP is :
+
+Net IMR = Sell IMR = 2% * 3 * 90,000 = 5,400 USD
+
+# Maintenance Margin Requirement (MMR)
+
+The Maintenance Margin Requirement (MMR) only depends on open positions (not impacted by open orders) and is composed of :
+
+- $\text{Net MMR}$: This is a fraction of the $\text{Net IMR}$ based on $\text{MMF Factor}$
+    - Note that $\text{MMF Factor}$ is currently set to $50\%$ for all perpetual futures. This means that Net MMR is half of the Net IMR
+- $\text{Fee Provision}$: This is a provision for the position exit fee, so this is equal to $\text{Taker Fee * Position Value}$
+
+# Leverage
+
+![Screenshot 2025-03-27 at 15.17.42.png](Cross%20Margin%20Requirement%201c332558084480dc8f53d6bb843279af/Screenshot_2025-03-27_at_15.17.42.png)
+
+Account Leverage in UI shows two numbers :
+
+- **Account Effective Leverage**
 
 $$
-\text{Fee Provision}(D_j)=\text{Fee Rate}\Big(n_B+n_S+|n_P|\Big)*\text{Mark Price}(D_j)
+\text{Account Effective Leverage}=\frac{\text{Open Notional}}{\text{Account Value}}
 $$
 
-For **MMR** and **Position IMR**, open orders are not included in fee provision calculation :
+where $\text{Open Notional}$ is the total Open Size expressed in USD and summed across markets
+
+i.e.  $\text{Open Notional}=\sum\limits_{\text{market}~m}\text{Open Size}(m)*\text{Mark Price}(m)$
+
+- **Account Maximum Leverage**
 
 $$
-\text{Position Fee Provision}(D_j)=\text{Fee Rate}*|n_P|*\text{Mark Price}(D_j)
+\text{Account Maximum Leverage}=\frac{\text{Open Notional}}{\text{Account 
+IMR}}
 $$
 
-## Open Loss
-
-The Open Loss is an additional margin requirement for orders which are more aggressive than the [Mark Price](mark-price-calculation). It offsets the difference between the order limit price and the Mark Price.
-
-$$
-\text{Open Loss} = \begin{cases} \max\big( \text{Limit Price}-\text{Mark Price} ,~0\big) \text{ for a Buy Order}\\ \max\big( \text{Mark Price}-\text{Limit Price} ,~0\big) \text{ for a Sell Order} \end{cases}
-$$
-
-Note that the "limit" price of a Market Order is defined by the instrument's [Price Band](price-bands).
-
-## **Margin Requirements**
-
-### Position Margin Requirement
-
-#### Initial margin requirement (**IMR**)
-
-For _**all derivatives positions**_, the initial margin requirements $$\text{IMR}_\text{buy}$$ and $$\text{IMR}_\text{sell}$$ are calculated as :
-
-$$
-\small\text{IMR}_\text{buy/sell}(D_j)=\text{IMF}_\text{buy/sell}(D_j)*\text{Open Size}_\text{buy/sell}(D_j)*\text{Mark Price}(D_j)
-$$
-
-$$
-\small\text{IMR}(D_j)=\text{IMR}(D_j)=\max\Big(\text{IMR}_\text{buy}(D_j),~\text{IMR}_\text{sell}(D_j)\Big)+\text{Fee Provision}(D_j)+\text{Open Loss}(D_j)
-$$
-
-#### Position Initial margin requirement (**Position IMR**)
-
-$$
-\small\text{Position IMR}(D_j)=\text{Position IMF}(D_j)*|n_P|*\text{Mark Price}(D_j)+\text{Position Fee Provision}(D_j)
-$$
-
-#### Maintenance margin requirement (**MMR**)
-
-$$
-\small\text{MMR}(D_j)=\text{MMF}(D_j)*|n_P|*\text{Mark Price}(D_j)+\text{Position Fee Provision}(D_j)+\text{Open Loss}(D_j)
-$$
-
-### Account Margin Requirement
-
-The account requirements are then calculated as the simple sum of individual synthetic asset balance requirements:
-
-* $$\small\text{Account IMR}=\sum\limits_{j=1}^m \text{IMR}(D_j)$$
-* $$\small\text{Account MMR}=\sum\limits_{j=1}^m \text{MMR}(D_j)$$
-
-## Leverage
-
-### Account Leverage
-
-$$
-\text{Account Leverage}=\frac{\sum\limits_{j=1}^m [\text{Open Size}_\text{buy/sell}(D_j)*\text{Mark Price}(D_j)]}{\text{Account Value}}
-$$
-
-### Max Leverage
-
-$$
-\text{Max Leverage}=\frac{\sum\limits_{j=1}^m [\text{Open Size}_\text{buy/sell}(D_j)*\text{Mark Price}(D_j)]}{\text{Account IMR}}
-$$
+This maximum leverage depends on the account maximum leverage per market. It represents the maximum allowed Effective Leverage beyond which the account will be unable to submit new orders that increase open notional.
 

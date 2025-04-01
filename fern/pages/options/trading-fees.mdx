@@ -3,13 +3,15 @@ title: Trading Fees
 ---
 ## Overview
 
-The Taker pays **6bps of underlying notional** as a taker fee.
+The Taker pays **4bps of underlying notional** as a taker fee.
 
-The Maker receives **1bp of underlying notional** as the maker rebate.
+The Maker pays **1bp of underlying notional** as the maker fee.
+
+Note: the maker and taker fee are capped at **300%** of the trade price.
 
 ### Example 
 
 Alice (taker) trades 2 BTC-USD-90000-C against Bob (maker). 
 BTC spot price is 100000. 
 
-Alice pays $$ 0.0006*2*100000=\$120 $$ and Bob receives $$ 0.0001*2*100000=\$20 $$
+Alice pays $$ 0.0004*2*100000=\$80 $$ and Bob pays $$ 0.0001*2*100000=\$20 $$

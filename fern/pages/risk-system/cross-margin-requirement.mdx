@@ -1,7 +1,6 @@
 ---
 title: Cross Margin Requirement
 ---
-# Cross Margin Requirement
 
 In Cross Margin, the account margin requirement is the total sum of margin requirements across markets :
 
@@ -47,7 +46,7 @@ $$
 \text{Market Net IMR}=\max(\text{Buy IMR},~\text{Sell IMR})
 $$
 
-Example : 
+### Example
 
 User has :
 
@@ -73,12 +72,14 @@ Net IMR = Sell IMR = 2% * 3 * 90,000 = 5,400 USD
 The Maintenance Margin Requirement (MMR) only depends on open positions (not impacted by open orders) and is composed of :
 
 - $\text{Net MMR}$: This is a fraction of the $\text{Net IMR}$ based on $\text{MMF Factor}$
-    - Note that $\text{MMF Factor}$ is currently set to $50\%$ for all perpetual futures. This means that Net MMR is half of the Net IMR
+    <Note>$\text{MMF Factor}$ is currently set to $50\%$ for all perpetual futures. This means that Net MMR is half of the Net IMR</Note>
 - $\text{Fee Provision}$: This is a provision for the position exit fee, so this is equal to $\text{Taker Fee * Position Value}$
 
 # Leverage
 
-![Screenshot 2025-03-27 at 15.17.42.png](Cross%20Margin%20Requirement%201c332558084480dc8f53d6bb843279af/Screenshot_2025-03-27_at_15.17.42.png)
+<Frame>
+	<img src="../../assets/cross-margin-leverage.png"/>
+</Frame>
 
 Account Leverage in UI shows two numbers :
 
@@ -99,5 +100,5 @@ $$
 IMR}}
 $$
 
-This maximum leverage depends on the account maximum leverage per market. It represents the maximum allowed Effective Leverage beyond which the account will be unable to submit new orders that increase open notional.
+This maximum leverage depends on the account maximum leverage per market. It represents the maximum allowed Effective Leverage beyond which the account will be unable to submit new orders that increase open notional.git 
 

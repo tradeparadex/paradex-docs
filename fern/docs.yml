@@ -97,7 +97,7 @@ navigation:
             slug: faq
             path: ./pages/vaults/faqs.mdx
       
-      - section: Perpetual Options (Closed Beta)
+      - section: Perpetual Options
         slug: perpetual-options
         contents:
           - page: Introduction
@@ -545,7 +545,7 @@ navigation:
             - page: ZRO-USD-PERP
               slug: zro-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
-        - section: Options (Closed Beta)
+        - section: Options
           contents:
             - page: BTC
               slug: btc

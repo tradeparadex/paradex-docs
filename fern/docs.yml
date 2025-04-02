@@ -97,7 +97,7 @@ navigation:
             slug: faq
             path: ./pages/vaults/faqs.mdx
       
-      - section: Perpetual Options (Closed Beta)
+      - section: Perpetual Options
         slug: perpetual-options
         contents:
           - page: Introduction
@@ -545,7 +545,7 @@ navigation:
             - page: ZRO-USD-PERP
               slug: zro-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
-        - section: Options (Closed Beta)
+        - section: Options
           contents:
             - page: BTC
               slug: btc
@@ -575,13 +575,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.89
+            path: ./pages/release-notes/v1.89.md
           - page: v1.88
             path: ./pages/release-notes/v1.88.md
-          - page: v1.87
-            path: ./pages/release-notes/v1.87.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.87
+                path: ./pages/release-notes/v1.87.md
               - page: v1.86
                 path: ./pages/release-notes/v1.86.md
               - page: v1.85

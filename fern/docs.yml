@@ -575,13 +575,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.90
+            path: ./pages/release-notes/v1.90.md
           - page: v1.89
             path: ./pages/release-notes/v1.89.md
-          - page: v1.88
-            path: ./pages/release-notes/v1.88.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.88
+                path: ./pages/release-notes/v1.88.md
               - page: v1.87
                 path: ./pages/release-notes/v1.87.md
               - page: v1.86

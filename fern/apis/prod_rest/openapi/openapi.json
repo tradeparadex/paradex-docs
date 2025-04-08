@@ -2844,7 +2844,7 @@
       ],
       "properties": {
         "id": {
-          "description": "Order ID to be modified",
+          "description": "Order ID to be modified. This field must be included in the signing process to generate the signature.",
           "type": "string"
         },
         "market": {

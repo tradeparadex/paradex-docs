@@ -323,15 +323,6 @@ navigation:
             - page: BNB-USD-PERP
               slug: bnb-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx
-            - page: BOME-USD-PERP
-              slug: bome-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/bome-usd-perp.mdx
-            - page: CHILLGUY-USD-PERP
-              slug: chillguy-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/chillguy-usd-perp.mdx
-            - page: CRV-USD-PERP
-              slug: crv-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx
             - page: DOGE-USD-PERP
               slug: doge-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/doge-usd-perp.mdx
@@ -497,9 +488,6 @@ navigation:
             - page: TON-USD-PERP
               slug: ton-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/ton-usd-perp.mdx
-            - page: TRB-USD-PERP
-              slug: trb-usd-perp
-              path: ./pages/instruments-guide/futures/tier-2/trb-usd-perp.mdx
             - page: TRUMP-USD-PERP
               slug: trump-usd-perp
               path: ./pages/instruments-guide/futures/tier-2/trump-usd-perp.mdx

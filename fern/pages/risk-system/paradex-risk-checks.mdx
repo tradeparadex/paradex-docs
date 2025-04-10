@@ -51,9 +51,9 @@ If an account's $$\text{Margin Ratio}>\text{100\%}$$, the account will enter [Li
 
 ## Withdrawal Check
 
-The amount of USDC that can be withdrawn is subject to an upper limit that depends on the [Free Collateral Balance](margin-term-reference#free-collateral-balance-usd) expressed in USDC terms. However, the user cannot withdraw more than the *Account USDC Balance*.
+The maximum amount of USDC you can withdraw is determined by your [Free Collateral Balance](margin-term-reference#free-collateral-balance-usd), but is capped by your actual Account USDC Balance. In other words, you can withdraw up to your Free Collateral Balance in USDC, but never more than the total USDC you currently have in your account.
 
-*Account USDC Balance* is equal to thier net USDC deposits (deposits - withdrawals) plus realized PnL (including funding), minus paid fees.
+*Account USDC Balance* is equal to a user's net USDC deposits (deposits - withdrawals) plus realized PnL (including funding), minus paid fees.
 
 $$
 \small\text{Withdrawable USDC Amount}=\min\Bigg(\text{Account USDC Balance} ,~\max\Big(0, \frac{\text{Free Collateral Balance}}{\text{USDC Oracle Price}}\Big)\Bigg)

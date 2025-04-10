@@ -72,11 +72,15 @@ _Note :_ Calculation of IMR and MMR in a cross-margin account can be found in th
 
 ### _**Free Collateral Balance (USD)**_
 
-The USD value of the collateral that can be immediately withdrawn
+The USD value of the collateral that can be immediately withdrawn subject to the upper bound of the user's Account USDC Balance.
 
 $$
-\text{Free Collateral Balance}=\text{Account Value}-\text{Account Initial Margin Requirement}
+\text{Free Collateral Balance} = \text{min}(\text{Account Value} - \text{Account Initial Margin Requirement}, \text{Account USDC Balance})
 $$
+
+A user's Account USDC Balance is equal to thier net USDC deposits (deposits - withdrawals) plus realized PnL (including funding), minus paid fees.
+
+### _**Margin Ratio (%)**_
 
 ### _**Margin Ratio (%)**_
 

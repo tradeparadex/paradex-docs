@@ -97,3 +97,104 @@
 - Less Funding: **1.53 USD**
 - **Total Unrealized PnL**: **+3.32 USD**
 - **PnL %**: `3.32 ÷ (0.012 × 233.2)` ≈ <span style="color: green; font-weight: bold;">+118%</span>
+
+## 🟥 **Example 3: Short Call (Bearish Bet - Expecting Low Volatility)**
+
+### ✅ Setup
+
+- **BTC Spot Price**: $84,332.3
+- **Strategy**: Charlie is bearish and expects low volatility. He sells a Call Option — **BTC-USD-84000-C**
+- **Strike Price**: $84,000
+- **Bid Price**: $1,112.5
+- **Mark Price**: $1,140.6
+- **8h Funding Rate:** 0.3195%
+  <img
+    src="../../assets/option-example-3-market-summary.webp"
+    alt=""
+    width="800"
+  />
+  <img src="../../assets/option-example-3-setup.webp" alt="" width="800" />
+
+### 🧮 Order Entry
+
+- Charlie can choose to enter the order size in either BTC or USD Spot Notional (Size x Spot Price) terms.
+- Charlie enters a **\$1,500 USD Spot Notional** → `0.018 BTC`
+- Submits a **market sell** at $1,112.5
+
+  <img src="../../assets/option-example-3-order.webp" alt="" width="300" />
+
+- **Position Opened**:
+  - Size: **0.018 BTC**
+  - Entry Price: **\$1,140.6**
+  - Spot Notional = Size x Spot Price =`0.018 × 84,332.3` ≈ **\$1,518**
+  - **8h Funding Rate**: 0.3195% → Expected funding cost per 8h = `0.018 × 0.003195 × 84,332.3` ≈ **\$0.80**
+  - **Unrealized PnL at Entry** = `-0.018 × (1,140.7 - 1,112.5)` ≈ **0.50 USD**
+    - Charlie has a slight Unrealized PnL at Entry because the Mark Price **(\$1,140.7)** is above the Entry Price **(\$1,112.5)**
+
+<img src="../../assets/option-example-3-position.webp" alt="" width="800" />
+
+### After 12 Hours
+
+- **Spot Price** drops from **\$84,332.3** to **\$84,000**
+- **Mark Price** drops from **\$1,140.7** to **\$961**
+- **Avg 8h Funding Rate (over 12 hours)**: 0.35%
+- **Avg Spot Price** **(over 12 hours)**: 84,200
+- **Funding Profit**: `0.018 × 0.0010 × 12 ÷ 8 × 84,200` ≈ **2.27 USD**
+
+### Final PnL
+
+- Option PnL: `-0.018 × (961 - 1,140.7)` ≈ **+3.23 USD**
+- Plus Funding: **2.27 USD**
+- **Total Unrealized PnL**: **+5.51 USD**
+- **PnL %**: `5.51 ÷ (0.018 × 1,112.5)` ≈ <span style="color: green; font-weight: bold;">+28%</span>
+
+## 🟩 **Example 4: Short Put (Bullish Bet - Expecting Low Volatility)**
+
+### ✅ Setup
+
+- **BTC Spot Price**: $84,410.1
+- **Strategy**: Dave is bullish but expects low volatility. He sells a Put Option — **BTC-USD-84000-P**
+- **Strike Price**: $84,000
+- **Bid Price**: $701.0
+- **Mark Price**: $709.2
+- **8h Funding Rate:** 0.2801%
+
+<img
+  src="../../assets/option-example-4-market-summary.webp"
+  alt=""
+  width="800"
+/>
+<img src="../../assets/option-example-4-setup.webp" alt="" width="800" />
+
+### 🧮 Order Entry
+
+- Dave can choose to enter the order size in either BTC or USD Spot Notional (Size x Spot Price) terms.
+- Dave enters a **\$2,000 USD Spot Notional** → `0.024 BTC`
+- Submits a **market sell** at $723.0
+
+  <img src="../../assets/option-example-4-order.webp" alt="" width="300" />
+
+- **Position Opened**:
+  - Size: **0.024 BTC**
+  - Entry Price: **\$723.0**
+  - Spot Notional = Size x Spot Price =`0.024 × 84,410.1` ≈ **\$2,024**
+  - **8h Funding Rate**: 0.2801% → Expected funding cost per 8h = `0.024 × 0.002801 × 84,410.1` ≈ **\$5.67**
+  - **Unrealized PnL at Entry** = `-0.024 × (730.4 - 723.0)` ≈ **0.17 USD**
+    - Dave has a slight Unrealized PnL at Entry because the Mark Price **(\$730.4)** is above the Entry Price **(\$723.0)**
+
+<img src="../../assets/option-example-4-position.webp" alt="" width="800" />
+
+### After 12 Hours
+
+- **Spot Price** rises from **\$84,410.1** to **\$84,500**
+- **Mark Price** drops from **\$730.4** to **\$675**
+- **Avg 8h Funding Rate (over 12 hours)**: 0.27%
+- **Avg Spot Price** **(over 12 hours)**: 84,450
+- **Funding Profit**: `0.024 × 0.0027 × 12 ÷ 8 × 84,450` ≈ **8.20 USD**
+
+### Final PnL
+
+- Option PnL: `-0.024 × (675 - 730.4)` ≈ **+1.32 USD**
+- Plus Funding: **2.27 USD**
+- **Total Unrealized PnL**: **+9.53 USD**
+- **PnL %**: `9.53 ÷ (0.024 × 723.0)` ≈ <span style="color: green; font-weight: bold;">+55%</span>

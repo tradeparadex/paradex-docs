@@ -433,6 +433,9 @@ navigation:
                   - page: ORDI-USD-PERP
                     slug: ordi-usd-perp
                     path: ./pages/instruments-guide/futures/tier-2/ordi-usd-perp.mdx
+                  - page: PAXG-USD-PERP
+                    slug: paxg-usd-perp
+                    path: ./pages/instruments-guide/futures/tier-2/paxg-usd-perp.mdx
                   - page: PENGU-USD-PERP
                     slug: pengu-usd-perp
                     path: ./pages/instruments-guide/futures/tier-2/pengu-usd-perp.mdx

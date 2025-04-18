@@ -571,13 +571,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.92
+            path: ./pages/release-notes/v1.92.md
           - page: v1.91
             path: ./pages/release-notes/v1.91.md
-          - page: v1.90
-            path: ./pages/release-notes/v1.90.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.90
+                path: ./pages/release-notes/v1.90.md
               - page: v1.89
                 path: ./pages/release-notes/v1.89.md
               - page: v1.88

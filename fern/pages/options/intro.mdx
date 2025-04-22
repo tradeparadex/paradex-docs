@@ -41,39 +41,42 @@ In perp futures, funding just pays for leverage.
 
 </Tip>
 
-# Comparing to Dated Options
+# Comparing to Perpetual Futures and Dated Options
 
-| **Feature**     | **Perpetual Options**             | **Dated Options**                        |
-| --------------- | --------------------------------- | ---------------------------------------- |
-| Expiration      | Never expire                      | Expire at a specific date and time       |
-| Time Decay      | No time decay (theta)             | Value decreases as expiration approaches |
-| Premium Payment | Paid continuously through funding | Paid upfront as a lump sum               |
-| Liquidity       | Concentrated in fewer instruments | Fragmented across strikes and expiries   |
-| Behavior        | Like a rolling 24-hour option     | Fixed time horizon                       |
-| Risk Management | No expiry mismatch with perps     | Require active management of expiry      |
+<Tabs>
+  <Tab title="Perpetual Futures">
 
-<Tip title="Core Idea" icon="leaf">
-  Perpetual Options can be thought of as dated options with a time to expiry
-  equal to their funding period (roughly 24 hours). However, instead of
-  continuously buying new dated options as they expire, the funding mechanism
-  automatically "rolls" your position forward.
-</Tip>
+    | **Feature**        | **Perpetual Options**                                                    | **Perpetual Futures**                                       |
+    | ------------------ | ------------------------------------------------------------------------ | ----------------------------------------------------------- |
+    | Payoff Structure   | Non Linear and Asymmetric<br />_(Accelerated Upside + Limited Downside)_ | Linear and Symmetric<br />_(unlimited upside and downside)_ |
+    | Leverage           | Variable leverage based on option delta                                  | Fixed leverage based on margin                              |
+    | Funding            | Includes cost of leverage plus convexity                                 | Only reflects cost of leverage                              |
+    | Liquidation Risk   | Lower liquidation risk (for buyers)                                      | Higher liquidation risk                                     |
+    | Capital Efficiency | May require less capital for similar exposure                            | Requires more capital to avoid liquidation                  |
 
-# Comparing to Perpetual Futures Options
+    <Tip title="Core Idea" icon="leaf">
+      In simple terms, Perpetual Options can be thought of as "insurance-enhanced" perpetual futures, where you pay a higher funding rate in exchange for protection against adverse price movements.
+    </Tip>  
+  
+  </Tab>
 
-| **Feature**        | **Perpetual Options**                                                    | **Perpetual Futures**                                       |
-| ------------------ | ------------------------------------------------------------------------ | ----------------------------------------------------------- |
-| Payoff Structure   | Non Linear and Asymmetric<br />_(Accelerated Upside + Limited Downside)_ | Linear and Symmetric<br />_(unlimited upside and downside)_ |
-| Leverage           | Variable leverage based on option delta                                  | Fixed leverage based on margin                              |
-| Funding            | Includes cost of leverage plus convexity                                 | Only reflects cost of leverage                              |
-| Liquidation Risk   | Lower liquidation risk (for buyers)                                      | Higher liquidation risk                                     |
-| Capital Efficiency | May require less capital for similar exposure                            | Requires more capital to avoid liquidation                  |
+  <Tab title="Dated Options">
+    
+    | **Feature**     | **Perpetual Options**             | **Dated Options**                        |
+    | --------------- | --------------------------------- | ---------------------------------------- |
+    | Expiration      | Never expire                      | Expire at a specific date and time       |
+    | Time Decay      | No time decay (theta)             | Value decreases as expiration approaches |
+    | Premium Payment | Paid continuously through funding | Paid upfront as a lump sum               |
+    | Liquidity       | Concentrated in fewer instruments | Fragmented across strikes and expiries   |
+    | Behavior        | Like a rolling 24-hour option     | Fixed time horizon                       |
+    | Risk Management | No expiry mismatch with perps     | Require active management of expiry      |
 
-<Tip title="Core Idea" icon="leaf">
-  In simple terms, Perpetual Options can be thought of as "insurance-enhanced"
-  perpetual futures, where you pay a higher funding rate in exchange for
-  protection against adverse price movements.
-</Tip>
+  <Tip title="Core Idea" icon="leaf">
+    Perpetual Options can be thought of as dated options with a time to expiry equal to their funding period (roughly 24 hours). However, instead of continuously buying new dated options as they expire, the funding mechanism automatically "rolls" your position forward.
+  </Tip>
+  </Tab>
+</Tabs>
+
 
 # Margin and Risk Comparison
 

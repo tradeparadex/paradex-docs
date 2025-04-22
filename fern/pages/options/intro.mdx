@@ -15,14 +15,23 @@ Perpetual Options are a novel new crypto derivative instrument that combines the
 Perpetual options are:
 
 <CardGroup cols={3}>
-  <Card title="Options that never expire" icon="circle-1">
-    <p class="text-sm">Unlike traditional options that have a fixed expiration date, Perpetual Options can be held indefinitely, reducing expiry timing risk</p>
+  <Card title="Option Type" icon="toggle-left">
+    <p class="text-sm">Call or Put option</p>
   </Card>
-  <Card title="Continuously funded instruments" icon="circle-2">
-    <p class="text-sm">Instead of paying a large premium upfront, traders pay (or receive) a continuous funding rate based on market conditions to hold a position</p>
+  <Card title="Spot Oracle Price" icon="activity">
+    <p class="text-sm">Current price of the underlying asset</p>
   </Card>
-  <Card title="Simplified derivatives" icon="circle-3">
-    <p class="text-sm">They follow the same straightforward PnL structure as perpetual futures (entry price, exit price, funding)</p>
+  <Card title="Strike Price" icon="target">
+    <p class="text-sm">Predetermined price at which the option can be exercised</p>
+  </Card>
+  <Card title="Mark Implied Volatility (Mark IV)" icon="bar-chart-2">
+    <p class="text-sm">Estimated volatility used in price calculations</p>
+  </Card>
+  <Card title="Interest Rate" icon="percent">
+    <p class="text-sm">Derived from Paradex Futures Funding Rate</p>
+  </Card>
+  <Card title="Funding Period" icon="clock">
+    <p class="text-sm">Set at 24 hours for continuous funding</p>
   </Card>
 </CardGroup>
 

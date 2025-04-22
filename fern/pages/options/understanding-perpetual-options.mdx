@@ -40,15 +40,20 @@ Paradex calculates prices using the Black-Scholes formula adapted for perpetual 
 
 Paradex maintains a fair estimate of market IV (mark IV) through a multi-source approach:
 
-<Tip title="Mark IV Calculation Flow" icon="chart-network">
-  <div className="flex flex-col space-y-2">
-    <div className="bg-blue-50 p-3 rounded-md border border-blue-100">Market Data → Best bid/ask + Last trade + Mid price</div>
-    <div className="text-center">↓</div>
-    <div className="bg-blue-50 p-3 rounded-md border border-blue-100">External Input → Deribit dated options IV calibration</div>
-    <div className="text-center">↓</div>
-    <div className="bg-green-50 p-3 rounded-md border border-green-100">Final Mark IV → Fair estimate even during illiquid periods</div>
-  </div>
-</Tip>
+<CardGroup cols={2}>
+  <Card title="Market Data Collection" icon="fa-solid fa-database">
+    <p class="text-sm">Gathers best bid/ask prices and last trade price</p>
+  </Card>
+  <Card title="Mid Price Calculation" icon="fa-solid fa-calculator">
+    <p class="text-sm">Determines the middle point between bid and ask</p>
+  </Card>
+  <Card title="External Calibration" icon="fa-solid fa-balance-scale">
+    <p class="text-sm">Integrates IV data from Deribit dated options</p>
+  </Card>
+  <Card title="Fair Value Assessment" icon="fa-solid fa-check-circle">
+    <p class="text-sm">Combines all inputs to establish a reliable Mark IV</p>
+  </Card>
+</CardGroup>
 
 ## Time Value
 

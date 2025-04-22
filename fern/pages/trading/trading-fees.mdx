@@ -4,24 +4,9 @@ title: Trading Fees
 
 Currently the fees are fixed and uniform across the platform.
 
-In due course, a tiered fee system may be introduced.
-
 | Maker   | Taker |
 | ------- | ----- |
 | -0.005% | 0.03% |
-
-### Understanding Our Fee Structure
-
-When two participants execute a trade on Paradex the system applies two different fee rates on the participants, one rate on the Maker side and another rate of the Taker side.
-
-* A **Maker** order is an order that provides liquidity to the order book. It's an order that doesn't get filled immediately since it is not matched with an existing order. Instead, it remains on the order book until someone else matches it.
-* A **Taker** order is an order that removes liquidity from the order book. It's an order that gets filled immediately because it matches with an existing order in the order book.
-
-**Let's illustrate this with an example:**
-
-Suppose you place a **Maker** order with a notional value of 10,000 USD. Since our **Maker** fee rate is -0.005%, you will **receive** 0.005% of the notional size of trades that happen on this order, i.e. 0.50 USD.
-
-On the other hand, if you place a **Taker** order with the same notional value, the fee on the whole order fill will be 3 USD. This is because our **Taker** fee is 0.03%, so you would be charged 0.03% of 10,000 USD.
 
 **Notes**:
 

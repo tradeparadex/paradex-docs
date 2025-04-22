@@ -38,22 +38,23 @@ Paradex calculates prices using the Black-Scholes formula adapted for perpetual 
 
 ### Implied Volatiility (IV)
 
-Paradex maintains a fair estimate of market IV (mark IV) through a multi-source approach:
+Paradex maintains a Mark Implied Volatility that reflects a fair estimate of market IV even when the perpetual option may be illiquid.
 
-<CardGroup cols={2}>
-  <Card title="Market Data Collection" icon="fa-solid fa-database">
-    <p class="text-sm">Gathers best bid/ask prices and last trade price</p>
-  </Card>
-  <Card title="Mid Price Calculation" icon="fa-solid fa-calculator">
-    <p class="text-sm">Determines the middle point between bid and ask</p>
-  </Card>
-  <Card title="External Calibration" icon="fa-solid fa-balance-scale">
-    <p class="text-sm">Integrates IV data from Deribit dated options</p>
-  </Card>
-  <Card title="Fair Value Assessment" icon="fa-solid fa-check-circle">
-    <p class="text-sm">Combines all inputs to establish a reliable Mark IV</p>
-  </Card>
-</CardGroup>
+```mermaid
+flowchart TD
+  A["Best bid/ask prices"] -->|Internal| E["Mark IV Calculator"]
+  B["Last trade price"] -->|Internal| E
+  C["Mid price"] -->|Internal| E
+  D["External IV (Deribit)"] -->|External| E
+  E --> F["Mark IV"]
+  
+  classDef internal fill:#d4f1f9,stroke:#05a4c4
+  classDef external fill:#ffdab9,stroke:#ff8c00
+  classDef output fill:#d8f3dc,stroke:#2d6a4f
+  
+  class A,B,C internal
+  class D external
+  class F output
 
 ## Time Value
 

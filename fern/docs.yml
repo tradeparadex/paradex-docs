@@ -105,7 +105,7 @@ navigation:
             path: ./pages/options/intro.mdx
           - page: Understanding Perpetual Options
             slug: understanding-perpetual-options
-            path: ./pages/options/understanding-perpetual-0ptions.mdx
+            path: ./pages/options/understanding-perpetual-options.mdx
           - page: Trading Mechanics
             slug: trading-mechanics
             path: ./pages/options/trading-mechanics.mdx

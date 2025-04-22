@@ -1,34 +1,19 @@
 ---
-title: Understanding Perpetual Options
-description: A comprehensive guide explaining the core concepts of perpetual options
+title: Funding Mechanism
 ---
 
-# Understanding Perpetual Options
+The **Funding Period** is the period over which the Funding Premium is paid, where the Funding Premium is the USDC equivalent of the option price for out-of-money options (and more generally Time Value = Mark Price - Intrinsic Value). The Funding Premium refers to an amount that is continuously paid over 24 hours (assuming no price changes)
 
-## Core Concepts
+Example :
 
-### Call Options
+Spot Price = \$100,000
 
-A Call option gives the holder the right to benefit from price increases above the strike price. The intrinsic value of a Call option is:
+1 USDC = 1 USD
 
-$\text{max}(\text{Spot Price} - \text{Strike Price}, 0)$
+Funding Period = 24 hours
 
-* When \text{Spot Price} > \text{Strike Price}: The option is "in-the-money" (ITM)
-* When \text{Spot Price} < \text{Strike Price}: The option is "out-of-the-money" (OTM)
+BTC-USD-101000-C has a price of \$500. Since the option is out-of-money (i.e. zero intrinsic value), the time value is also \$500. This corresponds to a **Funding Premium** of 500 USDC.
 
-### Put Options
+If Alice buys 5 BTC-USD-101000-C. **_After 1 hour_** and if market prices are unchanged, Alice will have a Funding PnL of -5 * (500 * 1 / 24) = -\$104.17
 
-A Put option gives the holder the right to benefit from price decreases below the strike price. The intrinsic value of a Put option is:
-
-$\text{max}(\text{Strike Price} - \text{Spot Price}, 0)$
-
-* When Spot Price < Strike Price: The option is "in-the-money" (ITM)
-* When Spot Price > Strike Price: The option is "out-of-the-money" (OTM)
-
-### Time Value
-
-In Perpetual Options, Time Value is the difference between the mark price of the option and its intrinsic value:
-
-$$\text{Time Value} = \text{Mark Price} - \text{Intrinsic Value}$$
-
-This Time Value represents the premium traders are willing to pay for the option's potential future value.
+Similar to Paradex Perpetual Futures, funding is continuously accrued as unrealized PnL and is realized whenever the position is updated.

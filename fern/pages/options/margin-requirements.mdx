@@ -4,7 +4,7 @@ title: Margin Requirements
 
 Paradex currently supports Cross Margin for Perpetual Options, allowing traders to benefit from PnL offsetting across futures and options markets.
 
-<Note>Paradex will soon offer **Portfolio Margin** which will significantly improve margin requirements for hedged portfolios, particularly for users that are short Perpetual Options.<Note>
+<Note>Paradex will soon offer **Portfolio Margin** which will significantly improve margin requirements for hedged portfolios, particularly for users that are short Perpetual Options.</Note>
 
 # Cross Margin Parameters
 
@@ -24,3 +24,23 @@ Cross Margin Requirements for Perpetual Options depend on their type (call/put),
 
 # Margin Calculation
 
+<Tabs>
+  <Tab title="Buying Options">
+    
+    min(Premium Multiplier × Option Mark Price, long_itm × Spot Price)
+
+    The margin plots below show the margin requirements for both call and put options across various strikes ranging from deep out the money (OTM) to in the money (ITM).
+  </Tab>
+  
+  <Tab title="Selling Options">
+    max(short_itm × Spot Price - OTM Amount, short_otm × Spot Price)
+
+    where OTM Amount is:
+    - For calls: max(0, Strike Price - Spot Price)
+    - For puts: max(0, Spot Price - Strike Price)
+
+    <Note>Margin requirements for short put options are capped at short_put_cap × Strike Price to prevent excessively high requirements.</Note>
+
+    The margin plots below show the margin requirements for both call and put options across various strikes ranging from deep out the money (OTM) to in the money (ITM).
+  </Tab>
+</Tabs>

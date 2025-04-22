@@ -71,6 +71,25 @@ navigation:
             slug: paradex-chain-testnet
             path: ./pages/paradex-chain/testnet.mdx
 
+      - section: Perpetual Options
+        slug: perpetual-options
+        contents:
+          - page: Introduction
+            slug: intro
+            path: ./pages/options/intro.mdx
+          - page: Understanding Perpetual Options
+            slug: understanding-perpetual-options
+            path: ./pages/options/understanding-perpetual-options.mdx
+          - page: Margin Requirements
+            slug: margin-requirements
+            path: ./pages/options/margin-requirements.mdx
+          - page: Trading Fees
+            slug: trading-fees
+            path: ./pages/options/trading-fees.mdx
+          - page: Examples
+            slug: examples
+            path: ./pages/options/examples.mdx
+
       - section: Vaults
         contents:
           - page: Introduction
@@ -96,28 +115,6 @@ navigation:
           - page: FAQs
             slug: faq
             path: ./pages/vaults/faqs.mdx
-
-      - section: Perpetual Options
-        slug: perpetual-options
-        contents:
-          - page: Introduction
-            slug: intro
-            path: ./pages/options/intro.mdx
-          - page: Understanding Perpetual Options
-            slug: understanding-perpetual-options
-            path: ./pages/options/understanding-perpetual-options.mdx
-          - page: Trading Mechanics
-            slug: trading-mechanics
-            path: ./pages/options/trading-mechanics.mdx
-          - page: Margin Requirements
-            slug: margin-requirements
-            path: ./pages/options/margin-requirements.mdx
-          - page: Trading Fees
-            slug: trading-fees
-            path: ./pages/options/trading-fees.mdx
-          - page: Examples
-            slug: examples
-            path: ./pages/options/examples.mdx
 
       - section: Points & Referrals
         contents:

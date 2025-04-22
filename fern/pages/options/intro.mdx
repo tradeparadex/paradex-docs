@@ -76,8 +76,14 @@ In perp options, the extra funding also covers downside protection, so price swi
 
 A key advantage of Perpetual Options is their unique margin structure compared to perpetual futures:
 
-- **High leverage without liquidation risk from price movements** - Unlike futures, option buyers cannot be liquidated due to adverse price movements
-- **High effective leverage** - Especially with out-of-the-money options, achieve effective leverage >50x
-- **Known maximum loss** - Your maximum risk is limited to the funding you pay while holding the position
-  This margin structure makes Perpetual Options a powerful alternative to futures for leveraged trading, offering an asymmetric return profile with liquidation risk where liquidation risk is transformed into a manageable, transparent funding rate.
-
+<CardGroup cols={3}>
+  <Card title="High leverage without liquidation risk" icon="fa-solid fa-shield-halved">
+    <p class="text-sm">Unlike futures, option buyers cannot be liquidated due to adverse price movements</p>
+  </Card>
+  <Card title="High effective leverage" icon="fa-solid fa-rocket">
+    <p class="text-sm">Especially with out-of-the-money options, achieve effective leverage >50x</p>
+  </Card>
+  <Card title="Known maximum loss" icon="fa-solid fa-chart-line">
+    <p class="text-sm">Your maximum risk is limited to the funding you pay while holding the position</p>
+  </Card>
+</CardGroup>

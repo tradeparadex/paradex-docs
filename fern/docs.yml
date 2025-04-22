@@ -105,16 +105,16 @@ navigation:
             path: ./pages/options/intro.mdx
           - page: Understanding Perpetual Options
             slug: understanding-perpetual-options
-            path: ./pages/options/funding-mechanism.mdx
+            path: ./pages/options/understanding-perpetual-0ptions.mdx
           - page: Trading Mechanics
             slug: trading-mechanics
-            path: ./pages/options/mark-price-calculation.mdx
+            path: ./pages/options/trading-mechanics.mdx
           - page: Margin Requirements
             slug: margin-requirements
-            path: ./pages/options/differences-perps-dated-options.mdx
-          - page: Trading Fees
-            slug: frading-fees
             path: ./pages/options/margin-requirements.mdx
+          - page: Trading Fees
+            slug: trading-fees
+            path: ./pages/options/trading-fees.mdx
           - page: Examples
             slug: examples
             path: ./pages/options/examples.mdx

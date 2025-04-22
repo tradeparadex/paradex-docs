@@ -12,12 +12,27 @@ Perpetual Options combine features of traditional options with a funding mechani
 ### Mark Price Calculation
 
 The price of a Perpetual Option depends on:
-- Option type (call/put)
-- Spot Oracle Price of the underlying asset
-- Strike Price
-- Mark Implied Volatility (Mark IV)
-- Interest Rate (derived from Paradex Futures Funding Rate)
-- Funding period (24 hours)
+
+<Cards>
+  <Card title="Option Type" icon="toggle-left">
+    Call or Put option
+  </Card>
+  <Card title="Spot Oracle Price" icon="activity">
+    Current price of the underlying asset
+  </Card>
+  <Card title="Strike Price" icon="target">
+    Predetermined price at which the option can be exercised
+  </Card>
+  <Card title="Mark Implied Volatility (Mark IV)" icon="bar-chart-2">
+    Estimated volatility used in price calculations
+  </Card>
+  <Card title="Interest Rate" icon="percent">
+    Derived from Paradex Futures Funding Rate
+  </Card>
+  <Card title="Funding Period" icon="clock">
+    Set at 24 hours for continuous funding
+  </Card>
+</Cards>
 
 Paradex calculates prices using the Black-Scholes formula adapted for perpetual options with continuous funding.
 
@@ -61,7 +76,7 @@ If Dave buys 5 contracts and holds for 1 hour with unchanged prices:
 
 Funding accrues continuously as unrealized PnL and is realized whenever the position is updated.
 
-## Option Types
+## Perpetual Option Types
 
 <Tabs>
   <Tab title="Perpetual Call Options">

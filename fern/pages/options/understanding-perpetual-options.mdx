@@ -36,11 +36,22 @@ The price of a Perpetual Option depends on:
 
 Paradex calculates prices using the Black-Scholes formula adapted for perpetual options with continuous funding.
 
-**Mark IV:** Paradex maintains a Mark Implied Volatility that reflects a fair estimate of market IV even when the option is illiquid. This is derived from:
-- Best bid/ask prices
-- Last trade price
-- Mid price
-- External IV calibrated from Deribit dated options
+### Mark IV
+
+<Tabs>
+  <Tab title="What is Mark IV?">
+    Mark Implied Volatility is a key parameter that ensures fair pricing of Perpetual Options, especially during periods of low liquidity.
+  </Tab>
+  <Tab title="Calculation Inputs">
+    - Best bid/ask prices
+    - Last trade price
+    - Mid price
+    - External IV from Deribit dated options
+  </Tab>
+  <Tab title="Why It Matters">
+    A reliable Mark IV prevents price manipulation and ensures that traders can enter and exit positions at fair market values, even when trading activity is low.
+  </Tab>
+</Tabs>
 
 ## Time Value
 

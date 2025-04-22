@@ -9,9 +9,9 @@ Perpetual Options combine features of traditional options with a funding mechani
 
 # Core Concepts
 
-## Perpetual Option Valuation (Mark Price Calculation)
+## Option Valuation
 
-The price of a Perpetual Option depends on:
+The mark price of a Perpetual Option depends on 6 major inputs:
 
 <CardGroup cols={3}>
   <Card title="Option Type" icon="fa-solid fa-toggle-on">
@@ -36,22 +36,19 @@ The price of a Perpetual Option depends on:
 
 Paradex calculates prices using the Black-Scholes formula adapted for perpetual options with continuous funding.
 
-### Mark IV
+### Implied Volatiility (IV)
 
-<Tabs>
-  <Tab title="What is Mark IV?">
-    Mark Implied Volatility is a key parameter that ensures fair pricing of Perpetual Options, especially during periods of low liquidity.
-  </Tab>
-  <Tab title="Calculation Inputs">
-    - Best bid/ask prices
-    - Last trade price
-    - Mid price
-    - External IV from Deribit dated options
-  </Tab>
-  <Tab title="Why It Matters">
-    A reliable Mark IV prevents price manipulation and ensures that traders can enter and exit positions at fair market values, even when trading activity is low.
-  </Tab>
-</Tabs>
+Paradex maintains a fair estimate of market IV (mark IV) through a multi-source approach:
+
+<Tip title="Mark IV Calculation Flow" icon="chart-network">
+  <div className="flex flex-col space-y-2">
+    <div className="bg-blue-50 p-3 rounded-md border border-blue-100">Market Data → Best bid/ask + Last trade + Mid price</div>
+    <div className="text-center">↓</div>
+    <div className="bg-blue-50 p-3 rounded-md border border-blue-100">External Input → Deribit dated options IV calibration</div>
+    <div className="text-center">↓</div>
+    <div className="bg-green-50 p-3 rounded-md border border-green-100">Final Mark IV → Fair estimate even during illiquid periods</div>
+  </div>
+</Tip>
 
 ## Time Value
 

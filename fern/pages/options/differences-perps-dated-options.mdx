@@ -1,15 +1,37 @@
 ---
-title: Key differences between Perpetual and Dated Options
+title: Margin Requirements
 ---
 
-A Perpetual Option inherits many of the traditional Dated Option properties but fits it into the simpler and more flexible perpetual framework.
+Paradex currently supports Cross Margin for Perpetual Options, allowing traders to benefit from PnL offsetting across futures and options markets.
 
-As a rough comparison, Perpetual Option can be thought of as Dated Option with a time to expiry equal to its funding period. This means that Paradex perpetual options prices are roughly close to prices of Dated Options expiring in 24 hours. Given the timing flexibility, the prices are not exactly equal (perpetual options have a different pricing formula).
+Shortly, Paradex will also offer **Portfolio Margin** which will significantly improve margin requirements for hedged portfolios, particularly for users that are short Perpetual Options.
 
-The main difference is that Perpetual Options do not have a Time Decay. Unlike Dated Options which price is negatively impacted by the passage of time (option becomes cheaper as it gets close to expiry, if spot price and IV are not changing), perpetual options do not have an expiry and therefore their price is not affected by time.
+# Cross Margin Parameters (Illustrative)
 
-Instead, the holder of a Perpetual Option pays for this perpetual exposure through funding. Funding replaces time decay in the perpetual framework.
+*The parameter values below are examples. The parameters are configurable by the underlying asset.*
 
-A key difference here is that in a dated option, you pay the time premium upfront vs in a perpetual option you pay it over the funding period (in Paradex’s case it’s paid continuously)
+| **Fraction Parameter** | **Initial Margin (IMR)** | **Maintenance Margin (MMR)** |
+|------------------------|--------------------------|------------------------------|
+| Premium Multiplier     | 100%                     | 50%                          |
+| Long ITM Fraction      | 10%                      | 5%                           |
+| Short ITM Fraction     | 7.5%                     | 3.75%                        |
+| Short OTM Fraction     | 5%                       | 2.5%                         |
+| Short Put Cap          | 50%                      | 50%                          |
 
-The Perpetual Option can be effectively as an intraday dated option with automatic adjustment/rolling to maintain a constant time-to-expiry.
+Cross Margin Requirements for options depends on their type (call/put), moneyness (out-of-money vs in-the money) and the mark price.
+
+# Margin Calculation
+
+**For Buying Options:**  
+min(Premium Multiplier × Option Mark Price, long_itm × Spot Price)
+
+**For Selling Options:**  
+max(short_itm × Spot Price - OTM Amount, short_otm × Spot Price)
+
+where OTM Amount is:
+- For calls: max(0, Strike Price - Spot Price)
+- For puts: max(0, Spot Price - Strike Price)
+
+Margin requirements for short put options are capped at short_put_cap × Strike Price to prevent excessively high requirements.
+
+The margin plots below show the margin requirements for both call and put options across various strikes ranging from deep out the money (OTM) to in the money (ITM).

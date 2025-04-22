@@ -3,59 +3,13 @@ title: Understanding Perpetual Options
 description: A comprehensive guide explaining the core concepts of perpetual options
 ---
 
-# Funding Mechanism
+# Perpetual Options Explained
 
-The funding mechanism is how Perpetual Options maintain their perpetual nature. Long positions continuously pay short positions a funding rate based on the option's time value.
+Perpetual Options combine features of traditional options with a funding mechanism that allows them to exist without expiration dates.
 
-- **Funding Period:** 24 hours (funding is paid continuously)
-- **Funding Premium:** The total amount of funding paid over the funding period, equal to the time value of the option:
-  
-  Funding Premium = Time Value = Mark Price - Intrinsic Value
+## Core Concepts
 
-<Tip title="Core Idea" icon="leaf">
-The Funding Period is a critical concept to understand. It represents the expected period of time over which a user will pay the time value of the option via Funding. This is a parameter chosen by Paradex and is what makes the current Perpetual Option similar (but not equal to) a 24 hour dated option.
-</Tip>
-
-## Example
-
-For a BTC-USD-101000-C with:
-- Spot Price: $100,000
-- Mark Price: $500
-- Intrinsic Value: $0 (out-of-the-money)
-- Time Value: $500
-
-If Dave buys 5 contracts and holds for 1 hour with unchanged prices:
-- Funding PnL = -5 × ($500 × 1/24) = -$104.17
-
-Funding accrues continuously as unrealized PnL and is realized whenever the position is updated.
-
-# Perpetual Call Options
-
-Similar to a traditional dated call option, a Perpetual Call Option gives the holder the right to benefit from price increases above the strike price. The intrinsic value of a Call option is:
-
-$\text{max}(\text{Spot Price} - \text{Strike Price}, 0)$
-
-- When Spot Price > Strike Price: The option is "in-the-money" (ITM)
-- When Spot Price < Strike Price: The option is "out-of-the-money" (OTM)
-
-# Perpetual Put Options
-
-Similar to a traditional dated put option, a Perpetual Put Option gives the holder the right to benefit from price decreases below the strike price. The intrinsic value of a Put option is:
-
-$\text{max}(\text{Strike Price} - \text{Spot Price}, 0)$
-
-- When Spot Price < Strike Price: The option is "in-the-money" (ITM)
-- When Spot Price > Strike Price: The option is "out-of-the-money" (OTM)
-
-# Time Value
-
-In Perpetual Options, Time Value is the difference between the mark price of the option and its intrinsic value:
-
-$$\text{Time Value} = \text{Mark Price} - \text{Intrinsic Value}$$
-
-This Time Value represents the premium traders are willing to pay for the option's potential future value.
-
-# Mark Price Calculation
+### Mark Price Calculation
 
 The price of a Perpetual Option depends on:
 - Option type (call/put)
@@ -73,4 +27,57 @@ Paradex calculates prices using the Black-Scholes formula adapted for perpetual 
 - Mid price
 - External IV calibrated from Deribit dated options
 
+### Time Value
 
+In Perpetual Options, Time Value is the difference between the mark price of the option and its intrinsic value:
+
+$$\text{Time Value} = \text{Mark Price} - \text{Intrinsic Value}$$
+
+This Time Value represents the premium traders are willing to pay for the option's potential future value.
+
+### Funding Mechanism
+
+The funding mechanism is how Perpetual Options maintain their perpetual nature. Long positions continuously pay short positions a funding rate based on the option's time value.
+
+- **Funding Period:** 24 hours (funding is paid continuously)
+- **Funding Premium:** The total amount of funding paid over the funding period, equal to the time value of the option:
+  
+  Funding Premium = Time Value = Mark Price - Intrinsic Value
+
+<Tip title="Core Idea" icon="leaf">
+The Funding Period is a critical concept to understand. It represents the expected period of time over which a user will pay the time value of the option via Funding. This is a parameter chosen by Paradex and is what makes the current Perpetual Option similar (but not equal to) a 24 hour dated option.
+</Tip>
+
+#### Example
+
+For a BTC-USD-101000-C with:
+- Spot Price: $100,000
+- Mark Price: $500
+- Intrinsic Value: $0 (out-of-the-money)
+- Time Value: $500
+
+If Dave buys 5 contracts and holds for 1 hour with unchanged prices:
+- Funding PnL = -5 × ($500 × 1/24) = -$104.17
+
+Funding accrues continuously as unrealized PnL and is realized whenever the position is updated.
+
+## Option Types
+
+<Tabs>
+  <Tab title="Perpetual Call Options">
+    Similar to a traditional dated call option, a Perpetual Call Option gives the holder the right to benefit from price increases above the strike price. The intrinsic value of a Call option is:
+    
+    $\text{max}(\text{Spot Price} - \text{Strike Price}, 0)$
+    
+    - When Spot Price > Strike Price: The option is "in-the-money" (ITM)
+    - When Spot Price < Strike Price: The option is "out-of-the-money" (OTM)
+  </Tab>
+  <Tab title="Perpetual Put Options">
+    Similar to a traditional dated put option, a Perpetual Put Option gives the holder the right to benefit from price decreases below the strike price. The intrinsic value of a Put option is:
+    
+    $\text{max}(\text{Strike Price} - \text{Spot Price}, 0)$
+    
+    - When Spot Price < Strike Price: The option is "in-the-money" (ITM)
+    - When Spot Price > Strike Price: The option is "out-of-the-money" (OTM)
+  </Tab>
+</Tabs>

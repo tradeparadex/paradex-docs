@@ -13,26 +13,26 @@ Perpetual Options combine features of traditional options with a funding mechani
 
 The price of a Perpetual Option depends on:
 
-<Cards>
-  <Card title="Option Type" icon="toggle-left">
-    Call or Put option
+<CardGroup cols={3}>
+  <Card title="Option Type" icon="fa-solid fa-toggle-on">
+    <p class="text-sm">Call or Put option</p>
   </Card>
-  <Card title="Spot Oracle Price" icon="activity">
-    Current price of the underlying asset
+  <Card title="Spot Oracle Price" icon="fa-solid fa-chart-line">
+    <p class="text-sm">Current price of the underlying asset</p>
   </Card>
-  <Card title="Strike Price" icon="target">
-    Predetermined price at which the option can be exercised
+  <Card title="Strike Price" icon="fa-solid fa-bullseye">
+    <p class="text-sm">Predetermined price at which the option can be exercised</p>
   </Card>
-  <Card title="Mark Implied Volatility (Mark IV)" icon="bar-chart-2">
-    Estimated volatility used in price calculations
+  <Card title="Mark Implied Volatility (Mark IV)" icon="fa-solid fa-chart-bar">
+    <p class="text-sm">Estimated volatility used in price calculations</p>
   </Card>
-  <Card title="Interest Rate" icon="percent">
-    Derived from Paradex Futures Funding Rate
+  <Card title="Interest Rate" icon="fa-solid fa-percent">
+    <p class="text-sm">Derived from Paradex Futures Funding Rate</p>
   </Card>
-  <Card title="Funding Period" icon="clock">
-    Set at 24 hours for continuous funding
+  <Card title="Funding Period" icon="fa-solid fa-clock">
+    <p class="text-sm">Set at 24 hours for continuous funding</p>
   </Card>
-</Cards>
+</CardGroup>
 
 Paradex calculates prices using the Black-Scholes formula adapted for perpetual options with continuous funding.
 

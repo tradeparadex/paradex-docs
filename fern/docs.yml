@@ -103,21 +103,18 @@ navigation:
           - page: Introduction
             slug: intro
             path: ./pages/options/intro.mdx
-          - page: Funding Mechanism
-            slug: funding-mechanism
+          - page: Understanding Perpetual Options
+            slug: understanding-perpetual-options
             path: ./pages/options/funding-mechanism.mdx
-          - page: Mark Price Calculation
-            slug: mark-price-calculation
+          - page: Trading Mechanics
+            slug: trading-mechanics
             path: ./pages/options/mark-price-calculation.mdx
-          - page: Perpetual vs Dated Options
-            slug: perp-vs-dated-options
-            path: ./pages/options/differences-perps-dated-options.mdx
           - page: Margin Requirements
             slug: margin-requirements
-            path: ./pages/options/margin-requirements.mdx
+            path: ./pages/options/differences-perps-dated-options.mdx
           - page: Trading Fees
-            slug: trading-fees
-            path: ./pages/options/trading-fees.mdx
+            slug: frading-fees
+            path: ./pages/options/margin-requirements.mdx
           - page: Examples
             slug: examples
             path: ./pages/options/examples.mdx

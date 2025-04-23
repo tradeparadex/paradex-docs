@@ -21,7 +21,7 @@ jobs:
           files: |
             - source: prod.json
               destination: fern/apis/prod_rest/openapi/openapi.json
-            - souce: testnet.json
+            - source: testnet.json
               destination: fern/apis/testnet_rest/openapi/openapi.json
 
           branch: apispec-update

@@ -86,9 +86,9 @@ navigation:
           - page: Trading Fees
             slug: trading-fees
             path: ./pages/options/trading-fees.mdx
-          - page: Examples
-            slug: examples
-            path: ./pages/options/examples.mdx
+          - page: Trade Examples
+            slug: trade-examples
+            path: ./pages/options/trade-examples.mdx
 
       - section: Vaults
         contents:

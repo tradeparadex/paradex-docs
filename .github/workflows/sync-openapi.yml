@@ -13,7 +13,7 @@ jobs:
         uses: fern-api/sync-openapi@v0
         with:
           repository: tradeparadex/paradex-docs
-          token: ${{ secrets.FERN_TOKEN }}
+          token: ${{ secrets.OPENAPI_SYNC_TOKEN }}
           files: |
             - source: https://api.prod.paradex.trade/swagger/doc.json
               destination: fern/apis/prod_rest/openapi/openapi.json

@@ -543,10 +543,12 @@ navigation:
               - page: SOL
                 slug: sol
                 path: ./pages/instruments-guide/options/sol.mdx
-      - section: Ecosystem Partners
+      - section: Ecosystem
         contents:
+          - page: Community Content
+            path: ./pages/ecosystem/community-content.mdx
           - section: Starknet Wallets
-            path: ./pages/ecosystem-partners/starknet-wallets/starknet.mdx
+            path: ./pages/ecosystem/starknet-wallets/starknet.mdx
             contents:
               - link: Argent
                 href: https://www.argent.xyz/

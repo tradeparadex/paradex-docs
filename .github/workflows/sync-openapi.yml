@@ -21,5 +21,5 @@ jobs:
             - source: doc.json
               destination: fern/apis/prod_rest/openapi/openapi.json
 
-          branch: main
+          branch: apispec-update
           auto_merge: false # note: branch = main with auto_merge = false will cause an error

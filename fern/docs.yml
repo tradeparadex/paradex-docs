@@ -71,8 +71,9 @@ navigation:
             slug: paradex-chain-testnet
             path: ./pages/paradex-chain/testnet.mdx
 
-      - section: Perpetual Options *New*
+      - section: Perpetual Options
         slug: perpetual-options
+        icon: fa-regular fa-sparkles
         contents:
           - page: Introduction
             slug: intro

@@ -71,7 +71,7 @@ navigation:
             slug: paradex-chain-testnet
             path: ./pages/paradex-chain/testnet.mdx
 
-      - section: Perpetual Options
+      - section: Perpetual Options *New*
         slug: perpetual-options
         contents:
           - page: Introduction

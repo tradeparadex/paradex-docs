@@ -11,15 +11,18 @@ jobs:
       - uses: actions/checkout@v4
       - name: Download OpenAPI JSON
         run: |
-          curl -L https://api.prod.paradex.trade/swagger/doc.json -o doc.json
-      - name: Sync OpenAPI spec to target repo
+          curl -L https://api.prod.paradex.trade/swagger/doc.json -o prod.json
+          curl -L https://api.testnet.paradex.trade/swagger/doc.json -o testnet.json
+      - name: Sync OpenAPI spec to docs repo
         uses: fern-api/sync-openapi@v0
         with:
           repository: tradeparadex/paradex-docs
           token: ${{ secrets.OPENAPI_SYNC_TOKEN }}
           files: |
-            - source: doc.json
+            - source: prod.json
               destination: fern/apis/prod_rest/openapi/openapi.json
+            - souce: testnet.json
+              destination: fern/apis/testnet_rest/openapi/openapi.json
 
           branch: apispec-update
           auto_merge: false # note: branch = main with auto_merge = false will cause an error

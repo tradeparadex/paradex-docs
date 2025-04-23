@@ -1,0 +1,22 @@
+name: Sync OpenAPI Specs # can be customized
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync OpenAPI spec to target repo
+        uses: fern-api/sync-openapi@v0
+        with:
+          repository: tradeparadex/paradex-docs
+          token: ${{ secrets.FERN_TOKEN }}
+          files: |
+            - source: https://api.prod.paradex.trade/swagger/doc.json
+              destination: fern/apis/prod_rest/openapi/openapi.json
+
+          branch: main
+          auto_merge: false # note: branch = main with auto_merge = false will cause an error

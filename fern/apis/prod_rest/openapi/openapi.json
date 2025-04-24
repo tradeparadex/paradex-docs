@@ -11,7 +11,7 @@
         "description": "The following describe Paradex API.\n",
         "title": "Paradex REST API",
         "contact": {},
-        "version": "1.92.10"
+        "version": "1.93.0"
     },
     "host": "api.prod.paradex.trade",
     "basePath": "/v1",
@@ -277,7 +277,7 @@
                 }
             }
         },
-        "/account/profile/max_slippage": {
+        "/account/profile/market_max_slippage/{market}": {
             "post": {
                 "security": [
                     {
@@ -294,11 +294,18 @@
                 "tags": [
                     "Account"
                 ],
-                "summary": "Updates account max slippage",
-                "operationId": "update-account-max-slippage",
+                "summary": "Updates account max slippage for a specific market",
+                "operationId": "update-account-market-max-slippage",
                 "parameters": [
                     {
-                        "description": "Update max slippage request",
+                        "type": "string",
+                        "description": "{base_currency}-{quote_currency}-{kind}",
+                        "name": "market",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update market max slippage request",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -3136,9 +3143,11 @@
                     "type": "boolean",
                     "example": true
                 },
-                "max_slippage": {
-                    "type": "string",
-                    "example": "0.05"
+                "market_max_slippage": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "nfts": {
                     "type": "array",

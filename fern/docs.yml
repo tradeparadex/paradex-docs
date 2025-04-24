@@ -356,6 +356,9 @@ navigation:
                   - page: HYPER-USD-PERP
                     slug: hyper-usd-perp
                     path: ./pages/instruments-guide/futures/tier-2/hyper-usd-perp.mdx
+                  - page: INIT-USD-PERP
+                    slug: init-usd-perp
+                    path: ./pages/instruments-guide/futures/tier-2/init-usd-perp.mdx
                   - page: INJ-USD-PERP
                     slug: inj-usd-perp
                     path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx

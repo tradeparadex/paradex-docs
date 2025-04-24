@@ -6,11 +6,11 @@ Paradex uses a maker-taker fee model based on the notional value of the trade:
 
 | **Fee Type** | **Rate** | **Cap** |
 |--------------|----------|---------|
-| Taker Fee    | 4 basis points (0.04%) of underlying notional | 500% of Option Price |
-| Maker Fee    | 1 basis point (0.01%) of underlying notional  | 500% of Option Price |
+| Taker Fee    | 0.03% of underlying notional | 200% of Option Price |
+| Maker Fee    | 0.03% of underlying notional  | 200% of Option Price |
 
-## Example
+<Note> Perpetual Options fees have a cap of 200% (2x) the Perpetual Option Price</Note>
 
-Alice (taker) trades 2 BTC-USD-90000-C against Bob (maker) with BTC spot price at $100,000:
-- Alice pays: 0.0004 × 2 × $100,000 = $80
-- Bob pays: 0.0001 × 2 × $100,000 = $20
+**Notes**:
+
+* Fees are collected on the notional value of the underlying trade, which is the total value of the underlying assets being traded, not the option price.

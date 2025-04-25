@@ -11,7 +11,7 @@
         "description": "The following describe Paradex API.\n",
         "title": "Paradex REST API",
         "contact": {},
-        "version": "1.93.0"
+        "version": "1.94.0"
     },
     "host": "api.testnet.paradex.trade",
     "basePath": "/v1",
@@ -390,6 +390,93 @@
                 ],
                 "summary": "Updates account profile username fields",
                 "operationId": "update-account-profile-username",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.AccountProfileResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ApiError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ApiError"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/settings": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Get account settings",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get account settings",
+                "operationId": "get-account-settings",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.AccountSettingsResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ApiError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ApiError"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/settings/trading_value_display": {
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "To set user preferences for the trading value display on the UI, Spot Notional will use spot price, and Market Value will use the market price.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Updates account trading value display",
+                "operationId": "update-account-trading-value-display",
+                "parameters": [
+                    {
+                        "description": "Update account trading value display request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UpdateTradingValueDisplayRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2872,6 +2959,11 @@
                     "type": "string",
                     "example": "BTC-USD-PERP"
                 },
+                "on_behalf_of_account": {
+                    "description": "ID corresponding to the configured isolated margin account.  Only for isolated margin orders",
+                    "type": "string",
+                    "example": "0x1234567890abcdef"
+                },
                 "price": {
                     "description": "Existing or modified price of the order",
                     "type": "string",
@@ -2952,6 +3044,11 @@
                     "type": "string",
                     "example": "BTC-USD-PERP"
                 },
+                "on_behalf_of_account": {
+                    "description": "ID corresponding to the configured isolated margin account.  Only for isolated margin orders",
+                    "type": "string",
+                    "example": "0x1234567890abcdef"
+                },
                 "price": {
                     "description": "Order price",
                     "type": "string",
@@ -3020,6 +3117,17 @@
             ],
             "properties": {
                 "max_slippage": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.UpdateTradingValueDisplayRequest": {
+            "type": "object",
+            "required": [
+                "trading_value_display"
+            ],
+            "properties": {
+                "trading_value_display": {
                     "type": "string"
                 }
             }
@@ -3175,6 +3283,15 @@
                 "username": {
                     "type": "string",
                     "example": "username"
+                }
+            }
+        },
+        "responses.AccountSettingsResp": {
+            "type": "object",
+            "properties": {
+                "trading_value_display": {
+                    "type": "string",
+                    "example": "SPOT_NOTIONAL"
                 }
             }
         },

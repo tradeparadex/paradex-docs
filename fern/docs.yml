@@ -547,6 +547,9 @@ navigation:
               - page: BTC
                 slug: btc
                 path: ./pages/instruments-guide/options/btc.mdx
+              - page: ETH
+                slug: eth
+                path: ./pages/instruments-guide/options/eth.mdx
               - page: SOL
                 slug: sol
                 path: ./pages/instruments-guide/options/sol.mdx

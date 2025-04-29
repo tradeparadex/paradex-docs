@@ -11,7 +11,7 @@
         "description": "The following describe Paradex API.\n",
         "title": "Paradex REST API",
         "contact": {},
-        "version": "1.94.0"
+        "version": "1.95.00"
     },
     "host": "api.prod.paradex.trade",
     "basePath": "/v1",
@@ -545,7 +545,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetOpenAlgoOrders"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.AlgoOrderResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -698,7 +713,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetAlgoOrders"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.PaginatedAPIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.AlgoOrderResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -875,7 +905,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetBalancesResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.BalanceResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -983,7 +1028,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetFillsResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.PaginatedAPIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.FillResult"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -1053,7 +1113,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.FundingDataResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.PaginatedAPIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.FundingDataResult"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -1122,7 +1197,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.FundingHistoryResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.PaginatedAPIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.FundingPayment"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -1195,7 +1285,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetLiquidations"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.LiquidationResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -1230,7 +1335,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetMarkets"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.MarketResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "404": {
@@ -1346,7 +1466,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetMarketSummary"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.MarketSummaryResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -1491,7 +1626,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetOpenOrders"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.OrderResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -1678,7 +1828,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetOrders"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.PaginatedAPIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.OrderResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -1998,7 +2163,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetPositionsResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.PositionResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -2062,7 +2242,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetReferrals"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.ReferralsResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2189,7 +2384,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetTradebustsResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.PaginatedAPIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.TradebustResult"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2253,7 +2463,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetTradesResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.PaginatedAPIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.TradeResult"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2314,7 +2539,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetTransactionResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.PaginatedAPIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.TransactionResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2385,7 +2625,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetTransfersResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.PaginatedAPIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.TransferResult"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2420,7 +2675,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetVaultsResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.VaultResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2524,7 +2794,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetVaultAccountSummariesResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.VaultAccountSummaryResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2566,7 +2851,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetBalancesResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.BalanceResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2659,7 +2959,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetVaultHistoricalDataResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.VaultHistoricalDataResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2701,7 +3016,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.VaultPositionsResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.PositionResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2736,7 +3066,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.GetVaultSummariesResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.VaultSummaryResp"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -2772,7 +3117,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.VaultTransfersResp"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/responses.APIResults"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/responses.TransferResult"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -3129,6 +3489,18 @@
             "properties": {
                 "trading_value_display": {
                     "type": "string"
+                }
+            }
+        },
+        "responses.APIResults": {
+            "type": "object",
+            "properties": {
+                "results": {
+                    "description": "Array of results",
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
                 }
             }
         },
@@ -3988,67 +4360,28 @@
                 "FillTypeSettleMarket"
             ]
         },
-        "responses.FundingDataResp": {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "description": "The pointer to fetch next set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-                },
-                "prev": {
-                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-                },
-                "results": {
-                    "description": "Funding Data Response data list",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.FundingDataResult"
-                    }
-                }
-            }
-        },
         "responses.FundingDataResult": {
             "type": "object",
             "properties": {
                 "created_at": {
+                    "description": "Timestamp in milliseconds when the funding data was created",
                     "type": "integer"
                 },
                 "funding_index": {
+                    "description": "Current funding index value as a decimal string",
                     "type": "string"
                 },
                 "funding_premium": {
+                    "description": "Current funding premium as a decimal string",
                     "type": "string"
                 },
                 "funding_rate": {
+                    "description": "Current funding rate as a decimal string",
                     "type": "string"
                 },
                 "market": {
+                    "description": "Market represents the market identifier",
                     "type": "string"
-                }
-            }
-        },
-        "responses.FundingHistoryResp": {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "description": "The pointer to fetch next set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-                },
-                "prev": {
-                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-                },
-                "results": {
-                    "description": "Funding Response data list",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.FundingPayment"
-                    }
                 }
             }
         },
@@ -4057,8 +4390,7 @@
             "properties": {
                 "account": {
                     "description": "Account that made the payment",
-                    "type": "string",
-                    "example": "Alice"
+                    "type": "string"
                 },
                 "created_at": {
                     "description": "Funding payment time",
@@ -4119,167 +4451,6 @@
                 }
             }
         },
-        "responses.GetAlgoOrders": {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "description": "The pointer to fetch next set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-                },
-                "prev": {
-                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-                },
-                "results": {
-                    "description": "List of Algo orders responses",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.AlgoOrderResp"
-                    }
-                }
-            }
-        },
-        "responses.GetBalancesResp": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "Array of token balances held",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.BalanceResp"
-                    }
-                }
-            }
-        },
-        "responses.GetFillsResp": {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "description": "The pointer to fetch next set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-                },
-                "prev": {
-                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-                },
-                "results": {
-                    "description": "Fill Results List",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.FillResult"
-                    }
-                }
-            }
-        },
-        "responses.GetLiquidations": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of liquidations",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.LiquidationResp"
-                    }
-                }
-            }
-        },
-        "responses.GetMarketSummary": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of market summaries",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.MarketSummaryResp"
-                    }
-                }
-            }
-        },
-        "responses.GetMarkets": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of available active markets",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.MarketResp"
-                    }
-                }
-            }
-        },
-        "responses.GetOpenAlgoOrders": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of Algo orders responses",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.AlgoOrderResp"
-                    }
-                }
-            }
-        },
-        "responses.GetOpenOrders": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "Orders list",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.OrderResp"
-                    }
-                }
-            }
-        },
-        "responses.GetOrders": {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "description": "The pointer to fetch next set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-                },
-                "prev": {
-                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-                },
-                "results": {
-                    "description": "List of Orders",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.OrderResp"
-                    }
-                }
-            }
-        },
-        "responses.GetPositionsResp": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.PositionResp"
-                    }
-                }
-            }
-        },
-        "responses.GetReferrals": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of referral details",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.ReferralsResp"
-                    }
-                }
-            }
-        },
         "responses.GetSubAccountsResponse": {
             "type": "object",
             "properties": {
@@ -4287,142 +4458,6 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/responses.AccountInfoResponse"
-                    }
-                }
-            }
-        },
-        "responses.GetTradebustsResp": {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "description": "The pointer to fetch next set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-                },
-                "prev": {
-                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-                },
-                "results": {
-                    "description": "List of tradebusts",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.TradebustResult"
-                    }
-                }
-            }
-        },
-        "responses.GetTradesResp": {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "description": "The pointer to fetch next set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-                },
-                "prev": {
-                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-                },
-                "results": {
-                    "description": "List of trade details",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.TradeResult"
-                    }
-                }
-            }
-        },
-        "responses.GetTransactionResponse": {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "description": "The pointer to fetch next set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-                },
-                "prev": {
-                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-                },
-                "results": {
-                    "description": "List of transaction responses",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.TransactionResponse"
-                    }
-                }
-            }
-        },
-        "responses.GetTransfersResponse": {
-            "type": "object",
-            "properties": {
-                "next": {
-                    "description": "The pointer to fetch next set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
-                },
-                "prev": {
-                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
-                    "type": "string",
-                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
-                },
-                "results": {
-                    "description": "List of transaction responses",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.TransferResult"
-                    }
-                }
-            }
-        },
-        "responses.GetVaultAccountSummariesResp": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of vaults account summaries",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.VaultAccountSummaryResp"
-                    }
-                }
-            }
-        },
-        "responses.GetVaultHistoricalDataResp": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of requested vault timeseries",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.VaultHistoricalDataResp"
-                    }
-                }
-            }
-        },
-        "responses.GetVaultSummariesResp": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of vaults summaries",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.VaultSummaryResp"
-                    }
-                }
-            }
-        },
-        "responses.GetVaultsResp": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of vaults",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.VaultResp"
                     }
                 }
             }
@@ -4552,12 +4587,29 @@
                 }
             }
         },
+        "responses.MarketKind": {
+            "type": "string",
+            "enum": [
+                "",
+                "cross",
+                "isolated"
+            ],
+            "x-enum-varnames": [
+                "MarketKindUnknown",
+                "MarketKindCross",
+                "MarketKindIsolated"
+            ]
+        },
         "responses.MarketResp": {
             "type": "object",
             "properties": {
                 "asset_kind": {
                     "description": "Type of asset",
                     "type": "string",
+                    "enum": [
+                        "PERP",
+                        "PERP_OPTION"
+                    ],
                     "example": "PERP"
                 },
                 "base_currency": {
@@ -4607,8 +4659,16 @@
                     "example": "0.05"
                 },
                 "market_kind": {
-                    "description": "Type of market - always 'cross'",
-                    "type": "string",
+                    "description": "Market's margin mode",
+                    "enum": [
+                        "cross",
+                        "isolated"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/responses.MarketKind"
+                        }
+                    ],
                     "example": "cross"
                 },
                 "max_funding_rate": {
@@ -4637,9 +4697,9 @@
                     "example": "0.2"
                 },
                 "min_notional": {
-                    "description": "Minimum order size in USD",
+                    "description": "Minimum order notional in USD. For futures: size*mark_price, for options: size*spot_price",
                     "type": "string",
-                    "example": "10"
+                    "example": "3"
                 },
                 "open_at": {
                     "description": "Market open time in milliseconds",
@@ -4655,8 +4715,12 @@
                     ]
                 },
                 "option_type": {
-                    "description": "Type of option (PUT or CALL)",
+                    "description": "Type of option",
                     "type": "string",
+                    "enum": [
+                        "PUT",
+                        "CALL"
+                    ],
                     "example": "PUT"
                 },
                 "oracle_ewma_factor": {
@@ -4670,7 +4734,7 @@
                     "example": "0.001"
                 },
                 "position_limit": {
-                    "description": "Position limit",
+                    "description": "Position limit in base currency",
                     "type": "string",
                     "example": "500"
                 },
@@ -5064,6 +5128,28 @@
                 "OrderTypeStopLossLimit"
             ]
         },
+        "responses.PaginatedAPIResults": {
+            "type": "object",
+            "properties": {
+                "next": {
+                    "description": "The pointer to fetch next set of records (null if there are no records left)",
+                    "type": "string",
+                    "example": "eyJmaWx0ZXIiMsIm1hcmtlciI6eyJtYXJrZXIiOiIxNjc1NjUwMDE3NDMxMTAxNjk5N="
+                },
+                "prev": {
+                    "description": "The pointer to fetch previous set of records (null if there are no records left)",
+                    "type": "string",
+                    "example": "eyJmaWx0ZXIiOnsiTGltaXQiOjkwfSwidGltZSI6MTY4MTY3OTgzNzk3MTMwOTk1MywibWFya2VyIjp7Im1zMjExMD=="
+                },
+                "results": {
+                    "description": "Array of paginated results",
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            }
+        },
         "responses.PerpetualOptionCrossMarginParams": {
             "type": "object",
             "properties": {
@@ -5373,7 +5459,7 @@
                 "address": {
                     "description": "Contract address of the sub-operator",
                     "type": "string",
-                    "example": "0x1234567890abcdef"
+                    "example": "0x29464b79b02543ed8746bba6e71c8a15401dd27b7279a5fa2f2fe8e8cdfabb"
                 },
                 "name": {
                     "description": "Strategy name",
@@ -5939,18 +6025,6 @@
                 "VaultKindProtocol"
             ]
         },
-        "responses.VaultPositionsResp": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of the vault's positions",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.PositionResp"
-                    }
-                }
-            }
-        },
         "responses.VaultResp": {
             "type": "object",
             "properties": {
@@ -6172,30 +6246,6 @@
                     "description": "Total amount of available vault tokens",
                     "type": "string",
                     "example": "1000000"
-                }
-            }
-        },
-        "responses.VaultTradesResp": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of the vault's trades",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.TradeResult"
-                    }
-                }
-            }
-        },
-        "responses.VaultTransfersResp": {
-            "type": "object",
-            "properties": {
-                "results": {
-                    "description": "List of the vault's transfers",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.TransferResult"
-                    }
                 }
             }
         },

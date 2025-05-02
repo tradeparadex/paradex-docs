@@ -67,6 +67,9 @@ navigation:
           - page: Introduction
             slug: paradex-chain-introduction
             path: ./pages/paradex-chain/introduction.mdx
+          - page: Node Setup
+            slug: node-setup
+            path: ./pages/paradex-chain/node-setup.mdx
           - page: Testnet
             slug: paradex-chain-testnet
             path: ./pages/paradex-chain/testnet.mdx

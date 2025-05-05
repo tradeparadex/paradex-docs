@@ -20,9 +20,8 @@ tabs:
     slug: websocket-reference
 analytics:
   posthog:
-    api-key: ${secrets.POSTHOG_API_KEY} # reads your api key from environment variables
-    # Optional
-    endpoint: ${secrets.POSTHOG_API_HOST} # e.g. https://analytics.example.com or https://eu.i.posthog.com
+    api-key: phc_PHIavFH8sn5Wzxmqcro0n6zQ3rguK7VPTYCzxMJ8eG8
+    endpoint: https://eu.i.posthog.com
 
 navigation:
   - tab: docs

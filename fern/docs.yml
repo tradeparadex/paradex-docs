@@ -874,3 +874,6 @@ colors:
 css: ./assets/styles.css
 js:
   - path: ./dist/dd-rum.js
+
+experimental:
+  openapi-parser-v3: true

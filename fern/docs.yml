@@ -588,13 +588,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.94
+            path: ./pages/release-notes/v1.94.md
           - page: v1.93
             path: ./pages/release-notes/v1.93.md
-          - page: v1.92
-            path: ./pages/release-notes/v1.92.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.92
+                path: ./pages/release-notes/v1.92.md
               - page: v1.91
                 path: ./pages/release-notes/v1.91.md
               - page: v1.90

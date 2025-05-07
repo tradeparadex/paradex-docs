@@ -1,28 +1,24 @@
-name: Sync OpenAPI Specs # can be customized
+name: Update OpenAPI Specification
+
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: "0 0 * * *"
+
 jobs:
-  sync:
+  update-openapi:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - name: Download OpenAPI JSON
-        run: |
-          curl -L https://api.prod.paradex.trade/swagger/doc.json -o prod.json
-          curl -L https://api.testnet.paradex.trade/swagger/doc.json -o testnet.json
-      - name: Sync OpenAPI spec to docs repo
-        uses: fern-api/sync-openapi@v0
         with:
-          repository: tradeparadex/paradex-docs
           token: ${{ secrets.OPENAPI_SYNC_TOKEN }}
-          files: |
-            - source: prod.json
-              destination: fern/apis/prod_rest/openapi/openapi.json
-            - source: testnet.json
-              destination: fern/apis/testnet_rest/openapi/openapi.json
-
-          branch: apispec-update
-          auto_merge: false # note: branch = main with auto_merge = false will cause an error
+      - name: Update OpenAPI Spec
+        uses: fern-api/sync-openapi@v2
+        with:
+          token: ${{ secrets.OPENAPI_SYNC_TOKEN }}
+          branch: 'update-openapi-spec'
+          update_from_source: true
+          add_timestamp: true

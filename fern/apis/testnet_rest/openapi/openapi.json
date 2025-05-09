@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.95.00"
+    "version": "1.96.00"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -4135,7 +4135,8 @@
         "INVALID_CHAIN",
         "INVALID_LAYERSWAP_SWAP",
         "SOCIAL_USERNAME_IN_USE",
-        "INVALID_OAUTH_REQUEST"
+        "INVALID_OAUTH_REQUEST",
+        "RPI_ACCOUNT_NOT_WHITELISTED"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -4202,7 +4203,8 @@
         "ErrorCodeString_InvalidChain",
         "ErrorCodeString_InvalidLayerswapSwap",
         "ErrorCodeString_SocialUsernameInUse",
-        "ErrorCodeString_InvalidOAuthRequest"
+        "ErrorCodeString_InvalidOAuthRequest",
+        "ErrorCodeString_RPIAccountNotWhitelisted"
       ]
     },
     "responses.ErrorResponse": {
@@ -4918,12 +4920,14 @@
       "enum": [
         "REDUCE_ONLY",
         "STOP_CONDITION_BELOW_TRIGGER",
-        "STOP_CONDITION_ABOVE_TRIGGER"
+        "STOP_CONDITION_ABOVE_TRIGGER",
+        "INTERACTIVE"
       ],
       "x-enum-varnames": [
         "FlagsReduceOnly",
         "FlagsStopConditionBelowTrigger",
-        "FlagsStopConditionAboveTrigger"
+        "FlagsStopConditionAboveTrigger",
+        "FlagsInteractive"
       ]
     },
     "responses.OrderInstruction": {
@@ -4931,12 +4935,14 @@
       "enum": [
         "GTC",
         "POST_ONLY",
-        "IOC"
+        "IOC",
+        "RPI"
       ],
       "x-enum-varnames": [
         "OrderInstructionGTC",
         "OrderInstructionPostOnly",
-        "OrderInstructionIOC"
+        "OrderInstructionIOC",
+        "OrderInstructionRPI"
       ]
     },
     "responses.OrderResp": {

@@ -144,7 +144,7 @@ channels:
             market_symbol:
                 description: Either the symbol of the market (any open market returned by GET /markets) or 'ALL' to subscribe for updates to all markets
                 schema:
-                    pattern: ^[A-Z0-9]+-[A-Z0-9]+$
+                    pattern: ^([A-Z0-9]+-[A-Z0-9]+|ALL)$
                     type: string
         description: Public websocket channel for tick updates of orderbook best bid/ask prices and amounts
         subscribe:
@@ -165,9 +165,10 @@ channels:
                             properties:
                                 channel:
                                     type: string
-                                    pattern: ^bbo\.[A-Z0-9]+-[A-Z0-9]+$
+                                    pattern: ^bbo\.([A-Z0-9]+-[A-Z0-9]+|ALL)$
                                     examples:
                                         - "bbo.BTC-USD-PERP"
+                                        - "bbo.ALL"
                                 data:
                                     $ref: '#/components/schemas/ResponsesBBOResp'
                             required:
@@ -199,9 +200,10 @@ channels:
                             properties:
                                 channel:
                                     type: string
-                                    pattern: ^bbo\.[A-Z0-9]+-[A-Z0-9]+$
+                                    pattern: ^bbo\.([A-Z0-9]+-[A-Z0-9]+|ALL)$
                                     examples:
                                         - "bbo.BTC-USD-PERP"
+                                        - "bbo.ALL"
                                     description: Channel name including market symbol, e.g., "bbo.{market_symbol}"
                             required:
                                 - channel
@@ -382,8 +384,8 @@ channels:
         description: Private websocket channel to receive funding payments of an account
         subscribe:
             message:
-                name: fundingresp
-                title: FundingResp
+                name: fundingpayment
+                title: FundingPayment
                 payload:
                     type: object
                     properties:
@@ -403,7 +405,7 @@ channels:
                                         - "funding_payments.BTC-USD-PERP"
                                         - "funding_payments.ALL"
                                 data:
-                                    $ref: '#/components/schemas/ResponsesFundingResp'
+                                    $ref: '#/components/schemas/ResponsesFundingPayment'
                             required:
                                 - channel
                                 - data
@@ -417,8 +419,8 @@ channels:
                     - name: funding
         publish:
             message:
-                name: fundingresp
-                title: FundingRespRequest
+                name: fundingpayment
+                title: FundingPaymentRequest
                 payload:
                     type: object
                     properties:
@@ -450,80 +452,10 @@ channels:
                         - id
         x-fern-display-name: SUB funding_payments
         x-fern-address: ""
-    /funding_rate_comparison:
-        parameters:
-            refresh_rate:
-                $ref: '#/components/parameters/refresh_rate'
-        subscribe:
-            summary: Public websocket channel for funding rate comparisons across exchanges
-            message:
-                name: fundingratecomparisonresp
-                title: FundingRateComparisonResp
-                payload:
-                    type: object
-                    properties:
-                        jsonrpc:
-                            type: string
-                            enum: ["2.0"]
-                        method:
-                            type: string
-                            enum: ["subscription"]
-                        params:
-                            type: object
-                            properties:
-                                channel:
-                                    type: string
-                                    pattern: ^funding_rate_comparison\.(?:[A-Z0-9]+-[A-Z0-9]+-[A-Z0-9]+|ALL)$
-                                    examples:
-                                        - "funding_rate_comparison.BTC-USD-PERP"
-                                        - "funding_rate_comparison.ALL"
-                                data:
-                                    $ref: '#/components/schemas/ResponsesFundingRateComparisonResp'
-                            required:
-                                - channel
-                                - data
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                summary: Public websocket channel for funding rate comparisons across exchanges
-                description: Subscribe to funding rate comparison messages.
-                tags:
-                    - name: funding
-            x-fern-display-name: SUB funding_rate_comparison
-        publish:
-            message:
-                name: fundingresp
-                title: FundingRateComparisonResp
-                payload:
-                    type: object
-                    properties:
-                        jsonrpc:
-                            type: string
-                            enum: ["2.0"]
-                        method:
-                            type: string
-                            enum: ["subscribe"]
-                        params:
-                            type: object
-                            properties:
-                                channel:
-                                    type: string
-                                    pattern: ^funding_rate_comparison@(500ms|1000ms)$
-                                    examples:
-                                        - "funding_payments.ALL@500ms"
-                            required:
-                                - channel
-                        id:
-                            type: integer
-                            description: Client-generated request identifier
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-
     /markets_summary:
+        parameters:
+            market_symbol:
+                $ref: '#/components/parameters/market_symbol'
         description: Public websocket channel for updates of available markets
         subscribe:
             message:
@@ -593,7 +525,7 @@ channels:
             market_symbol:
                 description: Either the symbol of the market (any open market returned by GET /markets) or 'ALL' to subscribe for updates to all markets
                 schema:
-                    pattern: ^[A-Z0-9]+-[A-Z0-9]+$
+                    pattern: ^([A-Z0-9]+-[A-Z0-9]+|ALL)$
                     type: string
             price_tick:
                 description: Optional price tick parameter for grouping order book prices, valid values are below.
@@ -620,12 +552,7 @@ channels:
                         - "100"
                     type: string
             refresh_rate:
-                description: Rate of sending updates
-                schema:
-                    enum:
-                        - 50ms
-                        - 100ms
-                    type: string
+                $ref: '#/components/parameters/refresh_rate'
         description: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
         subscribe:
             message:
@@ -645,10 +572,11 @@ channels:
                             properties:
                                 channel:
                                     type: string
-                                    pattern: order_book
+                                    pattern: ^order_book\.([A-Z0-9]+-[A-Z0-9]+|ALL)\.snapshot@15@(50ms|100ms)(?:\[(0_0000001|0_0000005|0_000001|0_00001|0_0001|0_001|0_01|0_1|1|10|100)\])?$
                                     examples:
-                                        - "order_book"
-                                        - "order_book"
+                                        - "order_book.BTC-USD-PERP.snapshot@15@50ms"
+                                        - "order_book.BTC-USD-PERP.snapshot@15@50ms[0_0001]"
+                                        - "order_book.ALL.snapshot@15@100ms"
                                 data:
                                     $ref: '#/components/schemas/ResponsesPriceBookUpdate'
                             required:
@@ -680,10 +608,12 @@ channels:
                             properties:
                                 channel:
                                     type: string
-                                    pattern: ^order_book\.[A-Z0-9]+-[A-Z0-9]+\.(0_0000001|0_0000005|0_000001|0_000005|0_00001|0_00005|0_0001|0_0005|0_001|0_005|0_01|0_05|0_1|0_5|1|5|10|50|100)\.(50ms|100ms)$
+                                    pattern: ^order_book\.([A-Z0-9]+-[A-Z0-9]+|ALL)\.snapshot@15@(50ms|100ms)(?:\[(0_0000001|0_0000005|0_000001|0_00001|0_0001|0_001|0_01|0_1|1|10|100)\])?$
                                     examples:
-                                        - "order_book.BTC-USD-PERP.snapshot@0_0001@50ms"
-                                    description: Channel name including market symbol, price tick, and refresh rate, e.g., "order_book.{market_symbol}.{price_tick}.{refresh_rate}"
+                                        - "order_book.BTC-USD-PERP.snapshot@15@50ms"
+                                        - "order_book.BTC-USD-PERP.snapshot@15@50ms[0_0001]"
+                                        - "order_book.ALL.snapshot@15@100ms"
+                                    description: Channel name including market symbol, price tick, and refresh rate, e.g., "order_book.{market_symbol}.snapshot@15@{refresh_rate}[{price_tick}]"
                             required:
                                 - channel
                         id:
@@ -1122,32 +1052,29 @@ channels:
 components:
     parameters:
         market_symbol:
+            description: Symbol of the market (e.g., BTC-PERP)
+            schema:
+                type: string
+                pattern: ^[A-Z0-9]+-[A-Z0-9]+$
+        market_symbol_or_all:
             description: Either the symbol of the market (any open market returned by GET /markets) or 'ALL' to subscribe for updates to all markets
             schema:
-                pattern: ^[A-Z0-9]+-[A-Z0-9]+$
+                pattern: ^([A-Z0-9]+-[A-Z0-9]+|ALL)$
                 type: string
         price_tick:
-            description: Optional price tick parameter for grouping order book prices, valid values are below.
+            description: Optional price tick for grouping order book prices
             schema:
                 enum:
                     - "0_0000001"
                     - "0_0000005"
                     - "0_000001"
-                    - "0_000005"
                     - "0_00001"
-                    - "0_00005"
                     - "0_0001"
-                    - "0_0005"
                     - "0_001"
-                    - "0_005"
                     - "0_01"
-                    - "0_05"
                     - "0_1"
-                    - "0_5"
                     - "1"
-                    - "5"
                     - "10"
-                    - "50"
                     - "100"
                 type: string
         refresh_rate:
@@ -1326,6 +1253,10 @@ components:
         ResponsesFillResult:
             additionalProperties: false
             properties:
+                account:
+                    description: Account that made the fill
+                    example: 0x978532f46745d7fFBa1CDfa1D8C8202D09D89C9E
+                    type: string
                 client_id:
                     description: Unique client assigned ID for the order
                     example: x1234
@@ -1344,6 +1275,11 @@ components:
                     type: string
                 fill_type:
                     description: Fill type, can be FILL, LIQUIDATION or TRANSFER
+                    enum:
+                        - LIQUIDATION
+                        - TRANSFER
+                        - FILL
+                        - SETTLE_MARKET
                     example: FILL
                     type: string
                 id:
@@ -1390,6 +1326,10 @@ components:
                     description: Size of the fill
                     example: "0.5"
                     type: string
+                underlying_price:
+                    description: Underlying asset price of the fill (spot price)
+                    example: "7.56"
+                    type: string
             required:
                 - id
                 - side
@@ -1406,19 +1346,26 @@ components:
                 - fill_type
                 - realized_pnl
                 - realized_funding
+                - account
+                - underlying_price
             type: object
         ResponsesFundingDataResult:
             additionalProperties: false
             properties:
                 created_at:
+                    description: Timestamp in milliseconds when the funding data was created
                     type: integer
                 funding_index:
+                    description: Current funding index value as a decimal string
                     type: string
                 funding_premium:
+                    description: Current funding premium as a decimal string
                     type: string
                 funding_rate:
+                    description: Current funding rate as a decimal string
                     type: string
                 market:
+                    description: Market represents the market identifier
                     type: string
             required:
                 - market
@@ -1427,15 +1374,18 @@ components:
                 - funding_rate
                 - created_at
             type: object
-        ResponsesFundingResp:
+        ResponsesFundingPayment:
             additionalProperties: false
             properties:
+                account:
+                    description: Account that made the payment
+                    type: string
                 created_at:
-                    description: Funding payments time
+                    description: Funding payment time
                     example: "1681375481000"
                     type: integer
                 fill_id:
-                    description: Unique string ID for the fill that triggered the payment (if any)
+                    description: Fill id that triggered the payment (if any)
                     example: "8615262148007718462"
                     type: string
                 id:
@@ -1447,7 +1397,7 @@ components:
                     example: "-2819.53434361"
                     type: string
                 market:
-                    description: Perpetual market against which payment is made
+                    description: Market against which payment is made
                     example: BTC-USD-PERP
                     type: string
                 payment:
@@ -1456,41 +1406,12 @@ components:
                     type: string
             required:
                 - id
+                - account
                 - market
                 - payment
                 - index
                 - fill_id
                 - created_at
-            type: object
-        ResponsesFundingRateComparisonResp:
-            additionalProperties: false
-            properties:
-                asset_kind:
-                    description: Asset kind
-                    example: ASSET_KIND_PERPETUAL_FUTURE
-                    type: string
-                hourly_funding_rate:
-                    description: Hourly funding rate
-                    example: "0.0001"
-                    type: string
-                last_updated_at:
-                    description: Last updated timestamp in milliseconds
-                    example: "1681375481000"
-                    type: integer
-                source:
-                    description: Source of the funding rate
-                    example: SOURCE_PARADEX
-                    type: string
-                symbol:
-                    description: Market symbol
-                    example: BTC-USD-PERP
-                    type: string
-            required:
-                - asset_kind
-                - symbol
-                - source
-                - last_updated_at
-                - hourly_funding_rate
             type: object
         ResponsesMarketSummaryResp:
             additionalProperties: false
@@ -1528,7 +1449,7 @@ components:
                     type: string
                 greeks:
                     additionalProperties: false
-                    description: Greeks
+                    description: Greeks (delta, gamma, vega). Partial for perpetual futures.
                     properties:
                         delta:
                             description: Market Delta
@@ -1538,8 +1459,20 @@ components:
                             description: Market Gamma
                             example: "0.2"
                             type: string
+                        rho:
+                            description: Market Rho
+                            example: "0.2"
+                            type: string
+                        vanna:
+                            description: Market Vanna
+                            example: "0.2"
+                            type: string
                         vega:
                             description: Market Vega
+                            example: "0.2"
+                            type: string
+                        volga:
+                            description: Market Volga
                             example: "0.2"
                             type: string
                     required:
@@ -1580,7 +1513,7 @@ components:
                     example: "141341.0424"
                     type: string
                 underlying_price:
-                    description: Underlying asset price (spot oracle price)
+                    description: Underlying asset price (spot price)
                     example: "29876.3"
                     type: string
                 volume_24h:
@@ -1605,7 +1538,7 @@ components:
             additionalProperties: false
             properties:
                 account:
-                    description: Account identifier (user's account address)
+                    description: Paradex Account
                     example: 0x4638e3041366aa71720be63e32e53e1223316c7f0d56f7aa617542ed1e7512x
                     type: string
                 avg_fill_price:
@@ -1617,7 +1550,7 @@ components:
                     example: NOT_ENOUGH_MARGIN
                     type: string
                 client_id:
-                    description: Client id passed on order creation
+                    description: Client order id provided by the client at order creation
                     example: x1234
                     type: string
                 created_at:
@@ -1630,23 +1563,24 @@ components:
                         type: string
                     type: array
                 id:
-                    description: Unique order identifier
+                    description: Unique order identifier generated by Paradex
                     example: "123456"
                     type: string
                 instruction:
-                    description: OrderInstruction (GTC, IOC, POST_ONLY)
+                    description: Execution instruction for order matching
                     enum:
                         - GTC
                         - POST_ONLY
                         - IOC
+                        - RPI
                     example: GTC
                     type: string
                 last_updated_at:
-                    description: Order last update time.  No changes once status=CLOSED
+                    description: Order last update time. No changes once status=CLOSED
                     example: "1681493746016"
                     type: integer
                 market:
-                    description: Market to which order belongs
+                    description: Market
                     example: BTC-USD-PERP
                     type: string
                 price:
@@ -1654,11 +1588,11 @@ components:
                     example: "26000"
                     type: string
                 published_at:
-                    description: Order published to the client time
+                    description: Timestamp in milliseconds when order was sent to the client
                     example: "1681493746016"
                     type: integer
                 received_at:
-                    description: Order received from the client time
+                    description: Timestamp in milliseconds when order was received by API service
                     example: "1681493746016"
                     type: integer
                 remaining_size:
@@ -1667,7 +1601,7 @@ components:
                     type: string
                 request_info:
                     additionalProperties: false
-                    description: Request info for modify order
+                    description: Additional request information for orders
                     properties:
                         id:
                             description: Request id
@@ -1710,7 +1644,7 @@ components:
                         - CLOSED
                     type: string
                 stp:
-                    description: Self Trade Prevention mode (EXEPIRE_MAKER, EXPIRE_TAKER, EXPIRE_BOTH)
+                    description: Self Trade Prevention mode
                     enum:
                         - EXPIRE_MAKER
                         - EXPIRE_TAKER
@@ -1764,6 +1698,9 @@ components:
         ResponsesPositionResp:
             additionalProperties: false
             properties:
+                account:
+                    description: Account ID of the position
+                    type: string
                 average_entry_price:
                     description: Average entry price
                     example: "29001.34"
@@ -1820,34 +1757,37 @@ components:
                     type: string
                 realized_positional_funding_pnl:
                     description: Realized Funding PnL for the position. Reset to 0 when position is closed or flipped.
+                    example: "12.234"
                     type: string
                 realized_positional_pnl:
                     description: Realized PnL including both positional PnL and funding payments. Reset to 0 when position is closed or flipped.
+                    example: "-123.23"
                     type: string
                 seq_no:
                     description: Unique increasing number (non-sequential) that is assigned to this position update. Can be used to deduplicate multiple feeds
                     example: "1681471234972000000"
                     type: integer
                 side:
-                    description: 'Position Side : Long or Short'
+                    description: 'Position Side: Long or Short'
                     type: string
                 size:
                     description: Size of the position with sign (positive if long or negative if short)
                     example: "-0.345"
                     type: string
                 status:
-                    description: 'Status of Position : Open or Closed'
+                    description: 'Status of Position: Open or Closed'
                     type: string
                 unrealized_funding_pnl:
                     description: Unrealized running funding P&L for the position
                     example: "12.234"
                     type: string
                 unrealized_pnl:
-                    description: Unrealized P&L of the position in the quote asset
+                    description: Unrealized P&L of the position in the quote asset. Includes the unrealized running funding P&L.
                     example: "-123.23"
                     type: string
             required:
                 - id
+                - account
                 - market
                 - status
                 - side
@@ -1979,6 +1919,11 @@ components:
                     type: string
                 trade_type:
                     description: Trade type, can be FILL or LIQUIDATION
+                    enum:
+                        - LIQUIDATION
+                        - TRANSFER
+                        - FILL
+                        - SETTLE_MARKET
                     example: FILL
                     type: string
             required:
@@ -1994,15 +1939,15 @@ components:
             additionalProperties: false
             properties:
                 account:
-                    description: Starknet Account from which fill was created
+                    description: Paradex Account
                     example: 0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d9454fa
                     type: string
                 busted_fill_id:
-                    description: Unique string ID of the busted fill
+                    description: Unique ID of the busted fill
                     example: "12342345"
                     type: string
                 created_at:
-                    description: Unix Millis timestamp when bust was created
+                    description: Unix timestamp in milliseconds when bust was created
                     example: "1681497002041"
                     type: integer
             required:
@@ -2203,11 +2148,18 @@ components:
             tags:
                 - name: market
                 - name: funding
-        ResponsesFundingResp:
-            name: fundingresp
-            title: FundingResp
+        ResponsesFundingPayment:
+            name: fundingpayment
+            title: FundingPayment
             summary: Private websocket channel to receive funding payments of an account
             description: Subscribe to funding payment messages for a market
+            tags:
+                - name: funding
+        ResponsesFundingRateComparisonResp:
+            name: fundingratecomparisonresp
+            title: FundingRateComparisonResp
+            summary: Public websocket channel for funding rate comparisons across exchanges
+            description: Subscribe to funding rate comparison messages
             tags:
                 - name: funding
         ResponsesMarketSummaryResp:
@@ -2229,13 +2181,6 @@ components:
             title: PositionResp
             summary: Private websocket channel to receive updates when position is changed
             description: Subscribe to position messages
-            tags:
-                - name: trading
-        ResponsesFundingRateComparisonResp:
-            name: fundingratecomparisonresp
-            title: FundingRateComparisonResp
-            summary: Public websocket channel for funding rate comparisons across exchanges
-            description: Subscribe to funding rate comparison messages.
             tags:
                 - name: trading
         ResponsesPriceBookUpdate:

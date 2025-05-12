@@ -3824,7 +3824,8 @@
       "type": "object",
       "properties": {
         "data": {
-          "description": "any additional data related to the error"
+          "description": "any additional data related to the error",
+          "type": "object"
         },
         "error": {
           "description": "unique immutable string identifier for specific error",
@@ -4134,6 +4135,9 @@
         "PROFILE_STATS_NOT_FOUND",
         "INVALID_CHAIN",
         "INVALID_LAYERSWAP_SWAP",
+        "INVALID_RHINOFI_REQUEST",
+        "INVALID_RHINOFI_QUOTE",
+        "INVALID_RHINOFI_QUOTE_COMMIT",
         "SOCIAL_USERNAME_IN_USE",
         "INVALID_OAUTH_REQUEST",
         "RPI_ACCOUNT_NOT_WHITELISTED"
@@ -4202,6 +4206,9 @@
         "ErrorCodeString_ProfileStatsNotFound",
         "ErrorCodeString_InvalidChain",
         "ErrorCodeString_InvalidLayerswapSwap",
+        "ErrorCodeString_InvalidRhinofiRequest",
+        "ErrorCodeString_InvalidRhinofiQuote",
+        "ErrorCodeString_InvalidRhinofiQuoteCommit",
         "ErrorCodeString_SocialUsernameInUse",
         "ErrorCodeString_InvalidOAuthRequest",
         "ErrorCodeString_RPIAccountNotWhitelisted"

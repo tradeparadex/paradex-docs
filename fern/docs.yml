@@ -43,7 +43,7 @@ navigation:
               - page: Chain Information
                 slug: chain-information
                 path: ./pages/introduction/architecture-overview/chain-information.mdx
-              - page: Bridges & Audits
+              - page: Bridges
                 slug: bridges-and-audits
                 path: ./pages/introduction/architecture-overview/bridges-and-audits.mdx
               - page: Wallet Integration

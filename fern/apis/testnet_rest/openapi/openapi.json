@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.96.00"
+    "version": "1.96.01"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -2277,6 +2277,83 @@
         }
       }
     },
+    "/system/announcements": {
+      "get": {
+        "description": "get announcements",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "System"
+        ],
+        "summary": "Get all announcements",
+        "operationId": "get-announcements",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Returns the ‘next’ paginated page.",
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "End Time (unix time millisecond)",
+            "name": "end_at",
+            "in": "query"
+          },
+          {
+            "maximum": 5000,
+            "minimum": 1,
+            "type": "integer",
+            "default": 100,
+            "description": "Limit the number of responses in the page",
+            "name": "page_size",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Start Time (unix time millisecond)",
+            "name": "start_at",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/responses.PaginatedAPIResults"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/responses.Announcement"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
     "/system/config": {
       "get": {
         "description": "Get clearing and settlement layer config for Paradex\n",
@@ -3148,6 +3225,19 @@
     }
   },
   "definitions": {
+    "model.AnnouncementKind": {
+      "type": "string",
+      "enum": [
+        "UPDATE",
+        "LISTING",
+        "DELISTING"
+      ],
+      "x-enum-varnames": [
+        "AnnouncementKindUpdate",
+        "AnnouncementKindListing",
+        "AnnouncementKindDelisting"
+      ]
+    },
     "requests.AccountMarginRequest": {
       "type": "object",
       "required": [
@@ -3819,6 +3909,35 @@
         "AlgoTypeUnspecified",
         "AlgoTypeTWAP"
       ]
+    },
+    "responses.Announcement": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "description": "Full announcement content in Markdown format",
+          "type": "string"
+        },
+        "expiry_at": {
+          "description": "Announcement expiry timestamp",
+          "type": "integer"
+        },
+        "kind": {
+          "description": "Type of announcement (e.g., Listing)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/model.AnnouncementKind"
+            }
+          ]
+        },
+        "title": {
+          "description": "Short, descriptive title of the announcement",
+          "type": "string"
+        },
+        "visible_at": {
+          "description": "Announcement visible timestamp",
+          "type": "integer"
+        }
+      }
     },
     "responses.ApiError": {
       "type": "object",

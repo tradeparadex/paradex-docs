@@ -2,8 +2,11 @@ name: "Fern Check"
 
 on:
   pull_request:
+    paths:
+      - fern/**
   push:
-    branches: [main]
+    branches: 
+      - main
 
 jobs:
   fern-check:

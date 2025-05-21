@@ -5872,13 +5872,15 @@
         "",
         "STARKGATE",
         "LAYERSWAP",
-        "RHINOFI"
+        "RHINOFI",
+        "HYPERLANE"
       ],
       "x-enum-varnames": [
         "TransferBridgeUnspecified",
         "TransferBridgeStarkgate",
         "TransferBridgeLayerswap",
-        "TransferBridgeRhinofi"
+        "TransferBridgeRhinofi",
+        "TransferBridgeHyperlane"
       ]
     },
     "responses.TransferDirection": {

@@ -1,4 +1,4 @@
 # See https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/about-code-owners
 
 # Default ownership
-*                                  @tradeparadex/solutions @tradeparadex/testops @tradeparadigm/backend @tradeparadigm/frontend
+*                                  @tradeparadex/solutions @tradeparadex/testops @tradeparadex/backend @tradeparadex/frontend

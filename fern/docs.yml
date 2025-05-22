@@ -22,6 +22,8 @@ analytics:
   posthog:
     api-key: phc_PHIavFH8sn5Wzxmqcro0n6zQ3rguK7VPTYCzxMJ8eG8
     endpoint: https://eu.i.posthog.com
+  gtm:
+    container-id: GTM-W68Q2TWZ
 
 navigation:
   - tab: docs

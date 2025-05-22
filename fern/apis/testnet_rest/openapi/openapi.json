@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.96.01"
+    "version": "1.96.02"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -3727,9 +3727,6 @@
             "$ref": "#/definitions/responses.Nft"
           }
         },
-        "programs_eligibility": {
-          "$ref": "#/definitions/responses.ProgramsEligibility"
-        },
         "referral": {
           "$ref": "#/definitions/responses.ReferralConfigResp"
         },
@@ -5445,27 +5442,6 @@
           "description": "Unrealized P&L of the position in the quote asset. Includes the unrealized running funding P&L.",
           "type": "string",
           "example": "-123.23"
-        }
-      }
-    },
-    "responses.ProgramsEligibility": {
-      "type": "object",
-      "properties": {
-        "affiliate": {
-          "type": "string",
-          "example": "Pending"
-        },
-        "fee": {
-          "type": "string",
-          "example": "True"
-        },
-        "maker": {
-          "type": "string",
-          "example": "True"
-        },
-        "referral": {
-          "type": "string",
-          "example": "False"
         }
       }
     },

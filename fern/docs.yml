@@ -345,6 +345,9 @@ navigation:
                   - page: ELX-USD-PERP
                     slug: elx-usd-perp
                     path: ./pages/instruments-guide/futures/tier-2/elx-usd-perp.mdx
+                  - page: ETHFI-USD-PERP
+                    slug: ethfi-usd-perp
+                    path: ./pages/instruments-guide/futures/tier-2/ethfi-usd-perp.mdx
                   - page: FARTCOIN-USD-PERP
                     slug: fartcoin-usd-perp
                     path: ./pages/instruments-guide/futures/tier-2/fartcoin-usd-perp.mdx

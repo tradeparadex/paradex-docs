@@ -57,14 +57,6 @@ navigation:
               - page: Global IP Addresses
                 slug: global-ip-addresses
                 path: ./pages/introduction/architecture-overview/global-ip-addresses.mdx
-          - section: Install Mobile / Desktop App
-            contents:
-              - page: Mobile App
-                slug: mobile-app
-                path: ./pages/introduction/install-our-app/mobile.mdx
-              - page: Desktop App
-                slug: desktop-app
-                path: ./pages/introduction/install-our-app/desktop.mdx
           - page: Official Links
             slug: official-links
             path: ./pages/introduction/official-links.mdx

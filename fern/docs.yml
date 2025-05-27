@@ -876,7 +876,7 @@ typography:
 logo:
   light: ./assets/logo-light.svg
   dark: ./assets/logo-dark.svg
-  height: 30
+  height: 15
   href: https://app.paradex.trade
 favicon: ./assets/logo.png
 colors:

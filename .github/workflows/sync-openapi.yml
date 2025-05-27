@@ -15,6 +15,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.OPENAPI_SYNC_TOKEN }}
+      
+      - name: Install Fern CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/fern-api/fern/main/scripts/install-cli.sh | bash
+          echo "$HOME/.fern" >> $GITHUB_PATH
+
+      - name: Run fern upgrade
+        run: fern upgrade
+      
       - name: Update OpenAPI Spec
         uses: fern-api/sync-openapi@v2
         with:

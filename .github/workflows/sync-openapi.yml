@@ -19,7 +19,6 @@ jobs:
       - name: Install Fern CLI
         run: |
           npm install -g fern-api
-          echo "$HOME/.fern" >> $GITHUB_PATH
 
       - name: Run fern upgrade
         run: fern upgrade

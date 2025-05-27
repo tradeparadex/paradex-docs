@@ -879,7 +879,7 @@ colors:
 css: ./assets/styles.css
 js:
   - path: ./dist/dd-rum.js
-  - path: ../dist/add-pixel.js
+  - path: ./dist/add-pixel.js
     strategy: lazyOnload
 
 experimental:

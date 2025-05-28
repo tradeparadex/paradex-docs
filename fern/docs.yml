@@ -484,6 +484,9 @@ navigation:
                   - page: SEI-USD-PERP
                     slug: sei-usd-perp
                     path: ./pages/instruments-guide/futures/tier-2/sei-usd-perp.mdx
+                  - page: SOPH-USD-PERP
+                    slug: soph-usd-perp
+                    path: ./pages/instruments-guide/futures/tier-2/soph-usd-perp.mdx
                   - page: STRK-USD-PERP
                     slug: strk-usd-perp
                     path: ./pages/instruments-guide/futures/tier-2/strk-usd-perp.mdx

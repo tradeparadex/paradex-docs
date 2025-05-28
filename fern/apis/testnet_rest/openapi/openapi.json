@@ -4953,7 +4953,7 @@
           "example": "0.3"
         },
         "future_funding_rate": {
-          "description": "Future funding rate, for options",
+          "description": "For options it's a smoothed version of future's funding rate",
           "type": "string",
           "example": "0.3"
         },

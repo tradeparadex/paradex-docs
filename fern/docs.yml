@@ -564,6 +564,9 @@ navigation:
               - page: SOL
                 slug: sol
                 path: ./pages/instruments-guide/options/sol.mdx
+              - page: HYPE
+                slug: hype
+                path: ./pages/instruments-guide/options/hype.mdx
       - section: Ecosystem
         contents:
           - page: Community Content

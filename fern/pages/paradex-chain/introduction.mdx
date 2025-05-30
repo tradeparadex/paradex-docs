@@ -1,15 +1,42 @@
 ---
 title: Introduction
+subtitle: A high-level overview of the Paradex Chain
 ---
 
 ## What is the Paradex Chain?
 
-Built on the SN Stack, Paradex Chain is a general-purpose smart contract platform powered by CairoVM. It shares state with Paradex Exchange, enabling a fully composable, high-throughput execution environment where on-chain applications can seamlessly interact with the deep liquidity and liquidity infrastructure on Paradex Exchange.
+<CardGroup cols={2}>
+  <Card title="Chain Powered by Starknet" icon="code">
+    Enabling developers to build and deploy high-performance decentralized applications on CairoVM
+  </Card>
+  <Card title="Access to Liquidity Infrastructure" icon="link">
+    Seamlessly interact with the deep liquidity on the Paradex Exchange
+  </Card>
+</CardGroup>
 
-## Technical Bits
+## Technical Architecture
 
-The CairoVM is a specialized virtual machine designed specifically for Validity Proof systems (ZK-Rollups), and is free from the constraints of EVM-based architectures. Smart contracts are written in Cairo, a Rust-like language designed to maximize the efficiency of STARK-proof-based computation for scaling Ethereum. Effective immediately, Cairo developers get:
+The CairoVM is a specialized virtual machine designed specifically for Validity Proof systems (ZK-Rollups), and is free from the constraints of EVM-based architectures.
+Smart contracts are written in Cairo, a Rust-like language designed to maximize the efficiency of STARK-proof-based computation for scaling Ethereum.
 
-- Full Starknet Compatibility: Deploy your SN contracts by simply updating RPC endpoints
-- Simplified Deployment: No protocol-level changes required
-- Mature Tooling: Use all existing Starknet ecosystem tooling including Hardhat, Starkli etc.
+Starknet applications can be easily deployed on the Paradex Chain
+
+<CardGroup cols={3}>
+  <Card title="Full Starknet Compatibility" icon="check-circle">
+    Deploy the same contracts by *just* updating RPC endpoints
+  </Card>
+  <Card title="Simplified Deployment" icon="rocket">
+    No protocol-level changes required
+  </Card>
+  <Card title="Mature Tooling" icon="toolbox">
+    Use all existing Starknet ecosystem tooling including Hardhat, Starkli etc.
+  </Card>
+</CardGroup>
+
+## Getting Started
+
+<CardGroup cols={1}>
+  <Card title="Next Steps" icon="arrow-right" href="/paradex-chain/node-setup">
+    Ready to start building? Check out our <a href="/paradex-chain/node-setup">Node Setup Guide</a> to get started with the Paradex Chain.
+  </Card>
+</CardGroup>

@@ -76,9 +76,6 @@ navigation:
               - page: Margin Requirements
                 slug: margin-requirements
                 path: ./pages/options/margin-requirements.mdx
-              - page: Trading Fees
-                slug: trading-fees
-                path: ./pages/options/trading-fees.mdx
               - page: Trade Examples
                 slug: trade-examples
                 path: ./pages/options/trade-examples.mdx
@@ -872,6 +869,9 @@ redirects:
     destination: "/documentation/trading/self-trade-prevention"
   - source: "/documentation/advanced-trading-features/receive-window"
     destination: "/documentation/trading/receive-window"
+
+  - source: "documentation/trading/perpetual-options/trading-fees"
+    destination: "/documentation/trading/trading-fees"
 
 layout:
   header-height: 72px

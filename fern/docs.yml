@@ -11,12 +11,13 @@ title: Paradex | Documentation
 tabs:
   docs:
     display-name: Documentation
+    skip-slug: true
   api:
     display-name: REST API Reference
-    slug: api-reference
+    slug: api
   websockets:
     display-name: WebSocket API Reference
-    slug: websocket-reference
+    slug: ws
 analytics:
   posthog:
     api-key: phc_PHIavFH8sn5Wzxmqcro0n6zQ3rguK7VPTYCzxMJ8eG8
@@ -828,48 +829,28 @@ navbar-links:
     url: https://app.paradex.trade
 
 redirects:
-  - source: "/getting-started/:slug*"
-    destination: "/documentation/getting-started/:slug*"
-  - source: "/vaults/:slug*"
-    destination: "/documentation/vaults/:slug*"
-  - source: "/point-and-referrals/:slug*"
-    destination: "/documentation/points-referrals/:slug*"
-  - source: "/accounts/:slug*"
-    destination: "/documentation/accounts/:slug*"
-  - source: "/trading/:slug*"
-    destination: "/documentation/trading/:slug*"
-  - source: "/security/:slug*"
-    destination: "/documentation/security/:slug*"
-  - source: "/risk-system/:slug*"
-    destination: "/documentation/risk-system/:slug*"
-  - source: "/advanced-trading-features/:slug*"
-    destination: "/documentation/advanced-trading-features/:slug*"
-  - source: "/ecosystem-partners/:slug*"
-    destination: "/documentation/ecosystem-partners/:slug*"
-  - source: "/release-notes/:slug*"
-    destination: "/documentation/release-notes/:slug*"
-  - source: "/developer-portal/:folder/:slug*"
-    destination: "/api-reference/:folder/:slug*"
-  - source: "/instruments-guide/:path*"
-    destination: "/documentation/instruments-guide/:path*"
-  - source: "/introduction/readme"
-    destination: "/documentation/getting-started/what-is-paradex"
-
-  # Redirects from navigation reorganization
   - source: "/documentation/getting-started/architecture-overview/wallet-integration"
-    destination: "/documentation/getting-started/wallet-integration"
+    destination: "/getting-started/wallet-integration"
   - source: "/documentation/perpetual-options/:slug*"
-    destination: "/documentation/trading/perpetual-options/:slug*"
+    destination: "/trading/perpetual-options/:slug*"
   - source: "/documentation/vaults/:slug*"
-    destination: "/documentation/trading/vaults/:slug*"
+    destination: "/trading/vaults/:slug*"
   - source: "/documentation/instruments-guide/:slug*"
-    destination: "/documentation/trading/instruments-guide/:slug*"
+    destination: "/trading/instruments-guide/:slug*"
   - source: "/documentation/risk-system/:slug*"
-    destination: "/documentation/risk/:slug*"
+    destination: "/risk/:slug*"
   - source: "/documentation/advanced-trading-features/self-trade-prevention"
-    destination: "/documentation/trading/self-trade-prevention"
+    destination: "/trading/self-trade-prevention"
   - source: "/documentation/advanced-trading-features/receive-window"
-    destination: "/documentation/trading/receive-window"
+    destination: "/trading/receive-window"
+
+  # Wildcard redirects for old documentation paths
+  - source: "/documentation/:slug*"
+    destination: "/:slug*"
+  - source: "/api-reference/:slug*"
+    destination: "/api/:slug*"
+  - source: "/websocket-reference/:slug*"
+    destination: "/ws/:slug*"
 
   - source: "documentation/trading/perpetual-options/trading-fees"
     destination: "/documentation/trading/trading-fees"

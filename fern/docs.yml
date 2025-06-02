@@ -843,6 +843,8 @@ redirects:
     destination: "/trading/self-trade-prevention"
   - source: "/documentation/advanced-trading-features/receive-window"
     destination: "/trading/receive-window"
+  - source: "/accounts/:slug*"
+    destination: "/trading/accounts/:slug*"
 
   # Wildcard redirects for old documentation paths
   - source: "/documentation/:slug*"

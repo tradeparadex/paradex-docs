@@ -2,16 +2,23 @@
 title: Trading Fees
 ---
 
-Currently trading fees on Paradex are fixed and uniform across the platform.
+## Fee Structure
 
-| Instrument | Maker   | Taker |
-| ---------- | ------- | ----- |
-| Perpetual Futures | -0.005% | 0.03% |
-| Perpetual Options | 0.03% | 0.03% |
+| Instrument        | Taker Fee | Maker Fee | Cap |
+| ----------------- | --------- | --------- | ----|
+| Perpetual Futures | 0.03%     | -0.005%   | N/A |
+| Perpetual Options | 0.03%     | 0.03%     | 50% |
 
-<Note> Perpetual Options fees have a cap of 300% (3x) the Perpetual Option Price</Note>
 
-**Notes**:
+### Fee Calculation
 
-* Fees are collected on the notional value of the trade, which is the total value of the underlying assets being traded, irrespective of any leverage used.
-* Currently fees are not subject to volume based discounts.
+Fees are calculated based on the **notional value** of your trade, not the margin you put up.
+The notional value represents the total dollar amount of the underlying assets being traded.
+
+<Tip title="Fee Example">
+If you open a \$25,000 ETH perpetual position with \$2,500 in margin (10x leverage), fees are charged on the full \$25,000 notional value, not your \$2,500 margin.
+</Tip>
+
+## Additional Information
+
+- There are currently no volume-based fee discounts

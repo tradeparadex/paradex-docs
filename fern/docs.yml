@@ -7,7 +7,6 @@ instances:
         repo: paradex-docs
         branch: main
   - url: https://paradex-dev.docs.buildwithfern.com
-    custom-domain: https://docs.staging.paradex.trade
 title: Paradex | Documentation
 tabs:
   docs:
@@ -77,9 +76,6 @@ navigation:
               - page: Margin Requirements
                 slug: margin-requirements
                 path: ./pages/options/margin-requirements.mdx
-              - page: Trading Fees
-                slug: trading-fees
-                path: ./pages/options/trading-fees.mdx
               - page: Trade Examples
                 slug: trade-examples
                 path: ./pages/options/trade-examples.mdx
@@ -593,13 +589,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.98
+            path: ./pages/release-notes/v1.98.md
           - page: v1.97
             path: ./pages/release-notes/v1.97.md
-          - page: v1.96
-            path: ./pages/release-notes/v1.96.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.96
+                path: ./pages/release-notes/v1.96.md
               - page: v1.95
                 path: ./pages/release-notes/v1.95.md
               - page: v1.94
@@ -853,6 +851,9 @@ redirects:
     destination: "/api/:slug*"
   - source: "/websocket-reference/:slug*"
     destination: "/ws/:slug*"
+
+  - source: "documentation/trading/perpetual-options/trading-fees"
+    destination: "/documentation/trading/trading-fees"
 
 layout:
   header-height: 72px

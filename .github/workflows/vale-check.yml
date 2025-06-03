@@ -15,4 +15,4 @@ jobs:
       - name: Run Vale linting
         uses: docker://jdkato/vale:latest
         with:
-          args: --config=.vale.ini --output=line fern/
+          args: --config=.vale.ini --output=line fern/ 2>&1

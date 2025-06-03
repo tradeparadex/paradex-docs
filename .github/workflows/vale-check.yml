@@ -1,0 +1,18 @@
+name: "Vale Check"
+
+on:
+  pull_request:
+  push:
+    branches: 
+      - main
+
+jobs:
+  vale-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run Vale linting
+        uses: docker://jdkato/vale:latest
+        with:
+          args: --config=.vale.ini --output=line fern/

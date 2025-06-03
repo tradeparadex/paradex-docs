@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Run Vale linting
-        uses: docker://jdkato/vale:latest
-        with:
-          args: --config=.vale.ini --output=line fern/ 2>&1
+      - name: Install Vale
+        run: sudo snap install vale
+      - name: Check Vale
+        run: vale fern/

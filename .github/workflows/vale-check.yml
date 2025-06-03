@@ -1,0 +1,18 @@
+name: "Vale Check"
+
+on:
+  pull_request:
+  push:
+    branches: 
+      - main
+
+jobs:
+  vale-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Vale
+        run: sudo snap install vale
+      - name: Check Vale
+        run: vale fern/

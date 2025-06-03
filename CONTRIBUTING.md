@@ -57,7 +57,7 @@ Visit the URL in your browser to see the documentation.
     git commit -m "Add feature X"
     ```
 
-4. **Push your changes to Github:**
+4. **Push your changes to GitHub:**
 
     ```shell
     git push origin my-feature-branch

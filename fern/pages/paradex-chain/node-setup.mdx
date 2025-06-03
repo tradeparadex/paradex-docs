@@ -1,159 +1,220 @@
 ---
 title: Node Setup
+subtitle: How to set up a Paradex full node using Docker
 ---
-
-This guide explains how to set up a Paradex full node using either Pathfinder or Juno via Docker.
 
 ## Prerequisites
 
-1.  **Docker:** Install Docker using the [official guide](https://docs.docker.com/engine/install/).
-2.  **Ethereum Node URL:** Obtain an Ethereum node URL for the target network (Mainnet or Sepolia Testnet) from a provider like [Infura](https://infura.io/) or [Alchemy](https://www.alchemy.com/).
-    *   Pathfinder requires a WebSocket URL (`wss://`).
-    *   Juno supports WebSocket (`wss://`) or HTTP (`https://`).
+Before you begin, ensure you have:
 
-    Export the URL(s) as environment variables before running `docker run`:
+1. **Docker** installed using the [official guide](https://docs.docker.com/engine/install/)
+2. **Ethereum Node URL** from a provider like [Infura](https://infura.io/) or [Alchemy](https://www.alchemy.com/)
+  - Pathfinder only supports WebSocket
+  - Juno supports WebSocket and HTTP
+
+### Required Environment Variables
+
+Export these URLs as environment variables before running `docker run`:
+
+<Tabs>
+  <Tab title="Mainnet">
     ```bash
-    # Required for Pathfinder (Mainnet)
-    export ETHEREUM_NODE_WSS_URL="wss://ethereum-mainnet.core.chainstack.com/YOUR_API_KEY"
-    # Optionally required for Juno (Mainnet)
-    export ETHEREUM_NODE_HTTP_URL="https://ethereum-mainnet.core.chainstack.com/YOUR_API_KEY"
+    # If using WS
+    export ETHEREUM_NODE_WSS_URL=
+      "wss://ethereum-mainnet.core.chainstack.com/YOUR_API_KEY"
 
-    # Example for Testnet (WSS, suitable for both)
-    export ETHEREUM_NODE_WSS_URL_TESTNET="wss://sepolia.infura.io/ws/v3/YOUR_PROJECT_ID"
-    # Example for Testnet (HTTP, suitable for Juno)
-    export ETHEREUM_NODE_HTTP_URL_TESTNET="https://sepolia.infura.io/v3/YOUR_PROJECT_ID"
+    # If using HTTP
+    export ETHEREUM_NODE_HTTP_URL=
+      "https://ethereum-mainnet.core.chainstack.com/YOUR_API_KEY"
     ```
-3.  **(Optional) AWS CLI & Decompression Tools:** For downloading snapshots, you'll need `awscli` installed and configured, plus `zstd` (for Pathfinder snapshots) or `tar` (for Juno snapshots).
-
-## Running Pathfinder
-
-Set up a Paradex node using the Pathfinder client.
-
-### Setup Steps
-
-1.  **Create Data Directory:**
+  </Tab>
+  <Tab title="Testnet">
     ```bash
-    # Ensure $HOME/pathfinder exists and is writable
-    mkdir -p $HOME/pathfinder
+    # If using WS
+    export ETHEREUM_NODE_WSS_URL_TESTNET=
+      "wss://sepolia.infura.io/ws/v3/YOUR_PROJECT_ID"
+
+    # If using HTTP
+    export ETHEREUM_NODE_HTTP_URL_TESTNET=
+      "https://sepolia.infura.io/v3/YOUR_PROJECT_ID"
     ```
+  </Tab>
+</Tabs>
 
-2.  **(Optional) Download Snapshot:**
-    Download and decompress a snapshot to speed up sync. (Requires `awscli` and `zstd`).
-    ```bash
-    # Example: Paradex Mainnet snapshot
-    aws s3 cp s3://paradex-prod-pathfinder-ap-northeast-1/2025-04-09/custom.sqlite.zst $HOME/pathfinder/
-    unzstd $HOME/pathfinder/custom.sqlite.zst -o $HOME/pathfinder/pathfinder.sqlite
-    ```
-    *Note: Snapshot URLs/availability may change.*
+<Tip title="Recommend tools for downloading snapshots">
+  - `awscli`
+  - `zstd` (for Pathfinder snapshots)
+  - `tar` (for Juno snapshots)
+</Tip>
 
-3.  **Run Container (Paradex Mainnet):**
-    Requires `ETHEREUM_NODE_WSS_URL` variable (see Prerequisites).
-    ```bash
-    docker run \
-      --name pathfinder-paradex-mainnet \
-      --restart unless-stopped \
-      --detach \
-      -p 9545:9545 `# JSON-RPC port` \
-      --user "$(id -u):$(id -g)" \
-      -e RUST_LOG=info \
-      -e EVENT_BLOOM_FILTER_CACHE_SIZE=1024 \
-      -e PATHFINDER_ETHEREUM_API_URL="${ETHEREUM_NODE_WSS_URL}" \
-      -e PATHFINDER_CHAIN_ID="PRIVATE_SN_PARACLEAR_MAINNET" \
-      -e PATHFINDER_FEEDER_GATEWAY_URL="https://paraclear-mainnet.starknet.io/feeder_gateway" \
-      -e PATHFINDER_GATEWAY_URL="https://paraclear-mainnet.starknet.io/gateway" \
-      -e PATHFINDER_NETWORK="custom" \
-      -e PATHFINDER_SYNC_ENABLED="true" \
-      -e PATHFINDER_GATEWAY_REQUEST_TIMEOUT=30 \
-      -v $HOME/pathfinder:/usr/share/pathfinder/data \
-      eqlabs/pathfinder:v0.16.4 # Specify version if needed
-    ```
-    *Key Paradex Parameters: `PATHFINDER_CHAIN_ID`, `PATHFINDER_FEEDER_GATEWAY_URL`, `PATHFINDER_GATEWAY_URL`, `PATHFINDER_NETWORK="custom"`.*
+## Choose Your Client
 
-4.  **Check Logs:**
-    ```bash
-    docker logs -f pathfinder-paradex-mainnet
-    ```
+<CardGroup cols={2}>
+  <Card title="Pathfinder" icon="code" href="https://github.com/eqlabs/pathfinder">
+    - Original Starknet Client
+    - Written in Rust
+    - Recommended for most users
+  </Card>
+  <Card title="Juno" icon="code" href="https://github.com/NethermindEth/juno">
+    - Newer Starknet Client
+    - Written in Rust
+  </Card>
+</CardGroup>
 
-5.  **Stop Container:**
-    ```bash
-    docker stop pathfinder-paradex-mainnet
-    ```
+## Running Your Client
 
-## Running Juno
+<Tabs>
+  <Tab title="Pathfinder">
+    <Steps>
+      <Step title="Create Data Directory">
+        ```bash
+        # Ensure $HOME/pathfinder exists and is writable
+        mkdir -p $HOME/pathfinder
+        ```
+      </Step>
 
-Set up a Paradex node using the Juno client.
+      <Step title="Download Snapshot (Optional)">
+        Download and decompress a snapshot to speed up sync:
+        ```bash
+        # Example: Paradex Mainnet snapshot
+        aws s3 cp s3://paradex-prod-pathfinder-ap-northeast-1/2025-04-09/custom.sqlite.zst $HOME/pathfinder/
+        unzstd $HOME/pathfinder/custom.sqlite.zst -o $HOME/pathfinder/pathfinder.sqlite
+        ```
+        *Note: Snapshot URLs/availability may change.*
+      </Step>
 
-### Setup Steps
+      <Step title="Run Container">
+        Run the Pathfinder container for Paradex Mainnet:
+        ```bash
+        docker run \
+         --name pathfinder-paradex-mainnet \
+         --restart unless-stopped \
+         --detach \
+         -p 9545:9545 `# JSON-RPC port` \
+         --user "$(id -u):$(id -g)" \
+         -e RUST_LOG=info \
+         -e EVENT_BLOOM_FILTER_CACHE_SIZE=1024 \
+         -e PATHFINDER_ETHEREUM_API_URL="${ETHEREUM_NODE_WSS_URL}" \
+         -e PATHFINDER_CHAIN_ID="PRIVATE_SN_PARACLEAR_MAINNET" \
+         -e PATHFINDER_FEEDER_GATEWAY_URL="https://paraclear-mainnet.starknet.io/feeder_gateway" \
+         -e PATHFINDER_GATEWAY_URL="https://paraclear-mainnet.starknet.io/gateway" \
+         -e PATHFINDER_NETWORK="custom" \
+         -e PATHFINDER_SYNC_ENABLED="true" \
+         -e PATHFINDER_GATEWAY_REQUEST_TIMEOUT=30 \
+         -v $HOME/pathfinder:/usr/share/pathfinder/data \
+         eqlabs/pathfinder:v0.16.4
+        ```
+      </Step>
 
-1.  **Create Data Directory:**
-    ```bash
-    # Ensure $HOME/juno exists and is writable
-    mkdir -p $HOME/juno
-    ```
+      <Step title="Monitor and Manage">
+        ```bash
+        # Check logs
+        docker logs -f pathfinder-paradex-main
+        # Stop container
+        docker stop pathfinder-paradex-mainnet
+        ```
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Juno">
+    <Steps>
+      <Step title="Create Data Directory">
+        ```bash
+        # Ensure $HOME/juno exists and is writable
+        mkdir -p $HOME/juno
+        ```
+      </Step>
 
-2.  **(Optional) Download Snapshot:**
-    Download and decompress a snapshot to speed up sync. (Requires `awscli` and `tar`).
-    ```bash
-    # Example: Paradex Mainnet Juno snapshot
-    aws s3 cp s3://paradex-prod-juno-ap-northeast-1/2025-04-09/juno.tar.xz $HOME/juno/
-    tar -xJf $HOME/juno/juno.tar.xz -C $HOME/juno/
-    ```
-    *Note: Snapshot URLs/availability may change.*
+      <Step title="Download Snapshot (Optional)">
+        Download and decompress a snapshot to speed up sync:
+        ```bash
+        # Example: Paradex Mainnet Juno snapshot
+        aws s3 cp s3://paradex-prod-juno-ap-northeast-1/2025-04-09/juno.tar.xz $HOME/juno/
+        tar -xJf $HOME/juno/juno.tar.xz -C $HOME/juno/
+        ```
+        *Note: Snapshot URLs/availability may change.*
+      </Step>
 
-3.  **Run Container (Paradex Mainnet):**
-    Requires `ETHEREUM_NODE_WSS_URL` or `ETHEREUM_NODE_HTTP_URL` variable (see Prerequisites).
-    ```bash
-    docker run -d \
-      --name juno-paradex-mainnet \
-      --restart unless-stopped \
-      -p 6060:6060 `# JSON-RPC port` \
-      -p 6061:6061 `# WebSocket port` \
-      --user "$(id -u):$(id -g)" \
-      -e JUNO_LOG_LEVEL=info \
-      -e JUNO_HTTP=true \
-      -e JUNO_HTTP_PORT=6060 \
-      -e JUNO_HTTP_HOST=0.0.0.0 \
-      -e JUNO_WS=true \
-      -e JUNO_WS_PORT=6061 \
-      -e JUNO_WS_HOST=0.0.0.0 \
-      -e JUNO_ETHEREUM_NODE_URL="${ETHEREUM_NODE_WSS_URL}" `# Or use HTTP var` \
-      -e JUNO_NETWORK=custom \
-      -e JUNO_STARKNET_FEEDER_URL="https://paraclear-mainnet.starknet.io/feeder_gateway/" \
-      -e JUNO_STARKNET_GATEWAY_URL="https://paraclear-mainnet.starknet.io/gateway/" \
-      -e JUNO_CUSTOM_NETWORK_NAME=sn-mainnet \
-      -e JUNO_ETHEREUM_CHAIN_ID="1" \
-      -e JUNO_UNVERIFIABLE_RANGE="0,10" \
-      -e JUNO_ETHEREUM_CORE_CONTRACT_ADDRESS="0xF338cad020D506e8e3d9B4854986E0EcE6C23640" \
-      -e JUNO_DB_PATH=/var/lib/juno `# Internal path` \
-      -v $HOME/juno:/var/lib/juno `# Mount host directory` \
-      nethermind/juno:latest # Specify version if needed
-    ```
-    *Key Paradex Parameters: `JUNO_NETWORK=custom`, `JUNO_STARKNET_FEEDER_URL`, `JUNO_STARKNET_GATEWAY_URL`, `JUNO_ETHEREUM_CHAIN_ID`, `JUNO_UNVERIFIABLE_RANGE`, `JUNO_ETHEREUM_CORE_CONTRACT_ADDRESS`.*
+      <Step title="Run Container">
+        Run the Juno container for Paradex Mainnet:
+        ```bash
+        docker run -d \
+          --name juno-paradex-mainnet \
+          --restart unless-stopped \
+          -p 6060:6060 `# JSON-RPC port` \
+          -p 6061:6061 `# WebSocket port` \
+          --user "$(id -u):$(id -g)" \
+          -e JUNO_LOG_LEVEL=info \
+          -e JUNO_HTTP=true \
+          -e JUNO_HTTP_PORT=6060 \
+          -e JUNO_HTTP_HOST=0.0.0.0 \
+          -e JUNO_WS=true \
+          -e JUNO_WS_PORT=6061 \
+          -e JUNO_WS_HOST=0.0.0.0 \
+          -e JUNO_ETHEREUM_NODE_URL="${ETHEREUM_NODE_WSS_URL}" \
+          -e JUNO_NETWORK=custom \
+          -e JUNO_STARKNET_FEEDER_URL="https://paraclear-mainnet.starknet.io/feeder_gateway/" \
+          -e JUNO_STARKNET_GATEWAY_URL="https://paraclear-mainnet.starknet.io/gateway/" \
+          -e JUNO_CUSTOM_NETWORK_NAME=sn-mainnet \
+          -e JUNO_ETHEREUM_CHAIN_ID="1" \
+          -e JUNO_UNVERIFIABLE_RANGE="0,10" \
+          -e JUNO_ETHEREUM_CORE_CONTRACT_ADDRESS="0xF338cad020D506e8e3d9B4854986E0EcE6C23640" \
+          -e JUNO_DB_PATH=/var/lib/juno \
+          -v $HOME/juno:/var/lib/juno \
+          nethermind/juno:latest
+        ```
+      </Step>
 
-4.  **Check Logs:**
-    ```bash
-    docker logs -f juno-paradex-mainnet
-    ```
+      <Step title="Monitor and Manage">
+        ```bash
+        # Check logs
+        docker logs -f juno-paradex-mainnet
 
-5.  **Stop Container:**
-    ```bash
-    docker stop juno-paradex-mainnet
-    ```
+        # Stop container
+        docker stop juno-paradex-mainnet
+        ```
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
 ## Running on Testnet
 
-To run either Pathfinder or Juno on the Paradex Testnet, adapt the respective Mainnet `docker run` command:
+<Steps>
+  <Step title="Use Sepolia Ethereum Node">
+    Ensure you are using a Sepolia Ethereum Node URL and set the appropriate environment variable:
+    ```bash
+    # For WebSocket (both clients)
+    export ETHEREUM_NODE_WSS_URL_TESTNET="wss://sepolia.infura.io/ws/v3/YOUR_PROJECT_ID"
+    
+    # For HTTP (Juno only)
+    export ETHEREUM_NODE_HTTP_URL_TESTNET="https://sepolia.infura.io/v3/YOUR_PROJECT_ID"
+    ```
+  </Step>
 
-1.  **Use Sepolia Ethereum Node:** Ensure you are using a Sepolia Ethereum Node URL (WSS for Pathfinder, WSS or HTTP for Juno). Set the appropriate environment variable (e.g., `ETHEREUM_NODE_WSS_URL_TESTNET` or `ETHEREUM_NODE_HTTP_URL_TESTNET` from Prerequisites).
-2.  **Adjust Parameters:** Modify the environment variables (`-e` flags) in the `docker run` command to use the correct Testnet values. Key parameters to change include:
-    *   Starknet Chain ID (`PATHFINDER_CHAIN_ID` or inferred by Juno via gateways)
-    *   Starknet Gateway URLs (`PATHFINDER_FEEDER_GATEWAY_URL`, `PATHFINDER_GATEWAY_URL`, `JUNO_STARKNET_FEEDER_URL`, `JUNO_STARKNET_GATEWAY_URL`)
-    *   Ethereum Chain ID (`JUNO_ETHEREUM_CHAIN_ID`)
-    *   Ethereum Core Contract Address (`JUNO_ETHEREUM_CORE_CONTRACT_ADDRESS`)
+  <Step title="Adjust Parameters">
+    Modify these environment variables in the `docker run` command:
+    - Starknet Chain ID
+    - Starknet Gateway URLs
+    - Ethereum Chain ID
+    - Ethereum Core Contract Address
+  </Step>
 
-    Find the precise Testnet values by querying the **Testnet System Config API:**
+  <Step title="Get Testnet Values">
+    Query the Testnet System Config API to get the correct values:
     [`https://api.testnet.paradex.trade/v1/system/config`](https://api.testnet.paradex.trade/v1/system/config)
+  </Step>
 
-3.  **(Optional) Use Testnet Snapshot:** If available, download and use a Testnet-specific database snapshot. Update the S3 URL and potentially the host directory path in the snapshot download commands.
-4.  **Use Different Names/Paths:** Change the Docker container name (`--name`) and the host volume path (`-v`) to avoid conflicts with your Mainnet node configuration (e.g., `--name pathfinder-paradex-testnet`, `-v $HOME/pathfinder-testnet:/usr/share/pathfinder/data`).
+  <Step title="Use Different Names/Paths">
+    Change the Docker container name and host volume path to avoid conflicts:
+    ```bash
+    # Example for Pathfinder
+    --name pathfinder-paradex-testnet
+    -v $HOME/pathfinder-testnet:/usr/share/pathfinder/data
 
+    # Example for Juno
+    --name juno-paradex-testnet
+    -v $HOME/juno-testnet:/var/lib/juno
+    ```
+  </Step>
+</Steps>

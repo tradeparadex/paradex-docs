@@ -3,6 +3,10 @@ title: Retail Price Improvement
 subtitle: Better pricing for retail traders with selective order visibility
 ---
 
+<Warning>
+RPI orders are in Beta and currently only available for selected market-making partners
+</Warning>
+
 ## Overview
 
 Retail Price Improvement (RPI) is a specialized order type that provides better pricing and execution opportunities for retail traders while protecting market makers from toxic flow. It achieves this through selective order visibility - orders are visible in the UI but hidden from API access.
@@ -39,16 +43,11 @@ RPI orders follow specific matching rules to ensure fair and efficient trading:
 
 ## Limitations and Restrictions
 
-- RPI orders are only available for selected market-making partners
 - Orders must be placed through the API interface
 - RPI orders cannot be placed in combination with other special order types
 - Minimum order size requirements may apply
 
 ## Placing an RPI Order
-
-<Warning>
-  Placing RPI orders are currently restricted to selected market-making partners.
-</Warning>
 
 <Steps>
   <Step title="Use the New Order endpoint">

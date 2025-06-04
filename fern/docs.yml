@@ -65,7 +65,6 @@ navigation:
         contents:
           - section: Perpetual Options
             slug: perpetual-options
-            icon: fa-regular fa-sparkles
             contents:
               - page: Introduction
                 slug: intro
@@ -104,6 +103,10 @@ navigation:
               - page: FAQs
                 slug: faq
                 path: ./pages/vaults/faqs.mdx
+          - page: Retail Price Improvement
+            slug: rpi
+            path: ./pages/trading/rpi.mdx
+            icon: fa-regular fa-sparkles
           - section: Placing Orders
             path: ./pages/trading/placing-orders/placing-orders.mdx
             contents:

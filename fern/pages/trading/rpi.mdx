@@ -1,0 +1,60 @@
+---
+title: Retail Price Improvement
+subtitle: Better pricing for retail traders with selective order visibility
+---
+
+## Overview
+
+Retail Price Improvement (RPI) is a specialized order type that provides better pricing and execution opportunities for retail traders while protecting market makers from toxic flow. It achieves this through selective order visibility - orders are visible in the UI but hidden from API access.
+
+### How RPI Works
+
+<CardGroup cols={2}>
+  <Card title="Visible on UI" icon="eye">
+    Enabling retail users to access improved pricing and better execution opportunities
+  </Card>
+
+  <Card title="Hidden from API" icon="eye-slash">
+    Protecting market makers from potentially harmful trading patterns
+  </Card>
+</CardGroup>
+
+## Matching Rules
+
+RPI orders follow specific matching rules to ensure fair and efficient trading:
+
+1. **Retail-Only Matching**: RPI orders will only match with orders placed by non-algorithmic users and do not execute against orders submitted via API.
+
+2. **Post-Only Requirement**: All RPI orders must be [Post-Only](/trading/placing-orders/order-instructions#post-only), meaning they will only provide liquidity and never take liquidity.
+
+3. **Price Improvement Rule**: RPI orders must be submitted inside the lit bid-ask spread (improving price). If the spread is 1 tick, placing at best bid or best ask is permitted.
+
+4. **Execution Priority**: RPI orders have the lowest execution priority, regardless of when they're placed. They will only be filled after all non-RPI orders at the same price level have been executed.
+
+## Order Behavior and Visibility
+
+1. **Order Persistence**: Accepted and resting RPI orders remain active until cancelled by the user, even if they are no longer at the best bid or offer (BBO).
+
+2. **Cross Book Behavior**: The orderbook visible in the UI may appear crossed due to RPI orders that are not matching with API orders. The crossed section of the book is visible and highlighted in the UI. However, the API orderbook remains uncrossed as it does not contain any RPI orders.
+
+## Limitations and Restrictions
+
+- RPI orders are only available for selected market-making partners
+- Orders must be placed through the API interface
+- RPI orders cannot be placed in combination with other special order types
+- Minimum order size requirements may apply
+
+## Placing an RPI Order
+
+<Warning>
+  Placing RPI orders are currently restricted to selected market-making partners.
+</Warning>
+
+<Steps>
+  <Step title="Use the New Order endpoint">
+    Make a request to the [New Order](https://docs.paradex.trade/api-reference/prod/orders/new) endpoint
+  </Step>
+  <Step title="Set RPI instruction">
+    Set `instruction="RPI"` in your order parameters
+  </Step>
+</Steps>

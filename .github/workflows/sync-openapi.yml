@@ -1,4 +1,4 @@
-name: Update OpenAPI Specification
+name: Update OpenAPI Specification and Fern Version
 
 on:
   workflow_dispatch:

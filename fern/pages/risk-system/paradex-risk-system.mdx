@@ -7,6 +7,14 @@ Paradex currently only supports **Cross Margin (XM)** mode.
 
 There will be no “isolated margin” mode. In order to open an isolated position, the user can create a new separate account to trade a single instrument.
 
+> **Important**
+>
+> When opening a position from an isolated account (i.e. a sub-account), Paradex automatically transfers the required margin from the main account to a sub account. This may look like a withdrawal, but funds stay within your account.
+>
+> Once the position is closed, remaining funds are returned to the main account.
+>
+> Note: If the user is submitting the trade via API, **they must manually transfer the required margin to the isolated account before placing the order.**
+
 #### Instrument types
 
 All instruments are quoted and valued in USD.

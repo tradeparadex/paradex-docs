@@ -452,7 +452,7 @@ channels:
                         - id
         x-fern-display-name: SUB funding_payments
         x-fern-address: ""
-    /funding_rate_comparison.ALL@{refresh_rate}:
+    /funding_rate_comparison:
         parameters:
             refresh_rate:
                 $ref: '#/components/parameters/refresh_rate'

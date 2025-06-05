@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.96.02"
+    "version": "1.96.03"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -363,6 +363,55 @@
           },
           "400": {
             "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/account/profile/size_currency_display": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "To set user preferences for the size currency display on the UI, BASE will use base currency, and QUOTE will use quote currency.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates account size currency display preference",
+        "operationId": "update-account-size-currency-display",
+        "parameters": [
+          {
+            "description": "Update account size currency display request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.UpdateSizeCurrencyDisplayRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.AccountProfileResp"
+            }
+          },
+          "400": {
+            "description": "Validation Error",
             "schema": {
               "$ref": "#/definitions/responses.ApiError"
             }
@@ -3488,8 +3537,12 @@
           }
         },
         "instruction": {
-          "description": "Order Instruction, GTC, IOC or POST_ONLY if empty GTC",
-          "type": "string"
+          "description": "Order Instruction, GTC, IOC, RPI or POST_ONLY if empty GTC",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.OrderInstruction"
+            }
+          ]
         },
         "market": {
           "description": "Market for which order is created",
@@ -3569,6 +3622,17 @@
       ],
       "properties": {
         "max_slippage": {
+          "type": "string"
+        }
+      }
+    },
+    "requests.UpdateSizeCurrencyDisplayRequest": {
+      "type": "object",
+      "required": [
+        "size_currency_display"
+      ],
+      "properties": {
+        "size_currency_display": {
           "type": "string"
         }
       }
@@ -3737,6 +3801,10 @@
         "referred_by": {
           "type": "string",
           "example": "maxDegen"
+        },
+        "size_currency_display": {
+          "type": "string",
+          "example": "BASE"
         },
         "twitter": {
           "$ref": "#/definitions/responses.TwitterProfile"
@@ -4372,6 +4440,21 @@
         }
       }
     },
+    "responses.FillFlag": {
+      "type": "string",
+      "enum": [
+        "interactive",
+        "rpi"
+      ],
+      "x-enum-comments": {
+        "FillFlagInteractive": "Fill was generated from an interactive order (user-initiated)",
+        "FillFlagRPI": "Fill qualifies for Retail Price Improvement"
+      },
+      "x-enum-varnames": [
+        "FillFlagInteractive",
+        "FillFlagRPI"
+      ]
+    },
     "responses.FillResult": {
       "type": "object",
       "properties": {
@@ -4408,6 +4491,17 @@
             }
           ],
           "example": "FILL"
+        },
+        "flags": {
+          "description": "Fill flags indicating special properties",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/responses.FillFlag"
+          },
+          "example": [
+            "[\"interactive\"",
+            " \"rpi\"]"
+          ]
         },
         "id": {
           "description": "Unique string ID of fill per FillType",
@@ -5759,7 +5853,7 @@
           "example": "0.01"
         },
         "trade_type": {
-          "description": "Trade type, can be FILL or LIQUIDATION",
+          "description": "Trade type, can be FILL, LIQUIDATION, or RPI",
           "allOf": [
             {
               "$ref": "#/definitions/responses.FillType"

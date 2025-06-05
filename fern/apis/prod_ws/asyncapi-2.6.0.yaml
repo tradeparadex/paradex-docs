@@ -452,6 +452,79 @@ channels:
                         - id
         x-fern-display-name: SUB funding_payments
         x-fern-address: ""
+    /funding_rate_comparison:
+        parameters:
+            refresh_rate:
+                $ref: '#/components/parameters/refresh_rate'
+        subscribe:
+            message:
+                name: fundingratecomparisonresp
+                title: FundingRateComparisonResp
+                payload:
+                    type: object
+                    properties:
+                        jsonrpc:
+                            type: string
+                            enum: [ "2.0" ]
+                        method:
+                            type: string
+                            enum: [ "subscription" ]
+                        params:
+                            type: object
+                            properties:
+                                channel:
+                                    type: string
+                                    pattern: ^funding_rate_comparison.ALL$
+                                    examples:
+                                        - "funding_rate_comparison.ALL"
+                                        - "funding_rate_comparison.ALL@500ms"
+                                data:
+                                    $ref: '#/components/schemas/ResponsesFundingRateComparisonResp'
+                            required:
+                                - channel
+                                - data
+                    required:
+                        - jsonrpc
+                        - method
+                        - params
+                description: Public websocket channel for funding rate comparisons across exchanges
+                tags:
+                    - name: funding
+        publish:
+            message:
+                name: fundingratecomparison
+                title: FundingRateComparisonRequest
+                payload:
+                    type: object
+                    properties:
+                        jsonrpc:
+                            type: string
+                            enum: [ "2.0" ]
+                        method:
+                            type: string
+                            enum: [ "subscribe" ]
+                        params:
+                            type: object
+                            properties:
+                                channel:
+                                    type: string
+                                    pattern: ^funding_rate_comparison.ALL$
+                                    examples:
+                                        - "funding_rate_comparison.ALL"
+                                        - "funding_rate_comparison.ALL@500ms"
+                            required:
+                                - channel
+                        id:
+                            type: integer
+                            description: Client-generated request identifier
+                    required:
+                        - jsonrpc
+                        - method
+                        - params
+                        - id
+        x-fern-display-name: SUB funding_rate_comparison
+        x-fern-address: ""
+
     /markets_summary:
         parameters:
             market_symbol:
@@ -1078,7 +1151,7 @@ components:
                     - "100"
                 type: string
         refresh_rate:
-            description: Rate of sending updates
+            description: Rate of sending updates (used in BBO channels)
             schema:
                 enum:
                     - 50ms
@@ -1280,8 +1353,15 @@ components:
                         - TRANSFER
                         - FILL
                         - SETTLE_MARKET
+                        - RPI
                     example: FILL
                     type: string
+                flags:
+                    description: Fill flags indicating special properties
+                    example: '["interactive", "rpi"]'
+                    items:
+                        type: string
+                    type: array
                 id:
                     description: Unique string ID of fill per FillType
                     example: "8615262148007718462"
@@ -1348,6 +1428,7 @@ components:
                 - realized_funding
                 - account
                 - underlying_price
+                - flags
             type: object
         ResponsesFundingDataResult:
             additionalProperties: false
@@ -1413,6 +1494,36 @@ components:
                 - fill_id
                 - created_at
             type: object
+        ResponsesFundingRateComparisonResp:
+            additionalProperties: false
+            properties:
+                asset_kind:
+                    description: Asset kind
+                    example: ASSET_KIND_PERPETUAL_FUTURE
+                    type: string
+                hourly_funding_rate:
+                    description: Hourly funding rate
+                    example: "0.0001"
+                    type: string
+                last_updated_at:
+                    description: Last updated timestamp in milliseconds
+                    example: "1681375481000"
+                    type: integer
+                source:
+                    description: Source of the funding rate
+                    example: SOURCE_PARADEX
+                    type: string
+                symbol:
+                    description: Market symbol
+                    example: BTC-USD-PERP
+                    type: string
+            required:
+                - asset_kind
+                - symbol
+                - source
+                - last_updated_at
+                - hourly_funding_rate
+            type: object
         ResponsesMarketSummaryResp:
             additionalProperties: false
             properties:
@@ -1444,7 +1555,7 @@ components:
                     example: "0.3"
                     type: string
                 future_funding_rate:
-                    description: Future funding rate, for options
+                    description: For options it's a smoothed version of future's funding rate
                     example: "0.3"
                     type: string
                 greeks:
@@ -1918,12 +2029,13 @@ components:
                     example: "0.01"
                     type: string
                 trade_type:
-                    description: Trade type, can be FILL or LIQUIDATION
+                    description: Trade type, can be FILL, LIQUIDATION, or RPI
                     enum:
                         - LIQUIDATION
                         - TRANSFER
                         - FILL
                         - SETTLE_MARKET
+                        - RPI
                     example: FILL
                     type: string
             required:

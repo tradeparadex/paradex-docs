@@ -3274,19 +3274,6 @@
     }
   },
   "definitions": {
-    "model.AnnouncementKind": {
-      "type": "string",
-      "enum": [
-        "UPDATE",
-        "LISTING",
-        "DELISTING"
-      ],
-      "x-enum-varnames": [
-        "AnnouncementKindUpdate",
-        "AnnouncementKindListing",
-        "AnnouncementKindDelisting"
-      ]
-    },
     "requests.AccountMarginRequest": {
       "type": "object",
       "required": [
@@ -3983,16 +3970,20 @@
           "type": "string"
         },
         "expiry_at": {
-          "description": "Announcement expiry timestamp",
+          "description": "Announcement expiry timestamp at page",
           "type": "integer"
         },
         "kind": {
           "description": "Type of announcement (e.g., Listing)",
           "allOf": [
             {
-              "$ref": "#/definitions/model.AnnouncementKind"
+              "$ref": "#/definitions/responses.AnnouncementKind"
             }
           ]
+        },
+        "notification_expiry_at": {
+          "description": "Announcement expiry timestamp at notification",
+          "type": "integer"
         },
         "title": {
           "description": "Short, descriptive title of the announcement",
@@ -4003,6 +3994,19 @@
           "type": "integer"
         }
       }
+    },
+    "responses.AnnouncementKind": {
+      "type": "string",
+      "enum": [
+        "UPDATE",
+        "LISTING",
+        "DELISTING"
+      ],
+      "x-enum-varnames": [
+        "AnnouncementKindUpdate",
+        "AnnouncementKindListing",
+        "AnnouncementKindDelisting"
+      ]
     },
     "responses.ApiError": {
       "type": "object",

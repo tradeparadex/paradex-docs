@@ -8,10 +8,6 @@ on:
   schedule:
     - cron: "0 0 * * *"
 
-env:
-  EXISTING_PR_TITLE_PREFIX: 'Update API Spec'
-  IS_PULL_REQUEST: "${{ github.event_name == 'pull_request' }}"
-
 jobs:
   update-openapi:
     runs-on: ubuntu-latest
@@ -29,7 +25,7 @@ jobs:
         run: |
           pr_list=$(gh pr list \
             --json number,title,state \
-            --jq '.[] | select(.title | startswith("${EXISTING_PR_TITLE_PREFIX}"))')
+            --jq '.[] | select(.title | startswith("Update API"))')
           if [[ -n "$pr_list" ]]; then
             echo "Found PR(s):"
             echo "$pr_list"
@@ -45,7 +41,7 @@ jobs:
         run: fern upgrade
           
       - name: Update OpenAPI Spec
-        if: ${{ env.IS_PULL_REQUEST == 'false' }}
+        if: ${{ github.event_name != 'pull_request' }}
         uses: fern-api/sync-openapi@v2
         with:
           token: ${{ secrets.OPENAPI_SYNC_TOKEN }}

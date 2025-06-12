@@ -44,12 +44,12 @@ jobs:
           echo "github.event_path=${{ github.event_path }}"
       
       - name: Install Fern CLI
-        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
+        # if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         run: |
           npm install -g fern-api
 
       - name: Run fern upgrade
-        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
+        # if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         run: fern upgrade
 
       - name: Check if we have a diff to publish

@@ -54,7 +54,7 @@ jobs:
 
       - name: Check if we have a diff to publish
         run: |
-          git diff
+          git diff fern/apis
 
       - name: Update OpenAPI Spec
         if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' && github.event_name != 'pull_request' }}

@@ -20,28 +20,40 @@ jobs:
           token: ${{ secrets.OPENAPI_SYNC_TOKEN }}
 
       - name: Check existing PRs
+        id: check-prs
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          PR_ALREADY_EXISTS=false
           pr_list=$(gh pr list \
             --json number,title,state \
             --jq '.[] | select(.title | startswith("Update API"))')
           if [[ -n "$pr_list" ]]; then
             echo "Found PR(s):"
             echo "$pr_list"
+            PR_ALREADY_EXISTS=true
           else
             echo "No PR found"
           fi
+          echo "PR_ALREADY_EXISTS=${PR_ALREADY_EXISTS}" >> $GITHUB_OUTPUT
+      
+      - name: Debug outputs
+        run: |
+          echo "PR_ALREADY_EXISTS=${{ steps.check-prs.outputs.PR_ALREADY_EXISTS }}"
+          echo "github.event_name=${{ github.event_name }}"
+          echo "github.event_path=${{ github.event_path }}"
       
       - name: Install Fern CLI
+        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         run: |
           npm install -g fern-api
 
       - name: Run fern upgrade
+        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         run: fern upgrade
           
       - name: Update OpenAPI Spec
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' && github.event_name != 'pull_request' }}
         uses: fern-api/sync-openapi@v2
         with:
           token: ${{ secrets.OPENAPI_SYNC_TOKEN }}

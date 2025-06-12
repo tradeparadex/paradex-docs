@@ -52,6 +52,10 @@ jobs:
         if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         run: fern upgrade
 
+      - name: Check if we have a diff to publish
+        run: |
+          git diff
+
       - name: Update OpenAPI Spec
         if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' && github.event_name != 'pull_request' }}
         uses: fern-api/sync-openapi@v2

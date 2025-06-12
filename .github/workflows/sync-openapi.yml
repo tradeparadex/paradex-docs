@@ -51,9 +51,23 @@ jobs:
       - name: Run fern upgrade
         if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         run: fern upgrade
-          
+
+      - name: Check if there are changes to publish
+        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
+        id: check-diff
+        run: |
+          diff=$(git diff fern/apis)
+          if [ -z "$diff" ]; then
+           echo "Relevant files haven't changed"
+           changed=false
+          else
+           echo "Relevant files have changed!"
+           changed=true
+          fi
+          echo "changed=${changed}" >> $GITHUB_OUTPUT
+
       - name: Update OpenAPI Spec
-        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' && github.event_name != 'pull_request' }}
+        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' && github.event_name != 'pull_request' && steps.check-diff.outputs.changed == 'true' }}
         uses: fern-api/sync-openapi@v2
         with:
           token: ${{ secrets.OPENAPI_SYNC_TOKEN }}

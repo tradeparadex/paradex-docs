@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.96.03"
+    "version": "1.96.4"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -5046,7 +5046,7 @@
           "example": "1"
         },
         "funding_rate": {
-          "description": "[8 hour funding rate](https://docs.paradex.trade/risk-system/funding-mechanism#funding-rate)",
+          "description": "This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate.",
           "type": "string",
           "example": "0.3"
         },

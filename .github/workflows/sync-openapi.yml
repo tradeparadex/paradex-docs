@@ -56,21 +56,18 @@ jobs:
         if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         id: check-diff
         run: |
-          changed=true
-          diff=$(git diff)
-          # diff=$(git diff fern/apis)
-          echo "Diff: $diff"
-          # if [ -z "$diff" ]; then
-          #  echo "Relevant files haven't changed"
-          #  changed=false
-          # else
-          #  echo "Relevant files have changed!"
-          #  changed=true
-          # fi
+          diff=$(git diff fern/apis)
+          if [ -z "$diff" ]; then
+           echo "Relevant files haven't changed"
+           changed=false
+          else
+           echo "Relevant files have changed!"
+           changed=true
+          fi
           echo "changed=${changed}" >> $GITHUB_OUTPUT
 
       - name: Update OpenAPI Spec
-        # if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' && github.event_name != 'pull_request' && steps.check-diff.outputs.changed == 'true' }}
+        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' && github.event_name != 'pull_request' && steps.check-diff.outputs.changed == 'true' }}
         uses: fern-api/sync-openapi@v2
         with:
           token: ${{ secrets.OPENAPI_SYNC_TOKEN }}

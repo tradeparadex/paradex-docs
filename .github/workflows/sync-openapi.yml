@@ -56,14 +56,16 @@ jobs:
         if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         id: check-diff
         run: |
+          changed=true
           diff=$(git diff fern/apis)
-          if [ -z "$diff" ]; then
-           echo "Relevant files haven't changed"
-           changed=false
-          else
-           echo "Relevant files have changed!"
-           changed=true
-          fi
+          echo "Diff: $diff"
+          # if [ -z "$diff" ]; then
+          #  echo "Relevant files haven't changed"
+          #  changed=false
+          # else
+          #  echo "Relevant files have changed!"
+          #  changed=true
+          # fi
           echo "changed=${changed}" >> $GITHUB_OUTPUT
 
       - name: Update OpenAPI Spec

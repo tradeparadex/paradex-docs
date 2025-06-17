@@ -885,6 +885,7 @@ typography:
   headingsFont:
     name: HarmonyOS
     path: ./assets/HarmonyOS_Sans_Bold.woff2
+    weight: 700
 logo:
   light: ./assets/logo-light.svg
   dark: ./assets/logo-dark.svg

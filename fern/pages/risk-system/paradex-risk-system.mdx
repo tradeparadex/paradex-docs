@@ -1,28 +1,57 @@
 ---
-title: Paradex Margin System
+title: Margin System
+subtitle: Understanding Paradex's margin modes and risk management
 ---
-#### Margin modes
 
-Paradex currently only supports **Cross Margin (XM)** mode.
+## Margin Modes
 
-There will be no “isolated margin” mode. In order to open an isolated position, the user can create a new separate account to trade a single instrument.
+Paradex offers two distinct margin modes to accommodate different trading strategies:
 
-#### Instrument types
+<CardGroup>
+  <Card title="Cross Margin" icon="c" href="/risk/cross-margin-requirement">
+    Margin shared across all positions.
+  </Card>
+  <Card title="Isolated Margin" icon="i">
+    Margin based on individual positions.
+  </Card>
+</CardGroup>
+
+## Instrument Types
 
 All instruments are quoted and valued in USD.
 
 Paradex currently supports only USDC as a collateral asset. You have to deposit USDC on your wallet to trade and all PnL accrued or charged to your wallet will be in USDC.
 
-#### Margin checks
+## Margin Checks
 
-In order to minimise solvency risk and prevent possible market manipulations during the course of trading, Paradex engine performs following margin checks on client accounts:
+Paradex performs two critical margin checks to ensure platform stability and protect against market manipulation:
 
-* **Initial margin check** - validates that account can take more risk. If this check fails then client's action increasing account's risk is rejected. **For example:**
-  1. User sends a new order
-  2. Users requests a withdrawal which would increase account leverage.
-* **Maintenance margin check** - determines if an account is close to bankruptcy. If this check fails the account positions and balances will be liquidated.
+<Steps>
+  <Step title="Initial Margin Check">
+    Validates that an account can take additional risk. Examples of when this check is performed:
+    - Submitting new orders
+    - Requesting withdrawals that would increase account leverage
+  </Step>
+  <Step title="Maintenance Margin Check">
+    Determines if an account is approaching bankruptcy. 
+    
+    <Error title="If an account fails this check">
+      Account positions and balances will be liquidated
+    </Error>
+  </Step>
+</Steps>
 
-Regardless of the specific use case, all margin checks can be described as a comparison of the **Account Value** against some **Margin Requirement**
+### How Margin Checks Work
 
-* **Account Value** is equal to the **USD** collateral value plus any unrealised Pnl from all open positions of this account. Since unrealised PnL is calculated on account level, the user benefits from _**PnL offsetting among all account's positions**_ which contributes to capital efficiency. Please refer to [Margin Term Reference](margin-term-reference) for more details about the calculation of Account Value and other important related risk metrics.
-* **Margin requirement** is an assessment of the account's overall risk and is expressed in **USD**. It depends both on the account's open positions as well as exchange-level parameters. The calculation of this requirement is defined by the [Cross Margin Requirement ](cross-margin-requirement)methodology
+All margin checks follow a simple comparison formula:
+
+```
+Account Value ≥ Margin Requirement
+```
+
+| Component | Cross Margin | Isolated Margin |
+|-----------|--------------|-----------------|
+| **Account Value** | Sum of<br/>• USD Collateral (USDC balance)<br/>• Unrealized PnL from all positions<br/>• Benefits from PnL offsetting across positions | Position Value only |
+| **Margin Requirement** | Based on<br/>• All open positions<br/>• Exchange-level parameters<br/>• [Cross Margin Requirement](cross-margin-requirement) methodology | Based on<br/>• Individual position only<br/>• Exchange-level parameters |
+
+For detailed calculations of Account Value and related risk metrics, see the [Margin Term Reference](margin-term-reference).

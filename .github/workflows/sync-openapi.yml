@@ -15,9 +15,8 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.OPENAPI_SYNC_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Check existing PRs
         id: check-prs
@@ -56,14 +55,9 @@ jobs:
         if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         id: check-diff
         run: |
+          changed=true
           diff=$(git diff fern/apis)
-          if [ -z "$diff" ]; then
-           echo "Relevant files haven't changed"
-           changed=false
-          else
-           echo "Relevant files have changed!"
-           changed=true
-          fi
+          echo "Checking diff: $diff"
           echo "changed=${changed}" >> $GITHUB_OUTPUT
 
       - name: Update OpenAPI Spec

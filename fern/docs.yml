@@ -502,8 +502,8 @@ navigation:
       - section: Risk & Liquidations
         slug: risk
         contents:
-          - page: Paradex Margin System
-            slug: paradex-risk-system
+          - page: Margin System
+            slug: margin-system
             path: ./pages/risk-system/paradex-risk-system.mdx
           - page: Margin Term Reference
             slug: margin-term-reference
@@ -875,6 +875,9 @@ redirects:
 
   - source: "documentation/trading/perpetual-options/trading-fees"
     destination: "/documentation/trading/trading-fees"
+
+  - source: "/risk/paradex-risk-system"
+    destination: "/risk/margin-system"
 
 layout:
   header-height: 72px

@@ -62,25 +62,25 @@ Time Value represents the premium or value traders are willing to pay for the op
 
 The funding mechanism is how Perpetual Options maintain their perpetual nature. Long positions continuously pay short positions a funding rate based on the option's time value.
 
-- **Funding Period:** 24 hours (funding is paid continuously)
+- **Funding Period:** 5 days (funding is paid continuously)
 - **Funding Premium:** The total amount of funding paid over the funding period, equal to the time value of the option:
   
   Funding Premium = Time Value = Mark Price - Intrinsic Value
 
 <Tip title="Core Idea" icon="leaf">
-The Funding Period is a critical concept to understand. It represents the expected period of time over which a user will pay the time value of the option via Funding. This is a parameter chosen by Paradex and is what makes the current Perpetual Option similar (but not equal to) a 24 hour dated option.
+The Funding Period is a critical concept to understand. It represents the expected period of time over which a user will pay the time value of the option via Funding. This is a parameter chosen by Paradex and is what makes the current Perpetual Option similar (but not equal to) a 5-day dated option.
 </Tip>
 
 ### Example
 
-For a BTC-USD-101000-C with:
+For a BTC-USD-104000-C with:
 - Spot Price: $100,000
 - Mark Price: $500
 - Intrinsic Value: $0 (out-of-the-money)
 - Time Value: $500
 
-If Dave buys 5 contracts and holds for 1 hour with unchanged prices:
-- Funding PnL = -5 × ($500 × 1/24) = -$104.17
+If Dave buys 5 contracts and holds for 8 hours with unchanged prices:
+- Funding PnL = -5 × ($500 / 5) * 8/24 = -$166.67
 
 Funding accrues continuously as unrealized PnL and is realized whenever the position is updated.
 

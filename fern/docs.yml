@@ -840,6 +840,9 @@ navigation:
           - link: CCXT Integration
             href: https://docs.ccxt.com/#/exchanges/paradex
 navbar-links:
+  - type: minimal
+    text: $DIME Nation
+    url: https://discord.gg/paradex
   - type: filled
     text: Launch Exchange
     rounded: true

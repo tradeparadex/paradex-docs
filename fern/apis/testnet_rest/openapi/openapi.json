@@ -5713,13 +5713,13 @@
           "type": "string",
           "example": "0x63e762538C70442758Fd622116d817761c94FD6A"
         },
-        "l1_withdraw_relayer_address": {
-          "description": "Address of L1 Withdraw Relayer",
+        "l1_relayer_address": {
+          "description": "Address of L1 Relayer",
           "type": "string",
           "example": "0x63e762538C70442758Fd622116d817761c94FD6A"
         },
-        "l2_withdraw_relayer_address": {
-          "description": "Address of L2 Withdraw Relayer",
+        "l2_relayer_address": {
+          "description": "Address of L2 Relayer",
           "type": "string",
           "example": "0x63e762538C70442758Fd622116d817761c94FD6A"
         },

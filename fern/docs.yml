@@ -400,9 +400,6 @@ navigation:
                     - page: S-USD-PERP
                       slug: s-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/s-usd-perp.mdx
-                    - page: SAND-USD-PERP
-                      slug: sand-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/sand-usd-perp.mdx
                     - page: SCR-USD-PERP
                       slug: scr-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/scr-usd-perp.mdx

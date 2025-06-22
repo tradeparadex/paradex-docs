@@ -208,9 +208,6 @@ navigation:
                     - page: ADA-USD-PERP
                       slug: ada-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ada-usd-perp.mdx
-                    - page: AEVO-USD-PERP
-                      slug: aevo-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/aevo-usd-perp.mdx
                     - page: AI16Z-USD-PERP
                       slug: ai16z-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ai16z-usd-perp.mdx

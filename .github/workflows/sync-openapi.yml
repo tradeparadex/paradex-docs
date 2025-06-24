@@ -47,10 +47,6 @@ jobs:
         run: |
           npm install -g fern-api
 
-      - name: Run fern upgrade
-        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
-        run: fern upgrade
-
       - name: Check if there are changes to publish
         if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
         id: check-diff

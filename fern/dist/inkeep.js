@@ -16,16 +16,16 @@ loadScript(
         organizationDisplayName: "Paradex",
       },
       aiChatSettings: {
-        // ...optional settings
-        aiAssistantAvatar: "https://mydomain.com/mylogo.svg",
+        aiAssistantAvatar: "./assets/dave.png",
         exampleQuestions: [
           "What is the API Rate limit?"
         ],
       },
+      label: "Ask Dave",
+      askAILabel: "Ask Dave"
     };
 
     // Initialize the UI components
-    Inkeep.ModalSearchAndChat(settings); // Search Bar
     Inkeep.ChatButton(settings); // 'Ask AI' button
   }
 );

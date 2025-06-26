@@ -24,13 +24,13 @@ loadScript(
             {
               key: "powered-by",
               type: "style",
-              value: ".ikp-ai-chat-tagline__container { visibility:hidden; }",
+              value: ".ikp-ai-chat-tagline__container, .ikp-ai-search-tagline__container { visibility:hidden; }",
             },
           ],
         },
       },
       aiChatSettings: {
-        aiAssistantName: "Davexbt",
+        aiAssistantName: "Dave",
         aiAssistantAvatar: "https://raw.githubusercontent.com/tradeparadex/paradex-docs/35bc92606dc1a3688756da62bcab256e1a2be75c/fern/assets/dave.png",
         exampleQuestions: [
           "What is the API Rate limit?"

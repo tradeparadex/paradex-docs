@@ -14,15 +14,31 @@ loadScript(
         apiKey: "1e1660d254edc816b721951f6b1973f0492028b235f8dca6", // required
         primaryBrandColor: "#c83efb", // required -- your brand color, the color scheme is derived from this
         organizationDisplayName: "Paradex",
+        theme: {
+          fontFamily: {
+            heading: "var(--font-heading)",
+            body: "var(--font-body)",
+            mono: "var(--font-code)",
+          },
+          styles: [
+            {
+              key: "powered-by",
+              type: "style",
+              value: ".ikp-ai-chat-tagline__container { visibility:hidden; }",
+            },
+          ],
+        },
       },
       aiChatSettings: {
-        aiAssistantAvatar: "./assets/dave.png",
+        aiAssistantName: "Dave",
+        aiAssistantAvatar: "https://raw.githubusercontent.com/tradeparadex/paradex-docs/35bc92606dc1a3688756da62bcab256e1a2be75c/fern/assets/dave.png",
         exampleQuestions: [
           "What is the API Rate limit?"
         ],
       },
       label: "Ask Dave",
-      askAILabel: "Ask Dave"
+      askAILabel: "Ask Dave",
+      aiAssistantName: "Dave"
     };
 
     // Initialize the UI components

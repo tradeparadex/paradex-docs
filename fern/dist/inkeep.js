@@ -30,15 +30,15 @@ loadScript(
         },
       },
       aiChatSettings: {
-        aiAssistantName: "Dave",
+        aiAssistantName: "Davexbt",
         aiAssistantAvatar: "https://raw.githubusercontent.com/tradeparadex/paradex-docs/35bc92606dc1a3688756da62bcab256e1a2be75c/fern/assets/dave.png",
         exampleQuestions: [
           "What is the API Rate limit?"
         ],
+        introMessage: "gDime I'm davexbt <br/> <br/>Hit me with any questions related to Paradex"
       },
       label: "Ask Dave",
-      askAILabel: "Ask Dave",
-      aiAssistantName: "Dave"
+      askAILabel: "Ask Dave"
     };
 
     // Initialize the UI components

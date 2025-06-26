@@ -418,6 +418,9 @@ navigation:
                     - page: SUI-USD-PERP
                       slug: sui-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/sui-usd-perp.mdx
+                    - page: SYRUP-USD-PERP
+                      slug: syrup-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/syrup-usd-perp.mdx
                     - page: TAO-USD-PERP
                       slug: tao-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/tao-usd-perp.mdx

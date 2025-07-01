@@ -1964,11 +1964,11 @@
         "tags": [
           "Orders"
         ],
-        "summary": "Cancel batch of orders by order IDs or client order IDs",
+        "summary": "Cancel batch of orders by order IDs",
         "operationId": "orders-cancel-batch",
         "parameters": [
           {
-            "description": "Order IDs or Client Order IDs to cancel",
+            "description": "Order IDs to cancel",
             "name": "params",
             "in": "body",
             "required": true,

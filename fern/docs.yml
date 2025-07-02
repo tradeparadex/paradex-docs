@@ -197,9 +197,6 @@ navigation:
                     - page: ETH-USD-PERP
                       slug: eth-usd-perp
                       path: ./pages/instruments-guide/futures/tier-1/eth-usd-perp.mdx
-                    - page: HYPE-USD-PERP
-                      slug: hype-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
                     - page: SOL-USD-PERP
                       slug: sol-usd-perp
                       path: ./pages/instruments-guide/futures/tier-1/sol-usd-perp.mdx
@@ -283,6 +280,9 @@ navigation:
                     - page: HYPER-USD-PERP
                       slug: hyper-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/hyper-usd-perp.mdx
+                    - page: HYPE-USD-PERP
+                      slug: hype-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
                     - page: INIT-USD-PERP
                       slug: init-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/init-usd-perp.mdx

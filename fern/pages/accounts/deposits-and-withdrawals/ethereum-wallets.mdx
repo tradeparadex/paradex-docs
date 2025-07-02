@@ -40,7 +40,7 @@ Initiate a withdrawal from your Paradex account to the Starknet bridge and it wi
    * Once funds are available on L1, we will complete the transfer of your funds from the bridge to your wallet automatically.
 
 <Warning>
-Note: "Pending - L2" status can take up to 16 hours to update.
+Note: "Pending - L2" status can take up to 8 hours to update. You can check for historical averages by going to the Liveness section of the [Paradex's L2BEAT page](https://l2beat.com/scaling/projects/paradex#liveness) and selecting the `State Updates` tab.
 
 Withdrawing funds requires all preceding actions from all accounts (including risk checks) be validated on Ethereum (L1). Your Paradex (L2) withdrawal transaction will be batched along with other Paradex (L2) transactions (trades, deposits, withdrawals, etc) and sent to the Starknet Prover to generate a Proof guaranteeing the calculations. Batching and proving can take several hours depending on the volume of trades / transactions processed by Paradex (L2) and generating a Starknet proof takes around 2 hours. Once the proof is generated it is sent to the Starknet (L1) verifier contract which will confirm its validity and then unlock funds for withdrawal.
 </Warning>

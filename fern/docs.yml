@@ -36,9 +36,6 @@ navigation:
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
-          - page: Wallet Integration
-            slug: wallet-integration
-            path: ./pages/introduction/architecture-overview/wallet-integration.mdx
           - page: Official Links
             slug: official-links
             path: ./pages/introduction/official-links.mdx
@@ -175,6 +172,9 @@ navigation:
                   - page: Cross Chain Bridging
                     slug: cross-chain-bridging
                     path: ./pages/accounts/deposits-and-withdrawals/cross-chain-bridging.mdx
+              - page: Wallet Integration
+                slug: wallet-integration
+                path: ./pages/introduction/architecture-overview/wallet-integration.mdx
               - page: Sub-accounts
                 slug: sub-accounts
                 path: ./pages/accounts/sub-accounts.mdx

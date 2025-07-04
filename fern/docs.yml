@@ -57,6 +57,8 @@ navigation:
               - page: Global IP Addresses
                 slug: global-ip-addresses
                 path: ./pages/introduction/architecture-overview/global-ip-addresses.mdx
+          - changelog: ./pages/changelog
+            title: Changelog
 
       - section: Trading
         contents:

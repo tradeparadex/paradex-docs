@@ -58,7 +58,7 @@ navigation:
                 slug: global-ip-addresses
                 path: ./pages/introduction/architecture-overview/global-ip-addresses.mdx
           - changelog: ./pages/changelog
-            title: Changelog
+            title: What's New
 
       - section: Trading
         contents:

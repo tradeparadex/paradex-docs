@@ -607,13 +607,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.102
+            path: ./pages/release-notes/v1.102.md
           - page: v1.101
             path: ./pages/release-notes/v1.101.md
-          - page: v1.100
-            path: ./pages/release-notes/v1.100.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.100
+                path: ./pages/release-notes/v1.100.md
               - page: v1.99
                 path: ./pages/release-notes/v1.99.md
               - page: v1.98

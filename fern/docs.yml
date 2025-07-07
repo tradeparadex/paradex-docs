@@ -573,9 +573,12 @@ navigation:
           - page: Introduction
             slug: paradex-chain-introduction
             path: ./pages/paradex-chain/introduction.mdx
-          - page: Node Setup
-            slug: node-setup
-            path: ./pages/paradex-chain/node-setup.mdx
+          - page: Data Privacy 
+            slug: paradex-chain-privacy
+            path: ./pages/paradex-chain/privacy.mdx
+          - page: RPC Node 
+            slug: paradex-chain-rpc-node
+            path: ./pages/paradex-chain/rpc-node.mdx
           - page: Testnet
             slug: paradex-chain-testnet
             path: ./pages/paradex-chain/testnet.mdx

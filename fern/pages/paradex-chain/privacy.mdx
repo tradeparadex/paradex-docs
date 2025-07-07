@@ -1,0 +1,75 @@
+# 🔐 Privacy on Paradex
+
+Privacy is a fundamental pillar of Paradex's architecture and philosophy. We believe that financial privacy is not just a luxury, but a necessity for institutional adoption, regulatory compliance, and user protection in decentralized finance.
+
+## Why Privacy Matters
+
+### **Institutional Adoption**
+Large institutional traders require privacy to prevent front-running, market manipulation, and strategic disadvantages. When trading positions and strategies are visible on-chain, it creates asymmetric information that can be exploited by other market participants.
+
+### **Regulatory Compliance**
+Financial institutions must navigate complex regulatory requirements including data protection (GDPR for personal data), market transparency obligations (MiFID II), and customer confidentiality duties. Privacy-preserving solutions help institutions balance these requirements while protecting legitimate business interests and client confidentiality.
+
+### **Market Efficiency**
+Public visibility of all trading activity can lead to:
+- **Front-running**: Bad actors executing trades ahead of known large orders
+- **Sandwich attacks**: Manipulating prices around known transactions
+- **Liquidation hunting**: Manipulating prices to force liquidation of positions
+- **MEV extraction**: Extracting value from predictable trading patterns
+- **Reduced liquidity**: Traders avoiding the platform due to lack of privacy
+
+### **User Protection**
+Privacy protects users from:
+- Targeted attacks based on known wallet balances
+- Social engineering based on trading patterns
+- Competitive disadvantage in trading strategies
+- Unwanted attention from holding large positions
+
+## Our Current Solution: Privacy-Preserving RPC Proxy
+
+Today, Paradex implements privacy through our **authenticated RPC node proxy system**:
+
+### **How It Works**
+1. **Account-Based Authentication**: Users authenticate with their account's private key
+2. **Selective Data Access**: Authenticated users can only access their own account data
+3. **Data Masking**: All other users' data is masked and filtered from responses
+4. **Public Data Accessibility**: General blockchain data remains accessible to everyone
+
+### **Benefits**
+- **Immediate Privacy**: Works with current StarkNet infrastructure
+- **Zero Trust**: No need to trust Paradex with sensitive data
+- **Selective Access**: Users control what data they can access
+- **Regulatory Friendly**: Complies with financial privacy requirements
+
+### **Limitations**
+- **Infrastructure Dependency**: Requires centralized proxy infrastructure
+- **Performance Overhead**: Additional authentication and filtering required
+
+## The Future: Smart Contract-Level Privacy
+
+The ultimate privacy solution for Paradex will implement **privacy directly at the smart contract level using zk-STARKs**, providing cryptographic guarantees rather than relying on access control mechanisms.
+
+All sensitive trading data will be stored as encrypted blobs on-chain:
+- **Positions**: Encrypted position sizes, leverage, and liquidation points
+- **Balances**: Account balances hidden from public view
+- **Trade History**: Transaction patterns and trading strategies protected
+- **Order Books**: Pending orders remain confidential until execution
+
+### **Smart Contract Verification**
+On-chain verification occurs without exposing underlying transaction details:
+- **Proof Validation**: Smart contracts verify zk-STARK proofs cryptographically
+- **State Updates**: Valid transactions update encrypted state
+- **Public Verifiability**: Anyone can verify proof validity without accessing private data
+- **Consensus Integration**: Proofs integrate seamlessly with StarkNet consensus
+
+### **Benefits**
+
+This smart contract-level privacy approach delivers comprehensive advantages across multiple dimensions:
+
+- **Cryptographic Privacy Guarantees**: zk-STARKs provide mathematical certainty of privacy, not just access control
+- **No Trusted Intermediaries**: Privacy enforcement happens cryptographically, eliminating reliance on third parties
+- **User-Controlled Data Access**: Users maintain complete control over their data encryption keys and disclosure permissions
+
+---
+
+*For technical details on our current privacy implementation, see our [RPC Node documentation](/paradex-chain/rpc-node).*

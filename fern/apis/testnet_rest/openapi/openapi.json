@@ -4577,14 +4577,16 @@
         "TRANSFER",
         "FILL",
         "SETTLE_MARKET",
-        "RPI"
+        "RPI",
+        "BLOCK_TRADE"
       ],
       "x-enum-varnames": [
         "FillTypeLiquidation",
         "FillTypeTransfer",
         "FillTypeFill",
         "FillTypeSettleMarket",
-        "FillTypeRPI"
+        "FillTypeRPI",
+        "FillTypeBlockTrade"
       ]
     },
     "responses.FundingDataResult": {

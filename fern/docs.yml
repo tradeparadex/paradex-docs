@@ -147,6 +147,9 @@ navigation:
           - page: Margin Calculator
             slug: margin-calculator
             path: ./pages/trading/margin-calculator.mdx
+          - page: Account Privacy
+            slug: privacy
+            path: ./pages/trading/privacy.mdx
           - page: Testnet FAQs
             slug: testnet-faqs
             path: ./pages/trading/testnet.mdx
@@ -573,9 +576,6 @@ navigation:
           - page: Introduction
             slug: paradex-chain-introduction
             path: ./pages/paradex-chain/introduction.mdx
-          - page: Data Privacy 
-            slug: paradex-chain-privacy
-            path: ./pages/paradex-chain/privacy.mdx
           - page: RPC Node 
             slug: paradex-chain-rpc-node
             path: ./pages/paradex-chain/rpc-node.mdx

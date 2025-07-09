@@ -1,61 +1,77 @@
+---
+title: RPC Node
+---
 
-# 🔗 RPC Node Proxy
-
-The RPC Node Proxy is a secure gateway that provides authenticated access to StarkNet RPC endpoints. It acts as an intermediary between your applications and StarkNet nodes, requiring cryptographic signatures for all authenticated requests to ensure security and privacy.
+Our RPC Node Proxy operates as a secure gateway that provides authenticated access to the StarkNet RPC node. It acts as an intermediary between your applications and StarkNet nodes, requiring cryptographic signatures for all authenticated requests to ensure security and privacy.
 
 ## Overview
 
-The RPC Node Proxy implements a signature-based authentication system using EIP-712 typed data for StarkNet. While non-authenticated requests are allowed, they return masked data for security purposes. 
+The RPC Node Proxy implements a signature-based authentication system using EIP-712 typed data for StarkNet. While non-authenticated requests are allowed, they return masked data for privacy. 
 
-When you authenticate with your account's private key, you gain full access to your own account's data, while other accounts' data remains masked to preserve privacy. This privacy-preserving approach ensures that users can access their own information while protecting sensitive data from other accounts on the network.
+When you authenticate with your account's private key, you gain full access to your own account's data, while other accounts' data remains masked. This privacy-preserving approach ensures that users can access their own information while protecting sensitive data from other accounts on the network.
 
-**RPC Compatibility**: Apart from the authentication layer and data masking, the proxy is fully compatible with standard StarkNet RPC nodes. It follows the [JSON-RPC 2.0 specification](https://www.jsonrpc.org/specification) and supports all [StarkNet RPC API methods](https://github.com/starkware-libs/starknet-specs/tree/master/api) with identical input parameters and output formats.
+<Note title="RPC Compatibility">
+- Apart from the authentication layer and data masking, the proxy is fully compatible with standard StarkNet RPC nodes. It follows the [JSON-RPC 2.0 specification](https://www.jsonrpc.org/specification) and supports all [StarkNet RPC API methods](https://github.com/starkware-libs/starknet-specs/tree/master/api) with identical input parameters and output formats.
+- Supports both v0.7 and v0.8 StarkNet RPC endpoints
+</Note>
 
-## Key Features
+## Access Model
 
-- **Secure Authentication**: Uses EIP-712 typed data signatures for request validation
-- **Account-based Access**: Requires StarkNet account ownership verification
-- **Privacy-Preserving**: Authenticated requests show only the signer's account data; other accounts' data remains masked
-- **Masked Responses**: Non-authenticated requests receive masked data for all accounts
-- **StarkNet RPC Support**: Supports both v0.7 and v0.8 StarkNet RPC endpoints
-- **Timestamp Validation**: Prevents replay attacks with timestamp verification
-
-## Data Access and Privacy
-
-The RPC Node Proxy implements a privacy-preserving access model:
-
-### Authenticated Requests
-- **Your Account Data**: When you authenticate with your account's private key, you gain full access to your own account's data (balances, transactions, positions, etc.)
-- **Other Accounts' Data**: Data from other accounts remains masked/filtered in the response to protect their privacy
-- **Public Data**: General blockchain data (blocks, network stats, etc.) is fully accessible
-
-### Non-Authenticated Requests
-- **All Account Data**: Data for all accounts is masked to protect privacy
-- **Public Data**: General blockchain data (blocks, network stats, etc.) is fully accessible
+<CardGroup cols={2}>
+  <Card title="Authenticated Requests" icon="fa-regular fa-signature-lock">
+    - **Your Account Data**: When you authenticate with your account's private key, you gain full access to your own account's data (balances, transactions, positions, etc.)
+    - **Other Accounts' Data**: Data from other accounts remains masked/filtered in the response to protect their privacy
+    - **Public Data**: General blockchain data (blocks, network stats, etc.) is fully accessible
+  </Card>
+  <Card title="Non-Authenticated Requests" icon="fa-regular fa-lock-open">
+    - **All Account Data**: Data for all accounts is masked to protect privacy
+    - **Public Data**: General blockchain data (blocks, network stats, etc.) is fully accessible
+  </Card>
+</CardGroup>
 
 ## Authentication Flow
 
-1. **Request Preparation**: Prepare your RPC request payload, as per StarkNet RPC specs
-2. **Request Hashing**: Hash your json payload via [Poseidon Hashing algorithm](https://www.poseidon-hash.info/)
-3. **Signature Generation**: Sign the request using EIP-712 typed data
-4. **Request Submission**: Send the signed request to the proxy including required headers
-5. **Signature Verification**: Proxy verifies the signature and account ownership
-6. **RPC Forwarding**: Valid requests are forwarded to the StarkNet RPC node
-7. **Response**: Full response is returned for your account's data, other accounts remain masked
+<Steps>
+  <Step title="Request Preparation">
+    Prepare your RPC request payload, as per StarkNet RPC specs
+  </Step>
+  <Step title="Request Hashing">
+    Hash your json payload via [Poseidon Hashing algorithm](https://www.poseidon-hash.info/)
+  </Step>
+  <Step title="Signature Generation">
+    Sign the request using EIP-712 typed data
+  </Step>
+  <Step title="Request Submission">
+    Send the signed request to the proxy including required headers
+  </Step>
+  <Step title="Signature Verification">
+    Proxy verifies the signature and account ownership
+  </Step>
+  <Step title="RPC Forwarding">
+    Valid requests are forwarded to the StarkNet RPC node
+  </Step>
+  <Step title="Response">
+    Full response is returned for your account's data, other accounts remain masked
+  </Step>
+</Steps>
 
 ## API Endpoints
 
 The RPC Node Proxy supports the following endpoints:
 
 <Tabs>
-<Tab title="Mainnet">
-- **v0.7**: `https://rpc.api.prod.paradex.trade/rpc/v0_7`
-- **v0.8**: `https://rpc.api.prod.paradex.trade/rpc/v0_8`
-</Tab>
-<Tab title="Testnet">
-- **v0.7**: `https://rpc.api.testnet.paradex.trade/rpc/v0_7`
-- **v0.8**: `https://rpc.api.testnet.paradex.trade/rpc/v0_8`
-</Tab>
+  <Tab title="Mainnet">
+    | StarkNet RPC Version | URL |
+    | --- | --- |
+    | v0.7 | https://rpc.api.prod.paradex.trade/rpc/v0_7 |
+    | v0.8 | https://rpc.api.prod.paradex.trade/rpc/v0_8 |
+  </Tab>
+  <Tab title="Testnet">
+    | StarkNet RPC Version | URL |
+    | --- | --- |
+    | v0.7 | https://rpc.api.testnet.paradex.trade/rpc/v0_7 |
+    | v0.8 | https://rpc.api.testnet.paradex.trade/rpc/v0_8 |
+  </Tab>
 </Tabs>
 
 ## Signature Requirements
@@ -64,7 +80,7 @@ The RPC Node Proxy supports the following endpoints:
 
 All authenticated requests must be signed using the following EIP-712 typed data structure (version 1.0.0):
 
-```json
+```json wordWrap
 {
   "types": {
     "StarkNetDomain": [
@@ -94,22 +110,35 @@ All authenticated requests must be signed using the following EIP-712 typed data
 }
 ```
 
-### Message Fields
-
-- **account**: Your StarkNet account address used for signature verification
-- **payload**: The Poseidon hash of your JSON-encoded RPC request payload
-- **timestamp**: Unix timestamp in seconds when the signature was created
-- **version**: Signature version (currently only "1.0.0" is supported)
-
-### Domain Fields
-
-- **name**: Service identifier ("Paradex")
-- **version**: Protocol version ("1")
-- **chainId**: StarkNet chain ID
+<AccordionGroup>
+  <Accordion title="Domain Fields">
+    <p>
+      | Field | Description |
+      |-------|-------------|
+      | **name** | Service identifier ("Paradex") |
+      | **version** | Protocol version ("1") |
+      | **chainId** | StarkNet chain ID |
+    </p>
+  </Accordion>
+  <Accordion title="Message Fields">
+    <p>
+      | Field | Description |
+      |-------|-------------|
+      | **account** | Your StarkNet account address used for signature verification |
+      | **payload** | The Poseidon hash of your JSON-encoded RPC request payload |
+      | **timestamp** | Unix timestamp in seconds when the signature was created |
+      | **version** | Signature version (currently only "1.0.0" is supported) |
+    </p>
+  </Accordion>
+</AccordionGroup>
 
 ## Required Headers
 
-All authenticated requests must include these headers. **Note**: If authentication headers are missing, the request proceeds unauthenticated with masked data for privacy.
+All authenticated requests must include these headers. 
+
+<Note>
+  If authentication headers are missing, the request proceeds in unauthenticated mode.
+</Note>
 
 | Header | Description | Format | Example |
 |--------|-------------|---------|---------|
@@ -122,7 +151,7 @@ All authenticated requests must include these headers. **Note**: If authenticati
 
 <Tabs>
 <Tab title="cURL">
-```bash
+```bash wordWrap
 curl -X POST https://rpc.api.prod.paradex.trade/rpc/v0_7 \
   -H "Content-Type: application/json" \
   -H "PARADEX-STARKNET-ACCOUNT: 0x1234567890abcdef..." \
@@ -134,7 +163,7 @@ curl -X POST https://rpc.api.prod.paradex.trade/rpc/v0_7 \
 </Tab>
 <Tab title="Python">
 
-```python
+```python wordWrap
 import json
 import time
 from poseidon_py.poseidon_hash import poseidon_hash_many
@@ -233,14 +262,12 @@ def make_authenticated_rpc_request(account: Account, chain_id: str, method: str,
 
 ## Error Responses
 
-The proxy may return the following error responses:
-
-### Response Errors
-
-- **Invalid StarkNet Address**: The account address is not a valid StarkNet address (must be 0x + 1-64 hexadecimal characters)
-- **Invalid Timestamp**: The signature timestamp is not a valid Unix timestamp
-- **Timestamp Expired**: The signature timestamp is older than the allowed expiry time
-- **Timestamp Future**: The signature timestamp is more than 1 second in the future
-- **Invalid Signature Version**: The signature version is not supported (currently only "1.0.0" is supported)
-- **Signature Verification Failed**: The signature cannot be verified against the account's public key
-- **StarkNet Call Error**: Error occurred while calling StarkNet RPC methods, typically due to malformed RPC request
+| Error | Description |
+|-------|-------------|
+| **Invalid StarkNet Address** | The account address is not a valid StarkNet address (must be 0x + 1-64 hexadecimal characters) |
+| **Invalid Timestamp** | The signature timestamp is not a valid Unix timestamp |
+| **Timestamp Expired** | The signature timestamp is older than the allowed expiry time |
+| **Timestamp Future** | The signature timestamp is more than 1 second in the future |
+| **Invalid Signature Version** | The signature version is not supported (currently only "1.0.0" is supported) |
+| **Signature Verification Failed** | The signature cannot be verified against the account's public key |
+| **StarkNet Call Error** | Error occurred while calling StarkNet RPC methods, typically due to malformed RPC request |

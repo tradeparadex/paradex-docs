@@ -1,0 +1,32 @@
+---
+title: Account Privacy
+subtitle: We believe that financial privacy is a fundamental right.
+---
+
+<Note>
+  Account Privacy is currently in Alpha. During this time, existing RPC nodes without privacy protection will remain publicly accessible.
+</Note>
+
+Our off-chain orderbook hides order data from the public.
+However, since account data are stored on-chain, additional methods are needed to provide privacy to users.
+
+We are taking a phased approach to Account Privacy, rolling out stronger privacy with each phase.
+
+1. Full Position Privacy through RPC Masking ✅
+2. Permanent Privacy through Encrypted DA
+3. Privacy secured at the Smart Contract level
+
+## How Privacy Works Today
+
+<CardGroup cols={2}>
+  <Card title="Masked by Default" icon="fa-regular fa-mask">
+    Account data is hidden from others
+  </Card>
+  <Card title="Authentication Reveals your Data" icon="fa-regular fa-key-skeleton">
+    You can access your own data when authenticated with your private key
+  </Card>
+</CardGroup>
+
+<Tip>
+Privacy protection lasts ~6 hours until data is submitted to L1. Future phases will provide permanent privacy.
+</Tip>

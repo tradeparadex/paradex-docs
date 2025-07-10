@@ -5767,9 +5767,9 @@
           "example": "SN_CHAIN_ID"
         },
         "starknet_fullnode_rpc_url": {
-          "description": "Full node RPC URL from Starknet",
+          "description": "Full node RPC Proxy URL for Starknet",
           "type": "string",
-          "example": "https://pathfinder.api.testnet.paradex.trade/rpc/v0_7"
+          "example": "https://rpc.api.testnet.paradex.trade/rpc/v0_7"
         },
         "starknet_gateway_url": {
           "description": "Feeder Gateway URL from Starknet",

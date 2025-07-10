@@ -1,0 +1,273 @@
+---
+title: RPC Node
+---
+
+Our RPC Node Proxy operates as a secure gateway that provides authenticated access to the StarkNet RPC node. It acts as an intermediary between your applications and StarkNet nodes, requiring cryptographic signatures for all authenticated requests to ensure security and privacy.
+
+## Overview
+
+The RPC Node Proxy implements a signature-based authentication system using EIP-712 typed data for StarkNet. While non-authenticated requests are allowed, they return masked data for privacy. 
+
+When you authenticate with your account's private key, you gain full access to your own account's data, while other accounts' data remains masked. This privacy-preserving approach ensures that users can access their own information while protecting sensitive data from other accounts on the network.
+
+<Note title="RPC Compatibility">
+- Apart from the authentication layer and data masking, the proxy is fully compatible with standard StarkNet RPC nodes. It follows the [JSON-RPC 2.0 specification](https://www.jsonrpc.org/specification) and supports all [StarkNet RPC API methods](https://github.com/starkware-libs/starknet-specs/tree/master/api) with identical input parameters and output formats.
+- Supports both v0.7 and v0.8 StarkNet RPC endpoints
+</Note>
+
+## Access Model
+
+<CardGroup cols={2}>
+  <Card title="Authenticated Requests" icon="fa-regular fa-signature-lock">
+    - Full access to your account data
+    - All other account data masked
+    - Public data fully accessible
+  </Card>
+  <Card title="Non-Authenticated Requests" icon="fa-regular fa-lock-open">
+    - All account data masked
+    - Public data fully accessible
+  </Card>
+</CardGroup>
+
+## Authentication Flow
+
+<Steps>
+  <Step title="Request Preparation">
+    Prepare your RPC request payload, as per StarkNet RPC specs
+  </Step>
+  <Step title="Request Hashing">
+    Hash your json payload via [Poseidon Hashing algorithm](https://www.poseidon-hash.info/)
+  </Step>
+  <Step title="Signature Generation">
+    Sign the request using EIP-712 typed data
+  </Step>
+  <Step title="Request Submission">
+    Send the signed request to the proxy including required headers
+  </Step>
+  <Step title="Signature Verification">
+    Proxy verifies the signature and account ownership
+  </Step>
+  <Step title="RPC Forwarding">
+    Valid requests are forwarded to the StarkNet RPC node
+  </Step>
+  <Step title="Response">
+    Full response is returned for your account's data, other accounts remain masked
+  </Step>
+</Steps>
+
+## API Endpoints
+
+The RPC Node Proxy supports the following endpoints:
+
+<Tabs>
+  <Tab title="Mainnet">
+    | StarkNet RPC Version | URL |
+    | --- | --- |
+    | v0.7 | https://rpc.api.prod.paradex.trade/rpc/v0_7 |
+    | v0.8 | https://rpc.api.prod.paradex.trade/rpc/v0_8 |
+  </Tab>
+  <Tab title="Testnet">
+    | StarkNet RPC Version | URL |
+    | --- | --- |
+    | v0.7 | https://rpc.api.testnet.paradex.trade/rpc/v0_7 |
+    | v0.8 | https://rpc.api.testnet.paradex.trade/rpc/v0_8 |
+  </Tab>
+</Tabs>
+
+## Signature Requirements
+
+### EIP-712 Typed Data Structure
+
+All authenticated requests must be signed using the following EIP-712 typed data structure (version 1.0.0):
+
+```json wordWrap
+{
+  "types": {
+    "StarkNetDomain": [
+      {"name": "name", "type": "felt"},
+      {"name": "chainId", "type": "felt"},
+      {"name": "version", "type": "felt"}
+    ],
+    "Request": [
+      {"name": "account", "type": "felt"},
+      {"name": "payload", "type": "felt"},
+      {"name": "timestamp", "type": "felt"},
+      {"name": "version", "type": "felt"}
+    ]
+  },
+  "primaryType": "Request",
+  "domain": {
+    "name": "Paradex",
+    "version": "1",
+    "chainId": "0x505249564154455f534e5f50415241434c4541525f4d41494e4e4554"
+  },
+  "message": {
+    "account": "0x1234567890abcdef...",
+    "payload": 3096312504809894877925894218655910104405544970396306324858916271221086864083,
+    "timestamp": 1710793629,
+    "version": "1.0.0"
+  }
+}
+```
+
+<AccordionGroup>
+  <Accordion title="Domain Fields">
+    <p>
+      | Field | Description |
+      |-------|-------------|
+      | **name** | Service identifier ("Paradex") |
+      | **version** | Protocol version ("1") |
+      | **chainId** | StarkNet chain ID |
+    </p>
+  </Accordion>
+  <Accordion title="Message Fields">
+    <p>
+      | Field | Description |
+      |-------|-------------|
+      | **account** | Your StarkNet account address used for signature verification |
+      | **payload** | The Poseidon hash of your JSON-encoded RPC request payload |
+      | **timestamp** | Unix timestamp in seconds when the signature was created |
+      | **version** | Signature version (currently only "1.0.0" is supported) |
+    </p>
+  </Accordion>
+</AccordionGroup>
+
+## Required Headers
+
+All authenticated requests must include these headers. 
+
+<Note>
+  If authentication headers are missing, the request proceeds in unauthenticated mode.
+</Note>
+
+| Header | Description | Format | Example |
+|--------|-------------|---------|---------|
+| `PARADEX-STARKNET-ACCOUNT` | Your StarkNet account address | `0x` + 1-64 hex characters | `0x1234567890abcdef...` |
+| `PARADEX-STARKNET-SIGNATURE` | JSON array of signature values (r, s) | JSON array of 2 strings | `["1234","5678"]` |
+| `PARADEX-STARKNET-SIGNATURE-TIMESTAMP` | Unix timestamp when signature was created | Unix timestamp as string | `1710793629` |
+| `PARADEX-STARKNET-SIGNATURE-VERSION` | Signature version (currently only "1.0.0") | String | `1.0.0` |
+
+## Request Examples
+
+<Tabs>
+<Tab title="cURL">
+```bash wordWrap
+curl -X POST https://rpc.api.prod.paradex.trade/rpc/v0_7 \
+  -H "Content-Type: application/json" \
+  -H "PARADEX-STARKNET-ACCOUNT: 0x1234567890abcdef..." \
+  -H "PARADEX-STARKNET-SIGNATURE: [\"1234\",\"5678\"]" \
+  -H "PARADEX-STARKNET-SIGNATURE-TIMESTAMP: 1710793629" \
+  -H "PARADEX-STARKNET-SIGNATURE-VERSION: 1.0.0" \
+  -d '{"jsonrpc": "2.0", "method": "starknet_blockNumber", "params": [], "id": 1}'
+```
+</Tab>
+<Tab title="Python">
+
+```python wordWrap
+import json
+import time
+from poseidon_py.poseidon_hash import poseidon_hash_many
+from starknet_py.net.account.account import Account
+from starknet_py.net.full_node_client import FullNodeClient
+from starknet_py.serialization.data_serializers.byte_array_serializer import ByteArraySerializer
+import requests
+
+def build_auth_message(chain_id: str, account: str, json_payload: str, signature_timestamp: int, signature_version: str):
+    """Build EIP-712 typed data for authentication"""
+    byte_array_serializer = ByteArraySerializer()
+    input_felts = byte_array_serializer.serialize(json_payload)
+    payload_hash = poseidon_hash_many(input_felts)
+    
+    return {
+        "message": {
+            "account": account,
+            "payload": payload_hash,
+            "timestamp": signature_timestamp,
+            "version": signature_version
+        },
+        "domain": {
+            "name": "Paradex",
+            "chainId": chain_id,
+            "version": "1"
+        },
+        "primaryType": "Request",
+        "types": {
+            "StarkNetDomain": [
+                {"name": "name", "type": "felt"},
+                {"name": "chainId", "type": "felt"},
+                {"name": "version", "type": "felt"}
+            ],
+            "Request": [
+                {"name": "account", "type": "felt"},
+                {"name": "payload", "type": "felt"},
+                {"name": "timestamp", "type": "felt"},
+                {"name": "version", "type": "felt"}
+            ]
+        }
+    }
+
+def make_authenticated_rpc_request(account: Account, chain_id: str, method: str, params: list = None, rpc_version: str = "v0_7"):
+    """Make an authenticated RPC request through the proxy"""
+    
+    # Prepare RPC payload
+    payload = {
+        "jsonrpc": "2.0",
+        "method": method,
+        "params": params or [],
+        "id": 1
+    }
+    json_payload = json.dumps(payload)
+    
+    # Create signature
+    signature_timestamp = int(time.time())
+    signature_version = "1.0.0"
+    
+    # Build typed data
+    typed_data = build_auth_message(chain_id, hex(account.address), json_payload, signature_timestamp, signature_version)
+    
+    # Sign the message
+    signature = account.sign_message(typed_data)
+    
+    # Prepare headers
+    headers = {
+        "Content-Type": "application/json",
+        "PARADEX-STARKNET-ACCOUNT": hex(account.address),
+        "PARADEX-STARKNET-SIGNATURE": json.dumps([hex(signature.r), hex(signature.s)]),
+        "PARADEX-STARKNET-SIGNATURE-TIMESTAMP": str(signature_timestamp),
+        "PARADEX-STARKNET-SIGNATURE-VERSION": signature_version
+    }
+    
+    # Make request
+    url = f"https://rpc.api.prod.paradex.trade/rpc/{rpc_version}"
+    response = requests.post(url, headers=headers, data=json_payload)
+    
+    return response.json()
+
+# Example usage
+# account = Account(address="0x...", key_pair=KeyPair.from_private_key("0x..."))
+# chain_id = "0x505249564154455f534e5f50415241434c4541525f4d41494e4e4554"
+# result = make_authenticated_rpc_request(account, chain_id, "starknet_blockNumber")
+```
+</Tab>
+</Tabs>
+
+## Security Considerations
+
+- **Private Key Security**: Never expose your private keys in client-side code
+- **Timestamp Validation**: Ensure your system clock is synchronized to prevent timestamp-related errors
+  - Future timestamps: Maximum 1 second tolerance
+  - Past timestamps: Subject to configurable expiry time
+- **Signature Uniqueness**: Each request requires a fresh signature with a current timestamp
+- **Network Security**: Always use HTTPS when making requests to the proxy
+
+## Error Responses
+
+| Error | Description |
+|-------|-------------|
+| **Invalid StarkNet Address** | The account address is not a valid StarkNet address (must be 0x + 1-64 hexadecimal characters) |
+| **Invalid Timestamp** | The signature timestamp is not a valid Unix timestamp |
+| **Timestamp Expired** | The signature timestamp is older than the allowed expiry time |
+| **Timestamp Future** | The signature timestamp is more than 1 second in the future |
+| **Invalid Signature Version** | The signature version is not supported (currently only "1.0.0" is supported) |
+| **Signature Verification Failed** | The signature cannot be verified against the account's public key |
+| **StarkNet Call Error** | Error occurred while calling StarkNet RPC methods, typically due to malformed RPC request |

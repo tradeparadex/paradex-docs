@@ -313,6 +313,9 @@ navigation:
                     - page: kBONK-USD-PERP
                       slug: kbonk-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/kbonk-usd-perp.mdx
+                    - page: kFLOKI-USD-PERP
+                      slug: kfloki-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/kfloki-usd-perp.mdx
                     - page: kPEPE-USD-PERP
                       slug: kpepe-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/kpepe-usd-perp.mdx

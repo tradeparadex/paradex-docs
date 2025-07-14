@@ -17,7 +17,7 @@ For the purposes of weekly XP distribution, we sum quote quality by user by mark
 
 ### The Process
 
-1. **Sample Collection:** Quote Quality scores recorded every ~1 minute throughout the week
+1. **Sample Collection:** Quote Quality samples collected throughout the week
 2. **Weekly Average:** Sum all samples ÷ number of samples = your average Quote Quality
 3. **Market Share:** Your average ÷ total of all users' averages = your share %
 4. **XP Distribution:** Your share % × weekly XP pool = your XP earned
@@ -38,7 +38,7 @@ Bottom line: Weekly XP = Your sustained liquidity quality as a % of total market
 | Term | Definition |
 | --- | --- |
 | Quote Quality | USD value that tracks the overall quality of an LP's liquidity provision over time using an exponential moving average of sample measurements |
-| Sample Quote Quality | A snapshot measurement taken every 10 seconds that evaluates current order quality |
+| Sample Quote Quality | A snapshot measurement taken every few seconds that evaluates current order quality |
 | Order Depth | How far an order's price is from the reference price (max(TOB, mid) for bids, min(TOB, mid) for asks), measured in basis points (bps). |
 | Scaling factor | A penalty system that reduces the value of orders placed farther from the reference price |
 
@@ -116,8 +116,5 @@ Bottom line: Weekly XP = Your sustained liquidity quality as a % of total market
 
     $\text{Quote Quality}(t_{i+1})=20\%*\text{Sample Quote Quality}(t_{i+1})+80\%*\text{Quote Quality}(t_{i})$
 
-    <Tip>
-    This updates every 10 seconds
-    </Tip>
   </Step>
 </Steps>

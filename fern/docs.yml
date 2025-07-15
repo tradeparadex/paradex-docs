@@ -388,6 +388,9 @@ navigation:
                     - page: POPCAT-USD-PERP
                       slug: popcat-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/popcat-usd-perp.mdx
+                    - page: PUMP-USD-PERP
+                      slug: pump-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/pump-usd-perp.mdx
                     - page: PYTH-USD-PERP
                       slug: pyth-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/pyth-usd-perp.mdx

@@ -7,6 +7,14 @@ title: Changing Max Slippage for an Order
 **Max slippage** defines the largest acceptable price deviation from the mark price. 
 
 If max slippage is not set by the user, default max slippage on market level will apply. 
+Default max slippage values are as below:
+             | Instrument | Leverage | Max Slippage |
+             |------------|----------|--------------|
+             | PERP | 50x | 0.001 |
+             | PERP | 50x > Leverage > 5x | 0.002 |
+             | PERP | 5x | 0.005 |
+             | PERP_OPTION | - | 0.5 |
+
 Both market and account defined slippage configurations are ignored for take profit or stop loss orders.
 
 During execution, an order will be canceled if the price exceeds the slippage limit or falls outside the market [Price Bands](https://docs.paradex.trade/documentation/risk-system/price-bands).

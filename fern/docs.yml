@@ -256,6 +256,9 @@ navigation:
                     - page: EIGEN-USD-PERP
                       slug: eigen-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/eigen-usd-perp.mdx
+                    - page: ES-USD-PERP
+                      slug: es-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/es-usd-perp.mdx
                     - page: ETHFI-USD-PERP
                       slug: ethfi-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ethfi-usd-perp.mdx

@@ -4,7 +4,12 @@ title: Changing Max Slippage for an Order
 
 ## Max Slippage  
 
-**Max slippage** defines the largest acceptable price deviation from the mark price. During execution, an order will be canceled if the price exceeds the slippage limit or falls outside the market [Price Bands](https://docs.paradex.trade/documentation/risk-system/price-bands).
+**Max slippage** defines the largest acceptable price deviation from the mark price. 
+
+If max slippage is not set by the user, default max slippage on market level will apply. 
+Both market and account defined slippage configurations are ignored for take profit or stop loss orders.
+
+During execution, an order will be canceled if the price exceeds the slippage limit or falls outside the market [Price Bands](https://docs.paradex.trade/documentation/risk-system/price-bands).
 
 --- 
 

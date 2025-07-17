@@ -513,6 +513,9 @@ navigation:
                 - page: HYPE
                   slug: hype
                   path: ./pages/instruments-guide/options/hype.mdx
+          - page: API Best Practices
+            slug: api-best-practices
+            path: ./pages/trading/API-Best-Practices.mdx
 
       - section: Risk & Liquidations
         slug: risk

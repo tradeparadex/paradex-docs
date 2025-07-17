@@ -10,7 +10,7 @@ subtitle: Essential technical guidelines for advanced traders using the Paradex 
 **Implementation:** Batch operations support partial failures - individual order rejections won't block others. Process response arrays to handle mixed success/failure scenarios. All orders validated by risk engine independently.
 
 <Tip>
-Reference: Orders API Documentation
+Reference: [Orders API Documentation](https://docs.paradex.trade/api/prod/orders/batch)
 </Tip>
 
 ## Real-Time BBO Feeds
@@ -22,7 +22,7 @@ Reference: Orders API Documentation
 **Multi-Market Strategy:** Subscribe to BBO feeds for all trading markets simultaneously. Each subscription costs minimal resources and provides real-time pricing for optimal execution decisions.
 
 <Tip>
-Reference: WebSocket API Documentation
+Reference: [WebSocket API Documentation](https://docs.paradex.trade/ws/general-information)
 </Tip>
 
 ## Rate Optimization
@@ -34,7 +34,7 @@ Reference: WebSocket API Documentation
 **Signing Optimization:** Order signing is computationally expensive. Pre-sign static order components and only process variable parts (price, size, timestamp) for each new order to reduce latency in high-frequency scenarios.
 
 <Tip>
-Reference: Rate Limits Documentation
+Reference: [Rate Limits Documentation](https://docs.paradex.trade/api/general-information/rate-limits/api)
 </Tip>
 
 ## WebSocket Rate Management
@@ -48,7 +48,7 @@ Reference: Rate Limits Documentation
 **Reconnection Logic:** Implement robust reconnection with backoff that respects rate limits (20 connections/second, 600/minute). Queue critical operations during reconnection to avoid data loss.
 
 <Tip>
-Reference: WebSocket Rate Limits
+Reference: [WebSocket Rate Limits](https://docs.paradex.trade/ws/general-information/rate-limits)
 </Tip>
 
 ## Latency Monitoring
@@ -60,7 +60,3 @@ Reference: WebSocket Rate Limits
 **Operational Status:** Poll `GET /v1/system/state` to monitor exchange operational state. Handle three status values: `ok` (fully operational), `maintenance` (trading unavailable), `cancel_only` (only cancellations allowed).
 
 **Implementation Strategy:** Check system state before trading operations and adapt behavior accordingly. During `cancel_only` periods, halt new order submissions but continue order cancellations to manage risk.
-
-## Rate Limit Upgrades
-
-Contact Paradex support for rate limit increases based on trading volume and requirements.

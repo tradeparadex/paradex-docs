@@ -19,6 +19,33 @@ The notional value represents the total dollar amount of the underlying assets b
 If you open a \$25,000 ETH perpetual position with \$2,500 in margin (10x leverage), fees are charged on the full \$25,000 notional value, not your \$2,500 margin.
 </Tip>
 
-## Additional Information
+## Taker Rebate
 
-- There are currently no volume-based fee discounts
+Starting July 16, 2025, Paradex will offer taker rebates of up to 1 bp based on a user's market share.
+
+### How It Works
+
+- **Rebate Range**: 0.1 bp to 1 bp
+- **Calculation Period**: Rolling 14-day trailing period
+- **Payment**: Automatic deposit every two weeks
+- **Eligibility**: Based on your overall market share during the measurement period
+
+### Market Share Formula
+
+```
+Market Share = (User Taker Volume + User Maker Volume) / Paradex 1-sided Volume
+```
+
+### Rebate Tiers
+
+| Market Share | Taker Rebate | Net Taker Fee |
+| ------------ | ------------ | ------------- |
+| >0.0%        | -0.00%       | 0.03%         |
+| >0.5%        | -0.001%      | 0.029%        |
+| >1.0%        | -0.0025%     | 0.0275%       |
+| >2.0%        | -0.005%      | 0.025%        |
+| >6.0%        | -0.01%       | 0.02%         |
+
+<Tip>
+Market share measurement began on July 16, 2025 at 0:00 UTC and runs for consecutive 14-day periods.
+</Tip>

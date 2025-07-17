@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.97.0"
+    "version": "1.98.0"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -2109,7 +2109,7 @@
             "required": true
           },
           {
-            "description": "Onboarding user public_key",
+            "description": "Onboarding user public_key and optional referral_code or marketing_code",
             "name": "request",
             "in": "body",
             "required": true,
@@ -4397,6 +4397,11 @@
     "requests.Onboarding": {
       "type": "object",
       "properties": {
+        "marketing_code": {
+          "description": "Marketing code of the campaign the user is being onboarded via.",
+          "type": "string",
+          "example": "abcd:code1"
+        },
         "public_key": {
           "description": "Public key of the user being onboarded.",
           "type": "string",
@@ -5655,7 +5660,8 @@
         "INVALID_RHINOFI_QUOTE_COMMIT",
         "SOCIAL_USERNAME_IN_USE",
         "INVALID_OAUTH_REQUEST",
-        "RPI_ACCOUNT_NOT_WHITELISTED"
+        "RPI_ACCOUNT_NOT_WHITELISTED",
+        "INVALID_MARKETING_CODE"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -5726,7 +5732,8 @@
         "ErrorCodeString_InvalidRhinofiQuoteCommit",
         "ErrorCodeString_SocialUsernameInUse",
         "ErrorCodeString_InvalidOAuthRequest",
-        "ErrorCodeString_RPIAccountNotWhitelisted"
+        "ErrorCodeString_RPIAccountNotWhitelisted",
+        "ErrorCodeString_InvalidMarketingCode"
       ]
     },
     "responses.ErrorResponse": {
@@ -6275,6 +6282,11 @@
           "description": "Maximum order size in base currency",
           "type": "string",
           "example": "100"
+        },
+        "max_slippage": {
+          "description": "Default max slippage allowed for the market",
+          "type": "string",
+          "example": "0.05"
         },
         "max_tob_spread": {
           "description": "The maximum TOB spread allowed to apply funding rate changes",

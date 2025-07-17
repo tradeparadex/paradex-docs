@@ -1,0 +1,66 @@
+---
+title: Market Maker Guidelines
+subtitle: Essential technical guidelines for market makers using the Paradex API to optimize trading performance, manage rate limits, and implement efficient liquidity provision strategies.
+---
+
+## Batch Order Operations
+
+**Efficiency Multiplier:** Single batch request = 1 rate limit unit (regardless of 1-50 orders). Use `POST /orders/batch` and `DELETE /orders/batch` for 50x efficiency improvement vs individual operations.
+
+**Implementation:** Batch operations support partial failures - individual order rejections won't block others. Process response arrays to handle mixed success/failure scenarios. All orders validated by risk engine independently.
+
+<Tip>
+Reference: Orders API Documentation
+</Tip>
+
+## Real-Time BBO Feeds
+
+**WebSocket Channel:** `bbo.{market_symbol}` provides immediate best bid/offer updates with no artificial throttling. Event-driven updates only when price/size changes - use sequence numbers for message ordering.
+
+**Feed Selection:** BBO is optimal for price-only strategies and useful when subscribing to snapshot books. For fastest BBO price changes, use BBO feed directly. For fastest full orderbook depth, subscribe to deltas websocket feed instead.
+
+**Multi-Market Strategy:** Subscribe to BBO feeds for all trading markets simultaneously. Each subscription costs minimal resources and provides real-time pricing for optimal execution decisions.
+
+<Tip>
+Reference: WebSocket API Documentation
+</Tip>
+
+## Rate Optimization
+
+**Order Management:** `POST /orders` and `DELETE /orders` share 800 req/s limit pool. Batch operations consume 1 unit regardless of order count (1-50), providing significant efficiency gains for market makers.
+
+**Client ID Optimization:** Avoid using client IDs on orders when possible to reduce processing overhead. Only include client IDs when order tracking is essential for your strategy.
+
+**Signing Optimization:** Order signing is computationally expensive. Pre-sign static order components and only process variable parts (price, size, timestamp) for each new order to reduce latency in high-frequency scenarios.
+
+<Tip>
+Reference: Rate Limits Documentation
+</Tip>
+
+## WebSocket Rate Management
+
+**Connection Limits:** 20 connections/second, 600 connections/minute per IP. Maintain persistent connections rather than frequent reconnects for optimal performance.
+
+**Channel Strategy:** Subscribe to essential channels only: `bbo.{market}`, `fills.{market}`, `positions`, `order`. Avoid unnecessary subscriptions that consume bandwidth.
+
+**Message Processing:** Drain WebSocket messages quickly to prevent disconnection. Exchange will disconnect if 2000+ messages accumulate unprocessed. Implement fast message handling and avoid blocking operations in message callbacks.
+
+**Reconnection Logic:** Implement robust reconnection with backoff that respects rate limits (20 connections/second, 600/minute). Queue critical operations during reconnection to avoid data loss.
+
+<Tip>
+Reference: WebSocket Rate Limits
+</Tip>
+
+## Latency Monitoring
+
+**Timestamp Analysis:** Use order response timestamps to monitor network latency for both REST and WebSocket. Track `published_at`, `received_at`, `created_at`, `last_updated_at` fields to identify bottlenecks in your trading pipeline.
+
+## System State Monitoring
+
+**Operational Status:** Poll `GET /v1/system/state` to monitor exchange operational state. Handle three status values: `ok` (fully operational), `maintenance` (trading unavailable), `cancel_only` (only cancellations allowed).
+
+**Implementation Strategy:** Check system state before trading operations and adapt behavior accordingly. During `cancel_only` periods, halt new order submissions but continue order cancellations to manage risk.
+
+## Rate Limit Upgrades
+
+Contact Paradex support for rate limit increases based on trading volume and requirements.

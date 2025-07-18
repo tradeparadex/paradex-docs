@@ -1,0 +1,310 @@
+---
+title: "Bridges and On-Ramps"
+description: "Learn about all available bridging options to deposit and withdraw funds on Paradex"
+---
+
+## Cross-Chain Deposits and Withdrawals
+
+Paradex supports multiple bridging solutions to enable seamless deposits and withdrawals across a wide range of blockchains. Users can bridge assets from over 30 different chains.
+
+## Overview
+
+<CardGroup cols={2}>
+  <Card title="Integrated Experience" icon="window">
+    Fully integrated within the Paradex UI without leaving the platform
+  </Card>
+  <Card title="Multi-Chain Support" icon="chart-network">
+    Bridge from 30+ chains across EVM, Solana, and Starknet
+  </Card>
+</CardGroup>
+
+## Chain Support Matrix
+
+| Chain | Paradex Bridge | Hyperlane | Layerswap | Rhino.fi | Orbiter Finance |
+|:------|:---------------|:----------|:----------|:---------|:----------------|
+| Arbitrum | - | ✅ | ✅ | ✅ | ✅ |
+| Avalanche | - | ✅ | ✅ | ✅ | ✅ |
+| Base | - | ✅ | ✅ | ✅ | ✅ |
+| BSC/Binance | - | - | ✅ | ✅ | ✅ |
+| Ethereum | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Linea | - | - | ✅ | ✅ | ✅ |
+| Mantle | - | - | ✅ | ✅ | - |
+| Optimism | - | - | ✅ | ✅ | ✅ |
+| Polygon | - | - | ✅ | ✅ | ✅ |
+| Scroll | - | - | ✅ | ✅ | ✅ |
+| Solana | - | ✅ | ✅ | ✅ | ✅ |
+| Sonic | - | - | ✅ | ✅ | ✅ |
+| Starknet | - | ✅ | ✅ | ✅ | ✅ |
+| zkSync Era | - | - | ✅ | - | ✅ |
+
+## Deposit and Withdrawal Availability
+
+<AccordionGroup>
+  <Accordion title="Deposit Support">
+    All bridge providers support deposits to Paradex from their respective supported chains. Users can deposit USDC from any supported network directly into their Paradex account.
+
+    **Available on all bridges:**
+    - Instant deposits after blockchain confirmation
+    - USDC token support across all networks
+    - Integrated experience within Paradex UI (except Orbiter Finance)
+  </Accordion>
+
+  <Accordion title="Withdrawal Support">
+    Withdrawal support varies by bridge provider:
+
+    | Bridge Provider | Withdrawal Status | Supported Chains |
+    |:----------------|:------------------|:-----------------|
+    | Paradex Bridge | ✅ Available | Ethereum |
+    | Hyperlane | ⏳ Coming Soon | All supported chains |
+    | Layerswap | ✅ Available | All supported chains |
+    | Rhino.fi | ✅ Available | All supported chains |
+    | Orbiter Finance | ✅ Available | All supported chains |
+  </Accordion>
+</AccordionGroup>
+
+## How to Use Bridges
+
+<Steps>
+  <Step title="Navigate to Deposit/Withdraw">
+    Access the Deposit/Withdraw section in your Paradex account dashboard
+  </Step>
+  <Step title="Select Source Chain">
+    Choose your source chain and desired bridge provider from the available options
+  </Step>
+  <Step title="Enter Amount">
+    Specify the amount you wish to bridge and review the transaction details
+  </Step>
+  <Step title="Connect Wallet">
+    Connect your wallet for the source chain to authorize the transaction
+  </Step>
+  <Step title="Confirm Transaction">
+    Review and confirm the transaction, then wait for blockchain processing
+  </Step>
+</Steps>
+
+## Security and Audits
+
+<CardGroup cols={2}>
+  <Card title="Audited Contracts" icon="shield-check">
+    Paradex Bridge undergoes comprehensive security audits with public source code
+  </Card>
+  <Card title="Trusted Partners" icon="handshake">
+    Integration only with battle-tested, reputable bridge providers
+  </Card>
+</CardGroup>
+
+<Note title="Security Resources">
+For detailed audit information and security reports, visit our [Security, Audits & Pentests documentation](https://docs.paradex.trade/security/audit-pentests).
+</Note>
+
+## Integration Status
+
+| Bridge Provider | Paradex UI Integration | Status |
+|:----------------|:-----------------------|:-------|
+| Paradex Bridge | ✅ Native | Live |
+| Hyperlane | ✅ Integrated | Live |
+| Layerswap | ✅ Integrated | Live |
+| Rhino.fi | ✅ Integrated | Live |
+| Orbiter Finance | ⏳ External | Coming Soon |
+
+## Supported Bridge Providers
+
+<AccordionGroup>
+  <Accordion title="Paradex Bridge">
+    The native bridging solution between Ethereum and Paradex Chain, powered by StarkGate.
+
+    <CardGroup cols={3}>
+      <Card title="Direct Integration" icon="link">
+        Native Ethereum ↔ Paradex deposits and withdrawals
+      </Card>
+      <Card title="Starknet Infrastructure" icon="shield-check">
+        Built on proven Starknet bridge technology
+      </Card>
+      <Card title="Audited Security" icon="lock">
+        Comprehensive security audits and open source code
+      </Card>
+    </CardGroup>
+
+    **Supported Chains:**
+    - Ethereum (deposits and withdrawals)
+
+    <Note title="Security First">
+    The Paradex Bridge contracts have undergone comprehensive security audits to ensure the safety of user funds. For detailed audit reports and security information, visit our [Security, Audits & Pentests documentation](https://docs.paradex.trade/security/audit-pentests).
+    </Note>
+
+    **Technical Details:**
+    - GitHub Repository: [tradeparadex/starkgate-contracts](https://github.com/tradeparadex/starkgate-contracts)
+  </Accordion>
+
+  <Accordion title="Hyperlane">
+    Hyperlane enables interchain deposits from multiple networks with multi-VM support.
+
+    <CardGroup cols={3}>
+      <Card title="Multi-VM Support" icon="chart-network">
+        EVM and SVM connectivity with Warp Routes technology
+      </Card>
+      <Card title="Secure Transfers" icon="shield">
+        USDC locked on origin chain, equivalent amount released on Paradex
+      </Card>
+      <Card title="Rapid Expansion" icon="rocket">
+        Easy addition of new chains through Hyperlane's 150+ chain network
+      </Card>
+    </CardGroup>
+
+    **Supported Chains:**
+    - **EVM Chains:** Ethereum, Arbitrum, Base
+    - **SVM Chains:** Solana
+    - **Other:** Starknet
+
+    <Tip title="Hyperlane Deposits">
+    Currently supports deposits only. Withdrawal functionality is coming soon for a complete interchain experience.
+    </Tip>
+
+    **Learn More:**
+    - [Hyperlane Documentation](https://docs.hyperlane.xyz/)
+  </Accordion>
+
+  <Accordion title="Layerswap">
+    A comprehensive bridging solution supporting the widest range of chains with both deposits and withdrawals.
+
+    <CardGroup cols={3}>
+      <Card title="Extensive Coverage" icon="globe">
+        20+ supported networks across multiple ecosystems
+      </Card>
+      <Card title="High Limits" icon="coins">
+        Up to 500,000 USDC deposits from Ethereum
+      </Card>
+      <Card title="Full Functionality" icon="arrows-rotate">
+        Both deposits and withdrawals available
+      </Card>
+    </CardGroup>
+
+    **Supported Chains:**
+    - **Major EVM Networks:** Ethereum, Arbitrum, Avalanche, Base, Optimism, Polygon, BSC
+    - **Layer 2s:** Linea, Mantle, Scroll, zkSync Era
+    - **Alternative Networks:** Solana, Starknet
+    - **Emerging Networks:** Sonic, Sophon, Manta, SEI
+
+    > **Transaction Limits:**
+    >
+    > * Deposits: Up to 500,000 USDC (Ethereum), varies by chain
+    > * Withdrawals: Up to 60,000 USDC for most chains
+
+    **Learn More:**
+    - [Layerswap Documentation](https://docs.layerswap.io/user-docs/)
+  </Accordion>
+
+  <Accordion title="Rhino.fi">
+    A decentralized exchange and bridge aggregator supporting multiple ecosystems.
+
+    <CardGroup cols={3}>
+      <Card title="DEX + Bridge" icon="shuffle">
+        Combined trading and bridging functionality
+      </Card>
+      <Card title="Multi-Ecosystem" icon="layer-group">
+        Support for EVM and non-EVM chains
+      </Card>
+      <Card title="Competitive Fees" icon="dollar-sign">
+        Optimized routing for cost-effective transfers
+      </Card>
+    </CardGroup>
+
+    **Supported Chains:**
+    - **EVM Networks:** Ethereum, Arbitrum, Avalanche, Base, Optimism, Polygon, BSC
+    - **Layer 2s:** Linea, Mantle, Scroll, zkSync Era
+    - **Alternative Networks:** Solana, Starknet
+    - **Additional:** Sonic, Mode, Manta Pacific
+
+    **Learn More:**
+    - [Rhino.fi Documentation](https://docs.rhino.fi/)
+  </Accordion>
+
+  <Accordion title="Orbiter Finance">
+    A decentralized bridge supporting the broadest range of chains across multiple ecosystems.
+
+    <CardGroup cols={3}>
+      <Card title="Maximum Coverage" icon="chart-network">
+        30+ chains across different virtual machines
+      </Card>
+      <Card title="Cross-Ecosystem" icon="arrows-rotate">
+        Transfers between various blockchain ecosystems
+      </Card>
+      <Card title="Coming Soon" icon="clock">
+        Native Paradex UI integration in development
+      </Card>
+    </CardGroup>
+
+    **Supported Chains:**
+    - **Major Networks:** Ethereum, Arbitrum, Avalanche, Base, Optimism, Polygon
+    - **Layer 2s:** zkSync Era, Scroll, Linea, Polygon zkEVM
+    - **Alternative VMs:** Solana, Starknet, Sui, TON
+    - **Emerging Networks:** Sonic, Sophon, Taiko, BOB, Core
+
+    <Note title="External Integration">
+    Currently requires users to visit the Orbiter Finance website. Native Paradex UI integration is coming soon.
+    </Note>
+
+    **Learn More:**
+    - [Orbiter Finance Documentation](https://docs.orbiter.finance/)
+  </Accordion>
+</AccordionGroup>
+
+## Future Developments
+
+<CardGroup cols={2}>
+  <Card title="Enhanced Withdrawals" icon="arrow-down">
+    Hyperlane withdrawal support, fast withdrawals, and expanded native bridge capabilities coming soon
+  </Card>
+  <Card title="Network Expansion" icon="plus">
+    Regular addition of new supported networks and improved UX across all providers
+  </Card>
+</CardGroup>
+
+<Tip title="Roadmap Updates">
+Paradex continues to expand cross-chain connectivity with new integrations and enhanced functionality being added regularly. Stay updated through our official channels for the latest developments.
+</Tip>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Large Amounts" icon="scale-balanced">
+    For large withdrawals, consider using the Paradex Bridge for maximum security, though it requires 4-6 hours for completion
+  </Card>
+  <Card title="Fee Optimization" icon="dollar-sign">
+    Bridge fees vary by provider and chain. Compare options before transferring - improved fee comparison UX coming soon
+  </Card>
+</CardGroup>
+
+<Note title="Fee Considerations">
+Some bridges may have significantly higher fees than others depending on the source chain and current network conditions. We're working on improved UX to surface this information more clearly in the near future.
+</Note>
+
+## Fiat On-Ramps and CEX Integration
+
+<CardGroup cols={2}>
+  <Card title="Fiat On-Ramps" icon="credit-card">
+    Direct fiat-to-Paradex deposits coming soon, enabling seamless onboarding with credit cards and bank transfers
+  </Card>
+  <Card title="CEX Deposits" icon="building-columns">
+    Direct deposits from major centralized exchanges in development for instant trading access
+  </Card>
+</CardGroup>
+
+## Technical Resources
+
+<CardGroup cols={2}>
+  <Card title="Paradex Resources" icon="code">
+    - [Bridge Contracts](https://github.com/tradeparadex/starkgate-contracts)
+    - [Documentation](https://github.com/tradeparadex/paradex-docs)
+  </Card>
+  <Card title="Partner Documentation" icon="book">
+    - [Hyperlane Docs](https://docs.hyperlane.xyz/)
+    - [Layerswap Docs](https://docs.layerswap.io/user-docs/)
+    - [Rhino.fi Docs](https://docs.rhino.fi/)
+    - [Orbiter Finance Docs](https://docs.orbiter.finance/)
+  </Card>
+</CardGroup>
+
+---
+
+*For technical support or questions about bridging, please contact our support team or visit our Discord community.*

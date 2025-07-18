@@ -36,6 +36,9 @@ navigation:
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
+          - page: Bridges and On-Ramps
+            slug: bridges
+            path: ./pages/introduction/bridges-onramps.mdx
           - page: Official Links
             slug: official-links
             path: ./pages/introduction/official-links.mdx
@@ -48,9 +51,6 @@ navigation:
               - page: Chain Information
                 slug: chain-information
                 path: ./pages/introduction/architecture-overview/chain-information.mdx
-              - page: Bridges
-                slug: bridges-and-audits
-                path: ./pages/introduction/architecture-overview/bridges-and-audits.mdx
               - page: Server Location
                 slug: server-location
                 path: ./pages/introduction/architecture-overview/server-location.mdx
@@ -594,7 +594,7 @@ navigation:
           - page: Introduction
             slug: paradex-chain-introduction
             path: ./pages/paradex-chain/introduction.mdx
-          - page: RPC Node 
+          - page: RPC Node
             slug: paradex-chain-rpc-node
             path: ./pages/paradex-chain/rpc-node.mdx
           - page: Testnet

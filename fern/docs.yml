@@ -346,6 +346,9 @@ navigation:
                     - page: MKR-USD-PERP
                       slug: mkr-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/mkr-usd-perp.mdx
+                    - page: mMOG-USD-PERP
+                      slug: mmog-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/mmog-usd-perp.mdx
                     - page: MOODENG-USD-PERP
                       slug: moodeng-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx

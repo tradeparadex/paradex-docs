@@ -39,6 +39,9 @@ navigation:
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
+          - page: Bridges and On-Ramps
+            slug: bridges
+            path: ./pages/introduction/bridges-onramps.mdx
           - page: Official Links
             slug: official-links
             path: ./pages/introduction/official-links.mdx
@@ -51,9 +54,6 @@ navigation:
               - page: Chain Information
                 slug: chain-information
                 path: ./pages/introduction/architecture-overview/chain-information.mdx
-              - page: Bridges
-                slug: bridges-and-audits
-                path: ./pages/introduction/architecture-overview/bridges-and-audits.mdx
               - page: Server Location
                 slug: server-location
                 path: ./pages/introduction/architecture-overview/server-location.mdx
@@ -238,12 +238,12 @@ navigation:
                     - page: BERA-USD-PERP
                       slug: bera-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/bera-usd-perp.mdx
-                    - page: BMT-USD-PERP
-                      slug: bmt-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/bmt-usd-perp.mdx
                     - page: BNB-USD-PERP
                       slug: bnb-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx
+                    - page: CRV-USD-PERP
+                      slug: crv-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx
                     - page: DOGE-USD-PERP
                       slug: doge-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/doge-usd-perp.mdx
@@ -274,9 +274,6 @@ navigation:
                     - page: FLOW-USD-PERP
                       slug: flow-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/flow-usd-perp.mdx
-                    - page: FRAG-USD-PERP
-                      slug: frag-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/frag-usd-perp.mdx
                     - page: GOAT-USD-PERP
                       slug: goat-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/goat-usd-perp.mdx
@@ -328,9 +325,6 @@ navigation:
                     - page: kSHIB-USD-PERP
                       slug: kshib-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/kshib-usd-perp.mdx
-                    - page: LAYER-USD-PERP
-                      slug: layer-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/layer-usd-perp.mdx
                     - page: LDO-USD-PERP
                       slug: ldo-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ldo-usd-perp.mdx
@@ -346,6 +340,9 @@ navigation:
                     - page: MKR-USD-PERP
                       slug: mkr-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/mkr-usd-perp.mdx
+                    - page: mMOG-USD-PERP
+                      slug: mmog-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/mmog-usd-perp.mdx
                     - page: MOODENG-USD-PERP
                       slug: moodeng-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
@@ -406,9 +403,6 @@ navigation:
                     - page: RAY-USD-PERP
                       slug: ray-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ray-usd-perp.mdx
-                    - page: RED-USD-PERP
-                      slug: red-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/red-usd-perp.mdx
                     - page: RESOLV-USD-PERP
                       slug: resolv-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/resolv-usd-perp.mdx
@@ -496,9 +490,6 @@ navigation:
                     - page: XRP-USD-PERP
                       slug: xrp-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx
-                    - page: ZORA-USD-PERP
-                      slug: zora-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/zora-usd-perp.mdx
                     - page: ZRO-USD-PERP
                       slug: zro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
@@ -594,7 +585,7 @@ navigation:
           - page: Introduction
             slug: paradex-chain-introduction
             path: ./pages/paradex-chain/introduction.mdx
-          - page: RPC Node 
+          - page: RPC Node
             slug: paradex-chain-rpc-node
             path: ./pages/paradex-chain/rpc-node.mdx
           - page: Testnet

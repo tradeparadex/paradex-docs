@@ -36,12 +36,12 @@ navigation:
           - page: Your First Trade
             slug: your-first-trade
             path: ./pages/getting-started/your-first-trade.mdx
-          - page: Roadmap
-            slug: roadmap
-            path: ./pages/introduction/roadmap.mdx
           - page: Bridges and On-Ramps
             slug: bridges
             path: ./pages/introduction/bridges-onramps.mdx
+          - page: Roadmap
+            slug: roadmap
+            path: ./pages/introduction/roadmap.mdx
           - page: Official Links
             slug: official-links
             path: ./pages/introduction/official-links.mdx

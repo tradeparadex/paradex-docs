@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.98.0"
+    "version": "1.98.1"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -4692,6 +4692,10 @@
           "additionalProperties": {
             "type": "string"
           }
+        },
+        "marketed_by": {
+          "type": "string",
+          "example": "maxDegen"
         },
         "nfts": {
           "type": "array",

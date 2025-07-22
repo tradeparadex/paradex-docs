@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.98.1"
+    "version": "1.99.1"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -3913,11 +3913,11 @@
           "example": "MARKET"
         },
         "signature": {
-          "description": "Order Payload signed with STARK Private Key",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string"
         },
         "signature_timestamp": {
-          "description": "Timestamp of order creation, used for signature verification",
+          "description": "Unix timestamp in milliseconds of order creation, used for signature verification",
           "type": "integer"
         },
         "size": {
@@ -4153,11 +4153,11 @@
           ]
         },
         "signature": {
-          "description": "Order Payload signed with STARK Private Key",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string"
         },
         "signature_timestamp": {
-          "description": "Timestamp of order creation, used for signature verification",
+          "description": "Unix timestamp in milliseconds of order creation, used for signature verification",
           "type": "integer"
         },
         "signed_impact_price": {
@@ -4190,12 +4190,18 @@
     "requests.BlockTradeRequest": {
       "type": "object",
       "required": [
+        "block_expiration",
         "nonce",
         "required_signers",
         "signatures",
         "trades"
       ],
       "properties": {
+        "block_expiration": {
+          "description": "Unix timestamp in milliseconds when block expires",
+          "type": "integer",
+          "example": 1640995800000
+        },
         "nonce": {
           "description": "Unique nonce for this block trade request",
           "type": "string",
@@ -4227,28 +4233,28 @@
     "requests.BlockTradeSignature": {
       "type": "object",
       "required": [
+        "block_expiration",
         "nonce",
         "signature_data",
-        "signature_expiration",
         "signature_timestamp",
         "signature_type",
         "signer_account"
       ],
       "properties": {
+        "block_expiration": {
+          "description": "Unix timestamp in milliseconds when block expires",
+          "type": "integer",
+          "example": 1640995800000
+        },
         "nonce": {
           "description": "Unique nonce to prevent replay attacks",
           "type": "string",
           "example": "12345"
         },
         "signature_data": {
-          "description": "The actual signature bytes in hex format",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string",
           "example": "0xabc123..."
-        },
-        "signature_expiration": {
-          "description": "Unix timestamp in milliseconds when signature expires",
-          "type": "integer",
-          "example": 1640995800000
         },
         "signature_timestamp": {
           "description": "Unix timestamp in milliseconds when signature was created",
@@ -4375,11 +4381,11 @@
           "example": "BUY"
         },
         "signature": {
-          "description": "Order Payload signed with STARK Private Key",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string"
         },
         "signature_timestamp": {
-          "description": "Timestamp of order creation, used for signature verification",
+          "description": "Unix timestamp in milliseconds of order creation, used for signature verification",
           "type": "integer"
         },
         "size": {
@@ -4476,11 +4482,11 @@
           ]
         },
         "signature": {
-          "description": "Order Payload signed with STARK Private Key",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string"
         },
         "signature_timestamp": {
-          "description": "Timestamp of order creation, used for signature verification",
+          "description": "Unix timestamp in milliseconds of order creation, used for signature verification",
           "type": "integer"
         },
         "signed_impact_price": {
@@ -5443,6 +5449,11 @@
     "responses.BlockTradeSignature": {
       "type": "object",
       "properties": {
+        "block_expiration": {
+          "description": "Unix timestamp in milliseconds when block expires",
+          "type": "integer",
+          "example": 1640995800000
+        },
         "nonce": {
           "description": "Unique nonce to prevent replay attacks",
           "type": "string",
@@ -5452,11 +5463,6 @@
           "description": "The actual signature bytes in hex format",
           "type": "string",
           "example": "0xabc123..."
-        },
-        "signature_expiration": {
-          "description": "Unix timestamp in milliseconds when signature expires",
-          "type": "integer",
-          "example": 1640995800000
         },
         "signature_timestamp": {
           "description": "Unix timestamp in milliseconds when signature was created",
@@ -5624,7 +5630,7 @@
         "ETHEREUM_HASH_MISMATCH",
         "NOT_ONBOARDED",
         "INVALID_TIMESTAMP",
-        "INVALID_SIGNATURE_EXPIRATION",
+        "INVALID_BLOCK_EXPIRATION",
         "ACCOUNT_NOT_FOUND",
         "INVALID_ORDER_SIGNATURE",
         "PUBLIC_KEY_INVALID",
@@ -6004,6 +6010,10 @@
           "items": {
             "$ref": "#/definitions/responses.AccountMarginEntry"
           }
+        },
+        "margin_methodology": {
+          "description": "Margin methodology (cross_margin/portfolio_margin)",
+          "type": "string"
         }
       }
     },

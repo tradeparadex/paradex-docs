@@ -250,6 +250,9 @@ navigation:
                     - page: DOT-USD-PERP
                       slug: dot-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/dot-usd-perp.mdx
+                    - page: DRIFT-USD-PERP
+                      slug: drift-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/drift-usd-perp.mdx
                     - page: DYDX-USD-PERP
                       slug: dydx-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/dydx-usd-perp.mdx

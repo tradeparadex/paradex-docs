@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.98.1"
+    "version": "1.99.1"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -3913,11 +3913,11 @@
           "example": "MARKET"
         },
         "signature": {
-          "description": "Order Payload signed with STARK Private Key",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string"
         },
         "signature_timestamp": {
-          "description": "Timestamp of order creation, used for signature verification",
+          "description": "Unix timestamp in milliseconds of order creation, used for signature verification",
           "type": "integer"
         },
         "size": {
@@ -3955,10 +3955,10 @@
           }
         },
         "signatures": {
-          "description": "Map of offer IDs to initiator signatures accepting each offer",
+          "description": "Map of offer IDs to initiator signatures accepting each offer. Block id if it is a direct block trade.",
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/requests.BlockTradeSignature"
+            "$ref": "#/definitions/responses.BlockTradeSignature"
           }
         }
       }
@@ -3975,7 +3975,7 @@
           "description": "Order details from the offering account",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeOrder"
+              "$ref": "#/definitions/responses.BlockTradeOrder"
             }
           ]
         },
@@ -4014,7 +4014,7 @@
           "description": "Cryptographic signature authorizing this offer",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeSignature"
+              "$ref": "#/definitions/responses.BlockTradeSignature"
             }
           ]
         },
@@ -4027,31 +4027,6 @@
         }
       }
     },
-    "requests.BlockTradeConstraints": {
-      "type": "object",
-      "properties": {
-        "max_price": {
-          "description": "Maximum price allowed",
-          "type": "string",
-          "example": "31000.00"
-        },
-        "max_size": {
-          "description": "Maximum trade size allowed",
-          "type": "string",
-          "example": "100.0"
-        },
-        "min_price": {
-          "description": "Minimum price allowed",
-          "type": "string",
-          "example": "29000.00"
-        },
-        "min_size": {
-          "description": "Minimum trade size allowed",
-          "type": "string",
-          "example": "0.1"
-        }
-      }
-    },
     "requests.BlockTradeInfo": {
       "type": "object",
       "properties": {
@@ -4059,7 +4034,7 @@
           "description": "Maker order details (empty if requiring offers)",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeOrder"
+              "$ref": "#/definitions/responses.BlockTradeOrder"
             }
           ]
         },
@@ -4077,7 +4052,7 @@
           "description": "Taker order details (empty if requiring offers)",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeOrder"
+              "$ref": "#/definitions/responses.BlockTradeOrder"
             }
           ]
         },
@@ -4085,103 +4060,7 @@
           "description": "Constraints for this trade when requiring offers",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeConstraints"
-            }
-          ]
-        }
-      }
-    },
-    "requests.BlockTradeOrder": {
-      "type": "object",
-      "required": [
-        "instruction",
-        "market",
-        "price",
-        "side",
-        "signature",
-        "signature_timestamp",
-        "size",
-        "type"
-      ],
-      "properties": {
-        "client_id": {
-          "description": "Unique client assigned ID for the order",
-          "type": "string",
-          "maxLength": 64,
-          "example": "123454321"
-        },
-        "flags": {
-          "description": "Order flags, allow flag: REDUCE_ONLY",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/responses.OrderFlag"
-          }
-        },
-        "instruction": {
-          "description": "Order Instruction, GTC, IOC, RPI or POST_ONLY if empty GTC",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.OrderInstruction"
-            }
-          ]
-        },
-        "market": {
-          "description": "Market for which order is created",
-          "type": "string",
-          "example": "BTC-USD-PERP"
-        },
-        "on_behalf_of_account": {
-          "description": "ID corresponding to the configured isolated margin account.  Only for isolated margin orders",
-          "type": "string",
-          "example": "0x1234567890abcdef"
-        },
-        "price": {
-          "description": "Order price",
-          "type": "string",
-          "example": "29500.12"
-        },
-        "recv_window": {
-          "description": "Order will be created if it is received by API within RecvWindow milliseconds from signature timestamp, minimum is 10 milliseconds",
-          "type": "integer"
-        },
-        "side": {
-          "description": "Order side",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.OrderSide"
-            }
-          ]
-        },
-        "signature": {
-          "description": "Order Payload signed with STARK Private Key",
-          "type": "string"
-        },
-        "signature_timestamp": {
-          "description": "Timestamp of order creation, used for signature verification",
-          "type": "integer"
-        },
-        "signed_impact_price": {
-          "description": "Optional signed impact price for market orders (base64 encoded)",
-          "type": "string"
-        },
-        "size": {
-          "description": "Size of the order",
-          "type": "string",
-          "example": "1.213"
-        },
-        "stp": {
-          "description": "Self Trade Prevention, EXPIRE_MAKER, EXPIRE_TAKER or EXPIRE_BOTH, if empty EXPIRE_TAKER",
-          "type": "string"
-        },
-        "trigger_price": {
-          "description": "Trigger price for stop order",
-          "type": "string"
-        },
-        "type": {
-          "description": "Order type",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.OrderType"
+              "$ref": "#/definitions/responses.BlockTradeConstraints"
             }
           ]
         }
@@ -4190,29 +4069,35 @@
     "requests.BlockTradeRequest": {
       "type": "object",
       "required": [
+        "block_expiration",
         "nonce",
         "required_signers",
         "signatures",
         "trades"
       ],
       "properties": {
+        "block_expiration": {
+          "description": "Unix timestamp in milliseconds when block expires",
+          "type": "integer",
+          "example": 1640995800000
+        },
         "nonce": {
           "description": "Unique nonce for this block trade request",
           "type": "string",
           "example": "67890"
         },
         "required_signers": {
-          "description": "Array of account addresses that must sign this block",
+          "description": "List of accounts that can participate in the block trade",
           "type": "array",
           "items": {
             "type": "string"
           }
         },
         "signatures": {
-          "description": "Map of account addresses to their signatures",
+          "description": "Map of account addresses to their signatures. Can be empty or partial.",
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/requests.BlockTradeSignature"
+            "$ref": "#/definitions/responses.BlockTradeSignature"
           }
         },
         "trades": {
@@ -4221,52 +4106,6 @@
           "additionalProperties": {
             "$ref": "#/definitions/requests.BlockTradeInfo"
           }
-        }
-      }
-    },
-    "requests.BlockTradeSignature": {
-      "type": "object",
-      "required": [
-        "nonce",
-        "signature_data",
-        "signature_expiration",
-        "signature_timestamp",
-        "signature_type",
-        "signer_account"
-      ],
-      "properties": {
-        "nonce": {
-          "description": "Unique nonce to prevent replay attacks",
-          "type": "string",
-          "example": "12345"
-        },
-        "signature_data": {
-          "description": "The actual signature bytes in hex format",
-          "type": "string",
-          "example": "0xabc123..."
-        },
-        "signature_expiration": {
-          "description": "Unix timestamp in milliseconds when signature expires",
-          "type": "integer",
-          "example": 1640995800000
-        },
-        "signature_timestamp": {
-          "description": "Unix timestamp in milliseconds when signature was created",
-          "type": "integer",
-          "example": 1640995200000
-        },
-        "signature_type": {
-          "description": "Type of cryptographic signature used",
-          "type": "string",
-          "enum": [
-            "STARKNET"
-          ],
-          "example": "STARKNET"
-        },
-        "signer_account": {
-          "description": "Starknet account address of the signer",
-          "type": "string",
-          "example": "0x1234567890abcdef"
         }
       }
     },
@@ -4375,11 +4214,11 @@
           "example": "BUY"
         },
         "signature": {
-          "description": "Order Payload signed with STARK Private Key",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string"
         },
         "signature_timestamp": {
-          "description": "Timestamp of order creation, used for signature verification",
+          "description": "Unix timestamp in milliseconds of order creation, used for signature verification",
           "type": "integer"
         },
         "size": {
@@ -4476,11 +4315,11 @@
           ]
         },
         "signature": {
-          "description": "Order Payload signed with STARK Private Key",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string"
         },
         "signature_timestamp": {
-          "description": "Timestamp of order creation, used for signature verification",
+          "description": "Unix timestamp in milliseconds of order creation, used for signature verification",
           "type": "integer"
         },
         "signed_impact_price": {
@@ -5123,57 +4962,7 @@
         }
       }
     },
-    "responses.BlockExecutionResultResponse": {
-      "type": "object",
-      "properties": {
-        "executed_at": {
-          "description": "When execution completed",
-          "type": "integer",
-          "example": 1640995500000
-        },
-        "failed_trades": {
-          "description": "Number of trades that failed",
-          "type": "integer",
-          "example": 1
-        },
-        "successful_trades": {
-          "description": "Number of trades that executed successfully",
-          "type": "integer",
-          "example": 3
-        },
-        "total_notional": {
-          "description": "Total notional value executed",
-          "type": "string",
-          "example": "315000.00"
-        }
-      }
-    },
-    "responses.BlockOffersSummaryResponse": {
-      "type": "object",
-      "properties": {
-        "accepted_offers": {
-          "description": "Number of offers that were accepted",
-          "type": "integer",
-          "example": 2
-        },
-        "pending_offers": {
-          "description": "Number of offers still pending",
-          "type": "integer",
-          "example": 6
-        },
-        "total_offered_size": {
-          "description": "Sum of all offered sizes",
-          "type": "string",
-          "example": "85.5"
-        },
-        "total_offers": {
-          "description": "Total number of offers received",
-          "type": "integer",
-          "example": 8
-        }
-      }
-    },
-    "responses.BlockTradeConstraintsResponse": {
+    "responses.BlockTradeConstraints": {
       "type": "object",
       "properties": {
         "max_price": {
@@ -5201,33 +4990,29 @@
     "responses.BlockTradeDetailFullResponse": {
       "type": "object",
       "properties": {
+        "block_expiration": {
+          "description": "Unix timestamp in milliseconds when block expires",
+          "type": "integer",
+          "example": 1640995800000
+        },
         "block_id": {
           "description": "Backend-generated unique identifier",
           "type": "string",
           "example": "block_456"
         },
         "block_type": {
-          "description": "Type: DIRECT or OFFER_BASED",
-          "type": "string",
+          "description": "Block type",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.BlockTradeType"
+            }
+          ],
           "example": "OFFER_BASED"
         },
         "created_at": {
           "description": "When block was created",
           "type": "integer",
           "example": 1640995200000
-        },
-        "execution_result": {
-          "description": "Final execution results (if executed)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.BlockExecutionResultResponse"
-            }
-          ]
-        },
-        "expires_at": {
-          "description": "When block expires",
-          "type": "integer",
-          "example": 1640995800000
         },
         "initiator": {
           "description": "Account that initiated this block trade",
@@ -5240,17 +5025,9 @@
           "example": 1640995400000
         },
         "nonce": {
-          "description": "Include signing data for signature verification and generation",
+          "description": "Original block nonce",
           "type": "string",
           "example": "67890"
-        },
-        "offers_summary": {
-          "description": "Summary of offers (if offer-based)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.BlockOffersSummaryResponse"
-            }
-          ]
         },
         "parent_block_id": {
           "description": "Parent block ID (if offer-based)",
@@ -5258,7 +5035,7 @@
           "example": "block_123"
         },
         "required_signers": {
-          "description": "List of accounts that must sign (for signature verification)",
+          "description": "List of accounts that can participate in the block trade",
           "type": "array",
           "items": {
             "type": "string"
@@ -5301,21 +5078,21 @@
           "description": "Reason for failure (if failed)",
           "type": "string"
         },
-        "fill": {
-          "description": "Execution details (if executed)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.BlockTradeFillResponse"
-            }
-          ]
-        },
         "maker_account": {
           "description": "Maker account (if fully executable)",
           "type": "string",
           "example": "0x123...abc"
         },
+        "maker_fill": {
+          "description": "Execution details (if executed)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.FillResult"
+            }
+          ]
+        },
         "maker_order": {
-          "description": "Include original orders for signature verification if needed",
+          "description": "Original maker order (for signature generation)",
           "allOf": [
             {
               "$ref": "#/definitions/responses.BlockTradeOrder"
@@ -5337,15 +5114,18 @@
           "type": "string",
           "example": "10.5"
         },
-        "status": {
-          "description": "Current status of this trade",
-          "type": "string",
-          "example": "PENDING"
-        },
         "taker_account": {
           "description": "Taker account (if fully executable)",
           "type": "string",
           "example": "0x456...def"
+        },
+        "taker_fill": {
+          "description": "Execution details (if executed)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.FillResult"
+            }
+          ]
         },
         "taker_order": {
           "description": "Original taker order (for signature generation)",
@@ -5359,7 +5139,7 @@
           "description": "Constraints for offers (if offer-based)",
           "allOf": [
             {
-              "$ref": "#/definitions/responses.BlockTradeConstraintsResponse"
+              "$ref": "#/definitions/responses.BlockTradeConstraints"
             }
           ]
         },
@@ -5370,33 +5150,12 @@
         }
       }
     },
-    "responses.BlockTradeFillResponse": {
-      "type": "object",
-      "properties": {
-        "fee": {
-          "description": "Fee charged for this fill",
-          "type": "string",
-          "example": "5.25"
-        },
-        "fill_id": {
-          "description": "Unique identifier for the fill",
-          "type": "string",
-          "example": "fill_789"
-        },
-        "price": {
-          "description": "Actual execution price",
-          "type": "string",
-          "example": "30000.00"
-        },
-        "size": {
-          "description": "Actual size that was filled",
-          "type": "string",
-          "example": "10.5"
-        }
-      }
-    },
     "responses.BlockTradeOrder": {
       "type": "object",
+      "required": [
+        "side",
+        "type"
+      ],
       "properties": {
         "client_id": {
           "description": "Client-provided identifier",
@@ -5414,9 +5173,12 @@
           "example": "30000.00"
         },
         "side": {
-          "description": "BUY or SELL",
-          "type": "string",
-          "example": "BUY"
+          "description": "Order side",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.OrderSide"
+            }
+          ]
         },
         "signature": {
           "description": "Order signature",
@@ -5434,14 +5196,25 @@
           "example": "10.5"
         },
         "type": {
-          "description": "Order type (LIMIT, MARKET, etc.)",
-          "type": "string",
-          "example": "LIMIT"
+          "description": "Order type",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.OrderType"
+            }
+          ]
         }
       }
     },
     "responses.BlockTradeSignature": {
       "type": "object",
+      "required": [
+        "nonce",
+        "signature_data",
+        "signature_expiration",
+        "signature_timestamp",
+        "signature_type",
+        "signer_account"
+      ],
       "properties": {
         "nonce": {
           "description": "Unique nonce to prevent replay attacks",
@@ -5449,7 +5222,7 @@
           "example": "12345"
         },
         "signature_data": {
-          "description": "The actual signature bytes in hex format",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string",
           "example": "0xabc123..."
         },
@@ -5466,6 +5239,9 @@
         "signature_type": {
           "description": "Type of cryptographic signature used",
           "type": "string",
+          "enum": [
+            "STARKNET"
+          ],
           "example": "STARKNET"
         },
         "signer_account": {
@@ -5483,6 +5259,7 @@
         "READY_TO_EXECUTE",
         "EXECUTING",
         "COMPLETED",
+        "FAILED",
         "CANCELLED"
       ],
       "x-enum-varnames": [
@@ -5491,7 +5268,19 @@
         "BlockTradeStatusReadyToExecute",
         "BlockTradeStatusExecuting",
         "BlockTradeStatusCompleted",
+        "BlockTradeStatusFailed",
         "BlockTradeStatusCancelled"
+      ]
+    },
+    "responses.BlockTradeType": {
+      "type": "string",
+      "enum": [
+        "DIRECT",
+        "OFFER_BASED"
+      ],
+      "x-enum-varnames": [
+        "BlockTradeTypeDirect",
+        "BlockTradeTypeOffer"
       ]
     },
     "responses.BridgedToken": {
@@ -5624,7 +5413,7 @@
         "ETHEREUM_HASH_MISMATCH",
         "NOT_ONBOARDED",
         "INVALID_TIMESTAMP",
-        "INVALID_SIGNATURE_EXPIRATION",
+        "INVALID_BLOCK_EXPIRATION",
         "ACCOUNT_NOT_FOUND",
         "INVALID_ORDER_SIGNATURE",
         "PUBLIC_KEY_INVALID",
@@ -6004,6 +5793,10 @@
           "items": {
             "$ref": "#/definitions/responses.AccountMarginEntry"
           }
+        },
+        "margin_methodology": {
+          "description": "Margin methodology (cross_margin/portfolio_margin)",
+          "type": "string"
         }
       }
     },

@@ -421,6 +421,9 @@ navigation:
                     - page: SOPH-USD-PERP
                       slug: soph-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/soph-usd-perp.mdx
+                    - page: SPK-USD-PERP
+                      slug: spk-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/spk-usd-perp.mdx
                     - page: SPX-USD-PERP
                       slug: spx-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/spx-usd-perp.mdx

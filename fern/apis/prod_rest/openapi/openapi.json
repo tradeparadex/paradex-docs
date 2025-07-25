@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.99.1"
+    "version": "1.99.2"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -4521,6 +4521,10 @@
       "properties": {
         "discord": {
           "$ref": "#/definitions/responses.DiscordProfile"
+        },
+        "is_twitter_follower": {
+          "type": "boolean",
+          "example": true
         },
         "is_username_private": {
           "type": "boolean",

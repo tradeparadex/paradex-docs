@@ -5458,7 +5458,8 @@
         "SOCIAL_USERNAME_IN_USE",
         "INVALID_OAUTH_REQUEST",
         "RPI_ACCOUNT_NOT_WHITELISTED",
-        "INVALID_MARKETING_CODE"
+        "INVALID_MARKETING_CODE",
+        "INVALID_JOIN_WAITLIST_REQUEST"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -5530,7 +5531,8 @@
         "ErrorCodeString_SocialUsernameInUse",
         "ErrorCodeString_InvalidOAuthRequest",
         "ErrorCodeString_RPIAccountNotWhitelisted",
-        "ErrorCodeString_InvalidMarketingCode"
+        "ErrorCodeString_InvalidMarketingCode",
+        "ErrorCodeString_InvalidJoinWaitlistRequest"
       ]
     },
     "responses.ErrorResponse": {

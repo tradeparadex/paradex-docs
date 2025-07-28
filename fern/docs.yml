@@ -493,6 +493,9 @@ navigation:
                     - page: XRP-USD-PERP
                       slug: xrp-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx
+                    - page: ZORA-USD-PERP
+                      slug: zora-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/zora-usd-perp.mdx
                     - page: ZRO-USD-PERP
                       slug: zro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx

@@ -5459,7 +5459,8 @@
         "INVALID_OAUTH_REQUEST",
         "RPI_ACCOUNT_NOT_WHITELISTED",
         "INVALID_MARKETING_CODE",
-        "INVALID_JOIN_WAITLIST_REQUEST"
+        "INVALID_JOIN_WAITLIST_REQUEST",
+        "SUBKEY_LIMIT_REACHED"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -5532,7 +5533,8 @@
         "ErrorCodeString_InvalidOAuthRequest",
         "ErrorCodeString_RPIAccountNotWhitelisted",
         "ErrorCodeString_InvalidMarketingCode",
-        "ErrorCodeString_InvalidJoinWaitlistRequest"
+        "ErrorCodeString_InvalidJoinWaitlistRequest",
+        "ErrorCodeString_SubkeyLimitReached"
       ]
     },
     "responses.ErrorResponse": {

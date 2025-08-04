@@ -5,7 +5,7 @@ title: Common Questions
 **What algorithm do you use for rate limits?**
 
 * Distributed Leaky Bucket Algorithm rate limiting
-* This technique uses a "token bucket" system based ona maximum number of available request tokens for a given timeframe. Each request consumes one token, and tokens are continuously refilled at a fixed rate. When all tokens are consumed, further requests are blocked until new tokens become available.
+* This technique uses a "token bucket" system based on a maximum number of available request tokens for a given timeframe. Each request consumes one token, and tokens are continuously refilled at a fixed rate. When all tokens are consumed, further requests are blocked until new tokens become available.
 * Distributed across instances: the system coordinates token usage across all our servers to maintain the global limit.
 
 **What if I hit a rate limit, how long is the cool down period?**

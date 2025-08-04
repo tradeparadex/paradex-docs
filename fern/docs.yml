@@ -79,6 +79,9 @@ navigation:
               - page: Margin Requirements
                 slug: margin-requirements
                 path: ./pages/options/margin-requirements.mdx
+              - page: Pricing
+                slug: pricing
+                path: ./pages/options/pricing.mdx
               - page: Trade Examples
                 slug: trade-examples
                 path: ./pages/options/trade-examples.mdx

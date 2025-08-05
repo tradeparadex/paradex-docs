@@ -4,19 +4,20 @@ title: API
 
 ### Public Endpoints
 
-| Endpoint            | Rate Limit              | Per        |
-|---------------------|-------------------------|------------|
-| Default             | 200 req/s OR 1500 req/m | IP address |
-| `POST /onboarding`  | 50 req/s OR 600 req/m   | IP address |
-| `POST /auth`        | 50 req/s OR 600 req/m   | IP address |
+| Endpoint            | Rate Limit  | Per        |
+|---------------------|-------------|------------|
+| Default             | 1500 req/m  | IP address |
+| `POST /onboarding`  | 600 req/m   | IP address |
+| `POST /auth`        | 600 req/m   | IP address |
 
 ### Private Endpoints
 
-| Endpoint                    | Rate Limit               | Per     |
-|-----------------------------|--------------------------|---------|
-| `POST, DELETE, PUT /orders` | 800 req/s OR 17250 req/m | Account |
-| `GET /*`                    | 120 req/s OR 600 req/m   | Account |
+| Endpoint                    | Rate Limit               | Per        |
+|-----------------------------|--------------------------|------------|
+| `POST, DELETE, PUT /orders` | 800 req/s OR 17250 req/m | Account    |
+| `GET /*`                    | 120 req/s OR 600 req/m   | Account    |
 
 <Note>
-Private endpoint rate limits are per account BUT also have a broader IP rate limit of 1500 req/min
+Private endpoint rate limits are applied per account, but are also subject to an
+**additional IP-based rate limit of 1500 req/m** across all accounts from the same IP address.
 </Note>

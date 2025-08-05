@@ -40,18 +40,18 @@ The following table illustrates how the optimal liquidation share is calculated 
 
 | Liquidation Share | New MMR | Liquidation Penalty | New Account Value | New Margin Ratio |
 | ----------------- | ------- | ------------------- | ----------------- | ---------------- |
-| 20%               | 71.04   | 8.88                | 71.12             | 99.9%            |
-| 40%               | 53.28   | 17.76               | 62.24             | 85.6%            |
-| 60%               | 35.52   | 26.64               | 53.36             | 66.6%            |
-| 80%               | 17.76   | 35.52               | 44.48             | 39.9%            |
+| 20%               | 71.04   | 12.43               | 67.57             | 105.1%           |
+| 40%               | 53.28   | 24.86               | 55.14             | 96.6%            |
+| 60%               | 35.52   | 37.3                | 42.7              | 83.2%            |
+| 80%               | 17.76   | 49.73               | 30.27             | 58.7%            |
 
-In this example, the insurance fund will liquidate 40% of the user's positions to bring the account's Margin Ratio below 90% and will receive 17.76 USDC as a liquidation penalty (which corresponds to a 50% liquidation fee).
+In this example, the insurance fund will liquidate 60% of the user's positions to bring the account's Margin Ratio below 90% and will receive 37.3 USDC as a liquidation penalty (corresponding to a 70% liquidation fee).
 
-Alice realized a loss of 40% \* 920 = 368 USD and is left with 1,000 - 368 - 17.76 = 614.24 USDC collateral
+Alice realized a loss of 60% \* 920 = 552 USD and is left with 1,000 - 552 - 37.3 = 410.7 USDC collateral
 
-Alice is also left with a long 0.06 BTC-USD-PERP and a short 0.6 ETH-USD-PERP positions which corresponds to an unrealized PnL of -552 USDC.
+Alice is also left with a long 0.04 BTC-USD-PERP and a short 0.4 ETH-USD-PERP positions which corresponds to an unrealized PnL of -368 USDC.
 
-The new account value of Alice is 614.24 - 552 = 62.24 USDC, the new margin ratio is now 85.6%. The insurance fund only took 17.76/88.8 = 20% of the maintenance margin requirement as a penalty to perform this liquidation and make the account healthy again.
+The new account value of Alice is 410.7 - 368 = 42.7 USDC, the new margin ratio is now 83.2%. The insurance fund only took 37.3/88.8 = 42% of the maintenance margin requirement as a penalty to perform this liquidation and make the account healthy again.
 
 Note that this process can result in a full liquidation in the event where the remaining collateral after a 100% liquidation of positions is not sufficient to pay the liquidation penalty.
 

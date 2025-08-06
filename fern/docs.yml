@@ -82,6 +82,9 @@ navigation:
               - page: Pricing
                 slug: pricing
                 path: ./pages/options/pricing.mdx
+              - page: Mark Implied Volatility
+                slug: mark-iv
+                path: ./pages/options/mark-iv.mdx
               - page: Trade Examples
                 slug: trade-examples
                 path: ./pages/options/trade-examples.mdx

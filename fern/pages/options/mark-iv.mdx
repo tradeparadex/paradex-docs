@@ -1,0 +1,19 @@
+Paradex Mark IV calculation depends on the following prices :
+
+- Orderbook Prices : **Bid Price**, **Ask Price**, **Mid Price**
+- **Last Trade Price**
+- **External Price** : A perpetual option price estimated using external (Deribit) data
+
+By inverting the [Black Scholes Pricing formula for perpetual options](https://docs.paradex.trade/trading/perpetual-options/pricing#pricing-functions), a variance $\sigma^2$ is implied for each of those 5 prices and smoothed using a 5-minute EWMA for the external variance and 15-second for the internal variances (Ask/Bid/Mid/Last)
+
+The **Mark Variance** is then derived by combining the Variance EWMAs :
+
+$$
+\small\text{Mark Variance}=\text{Median}\big(\text{Median}\big(\text{Ask Variance EWMA},~\text{Bid Variance EWMA},~\text{Last Trade Variance EWMA}\big),\\ \text{Mid Variance EWMA},\\ \text{External Variance EWMA}\big)
+$$
+
+and Mark IV is finally calculated as the square root of the Mark Variance :
+
+$$
+\small\text{Mark IV}=\sqrt{\text{Mark Variance}}
+$$

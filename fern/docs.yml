@@ -400,6 +400,9 @@ navigation:
                     - page: POPCAT-USD-PERP
                       slug: popcat-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/popcat-usd-perp.mdx
+                    - page: PROVE-USD-PERP
+                      slug: prove-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/prove-usd-perp.mdx
                     - page: PUMP-USD-PERP
                       slug: pump-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/pump-usd-perp.mdx

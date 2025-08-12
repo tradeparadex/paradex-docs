@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.99.2"
+    "version": "1.100.0"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -571,6 +571,316 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/responses.GetSubAccountsResponse"
+            }
+          }
+        }
+      }
+    },
+    "/account/subkeys": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Get all subkeys for the authenticated account with optional filtering by status.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Subkey"
+        ],
+        "summary": "List Subkeys",
+        "operationId": "list-subkeys",
+        "parameters": [
+          {
+            "type": "boolean",
+            "description": "Include revoked subkeys",
+            "name": "with_revoked",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of subkeys",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/responses.APIResults"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/responses.Subkey"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Register a new subkey for the authenticated account.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Subkey"
+        ],
+        "summary": "Register Subkey",
+        "operationId": "register-subkey",
+        "parameters": [
+          {
+            "description": "Subkey registration request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.CreateSubkey"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "An empty response"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/account/subkeys/{public_key}": {
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Revoke a subkey for the authenticated account.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Subkey"
+        ],
+        "summary": "Revoke Subkey",
+        "operationId": "revoke-subkey",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Subkey public key",
+            "name": "public_key",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subkey revoked successfully",
+            "schema": {
+              "$ref": "#/definitions/responses.RevokeSubkeyResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/account/tokens": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Get all tokens for the authenticated account with optional filtering by kind\nand status.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Token"
+        ],
+        "summary": "List tokens",
+        "operationId": "list-tokens",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Filter by token kind (e.g., 'jwt', 'api_key')",
+            "name": "kind",
+            "in": "query"
+          },
+          {
+            "type": "boolean",
+            "description": "Include revoked and expired tokens",
+            "name": "with_invalid",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tokens",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/responses.APIResults"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/responses.ApiToken"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Create a new authentication token for the authenticated account with custom\nname and expiration duration.\n",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Token"
+        ],
+        "summary": "Create token",
+        "operationId": "create-token",
+        "parameters": [
+          {
+            "description": "Token creation request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.CreateToken"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token created successfully",
+            "schema": {
+              "$ref": "#/definitions/responses.CreateTokenResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/account/tokens/{lookup_id}": {
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Revoke an authentication token by its unique identifier.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Token"
+        ],
+        "summary": "Revoke token",
+        "operationId": "revoke-token",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Token lookup ID",
+            "name": "lookup_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token revoked successfully",
+            "schema": {
+              "$ref": "#/definitions/responses.RevokeTokenResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
             }
           }
         }
@@ -4136,6 +4446,44 @@
         }
       }
     },
+    "requests.CreateSubkey": {
+      "type": "object",
+      "properties": {
+        "key_type": {
+          "description": "Key type to be registered as a subkey.",
+          "type": "string"
+        },
+        "name": {
+          "description": "User-friendly name for the subkey.",
+          "type": "string",
+          "example": "My Trading Subkey"
+        },
+        "public_key": {
+          "description": "Public key to be registered as a subkey.",
+          "type": "string",
+          "example": "0x3d9f2b2e5f50c1aade60ca540368cd7490160f41270c192c05729fe35b656a9"
+        }
+      }
+    },
+    "requests.CreateToken": {
+      "type": "object",
+      "properties": {
+        "expiry_duration": {
+          "description": "Duration in seconds from now until expiration (1 min to 1 year).",
+          "type": "integer",
+          "example": 86400
+        },
+        "name": {
+          "description": "User-friendly name for the JWT token.",
+          "type": "string",
+          "example": "My Long-term Trading Token"
+        },
+        "token_type": {
+          "description": "Type of token to create.",
+          "type": "string"
+        }
+      }
+    },
     "requests.CreateVault": {
       "type": "object",
       "properties": {
@@ -4293,7 +4641,7 @@
           "example": "BTC-USD-PERP"
         },
         "on_behalf_of_account": {
-          "description": "ID corresponding to the configured isolated margin account.  Only for isolated margin orders",
+          "description": "ID corresponding to the configured isolated margin account. Only for isolated margin orders",
           "type": "string",
           "example": "0x1234567890abcdef"
         },
@@ -4796,6 +5144,50 @@
           "description": "detailed description of error and how to address it",
           "type": "string",
           "example": "User has never called /onboarding endpoint"
+        }
+      }
+    },
+    "responses.ApiToken": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "description": "Token creation timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200
+        },
+        "expiry_at": {
+          "description": "Expiration timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1672531200
+        },
+        "kind": {
+          "description": "Token type (jwt, api_key, etc.)",
+          "type": "string"
+        },
+        "last_updated_at": {
+          "description": "Last modification timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200
+        },
+        "lookup_id": {
+          "description": "Identifier used for the token lookup",
+          "type": "string",
+          "example": "uuid-123"
+        },
+        "name": {
+          "description": "User-provided token name",
+          "type": "string",
+          "example": "My API Token"
+        },
+        "revoked_at": {
+          "description": "Revocation timestamp (nanoseconds since epoch, 0 if not revoked)",
+          "type": "integer",
+          "example": 0
+        },
+        "token_id": {
+          "description": "Unique ID for the auth token",
+          "type": "string",
+          "example": "token_123"
         }
       }
     },
@@ -5350,6 +5742,24 @@
         }
       }
     },
+    "responses.CreateTokenResponse": {
+      "type": "object",
+      "properties": {
+        "api_token": {
+          "description": "The token metadata",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.ApiToken"
+            }
+          ]
+        },
+        "token": {
+          "description": "The generated JWT token",
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        }
+      }
+    },
     "responses.Delta1CrossMarginParams": {
       "type": "object",
       "properties": {
@@ -5460,7 +5870,7 @@
         "RPI_ACCOUNT_NOT_WHITELISTED",
         "INVALID_MARKETING_CODE",
         "INVALID_JOIN_WAITLIST_REQUEST",
-        "SUBKEY_LIMIT_REACHED"
+        "TOKEN_LIMIT_REACHED"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -5534,7 +5944,7 @@
         "ErrorCodeString_RPIAccountNotWhitelisted",
         "ErrorCodeString_InvalidMarketingCode",
         "ErrorCodeString_InvalidJoinWaitlistRequest",
-        "ErrorCodeString_SubkeyLimitReached"
+        "ErrorCodeString_TokenLimitReached"
       ]
     },
     "responses.ErrorResponse": {
@@ -6828,6 +7238,26 @@
         }
       }
     },
+    "responses.RevokeSubkeyResponse": {
+      "type": "object",
+      "properties": {
+        "public_key": {
+          "description": "The public key of the revoked subkey",
+          "type": "string",
+          "example": "0xabcdef1234567890abcdef"
+        }
+      }
+    },
+    "responses.RevokeTokenResponse": {
+      "type": "object",
+      "properties": {
+        "lookup_id": {
+          "description": "The lookup ID of the revoked token",
+          "type": "string",
+          "example": "uuid-123"
+        }
+      }
+    },
     "responses.STPMode": {
       "type": "string",
       "enum": [
@@ -6858,6 +7288,46 @@
           "description": "Strategy name",
           "type": "string",
           "example": "Alpha Strategy"
+        }
+      }
+    },
+    "responses.Subkey": {
+      "type": "object",
+      "properties": {
+        "account_id": {
+          "description": "Account ID that owns this subkey",
+          "type": "string",
+          "example": "0x1234567890abcdef"
+        },
+        "created_at": {
+          "description": "Subkey creation timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200
+        },
+        "id": {
+          "description": "Unique subkey identifier",
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "description": "User-provided subkey name",
+          "type": "string",
+          "example": "My Subkey"
+        },
+        "public_key": {
+          "description": "Subkey public key",
+          "type": "string",
+          "example": "0xabcdef1234567890abcdef"
+        },
+        "revoked_at": {
+          "description": "Revocation timestamp (nanoseconds since epoch, 0 if not revoked)",
+          "type": "integer",
+          "example": 0
+        },
+        "updated_at": {
+          "description": "Last modification timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200
         }
       }
     },

@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.100.0"
+    "version": "1.100.2"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -5870,7 +5870,8 @@
         "RPI_ACCOUNT_NOT_WHITELISTED",
         "INVALID_MARKETING_CODE",
         "INVALID_JOIN_WAITLIST_REQUEST",
-        "TOKEN_LIMIT_REACHED"
+        "TOKEN_LIMIT_REACHED",
+        "INVALID_TOKEN_SCOPE"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -5944,7 +5945,8 @@
         "ErrorCodeString_RPIAccountNotWhitelisted",
         "ErrorCodeString_InvalidMarketingCode",
         "ErrorCodeString_InvalidJoinWaitlistRequest",
-        "ErrorCodeString_TokenLimitReached"
+        "ErrorCodeString_TokenLimitReached",
+        "ErrorCodeString_InvalidTokenScope"
       ]
     },
     "responses.ErrorResponse": {
@@ -6530,7 +6532,7 @@
           "description": "Option Cross margin parameters",
           "allOf": [
             {
-              "$ref": "#/definitions/responses.PerpetualOptionCrossMarginParams"
+              "$ref": "#/definitions/responses.OptionCrossMarginParams"
             }
           ]
         },
@@ -6728,6 +6730,47 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "responses.OptionCrossMarginParams": {
+      "type": "object",
+      "properties": {
+        "imf": {
+          "$ref": "#/definitions/responses.OptionMarginParams"
+        },
+        "mmf": {
+          "$ref": "#/definitions/responses.OptionMarginParams"
+        }
+      }
+    },
+    "responses.OptionMarginParams": {
+      "type": "object",
+      "properties": {
+        "long_itm": {
+          "description": "Margin fraction for long ITM options",
+          "type": "string",
+          "example": "0.2"
+        },
+        "premium_multiplier": {
+          "description": "Multiplier for margin fraction for premium",
+          "type": "string",
+          "example": "1.2"
+        },
+        "short_itm": {
+          "description": "Margin fraction for short ITM options",
+          "type": "string",
+          "example": "0.4"
+        },
+        "short_otm": {
+          "description": "Margin fraction for short OTM options",
+          "type": "string",
+          "example": "0.25"
+        },
+        "short_put_cap": {
+          "description": "Cap for margin fraction for short put options",
+          "type": "string",
+          "example": "0.5"
         }
       }
     },
@@ -6971,47 +7014,6 @@
           "items": {
             "type": "object"
           }
-        }
-      }
-    },
-    "responses.PerpetualOptionCrossMarginParams": {
-      "type": "object",
-      "properties": {
-        "imf": {
-          "$ref": "#/definitions/responses.PerpetualOptionMarginParams"
-        },
-        "mmf": {
-          "$ref": "#/definitions/responses.PerpetualOptionMarginParams"
-        }
-      }
-    },
-    "responses.PerpetualOptionMarginParams": {
-      "type": "object",
-      "properties": {
-        "long_itm": {
-          "description": "Margin fraction for long ITM options",
-          "type": "string",
-          "example": "0.2"
-        },
-        "premium_multiplier": {
-          "description": "Multiplier for margin fraction for premium",
-          "type": "string",
-          "example": "1.2"
-        },
-        "short_itm": {
-          "description": "Margin fraction for short ITM options",
-          "type": "string",
-          "example": "0.4"
-        },
-        "short_otm": {
-          "description": "Margin fraction for short OTM options",
-          "type": "string",
-          "example": "0.25"
-        },
-        "short_put_cap": {
-          "description": "Cap for margin fraction for short put options",
-          "type": "string",
-          "example": "0.5"
         }
       }
     },

@@ -79,6 +79,12 @@ navigation:
               - page: Margin Requirements
                 slug: margin-requirements
                 path: ./pages/options/margin-requirements.mdx
+              - page: Pricing
+                slug: pricing
+                path: ./pages/options/pricing.mdx
+              - page: Mark Implied Volatility
+                slug: mark-iv
+                path: ./pages/options/mark-iv.mdx
               - page: Trade Examples
                 slug: trade-examples
                 path: ./pages/options/trade-examples.mdx
@@ -352,6 +358,9 @@ navigation:
                     - page: MOVE-USD-PERP
                       slug: move-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/move-usd-perp.mdx
+                    - page: MYX-USD-PERP
+                      slug: myx-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/myx-usd-perp.mdx
                     - page: NEAR-USD-PERP
                       slug: near-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/near-usd-perp.mdx
@@ -367,6 +376,9 @@ navigation:
                     - page: OM-USD-PERP
                       slug: om-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/om-usd-perp.mdx
+                    - page: OMNI-USD-PERP
+                      slug: omni-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/omni-usd-perp.mdx
                     - page: ONDO-USD-PERP
                       slug: ondo-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ondo-usd-perp.mdx
@@ -394,6 +406,9 @@ navigation:
                     - page: POPCAT-USD-PERP
                       slug: popcat-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/popcat-usd-perp.mdx
+                    - page: PROVE-USD-PERP
+                      slug: prove-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/prove-usd-perp.mdx
                     - page: PUMP-USD-PERP
                       slug: pump-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/pump-usd-perp.mdx
@@ -421,6 +436,9 @@ navigation:
                     - page: SOPH-USD-PERP
                       slug: soph-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/soph-usd-perp.mdx
+                    - page: SPK-USD-PERP
+                      slug: spk-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/spk-usd-perp.mdx
                     - page: SPX-USD-PERP
                       slug: spx-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/spx-usd-perp.mdx
@@ -490,6 +508,9 @@ navigation:
                     - page: XRP-USD-PERP
                       slug: xrp-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx
+                    - page: ZORA-USD-PERP
+                      slug: zora-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/zora-usd-perp.mdx
                     - page: ZRO-USD-PERP
                       slug: zro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
@@ -619,15 +640,21 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
-          - page: v1.104
-            path: ./pages/release-notes/v1.104.md
-          - page: v1.103
-            path: ./pages/release-notes/v1.103.md
+          - page: v1.107
+            path: ./pages/release-notes/v1.107.md
+          - page: v1.106
+            path: ./pages/release-notes/v1.106.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.105
+                path: ./pages/release-notes/v1.105.md
+              - page: v1.104
+                path: ./pages/release-notes/v1.104.md
+              - page: v1.103
+                path: ./pages/release-notes/v1.103.md
               - page: v1.102
-                path: ./pages/release-notes/v1.101.md
+                path: ./pages/release-notes/v1.102.md
               - page: v1.101
                 path: ./pages/release-notes/v1.101.md
               - page: v1.100

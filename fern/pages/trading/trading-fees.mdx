@@ -4,11 +4,17 @@ title: Trading Fees
 
 ## Fee Structure
 
-| Instrument        | Taker Fee | Maker Fee | Cap |
-| ----------------- | --------- | --------- | ----|
-| Perpetual Futures | 0.03%     | -0.005%   | N/A |
-| Perpetual Options | 0.03%     | 0%        | 50% |
+| Instrument        | Taker Fee | Maker Fee | Cap / Floor |
+| ----------------- | --------- | --------- | ----------- |
+| Perpetual Futures | 0.03%     | -0.005%   | N/A         |
+| Perpetual Options | 0.03%     | -0.01%    | 25% / -8%   |
 
+## Settlement Fee Structure
+
+| Instrument        | Fee    | Cap |
+| ----------------- | ------ | --- |
+| Perpetual Futures | 0.015% | N/A |
+| Perpetual Options | 0.01%  | 25% |
 
 ### Fee Calculation
 
@@ -16,7 +22,9 @@ Fees are calculated based on the **notional value** of your trade, not the margi
 The notional value represents the total dollar amount of the underlying assets being traded.
 
 <Tip title="Fee Example">
-If you open a \$25,000 ETH perpetual position with \$2,500 in margin (10x leverage), fees are charged on the full \$25,000 notional value, not your \$2,500 margin.
+  If you open a \$25,000 ETH perpetual position with \$2,500 in margin (10x
+  leverage), fees are charged on the full \$25,000 notional value, not your
+  \$2,500 margin.
 </Tip>
 
 ## Taker Rebate
@@ -47,5 +55,6 @@ Market Share = (User Taker Volume + User Maker Volume) / Paradex 1-sided Volume
 | >6.0%        | -0.01%       | 0.02%         |
 
 <Tip>
-Market share measurement began on July 16, 2025 at 0:00 UTC and runs for consecutive 14-day periods.
+  Market share measurement began on July 16, 2025 at 0:00 UTC and runs for
+  consecutive 14-day periods.
 </Tip>

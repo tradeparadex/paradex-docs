@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.99.1"
+    "version": "1.100.2"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -571,6 +571,316 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/responses.GetSubAccountsResponse"
+            }
+          }
+        }
+      }
+    },
+    "/account/subkeys": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Get all subkeys for the authenticated account with optional filtering by status.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Subkey"
+        ],
+        "summary": "List Subkeys",
+        "operationId": "list-subkeys",
+        "parameters": [
+          {
+            "type": "boolean",
+            "description": "Include revoked subkeys",
+            "name": "with_revoked",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of subkeys",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/responses.APIResults"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/responses.Subkey"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Register a new subkey for the authenticated account.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Subkey"
+        ],
+        "summary": "Register Subkey",
+        "operationId": "register-subkey",
+        "parameters": [
+          {
+            "description": "Subkey registration request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.CreateSubkey"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "An empty response"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/account/subkeys/{public_key}": {
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Revoke a subkey for the authenticated account.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Subkey"
+        ],
+        "summary": "Revoke Subkey",
+        "operationId": "revoke-subkey",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Subkey public key",
+            "name": "public_key",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subkey revoked successfully",
+            "schema": {
+              "$ref": "#/definitions/responses.RevokeSubkeyResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/account/tokens": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Get all tokens for the authenticated account with optional filtering by kind\nand status.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Token"
+        ],
+        "summary": "List tokens",
+        "operationId": "list-tokens",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Filter by token kind (e.g., 'jwt', 'api_key')",
+            "name": "kind",
+            "in": "query"
+          },
+          {
+            "type": "boolean",
+            "description": "Include revoked and expired tokens",
+            "name": "with_invalid",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tokens",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/responses.APIResults"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/responses.ApiToken"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Create a new authentication token for the authenticated account with custom\nname and expiration duration.\n",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Token"
+        ],
+        "summary": "Create token",
+        "operationId": "create-token",
+        "parameters": [
+          {
+            "description": "Token creation request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.CreateToken"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token created successfully",
+            "schema": {
+              "$ref": "#/definitions/responses.CreateTokenResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/account/tokens/{lookup_id}": {
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Revoke an authentication token by its unique identifier.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Token"
+        ],
+        "summary": "Revoke token",
+        "operationId": "revoke-token",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Token lookup ID",
+            "name": "lookup_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token revoked successfully",
+            "schema": {
+              "$ref": "#/definitions/responses.RevokeTokenResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
             }
           }
         }
@@ -3955,10 +4265,10 @@
           }
         },
         "signatures": {
-          "description": "Map of offer IDs to initiator signatures accepting each offer",
+          "description": "Map of offer IDs to initiator signatures accepting each offer. Block id if it is a direct block trade.",
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/requests.BlockTradeSignature"
+            "$ref": "#/definitions/responses.BlockTradeSignature"
           }
         }
       }
@@ -3975,7 +4285,7 @@
           "description": "Order details from the offering account",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeOrder"
+              "$ref": "#/definitions/responses.BlockTradeOrder"
             }
           ]
         },
@@ -4014,7 +4324,7 @@
           "description": "Cryptographic signature authorizing this offer",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeSignature"
+              "$ref": "#/definitions/responses.BlockTradeSignature"
             }
           ]
         },
@@ -4027,31 +4337,6 @@
         }
       }
     },
-    "requests.BlockTradeConstraints": {
-      "type": "object",
-      "properties": {
-        "max_price": {
-          "description": "Maximum price allowed",
-          "type": "string",
-          "example": "31000.00"
-        },
-        "max_size": {
-          "description": "Maximum trade size allowed",
-          "type": "string",
-          "example": "100.0"
-        },
-        "min_price": {
-          "description": "Minimum price allowed",
-          "type": "string",
-          "example": "29000.00"
-        },
-        "min_size": {
-          "description": "Minimum trade size allowed",
-          "type": "string",
-          "example": "0.1"
-        }
-      }
-    },
     "requests.BlockTradeInfo": {
       "type": "object",
       "properties": {
@@ -4059,7 +4344,7 @@
           "description": "Maker order details (empty if requiring offers)",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeOrder"
+              "$ref": "#/definitions/responses.BlockTradeOrder"
             }
           ]
         },
@@ -4077,7 +4362,7 @@
           "description": "Taker order details (empty if requiring offers)",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeOrder"
+              "$ref": "#/definitions/responses.BlockTradeOrder"
             }
           ]
         },
@@ -4085,103 +4370,7 @@
           "description": "Constraints for this trade when requiring offers",
           "allOf": [
             {
-              "$ref": "#/definitions/requests.BlockTradeConstraints"
-            }
-          ]
-        }
-      }
-    },
-    "requests.BlockTradeOrder": {
-      "type": "object",
-      "required": [
-        "instruction",
-        "market",
-        "price",
-        "side",
-        "signature",
-        "signature_timestamp",
-        "size",
-        "type"
-      ],
-      "properties": {
-        "client_id": {
-          "description": "Unique client assigned ID for the order",
-          "type": "string",
-          "maxLength": 64,
-          "example": "123454321"
-        },
-        "flags": {
-          "description": "Order flags, allow flag: REDUCE_ONLY",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/responses.OrderFlag"
-          }
-        },
-        "instruction": {
-          "description": "Order Instruction, GTC, IOC, RPI or POST_ONLY if empty GTC",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.OrderInstruction"
-            }
-          ]
-        },
-        "market": {
-          "description": "Market for which order is created",
-          "type": "string",
-          "example": "BTC-USD-PERP"
-        },
-        "on_behalf_of_account": {
-          "description": "ID corresponding to the configured isolated margin account.  Only for isolated margin orders",
-          "type": "string",
-          "example": "0x1234567890abcdef"
-        },
-        "price": {
-          "description": "Order price",
-          "type": "string",
-          "example": "29500.12"
-        },
-        "recv_window": {
-          "description": "Order will be created if it is received by API within RecvWindow milliseconds from signature timestamp, minimum is 10 milliseconds",
-          "type": "integer"
-        },
-        "side": {
-          "description": "Order side",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.OrderSide"
-            }
-          ]
-        },
-        "signature": {
-          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
-          "type": "string"
-        },
-        "signature_timestamp": {
-          "description": "Unix timestamp in milliseconds of order creation, used for signature verification",
-          "type": "integer"
-        },
-        "signed_impact_price": {
-          "description": "Optional signed impact price for market orders (base64 encoded)",
-          "type": "string"
-        },
-        "size": {
-          "description": "Size of the order",
-          "type": "string",
-          "example": "1.213"
-        },
-        "stp": {
-          "description": "Self Trade Prevention, EXPIRE_MAKER, EXPIRE_TAKER or EXPIRE_BOTH, if empty EXPIRE_TAKER",
-          "type": "string"
-        },
-        "trigger_price": {
-          "description": "Trigger price for stop order",
-          "type": "string"
-        },
-        "type": {
-          "description": "Order type",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.OrderType"
+              "$ref": "#/definitions/responses.BlockTradeConstraints"
             }
           ]
         }
@@ -4208,17 +4397,17 @@
           "example": "67890"
         },
         "required_signers": {
-          "description": "Array of account addresses that must sign this block",
+          "description": "List of accounts that can participate in the block trade",
           "type": "array",
           "items": {
             "type": "string"
           }
         },
         "signatures": {
-          "description": "Map of account addresses to their signatures",
+          "description": "Map of account addresses to their signatures. Can be empty or partial.",
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/requests.BlockTradeSignature"
+            "$ref": "#/definitions/responses.BlockTradeSignature"
           }
         },
         "trades": {
@@ -4227,52 +4416,6 @@
           "additionalProperties": {
             "$ref": "#/definitions/requests.BlockTradeInfo"
           }
-        }
-      }
-    },
-    "requests.BlockTradeSignature": {
-      "type": "object",
-      "required": [
-        "block_expiration",
-        "nonce",
-        "signature_data",
-        "signature_timestamp",
-        "signature_type",
-        "signer_account"
-      ],
-      "properties": {
-        "block_expiration": {
-          "description": "Unix timestamp in milliseconds when block expires",
-          "type": "integer",
-          "example": 1640995800000
-        },
-        "nonce": {
-          "description": "Unique nonce to prevent replay attacks",
-          "type": "string",
-          "example": "12345"
-        },
-        "signature_data": {
-          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
-          "type": "string",
-          "example": "0xabc123..."
-        },
-        "signature_timestamp": {
-          "description": "Unix timestamp in milliseconds when signature was created",
-          "type": "integer",
-          "example": 1640995200000
-        },
-        "signature_type": {
-          "description": "Type of cryptographic signature used",
-          "type": "string",
-          "enum": [
-            "STARKNET"
-          ],
-          "example": "STARKNET"
-        },
-        "signer_account": {
-          "description": "Starknet account address of the signer",
-          "type": "string",
-          "example": "0x1234567890abcdef"
         }
       }
     },
@@ -4300,6 +4443,44 @@
             "[\"order-id-1\"",
             "\"order-id-2\"]"
           ]
+        }
+      }
+    },
+    "requests.CreateSubkey": {
+      "type": "object",
+      "properties": {
+        "key_type": {
+          "description": "Key type to be registered as a subkey.",
+          "type": "string"
+        },
+        "name": {
+          "description": "User-friendly name for the subkey.",
+          "type": "string",
+          "example": "My Trading Subkey"
+        },
+        "public_key": {
+          "description": "Public key to be registered as a subkey.",
+          "type": "string",
+          "example": "0x3d9f2b2e5f50c1aade60ca540368cd7490160f41270c192c05729fe35b656a9"
+        }
+      }
+    },
+    "requests.CreateToken": {
+      "type": "object",
+      "properties": {
+        "expiry_duration": {
+          "description": "Duration in seconds from now until expiration (1 min to 1 year).",
+          "type": "integer",
+          "example": 86400
+        },
+        "name": {
+          "description": "User-friendly name for the JWT token.",
+          "type": "string",
+          "example": "My Long-term Trading Token"
+        },
+        "token_type": {
+          "description": "Type of token to create.",
+          "type": "string"
         }
       }
     },
@@ -4460,7 +4641,7 @@
           "example": "BTC-USD-PERP"
         },
         "on_behalf_of_account": {
-          "description": "ID corresponding to the configured isolated margin account.  Only for isolated margin orders",
+          "description": "ID corresponding to the configured isolated margin account. Only for isolated margin orders",
           "type": "string",
           "example": "0x1234567890abcdef"
         },
@@ -4688,6 +4869,10 @@
       "properties": {
         "discord": {
           "$ref": "#/definitions/responses.DiscordProfile"
+        },
+        "is_twitter_follower": {
+          "type": "boolean",
+          "example": true
         },
         "is_username_private": {
           "type": "boolean",
@@ -4962,6 +5147,50 @@
         }
       }
     },
+    "responses.ApiToken": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "description": "Token creation timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200
+        },
+        "expiry_at": {
+          "description": "Expiration timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1672531200
+        },
+        "kind": {
+          "description": "Token type (jwt, api_key, etc.)",
+          "type": "string"
+        },
+        "last_updated_at": {
+          "description": "Last modification timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200
+        },
+        "lookup_id": {
+          "description": "Identifier used for the token lookup",
+          "type": "string",
+          "example": "uuid-123"
+        },
+        "name": {
+          "description": "User-provided token name",
+          "type": "string",
+          "example": "My API Token"
+        },
+        "revoked_at": {
+          "description": "Revocation timestamp (nanoseconds since epoch, 0 if not revoked)",
+          "type": "integer",
+          "example": 0
+        },
+        "token_id": {
+          "description": "Unique ID for the auth token",
+          "type": "string",
+          "example": "token_123"
+        }
+      }
+    },
     "responses.AskBidArray": {
       "type": "object",
       "properties": {
@@ -5129,57 +5358,7 @@
         }
       }
     },
-    "responses.BlockExecutionResultResponse": {
-      "type": "object",
-      "properties": {
-        "executed_at": {
-          "description": "When execution completed",
-          "type": "integer",
-          "example": 1640995500000
-        },
-        "failed_trades": {
-          "description": "Number of trades that failed",
-          "type": "integer",
-          "example": 1
-        },
-        "successful_trades": {
-          "description": "Number of trades that executed successfully",
-          "type": "integer",
-          "example": 3
-        },
-        "total_notional": {
-          "description": "Total notional value executed",
-          "type": "string",
-          "example": "315000.00"
-        }
-      }
-    },
-    "responses.BlockOffersSummaryResponse": {
-      "type": "object",
-      "properties": {
-        "accepted_offers": {
-          "description": "Number of offers that were accepted",
-          "type": "integer",
-          "example": 2
-        },
-        "pending_offers": {
-          "description": "Number of offers still pending",
-          "type": "integer",
-          "example": 6
-        },
-        "total_offered_size": {
-          "description": "Sum of all offered sizes",
-          "type": "string",
-          "example": "85.5"
-        },
-        "total_offers": {
-          "description": "Total number of offers received",
-          "type": "integer",
-          "example": 8
-        }
-      }
-    },
-    "responses.BlockTradeConstraintsResponse": {
+    "responses.BlockTradeConstraints": {
       "type": "object",
       "properties": {
         "max_price": {
@@ -5207,33 +5386,29 @@
     "responses.BlockTradeDetailFullResponse": {
       "type": "object",
       "properties": {
+        "block_expiration": {
+          "description": "Unix timestamp in milliseconds when block expires",
+          "type": "integer",
+          "example": 1640995800000
+        },
         "block_id": {
           "description": "Backend-generated unique identifier",
           "type": "string",
           "example": "block_456"
         },
         "block_type": {
-          "description": "Type: DIRECT or OFFER_BASED",
-          "type": "string",
+          "description": "Block type",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.BlockTradeType"
+            }
+          ],
           "example": "OFFER_BASED"
         },
         "created_at": {
           "description": "When block was created",
           "type": "integer",
           "example": 1640995200000
-        },
-        "execution_result": {
-          "description": "Final execution results (if executed)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.BlockExecutionResultResponse"
-            }
-          ]
-        },
-        "expires_at": {
-          "description": "When block expires",
-          "type": "integer",
-          "example": 1640995800000
         },
         "initiator": {
           "description": "Account that initiated this block trade",
@@ -5246,17 +5421,9 @@
           "example": 1640995400000
         },
         "nonce": {
-          "description": "Include signing data for signature verification and generation",
+          "description": "Original block nonce",
           "type": "string",
           "example": "67890"
-        },
-        "offers_summary": {
-          "description": "Summary of offers (if offer-based)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.BlockOffersSummaryResponse"
-            }
-          ]
         },
         "parent_block_id": {
           "description": "Parent block ID (if offer-based)",
@@ -5264,7 +5431,7 @@
           "example": "block_123"
         },
         "required_signers": {
-          "description": "List of accounts that must sign (for signature verification)",
+          "description": "List of accounts that can participate in the block trade",
           "type": "array",
           "items": {
             "type": "string"
@@ -5307,21 +5474,21 @@
           "description": "Reason for failure (if failed)",
           "type": "string"
         },
-        "fill": {
-          "description": "Execution details (if executed)",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.BlockTradeFillResponse"
-            }
-          ]
-        },
         "maker_account": {
           "description": "Maker account (if fully executable)",
           "type": "string",
           "example": "0x123...abc"
         },
+        "maker_fill": {
+          "description": "Execution details (if executed)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.FillResult"
+            }
+          ]
+        },
         "maker_order": {
-          "description": "Include original orders for signature verification if needed",
+          "description": "Original maker order (for signature generation)",
           "allOf": [
             {
               "$ref": "#/definitions/responses.BlockTradeOrder"
@@ -5343,15 +5510,18 @@
           "type": "string",
           "example": "10.5"
         },
-        "status": {
-          "description": "Current status of this trade",
-          "type": "string",
-          "example": "PENDING"
-        },
         "taker_account": {
           "description": "Taker account (if fully executable)",
           "type": "string",
           "example": "0x456...def"
+        },
+        "taker_fill": {
+          "description": "Execution details (if executed)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.FillResult"
+            }
+          ]
         },
         "taker_order": {
           "description": "Original taker order (for signature generation)",
@@ -5365,7 +5535,7 @@
           "description": "Constraints for offers (if offer-based)",
           "allOf": [
             {
-              "$ref": "#/definitions/responses.BlockTradeConstraintsResponse"
+              "$ref": "#/definitions/responses.BlockTradeConstraints"
             }
           ]
         },
@@ -5376,33 +5546,12 @@
         }
       }
     },
-    "responses.BlockTradeFillResponse": {
-      "type": "object",
-      "properties": {
-        "fee": {
-          "description": "Fee charged for this fill",
-          "type": "string",
-          "example": "5.25"
-        },
-        "fill_id": {
-          "description": "Unique identifier for the fill",
-          "type": "string",
-          "example": "fill_789"
-        },
-        "price": {
-          "description": "Actual execution price",
-          "type": "string",
-          "example": "30000.00"
-        },
-        "size": {
-          "description": "Actual size that was filled",
-          "type": "string",
-          "example": "10.5"
-        }
-      }
-    },
     "responses.BlockTradeOrder": {
       "type": "object",
+      "required": [
+        "side",
+        "type"
+      ],
       "properties": {
         "client_id": {
           "description": "Client-provided identifier",
@@ -5420,9 +5569,12 @@
           "example": "30000.00"
         },
         "side": {
-          "description": "BUY or SELL",
-          "type": "string",
-          "example": "BUY"
+          "description": "Order side",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.OrderSide"
+            }
+          ]
         },
         "signature": {
           "description": "Order signature",
@@ -5440,29 +5592,40 @@
           "example": "10.5"
         },
         "type": {
-          "description": "Order type (LIMIT, MARKET, etc.)",
-          "type": "string",
-          "example": "LIMIT"
+          "description": "Order type",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.OrderType"
+            }
+          ]
         }
       }
     },
     "responses.BlockTradeSignature": {
       "type": "object",
+      "required": [
+        "nonce",
+        "signature_data",
+        "signature_expiration",
+        "signature_timestamp",
+        "signature_type",
+        "signer_account"
+      ],
       "properties": {
-        "block_expiration": {
-          "description": "Unix timestamp in milliseconds when block expires",
-          "type": "integer",
-          "example": 1640995800000
-        },
         "nonce": {
           "description": "Unique nonce to prevent replay attacks",
           "type": "string",
           "example": "12345"
         },
         "signature_data": {
-          "description": "The actual signature bytes in hex format",
+          "description": "Order signature in as a string \"[r,s]\" signed by account's paradex private key",
           "type": "string",
           "example": "0xabc123..."
+        },
+        "signature_expiration": {
+          "description": "Unix timestamp in milliseconds when signature expires",
+          "type": "integer",
+          "example": 1640995800000
         },
         "signature_timestamp": {
           "description": "Unix timestamp in milliseconds when signature was created",
@@ -5472,6 +5635,9 @@
         "signature_type": {
           "description": "Type of cryptographic signature used",
           "type": "string",
+          "enum": [
+            "STARKNET"
+          ],
           "example": "STARKNET"
         },
         "signer_account": {
@@ -5489,6 +5655,7 @@
         "READY_TO_EXECUTE",
         "EXECUTING",
         "COMPLETED",
+        "FAILED",
         "CANCELLED"
       ],
       "x-enum-varnames": [
@@ -5497,7 +5664,19 @@
         "BlockTradeStatusReadyToExecute",
         "BlockTradeStatusExecuting",
         "BlockTradeStatusCompleted",
+        "BlockTradeStatusFailed",
         "BlockTradeStatusCancelled"
+      ]
+    },
+    "responses.BlockTradeType": {
+      "type": "string",
+      "enum": [
+        "DIRECT",
+        "OFFER_BASED"
+      ],
+      "x-enum-varnames": [
+        "BlockTradeTypeDirect",
+        "BlockTradeTypeOffer"
       ]
     },
     "responses.BridgedToken": {
@@ -5560,6 +5739,24 @@
         "status": {
           "description": "Status of the cancellation: QUEUED_FOR_CANCELLATION, ALREADY_CLOSED, NOT_FOUND",
           "type": "string"
+        }
+      }
+    },
+    "responses.CreateTokenResponse": {
+      "type": "object",
+      "properties": {
+        "api_token": {
+          "description": "The token metadata",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.ApiToken"
+            }
+          ]
+        },
+        "token": {
+          "description": "The generated JWT token",
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
         }
       }
     },
@@ -5671,7 +5868,10 @@
         "SOCIAL_USERNAME_IN_USE",
         "INVALID_OAUTH_REQUEST",
         "RPI_ACCOUNT_NOT_WHITELISTED",
-        "INVALID_MARKETING_CODE"
+        "INVALID_MARKETING_CODE",
+        "INVALID_JOIN_WAITLIST_REQUEST",
+        "TOKEN_LIMIT_REACHED",
+        "INVALID_TOKEN_SCOPE"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -5743,7 +5943,10 @@
         "ErrorCodeString_SocialUsernameInUse",
         "ErrorCodeString_InvalidOAuthRequest",
         "ErrorCodeString_RPIAccountNotWhitelisted",
-        "ErrorCodeString_InvalidMarketingCode"
+        "ErrorCodeString_InvalidMarketingCode",
+        "ErrorCodeString_InvalidJoinWaitlistRequest",
+        "ErrorCodeString_TokenLimitReached",
+        "ErrorCodeString_InvalidTokenScope"
       ]
     },
     "responses.ErrorResponse": {
@@ -5779,6 +5982,14 @@
           "example": "0.0001"
         },
         "option_taker_rate": {
+          "type": "string",
+          "example": "0.0001"
+        },
+        "spot_maker_rate": {
+          "type": "string",
+          "example": "0.0001"
+        },
+        "spot_taker_rate": {
           "type": "string",
           "example": "0.0001"
         },
@@ -6321,7 +6532,7 @@
           "description": "Option Cross margin parameters",
           "allOf": [
             {
-              "$ref": "#/definitions/responses.PerpetualOptionCrossMarginParams"
+              "$ref": "#/definitions/responses.OptionCrossMarginParams"
             }
           ]
         },
@@ -6519,6 +6730,47 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "responses.OptionCrossMarginParams": {
+      "type": "object",
+      "properties": {
+        "imf": {
+          "$ref": "#/definitions/responses.OptionMarginParams"
+        },
+        "mmf": {
+          "$ref": "#/definitions/responses.OptionMarginParams"
+        }
+      }
+    },
+    "responses.OptionMarginParams": {
+      "type": "object",
+      "properties": {
+        "long_itm": {
+          "description": "Margin fraction for long ITM options",
+          "type": "string",
+          "example": "0.2"
+        },
+        "premium_multiplier": {
+          "description": "Multiplier for margin fraction for premium",
+          "type": "string",
+          "example": "1.2"
+        },
+        "short_itm": {
+          "description": "Margin fraction for short ITM options",
+          "type": "string",
+          "example": "0.4"
+        },
+        "short_otm": {
+          "description": "Margin fraction for short OTM options",
+          "type": "string",
+          "example": "0.25"
+        },
+        "short_put_cap": {
+          "description": "Cap for margin fraction for short put options",
+          "type": "string",
+          "example": "0.5"
         }
       }
     },
@@ -6765,47 +7017,6 @@
         }
       }
     },
-    "responses.PerpetualOptionCrossMarginParams": {
-      "type": "object",
-      "properties": {
-        "imf": {
-          "$ref": "#/definitions/responses.PerpetualOptionMarginParams"
-        },
-        "mmf": {
-          "$ref": "#/definitions/responses.PerpetualOptionMarginParams"
-        }
-      }
-    },
-    "responses.PerpetualOptionMarginParams": {
-      "type": "object",
-      "properties": {
-        "long_itm": {
-          "description": "Margin fraction for long ITM options",
-          "type": "string",
-          "example": "0.2"
-        },
-        "premium_multiplier": {
-          "description": "Multiplier for margin fraction for premium",
-          "type": "string",
-          "example": "1.2"
-        },
-        "short_itm": {
-          "description": "Margin fraction for short ITM options",
-          "type": "string",
-          "example": "0.4"
-        },
-        "short_otm": {
-          "description": "Margin fraction for short OTM options",
-          "type": "string",
-          "example": "0.25"
-        },
-        "short_put_cap": {
-          "description": "Cap for margin fraction for short put options",
-          "type": "string",
-          "example": "0.5"
-        }
-      }
-    },
     "responses.PositionResp": {
       "type": "object",
       "properties": {
@@ -7029,6 +7240,26 @@
         }
       }
     },
+    "responses.RevokeSubkeyResponse": {
+      "type": "object",
+      "properties": {
+        "public_key": {
+          "description": "The public key of the revoked subkey",
+          "type": "string",
+          "example": "0xabcdef1234567890abcdef"
+        }
+      }
+    },
+    "responses.RevokeTokenResponse": {
+      "type": "object",
+      "properties": {
+        "lookup_id": {
+          "description": "The lookup ID of the revoked token",
+          "type": "string",
+          "example": "uuid-123"
+        }
+      }
+    },
     "responses.STPMode": {
       "type": "string",
       "enum": [
@@ -7059,6 +7290,46 @@
           "description": "Strategy name",
           "type": "string",
           "example": "Alpha Strategy"
+        }
+      }
+    },
+    "responses.Subkey": {
+      "type": "object",
+      "properties": {
+        "account_id": {
+          "description": "Account ID that owns this subkey",
+          "type": "string",
+          "example": "0x1234567890abcdef"
+        },
+        "created_at": {
+          "description": "Subkey creation timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200
+        },
+        "id": {
+          "description": "Unique subkey identifier",
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "description": "User-provided subkey name",
+          "type": "string",
+          "example": "My Subkey"
+        },
+        "public_key": {
+          "description": "Subkey public key",
+          "type": "string",
+          "example": "0xabcdef1234567890abcdef"
+        },
+        "revoked_at": {
+          "description": "Revocation timestamp (nanoseconds since epoch, 0 if not revoked)",
+          "type": "integer",
+          "example": 0
+        },
+        "updated_at": {
+          "description": "Last modification timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200
         }
       }
     },

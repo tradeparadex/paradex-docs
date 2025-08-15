@@ -2,19 +2,22 @@
 title: API
 ---
 
-## Public Endpoints
+### Public Endpoints
 
-The rate limit for all of our public API endpoints is set to a maximum of 200 requests per second or 1500 requests per minute per IP address.
+| Endpoint            | Rate Limit  | Per        |
+|---------------------|-------------|------------|
+| Default             | 1500 req/m  | IP address |
+| `POST /onboarding`  | 600 req/m   | IP address |
+| `POST /auth`        | 600 req/m   | IP address |
 
-Exceptions:
+### Private Endpoints
 
-* `POST /onboarding` & `POST /auth`: These endpoints have a shared rate limit of _<span style={{color: '#C760ED'}}>50 requests per second or 600 requests per minute</span>_ per IP address.
+| Endpoint                    | Rate Limit               | Per        |
+|-----------------------------|--------------------------|------------|
+| `POST, DELETE, PUT /orders` | 800 req/s OR 17250 req/m | Account    |
+| `GET /*`                    | 120 req/s OR 600 req/m   | Account    |
 
-## Private Endpoints (Per-account limits)
-
-For our private API endpoints, the rate limit varies according to the specific endpoint:
-
-* `POST /orders` & `DELETE /orders` & `PUT /orders`: These endpoints have a shared rate limit of _<span style={{color: '#C760ED'}}>800 requests per second or 17250 requests per minute</span>_ per account.
-* `GET /*`: All GET endpoints have a shared rate limit of _<span style={{color: '#C760ED'}}>40 requests per second or 600 requests per minute</span>_ per account.
-
-For private end points the rate limits are per account and not per IP.
+<Note>
+Private endpoint rate limits are applied per account, but are also subject to an
+**additional IP-based rate limit of 1500 req/m** across all accounts from the same IP address.
+</Note>

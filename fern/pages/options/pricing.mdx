@@ -1,0 +1,151 @@
+## Pricing Relationship with Dated Options
+
+The price of the perpetual option with continuous funding can be expressed as a continuous sum of dated options, weighted exponentially according to the time to expiry of the dated options :
+
+$$
+P_{perpetual}=\frac{1}{T}*\int_0^{\infty}e^{-\frac{\tau}{T}}*P_{dated}(\tau)~d\tau
+$$
+
+where $T$ is the funding period of the option
+
+## Pricing Functions
+
+Under Black Scholes, the continuous nature of the option results in closed-form solution for the price (this is not the case in the discrete case) under the assumption that the short-term IV $\sigma$ is flat for a given strike.
+
+The price of a perpetual option depends on :
+
+- Type of the option (call/put)
+- $S$ : Spot Price of the underlying asset
+- $K$ : Strike Price of the option
+- $\sigma$ : The volatility of the underlying asset
+- $r$ : The annualised instantaneous interest rate. Paradex derives this from the perpetual future funding rate $\text{FR}$. The relationship is : $r=\frac{1}{T_{Future}}*\frac{\text{FR}}{1+\text{FR}}$
+  where $T_{Future}=\frac{8}{24*365}\approx 0.00091324$ corresponds to the 8-hour funding period of the perpetual future
+- $T$ : The funding period of the option. Currently set to 5 days, i.e. $T\approx \frac{5}{365}=0.01369863014$
+
+Price of a Perpetual Call Option
+
+$$
+
+C =
+    \begin{cases}
+      S*A-K*B+(S-\frac{K}{1+r*T}) & \text{if }S\ge K\\
+      S*A-K*B & \text{if }S< K
+    \end{cases}
+$$
+
+Price of a Perpetual Put Option
+
+$$
+
+P =
+    \begin{cases}
+      S*A-K*B & \text{if }S\ge K\\
+      S*A-K*B-(S-\frac{K}{1+r*T}) & \text{if }S< K
+    \end{cases}
+$$
+
+where :
+
+$$
+
+A =
+    \begin{cases}
+      \frac{1}{2}~(\frac{S}{K})^{-\frac{1}{2}(1+u)~p}*(\frac{1}{u}-1) & \text{if }S\ge K\\
+      \frac{1}{2}~(\frac{S}{K})^{-\frac{1}{2}(1-u)~p}*(\frac{1}{u}+1) & \text{if }S< K
+    \end{cases}
+$$
+
+$$
+
+B =
+    \begin{cases}
+      \frac{1}{2~(1+r*T)}~(\frac{S}{K})^{\frac{1}{2}(1+\omega)~q}*(\frac{1}{\omega}-1) & \text{if }S\ge K\\
+      \frac{1}{2~(1+r*T)}~(\frac{S}{K})^{\frac{1}{2}(1-\omega)~q}*(\frac{1}{\omega}+1) & \text{if }S< K
+    \end{cases}
+$$
+
+$$
+p=1+\frac{2*r}{\sigma^2}
+$$
+
+$$
+q=1-\frac{2*r}{\sigma^2}
+$$
+
+$$
+u=\frac{1}{p}\sqrt{p^2+\frac{8}{\sigma^2*T}}
+$$
+
+$$
+\omega=-\frac{1}{q}\sqrt{q^2+\frac{8*(1+r*T)}{\sigma^2*T}}
+$$
+
+## Greeks
+
+Delta
+
+$$
+
+\Delta_{call} =
+    \begin{cases}
+      \Delta_{TV}+1 & \text{if }S\ge K\\
+      \Delta_{TV} & \text{if }S< K
+    \end{cases}
+$$
+
+$$
+
+\Delta_{put} =
+    \begin{cases}
+      \Delta_{TV} & \text{if }S\ge K\\
+      \Delta_{TV}-1 & \text{if }S< K
+    \end{cases}
+$$
+
+where $\Delta_{TV}$ is the delta of the Time Value and is equal to :
+
+$$
+
+\Delta_{TV} =
+    \begin{cases}
+      A~*~(1-\frac{(1+u)~p}{2})-B~*~\frac{K}{S}~\frac{(1+\omega)~q}{2} & \text{if }S\ge K\\
+      A~*~(1-\frac{(1-u)~p}{2})-B~*~\frac{K}{S}~\frac{(1-\omega)~q}{2} & \text{if }S< K
+    \end{cases}
+$$
+
+Gamma
+
+$$
+
+\Gamma =
+    \begin{cases}
+      \frac{A}{S}~[\frac{(1+u)~p}{2}-1].\frac{(1+u)~p}{2}-\frac{B.K}{S^2}~[\frac{(1+\omega)}{2}.q-1].\frac{(1+\omega)}{2}.q & \text{if }S\ge K\\
+      \frac{A}{S}~[\frac{(1-u)~p}{2}-1].\frac{(1-u)~p}{2}-\frac{B.K}{S^2}~[\frac{(1-\omega)}{2}.q-1].\frac{(1-\omega)}{2}.q & \text{if }S< K
+    \end{cases}
+$$
+
+Vega
+
+$$
+\nu=S*\frac{\delta A}{\delta \sigma}-K*\frac{\delta B}{\delta \sigma}
+$$
+
+where
+
+$$
+
+  \frac{\delta A}{\delta \sigma} =
+    \begin{cases}
+      \frac{4*A}{\sigma^3}*\Big(\big(\frac{r*u}{p}-\frac{r}{p*u}-\frac{2}{p^2 * u*T}\big)*\big(\frac{1}{u^2-u}-\frac{p}{2}*\log(\frac{S}{K})\big)~\\~~~~~~~~~~~~~~~~~~~~~~~~~~+~\frac{r*(1+u)}{2}*\log(\frac{S}{K})\Big) & \text{if }S\ge K\\
+      \frac{4*A}{\sigma^3}*\Big(\big(\frac{r*u}{p}-\frac{r}{p*u}-\frac{2}{p^2 * u*T}\big)*\big(\frac{-1}{u^2+u}+\frac{p}{2}*\log(\frac{S}{K})\big)~\\~~~~~~~~~~~~~~~~~~~~~~~~~~+~\frac{r*(1-u)}{2}*\log(\frac{S}{K})\Big) & \text{if }S< K
+    \end{cases}
+$$
+
+$$
+
+  \frac{\delta B}{\delta \sigma} =
+    \begin{cases}
+      \frac{4*B}{\sigma^3}*\Big(\big(\frac{-r*\omega}{q}+\frac{r}{q*\omega}+\frac{2}{q^2 * \omega*T}\big)*\big(\frac{1}{\omega^2-\omega}+\frac{q}{2}*\log(\frac{S}{K})\big)~\\~~~~~~~~~~~~~~~~~~~~~~~~~~+~\frac{r*(1+\omega)}{2}*\log(\frac{S}{K})\Big) & \text{if }S\ge K\\
+      \frac{4*B}{\sigma^3}*\Big(\big(\frac{r*\omega}{q}-\frac{r}{q*\omega}+\frac{2}{q^2 * \omega*T}\big)*\big(\frac{1}{\omega^2+\omega}+\frac{q}{2}*\log(\frac{S}{K})\big)~\\~~~~~~~~~~~~~~~~~~~~~~~~~~+~\frac{r*(1-\omega)}{2}*\log(\frac{S}{K})\Big) & \text{if }S< K
+    \end{cases}
+$$

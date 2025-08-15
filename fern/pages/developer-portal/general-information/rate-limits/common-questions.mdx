@@ -4,13 +4,21 @@ title: Common Questions
 
 **What algorithm do you use for rate limits?**
 
-* Fixed Window Counter rate limiting
-* This technique uses a counter to track the number of requests made within a given time period (_time time period begins after first request is received_). When the counter reaches the maximum allowed number of requests, further requests are blocked until the next time period begins.
+* Leaky Bucket Algorithm rate limiting
+* This technique uses a "token bucket" system based on a maximum number of available request tokens for a given timeframe. Each request consumes one token, and tokens are continuously refilled at a fixed rate. When all tokens are consumed, further requests are blocked until new tokens become available.
+* Distributed across instances: the system coordinates token usage across all our servers to maintain the global limit.
 
-**What if I hit requests per minute limit, how long is the cool down period?**
+**What if I hit a rate limit, how long is the cool down period?**
 
-* In a real world scenario, the expected wait time is expected to be less since not all the requests will arrive at the same time, so we can say the wait time to reset the limit for 1 minute bucket is up to 1 minute.
-* If you have requests well distributed over the time and you send 201 requests per second (assuming rate limit per second would allow you to do that) you will hit the limit exactly at the end of the minute (at \~59 seconds). In this scenario you would be able to send other requests just 1 second.
+Since token refilling is a continuous process, there's no fixed cooldown period. As soon as a single token is refilled, you can make another request. The wait time depends on how many tokens you've used and the refill rate - it could be just milliseconds if you're slightly over the limit, or longer if you've exhausted your entire token bucket.
+
+<Tip title="Rate limit example">
+If you have a 600 requests/minute limit:
+- Tokens will refill at ~10 tokens per second (1 token every 100ms)
+- If you have 0 tokens available you will wait ~100ms for 1 new token to be refilled
+- For continuous requests: You can make 1 request every 100ms sustainably
+- If you want to make multiple requests quickly you will need to wait longer to accumulate more tokens (e.g., 500ms to get 5 tokens)
+</Tip>
 
 **How long will an API query run before timing out?**
 

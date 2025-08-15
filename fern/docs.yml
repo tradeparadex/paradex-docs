@@ -646,7 +646,7 @@ navigation:
             path: ./pages/release-notes/v1.106.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
-            contents: '
+            contents:
               - page: v1.105
                 path: ./pages/release-notes/v1.105.md
               - page: v1.104

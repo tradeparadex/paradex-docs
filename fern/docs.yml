@@ -640,21 +640,21 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.107
+            path: ./pages/release-notes/v1.107.md
           - page: v1.106
             path: ./pages/release-notes/v1.106.md
-          - page: v1.105
-            path: ./pages/release-notes/v1.105.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
-            contents: 
+            contents: '
+              - page: v1.105
+                path: ./pages/release-notes/v1.105.md
               - page: v1.104
                 path: ./pages/release-notes/v1.104.md
               - page: v1.103
                 path: ./pages/release-notes/v1.103.md
-              - page: v1.103
-                path: ./pages/release-notes/v1.103.md
               - page: v1.102
-                path: ./pages/release-notes/v1.101.md
+                path: ./pages/release-notes/v1.102.md
               - page: v1.101
                 path: ./pages/release-notes/v1.101.md
               - page: v1.100

@@ -4870,10 +4870,6 @@
         "discord": {
           "$ref": "#/definitions/responses.DiscordProfile"
         },
-        "is_twitter_follower": {
-          "type": "boolean",
-          "example": true
-        },
         "is_username_private": {
           "type": "boolean",
           "example": true
@@ -4911,6 +4907,12 @@
         },
         "twitter": {
           "$ref": "#/definitions/responses.TwitterProfile"
+        },
+        "twitter_following": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
         },
         "username": {
           "type": "string",

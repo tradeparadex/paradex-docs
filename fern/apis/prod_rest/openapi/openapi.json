@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.100.2"
+    "version": "1.100.3"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -5871,7 +5871,8 @@
         "INVALID_MARKETING_CODE",
         "INVALID_JOIN_WAITLIST_REQUEST",
         "TOKEN_LIMIT_REACHED",
-        "INVALID_TOKEN_SCOPE"
+        "INVALID_TOKEN_SCOPE",
+        "NOT_UNIQUE"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -5946,7 +5947,8 @@
         "ErrorCodeString_InvalidMarketingCode",
         "ErrorCodeString_InvalidJoinWaitlistRequest",
         "ErrorCodeString_TokenLimitReached",
-        "ErrorCodeString_InvalidTokenScope"
+        "ErrorCodeString_InvalidTokenScope",
+        "ErrorCodeString_NotUnique"
       ]
     },
     "responses.ErrorResponse": {

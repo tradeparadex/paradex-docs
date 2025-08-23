@@ -265,9 +265,6 @@ navigation:
                     - page: EIGEN-USD-PERP
                       slug: eigen-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/eigen-usd-perp.mdx
-                    - page: ES-USD-PERP
-                      slug: es-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/es-usd-perp.mdx
                     - page: ETHFI-USD-PERP
                       slug: ethfi-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ethfi-usd-perp.mdx
@@ -286,9 +283,6 @@ navigation:
                     - page: GRASS-USD-PERP
                       slug: grass-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/grass-usd-perp.mdx
-                    - page: H-USD-PERP
-                      slug: h-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/h-usd-perp.mdx
                     - page: HYPE-USD-PERP
                       slug: hype-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
@@ -340,9 +334,6 @@ navigation:
                     - page: LTC-USD-PERP
                       slug: ltc-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ltc-usd-perp.mdx
-                    - page: MELANIA-USD-PERP
-                      slug: melania-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/melania-usd-perp.mdx
                     - page: MKR-USD-PERP
                       slug: mkr-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/mkr-usd-perp.mdx
@@ -463,9 +454,6 @@ navigation:
                     - page: TRUMP-USD-PERP
                       slug: trump-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/trump-usd-perp.mdx
-                    - page: TRB-USD-PERP
-                      slug: trb-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/trb-usd-perp.mdx
                     - page: TRX-USD-PERP
                       slug: trx-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/trx-usd-perp.mdx

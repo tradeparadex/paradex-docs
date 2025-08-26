@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.100.3"
+    "version": "1.100.4"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -8084,7 +8084,7 @@
           "example": "0.724"
         },
         "tvl": {
-          "description": "Net deposits of the vault in USDC (deprecated; use net_deposits instead)",
+          "description": "Total Value Locked (deposits + unrealized PnL) in USDC",
           "type": "string",
           "example": "1000000"
         },

@@ -493,6 +493,9 @@ navigation:
                     - page: WLD-USD-PERP
                       slug: wld-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/wld-usd-perp.mdx
+                    - page: WLFI-USD-PERP
+                      slug: wlfi-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/wlfi-usd-perp.mdx
                     - page: XLM-USD-PERP
                       slug: xlm-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/xlm-usd-perp.mdx

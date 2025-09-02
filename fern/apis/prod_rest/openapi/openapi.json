@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.101.0"
+    "version": "1.101.2"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -4397,6 +4397,73 @@
     }
   },
   "definitions": {
+    "messagesv1.FeeWithCap": {
+      "type": "object",
+      "properties": {
+        "fee": {
+          "description": "the fee rate",
+          "type": "number"
+        },
+        "fee_cap": {
+          "description": "fee cap (used for option)",
+          "type": "number"
+        },
+        "fee_floor": {
+          "description": "fee floor (used for option)",
+          "type": "number"
+        }
+      }
+    },
+    "messagesv1.MakerTakerFee": {
+      "type": "object",
+      "properties": {
+        "maker_fee": {
+          "description": "fee setup for makers",
+          "allOf": [
+            {
+              "$ref": "#/definitions/messagesv1.FeeWithCap"
+            }
+          ]
+        },
+        "taker_fee": {
+          "description": "fee setup for takers",
+          "allOf": [
+            {
+              "$ref": "#/definitions/messagesv1.FeeWithCap"
+            }
+          ]
+        }
+      }
+    },
+    "messagesv1.MarketFeeConfig": {
+      "type": "object",
+      "properties": {
+        "api_fee": {
+          "description": "fee config for API order",
+          "allOf": [
+            {
+              "$ref": "#/definitions/messagesv1.MakerTakerFee"
+            }
+          ]
+        },
+        "interactive_fee": {
+          "description": "fee config for interactive order\ni.e. retail order coming from UI",
+          "allOf": [
+            {
+              "$ref": "#/definitions/messagesv1.MakerTakerFee"
+            }
+          ]
+        },
+        "rpi_fee": {
+          "description": "fee config for RPI order",
+          "allOf": [
+            {
+              "$ref": "#/definitions/messagesv1.MakerTakerFee"
+            }
+          ]
+        }
+      }
+    },
     "requests.AccountMarginRequest": {
       "type": "object",
       "required": [
@@ -6780,6 +6847,19 @@
           "description": "Market expiry time",
           "type": "integer",
           "example": 0
+        },
+        "fee_config": {
+          "description": "Fee config indicates override fee for the market. If not set, it will use the global exchange fee config",
+          "allOf": [
+            {
+              "$ref": "#/definitions/messagesv1.MarketFeeConfig"
+            }
+          ]
+        },
+        "funding_multiplier": {
+          "description": "Funding multiplier",
+          "type": "number",
+          "example": 1
         },
         "funding_period_hours": {
           "description": "Funding period in hours",

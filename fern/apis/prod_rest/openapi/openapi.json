@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.101.2"
+    "version": "1.101.3"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -6229,6 +6229,7 @@
         "INVALID_JOIN_WAITLIST_REQUEST",
         "TRANSACTION_NOT_FOUND",
         "OFFER_NOT_FOUND",
+        "MARKET_MARGIN_RESTRICTED",
         "TOKEN_LIMIT_REACHED",
         "INVALID_TOKEN_SCOPE",
         "NOT_UNIQUE"
@@ -6307,6 +6308,7 @@
         "ErrorCodeString_InvalidJoinWaitlistRequest",
         "ErrorCodeString_TransactionNotFound",
         "ErrorCodeString_OfferNotFound",
+        "ErrorCodeString_MarketMarginRestricted",
         "ErrorCodeString_TokenLimitReached",
         "ErrorCodeString_InvalidTokenScope",
         "ErrorCodeString_NotUnique"
@@ -6797,12 +6799,14 @@
       "enum": [
         "",
         "cross",
-        "isolated"
+        "isolated",
+        "isolated_margin"
       ],
       "x-enum-varnames": [
         "MarketKindUnknown",
         "MarketKindCross",
-        "MarketKindIsolated"
+        "MarketKindIsolated",
+        "MarketKindIsolatedMargin"
       ]
     },
     "responses.MarketResp": {
@@ -6880,7 +6884,8 @@
           "description": "Market's margin mode",
           "enum": [
             "cross",
-            "isolated"
+            "isolated",
+            "isolated_margin"
           ],
           "allOf": [
             {

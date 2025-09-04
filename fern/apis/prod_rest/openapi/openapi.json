@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.101.3"
+    "version": "1.101.4"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -4915,6 +4915,14 @@
           "description": "Referral code of the user who referred the user being onboarded.",
           "type": "string",
           "example": "cryptofox8"
+        },
+        "utm": {
+          "description": "UTM tracking parameters (optional).",
+          "allOf": [
+            {
+              "$ref": "#/definitions/requests.Utm"
+            }
+          ]
         }
       }
     },
@@ -5082,6 +5090,21 @@
       "properties": {
         "trading_value_display": {
           "type": "string"
+        }
+      }
+    },
+    "requests.Utm": {
+      "type": "object",
+      "properties": {
+        "campaign": {
+          "description": "UTM campaign parameter",
+          "type": "string",
+          "example": "summer2024"
+        },
+        "source": {
+          "description": "UTM source parameter",
+          "type": "string",
+          "example": "google"
         }
       }
     },

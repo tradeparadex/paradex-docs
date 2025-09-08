@@ -640,13 +640,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.111
+            path: ./pages/release-notes/v1.111.md
           - page: v1.109
             path: ./pages/release-notes/v1.109.md
-          - page: v1.107
-            path: ./pages/release-notes/v1.107.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.107
+                path: ./pages/release-notes/v1.107.md
               - page: v1.106
                 path: ./pages/release-notes/v1.106.md
               - page: v1.105

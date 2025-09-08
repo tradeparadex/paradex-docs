@@ -334,6 +334,9 @@ navigation:
                     - page: LDO-USD-PERP
                       slug: ldo-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ldo-usd-perp.mdx
+                    - page: LINEA-USD-PERP
+                      slug: linea-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/linea-usd-perp.mdx
                     - page: LINK-USD-PERP
                       slug: link-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/link-usd-perp.mdx

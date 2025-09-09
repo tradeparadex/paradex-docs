@@ -340,9 +340,6 @@ navigation:
                     - page: LTC-USD-PERP
                       slug: ltc-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ltc-usd-perp.mdx
-                    - page: MKR-USD-PERP
-                      slug: mkr-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/mkr-usd-perp.mdx
                     - page: mMOG-USD-PERP
                       slug: mmog-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/mmog-usd-perp.mdx

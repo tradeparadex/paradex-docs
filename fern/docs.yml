@@ -33,9 +33,10 @@ navigation:
           - page: What is Paradex?
             slug: what-is-paradex
             path: ./pages/what-is-paradex.mdx
-          - page: Trading Fees
-            slug: trading-fees
-            path: ./pages/trading/trading-fees.mdx
+          - page: Free Trading
+            slug: free-trading
+            path: ./pages/trading/free-trading.mdx
+            icon: fa-solid fa-sparkle
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx

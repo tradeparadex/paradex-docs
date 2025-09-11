@@ -33,6 +33,9 @@ navigation:
           - page: What is Paradex?
             slug: what-is-paradex
             path: ./pages/what-is-paradex.mdx
+          - page: Trading Fees
+            slug: trading-fees
+            path: ./pages/trading/trading-fees.mdx
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
@@ -140,9 +143,7 @@ navigation:
                 path: ./pages/trading/placing-orders/order-instructions.mdx
                 slug: order-instructions
 
-          - page: Trading Fees
-            slug: trading-fees
-            path: ./pages/trading/trading-fees.mdx
+
           - section: Price Impact and Slippage
             slug: price-impact-and-slippage
             path: ./pages/trading/slippage-overview.mdx

@@ -36,7 +36,7 @@ navigation:
           - page: Free Trading
             slug: free-trading
             path: ./pages/trading/free-trading.mdx
-            icon: fa-solid fa-sparkle
+            icon: lucide:gift
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx

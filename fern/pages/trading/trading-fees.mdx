@@ -4,20 +4,45 @@ title: Trading Fees
 
 ## Fee Structure
 
-| Instrument        | Taker Fee | Maker Fee | Cap / Floor |
-| ----------------- | --------- | --------- | ----------- |
-| Perpetual Futures | 0.03%     | -0.005%   | N/A         |
-| Perpetual Options | 0.03%     | -0.01%    | 25% / -8%   |
+### Perpetual Futures
+
+#### Trading via Application / GUI
+| Order Type | Maker Fee | Taker Fee |
+| ---------- | --------- | --------- |
+| All Orders | **Free** (0%) | **Free** (0%) |
+
+All trading through the Paradex application and web interface is **completely free**. This includes both maker and taker orders for all perpetual futures contracts. There are no minimum volume requirements or conditions at this time.
+
+<Warning title="BTC and ETH Perpetuals - Temporary Exception">
+  BTC and ETH perpetual futures are currently still on the previous fee structure:
+  - **Taker Fee**: 3 bps (0.03%)
+  - **Maker Fee**: -0.5 bp (-0.005%) rebate
+  
+  These contracts will be updated to the new fee-free structure for GUI users **next week**.
+</Warning>
+
+#### Trading via API
+| Order Type | Maker Fee | Taker Fee | Comments |
+| ---------- | --------- | --------- | -------- |
+| Standard API Orders | **Free** (0%) | 2.0 - 3.0 bp (0.02% - 0.03%) | Taker fees subject to volume-based rebates (see below) |
+| RPI Orders | 0.5 bp (0.005%) | N/A | Special order type that can only be matched with GUI orders |
+
+API trading follows a maker-taker fee model. **Maker orders** (orders that add liquidity to the order book) are free, while **taker orders** (orders that remove liquidity) incur fees of 2.0-3.0 bp depending on your market share and rebate tier.
+
+**RPI (Retail Price Improvement) orders** are a special maker order type designed to provide liquidity specifically to GUI users. These orders can only be matched against GUI taker orders and makers pay a small 0.5 bp fee for these special lane orders.
+
+### Perpetual Options
+| Order Type | Taker Fee | Maker Fee | Cap / Floor |
+| ---------- | --------- | --------- | ----------- |
+| All Orders | 0.03%     | -0.01%    | 25% / -8%   |
 
 ## Settlement Fee Structure
-
 | Instrument        | Fee    | Cap |
 | ----------------- | ------ | --- |
 | Perpetual Futures | 0.015% | N/A |
 | Perpetual Options | 0.01%  | 25% |
 
 ### Fee Calculation
-
 Fees are calculated based on the **notional value** of your trade, not the margin you put up.
 The notional value represents the total dollar amount of the underlying assets being traded.
 
@@ -27,34 +52,31 @@ The notional value represents the total dollar amount of the underlying assets b
   \$2,500 margin.
 </Tip>
 
-## Taker Rebate
-
-Starting July 16, 2025, Paradex will offer taker rebates of up to 1 bp based on a user's market share.
+## API Taker Rebate Program (Perpetual Futures Only)
+API users trading perpetual futures can earn taker rebates of up to 1 bp based on market share, reducing effective taker fees from 3.0 bp to as low as 2.0 bp.
 
 ### How It Works
-
 - **Rebate Range**: 0.1 bp to 1 bp
 - **Calculation Period**: Rolling 14-day trailing period
 - **Payment**: Automatic deposit every two weeks
 - **Eligibility**: Based on your overall market share during the measurement period
+- **Applies To**: API taker orders on perpetual futures only
 
 ### Market Share Formula
-
 ```
 Market Share = (User Taker Volume + User Maker Volume) / Paradex 1-sided Volume
 ```
 
 ### Rebate Tiers
-
-| Market Share | Taker Rebate | Net Taker Fee |
-| ------------ | ------------ | ------------- |
-| >0.0%        | -0.00%       | 0.03%         |
-| >0.5%        | -0.001%      | 0.029%        |
-| >1.0%        | -0.0025%     | 0.0275%       |
-| >2.0%        | -0.005%      | 0.025%        |
-| >6.0%        | -0.01%       | 0.02%         |
+| Market Share | Taker Rebate | Net API Taker Fee (Perpetual Futures) |
+| ------------ | ------------ | -------------------------------------- |
+| >0.0%        | -0.00%       | 0.03%                                  |
+| >0.5%        | -0.001%      | 0.029%                                 |
+| >1.0%        | -0.0025%     | 0.0275%                                |
+| >2.0%        | -0.005%      | 0.025%                                 |
+| >6.0%        | -0.01%       | 0.02%                                  |
 
 <Tip>
   Market share measurement began on July 16, 2025 at 0:00 UTC and runs for
-  consecutive 14-day periods.
+  consecutive 14-day periods. Rebates apply only to API taker fees on perpetual futures.
 </Tip>

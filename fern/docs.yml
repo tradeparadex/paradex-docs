@@ -33,10 +33,6 @@ navigation:
           - page: What is Paradex?
             slug: what-is-paradex
             path: ./pages/what-is-paradex.mdx
-          - page: Free Trading
-            slug: free-trading
-            path: ./pages/trading/free-trading.mdx
-            icon: fa-solid fa-gift
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
@@ -71,6 +67,9 @@ navigation:
             slug: rpi
             path: ./pages/trading/rpi.mdx
             icon: fa-regular fa-sparkles
+          - page: Free Trading
+            slug: free-trading
+            path: ./pages/trading/free-trading.mdx
           - section: Perpetual Options
             slug: perpetual-options
             contents:

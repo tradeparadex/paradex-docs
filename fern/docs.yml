@@ -236,6 +236,9 @@ navigation:
                     - page: AVAX-USD-PERP
                       slug: avax-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/avax-usd-perp.mdx
+                    - page: AVNT-USD-PERP
+                      slug: avnt-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/avnt-usd-perp.mdx
                     - page: BCH-USD-PERP
                       slug: bch-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/bch-usd-perp.mdx

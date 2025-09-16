@@ -1,45 +1,50 @@
----
-title: Trading Fees
----
+# Trading Fees
 
-## Fee Structure
+## Perpetual Futures
 
-### Perpetual Futures (FREE for Retail Traders!)
+### Retail Profile (Opt-in) - Default for UI Traders
+**Completely FREE for all retail traders!**
 
-#### Trading via Application / GUI
 | Order Type | Maker Fee | Taker Fee |
 | ---------- | --------- | --------- |
 | All Orders | **Free** (0%) | **Free** (0%) |
 
-All trading through the Paradex application and web interface is **completely free**. This includes both maker and taker orders for all perpetual futures contracts. There are no minimum volume requirements or conditions at this time.
+All trading through the Paradex application and web interface is completely free with no minimum volume requirements.
 
-#### Trading via API
+### Standard Profile - Default for API Traders
+
 | Order Type | Maker Fee | Taker Fee | Comments |
 | ---------- | --------- | --------- | -------- |
-| Standard API Orders | **Free** (0%) | 2.0 bp (0.02%) | NA |
-| RPI Orders | 0.5 bp (0.005%) | N/A | Special order type that can only be matched with GUI orders |
+| Standard Orders | **Free** (0%) | 2.0 bp (0.02%) | Simple fee structure for API traders |
+| RPI Orders | 0.5 bp (0.005%) | N/A | Special liquidity provision for retail traders |
 
-API trading follows a maker-taker fee model. **Maker orders** (orders that add liquidity to the order book) are free, while **taker orders** (orders that remove liquidity) incur fees of 2.0 bp.
+**RPI orders** are a special order type that provides liquidity specifically to retail traders. They must be placed inside the spread and can only match with GUI orders.
 
-**RPI (Retail Price Improvement) orders** are a special maker order type designed to provide liquidity specifically to GUI users. These orders can only be matched against GUI taker orders and makers pay a small 0.5 bp fee for these special lane orders.
+---
 
-### Perpetual Options
+## Perpetual Options
+
 | Order Type | Taker Fee | Maker Fee | Cap / Floor |
 | ---------- | --------- | --------- | ----------- |
 | All Orders | 0.03%     | -0.01%    | 25% / -8%   |
 
-## Settlement Fee Structure
+---
+
+## Settlement Fees
+
 | Instrument        | Fee    | Cap |
 | ----------------- | ------ | --- |
 | Perpetual Futures | 0.015% | N/A |
 | Perpetual Options | 0.01%  | 25% |
 
-### Fee Calculation
+---
+
+## Fee Calculation
+
 Fees are calculated based on the **notional value** of your trade, not the margin you put up.
-The notional value represents the total dollar amount of the underlying assets being traded.
 
 <Tip title="Fee Example">
-  If you open a \$25,000 ETH perpetual position with \$2,500 in margin (10x
-  leverage), fees are charged on the full \$25,000 notional value, not your
-  \$2,500 margin.
+  If you open a $25,000 ETH perpetual position with $2,500 in margin (10x
+  leverage), fees are charged on the full $25,000 notional value, not your
+  $2,500 margin.
 </Tip>

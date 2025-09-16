@@ -13,21 +13,13 @@ title: Trading Fees
 
 All trading through the Paradex application and web interface is **completely free**. This includes both maker and taker orders for all perpetual futures contracts. There are no minimum volume requirements or conditions at this time.
 
-<Warning title="BTC and ETH Perpetuals - Temporary Exception">
-  BTC and ETH perpetual futures are currently still on the previous fee structure:
-  - **Taker Fee**: 3 bps (0.03%)
-  - **Maker Fee**: -0.5 bp (-0.005%) rebate
-  
-  These contracts will be updated to the new fee-free structure for GUI users **next week**.
-</Warning>
-
 #### Trading via API
 | Order Type | Maker Fee | Taker Fee | Comments |
 | ---------- | --------- | --------- | -------- |
-| Standard API Orders | **Free** (0%) | 2.0 - 3.0 bp (0.02% - 0.03%) | Taker fees subject to volume-based rebates (see below) |
+| Standard API Orders | **Free** (0%) | 2.0 bp (0.02%) | NA |
 | RPI Orders | 0.5 bp (0.005%) | N/A | Special order type that can only be matched with GUI orders |
 
-API trading follows a maker-taker fee model. **Maker orders** (orders that add liquidity to the order book) are free, while **taker orders** (orders that remove liquidity) incur fees of 2.0-3.0 bp depending on your market share and rebate tier.
+API trading follows a maker-taker fee model. **Maker orders** (orders that add liquidity to the order book) are free, while **taker orders** (orders that remove liquidity) incur fees of 2.0 bp.
 
 **RPI (Retail Price Improvement) orders** are a special maker order type designed to provide liquidity specifically to GUI users. These orders can only be matched against GUI taker orders and makers pay a small 0.5 bp fee for these special lane orders.
 
@@ -50,33 +42,4 @@ The notional value represents the total dollar amount of the underlying assets b
   If you open a \$25,000 ETH perpetual position with \$2,500 in margin (10x
   leverage), fees are charged on the full \$25,000 notional value, not your
   \$2,500 margin.
-</Tip>
-
-## API Taker Rebate Program (Perpetual Futures Only)
-API users trading perpetual futures can earn taker rebates of up to 1 bp based on market share, reducing effective taker fees from 3.0 bp to as low as 2.0 bp.
-
-### How It Works
-- **Rebate Range**: 0.1 bp to 1 bp
-- **Calculation Period**: Rolling 14-day trailing period
-- **Payment**: Automatic deposit every two weeks
-- **Eligibility**: Based on your overall market share during the measurement period
-- **Applies To**: API taker orders on perpetual futures only
-
-### Market Share Formula
-```
-Market Share = (User Taker Volume + User Maker Volume) / Paradex 1-sided Volume
-```
-
-### Rebate Tiers
-| Market Share | Taker Rebate | Net API Taker Fee (Perpetual Futures) |
-| ------------ | ------------ | -------------------------------------- |
-| >0.0%        | -0.00%       | 0.03%                                  |
-| >0.5%        | -0.001%      | 0.029%                                 |
-| >1.0%        | -0.0025%     | 0.0275%                                |
-| >2.0%        | -0.005%      | 0.025%                                 |
-| >6.0%        | -0.01%       | 0.02%                                  |
-
-<Tip>
-  Market share measurement began on July 16, 2025 at 0:00 UTC and runs for
-  consecutive 14-day periods. Rebates apply only to API taker fees on perpetual futures.
 </Tip>

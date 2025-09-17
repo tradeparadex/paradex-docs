@@ -42,3 +42,7 @@ a.green-cards:hover {
 .purple-cards .text-body {
   color: #CC38FF !important;
 }
+
+.card-icon-w64 .card-icon {
+  width: 64px !important;
+}

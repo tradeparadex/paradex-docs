@@ -23,6 +23,25 @@ Depositing into the vault results in minting Vault Tokens for the depositor. The
 Currently, vault tokens do not count as collateral and do not contribute to account value since Paradex does not support multi-collateral yet.
 
 
+## Profit sharing
+
+Paradex Vaults include a profit-sharing mechanism that compensates vault owners when users exit with a profit.
+
+When a user deposits into a vault, they receive vault tokens based on the current token price (e.g., if token price = 1, $100 = 100 tokens). When the user withdraws:
+
+- If the token price has increased (i.e., the user exits in profit), a portion of their profit is paid to the vault owner as **profit share**.
+- The profit share is calculated as a percentage of the user’s profit at withdrawal and is paid in **vault tokens**, not dollars.
+- If the user exits at a loss or breakeven, no profit share is paid.
+
+**Example:**
+A user deposits $100 at token price = 1 (receives 100 tokens). If token price increases to 2, the 100 tokens are worth $200. With a 10% profit share:
+
+- Profit = $100 ⇒ profit share = $10 ⇒ vault owner receives 10 vault tokens.
+- The user’s withdrawal burns 90 tokens (redeemed for $180) and transfers 10 tokens to the vault owner.
+The vault owner can later redeem or keep those tokens.
+
+
+
 
 ## Withdrawal into Auxiliary Accounts
 

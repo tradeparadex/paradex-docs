@@ -29,4 +29,8 @@
 
 a[id*="playground-button"] {
   display: none;
- }
+}
+
+a.green-cards:hover {
+  border-color: #10b981 !important;
+}

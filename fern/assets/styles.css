@@ -38,3 +38,7 @@ a.green-cards:hover {
 .green-cards .text-body {
   color: #00ee91 !important;
 }
+
+.purple-cards .text-body {
+  color: #CC38FF !important;
+}

@@ -29,4 +29,20 @@
 
 a[id*="playground-button"] {
   display: none;
- }
+}
+
+a.green-cards:hover {
+  border-color: #00ee91 !important;
+}
+
+.green-cards .text-body {
+  color: #00ee91 !important;
+}
+
+.purple-cards .text-body {
+  color: #CC38FF !important;
+}
+
+.card-icon-w64 .card-icon {
+  width: 64px !important;
+}

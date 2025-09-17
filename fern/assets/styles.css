@@ -34,3 +34,7 @@ a[id*="playground-button"] {
 a.green-cards:hover {
   border-color: #00ee91 !important;
 }
+
+.green-cards .text-body {
+  color: #00ee91 !important;
+}

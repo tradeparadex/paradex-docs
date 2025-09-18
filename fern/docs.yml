@@ -359,6 +359,9 @@ navigation:
                     - page: MOVE-USD-PERP
                       slug: move-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/move-usd-perp.mdx
+                    - page: MNT-USD-PERP
+                      slug: mnt-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/mnt-usd-perp.mdx
                     - page: MYX-USD-PERP
                       slug: myx-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/myx-usd-perp.mdx

@@ -233,6 +233,9 @@ navigation:
                     - page: ARB-USD-PERP
                       slug: arb-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/arb-usd-perp.mdx
+                    - page: ASTER-USD-PERP
+                      slug: aster-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/aster-usd-perp.mdx
                     - page: AVAX-USD-PERP
                       slug: avax-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/avax-usd-perp.mdx

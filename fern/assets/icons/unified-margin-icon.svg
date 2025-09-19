@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>unified-margin-icon</title>
+    <g id="unified-margin-icon" stroke="none" fill="none" fill-rule="evenodd" stroke-width="1">
+        <g id="Path" transform="translate(1.5238, 3.0476)" stroke="#CC38FF">
+            <path d="M0,11.3347048 L1.64847238,15.2257524 C2.19625143,16.5187048 4.04902095,16.4469334 4.49558857,15.1154286 L6.55114667,8.98672764 C7.02108952,7.58556954 9.00566857,7.60444954 9.44897524,9.01429335 L14.4240762,24.8367239 C14.8889905,26.3154286 17.0029714,26.238781 17.3601524,24.730362 L22.9369905,1.17447621 C23.2874667,-0.305508551 25.3464381,-0.41799617 25.8553905,1.01505526 L28.952381,9.73606097" stroke-width="1.4"></path>
+        </g>
+    </g>
+</svg>

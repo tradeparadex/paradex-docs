@@ -69,10 +69,11 @@ navigation:
           - page: Quote Quality Score
             slug: quote-quality
             path: ./pages/points-and-referrals/quote-quality.mdx
-          - page: Referral Program
-            path: ./pages/points-and-referrals/referrals.mdx
           - page: Affiliate Program
             path: ./pages/points-and-referrals/affiliate.mdx
+          - page: Referral Program
+            path: ./pages/points-and-referrals/referrals.mdx
+
 
       - section: Trading
         contents:

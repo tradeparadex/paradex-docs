@@ -61,6 +61,19 @@ navigation:
             title: What's New
             icon: fa-solid fa-sparkle
 
+      - section: XP & Referrals
+        contents:
+          - page: Xperience Points
+            slug: xp
+            path: ./pages/points-and-referrals/xp.mdx
+          - page: Quote Quality Score
+            slug: quote-quality
+            path: ./pages/points-and-referrals/quote-quality.mdx
+          - page: Referral Program
+            path: ./pages/points-and-referrals/referrals.mdx
+          - page: Affiliate Program
+            path: ./pages/points-and-referrals/affiliate.mdx
+
       - section: Trading
         contents:
           - page: Retail Price Improvement
@@ -584,19 +597,6 @@ navigation:
           - page: Trade Flow And Busts
             slug: trade-busts
             path: ./pages/risk-system/trade-busts.mdx
-
-      - section: XP & Referrals
-        contents:
-          - page: Xperience Points
-            slug: xp
-            path: ./pages/points-and-referrals/xp.mdx
-          - page: Quote Quality Score
-            slug: quote-quality
-            path: ./pages/points-and-referrals/quote-quality.mdx
-          - page: Referral Program
-            path: ./pages/points-and-referrals/referrals.mdx
-          - page: Affiliate Program
-            path: ./pages/points-and-referrals/affiliate.mdx
 
       - section: Security & Trust
         slug: security

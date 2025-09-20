@@ -65,14 +65,14 @@ navigation:
         contents:
           - page: Xperience Points
             slug: xp
-            path: ./pages/xp.mdx
+            path: ./pages/points-and-referrals/xp.mdx
           - page: Quote Quality Score
             slug: quote-quality
-            path: ./pages/quote-quality.mdx
+            path: ./pages/points-and-referrals/quote-quality.mdx
           - page: Affiliate Program
-            path: ./pages/affiliate.mdx
+            path: ./pages/points-and-referrals/affiliate.mdx
           - page: Referral Program
-            path: ./pages/referrals.mdx
+            path: ./pages/points-and-referrals/referrals.mdx
 
 
       - section: Trading

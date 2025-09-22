@@ -81,7 +81,7 @@ navigation:
             slug: rpi
             path: ./pages/trading/rpi.mdx
             icon: fa-regular fa-sparkles
-          - page: Trading Fees (Free!)
+          - page: Trading Fees
             slug: trading-fee
             path: ./pages/trading/trading-fees.mdx
           - section: Perpetual Options

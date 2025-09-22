@@ -4,7 +4,7 @@ Paradex offers different fee structures based on your trading profile and instru
 
 ## Perpetual Futures
 
-| Profile Type | Description | Maker Fee | Taker Fee | Settlement Fee |
+| Profile Type | Description | Maker Fee | Taker Fee | Settlement Fee* |
 |--------------|-------------|-----------|-----------|----------------|
 | **Retail Profile** | (Opt-in) - Default for UI Traders | **FREE (0%)** | **FREE (0%)** | 0.015% |
 | **API - Standard** | Default for API Traders | 0.0025% | 0.02% | 0.015% |
@@ -12,11 +12,13 @@ Paradex offers different fee structures based on your trading profile and instru
 
 ## Perpetual Options
 
-| Profile Type | Description | Maker Fee | Taker Fee | Settlement Fee |
+| Profile Type | Description | Maker Fee | Taker Fee | Settlement Fee* |
 |--------------|-------------|-----------|-----------|----------------|
 | **Retail Profile** | (Opt-in) - Default for UI Traders | -0.01% (rebate) | 0.03% | 0.01% (25% cap) |
 | **API - Standard** | Default for API Traders | -0.01% (rebate) | 0.03% | 0.01% (25% cap) |
 | **API - RPI** | Opt in for orders that only match with Retail Profile | -0.01% (rebate) | 0.03% | 0.01% (25% cap) |
+
+*  Settlement fees occur when a market is delisted and Paradex needs to wind down residual open positions.
 
 ---
 
@@ -26,4 +28,4 @@ Paradex offers different fee structures based on your trading profile and instru
 - **API - RPI**: Special liquidity provision orders that match only with Retail Profile traders
 - **Fee Calculation**: Based on notional value, not margin used
 
-*RPI orders can only match with Retail Profile orders
+

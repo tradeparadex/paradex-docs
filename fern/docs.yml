@@ -229,6 +229,9 @@ navigation:
                       path: ./pages/instruments-guide/futures/tier-1/sol-usd-perp.mdx
                 - section: Tier 2
                   contents:
+                    - page: 0G-USD-PERP
+                      slug: 0g-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/0g-usd-perp.mdx
                     - page: AAVE-USD-PERP
                       slug: aave-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/aave-usd-perp.mdx

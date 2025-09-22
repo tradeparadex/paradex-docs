@@ -310,6 +310,9 @@ navigation:
                     - page: GRASS-USD-PERP
                       slug: grass-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/grass-usd-perp.mdx
+                    - page: HEMI-USD-PERP
+                      slug: hemi-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/hemi-usd-perp.mdx
                     - page: HYPE-USD-PERP
                       slug: hype-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
@@ -370,6 +373,9 @@ navigation:
                     - page: mMOG-USD-PERP
                       slug: mmog-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/mmog-usd-perp.mdx
+                    - page: MERL-USD-PERP
+                      slug: merl-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/merl-usd-perp.mdx
                     - page: MOODENG-USD-PERP
                       slug: moodeng-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
@@ -472,6 +478,9 @@ navigation:
                     - page: SUI-USD-PERP
                       slug: sui-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/sui-usd-perp.mdx
+                    - page: SUN-USD-PERP
+                      slug: sun-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/sun-usd-perp.mdx
                     - page: SYRUP-USD-PERP
                       slug: syrup-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/syrup-usd-perp.mdx

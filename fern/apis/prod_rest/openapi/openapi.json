@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.101.4"
+    "version": "1.101.5"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -441,6 +441,44 @@
         ],
         "summary": "Updates account profile username fields",
         "operationId": "update-account-profile-username",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.AccountProfileResp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/account/referrer": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Add missing account referrer within a certain time window after account creation.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates account referred_by field",
+        "operationId": "update-account-referrer",
         "responses": {
           "200": {
             "description": "OK",
@@ -6306,9 +6344,11 @@
         "TRANSACTION_NOT_FOUND",
         "OFFER_NOT_FOUND",
         "MARKET_MARGIN_RESTRICTED",
+        "NOT_UNIQUE",
+        "ACCOUNT_ALREADY_REFERRED",
+        "ONBOARDING_PERIOD_EXPIRED",
         "TOKEN_LIMIT_REACHED",
-        "INVALID_TOKEN_SCOPE",
-        "NOT_UNIQUE"
+        "INVALID_TOKEN_SCOPE"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -6385,9 +6425,11 @@
         "ErrorCodeString_TransactionNotFound",
         "ErrorCodeString_OfferNotFound",
         "ErrorCodeString_MarketMarginRestricted",
+        "ErrorCodeString_NotUnique",
+        "ErrorCodeString_AccountAlreadyReferred",
+        "ErrorCodeString_OnboardingPeriodExpired",
         "ErrorCodeString_TokenLimitReached",
-        "ErrorCodeString_InvalidTokenScope",
-        "ErrorCodeString_NotUnique"
+        "ErrorCodeString_InvalidTokenScope"
       ]
     },
     "responses.ErrorResponse": {

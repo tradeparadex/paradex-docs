@@ -1,50 +1,29 @@
-# Trading Fees
+# Paradex Trading Fees
+
+Paradex offers different fee structures based on your trading profile and instrument type. UI traders enjoy completely free futures trading, while API traders have access to standard rates and specialized liquidity provision options.
 
 ## Perpetual Futures
 
-### Retail Profile (Opt-in) - Default for UI Traders
-**Completely FREE for all retail traders!**
-
-| Order Type | Maker Fee | Taker Fee |
-| ---------- | --------- | --------- |
-| All Orders | **Free** (0%) | **Free** (0%) |
-
-All trading through the Paradex application and web interface is completely free with no minimum volume requirements.
-
-### Standard Profile - Default for API Traders
-
-| Order Type | Maker Fee | Taker Fee | Comments |
-| ---------- | --------- | --------- | -------- |
-| Standard Orders | 0.25 bp (0.0025%) | 2.0 bp (0.02%) | Simple fee structure for API traders |
-| RPI Orders | 0.5 bp (0.005%) | N/A | Special liquidity provision for retail traders |
-
-**RPI orders** are a special order type that provides liquidity specifically to retail traders. They must be placed inside the spread and can only match with Retail Profile orders.
-
----
+| Profile Type | Description | Maker Fee | Taker Fee | Settlement Fee |
+|--------------|-------------|-----------|-----------|----------------|
+| **Retail Profile** | (Opt-in) - Default for UI Traders | **FREE (0%)** | **FREE (0%)** | 0.015% |
+| **API - Standard** | Default for API Traders | 0.0025% | 0.02% | 0.015% |
+| **API - RPI** | Opt in for orders that only match with Retail Profile | 0.005% | N/A* | 0.015% |
 
 ## Perpetual Options
 
-| Order Type | Taker Fee | Maker Fee | Cap / Floor |
-| ---------- | --------- | --------- | ----------- |
-| All Orders | 0.03%     | -0.01%    | 25% / -8%   |
+| Profile Type | Description | Maker Fee | Taker Fee | Settlement Fee |
+|--------------|-------------|-----------|-----------|----------------|
+| **Retail Profile** | (Opt-in) - Default for UI Traders | -0.01% (rebate) | 0.03% | 0.01% (25% cap) |
+| **API - Standard** | Default for API Traders | -0.01% (rebate) | 0.03% | 0.01% (25% cap) |
+| **API - RPI** | Opt in for orders that only match with Retail Profile | -0.01% (rebate) | 0.03% | 0.01% (25% cap) |
 
 ---
 
-## Settlement Fees
+## Key Notes:
+- **Retail Profile**: Default for UI traders - completely FREE futures trading
+- **API - Standard**: Default for API traders - standard fee structure  
+- **API - RPI**: Special liquidity provision orders that match only with Retail Profile traders
+- **Fee Calculation**: Based on notional value, not margin used
 
-| Instrument        | Fee    | Cap |
-| ----------------- | ------ | --- |
-| Perpetual Futures | 0.015% | N/A |
-| Perpetual Options | 0.01%  | 25% |
-
----
-
-## Fee Calculation
-
-Fees are calculated based on the **notional value** of your trade, not the margin you put up.
-
-<Tip title="Fee Example">
-  If you open a $25,000 ETH perpetual position with $2,500 in margin (10x
-  leverage), fees are charged on the full $25,000 notional value, not your
-  $2,500 margin.
-</Tip>
+*RPI orders can only match with Retail Profile orders

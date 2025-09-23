@@ -409,9 +409,6 @@ navigation:
                     - page: OM-USD-PERP
                       slug: om-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/om-usd-perp.mdx
-                    - page: OMNI-USD-PERP
-                      slug: omni-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/omni-usd-perp.mdx
                     - page: ONDO-USD-PERP
                       slug: ondo-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ondo-usd-perp.mdx

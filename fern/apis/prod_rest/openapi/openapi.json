@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.101.5"
+    "version": "1.101.6"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -4245,246 +4245,6 @@
           }
         }
       }
-    },
-    "/xp/balance": {
-      "get": {
-        "security": [
-          {
-            "BearerToken": []
-          }
-        ],
-        "description": "Get the user's current XP balance, available balance for transfers, and pending XP in claimed but unsettled offers",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "XPTransfers"
-        ],
-        "summary": "Get comprehensive XP balance information for the authenticated user",
-        "operationId": "get-xp-balance",
-        "responses": {
-          "200": {
-            "description": "XP balance information retrieved successfully",
-            "schema": {
-              "$ref": "#/definitions/responses.GetXPBalanceResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          }
-        }
-      }
-    },
-    "/xp/offer": {
-      "post": {
-        "security": [
-          {
-            "BearerToken": []
-          }
-        ],
-        "description": "Register a new XP transfer offer for selling XP at a specified price.\nThe offer will be available for other users to claim by providing a\nvalid USDC transfer transaction.\n",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "XPTransfers"
-        ],
-        "summary": "Register a new XP transfer offer",
-        "operationId": "register-xp-offer",
-        "parameters": [
-          {
-            "description": "XP transfer offer registration request",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/requests.RegisterOfferRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Offer registered successfully",
-            "schema": {
-              "$ref": "#/definitions/responses.RegisterOfferResponse"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          }
-        }
-      }
-    },
-    "/xp/offer/{offer_id}": {
-      "post": {
-        "security": [
-          {
-            "BearerToken": []
-          }
-        ],
-        "description": "Claim an XP transfer offer by providing a valid USDC transfer transaction\nhash. The system validates the transaction on-chain and marks the offer as\nclaimed if successful.\n",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "XPTransfers"
-        ],
-        "summary": "Claim an XP transfer offer",
-        "operationId": "claim-xp-offer",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Offer ID to claim",
-            "name": "offer_id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "description": "XP transfer offer claim request",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/requests.ClaimOfferRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Offer claimed successfully",
-            "schema": {
-              "$ref": "#/definitions/responses.ClaimOfferResponse"
-            }
-          },
-          "202": {
-            "description": "Transaction not found on blockchain, retry later",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          },
-          "400": {
-            "description": "Bad request - validation error, transaction rejected, or business logic failure",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          },
-          "404": {
-            "description": "Offer not found",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          }
-        }
-      }
-    },
-    "/xp/offers": {
-      "get": {
-        "security": [
-          {
-            "BearerToken": []
-          }
-        ],
-        "description": "Get XP transfer offers for an account. If role is not specified, returns all\noffers (both as maker and taker). If role is specified, filters by that role\nonly.\n",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "XPTransfers"
-        ],
-        "summary": "Get XP transfer offers for an account",
-        "operationId": "get-offers-for-account",
-        "parameters": [
-          {
-            "enum": [
-              "maker",
-              "taker"
-            ],
-            "type": "string",
-            "description": "Role of the account (maker or taker). If not specified, returns all offers for the account",
-            "name": "role",
-            "in": "query"
-          },
-          {
-            "type": "string",
-            "description": "Cursor for pagination",
-            "name": "cursor",
-            "in": "query"
-          },
-          {
-            "maximum": 5000,
-            "minimum": 1,
-            "type": "integer",
-            "description": "Number of results per page (default: 100, max: 5000)",
-            "name": "page_size",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of offers retrieved successfully",
-            "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/definitions/responses.PaginatedAPIResults"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "results": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/definitions/responses.XPTransferOffer"
-                      }
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -4844,16 +4604,6 @@
         }
       }
     },
-    "requests.ClaimOfferRequest": {
-      "type": "object",
-      "properties": {
-        "tx_hash": {
-          "description": "Transaction hash of the USDC transfer. This must be a single call transaction of a paraclear USDC transfer.",
-          "type": "string",
-          "example": "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
-        }
-      }
-    },
     "requests.CreateSubkey": {
       "type": "object",
       "properties": {
@@ -5125,31 +4875,6 @@
         "PriceKindMark",
         "PriceKindUnderlying"
       ]
-    },
-    "requests.RegisterOfferRequest": {
-      "type": "object",
-      "properties": {
-        "expiry_duration": {
-          "description": "Duration in seconds until offer expires (minimum 3600 = 1 hour, maximum 86400 = 24 hours)",
-          "type": "integer",
-          "example": 86400
-        },
-        "price": {
-          "description": "Price in USDC (as string to handle precision)",
-          "type": "string",
-          "example": "1000"
-        },
-        "taker": {
-          "description": "Address of the taker (buyer)",
-          "type": "string",
-          "example": "0x1234567890abcdef"
-        },
-        "xp_amount": {
-          "description": "Amount of XP to transfer",
-          "type": "integer",
-          "example": 100
-        }
-      }
     },
     "requests.UpdateAccountMaxSlippageRequest": {
       "type": "object",
@@ -6200,19 +5925,6 @@
         }
       }
     },
-    "responses.ClaimOfferResponse": {
-      "type": "object",
-      "properties": {
-        "offer": {
-          "description": "The claimed XP transfer offer",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.XPTransferOffer"
-            }
-          ]
-        }
-      }
-    },
     "responses.CreateTokenResponse": {
       "type": "object",
       "properties": {
@@ -6738,31 +6450,6 @@
           "items": {
             "$ref": "#/definitions/responses.AccountInfoResponse"
           }
-        }
-      }
-    },
-    "responses.GetXPBalanceResponse": {
-      "type": "object",
-      "properties": {
-        "available_balance": {
-          "description": "Available XP for transfers (current - pending outgoing)",
-          "type": "integer",
-          "example": 800
-        },
-        "current_balance": {
-          "description": "Current XP balance from leaderboard",
-          "type": "integer",
-          "example": 1000
-        },
-        "pending_incoming_xp": {
-          "description": "XP in claimed but unsettled offers as taker",
-          "type": "integer",
-          "example": 100
-        },
-        "pending_outgoing_xp": {
-          "description": "XP in claimed but unsettled offers as maker",
-          "type": "integer",
-          "example": 200
         }
       }
     },
@@ -7751,19 +7438,6 @@
         }
       }
     },
-    "responses.RegisterOfferResponse": {
-      "type": "object",
-      "properties": {
-        "offer": {
-          "description": "The created XP transfer offer",
-          "allOf": [
-            {
-              "$ref": "#/definitions/responses.XPTransferOffer"
-            }
-          ]
-        }
-      }
-    },
     "responses.RequestInfo": {
       "type": "object",
       "properties": {
@@ -8693,66 +8367,6 @@
           "description": "Address of the vault factory contract",
           "type": "string",
           "example": "0x1234567890abcdef"
-        }
-      }
-    },
-    "responses.XPTransferOffer": {
-      "type": "object",
-      "properties": {
-        "claimed_at": {
-          "description": "Claim timestamp (nanoseconds since epoch, 0 if not claimed)",
-          "type": "integer",
-          "example": 1640995200000000000
-        },
-        "created_at": {
-          "description": "Creation timestamp (nanoseconds since epoch)",
-          "type": "integer",
-          "example": 1640995200000000000
-        },
-        "expires_at": {
-          "description": "Expiration timestamp (nanoseconds since epoch)",
-          "type": "integer",
-          "example": 1640995200000000000
-        },
-        "id": {
-          "description": "Unique offer identifier",
-          "type": "string",
-          "example": "offer_123"
-        },
-        "maker": {
-          "description": "Address of the maker (seller)",
-          "type": "string",
-          "example": "0x1234567890abcdef"
-        },
-        "price": {
-          "description": "Price in USDC (as string to handle precision)",
-          "type": "string",
-          "example": "1000"
-        },
-        "sequence": {
-          "description": "Sequence number for this maker",
-          "type": "integer",
-          "example": 1
-        },
-        "settled_at": {
-          "description": "Settlement timestamp (nanoseconds since epoch, 0 if not settled)",
-          "type": "integer",
-          "example": 0
-        },
-        "taker": {
-          "description": "Address of the taker (buyer)",
-          "type": "string",
-          "example": "0xfedcba0987654321"
-        },
-        "tx_hash": {
-          "description": "Transaction hash (empty if not claimed)",
-          "type": "string",
-          "example": "0xabcdef1234567890..."
-        },
-        "xp_amount": {
-          "description": "Amount of XP to transfer",
-          "type": "integer",
-          "example": 100
         }
       }
     }

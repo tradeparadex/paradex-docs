@@ -1,0 +1,21 @@
+---
+title: Automatic Options Listing
+---
+
+### Strike Classification & Listing Rules
+
+Strikes are dynamically classified into three moneyness ranges based on the call delta:
+
+- **ATM (At-the-Money):** Call Delta between 0.40 and 0.60
+- **Outer:** Call Delta between 0.20 and 0.40 or between 0.60 and 0.80
+- **Wings:** Call Delta below 0.20 or above 0.80
+
+Each moneyness range follows specific strike step sizes depending on the underlying asset:
+
+| **Moneyness** | **BTC** | **ETH** | **SOL** | **HYPE** |
+| ------------- | ------- | ------- | ------- | -------- |
+| **ATM**       | $500    | $50     | $5      | $1       |
+| **Outer**     | $1,000  | $100    | $10     | $2       |
+| **Wings**     | $2,000  | $200    | $20     | $5       |
+
+Options are automatically listed every **8 hours**, at: **00:00 UTC, 08:00 UTC, and 16:00 UTC**

@@ -105,6 +105,9 @@ navigation:
               - page: Trade Examples
                 slug: trade-examples
                 path: ./pages/options/trade-examples.mdx
+              - page: Automatic Options Listing
+                slug: automatic-options-listing
+                path: ./pages/options/automatic-options-listing.mdx
           - section: Vaults
             contents:
               - page: Introduction

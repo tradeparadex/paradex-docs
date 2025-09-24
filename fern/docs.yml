@@ -553,6 +553,9 @@ navigation:
                     - page: YZY-USD-PERP
                       slug: yzy-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/yzy-usd-perp.mdx
+                    - page: ZEC-USD-PERP
+                      slug: zec-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/zec-usd-perp.mdx
                     - page: ZORA-USD-PERP
                       slug: zora-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zora-usd-perp.mdx

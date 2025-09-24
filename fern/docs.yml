@@ -70,7 +70,7 @@ navigation:
             slug: quote-quality
             path: ./pages/points-and-referrals/quote-quality.mdx
           - page: Affiliate Program
-            path: ./pages/points-and-referrals/affiliate.mdx
+            path: ./pages/points-and-referrals/affiliate-program.mdx
           - page: Referral Program
             path: ./pages/points-and-referrals/referrals.mdx
 

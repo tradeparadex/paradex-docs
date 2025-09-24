@@ -559,6 +559,9 @@ navigation:
                     - page: ZRO-USD-PERP
                       slug: zro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
+                    - page: ZEC-USD-PERP
+                      slug: zec-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/zec-usd-perp.mdx
             - section: Options
               contents:
                 - page: BTC

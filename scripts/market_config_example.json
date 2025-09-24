@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+"""
+Example configuration file for adding new markets.
+Copy this file and modify the values as needed.
+"""
+
+# Example configuration for a new market
+MARKET_CONFIG = {
+    "contractName": "TOKEN-USD-PERP",
+    "productType": "TOKEN Perpetual Future",
+    "settlementCurrency": "USDC",
+    "baseCurrency": "TOKEN",
+    "quoteCurrency": "USD",
+    "fundingPeriod": "8 hours",
+    "tickSize": "0.00001 USD",
+    "orderSizeIncrement": "1 TOKEN",
+    "minOrderValue": "50 USD",
+    "maxOrderSize": "100,000 TOKEN",
+    "maxOpenOrders": "75",
+    "positionLimit": "500,000 TOKEN",
+    "priceBandFactor": "20%",
+    "fundingClampingRate": "5.0%",
+    "ewmaFactor": "15%",
+    "imf": "20%",
+    "mmf": "50%"
+}
+
+# Example usage:
+# python add_new_market.py new-token-usd-perp tier2 market_config.json

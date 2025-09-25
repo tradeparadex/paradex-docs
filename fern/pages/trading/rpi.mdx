@@ -29,15 +29,18 @@ Activating the Retail profile is opt-in and eligibility is determined through au
 Suitable for retail traders seeking price improvement.
 
 - **Order Submission Speed Bump:** `350ms`
-- **Order Cancel Speed Bump:** `0ms`
+- **Order Cancel Speed Bump:** `300ms`
 - **Activity Thresholds**: If exceeded, orders will lose access to RPI liquidity.
     - `10` orders/second
     - `10` orders/minute
     - `100` orders/hour
     - `1000` orders/24 hours
 
-Activated if order is submitted with retail JWT token. 
 To obtain retail token pass `?token_usage=interactive` to `/v1/auth` endpoint.
+
+<Note>
+Orders use Retail Profile when submitted with a retail JWT token while under activity limits. Once limits are exceeded, all orders—including those with retail JWT tokens—automatically use Standard Profile and its fee structure until the account returns below the threshold.
+</Note>
 
 ### Standard Profile - Default for API Traders
 

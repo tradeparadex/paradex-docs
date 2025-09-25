@@ -271,9 +271,6 @@ navigation:
                     - page: BNB-USD-PERP
                       slug: bnb-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx
-                    - page: CRO-USD-PERP
-                      slug: cro-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/cro-usd-perp.mdx
                     - page: CRV-USD-PERP
                       slug: crv-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx
@@ -463,9 +460,6 @@ navigation:
                     - page: S-USD-PERP
                       slug: s-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/s-usd-perp.mdx
-                    - page: SCR-USD-PERP
-                      slug: scr-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/scr-usd-perp.mdx
                     - page: SEI-USD-PERP
                       slug: sei-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/sei-usd-perp.mdx
@@ -508,9 +502,6 @@ navigation:
                     - page: TRX-USD-PERP
                       slug: trx-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/trx-usd-perp.mdx
-                    - page: TST-USD-PERP
-                      slug: tst-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/tst-usd-perp.mdx
                     - page: UNI-USD-PERP
                       slug: uni-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/uni-usd-perp.mdx

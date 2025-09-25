@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.101.6"
+    "version": "1.101.8"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -85,7 +85,8 @@
             "enum": [
               "pnl",
               "value",
-              "volume"
+              "volume",
+              "fee_savings"
             ],
             "type": "string",
             "description": "Type of data",
@@ -4248,73 +4249,6 @@
     }
   },
   "definitions": {
-    "messagesv1.FeeWithCap": {
-      "type": "object",
-      "properties": {
-        "fee": {
-          "description": "the fee rate",
-          "type": "number"
-        },
-        "fee_cap": {
-          "description": "fee cap (used for option)",
-          "type": "number"
-        },
-        "fee_floor": {
-          "description": "fee floor (used for option)",
-          "type": "number"
-        }
-      }
-    },
-    "messagesv1.MakerTakerFee": {
-      "type": "object",
-      "properties": {
-        "maker_fee": {
-          "description": "fee setup for makers",
-          "allOf": [
-            {
-              "$ref": "#/definitions/messagesv1.FeeWithCap"
-            }
-          ]
-        },
-        "taker_fee": {
-          "description": "fee setup for takers",
-          "allOf": [
-            {
-              "$ref": "#/definitions/messagesv1.FeeWithCap"
-            }
-          ]
-        }
-      }
-    },
-    "messagesv1.MarketFeeConfig": {
-      "type": "object",
-      "properties": {
-        "api_fee": {
-          "description": "fee config for API order",
-          "allOf": [
-            {
-              "$ref": "#/definitions/messagesv1.MakerTakerFee"
-            }
-          ]
-        },
-        "interactive_fee": {
-          "description": "fee config for interactive order\ni.e. retail order coming from UI",
-          "allOf": [
-            {
-              "$ref": "#/definitions/messagesv1.MakerTakerFee"
-            }
-          ]
-        },
-        "rpi_fee": {
-          "description": "fee config for RPI order",
-          "allOf": [
-            {
-              "$ref": "#/definitions/messagesv1.MakerTakerFee"
-            }
-          ]
-        }
-      }
-    },
     "requests.AccountMarginRequest": {
       "type": "object",
       "required": [
@@ -6059,6 +5993,7 @@
         "NOT_UNIQUE",
         "ACCOUNT_ALREADY_REFERRED",
         "ONBOARDING_PERIOD_EXPIRED",
+        "ONBOARDING_RATE_LIMITED",
         "TOKEN_LIMIT_REACHED",
         "INVALID_TOKEN_SCOPE"
       ],
@@ -6140,6 +6075,7 @@
         "ErrorCodeString_NotUnique",
         "ErrorCodeString_AccountAlreadyReferred",
         "ErrorCodeString_OnboardingPeriodExpired",
+        "ErrorCodeString_OnboardingRateLimited",
         "ErrorCodeString_TokenLimitReached",
         "ErrorCodeString_InvalidTokenScope"
       ]
@@ -6152,6 +6088,26 @@
         },
         "message": {
           "type": "string"
+        }
+      }
+    },
+    "responses.FeeWithCap": {
+      "type": "object",
+      "properties": {
+        "fee": {
+          "description": "fee rate",
+          "type": "string",
+          "example": "0.0003"
+        },
+        "fee_cap": {
+          "description": "fee cap (used for option)",
+          "type": "string",
+          "example": "0.5"
+        },
+        "fee_floor": {
+          "description": "fee floor (used for option)",
+          "type": "string",
+          "example": "-0.5"
         }
       }
     },
@@ -6557,6 +6513,27 @@
         }
       }
     },
+    "responses.MakerTakerFee": {
+      "type": "object",
+      "properties": {
+        "maker_fee": {
+          "description": "fee for maker",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.FeeWithCap"
+            }
+          ]
+        },
+        "taker_fee": {
+          "description": "fee for taker",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.FeeWithCap"
+            }
+          ]
+        }
+      }
+    },
     "responses.MarketChainDetails": {
       "type": "object",
       "properties": {
@@ -6604,6 +6581,35 @@
           "description": "Market symbol",
           "type": "string",
           "example": "ETH-USD-PERP"
+        }
+      }
+    },
+    "responses.MarketFeeConfig": {
+      "type": "object",
+      "properties": {
+        "api_fee": {
+          "description": "fee for order coming from API",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.MakerTakerFee"
+            }
+          ]
+        },
+        "interactive_fee": {
+          "description": "fee for order coming from UI",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.MakerTakerFee"
+            }
+          ]
+        },
+        "rpi_fee": {
+          "description": "fee for order coming from API with RPI instruction",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.MakerTakerFee"
+            }
+          ]
         }
       }
     },
@@ -6669,7 +6675,7 @@
           "description": "Fee config indicates override fee for the market. If not set, it will use the global exchange fee config",
           "allOf": [
             {
-              "$ref": "#/definitions/messagesv1.MarketFeeConfig"
+              "$ref": "#/definitions/responses.MarketFeeConfig"
             }
           ]
         },

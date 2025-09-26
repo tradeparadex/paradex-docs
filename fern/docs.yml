@@ -553,7 +553,11 @@ navigation:
                     - page: ZRO-USD-PERP
                       slug: zro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
+
             - section: Options
+                    - page: SNX-USD-PERP
+                      slug: snx-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/snx-usd-perp.mdx
               contents:
                 - page: BTC
                   slug: btc

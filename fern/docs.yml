@@ -247,6 +247,9 @@ navigation:
                     - page: AIXBT-USD-PERP
                       slug: aixbt-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/aixbt-usd-perp.mdx
+                    - page: APEX-USD-PERP
+                      slug: apex-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/apex-usd-perp.mdx
                     - page: APT-USD-PERP
                       slug: apt-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/apt-usd-perp.mdx
@@ -553,11 +556,7 @@ navigation:
                     - page: ZRO-USD-PERP
                       slug: zro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
-
             - section: Options
-                    - page: APEX-USD-PERP
-                      slug: apex-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/apex-usd-perp.mdx
               contents:
                 - page: BTC
                   slug: btc

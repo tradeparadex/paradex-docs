@@ -247,6 +247,9 @@ navigation:
                     - page: AIXBT-USD-PERP
                       slug: aixbt-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/aixbt-usd-perp.mdx
+                    - page: APEX-USD-PERP
+                      slug: apex-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/apex-usd-perp.mdx
                     - page: APT-USD-PERP
                       slug: apt-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/apt-usd-perp.mdx

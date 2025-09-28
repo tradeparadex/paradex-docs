@@ -460,6 +460,9 @@ navigation:
                     - page: SEI-USD-PERP
                       slug: sei-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/sei-usd-perp.mdx
+                    - page: SNX-USD-PERP
+                      slug: snx-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/snx-usd-perp.mdx
                     - page: SOPH-USD-PERP
                       slug: soph-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/soph-usd-perp.mdx
@@ -553,11 +556,7 @@ navigation:
                     - page: ZRO-USD-PERP
                       slug: zro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
-
             - section: Options
-                    - page: SNX-USD-PERP
-                      slug: snx-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/snx-usd-perp.mdx
               contents:
                 - page: BTC
                   slug: btc

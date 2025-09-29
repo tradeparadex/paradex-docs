@@ -256,6 +256,9 @@ navigation:
                     - page: ARB-USD-PERP
                       slug: arb-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/arb-usd-perp.mdx
+                    - page: ARKM-USD-PERP
+                      slug: arkm-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/arkm-usd-perp.mdx
                     - page: ASTER-USD-PERP
                       slug: aster-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/aster-usd-perp.mdx
@@ -418,6 +421,9 @@ navigation:
                     - page: OP-USD-PERP
                       slug: op-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/op-usd-perp.mdx
+                    - page: ORDER-USD-PERP
+                      slug: order-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/order-usd-perp.mdx
                     - page: ORDI-USD-PERP
                       slug: ordi-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ordi-usd-perp.mdx
@@ -535,6 +541,9 @@ navigation:
                     - page: WLFI-USD-PERP
                       slug: wlfi-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/wlfi-usd-perp.mdx
+                    - page: WOO-USD-PERP
+                      slug: woo-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/woo-usd-perp.mdx
                     - page: XLM-USD-PERP
                       slug: xlm-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/xlm-usd-perp.mdx

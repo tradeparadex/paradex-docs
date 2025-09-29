@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.101.8"
+    "version": "1.101.10"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -5994,6 +5994,8 @@
         "ACCOUNT_ALREADY_REFERRED",
         "ONBOARDING_PERIOD_EXPIRED",
         "ONBOARDING_RATE_LIMITED",
+        "SUBACCOUNTS_LIMIT_EXCEEDED",
+        "INSUFFICIENT_ETH_BALANCE",
         "TOKEN_LIMIT_REACHED",
         "INVALID_TOKEN_SCOPE"
       ],
@@ -6076,6 +6078,8 @@
         "ErrorCodeString_AccountAlreadyReferred",
         "ErrorCodeString_OnboardingPeriodExpired",
         "ErrorCodeString_OnboardingRateLimited",
+        "ErrorCodeString_SubaccountsLimitExceeded",
+        "ErrorCodeString_InsufficientEthBalance",
         "ErrorCodeString_TokenLimitReached",
         "ErrorCodeString_InvalidTokenScope"
       ]

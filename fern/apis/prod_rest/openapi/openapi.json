@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.101.10"
+    "version": "1.102.1"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -6318,12 +6318,20 @@
           "description": "Current funding index value as a decimal string",
           "type": "string"
         },
+        "funding_period_hours": {
+          "description": "Actual funding period in hours for this market",
+          "type": "number"
+        },
         "funding_premium": {
           "description": "Current funding premium as a decimal string",
           "type": "string"
         },
         "funding_rate": {
-          "description": "Current funding rate as a decimal string",
+          "description": "Raw funding rate for the actual funding period as a decimal string",
+          "type": "string"
+        },
+        "funding_rate_8h": {
+          "description": "Normalized 8-hour funding rate as a decimal string",
           "type": "string"
         },
         "market": {

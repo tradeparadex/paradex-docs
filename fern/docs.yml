@@ -307,6 +307,9 @@ navigation:
                     - page: FARTCOIN-USD-PERP
                       slug: fartcoin-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/fartcoin-usd-perp.mdx
+                    - page: FF-USD-PERP
+                      slug: ff-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/ff-usd-perp.mdx
                     - page: FIL-USD-PERP
                       slug: fil-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/fil-usd-perp.mdx
@@ -454,6 +457,9 @@ navigation:
                     - page: PYTH-USD-PERP
                       slug: pyth-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/pyth-usd-perp.mdx
+                    - page: PURR-USD-PERP
+                      slug: purr-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/purr-usd-perp.mdx
                     - page: RAY-USD-PERP
                       slug: ray-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ray-usd-perp.mdx

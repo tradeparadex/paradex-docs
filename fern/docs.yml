@@ -490,9 +490,6 @@ navigation:
                     - page: STBL-USD-PERP
                       slug: stbl-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/stbl-usd-perp.mdx
-                    - page: STRK-USD-PERP
-                      slug: strk-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/strk-usd-perp.mdx
                     - page: SUI-USD-PERP
                       slug: sui-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/sui-usd-perp.mdx

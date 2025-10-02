@@ -235,6 +235,9 @@ navigation:
                     - page: 0G-USD-PERP
                       slug: 0g-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/0g-usd-perp.mdx
+                    - page: 2Z-USD-PERP
+                      slug: 2z-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/2z-usd-perp.mdx
                     - page: AAVE-USD-PERP
                       slug: aave-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/aave-usd-perp.mdx

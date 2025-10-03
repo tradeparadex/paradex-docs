@@ -280,6 +280,9 @@ navigation:
                     - page: BNB-USD-PERP
                       slug: bnb-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx
+                    - page: CAKE-USD-PERP
+                      slug: cake-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/cake-usd-perp.mdx
                     - page: CRV-USD-PERP
                       slug: crv-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx

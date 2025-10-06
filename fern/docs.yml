@@ -415,9 +415,6 @@ navigation:
                     - page: NEIRO-USD-PERP
                       slug: neiro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/neiro-usd-perp.mdx
-                    - page: NEWT-USD-PERP
-                      slug: newt-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/newt-usd-perp.mdx
                     - page: NIL-USD-PERP
                       slug: nil-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/nil-usd-perp.mdx
@@ -448,9 +445,6 @@ navigation:
                     - page: PLUME-USD-PERP
                       slug: plume-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/plume-usd-perp.mdx
-                    - page: PNUT-USD-PERP
-                      slug: pnut-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/pnut-usd-perp.mdx
                     - page: POPCAT-USD-PERP
                       slug: popcat-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/popcat-usd-perp.mdx
@@ -502,9 +496,6 @@ navigation:
                     - page: SUI-USD-PERP
                       slug: sui-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/sui-usd-perp.mdx
-                    - page: SUN-USD-PERP
-                      slug: sun-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/sun-usd-perp.mdx
                     - page: SYRUP-USD-PERP
                       slug: syrup-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/syrup-usd-perp.mdx

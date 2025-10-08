@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.102.1"
+    "version": "1.102.2"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -326,6 +326,58 @@
           },
           "400": {
             "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/account/profile/notifications": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Updates user notification preferences for orders, fills, announcements, and transfers. All fields are optional - only provided fields will be updated.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates account notification preferences",
+        "operationId": "update-account-notification-preferences",
+        "parameters": [
+          {
+            "description": "Update notification preferences request (all fields optional)",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.UpdateNotificationPreferencesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.AccountProfileResp"
+            }
+          },
+          "400": {
+            "description": "Validation Error",
             "schema": {
               "$ref": "#/definitions/responses.ApiError"
             }
@@ -4821,6 +4873,27 @@
         }
       }
     },
+    "requests.UpdateNotificationPreferencesRequest": {
+      "type": "object",
+      "properties": {
+        "announcements": {
+          "type": "boolean",
+          "example": false
+        },
+        "fills": {
+          "type": "boolean",
+          "example": true
+        },
+        "orders": {
+          "type": "boolean",
+          "example": true
+        },
+        "transfers": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    },
     "requests.UpdateSizeCurrencyDisplayRequest": {
       "type": "object",
       "required": [
@@ -5004,6 +5077,9 @@
           "items": {
             "$ref": "#/definitions/responses.Nft"
           }
+        },
+        "notifications": {
+          "$ref": "#/definitions/responses.NotificationPreferencesResp"
         },
         "referral": {
           "$ref": "#/definitions/responses.ReferralConfigResp"
@@ -6967,6 +7043,27 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "responses.NotificationPreferencesResp": {
+      "type": "object",
+      "properties": {
+        "announcements": {
+          "type": "boolean",
+          "example": false
+        },
+        "fills": {
+          "type": "boolean",
+          "example": true
+        },
+        "orders": {
+          "type": "boolean",
+          "example": true
+        },
+        "transfers": {
+          "type": "boolean",
+          "example": true
         }
       }
     },

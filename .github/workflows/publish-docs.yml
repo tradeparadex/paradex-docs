@@ -13,7 +13,7 @@ jobs:
     if: ${{ github.event_name == 'push' && contains(github.ref, 'refs/heads/main') && github.run_number > 1 }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install RUM Dependencies
         working-directory: ./datadog-rum
@@ -32,4 +32,4 @@ jobs:
       - name: Publish Docs
         env:
           FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
-        run: fern generate --docs --instance https://paradex.docs.buildwithfern.com
+        run: fern generate --docs --warnings --instance https://paradex.docs.buildwithfern.com

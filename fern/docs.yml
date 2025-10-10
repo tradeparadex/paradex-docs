@@ -287,6 +287,9 @@ navigation:
                     - page: CRV-USD-PERP
                       slug: crv-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx
+                    - page: DASH-USD-PERP
+                      slug: dash-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/dash-usd-perp.mdx
                     - page: DOGE-USD-PERP
                       slug: doge-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/doge-usd-perp.mdx

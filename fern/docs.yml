@@ -586,12 +586,6 @@ navigation:
                 - page: ETH
                   slug: eth
                   path: ./pages/instruments-guide/options/eth.mdx
-                - page: SOL
-                  slug: sol
-                  path: ./pages/instruments-guide/options/sol.mdx
-                - page: HYPE
-                  slug: hype
-                  path: ./pages/instruments-guide/options/hype.mdx
           - page: API Authentication
             slug: api-authentication
             path: ./pages/trading/api-authentication.mdx

@@ -266,6 +266,9 @@ navigation:
                     - page: ASTER-USD-PERP
                       slug: aster-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/aster-usd-perp.mdx
+                    - page: ATOM-USD-PERP
+                      slug: atom-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/atom-usd-perp.mdx
                     - page: AVAX-USD-PERP
                       slug: avax-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/avax-usd-perp.mdx

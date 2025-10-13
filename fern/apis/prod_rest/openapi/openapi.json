@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.102.2"
+    "version": "1.102.3"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -6071,7 +6071,7 @@
         "ONBOARDING_PERIOD_EXPIRED",
         "ONBOARDING_RATE_LIMITED",
         "SUBACCOUNTS_LIMIT_EXCEEDED",
-        "INSUFFICIENT_ETH_BALANCE",
+        "INSUFFICIENT_MIN_CHAIN_BALANCE",
         "TOKEN_LIMIT_REACHED",
         "INVALID_TOKEN_SCOPE"
       ],
@@ -6155,7 +6155,7 @@
         "ErrorCodeString_OnboardingPeriodExpired",
         "ErrorCodeString_OnboardingRateLimited",
         "ErrorCodeString_SubaccountsLimitExceeded",
-        "ErrorCodeString_InsufficientEthBalance",
+        "ErrorCodeString_InsufficientMinChainBalance",
         "ErrorCodeString_TokenLimitReached",
         "ErrorCodeString_InvalidTokenScope"
       ]
@@ -6323,6 +6323,11 @@
           "description": "Order ID",
           "type": "string",
           "example": "1681462103821101699438490000"
+        },
+        "orderbook_seq_no": {
+          "description": "Orderbook sequence number after trade execution (post-execution state). Use seqno-1 for pre-execution. 0 for position transfers (liquidations, settlements)",
+          "type": "integer",
+          "example": 12345
         },
         "price": {
           "description": "Price at which order was filled",

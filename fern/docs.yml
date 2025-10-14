@@ -341,9 +341,6 @@ navigation:
                     - page: GRASS-USD-PERP
                       slug: grass-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/grass-usd-perp.mdx
-                    - page: HEMI-USD-PERP
-                      slug: hemi-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/hemi-usd-perp.mdx
                     - page: HYPE-USD-PERP
                       slug: hype-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
@@ -413,9 +410,6 @@ navigation:
                     - page: MORPHO-USD-PERP
                       slug: morpho-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/morpho-usd-perp.mdx
-                    - page: MOVE-USD-PERP
-                      slug: move-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/move-usd-perp.mdx
                     - page: MNT-USD-PERP
                       slug: mnt-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/mnt-usd-perp.mdx
@@ -428,9 +422,6 @@ navigation:
                     - page: NEIRO-USD-PERP
                       slug: neiro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/neiro-usd-perp.mdx
-                    - page: NIL-USD-PERP
-                      slug: nil-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/nil-usd-perp.mdx
                     - page: OM-USD-PERP
                       slug: om-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/om-usd-perp.mdx
@@ -491,12 +482,6 @@ navigation:
                     - page: SNX-USD-PERP
                       slug: snx-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/snx-usd-perp.mdx
-                    - page: SOPH-USD-PERP
-                      slug: soph-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/soph-usd-perp.mdx
-                    - page: SPK-USD-PERP
-                      slug: spk-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/spk-usd-perp.mdx
                     - page: SPX-USD-PERP
                       slug: spx-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/spx-usd-perp.mdx

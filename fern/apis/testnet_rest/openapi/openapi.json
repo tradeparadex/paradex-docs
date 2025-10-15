@@ -4353,6 +4353,11 @@
           "type": "string",
           "example": "BTC-USD-PERP"
         },
+        "on_behalf_of_account": {
+          "description": "ID corresponding to the configured isolated margin account. Only for isolated margin orders",
+          "type": "string",
+          "example": "0x1234567890abcdef"
+        },
         "recv_window": {
           "description": "Order will be created if it is received by API within RecvWindow milliseconds from signature timestamp, minimum is 10 milliseconds",
           "type": "integer"

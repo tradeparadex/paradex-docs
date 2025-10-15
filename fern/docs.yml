@@ -572,6 +572,9 @@ navigation:
                     - page: XRP-USD-PERP
                       slug: xrp-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx
+                    - page: YB-USD-PERP
+                      slug: yb-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/yb-usd-perp.mdx
                     - page: YZY-USD-PERP
                       slug: yzy-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/yzy-usd-perp.mdx

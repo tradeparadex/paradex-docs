@@ -28,13 +28,13 @@ Activating the Retail profile is opt-in and eligibility is determined through au
 
 Suitable for retail traders seeking price improvement.
 
-- **Order Submission Speed Bump:** `350ms`
+- **Order Submission Speed Bump:** `500ms`
 - **Order Cancel Speed Bump:** `300ms`
 - **Activity Thresholds**: If exceeded, orders will lose access to RPI liquidity.
-    - `10` orders/second
-    - `10` orders/minute
-    - `100` orders/hour
-    - `1000` orders/24 hours
+    - `5` orders / second
+    - `10` orders / minute
+    - `60` orders / hour
+    - `750` orders / 24 hours
 
 To obtain retail token pass `?token_usage=interactive` to `/v1/auth` endpoint.
 

@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.102.3"
+    "version": "1.103.0"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -3081,6 +3081,12 @@
             "name": "client_id",
             "in": "path",
             "required": true
+          },
+          {
+            "type": "string",
+            "description": "Market to cancel orders for",
+            "name": "market",
+            "in": "query"
           }
         ],
         "responses": {

@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.102.3"
+    "version": "1.103.0"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -3081,6 +3081,12 @@
             "name": "client_id",
             "in": "path",
             "required": true
+          },
+          {
+            "type": "string",
+            "description": "Market to cancel orders for",
+            "name": "market",
+            "in": "query"
           }
         ],
         "responses": {
@@ -6078,7 +6084,9 @@
         "SUBACCOUNTS_LIMIT_EXCEEDED",
         "INSUFFICIENT_MIN_CHAIN_BALANCE",
         "TOKEN_LIMIT_REACHED",
-        "INVALID_TOKEN_SCOPE"
+        "INVALID_TOKEN_SCOPE",
+        "INSUFFICIENT_TRANSFERRABLE_XP",
+        "TRANSFER_LIMIT_REACHED"
       ],
       "x-enum-comments": {
         "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -6162,7 +6170,9 @@
         "ErrorCodeString_SubaccountsLimitExceeded",
         "ErrorCodeString_InsufficientMinChainBalance",
         "ErrorCodeString_TokenLimitReached",
-        "ErrorCodeString_InvalidTokenScope"
+        "ErrorCodeString_InvalidTokenScope",
+        "ErrorCodeString_InsufficientTransferrableXP",
+        "ErrorCodeString_TransferLimitReached"
       ]
     },
     "responses.ErrorResponse": {

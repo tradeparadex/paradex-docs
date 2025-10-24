@@ -305,9 +305,6 @@ navigation:
                     - page: DOT-USD-PERP
                       slug: dot-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/dot-usd-perp.mdx
-                    - page: DRIFT-USD-PERP
-                      slug: drift-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/drift-usd-perp.mdx
                     - page: DYDX-USD-PERP
                       slug: dydx-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/dydx-usd-perp.mdx
@@ -356,9 +353,6 @@ navigation:
                     - page: HYPE-USD-PERP
                       slug: hype-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
-                    - page: INIT-USD-PERP
-                      slug: init-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/init-usd-perp.mdx
                     - page: INJ-USD-PERP
                       slug: inj-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx
@@ -470,9 +464,6 @@ navigation:
                     - page: PURR-USD-PERP
                       slug: purr-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/purr-usd-perp.mdx
-                    - page: RAY-USD-PERP
-                      slug: ray-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/ray-usd-perp.mdx
                     - page: RESOLV-USD-PERP
                       slug: resolv-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/resolv-usd-perp.mdx
@@ -524,9 +515,6 @@ navigation:
                     - page: USUAL-USD-PERP
                       slug: usual-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/usual-usd-perp.mdx
-                    - page: VINE-USD-PERP
-                      slug: vine-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/vine-usd-perp.mdx
                     - page: VIRTUAL-USD-PERP
                       slug: virtual-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/virtual-usd-perp.mdx
@@ -566,9 +554,6 @@ navigation:
                     - page: YB-USD-PERP
                       slug: yb-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/yb-usd-perp.mdx
-                    - page: YZY-USD-PERP
-                      slug: yzy-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/yzy-usd-perp.mdx
                     - page: ZEC-USD-PERP
                       slug: zec-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zec-usd-perp.mdx

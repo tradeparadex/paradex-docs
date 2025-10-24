@@ -28,6 +28,10 @@ Activating the Retail profile is opt-in and eligibility is determined through au
 
 Suitable for retail traders seeking price improvement.
 
+<Card title="Faster Fills for Retail Traders">
+  To improve trade execution speed for retail users, API traders now receive a **75% fee discount** when they match with passive orders from a Retail Profile. This incentive is designed to get your passive orders filled faster. No action is required on your part.
+</Card>
+
 - **Order Submission Speed Bump:** `500ms`
 - **Order Cancel Speed Bump:** `300ms`
 - **Activity Thresholds**: If exceeded, orders will lose access to RPI liquidity.
@@ -37,10 +41,6 @@ Suitable for retail traders seeking price improvement.
     - `750` orders / 24 hours
 
 To obtain retail token pass `?token_usage=interactive` to `/v1/auth` endpoint.
-
-<Note>
-Orders use Retail Profile when submitted with a retail JWT token while under activity limits. Once limits are exceeded, all orders—including those with retail JWT tokens—automatically use Standard Profile and its fee structure until the account returns below the threshold.
-</Note>
 
 ### Standard Profile - Default for API Traders
 

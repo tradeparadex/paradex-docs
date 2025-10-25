@@ -1,0 +1,10 @@
+{
+  "tvlLimit": {
+    "rawValue": "175000000000000",
+    "usdcValue": 175000000,
+    "formattedValue": "175 million USDC",
+    "lastUpdated": "2025-10-15T08:38:38.166Z",
+    "source": "Ethereum Contract",
+    "contractAddress": "0xe3cbe3a636ab6a754e9e41b12b09d09ce9e53db3"
+  }
+}

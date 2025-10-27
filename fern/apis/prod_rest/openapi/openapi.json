@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.103.0"
+    "version": "1.103.1"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -3148,7 +3148,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Modify an existing open order by changing its price and/or size.\nThe modified order maintains its original order ID.\n",
+        "description": "Modify an existing open limit order or TPSL order by changing its\n`price`, `size`, and/or `trigger_price`.\n\nFor untriggered TPSL orders, you can modify `trigger_price`,\n`price` (limit orders only), and `size`.\nOnce a TPSL limit order triggers you can modify its `price` and `size`\njust like a regular limit order,\nbut the `trigger_price` is no longer modifiable.\n\nTPSL market orders execute immediately when triggered and\ncannot be modified afterwards.\n\nThe modified order maintains its original order ID.\n",
         "produces": [
           "application/json"
         ],
@@ -4728,6 +4728,11 @@
           "description": "Existing or modified size of the order",
           "type": "string",
           "example": "1.213"
+        },
+        "trigger_price": {
+          "description": "Existing or modified trigger price of a TPSL order",
+          "type": "string",
+          "example": "29500.12"
         },
         "type": {
           "description": "Existing type of the order",

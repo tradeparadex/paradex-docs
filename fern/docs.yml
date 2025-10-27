@@ -392,9 +392,6 @@ navigation:
                     - page: MET-USD-PERP
                       slug: met-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/met-usd-perp.mdx
-                    - page: mMOG-USD-PERP
-                      slug: mmog-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/mmog-usd-perp.mdx
                     - page: MERL-USD-PERP
                       slug: merl-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/merl-usd-perp.mdx

@@ -344,9 +344,6 @@ navigation:
                     - page: HYPE-USD-PERP
                       slug: hype-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
-                    - page: HUMA-USD-PERP
-                      slug: huma-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/huma-usd-perp.mdx
                     - page: HYPER-USD-PERP
                       slug: hyper-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/hyper-usd-perp.mdx
@@ -356,9 +353,6 @@ navigation:
                     - page: INJ-USD-PERP
                       slug: inj-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx
-                    - page: IMX-USD-PERP
-                      slug: imx-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/imx-usd-perp.mdx
                     - page: IP-USD-PERP
                       slug: ip-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ip-usd-perp.mdx

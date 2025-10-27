@@ -673,11 +673,13 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
-          - page: v1.117
-            path: ./pages/release-notes/v1.117.md
+          - page: v1.118
+            path: ./pages/release-notes/v1.118.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.117
+                path: ./pages/release-notes/v1.117.md
               - page: v1.116
                 path: ./pages/release-notes/v1.116.md
               - page: v1.115

@@ -293,6 +293,9 @@ navigation:
                     - page: CLANKER-USD-PERP
                       slug: clanker-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/clanker-usd-perp.mdx
+                    - page: COAI-USD-PERP
+                      slug: coai-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/coai-usd-perp.mdx
                     - page: CRV-USD-PERP
                       slug: crv-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx

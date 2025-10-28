@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.103.1"
+    "version": "1.104.0"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -4304,6 +4304,280 @@
           }
         }
       }
+    },
+    "/xp/account-balance": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Get detailed XP balance including earned XP, transfer delta, and transferrable\namount.\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "XPTransfersV2"
+        ],
+        "summary": "Get XP Balance (V2)",
+        "operationId": "get-xp-balance-v2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.GetXPBalanceResponseV2"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/xp/fee-config": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Get the current fee percentage charged on XP transfers",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "XPTransfersV2"
+        ],
+        "summary": "Get Transfer Fee Configuration",
+        "operationId": "get-transfer-fee-config-v2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/services.TransferFeeConfigResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/xp/transfer": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Transfer XP instantly from your account to another user.\n",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "XPTransfersV2"
+        ],
+        "summary": "Create XP Transfer",
+        "operationId": "create-xp-transfer-v2",
+        "parameters": [
+          {
+            "description": "Transfer details",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.CreateXPTransferRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Transfer created successfully",
+            "schema": {
+              "$ref": "#/definitions/responses.CreateTransferResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "403": {
+            "description": "Not whitelisted for XP transfers V2",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/xp/transfer/{transfer_id}": {
+      "get": {
+        "description": "Retrieve details of a specific XP transfer by its ID. This is a public endpoint that does not require authentication.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "XPTransfersV2"
+        ],
+        "summary": "Get XP Transfer by ID",
+        "operationId": "get-xp-transfer-by-id-v2",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Transfer ID",
+            "name": "transfer_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.XPTransfer"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/xp/transfers": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Retrieve XP transfer history for the authenticated account with optional\nfiltering by role (maker/taker).\n",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "XPTransfersV2"
+        ],
+        "summary": "Get XP Transfer History",
+        "operationId": "get-xp-transfers-v2",
+        "parameters": [
+          {
+            "enum": [
+              "sender",
+              "recipient"
+            ],
+            "type": "string",
+            "description": "Filter by role",
+            "name": "role",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Pagination cursor",
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "maximum": 5000,
+            "minimum": 1,
+            "type": "integer",
+            "default": 100,
+            "description": "Number of results per page",
+            "name": "page_size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/responses.PaginatedAPIResults"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/responses.XPTransfer"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -4676,6 +4950,26 @@
           "description": "Public key of vault operator",
           "type": "string",
           "example": "0x1234567890abcdef"
+        }
+      }
+    },
+    "requests.CreateXPTransferRequest": {
+      "type": "object",
+      "required": [
+        "amount",
+        "recipient"
+      ],
+      "properties": {
+        "amount": {
+          "description": "Amount of XP to transfer (must be >= 1)",
+          "type": "integer",
+          "minimum": 1,
+          "example": 100
+        },
+        "recipient": {
+          "description": "Recipient's Starknet address (hex format)",
+          "type": "string",
+          "example": "0x1234567890abcdef0123456789abcdef"
         }
       }
     },
@@ -5969,6 +6263,19 @@
         }
       }
     },
+    "responses.CreateTransferResponse": {
+      "type": "object",
+      "properties": {
+        "transfer": {
+          "description": "The created XP transfer",
+          "allOf": [
+            {
+              "$ref": "#/definitions/responses.XPTransfer"
+            }
+          ]
+        }
+      }
+    },
     "responses.Delta1CrossMarginParams": {
       "type": "object",
       "properties": {
@@ -6519,6 +6826,26 @@
           "items": {
             "$ref": "#/definitions/responses.AccountInfoResponse"
           }
+        }
+      }
+    },
+    "responses.GetXPBalanceResponseV2": {
+      "type": "object",
+      "properties": {
+        "earned_xp": {
+          "description": "XP earned through trading (from leaderboard, immutable)",
+          "type": "integer",
+          "example": 1000
+        },
+        "transferrable_xp": {
+          "description": "(EarnedXP × N%) + XPDelta - maximum XP that can be transferred",
+          "type": "integer",
+          "example": 700
+        },
+        "xp_delta": {
+          "description": "Net XP from transfers",
+          "type": "integer",
+          "example": 200
         }
       }
     },
@@ -8507,6 +8834,55 @@
           "description": "Address of the vault factory contract",
           "type": "string",
           "example": "0x1234567890abcdef"
+        }
+      }
+    },
+    "responses.XPTransfer": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description": "Amount of XP transferred",
+          "type": "integer",
+          "example": 100
+        },
+        "created_at": {
+          "description": "Creation timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200000000000
+        },
+        "fee": {
+          "description": "Fee charged for the transfer (deducted from maker's balance)",
+          "type": "integer",
+          "example": 1
+        },
+        "id": {
+          "description": "Unique transfer identifier",
+          "type": "string",
+          "example": "transfer_123"
+        },
+        "recipient": {
+          "description": "Address of the recipient (gaining XP)",
+          "type": "string",
+          "example": "0xfedcba0987654321"
+        },
+        "sender": {
+          "description": "Address of the sender (losing XP)",
+          "type": "string",
+          "example": "0x1234567890abcdef"
+        },
+        "sequence": {
+          "description": "Sequence number for race condition protection",
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
+    "services.TransferFeeConfigResponse": {
+      "type": "object",
+      "properties": {
+        "fee_percentage": {
+          "description": "Fee percentage charged on transfers (e.g., 0.01 = 1%)",
+          "type": "number"
         }
       }
     }

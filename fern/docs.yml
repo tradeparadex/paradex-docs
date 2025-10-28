@@ -290,6 +290,9 @@ navigation:
                     - page: CAKE-USD-PERP
                       slug: cake-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/cake-usd-perp.mdx
+                    - page: CLANKER-USD-PERP
+                      slug: clanker-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/clanker-usd-perp.mdx
                     - page: COAI-USD-PERP
                       slug: coai-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/coai-usd-perp.mdx

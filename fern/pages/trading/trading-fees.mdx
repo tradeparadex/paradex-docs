@@ -1,38 +1,34 @@
-# Paradex Trading Fees
-
-Paradex offers different fee structures based on your trading profile and instrument type. UI traders enjoy completely free futures trading, while API traders have access to standard rates and specialized liquidity provision options.
-
-## Perpetual Futures
-
-| Profile Type | Description | Maker Fee | Taker Fee | Settlement Fee* |
-|--------------|-------------|-----------|-----------|----------------|
-| **Retail Profile** | (Opt-in) - Default for UI Traders | **FREE (0%)** | **FREE (0%)** | 0.015% |
-| **API - Standard** | Default for API Traders | 0.002% | 0.02% | 0.015% |
-| **API - RPI** | Opt in for orders that only match with Retail Profile | 0.002% | N/A* | 0.015% |
-
-## Perpetual Options
-
-| Profile Type | Description | Maker Fee | Taker Fee | Settlement Fee* |
-|--------------|-------------|-----------|-----------|----------------|
-| **Retail Profile** | (Opt-in) - Default for UI Traders | -0.01% (rebate) | 0.03% | 0.01% (25% cap) |
-| **API - Standard** | Default for API Traders | -0.01% (rebate) | 0.03% | 0.01% (25% cap) |
-| **API - RPI** | Opt in for orders that only match with Retail Profile | -0.01% (rebate) | 0.03% | 0.01% (25% cap) |
-
-
-<Note>
-Settlement fees occur when a market is delisted and Paradex needs to wind down residual open positions.
-</Note>
-
-<Note>
-API Takers that match with a Retail Profile will receive a 75% discount on the trading fee. 
-This is designed to improve the retail experience by getting their orders filled quickly, while still allowing them to trade passively.
-</Note>
+---
+title: Trading Fees
+subtitle: Fee structures are based on your trading profile and instrument type
 ---
 
-## Key Notes:
-- **Retail Profile**: Default for UI traders - completely FREE perpetual futures trading
-- **API - Standard**: Default for API traders - standard fee structure  
-- **API - RPI**: Special liquidity provision orders that match only with Retail Profile traders
-- **Fee Calculation**: Based on notional value, not margin used
+## Trading Profile
+<CardGroup>
+  <Card title="Retail" icon="fa-light fa-user">
+    UI traders enjoy completely <br /> <Badge intent="success" minimal>FREE</Badge> trading
+  </Card>
+  <Card title="Standard" icon="fa-light fa-standard-definition">
+    API traders have access to <Badge intent="note" minimal>Standard</Badge> rates
+  </Card>
+</CardGroup>
 
+## Fee Structure
 
+| | Perpetual Futures  | Perpetual Options |
+|:---|:---|:---|
+| <Tooltip tip="UI Default"><Badge class="ml-4" intent="success" outlined minimal>Retail</Badge></Tooltip> |  <Tooltip tip="Powered by RPI"><Badge intent="success" minimal>FREE (0%)</Badge></Tooltip>  | <div class="pt-3 pb-3" style="line-height:1.7">Maker: -0.01% <br /> Taker: 0.03%</div> |
+| <Tooltip tip="API Default"><Badge class="ml-4" intent="note" outlined minimal>Standard</Badge></Tooltip> | <div class="pt-3 pb-3" style="line-height:1.7">Maker: 0.002% <br /> Taker: 0.02% <br /> <Tooltip tip={<div class="text-left"><Icon icon="fa-light fa-bolt" /> <strong>FastFills Taker Discount</strong> <Icon icon="fa-light fa-bolt" /><br />Standard taker fee is reduced by 75% to 0.005% when matching against retail orders.</div>} >Taker (vs retail): 0.005% <Icon icon="fa-regular fa-bolt" /></Tooltip></div>   | <div style="line-height:1.7">Maker: -0.01% <br /> Taker: 0.03%</div> |
+
+<sub>Fees are calculated based on notional value.</sub>
+
+## Settlement Fees
+
+When a market is delisted, a settlement fee is applied to close any positions still open in that market.
+
+|         | Fee    | Cap |
+|---------|:------:|:---:|
+| Futures | 0.015% | N/A |
+| Options | 0.010% | 25% |
+
+<sub>Fees are calculated based on notional value.</sub>

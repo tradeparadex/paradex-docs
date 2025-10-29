@@ -4,24 +4,21 @@ subtitle: Paradex offers different fee structures based on your trading profile 
 ---
 
 ## Trading Profiles for Futures
-1. Retail (UI) traders enjoy completely <Badge intent="success" minimal>FREE</Badge> trading
+1. UI (Retail) traders enjoy completely <Badge intent="success" minimal>FREE</Badge> trading
 2. API traders have access to <Badge intent="note" minimal>Standard</Badge> rates
 
 ## Fee Structure
 
-| Perpetual Futures  | <Badge intent="success" outlined minimal>Retail</Badge> | <Badge intent="note" outlined minimal>API</Badge> |
-|---|:---:|:---:|
-| Maker <Tooltip tip="Calculated based on notional value">Fee</Tooltip> | <Badge intent="success" minimal>FREE (0%)</Badge> | 0.002% |
-| Taker <Tooltip tip="Calculated based on notional value">Fee</Tooltip> (from API orders) | <Badge intent="success" minimal>FREE (0%)</Badge> | 0.020% |
-| Taker <Tooltip tip="Calculated based on notional value">Fee</Tooltip> (from Retail orders) | <Badge intent="success" minimal>FREE (0%)</Badge>  | 0.005% <br /><Tooltip tip="Compared to taking from API orders"><Badge intent="success" minimal>75% OFF</Badge></Tooltip> |
+Fees are calculated based on notional value.
 
-<br />
+| | Perpetual Futures  | Perpetual Options |
+|---|:---|:---|
+| <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> |  <Tooltip tip="Powered by RPI"><Badge intent="success" minimal>FREE (0%)</Badge></Tooltip>  | Maker: -0.01% <br /> Taker : 0.03% |
+| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Standard</Badge></Tooltip> | Maker: 0.002% <br /> <Tooltip tip="Powered by FastFills">Taker (vs retail): 0.005% <Icon icon="fa-regular fa-bolt" /></Tooltip> <br /> Taker (vs standard): 0.02%   | Maker: -0.01% <br /> Taker : 0.03% |
 
-| **Perpetual Options**  | All Profiles |
-|---|:---:|
-| Maker <Tooltip tip="Calculated based on notional value">Fee</Tooltip> | -0.01% |
-| Taker <Tooltip tip="Calculated based on notional value">Fee</Tooltip> | 0.03%  |
-
+<Tip title = "FastFills Taker Discount" icon="fa-regular fa-bolt">
+Standard taker fee is reduced by 75% to 0.005% when matching against retail orders.
+</Tip>
 
 ## Settlement Fees
 

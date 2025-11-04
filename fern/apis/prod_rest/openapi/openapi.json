@@ -4339,23 +4339,12 @@
             "schema": {
               "$ref": "#/definitions/responses.ApiError"
             }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
           }
         }
       }
     },
     "/xp/fee-config": {
       "get": {
-        "security": [
-          {
-            "BearerToken": []
-          }
-        ],
         "description": "Get the current fee percentage charged on XP transfers",
         "produces": [
           "application/json"
@@ -4371,9 +4360,74 @@
             "schema": {
               "$ref": "#/definitions/services.TransferFeeConfigResponse"
             }
+          }
+        }
+      }
+    },
+    "/xp/public-transfers": {
+      "get": {
+        "description": "Retrieve a feed of public XP transfers. Supports filtering by time range or getting the latest transfers based on page_size. Private transfers are excluded from results.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "XPTransfersV2"
+        ],
+        "summary": "Get Public XP Transfer History",
+        "operationId": "get-public-xp-transfers-v2",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Start timestamp in milliseconds",
+            "name": "start_at",
+            "in": "query"
           },
-          "500": {
-            "description": "Internal Server Error",
+          {
+            "type": "integer",
+            "description": "End timestamp in milliseconds",
+            "name": "end_at",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Pagination cursor",
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "maximum": 50,
+            "minimum": 1,
+            "type": "integer",
+            "default": 50,
+            "description": "Number of results per page",
+            "name": "page_size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/responses.PaginatedAPIResults"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/responses.XPTransferWithProfile"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
             "schema": {
               "$ref": "#/definitions/responses.ApiError"
             }
@@ -4435,19 +4489,13 @@
             "schema": {
               "$ref": "#/definitions/responses.ApiError"
             }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
           }
         }
       }
     },
     "/xp/transfer/{transfer_id}": {
       "get": {
-        "description": "Retrieve details of a specific XP transfer by its ID. This is a public endpoint that does not require authentication.",
+        "description": "Retrieve details of a specific XP transfer by its ID. This is a public endpoint that does not require authentication. Note: Private transfers will return 404 (not found) to maintain privacy.",
         "produces": [
           "application/json"
         ],
@@ -4483,12 +4531,6 @@
             "schema": {
               "$ref": "#/definitions/responses.ApiError"
             }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
           }
         }
       }
@@ -4500,7 +4542,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Retrieve XP transfer history for the authenticated account with optional\nfiltering by role (maker/taker).\n",
+        "description": "Retrieve XP transfer history for the authenticated account with optional\nfiltering by role (sender/recipient).\n",
         "produces": [
           "application/json"
         ],
@@ -4566,12 +4608,6 @@
           },
           "401": {
             "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/responses.ApiError"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
             "schema": {
               "$ref": "#/definitions/responses.ApiError"
             }
@@ -4965,6 +5001,12 @@
           "type": "integer",
           "minimum": 1,
           "example": 100
+        },
+        "is_private": {
+          "description": "Whether the transfer is private (not shown on public feeds). Defaults to false if not provided.",
+          "type": "boolean",
+          "default": false,
+          "example": false
         },
         "recipient": {
           "description": "Recipient's Starknet address (hex format)",
@@ -6838,7 +6880,7 @@
           "example": 1000
         },
         "transferrable_xp": {
-          "description": "(EarnedXP × N%) + XPDelta - maximum XP that can be transferred",
+          "description": "Maximum XP that can be transferred",
           "type": "integer",
           "example": 700
         },
@@ -8851,7 +8893,52 @@
           "example": 1640995200000000000
         },
         "fee": {
-          "description": "Fee charged for the transfer (deducted from maker's balance)",
+          "description": "Fee charged for the transfer (deducted from sender's balance)",
+          "type": "integer",
+          "example": 1
+        },
+        "id": {
+          "description": "Unique transfer identifier",
+          "type": "string",
+          "example": "transfer_123"
+        },
+        "is_private": {
+          "description": "Whether the transfer is private (not shown on public feeds)",
+          "type": "boolean",
+          "example": false
+        },
+        "recipient": {
+          "description": "Address of the recipient (gaining XP)",
+          "type": "string",
+          "example": "0xfedcba0987654321"
+        },
+        "sender": {
+          "description": "Address of the sender (losing XP)",
+          "type": "string",
+          "example": "0x1234567890abcdef"
+        },
+        "sequence": {
+          "description": "Transfer count for this sender",
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
+    "responses.XPTransferWithProfile": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description": "Amount of XP transferred",
+          "type": "integer",
+          "example": 100
+        },
+        "created_at": {
+          "description": "Creation timestamp (nanoseconds since epoch)",
+          "type": "integer",
+          "example": 1640995200000000000
+        },
+        "fee": {
+          "description": "Fee charged for the transfer (deducted from sender's balance)",
           "type": "integer",
           "example": 1
         },
@@ -8865,13 +8952,33 @@
           "type": "string",
           "example": "0xfedcba0987654321"
         },
+        "recipient_twitter": {
+          "description": "Recipient's Twitter username",
+          "type": "string",
+          "example": "bob_tw"
+        },
+        "recipient_username": {
+          "description": "Recipient's username (respects privacy flag)",
+          "type": "string",
+          "example": "bob"
+        },
         "sender": {
           "description": "Address of the sender (losing XP)",
           "type": "string",
           "example": "0x1234567890abcdef"
         },
+        "sender_twitter": {
+          "description": "Sender's Twitter username",
+          "type": "string",
+          "example": "alice_tw"
+        },
+        "sender_username": {
+          "description": "Sender's username (respects privacy flag)",
+          "type": "string",
+          "example": "alice"
+        },
         "sequence": {
-          "description": "Sequence number for race condition protection",
+          "description": "Transfer count for this sender",
           "type": "integer",
           "example": 1
         }

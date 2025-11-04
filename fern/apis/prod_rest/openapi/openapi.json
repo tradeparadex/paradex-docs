@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.0"
+    "version": "1.104.1"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -6611,15 +6611,18 @@
       "type": "string",
       "enum": [
         "interactive",
-        "rpi"
+        "rpi",
+        "fastfill"
       ],
       "x-enum-comments": {
+        "FillFlagFast": "Retail order was fast filled",
         "FillFlagInteractive": "Fill was generated from an interactive order (user-initiated)",
         "FillFlagRPI": "Fill qualifies for Retail Price Improvement"
       },
       "x-enum-varnames": [
         "FillFlagInteractive",
-        "FillFlagRPI"
+        "FillFlagRPI",
+        "FillFlagFast"
       ]
     },
     "responses.FillResult": {

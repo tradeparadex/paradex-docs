@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.1"
+    "version": "1.104.2"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -4418,7 +4418,7 @@
                     "results": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/definitions/responses.XPTransferWithProfile"
+                        "$ref": "#/definitions/responses.XPTransfer"
                       }
                     }
                   }
@@ -8891,9 +8891,9 @@
           "example": 100
         },
         "created_at": {
-          "description": "Creation timestamp (nanoseconds since epoch)",
+          "description": "Creation timestamp (milliseconds since epoch)",
           "type": "integer",
-          "example": 1640995200000000000
+          "example": 1640995200000
         },
         "fee": {
           "description": "Fee charged for the transfer (deducted from sender's balance)",
@@ -8919,66 +8919,6 @@
           "description": "Address of the sender (losing XP)",
           "type": "string",
           "example": "0x1234567890abcdef"
-        },
-        "sequence": {
-          "description": "Transfer count for this sender",
-          "type": "integer",
-          "example": 1
-        }
-      }
-    },
-    "responses.XPTransferWithProfile": {
-      "type": "object",
-      "properties": {
-        "amount": {
-          "description": "Amount of XP transferred",
-          "type": "integer",
-          "example": 100
-        },
-        "created_at": {
-          "description": "Creation timestamp (nanoseconds since epoch)",
-          "type": "integer",
-          "example": 1640995200000000000
-        },
-        "fee": {
-          "description": "Fee charged for the transfer (deducted from sender's balance)",
-          "type": "integer",
-          "example": 1
-        },
-        "id": {
-          "description": "Unique transfer identifier",
-          "type": "string",
-          "example": "transfer_123"
-        },
-        "recipient": {
-          "description": "Address of the recipient (gaining XP)",
-          "type": "string",
-          "example": "0xfedcba0987654321"
-        },
-        "recipient_twitter": {
-          "description": "Recipient's Twitter username",
-          "type": "string",
-          "example": "bob_tw"
-        },
-        "recipient_username": {
-          "description": "Recipient's username (respects privacy flag)",
-          "type": "string",
-          "example": "bob"
-        },
-        "sender": {
-          "description": "Address of the sender (losing XP)",
-          "type": "string",
-          "example": "0x1234567890abcdef"
-        },
-        "sender_twitter": {
-          "description": "Sender's Twitter username",
-          "type": "string",
-          "example": "alice_tw"
-        },
-        "sender_username": {
-          "description": "Sender's username (respects privacy flag)",
-          "type": "string",
-          "example": "alice"
         },
         "sequence": {
           "description": "Transfer count for this sender",

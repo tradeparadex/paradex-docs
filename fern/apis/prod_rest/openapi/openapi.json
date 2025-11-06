@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.1"
+    "version": "1.104.2"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -4321,6 +4321,15 @@
         ],
         "summary": "Get XP Balance (V2)",
         "operationId": "get-xp-balance-v2",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "season2",
+            "description": "Season filter ('preseason' for Preseason, 'season1' for Season 1, 'season2' for Season 2)",
+            "name": "season",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -4390,6 +4399,13 @@
           },
           {
             "type": "string",
+            "default": "season2",
+            "description": "Season filter ('preseason' for Preseason, 'season1' for Season 1, 'season2' for Season 2)",
+            "name": "season",
+            "in": "query"
+          },
+          {
+            "type": "string",
             "description": "Pagination cursor",
             "name": "cursor",
             "in": "query"
@@ -4418,7 +4434,7 @@
                     "results": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/definitions/responses.XPTransferWithProfile"
+                        "$ref": "#/definitions/responses.XPTransfer"
                       }
                     }
                   }
@@ -4560,6 +4576,13 @@
             "type": "string",
             "description": "Filter by role",
             "name": "role",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "season2",
+            "description": "Season filter ('preseason' for Preseason, 'season1' for Season 1, 'season2' for Season 2)",
+            "name": "season",
             "in": "query"
           },
           {
@@ -5012,6 +5035,12 @@
           "description": "Recipient's Starknet address (hex format)",
           "type": "string",
           "example": "0x1234567890abcdef0123456789abcdef"
+        },
+        "season": {
+          "description": "Season identifier. Defaults to season2 if not provided.",
+          "type": "string",
+          "default": "season2",
+          "example": "season2"
         }
       }
     },
@@ -8891,9 +8920,9 @@
           "example": 100
         },
         "created_at": {
-          "description": "Creation timestamp (nanoseconds since epoch)",
+          "description": "Creation timestamp (milliseconds since epoch)",
           "type": "integer",
-          "example": 1640995200000000000
+          "example": 1640995200000
         },
         "fee": {
           "description": "Fee charged for the transfer (deducted from sender's balance)",
@@ -8915,75 +8944,15 @@
           "type": "string",
           "example": "0xfedcba0987654321"
         },
-        "sender": {
-          "description": "Address of the sender (losing XP)",
+        "season": {
+          "description": "Season identifier ('season1' for Season 1, 'season2' for Season 2, etc.)",
           "type": "string",
-          "example": "0x1234567890abcdef"
-        },
-        "sequence": {
-          "description": "Transfer count for this sender",
-          "type": "integer",
-          "example": 1
-        }
-      }
-    },
-    "responses.XPTransferWithProfile": {
-      "type": "object",
-      "properties": {
-        "amount": {
-          "description": "Amount of XP transferred",
-          "type": "integer",
-          "example": 100
-        },
-        "created_at": {
-          "description": "Creation timestamp (nanoseconds since epoch)",
-          "type": "integer",
-          "example": 1640995200000000000
-        },
-        "fee": {
-          "description": "Fee charged for the transfer (deducted from sender's balance)",
-          "type": "integer",
-          "example": 1
-        },
-        "id": {
-          "description": "Unique transfer identifier",
-          "type": "string",
-          "example": "transfer_123"
-        },
-        "recipient": {
-          "description": "Address of the recipient (gaining XP)",
-          "type": "string",
-          "example": "0xfedcba0987654321"
-        },
-        "recipient_twitter": {
-          "description": "Recipient's Twitter username",
-          "type": "string",
-          "example": "bob_tw"
-        },
-        "recipient_username": {
-          "description": "Recipient's username (respects privacy flag)",
-          "type": "string",
-          "example": "bob"
+          "example": "season2"
         },
         "sender": {
           "description": "Address of the sender (losing XP)",
           "type": "string",
           "example": "0x1234567890abcdef"
-        },
-        "sender_twitter": {
-          "description": "Sender's Twitter username",
-          "type": "string",
-          "example": "alice_tw"
-        },
-        "sender_username": {
-          "description": "Sender's username (respects privacy flag)",
-          "type": "string",
-          "example": "alice"
-        },
-        "sequence": {
-          "description": "Transfer count for this sender",
-          "type": "integer",
-          "example": 1
         }
       }
     },

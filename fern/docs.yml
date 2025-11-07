@@ -350,6 +350,9 @@ navigation:
                     - page: HYPE-USD-PERP
                       slug: hype-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
+                    - page: ICP-USD-PERP
+                      slug: icp-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/icp-usd-perp.mdx
                     - page: INJ-USD-PERP
                       slug: inj-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx

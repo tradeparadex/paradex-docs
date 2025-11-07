@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.2"
+    "version": "1.104.3"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -267,6 +267,56 @@
           },
           "400": {
             "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Updates account profile information",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates account profile",
+        "operationId": "update-account-profile",
+        "parameters": [
+          {
+            "description": "Update account profile request",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requests.UpdateAccountProfileRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.AccountProfileResp"
+            }
+          },
+          "400": {
+            "description": "Validation Error",
             "schema": {
               "$ref": "#/definitions/responses.ApiError"
             }
@@ -5254,6 +5304,60 @@
         }
       }
     },
+    "requests.UpdateAccountProfileRequest": {
+      "type": "object",
+      "properties": {
+        "announcements": {
+          "type": "boolean",
+          "example": false
+        },
+        "fills": {
+          "type": "boolean",
+          "example": true
+        },
+        "is_username_private": {
+          "type": "boolean",
+          "example": true
+        },
+        "max_slippage": {
+          "type": "string"
+        },
+        "orders": {
+          "type": "boolean",
+          "example": true
+        },
+        "referral_code": {
+          "type": "string",
+          "example": "referral_code"
+        },
+        "referred_by": {
+          "type": "string",
+          "example": "referral_code"
+        },
+        "size_currency_display": {
+          "type": "string"
+        },
+        "tap_share_rate": {
+          "type": "string",
+          "example": "0.2"
+        },
+        "trading_value_display": {
+          "type": "string"
+        },
+        "transfers": {
+          "type": "boolean",
+          "example": true
+        },
+        "username": {
+          "type": "string",
+          "example": "username"
+        },
+        "xp_share_rate": {
+          "type": "string",
+          "example": "0.2"
+        }
+      }
+    },
     "requests.UpdateNotificationPreferencesRequest": {
       "type": "object",
       "properties": {
@@ -5477,6 +5581,9 @@
           "type": "string",
           "example": "BASE"
         },
+        "tap_share_rate": {
+          "$ref": "#/definitions/responses.ShareRateResp"
+        },
         "twitter": {
           "$ref": "#/definitions/responses.TwitterProfile"
         },
@@ -5489,6 +5596,9 @@
         "username": {
           "type": "string",
           "example": "username"
+        },
+        "xp_share_rate": {
+          "$ref": "#/definitions/responses.ShareRateResp"
         }
       }
     },
@@ -8037,6 +8147,19 @@
         "STPModeExpireTaker",
         "STPModeExpireBoth"
       ]
+    },
+    "responses.ShareRateResp": {
+      "type": "object",
+      "properties": {
+        "last_updated_at": {
+          "type": "integer",
+          "example": 1715592690488
+        },
+        "share_rate": {
+          "type": "string",
+          "example": "0.2"
+        }
+      }
     },
     "responses.Strategy": {
       "type": "object",

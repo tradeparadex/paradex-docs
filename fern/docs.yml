@@ -350,6 +350,9 @@ navigation:
                     - page: HYPE-USD-PERP
                       slug: hype-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
+                    - page: ICP-USD-PERP
+                      slug: icp-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/icp-usd-perp.mdx
                     - page: INJ-USD-PERP
                       slug: inj-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx
@@ -548,6 +551,9 @@ navigation:
                     - page: ZEC-USD-PERP
                       slug: zec-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zec-usd-perp.mdx
+                    - page: ZK-USD-PERP
+                      slug: zk-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/zk-usd-perp.mdx
                     - page: ZORA-USD-PERP
                       slug: zora-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zora-usd-perp.mdx

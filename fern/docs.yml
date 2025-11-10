@@ -242,6 +242,9 @@ navigation:
                     - page: ADA-USD-PERP
                       slug: ada-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ada-usd-perp.mdx
+                    - page: AERO-USD-PERP
+                      slug: aero-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/aero-usd-perp.mdx
                     - page: AIXBT-USD-PERP
                       slug: aixbt-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/aixbt-usd-perp.mdx

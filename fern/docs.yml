@@ -670,11 +670,13 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
-          - page: v1.119
-            path: ./pages/release-notes/v1.119.md
+          - page: v1.120
+            path: ./pages/release-notes/v1.120.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.119
+                path: ./pages/release-notes/v1.119.md
               - page: v1.118
                 path: ./pages/release-notes/v1.118.md
               - page: v1.117

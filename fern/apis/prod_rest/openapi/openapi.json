@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.3"
+    "version": "1.104.4"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -6576,6 +6576,7 @@
         "ONBOARDING_RATE_LIMITED",
         "SUBACCOUNTS_LIMIT_EXCEEDED",
         "INSUFFICIENT_MIN_CHAIN_BALANCE",
+        "INVALID_SUBKEY",
         "TOKEN_LIMIT_REACHED",
         "INVALID_TOKEN_SCOPE",
         "INSUFFICIENT_TRANSFERRABLE_XP",
@@ -6662,6 +6663,7 @@
         "ErrorCodeString_OnboardingRateLimited",
         "ErrorCodeString_SubaccountsLimitExceeded",
         "ErrorCodeString_InsufficientMinChainBalance",
+        "ErrorCodeString_InvalidSubkey",
         "ErrorCodeString_TokenLimitReached",
         "ErrorCodeString_InvalidTokenScope",
         "ErrorCodeString_InsufficientTransferrableXP",

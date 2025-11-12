@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.5"
+    "version": "1.104.6"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -5364,6 +5364,10 @@
           "type": "boolean",
           "example": false
         },
+        "fill_sound": {
+          "type": "boolean",
+          "example": true
+        },
         "fills": {
           "type": "boolean",
           "example": true
@@ -5417,6 +5421,10 @@
         "announcements": {
           "type": "boolean",
           "example": false
+        },
+        "fill_sound": {
+          "type": "boolean",
+          "example": true
         },
         "fills": {
           "type": "boolean",
@@ -7643,6 +7651,10 @@
         "announcements": {
           "type": "boolean",
           "example": false
+        },
+        "fill_sound": {
+          "type": "boolean",
+          "example": true
         },
         "fills": {
           "type": "boolean",

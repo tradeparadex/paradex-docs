@@ -3,65 +3,24 @@ title: Trader Profiles
 subtitle: Users can choose between two trader profiles that best suits their strategy
 ---
 
-<CardGroup>
-  <Card title="Retail" icon="fa-thin fa-user">
-    UI traders enjoy completely <br /> <Badge intent="success" minimal>FREE</Badge> trading
-  </Card>
-  <Card title="Pro" icon="fa-thin fa-rectangle-pro">
-    API traders have access to <Badge intent="note" minimal>Pro</Badge> rates
-  </Card>
-</CardGroup>
+|                     | <Badge intent="success" outlined minimal>Retail</Badge> | <Badge intent="note" outlined minimal>Pro</Badge> |
+|---------------------|-|-|
+| Fees <br /> (Perps) | Maker: 0% <br /> Taker: 0% | <br />Maker: 0.002% <br /> Taker: 0.02% <br /> Taker (vs Retail): 0.005% <Icon icon="fa-light fa-bolt" /> <br /><br /> |
+| Latency             | <br />Taker: 500ms <br /> Maker: 300ms<br /><br /> | <br />Taker: 0ms <br /> Maker: 0ms<br /><br /> |
+| Rate Limit          | <br />3 orders / sec <br /> 30 orders / min <br /> 300 orders / hr <br /> 1,000 orders / 24 hrs<br /><br /> | 800 orders / sec <br /> 17,250 orders / min <br /><sub>Inclusive of RPI orders</sub> |
 
-## Attributes
+<sub>1. Fees are calculated based on notional value.</sub>
+<br />
+<sub>2. Retail orders exceeding rate limits automatically switch to Pro trader profile and lose access to RPI liquidity.</sub>
+<Success icon="fa-light fa-bolt" title="FastFills Taker Discount">Pro taker fee is reduced by 75% to 0.005% when matching against retail orders.</Success>
 
-|            | <Badge intent="success" outlined minimal>Retail</Badge> | <Badge intent="note" outlined minimal>Pro</Badge> |
-|------------|-|-|
-| Speed Bump | Order Submission: 500ms <br /> Order Cancellation: 300ms | None |
-| Rate Limit | 3 orders / sec <br /> 30 orders / min <br /> 300 orders / hr <br /> 1000 orders / 24 hrs | 800 orders / sec <br /> 17,250 orders / min |
+## Perpetual Options Fees
 
-<sub>Retail orders exceeding rate limits automatically switch to Pro trader profile and lose access to RPI liquidity.</sub>
+Perpetual Options trading fees are the same for both trader profiles.
 
-## Fee Structure
-<table style="table-layout: fixed; width: 100%; border-collapse: collapse;">
-  <colgroup>
-    <col style="width: 20%;" />
-    <col style="width: 20%;" />
-    <col style="width: 20%;" />
-    <col style="width: 20%;" />
-    <col style="width: 20%;" />
-  </colgroup>
-  <thead>
-    <tr style="height: 50px;">
-      <th style="text-align:left; border: 1px solid #ddd; padding: 8px;">Profile</th>
-      <th colspan="2" style="text-align:center; border: 1px solid #ddd; padding: 8px;">Perpetual Futures</th>
-      <th colspan="2" style="text-align:center; border: 1px solid #ddd; padding: 8px;">Perpetual Options</th>
-    </tr>
-    <tr style="height: 50px;">
-      <th style="border: 1px solid #ddd; padding: 8px;"></th>
-      <th style="text-align:center; border: 1px solid #ddd; padding: 8px;"><strong>Maker</strong></th>
-      <th style="text-align:center; border: 1px solid #ddd; padding: 8px;"><strong>Taker</strong></th>
-      <th style="text-align:center; border: 1px solid #ddd; padding: 8px;"><strong>Maker</strong></th>
-      <th style="text-align:center; border: 1px solid #ddd; padding: 8px;"><strong>Taker</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style="height: 80px;">
-      <td style="text-align:left; border: 1px solid #ddd; padding: 8px;"><Tooltip tip="UI Default"><Badge class="ml-4" intent="success" outlined minimal>Retail</Badge></Tooltip></td>
-      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;"><Tooltip tip="Powered by RPI"><Badge intent="success" minimal>FREE (0%)</Badge></Tooltip></td>
-      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;"><Tooltip tip="Powered by RPI"><Badge intent="success" minimal>FREE (0%)</Badge></Tooltip></td>
-      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">-0.01%</td>
-      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">0.03%</td>
-    </tr>
-    <tr style="height: 80px;">
-      <td style="text-align:left; border: 1px solid #ddd; padding: 8px;"><Tooltip tip="API Default"><Badge class="ml-4" intent="note" outlined minimal>Pro</Badge></Tooltip></td>
-      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">0.002%</td>
-      <td style="text-align:center; border: 1px solid #ddd; padding: 8px; vertical-align: middle;"><div style="line-height:1.7">0.02% <br /> <Tooltip tip={<div class="text-left"><Icon icon="fa-light fa-bolt" /> <strong>FastFills Taker Discount</strong> <Icon icon="fa-light fa-bolt" /><br />Pro taker fee is reduced by 75% to 0.005% when matching against retail orders.</div>} >vs retail: 0.005% <Icon icon="fa-regular fa-bolt" /></Tooltip></div></td>
-      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">-0.01%</td>
-      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">0.03%</td>
-    </tr>
-  </tbody>
-</table>
-<sub>Fees are calculated based on notional value.</sub>
+|       | Maker  | Taker |
+|-------|:------:|:-----:|
+| Fee   | -0.01% | 0.03% |
 
 ## Settlement Fees
 

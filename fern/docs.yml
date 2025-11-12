@@ -75,13 +75,12 @@ navigation:
 
       - section: Trading
         contents:
+          - page: Trader Profiles
+            slug: trader-profiles
+            path: ./pages/trading/trader-profiles.mdx
           - page: Retail Price Improvement
             slug: rpi
             path: ./pages/trading/rpi.mdx
-            icon: fa-regular fa-sparkles
-          - page: Trading Fees
-            slug: trading-fee
-            path: ./pages/trading/trading-fees.mdx
           - section: Perpetual Options
             slug: perpetual-options
             contents:
@@ -977,6 +976,8 @@ redirects:
     destination: "/xp-referrals/:slug*"
   - source: "/accounts/:slug*"
     destination: "/trading/accounts/:slug*"
+  - source: "/trading/trading-fee"
+    destination: "/trading/trader-profiles"
 
   # Wildcard redirects for old documentation paths
   - source: "/documentation/:slug*"
@@ -987,7 +988,7 @@ redirects:
     destination: "/ws/:slug*"
 
   - source: "documentation/trading/perpetual-options/trading-fees"
-    destination: "/documentation/trading/trading-fees"
+    destination: "/trading/trader-profiles"
 
   - source: "/risk/paradex-risk-system"
     destination: "/risk/margin-system"

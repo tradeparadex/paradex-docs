@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.4"
+    "version": "1.104.6"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -3409,6 +3409,59 @@
         }
       }
     },
+    "/referrals/tap-summary": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Returns the list of TAP referrals for the authenticated account",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Referrals"
+        ],
+        "summary": "Get TAP referrals summary for authenticated account",
+        "operationId": "get-tap-referrals-summary",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/responses.APIResults"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/responses.TapReferralsResp"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
     "/system/announcements": {
       "get": {
         "description": "get announcements",
@@ -5311,6 +5364,10 @@
           "type": "boolean",
           "example": false
         },
+        "fill_sound": {
+          "type": "boolean",
+          "example": true
+        },
         "fills": {
           "type": "boolean",
           "example": true
@@ -5364,6 +5421,10 @@
         "announcements": {
           "type": "boolean",
           "example": false
+        },
+        "fill_sound": {
+          "type": "boolean",
+          "example": true
         },
         "fills": {
           "type": "boolean",
@@ -7591,6 +7652,10 @@
           "type": "boolean",
           "example": false
         },
+        "fill_sound": {
+          "type": "boolean",
+          "example": true
+        },
         "fills": {
           "type": "boolean",
           "example": true
@@ -8357,6 +8422,40 @@
           "description": "Paradex Server time",
           "type": "string",
           "example": "1681493415023"
+        }
+      }
+    },
+    "responses.TapReferralsResp": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "description": "Account address",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "Unix timestamp in milliseconds",
+          "type": "integer",
+          "example": 1715592690488
+        },
+        "points": {
+          "description": "Points earned",
+          "type": "string"
+        },
+        "referral_points": {
+          "description": "Referral points earned",
+          "type": "string"
+        },
+        "referrer_account": {
+          "description": "Referrer account address",
+          "type": "string"
+        },
+        "traded_volume": {
+          "description": "Traded volume",
+          "type": "string"
+        },
+        "twitter_username": {
+          "description": "Twitter username",
+          "type": "string"
         }
       }
     },

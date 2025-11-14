@@ -463,6 +463,9 @@ navigation:
                     - page: PURR-USD-PERP
                       slug: purr-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/purr-usd-perp.mdx
+                    - page: QNT-USD-PERP
+                      slug: qnt-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/qnt-usd-perp.mdx
                     - page: RESOLV-USD-PERP
                       slug: resolv-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/resolv-usd-perp.mdx

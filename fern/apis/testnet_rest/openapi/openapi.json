@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.6"
+    "version": "1.104.7"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -4743,6 +4743,20 @@
     }
   },
   "definitions": {
+    "messagesv1.NftPrice": {
+      "type": "object",
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "decimals": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
     "requests.AccountMarginRequest": {
       "type": "object",
       "required": [
@@ -7642,6 +7656,9 @@
         },
         "name": {
           "type": "string"
+        },
+        "price": {
+          "$ref": "#/definitions/messagesv1.NftPrice"
         }
       }
     },

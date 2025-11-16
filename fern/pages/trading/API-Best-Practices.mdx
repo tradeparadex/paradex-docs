@@ -60,3 +60,11 @@ Reference: [WebSocket Rate Limits](https://docs.paradex.trade/ws/general-informa
 **Operational Status:** Poll `GET /v1/system/state` to monitor exchange operational state. Handle three status values: `ok` (fully operational), `maintenance` (trading unavailable), `cancel_only` (only cancellations allowed).
 
 **Implementation Strategy:** Check system state before trading operations and adapt behavior accordingly. During `cancel_only` periods, halt new order submissions but continue order cancellations to manage risk.
+
+
+## Cancel By Order ID & Market
+
+There is an optional "market" parameter for cancel by client order id which makes the call significantly faster. 
+https://api.prod.paradex.trade/swagger/index.html#/Orders/orders-cancel-by-client-id
+
+Additionally, if you want to cancel all orders for a market, you can use the cancel all https://api.prod.paradex.trade/swagger/index.html#/Orders/orders-cancel-all and specify market parameter. This endpoint is faster as well.

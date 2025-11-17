@@ -58,9 +58,15 @@ Reference: [Rate Limits Documentation](https://docs.paradex.trade/api/general-in
 
 **Reconnection Logic:** Implement robust reconnection with backoff that respects rate limits (20 connections/second, 600/minute). Queue critical operations during reconnection to avoid data loss.
 
+**Node Distribution:** Track `node_id` from authentication responses and avoid connecting to the same node multiple times. Distribute connections across different nodes for better load balancing and redundancy.
+
 <Tip>
 Reference: [WebSocket Rate Limits](https://docs.paradex.trade/ws/general-information/rate-limits)
 </Tip>
+
+## Clock Synchronization
+
+**Time Sync:** Synchronize your system clock with Paradex servers using the Amazon Time Sync Service at `time.aws.com`. Accurate clock synchronization is critical for order timestamp validation and latency measurements. Ensure your system maintains clock accuracy within milliseconds to avoid order rejections due to timestamp drift.
 
 ## Latency Monitoring
 

@@ -678,11 +678,13 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
-          - page: v1.120
-            path: ./pages/release-notes/v1.120.md
+          - page: v1.121
+            path: ./pages/release-notes/v1.121.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.120
+                path: ./pages/release-notes/v1.120.md
               - page: v1.119
                 path: ./pages/release-notes/v1.119.md
               - page: v1.118

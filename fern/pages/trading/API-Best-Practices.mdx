@@ -3,6 +3,17 @@ title: Advanced API Trader Best Practices
 subtitle: Essential technical guidelines for advanced traders using the Paradex API to optimize trading performance, manage rate limits, and implement efficient liquidity provision strategies.
 ---
 
+## Order Signing
+
+Native C++ and Rust offer the lowest latency for traders when signing their orders (0.4ms and 0.2ms avg latency). For more information you can visit our github [signing library](https://github.com/tradeparadex/starknet-signing-cpp/tree/a4978dbba8dfe2db42b38d07287fb0abf5f66627?tab=readme-ov-file) 
+
+## Cancel By Order ID & Market
+
+There is an **optional "market" parameter** for cancel by client order id which makes the call significantly faster. 
+https://api.prod.paradex.trade/swagger/index.html#/Orders/orders-cancel-by-client-id
+
+Additionally, if you want to cancel all orders for a market, you can use the cancel all https://api.prod.paradex.trade/swagger/index.html#/Orders/orders-cancel-all and specify market parameter. This endpoint is faster as well.
+
 ## Batch Order Operations
 
 **Efficiency Multiplier:** Single batch request = 1 rate limit unit (regardless of 1-50 orders). Use `POST /orders/batch` and `DELETE /orders/batch` for 50x efficiency improvement vs individual operations.
@@ -60,10 +71,3 @@ Reference: [WebSocket Rate Limits](https://docs.paradex.trade/ws/general-informa
 **Operational Status:** Poll `GET /v1/system/state` to monitor exchange operational state. Handle three status values: `ok` (fully operational), `maintenance` (trading unavailable), `cancel_only` (only cancellations allowed).
 
 **Implementation Strategy:** Check system state before trading operations and adapt behavior accordingly. During `cancel_only` periods, halt new order submissions but continue order cancellations to manage risk.
-
-## Cancel By Order ID & Market
-
-There is an **optional "market" parameter** for cancel by client order id which makes the call significantly faster. 
-https://api.prod.paradex.trade/swagger/index.html#/Orders/orders-cancel-by-client-id
-
-Additionally, if you want to cancel all orders for a market, you can use the cancel all https://api.prod.paradex.trade/swagger/index.html#/Orders/orders-cancel-all and specify market parameter. This endpoint is faster as well.

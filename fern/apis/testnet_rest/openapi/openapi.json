@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.8"
+    "version": "1.104.7"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -5290,6 +5290,10 @@
           "type": "string",
           "example": "BTC-USD-PERP"
         },
+        "max_slippage_price": {
+          "description": "Optional max slippage price for market orders, if greater than price band, will use price band instead",
+          "type": "string"
+        },
         "on_behalf_of_account": {
           "description": "ID corresponding to the configured isolated margin account. Only for isolated margin orders",
           "type": "string",
@@ -5321,7 +5325,7 @@
           "type": "integer"
         },
         "signed_impact_price": {
-          "description": "Optional signed impact price for market orders (base64 encoded)",
+          "description": "[DEPRECATED] Optional signed impact price for market orders (base64 encoded)",
           "type": "string"
         },
         "size": {
@@ -6980,11 +6984,11 @@
       "type": "object",
       "properties": {
         "created_at": {
-          "description": "Funding data calculation time. The same as oracle snapshot for this market.",
+          "description": "Timestamp in milliseconds when the funding data was created",
           "type": "integer"
         },
         "funding_index": {
-          "description": "Accrued funding premium since market launch per unit of the asset",
+          "description": "Current funding index value as a decimal string",
           "type": "string"
         },
         "funding_period_hours": {
@@ -6992,15 +6996,15 @@
           "type": "number"
         },
         "funding_premium": {
-          "description": "Current funding premium",
+          "description": "Current funding premium as a decimal string",
           "type": "string"
         },
         "funding_rate": {
-          "description": "Raw funding rate for the actual funding period",
+          "description": "Raw funding rate for the actual funding period as a decimal string",
           "type": "string"
         },
         "funding_rate_8h": {
-          "description": "Normalized 8-hour funding rate",
+          "description": "Normalized 8-hour funding rate as a decimal string",
           "type": "string"
         },
         "market": {
@@ -7558,7 +7562,7 @@
           "example": "0.2"
         },
         "created_at": {
-          "description": "Summary creation time. The same as oracle snapshot for this market.",
+          "description": "Market summary creation time",
           "type": "integer"
         },
         "delta": {

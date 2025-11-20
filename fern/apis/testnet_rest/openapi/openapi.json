@@ -1531,14 +1531,14 @@
     },
     "/bbo/{market}/interactive": {
       "get": {
-        "description": "Returns best bid/offer containing all orders",
+        "description": "Returns best bid/offer including all orders including RPI (as seen by the UI)",
         "produces": [
           "application/json"
         ],
         "tags": [
           "Markets"
         ],
-        "summary": "Get market interactive bbo",
+        "summary": "Get market bbo including all orders including RPI (as seen by the UI)",
         "operationId": "get-bbo-interactive",
         "parameters": [
           {
@@ -2702,6 +2702,12 @@
             "description": "Depth",
             "name": "depth",
             "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Price tick for aggregation",
+            "name": "price_tick",
+            "in": "query"
           }
         ],
         "responses": {
@@ -2764,7 +2770,7 @@
     },
     "/orderbook/{market}/interactive": {
       "get": {
-        "description": "Returns orderbook containing all orders (no filtering)",
+        "description": "Returns orderbook including RPI",
         "produces": [
           "application/json"
         ],
@@ -2786,6 +2792,12 @@
             "default": 20,
             "description": "Depth",
             "name": "depth",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Price tick for aggregation",
+            "name": "price_tick",
             "in": "query"
           }
         ],

@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.104.7"
+    "version": "1.105.0"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -1529,6 +1529,42 @@
         }
       }
     },
+    "/bbo/{market}/interactive": {
+      "get": {
+        "description": "Returns best bid/offer containing all orders",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Markets"
+        ],
+        "summary": "Get market interactive bbo",
+        "operationId": "get-bbo-interactive",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Market symbol - ex: BTC-USD-PERP",
+            "name": "market",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.BBOResp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
     "/block-trades": {
       "get": {
         "security": [
@@ -2715,6 +2751,49 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/responses.ImpactPriceResp"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responses.ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/orderbook/{market}/interactive": {
+      "get": {
+        "description": "Returns orderbook containing all orders (no filtering)",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Markets"
+        ],
+        "summary": "Get market interactive orderbook",
+        "operationId": "get-orderbook-interactive",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Market symbol - ex: BTC-USD-PERP",
+            "name": "market",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "description": "Depth",
+            "name": "depth",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/responses.AskBidArray"
             }
           },
           "400": {
@@ -5662,6 +5741,10 @@
         },
         "tap_share_rate": {
           "$ref": "#/definitions/responses.ShareRateResp"
+        },
+        "tap_status": {
+          "description": "TAP affiliate status: \"NONE\", \"ACTIVE\", or \"INACTIVE\"",
+          "type": "string"
         },
         "twitter": {
           "$ref": "#/definitions/responses.TwitterProfile"

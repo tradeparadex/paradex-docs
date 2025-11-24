@@ -403,6 +403,9 @@ navigation:
                     - page: MERL-USD-PERP
                       slug: merl-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/merl-usd-perp.mdx
+                    - page: MON-USD-PERP
+                      slug: mon-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/mon-usd-perp.mdx
                     - page: MOODENG-USD-PERP
                       slug: moodeng-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx

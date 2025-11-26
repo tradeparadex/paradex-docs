@@ -681,6 +681,8 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.122
+            path: ./pages/release-notes/v1.122.md
           - page: v1.121
             path: ./pages/release-notes/v1.121.md
           - section: Archive

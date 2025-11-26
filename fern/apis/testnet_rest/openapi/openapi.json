@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.105.0"
+    "version": "1.105.1"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -8557,12 +8557,12 @@
           "description": "Points earned",
           "type": "string"
         },
-        "referral_points": {
-          "description": "Referral points earned",
-          "type": "string"
-        },
         "referrer_account": {
           "description": "Referrer account address",
+          "type": "string"
+        },
+        "shared_points": {
+          "description": "Shared referrer points earned",
           "type": "string"
         },
         "traded_volume": {

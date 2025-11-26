@@ -24,17 +24,19 @@ subtitle: Users can choose between two trader profiles that best suits their str
 ## Fee Structure
 <table style="table-layout: fixed; width: 100%; border-collapse: collapse;">
   <colgroup>
-    <col style="width: 20%;" />
-    <col style="width: 20%;" />
-    <col style="width: 20%;" />
-    <col style="width: 20%;" />
-    <col style="width: 20%;" />
+    <col style="width: 14.3%;" />
+    <col style="width: 14.3%;" />
+    <col style="width: 14.3%;" />
+    <col style="width: 14.3%;" />
+    <col style="width: 14.3%;" />
+    <col style="width: 14.3%;" />
+    <col style="width: 14.3%;" />
   </colgroup>
   <thead>
     <tr style="height: 50px;">
       <th style="text-align:left; border: 1px solid #ddd; padding: 8px;">Profile</th>
       <th colspan="2" style="text-align:center; border: 1px solid #ddd; padding: 8px;">Perpetual Futures</th>
-      <th colspan="2" style="text-align:center; border: 1px solid #ddd; padding: 8px;">Perpetual Options</th>
+      <th colspan="4" style="text-align:center; border: 1px solid #ddd; padding: 8px;">Perpetual Options</th>
     </tr>
     <tr style="height: 50px;">
       <th style="border: 1px solid #ddd; padding: 8px;"></th>
@@ -42,6 +44,8 @@ subtitle: Users can choose between two trader profiles that best suits their str
       <th style="text-align:center; border: 1px solid #ddd; padding: 8px;"><strong>Taker</strong></th>
       <th style="text-align:center; border: 1px solid #ddd; padding: 8px;"><strong>Maker</strong></th>
       <th style="text-align:center; border: 1px solid #ddd; padding: 8px;"><strong>Taker</strong></th>
+      <th style="text-align:center; border: 1px solid #ddd; padding: 8px;"><strong>Fee Cap (%)</strong></th>
+      <th style="text-align:center; border: 1px solid #ddd; padding: 8px;"><strong>Floor (%)</strong></th>
     </tr>
   </thead>
   <tbody>
@@ -51,6 +55,8 @@ subtitle: Users can choose between two trader profiles that best suits their str
       <td style="text-align:center; border: 1px solid #ddd; padding: 8px;"><Tooltip tip="Powered by RPI"><Badge intent="success" minimal>FREE (0%)</Badge></Tooltip></td>
       <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">-0.01%</td>
       <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">0.03%</td>
+      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">12.5</td>
+      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">8</td>
     </tr>
     <tr style="height: 80px;">
       <td style="text-align:left; border: 1px solid #ddd; padding: 8px;"><Tooltip tip="API Default"><Badge class="ml-4" intent="note" outlined minimal>Pro</Badge></Tooltip></td>
@@ -58,6 +64,8 @@ subtitle: Users can choose between two trader profiles that best suits their str
       <td style="text-align:center; border: 1px solid #ddd; padding: 8px; vertical-align: middle;"><div style="line-height:1.7">0.02% <br /> <Tooltip tip={<div class="text-left"><Icon icon="fa-light fa-bolt" /> <strong>FastFills Taker Discount</strong> <Icon icon="fa-light fa-bolt" /><br />Pro taker fee is reduced by 75% to 0.005% when matching against retail orders.</div>} >vs retail: 0.005% <Icon icon="fa-regular fa-bolt" /></Tooltip></div></td>
       <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">-0.01%</td>
       <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">0.03%</td>
+      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">12.5</td>
+      <td style="text-align:center; border: 1px solid #ddd; padding: 8px;">8</td>
     </tr>
   </tbody>
 </table>
@@ -70,6 +78,6 @@ When a market is delisted, a settlement fee is applied to close any positions st
 |         | Fee    | Cap |
 |---------|:------:|:---:|
 | Futures | 0.015% | N/A |
-| Options | 0.010% | 25% |
+| Options | 0.010% | 12.5% |
 
 <sub>Fees are calculated based on notional value.</sub>

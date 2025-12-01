@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.105.1"
+    "version": "1.105.3"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -5381,10 +5381,6 @@
           "type": "string",
           "example": "BTC-USD-PERP"
         },
-        "max_slippage_price": {
-          "description": "Optional max slippage price for market orders, if greater than price band, will use price band instead",
-          "type": "string"
-        },
         "on_behalf_of_account": {
           "description": "ID corresponding to the configured isolated margin account. Only for isolated margin orders",
           "type": "string",
@@ -5415,10 +5411,6 @@
           "description": "Unix timestamp in milliseconds of order creation, used for signature verification",
           "type": "integer"
         },
-        "signed_impact_price": {
-          "description": "[DEPRECATED] Optional signed impact price for market orders (base64 encoded)",
-          "type": "string"
-        },
         "size": {
           "description": "Size of the order",
           "type": "string",
@@ -5439,6 +5431,10 @@
               "$ref": "#/definitions/responses.OrderType"
             }
           ]
+        },
+        "vwap_price": {
+          "description": "Optional VWAP price for market orders used for VWAP instruction, bounded by price band",
+          "type": "string"
         }
       }
     },
@@ -7247,10 +7243,6 @@
     "responses.ImpactPriceResp": {
       "type": "object",
       "properties": {
-        "encoded": {
-          "description": "Opaque signed impact price for attaching to a market order",
-          "type": "string"
-        },
         "impact_price": {
           "description": "The calculated impact price",
           "type": "string",
@@ -7833,13 +7825,15 @@
         "REDUCE_ONLY",
         "STOP_CONDITION_BELOW_TRIGGER",
         "STOP_CONDITION_ABOVE_TRIGGER",
-        "INTERACTIVE"
+        "INTERACTIVE",
+        "TARGET_STRATEGY_VWAP"
       ],
       "x-enum-varnames": [
         "FlagsReduceOnly",
         "FlagsStopConditionBelowTrigger",
         "FlagsStopConditionAboveTrigger",
-        "FlagsInteractive"
+        "FlagsInteractive",
+        "FlagsTargetStrategyVWAP"
       ]
     },
     "responses.OrderInstruction": {

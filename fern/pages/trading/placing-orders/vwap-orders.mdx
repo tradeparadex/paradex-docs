@@ -32,13 +32,13 @@ Market orders use **two types of price protection**:
 
 ### For Buy Orders
 - Uses the **best ask price** from the order book
-- Formula: `Ask Price × (1 + Your Max Slippage)`
-- Example: If ask is $20,100 and slippage is 0.1%, VWAP = $20,120.10
+- **Formula**: `Ask Price × (1 + Your Max Slippage)`
+- **Example**: If ask is $20,100 and slippage is 0.1%, VWAP = $20,120.10
 
 ### For Sell Orders
 - Uses the **best bid price** from the order book
-- Formula: `Bid Price × (1 + Your Max Slippage)`
-- Example: If bid is $20,000 and slippage is 0.1%, VWAP = $20,020.00
+- **Formula**: `Bid Price × (1 + Your Max Slippage)`
+- **Example**: If bid is $20,000 and slippage is 0.1%, VWAP = $20,020.00
 
 ### Max Slippage Priority
 1. Your account-level max slippage setting (if configured)
@@ -50,6 +50,7 @@ Market orders use **two types of price protection**:
 ## Example Scenarios
 
 ### Scenario 1: Standard Execution
+
 **Order**: Buy 50 units, Terminal: $20,060, VWAP: $20,000
 
 **Order Book**:
@@ -60,6 +61,7 @@ Market orders use **two types of price protection**:
 **Result**: 30 units filled at average price of $19,975 (within VWAP limit)
 
 ### Scenario 2: Partial Fill with VWAP Protection
+
 **Order**: Buy 50 units, Terminal: $20,150, VWAP: $20,000
 
 **Order Book**:

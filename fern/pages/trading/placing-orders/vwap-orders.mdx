@@ -43,7 +43,7 @@ Market orders use **two types of price protection**:
 ### Max Slippage Priority
 1. Your account-level max slippage setting (if configured)
 2. Market-level default max slippage
-3. System default: 0.1% (0.001)
+3. System default: as returned by the `/v1/markets` endpoint `max_slippage` field
 
 **Note**: If BBO prices are unavailable, the system falls back to mark price for VWAP calculation.
 

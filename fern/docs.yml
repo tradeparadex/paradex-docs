@@ -681,13 +681,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.123
+            path: ./pages/release-notes/v1.123.md
           - page: v1.122
             path: ./pages/release-notes/v1.122.md
-          - page: v1.121
-            path: ./pages/release-notes/v1.121.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.121
+                path: ./pages/release-notes/v1.121.md
               - page: v1.120
                 path: ./pages/release-notes/v1.120.md
               - page: v1.119

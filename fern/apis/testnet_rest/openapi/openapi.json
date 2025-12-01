@@ -5381,10 +5381,6 @@
           "type": "string",
           "example": "BTC-USD-PERP"
         },
-        "max_slippage_price": {
-          "description": "Optional max slippage price for market orders, if greater than price band, will use price band instead",
-          "type": "string"
-        },
         "on_behalf_of_account": {
           "description": "ID corresponding to the configured isolated margin account. Only for isolated margin orders",
           "type": "string",
@@ -5439,6 +5435,10 @@
               "$ref": "#/definitions/responses.OrderType"
             }
           ]
+        },
+        "vwap_price": {
+          "description": "Optional VWAP price for market orders used for VWAP instruction, bounded by price band",
+          "type": "string"
         }
       }
     },
@@ -7848,13 +7848,15 @@
         "GTC",
         "POST_ONLY",
         "IOC",
-        "RPI"
+        "RPI",
+        "VWAP"
       ],
       "x-enum-varnames": [
         "OrderInstructionGTC",
         "OrderInstructionPostOnly",
         "OrderInstructionIOC",
-        "OrderInstructionRPI"
+        "OrderInstructionRPI",
+        "OrderInstructionVWAP"
       ]
     },
     "responses.OrderResp": {

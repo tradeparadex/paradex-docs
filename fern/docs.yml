@@ -256,15 +256,9 @@ navigation:
                     - page: ARB-USD-PERP
                       slug: arb-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/arb-usd-perp.mdx
-                    - page: ARKM-USD-PERP
-                      slug: arkm-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/arkm-usd-perp.mdx
                     - page: ASTER-USD-PERP
                       slug: aster-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/aster-usd-perp.mdx
-                    - page: ATOM-USD-PERP
-                      slug: atom-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/atom-usd-perp.mdx
                     - page: AVAX-USD-PERP
                       slug: avax-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/avax-usd-perp.mdx
@@ -337,9 +331,6 @@ navigation:
                     - page: FLOW-USD-PERP
                       slug: flow-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/flow-usd-perp.mdx
-                    - page: FORM-USD-PERP
-                      slug: form-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/form-usd-perp.mdx
                     - page: GOAT-USD-PERP
                       slug: goat-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/goat-usd-perp.mdx
@@ -463,9 +454,6 @@ navigation:
                     - page: PYTH-USD-PERP
                       slug: pyth-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/pyth-usd-perp.mdx
-                    - page: PURR-USD-PERP
-                      slug: purr-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/purr-usd-perp.mdx
                     - page: QNT-USD-PERP
                       slug: qnt-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/qnt-usd-perp.mdx

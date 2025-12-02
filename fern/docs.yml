@@ -156,6 +156,9 @@ navigation:
               - page: Order Instuctions
                 path: ./pages/trading/placing-orders/order-instructions.mdx
                 slug: order-instructions
+              - page: VWAP Price Protection for Market Orders
+                slug: vwap-price-protection
+                path: ./pages/trading/placing-orders/vwap-orders.mdx
 
 
           - section: Price Impact and Slippage

@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.105.1"
+    "version": "1.105.4"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -8487,10 +8487,15 @@
           "type": "string",
           "example": "SN_CHAIN_ID"
         },
+        "starknet_fullnode_rpc_public_base_url": {
+          "description": "Full node RPC base URL from Starknet",
+          "type": "string",
+          "example": "https://pathfinder.api.testnet.paradex.trade"
+        },
         "starknet_fullnode_rpc_url": {
           "description": "Full node RPC URL from Starknet",
           "type": "string",
-          "example": "https://pathfinder.api.testnet.paradex.trade/rpc/v0_7"
+          "example": "https://pathfinder.api.testnet.paradex.trade/rpc/v0_9"
         },
         "starknet_gateway_url": {
           "description": "Feeder Gateway URL from Starknet",

@@ -5526,6 +5526,11 @@
           "description": "UTM source parameter",
           "type": "string",
           "example": "google"
+        },
+        "type": {
+          "description": "UTM type parameter",
+          "type": "string",
+          "example": "clickthrough"
         }
       }
     },

@@ -1,8 +1,8 @@
 ---
-title: Socialized Losses
+title: Socialized Losses and Last Resort Mechanism
 ---
 
-## Context
+## Socialised Loss
 
 Socialized Losses happen when Paradex Insurance Fund is bankrupt due to large amounts of unprofitable liquidations. Paradex is built to minimize the probability of such an event but it can still happen. In this case the exchange would have insufficient USDC funds to meet withdrawal requests for all client funds.
 
@@ -84,3 +84,9 @@ Now the Insurance Fund position (taken over from Alice) only has $$50*(70-100)=-
 This brings the Exchange Bankruptcy Amount to 0 and the Socialized Loss Factor to 0%.
 
 Therefore, withdrawals are now no longer subject to any loss.
+
+##
+
+## Last Resort Mechanism
+
+A time-based Last-Resort (LR) mechanism operates independently of Socialized Loss (SL). Its job is to manage the insurance fund’s exposure in extreme illiquidity scenarios when the fund is unable to unwind or hedge a large position for an extended period. In such cases, it will settle counterparties positions under time-based rules. The difference vs ADL is that users have clear visibility and ability to anticipate any intervention before it takes place. Additionally, the introduction of time allow both solvency and liquidity to recover, which in turn reduces the burden on both mechanisms.

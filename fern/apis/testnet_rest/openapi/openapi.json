@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.105.6"
+    "version": "1.106.0"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -6687,6 +6687,8 @@
         "SOCIAL_USERNAME_IN_USE",
         "INVALID_OAUTH_REQUEST",
         "RPI_ACCOUNT_NOT_WHITELISTED",
+        "SYSTEM_STATUS_POST_ONLY",
+        "SYSTEM_STATUS_CANCEL_ONLY",
         "INVALID_MARKETING_CODE",
         "INVALID_JOIN_WAITLIST_REQUEST",
         "TRANSACTION_NOT_FOUND",
@@ -6774,6 +6776,8 @@
         "ErrorCodeString_SocialUsernameInUse",
         "ErrorCodeString_InvalidOAuthRequest",
         "ErrorCodeString_RPIAccountNotWhitelisted",
+        "ErrorCodeString_SystemStatusPostOnly",
+        "ErrorCodeString_SystemStatusCancelOnly",
         "ErrorCodeString_InvalidMarketingCode",
         "ErrorCodeString_InvalidJoinWaitlistRequest",
         "ErrorCodeString_TransactionNotFound",
@@ -8474,12 +8478,14 @@
       "enum": [
         "ok",
         "maintenance",
-        "cancel_only"
+        "cancel_only",
+        "post_only"
       ],
       "x-enum-varnames": [
         "SystemStatusOk",
         "SystemStatusMaintenance",
-        "SystemStatusCancelOnly"
+        "SystemStatusCancelOnly",
+        "SystemStatusPostOnly"
       ]
     },
     "responses.SystemTimeResponse": {

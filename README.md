@@ -28,7 +28,7 @@ Paradex is a decentralized trading platform that allows users to trade digital a
 
 [![Discord](https://img.shields.io/badge/Join%20our%20Discord-7289DA?logo=discord&logoColor=white)](https://discord.gg/paradex)
 [![Telegram](https://img.shields.io/badge/Join%20our%20Telegram-2CA5E0?logo=telegram&logoColor=white)](https://t.me/paradex)
-[![Twitter](https://img.shields.io/twitter/follow/tradeparadex)](https://x.com/paradex)
+[![Twitter](https://img.shields.io/twitter/follow/paradex)](https://x.com/paradex)
 
 ## Contributing
 

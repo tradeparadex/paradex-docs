@@ -72,6 +72,9 @@ navigation:
 
       - section: Trading
         contents:
+          - page: Privacy Perps
+            slug: privacy
+            path: ./pages/trading/privacy.mdx
           - page: Trader Profiles
             slug: trader-profiles
             path: ./pages/trading/trader-profiles.mdx
@@ -168,9 +171,6 @@ navigation:
           - page: Margin Calculator
             slug: margin-calculator
             path: ./pages/trading/margin-calculator.mdx
-          - page: Account Privacy
-            slug: privacy
-            path: ./pages/trading/privacy.mdx
           - page: Testnet FAQs
             slug: testnet-faqs
             path: ./pages/trading/testnet.mdx

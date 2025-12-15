@@ -1,32 +1,67 @@
 ---
-title: Account Privacy
-subtitle: We believe that financial privacy is a fundamental right.
+title: Privacy Perps
+subtitle: All position and account data on Paradex is private to the account holder
 ---
 
-<Note>
-  Account Privacy is currently in Alpha. During this time, existing RPC nodes without privacy protection will remain publicly accessible.
-</Note>
-
-Our off-chain orderbook hides order data from the public.
-However, since account data are stored on-chain, additional methods are needed to provide privacy to users.
-
-We are taking a phased approach to Account Privacy, rolling out stronger privacy with each phase.
-
-1. Full Position Privacy through RPC Masking ✅
-2. Permanent Privacy through Encrypted DA
-3. Privacy secured at the Smart Contract level
-
-## How Privacy Works Today
-
-<CardGroup cols={2}>
-  <Card title="Masked by Default" icon="fa-regular fa-mask">
-    Account data is hidden from others
-  </Card>
-  <Card title="Authentication Reveals your Data" icon="fa-regular fa-key-skeleton">
-    You can access your own data when authenticated with your private key
-  </Card>
-</CardGroup>
-
-<Tip>
-Privacy protection lasts ~6 hours until data is submitted to L1. Future phases will provide permanent privacy.
+<Tip title="Privacy on Paradex is end-to-end" icon="fa-regular fa-eye-slash">
+Orders, Positions and Trades are private on:
+1. Paradex Cloud
+2. Paradex Chain (L2) and
+3. Ethereum (L1) where state commitments are posted
 </Tip>
+
+## Privacy Architecture
+
+### Paradex Cloud
+
+Orders are only stored on the Paradex Cloud and are only known to the operators of Paradex Cloud.
+Users can only access their own orders through authenticated access.
+
+### Paradex Chain (L2)
+
+Privacy on Paradex Chain is guaranteed through a custom RPC configuration.
+RPC nodes mask position and account fields by default, and only return private data to the owner after authenticating the request via a valid signature.
+Bridge partners are only granted selective access to the transaction data (account state remains private) required by their smart contracts to process deposits and withdrawals.
+
+### Ethereum (L1)
+
+Encrypted state diffs with ZK verification are regularly posted to Ethereum as part of the zkrollup architecture.
+The Paradex Privacy Council holds the decryption keys needed to decrypt in the event of an emergency.
+
+In the zkrollup architecture, state update transactions contain an aggregated ("squashed") state diff that is used to reconstruct state from L1 DA.
+In the sequencer, an aggregator determines which blocks are included in a given state update, combines the squashed state difference across those blocks, serializes it into the blob payload,
+and forwards the commitment so that the proof system (SHARP) and Ethereum can enforce that the published diff matches the proven state transition. Encryption prevents the ability of monitoring
+these state update transactions and reconstructing the aggregated balances/positions of users over time.
+
+In Paradex's Privacy Architecture, the blob data is encrypted before posting to Ethereum and the ZK proof validates the correctness of the state transition and the correctness of the encryption/commitment to the encrypted diff.
+This encryption path is unique to the Paradex Chain and not part of Public Starknet defaults.
+
+<Success title="Encryption" icon="fa-regular fa-shield">
+Paradex utilizes hybrid encryption. Encryption is performed using the following steps
+1. For each state update, a random symmetric key encryption `k` (a felt252)
+2. At the beginning of the blob, `k` is encrypted with all the public keys using the Stark curve (with generator `G`) of the Privacy Council
+
+   - For each council member `i` with public key `Pubᵢ`, a random variable `rᵢ` is randomly selected
+   - Remainder of the data encrypts `k` for each council member `i` using the function `(Rᵢ= G*rᵢ , Yᵢ = blake(Pubᵢ*rᵢ) + k)`
+3. Finally, the entire blob is encrypted using `blake(i, k) + pᵢ`, where `pᵢ` is the `i`th element of the blob
+</Success>
+
+<Success title="Decryption" icon="fa-regular fa-shield-halved">
+Decryption can only be performed by council members using their decryption keys.
+
+1. `k` is reconstructed through `k = Yᵢ - Rᵢ * Privᵢ`
+2. Each individual message is individually decrypted
+
+</Success>
+
+#### Privacy Council
+
+Paradex submits state to Ethereum to preserve the possibility of an escape hatch in the event Paradex becomes inoperable.
+In that situation, the council can decrypt and publish the necessary state to enable recovery.
+
+The current members of the Privacy Council are:
+1. Paradex Foundation
+2. Paradex
+3. Karnot
+
+As Paradex scales, the council will be expanded for even stronger decentralization.

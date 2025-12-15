@@ -3,12 +3,12 @@ title: Privacy Perps
 subtitle: All position and account data on Paradex is private to the account holder
 ---
 
-<Tip title="Privacy on Paradex is end-to-end" icon="fa-regular fa-eye-slash">
+<Note title="Privacy on Paradex is end-to-end" icon="fa-regular fa-eye-slash">
 Orders, Positions and Trades are private on:
 1. Paradex Cloud
 2. Paradex Chain (L2) and
 3. Ethereum (L1) where state commitments are posted
-</Tip>
+</Note>
 
 ## Privacy Architecture
 
@@ -36,7 +36,7 @@ these state update transactions and reconstructing the aggregated balances/posit
 In Paradex's Privacy Architecture, the blob data is encrypted before posting to Ethereum and the ZK proof validates the correctness of the state transition and the correctness of the encryption/commitment to the encrypted diff.
 This encryption path is unique to the Paradex Chain and not part of Public Starknet defaults.
 
-<Success title="Encryption" icon="fa-regular fa-shield">
+<Note title="Encryption" icon="fa-regular fa-shield">
 Paradex utilizes hybrid encryption. Encryption is performed using the following steps
 1. For each state update, a random symmetric key encryption `k` (a felt252)
 2. At the beginning of the blob, `k` is encrypted with all the public keys using the Stark curve (with generator `G`) of the Privacy Council
@@ -44,15 +44,15 @@ Paradex utilizes hybrid encryption. Encryption is performed using the following 
    - For each council member `i` with public key `Pubᵢ`, a random variable `rᵢ` is randomly selected
    - Remainder of the data encrypts `k` for each council member `i` using the function `(Rᵢ= G*rᵢ , Yᵢ = blake(Pubᵢ*rᵢ) + k)`
 3. Finally, the entire blob is encrypted using `blake(i, k) + pᵢ`, where `pᵢ` is the `i`th element of the blob
-</Success>
+</Note>
 
-<Success title="Decryption" icon="fa-regular fa-shield-halved">
+<Note title="Decryption" icon="fa-regular fa-shield-halved">
 Decryption can only be performed by council members using their decryption keys.
 
 1. `k` is reconstructed through `k = Yᵢ - Rᵢ * Privᵢ`
-2. Each individual message is individually decrypted
+2. Each message is individually decrypted
 
-</Success>
+</Note>
 
 #### Privacy Council
 

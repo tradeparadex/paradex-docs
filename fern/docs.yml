@@ -1016,7 +1016,7 @@ logo:
 favicon: ./assets/logo.png
 colors:
   accent-primary:
-    dark: "#c83efb"
+    dark: "#1BC1CF"
   background:
     dark: "#181c20"
 css: ./assets/styles.css

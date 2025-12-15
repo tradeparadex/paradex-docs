@@ -12,7 +12,7 @@ loadScript(
     const settings = {
       baseSettings: {
         apiKey: "1e1660d254edc816b721951f6b1973f0492028b235f8dca6", // required
-        primaryBrandColor: "#c83efb", // required -- your brand color, the color scheme is derived from this
+        primaryBrandColor: "#1BC1CF", // required -- your brand color, the color scheme is derived from this
         organizationDisplayName: "Paradex",
         theme: {
           fontFamily: {

@@ -32,17 +32,56 @@ a[id*="playground-button"] {
 }
 
 a.green-cards:hover {
-  border-color: #00ee91 !important;
+  border-color: #1BC1CF !important;
 }
 
 .green-cards .text-body {
-  color: #00ee91 !important;
+  color: #1BC1CF !important;
 }
 
-.purple-cards .text-body {
-  color: #CC38FF !important;
+.cyan-cards .text-body {
+  color: #1BC1CF !important;
+}
+
+a.cyan-cards:hover {
+  border-color: #1BC1CF !important;
 }
 
 .card-icon-w64 .card-icon {
   width: 64px !important;
+}
+
+.fern-callout[data-intent="tip"],
+[class*="callout"][data-intent="tip"],
+[class*="Callout"][data-intent="tip"],
+.fern-tip {
+  border-color: #1BC1CF !important;
+  background-color: rgba(27, 193, 207, 0.1) !important;
+  color: #1BC1CF !important;
+}
+
+.fern-callout[data-intent="tip"] *,
+[class*="callout"][data-intent="tip"] *,
+[class*="Callout"][data-intent="tip"] *,
+.fern-tip * {
+  color: #1BC1CF !important;
+}
+
+.fern-docs-badge.green,
+.fern-docs-badge[data-intent="success"] {
+  color: #1BC1CF !important;
+}
+
+.fern-docs-badge.subtle.green,
+.fern-docs-badge.subtle[data-intent="success"] {
+  background-color: rgba(27, 193, 207, 0.12) !important;
+  border-color: #1BC1CF !important;
+  color: #1BC1CF !important;
+}
+
+.fern-docs-badge.outlined.green,
+.fern-docs-badge.outlined[data-intent="success"] {
+  background-color: transparent !important;
+  border-color: #1BC1CF !important;
+  color: #1BC1CF !important;
 }

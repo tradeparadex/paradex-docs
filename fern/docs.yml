@@ -57,9 +57,6 @@ navigation:
               - page: Global IP Addresses
                 slug: global-ip-addresses
                 path: ./pages/introduction/architecture-overview/global-ip-addresses.mdx
-          - changelog: ./pages/changelog
-            title: What's New
-            icon: fa-solid fa-sparkle
 
       - section: XP & Referrals
         contents:

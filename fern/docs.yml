@@ -232,9 +232,6 @@ navigation:
                     - page: 0G-USD-PERP
                       slug: 0g-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/0g-usd-perp.mdx
-                    - page: 4-USD-PERP
-                      slug: 4-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/4-usd-perp.mdx
                     - page: AAVE-USD-PERP
                       slug: aave-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/aave-usd-perp.mdx
@@ -526,9 +523,6 @@ navigation:
                     - page: WLFI-USD-PERP
                       slug: wlfi-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/wlfi-usd-perp.mdx
-                    - page: WOO-USD-PERP
-                      slug: woo-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/woo-usd-perp.mdx
                     - page: XLM-USD-PERP
                       slug: xlm-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/xlm-usd-perp.mdx
@@ -541,9 +535,6 @@ navigation:
                     - page: XRP-USD-PERP
                       slug: xrp-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/xrp-usd-perp.mdx
-                    - page: YB-USD-PERP
-                      slug: yb-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/yb-usd-perp.mdx
                     - page: ZEC-USD-PERP
                       slug: zec-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zec-usd-perp.mdx

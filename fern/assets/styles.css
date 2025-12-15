@@ -31,12 +31,12 @@ a[id*="playground-button"] {
   display: none;
 }
 
-a.green-cards:hover {
+a.white-cards:hover {
   border-color: #1BC1CF !important;
 }
 
-.green-cards .text-body {
-  color: #1BC1CF !important;
+.white-cards .text-body {
+  color: #ffffff !important;
 }
 
 .cyan-cards .text-body {

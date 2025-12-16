@@ -520,6 +520,9 @@ navigation:
                     - page: WCT-USD-PERP
                       slug: wct-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/wct-usd-perp.mdx
+                    - page: WET-USD-PERP
+                      slug: wet-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/wet-usd-perp.mdx
                     - page: WIF-USD-PERP
                       slug: wif-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/wif-usd-perp.mdx

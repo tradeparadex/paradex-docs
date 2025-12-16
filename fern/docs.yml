@@ -412,6 +412,9 @@ navigation:
                     - page: NEAR-USD-PERP
                       slug: near-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/near-usd-perp.mdx
+                    - page: NIGHT-USD-PERP
+                      slug: night-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/night-usd-perp.mdx
                     - page: OM-USD-PERP
                       slug: om-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/om-usd-perp.mdx

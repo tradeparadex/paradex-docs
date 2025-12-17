@@ -29,7 +29,6 @@ layout: reference
         - SuperChain Mainnet
       </Card>
       <Card title="Privacy" icon="signature-lock">
-        - Full Position Privacy via RPC Masking (L2) + Encrypted DA (L1)
         - Full Smart Contract-Level Privacy with Cryptographic Guarantees
       </Card>
     </CardGroup>
@@ -64,14 +63,55 @@ layout: reference
       <Card title="Nov 2025">
         **New Markets**
           - 6 new perpetual markets
+          - [BadgerBoxes NFT](https://opensea.io/collection/badgerboxes)
+
+        **Liquidity & Trading**
+          - 50% of S2 XP, 100% of Preseason and S1 XP now transferrable
+          - TPSL race condition fixes
+          - Execute fixed size TPSL regardless of position size
+          - BBO for max slippage estimation calculation
+          - Switch to VWAP calculation for max slippage price
+          - Size aggressive limit orders to price band
 
         **Performance & Infra**
           - Upgrade to SN 0.14 (Decentralized Sequencer Architecture)
           - High frequency mark price
+          - Enhanced margin requirement calculations
+          - Faster ticks for stop orders
 
         **UX**
-          - Redesign of the trading experience (Desktop 3.0 / Mobile 2.0)
-          - Redesign Referral Page
+          - Trading experience redesign (Desktop 3.0 / Mobile 2.0)
+          - Draggable TPSL modals
+          - Sound effect when position filled
+          - Show funding and realized PnL on liquidations
+          - Historical open interest data in market summary
+          - Inventory page
+          - Public XP transfers page
+          - Anonymous XP Transfers
+          - Referral page redesign
+          - TAP affiliate program page
+      </Card>
+      <Card title="Dec 2025 (To Date)">
+        **New Markets**
+          - 2 new perpetual markets
+
+        **Liquidity & Trading**
+          - [Privacy Perps](/trading/privacy)
+          - 75% of S2 XP now transferrable
+          - Average fill price for max slippage calculation for market orders
+
+        **Performance & Infra**
+          - 4x faster orderbook animation
+
+        **UX**
+          - Portfolio Page Redesign
+          - Autoscale charts when changing markets / time range
+          - Customizable order book and order builder width
+          - Configurable orderbook update refresh rate
+          - Clear market menu search input after market selection
+          - Specify time range in CSV exports
+          - Support for `Keplr` and `Xverse` Starknet wallets
+          - Block Explorer Page
       </Card>
     </CardGroup>
 

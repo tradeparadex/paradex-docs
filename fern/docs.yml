@@ -680,7 +680,7 @@ navigation:
             path: ./pages/release-notes/archive.mdx
             contents:
               - page: v1.123
-                path: ./pages/release-notes/v-1.123.md
+                path: ./pages/release-notes/v1.123.md
               - page: v1.122
                 path: ./pages/release-notes/v1.122.md
               - page: v1.121

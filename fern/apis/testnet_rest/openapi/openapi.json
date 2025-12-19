@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.106.2"
+    "version": "1.106.3"
   },
   "host": "api.testnet.paradex.trade",
   "basePath": "/v1",
@@ -3715,7 +3715,7 @@
     },
     "/trades": {
       "get": {
-        "description": "Returns a paginated list of trades that have occurred on the exchange.\nDefault page size is 100, maxium is 5000.\n\nThe `side` field in the response indicates the taker side of the trade.\n\n### Example\n\n```http\nGET /trades?market=BTC-USD-PERP&page_size=100\n```\n\nThis endpoint supports cursor-based pagination for efficiently traversing large\nresult sets.\n",
+        "description": "Returns a paginated list of trades that have occurred on the exchange.\nDefault page size is 100, maximum is 5000.\n\nThe `side` field in the response indicates the taker side of the trade.\n\n### Example\n\n```http\nGET /trades?market=BTC-USD-PERP&page_size=100\n```\n\nThis endpoint supports cursor-based pagination for efficiently traversing large\nresult sets.\n",
         "produces": [
           "application/json"
         ],
@@ -3746,7 +3746,7 @@
             "required": true
           },
           {
-            "maximum": 5000,
+            "maximum": 1000,
             "minimum": 1,
             "type": "integer",
             "default": 100,

@@ -13,7 +13,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.106.1"
+    "version": "1.106.2"
   },
   "host": "api.prod.paradex.trade",
   "basePath": "/v1",
@@ -5092,10 +5092,6 @@
     "requests.CreateSubkey": {
       "type": "object",
       "properties": {
-        "key_type": {
-          "description": "Key type to be registered as a subkey.",
-          "type": "string"
-        },
         "name": {
           "description": "User-friendly name for the subkey.",
           "type": "string",

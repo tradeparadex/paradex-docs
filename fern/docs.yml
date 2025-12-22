@@ -663,13 +663,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.126
+            path: ./pages/release-notes/v1.126.md
           - page: v1.125
             path: ./pages/release-notes/v1.125.md
-          - page: v1.124
-            path: ./pages/release-notes/v1.124.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.124
+                path: ./pages/release-notes/v1.124.md
               - page: v1.123
                 path: ./pages/release-notes/v1.123.md
               - page: v1.122
@@ -678,30 +680,8 @@ navigation:
                 path: ./pages/release-notes/v1.121.md
               - page: v1.120
                 path: ./pages/release-notes/v1.120.md
-              - page: v1.119
-                path: ./pages/release-notes/v1.119.md
-              - page: v1.118
-                path: ./pages/release-notes/v1.118.md
-              - page: v1.117
-                path: ./pages/release-notes/v1.117.md
-              - page: v1.116
-                path: ./pages/release-notes/v1.116.md
-              - page: v1.115
-                path: ./pages/release-notes/v1.115.md
-              - page: v1.114
-                path: ./pages/release-notes/v1.114.md
-              - page: v1.113
-                path: ./pages/release-notes/v1.113.md
-              - page: v1.112
-                path: ./pages/release-notes/v1.112.md
-              - page: v1.111
-                path: ./pages/release-notes/v1.111.md
-              - page: v1.109
-                path: ./pages/release-notes/v1.109.md
-              - page: v1.107
-                path: ./pages/release-notes/v1.107.md
-              - page: v1.106
-                path: ./pages/release-notes/v1.106.md
+              - page: v1.124
+                path: ./pages/release-notes/v1.124.md
               - page: v1.105
                 path: ./pages/release-notes/v1.105.md
               - page: v1.104

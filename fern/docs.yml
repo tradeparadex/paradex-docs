@@ -382,6 +382,9 @@ navigation:
                     - page: LINK-USD-PERP
                       slug: link-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/link-usd-perp.mdx
+                    - page: LIT-USD-PERP
+                      slug: lit-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/lit-usd-perp.mdx
                     - page: LTC-USD-PERP
                       slug: ltc-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ltc-usd-perp.mdx

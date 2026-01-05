@@ -325,9 +325,6 @@ navigation:
                     - page: FIL-USD-PERP
                       slug: fil-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/fil-usd-perp.mdx
-                    - page: FLOW-USD-PERP
-                      slug: flow-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/flow-usd-perp.mdx
                     - page: GOAT-USD-PERP
                       slug: goat-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/goat-usd-perp.mdx

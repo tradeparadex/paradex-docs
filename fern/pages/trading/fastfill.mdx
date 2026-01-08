@@ -59,6 +59,14 @@ The orderbook endpoint includes additional fields to help API traders identify r
 
 These fields allow you to see how much retail size is available on top of the book, helping you understand potential FastFill opportunities. Query the [Get Orderbook](/api/prod/markets/get-orderbook) endpoint to access this information.
 
+## Execution Priority
+
+UI orders (interactive orders placed through the web interface) have queue priority at each price level. This means:
+
+- **UI orders are guaranteed to be filled first** before API or RPI orders at the same price level
+- The priority ensures retail traders receive the best execution when multiple orders exist at the same price
+- API traders matching with retail passive orders benefit from the FastFill discount while respecting this priority system
+
 ## Benefits
 
 - **Faster Execution**: Retail orders get filled more quickly as API traders are incentivized to match with them

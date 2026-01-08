@@ -81,6 +81,9 @@ navigation:
           - page: Retail Price Improvement
             slug: rpi
             path: ./pages/trading/rpi.mdx
+          - page: FastFill
+            slug: fastfill
+            path: ./pages/trading/fastfill.mdx
           - section: Perpetual Options
             slug: perpetual-options
             contents:

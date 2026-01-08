@@ -1,0 +1,67 @@
+---
+title: FastFill
+subtitle: Faster fills for retail traders with fee discounts for API traders
+---
+
+## Overview
+
+FastFill is a program designed to improve trade execution speed for retail traders by incentivizing API traders to match with passive orders from Retail Profiles. API traders automatically receive a 75% fee discount when their orders match with retail passive orders, encouraging faster fills for retail users.
+
+### How FastFill Works
+
+<CardGroup cols={2}>
+  <Card title="75% Fee Discount" icon="percent">
+    API traders automatically receive a 75% fee discount when matching with retail passive orders
+  </Card>
+
+  <Card title="No Action Required" icon="check-circle">
+    The discount is applied automatically - no special configuration needed
+  </Card>
+</CardGroup>
+
+## Fee Discount Details
+
+When your API orders match with passive orders from a Retail Profile:
+
+- **75% fee discount** is automatically applied to your trading fees
+- The discount is reflected in the `fee` field of fill responses
+- No additional configuration or order parameters are required
+- The discount applies to all qualifying fills automatically
+
+## Identifying FastFill Fills
+
+Fills that qualify for the FastFill discount are marked with a `fastfill` flag in the fill response. When querying fills via the [List Fills](/api/prod/account/list-fills) endpoint, check the `flags` array for the `fastfill` value.
+
+Example fill response with FastFill flag:
+
+```json
+{
+  "id": "...",
+  "market": "BTC-USD-PERP",
+  "price": "50000",
+  "size": "0.1",
+  "fee": "0.25",
+  "flags": ["fastfill"],
+  ...
+}
+```
+
+The discounted fee amount will be reflected in the `fee` field of the response.
+
+## Orderbook Visibility
+
+The orderbook endpoint includes additional fields to help API traders identify retail liquidity available at the best bid and offer:
+
+- **`best_ask_interactive`**: Size available on the best ask from retail traders (UI orders)
+- **`best_bid_interactive`**: Size available on the best bid from retail traders (UI orders)
+- **`best_ask_api`**: Size available on the best ask from API orders (excluding retail)
+- **`best_bid_api`**: Size available on the best bid from API orders (excluding retail)
+
+These fields allow you to see how much retail size is available on top of the book, helping you understand potential FastFill opportunities. Query the [Get Orderbook](/api/prod/markets/get-orderbook) endpoint to access this information.
+
+## Benefits
+
+- **Faster Execution**: Retail orders get filled more quickly as API traders are incentivized to match with them
+- **Lower Fees**: API traders benefit from reduced trading costs when matching with retail liquidity
+- **Transparent**: Orderbook fields clearly show retail liquidity available at the top of the book
+- **Automatic**: No special order types or configurations required - the discount applies automatically

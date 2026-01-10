@@ -42,6 +42,9 @@ navigation:
           - page: Official Links
             slug: official-links
             path: ./pages/introduction/official-links.mdx
+          - page: Maintenance & Releases
+            slug: maintenance
+            path: ./pages/maintenance.mdx
           - section: Architecture Overview
             path: ./pages/introduction/architecture-overview/overview.mdx
             contents:

@@ -42,6 +42,9 @@ navigation:
           - page: Official Links
             slug: official-links
             path: ./pages/introduction/official-links.mdx
+          - page: Maintenance & Releases
+            slug: maintenance
+            path: ./pages/maintenance.mdx
           - section: Architecture Overview
             path: ./pages/introduction/architecture-overview/overview.mdx
             contents:
@@ -63,9 +66,6 @@ navigation:
           - page: Xperience Points
             slug: xp
             path: ./pages/points-and-referrals/xp.mdx
-          - page: Quote Quality Score
-            slug: quote-quality
-            path: ./pages/points-and-referrals/quote-quality.mdx
           - page: Affiliate & Referrals
             path: ./pages/points-and-referrals/affiliate-program.mdx
 
@@ -81,6 +81,9 @@ navigation:
           - page: Retail Price Improvement
             slug: rpi
             path: ./pages/trading/rpi.mdx
+          - page: FastFill
+            slug: fastfill
+            path: ./pages/trading/fastfill.mdx
           - section: Perpetual Options
             slug: perpetual-options
             contents:
@@ -325,9 +328,6 @@ navigation:
                     - page: FIL-USD-PERP
                       slug: fil-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/fil-usd-perp.mdx
-                    - page: FLOW-USD-PERP
-                      slug: flow-usd-perp
-                      path: ./pages/instruments-guide/futures/tier-2/flow-usd-perp.mdx
                     - page: GOAT-USD-PERP
                       slug: goat-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/goat-usd-perp.mdx
@@ -382,6 +382,9 @@ navigation:
                     - page: LINK-USD-PERP
                       slug: link-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/link-usd-perp.mdx
+                    - page: LIT-USD-PERP
+                      slug: lit-usd-perp
+                      path: ./pages/instruments-guide/futures/tier-2/lit-usd-perp.mdx
                     - page: LTC-USD-PERP
                       slug: ltc-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/ltc-usd-perp.mdx
@@ -558,9 +561,6 @@ navigation:
                 - page: BTC
                   slug: btc
                   path: ./pages/instruments-guide/options/btc.mdx
-                - page: ETH
-                  slug: eth
-                  path: ./pages/instruments-guide/options/eth.mdx
           - page: API Authentication
             slug: api-authentication
             path: ./pages/trading/api-authentication.mdx
@@ -663,13 +663,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.127
+            path: ./pages/release-notes/v1.127.md
           - page: v1.126
             path: ./pages/release-notes/v1.126.md
-          - page: v1.125
-            path: ./pages/release-notes/v1.125.md
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.125
+                path: ./pages/release-notes/v1.125.md
               - page: v1.124
                 path: ./pages/release-notes/v1.124.md
               - page: v1.123

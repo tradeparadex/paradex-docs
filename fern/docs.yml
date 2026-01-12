@@ -63,9 +63,6 @@ navigation:
           - page: Xperience Points
             slug: xp
             path: ./pages/points-and-referrals/xp.mdx
-          - page: Quote Quality Score
-            slug: quote-quality
-            path: ./pages/points-and-referrals/quote-quality.mdx
           - page: Affiliate & Referrals
             path: ./pages/points-and-referrals/affiliate-program.mdx
 

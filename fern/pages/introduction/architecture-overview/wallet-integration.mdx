@@ -15,7 +15,7 @@ Paradex, a [Starknet Appchain](starknet-first-appchain), incorporates separate p
 
 We wanted to provide our clients with the simplest possible onboarding experience. Our solution was to allow our customers to operate on Paradex while only having to care about their Ethereum wallet, which they are already familiar with. We did not want users to have to manage a separate Paradex wallet, but instead be able to use a wallet they are comfortable with, such as MetaMask. This reduces complexity, as they would have to manage an Ethereum wallet anyway in order to interact with Paradex.
 <Frame caption="MetaMask was our wallet of choice that would allow us to provide a simple experience to our users.">
-<img src="../../../assets/image (11).png" alt=""/>
+<img src="../../../assets/architecture/wallet_metamask_integration.png" alt=""/>
 </Frame>
 
 ### How the internal wallet works
@@ -47,7 +47,7 @@ This is where some slightly advanced cryptography comes in.
 
 The signature itself can't be the user's private key on Paradex because the private key must be compatible with a [Stark-friendly elliptic curve](https://docs.starkware.co/starkex/crypto/stark-curve.html).
 
-<img src="../../../assets/image (19).png" alt=""/>
+<img src="../../../assets/architecture/wallet_key_derivation_diagram.png" alt=""/>
 
 Converting arbitrary inputs into a private key is done with a KDF or [Key Derivation Function](https://en.wikipedia.org/wiki/Key_derivation_function). The KDF takes the input and does a series of transformations to it in order to convert it to a key in a deterministic way.
 

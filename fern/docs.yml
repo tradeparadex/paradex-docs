@@ -13,7 +13,6 @@ products:
   - display-name: Documentation
     path: ./products/documentation.yml
     icon: fa-solid fa-book
-    slug: docs
     subtitle: Complete guide to Paradex
   - display-name: REST API Reference
     path: ./products/rest-api.yml
@@ -43,64 +42,49 @@ navbar-links:
     url: https://app.paradex.trade
 
 redirects:
-  # Redirect root to docs product landing
+  # Redirect root to documentation landing
   - source: "/"
-    destination: "/docs/getting-started/what-is-paradex"
+    destination: "/getting-started/what-is-paradex"
 
-  # Redirects from old root-level Documentation URLs to new /docs/ prefix
-  # The old "docs" tab had skip-slug: true, so pages were at root level with section prefixes
-  - source: "/getting-started/:slug*"
-    destination: "/docs/getting-started/:slug*"
-  - source: "/xp-referrals/:slug*"
-    destination: "/docs/xp-referrals/:slug*"
-  - source: "/trading/:slug*"
-    destination: "/docs/trading/:slug*"
-  - source: "/risk/:slug*"
-    destination: "/docs/risk/:slug*"
-  - source: "/security/:slug*"
-    destination: "/docs/security/:slug*"
-  - source: "/paradex-chain/:slug*"
-    destination: "/docs/paradex-chain/:slug*"
-  - source: "/ecosystem/:slug*"
-    destination: "/docs/ecosystem/:slug*"
-  - source: "/release-notes/:slug*"
-    destination: "/docs/release-notes/:slug*"
+  # Redirect /docs/* to root (for any old links with /docs/ prefix)
+  - source: "/docs/:slug*"
+    destination: "/:slug*"
 
-  # Legacy redirects (updated to point to new /docs/ prefix)
+  # Legacy redirects
   - source: "/documentation/getting-started/architecture-overview/wallet-integration"
-    destination: "/docs/trading/accounts/wallet-integration"
+    destination: "/trading/accounts/wallet-integration"
   - source: "/documentation/perpetual-options/:slug*"
-    destination: "/docs/trading/perpetual-options/:slug*"
+    destination: "/trading/perpetual-options/:slug*"
   - source: "/documentation/vaults/:slug*"
-    destination: "/docs/trading/vaults/:slug*"
+    destination: "/trading/vaults/:slug*"
   - source: "/documentation/instruments-guide/:slug*"
-    destination: "/docs/trading/instruments-guide/:slug*"
+    destination: "/trading/instruments-guide/:slug*"
   - source: "/documentation/risk-system/:slug*"
-    destination: "/docs/risk/:slug*"
+    destination: "/risk/:slug*"
   - source: "/documentation/advanced-trading-features/self-trade-prevention"
-    destination: "/docs/trading/self-trade-prevention"
+    destination: "/trading/self-trade-prevention"
   - source: "/documentation/advanced-trading-features/receive-window"
-    destination: "/docs/trading/receive-window"
+    destination: "/trading/receive-window"
   - source: "/documentation/points-referrals/:slug*"
-    destination: "/docs/xp-referrals/:slug*"
+    destination: "/xp-referrals/:slug*"
   - source: "/accounts/:slug*"
-    destination: "/docs/trading/accounts/:slug*"
+    destination: "/trading/accounts/:slug*"
   - source: "/trading/trading-fee"
-    destination: "/docs/trading/trader-profiles"
+    destination: "/trading/trader-profiles"
 
-  # Wildcard redirects for old documentation paths (updated to new /docs/ prefix)
+  # Wildcard redirects for old documentation paths
   - source: "/documentation/:slug*"
-    destination: "/docs/:slug*"
+    destination: "/:slug*"
   - source: "/api-reference/:slug*"
     destination: "/api/:slug*"
   - source: "/websocket-reference/:slug*"
     destination: "/ws/:slug*"
 
   - source: "documentation/trading/perpetual-options/trading-fees"
-    destination: "/docs/trading/trader-profiles"
+    destination: "/trading/trader-profiles"
 
   - source: "/risk/paradex-risk-system"
-    destination: "/docs/risk/margin-system"
+    destination: "/risk/margin-system"
 
 layout:
   header-height: 72px

@@ -1005,8 +1005,6 @@ js:
   - path: ./dist/dd-rum.js
   - path: ./dist/add-pixel.js
     strategy: lazyOnload
-  - path: ./dist/inkeep.js
-    strategy: lazyOnload
 
 experimental:
   openapi-parser-v3: true

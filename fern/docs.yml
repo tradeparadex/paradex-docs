@@ -556,11 +556,6 @@ navigation:
                     - page: ZRO-USD-PERP
                       slug: zro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
-            - section: Options
-              contents:
-                - page: BTC
-                  slug: btc
-                  path: ./pages/instruments-guide/options/btc.mdx
           - page: API Authentication
             slug: api-authentication
             path: ./pages/trading/api-authentication.mdx
@@ -663,13 +658,15 @@ navigation:
       - section: Release Notes
         path: ./pages/release-notes/overview.mdx
         contents:
+          - page: v1.128
+            path: ./pages/release-notes/v1.128.md
           - page: v1.127
-            path: ./pages/release-notes/v1.127.md
-          - page: v1.126
-            path: ./pages/release-notes/v1.126.md
+            path: ./pages/release-notes/v1.127.md     
           - section: Archive
             path: ./pages/release-notes/archive.mdx
             contents:
+              - page: v1.126
+                path: ./pages/release-notes/v1.126.md
               - page: v1.125
                 path: ./pages/release-notes/v1.125.md
               - page: v1.124
@@ -1004,8 +1001,6 @@ css: ./assets/styles.css
 js:
   - path: ./dist/dd-rum.js
   - path: ./dist/add-pixel.js
-    strategy: lazyOnload
-  - path: ./dist/inkeep.js
     strategy: lazyOnload
 
 experimental:

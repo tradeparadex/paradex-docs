@@ -1,0 +1,61 @@
+navigation:
+  - section: General Information
+    path: ../pages/developer-portal/general-information/intro.mdx
+    contents:
+      - page: Server Location
+        slug: server-location
+        path: ../pages/developer-portal/general-information/server-location.mdx
+      - page: Server URLs
+        slug: api-urls
+        path: ../pages/developer-portal/general-information/api-urls.mdx
+      - page: Quick Start
+        slug: api-quick-start
+        path: ../pages/developer-portal/general-information/api-quick-start.mdx
+      - page: Authentication
+        slug: authentication
+        path: ../pages/developer-portal/general-information/authentication.mdx
+      - section: Rate Limits
+        path: ../pages/developer-portal/general-information/rate-limits/rate-limits.mdx
+        contents:
+          - page: API
+            slug: api
+            path: ../pages/developer-portal/general-information/rate-limits/api.mdx
+          - page: Open Orders per Account
+            slug: open-orders-per-account
+            path: ../pages/developer-portal/general-information/rate-limits/open-orders-per-account.mdx
+          - page: Common Questions
+            slug: common-questions
+            path: ../pages/developer-portal/general-information/rate-limits/common-questions.mdx
+      - page: Benchmarks
+        slug: benchmarks
+        path: ../pages/developer-portal/benchmarks.mdx
+  - section: Production API Reference
+    contents:
+      - api: REST Endpoints
+        api-name: prod_rest
+        skip-slug: true
+        display-errors: true
+        flattened: true
+        paginated: true
+    slug: prod
+  - section: Testnet API Reference
+    contents:
+      - api: REST Endpoints
+        api-name: testnet_rest
+        skip-slug: true
+        display-errors: true
+        flattened: true
+        paginated: true
+    slug: testnet
+  - section: Useful Resources
+    contents:
+      - link: Paradex Github
+        href: https://github.com/tradeparadex
+      - link: Paradex CLI
+        href: https://github.com/tradeparadex/paradex-cli/
+      - link: Code Samples
+        href: https://github.com/tradeparadex/code-samples
+      - link: Python SDK
+        href: https://tradeparadex.github.io/paradex-py/
+      - link: CCXT Integration
+        href: https://docs.ccxt.com/#/exchanges/paradex

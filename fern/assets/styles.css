@@ -85,3 +85,16 @@ a.cyan-cards:hover {
   border-color: #1BC1CF !important;
   color: #1BC1CF !important;
 }
+
+/* Product Switcher Styling */
+div:has(> .fern-product-selector-radio-group) {
+  margin-top: 0.125rem;
+  padding: 0.5rem;
+}
+
+div:has(> .fern-product-selector-radio-group):before {
+  content: "Explore Paradex";
+  font-weight: 700;
+  display: block;
+  margin: 0 0.5rem 0.5rem 0.5rem;
+}

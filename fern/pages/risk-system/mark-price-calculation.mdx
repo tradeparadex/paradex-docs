@@ -37,13 +37,13 @@ More details are provided below.
 ### 1. Every 5 seconds, get the latest Best Ask, Best Bid, Last Trade and Spot Prices
 
 <Frame caption="Example with SOL-USD-PERP best bid, best ask, last trade price and spot price">
-<img src="../../assets/Screenshot 2024-07-04 at 11.24.42.png" alt=""/>
+<img src="../../assets/risk/mark_price_data_inputs.png" alt=""/>
 </Frame>
 
 ### 2. Calculate the implied rates from Best Ask, Best Bid, Last Trade relative to the Spot Price
 
 <Frame caption="Rates implied from SOL-USD-PERP best bid, best ask and last trade price relative to the spot price">
-<img src="../../assets/Screenshot 2024-07-04 at 11.24.53.png" alt=""/>
+<img src="../../assets/risk/mark_price_implied_rates.png" alt=""/>
 </Frame>
 
 ### 3. Calculate the EWMA **(Exponentially Weighted Moving Average) of each of the three rates (**Paradex EWMA rates) **and take the median**
@@ -51,7 +51,7 @@ More details are provided below.
 In this example, an EWMA weight of 20% is applied to the latest rate observation
 
 <Frame caption="EWMA of SOL-USD-PERP rates implied from best bid, best ask and last trade price relative to the spot price">
-<img src="../../assets/Screenshot 2024-07-04 at 11.25.00.png" alt=""/>
+<img src="../../assets/risk/mark_price_ewma_rates.png" alt=""/>
 </Frame>
 
 ### 5. Calculate the EWMA **(Exponentially Weighted Moving Average) of the Mid Rate**
@@ -83,7 +83,7 @@ $$
 ### 8. Calculate the Mark Price by applying the Fair Basis to the Spot Price
 
 <Frame caption="SOL-USD-PERP mark price compared to the underlying spot price">
-<img src="../../assets/Screenshot 2024-07-04 at 11.27.53.png" alt=""/>
+<img src="../../assets/risk/mark_price_vs_spot.png" alt=""/>
 </Frame>
 
 Note that the **Fair Basis** is different from the **Funding Rate**, the Funding Rate is derived from the Fair Basis using the formula [described here](funding-mechanism#funding-rate)
@@ -91,5 +91,5 @@ Note that the **Fair Basis** is different from the **Funding Rate**, the Funding
 Here a comparison between the Fair Basis and the Funding Rate in this example :
 
 <Frame caption="SOL-USD-PERP fair basis and funding rate">
-<img src="../../assets/Screenshot 2024-07-04 at 11.36.04.png" alt=""/>
+<img src="../../assets/risk/mark_price_fair_basis_vs_funding.png" alt=""/>
 </Frame>

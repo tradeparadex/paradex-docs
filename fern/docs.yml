@@ -556,11 +556,6 @@ navigation:
                     - page: ZRO-USD-PERP
                       slug: zro-usd-perp
                       path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
-            - section: Options
-              contents:
-                - page: BTC
-                  slug: btc
-                  path: ./pages/instruments-guide/options/btc.mdx
           - page: API Authentication
             slug: api-authentication
             path: ./pages/trading/api-authentication.mdx

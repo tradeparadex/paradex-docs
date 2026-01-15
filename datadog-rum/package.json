@@ -9,7 +9,7 @@
     "dependencies": {
         "@datadog/browser-logs": "^5.4.0",
         "@datadog/browser-rum": "^5.28.1",
-        "vite": "^4.0.0"
+        "vite": "7.3.0"
     },
     "main": "init-rum.js",
     "keywords": [],

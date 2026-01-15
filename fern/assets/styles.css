@@ -2,7 +2,9 @@
   --paradex-accent: #1BC1CF;
   --paradex-accent-bright: #07D1E2;
   --paradex-dark: #070808;
-  --paradex-sidebar-active: #302F38;
+  --paradex-bg: #090A0A;
+  --paradex-card-bg: #16191C;
+  --paradex-sidebar-active: #1E2124;
   --accent-contrast: var(--paradex-dark);
 }
 

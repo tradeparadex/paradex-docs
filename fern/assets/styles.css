@@ -24,6 +24,14 @@
   font-weight: 500;
 }
 
+/* $DIME Nation button styling to match Launch Exchange size */
+a.fern-button.minimal.normal,
+a.fern-button.minimal.normal:hover {
+  height: 40px !important;
+  padding: 0 16px !important;
+  border-radius: 9999px !important;
+}
+
 /* Launch Exchange button styling to match paradex.trade */
 a.fern-button.filled.primary.rounded {
   background-color: var(--paradex-accent-bright);

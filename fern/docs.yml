@@ -140,6 +140,7 @@ js:
   - path: ./dist/dd-rum.js
   - path: ./dist/add-pixel.js
     strategy: lazyOnload
+  - path: ./assets/tvl-limit.js
 
 experimental:
   openapi-parser-v3: true

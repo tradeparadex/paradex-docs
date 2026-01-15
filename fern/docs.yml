@@ -1000,6 +1000,8 @@ colors:
     dark: "#1BC1CF"
   background:
     dark: "#181c20"
+  card-background:
+    dark: "#181C20"
 css: ./assets/styles.css
 js:
   - path: ./dist/dd-rum.js

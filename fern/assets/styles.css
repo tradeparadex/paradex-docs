@@ -1,5 +1,13 @@
+:root {
+  --paradex-accent: #1BC1CF;
+  --paradex-accent-bright: #07D1E2;
+  --paradex-dark: #070808;
+  --paradex-sidebar-active: #302F38;
+  --accent-contrast: var(--paradex-dark);
+}
+
 .fern-sidebar-link-container[data-state=active] .fern-sidebar-link {
-  background-color: #302F38;
+  background-color: var(--paradex-sidebar-active);
 }
 
 .fern-sidebar-link-container[data-state=active] {
@@ -7,15 +15,23 @@
 }
 
 .fern-scroll-area-thumb {
-  background-color: #302F38;
-}
-
-.fern-card {
-  background-color: #181C20;
+  background-color: var(--paradex-sidebar-active);
 }
 
 .fern-button:not(.disabled).filled.primary {
   font-weight: 500;
+}
+
+/* Launch Exchange button styling to match paradex.trade */
+a.fern-button.filled.primary.rounded {
+  background-color: var(--paradex-accent-bright);
+  color: var(--paradex-dark);
+  height: 40px;
+  padding: 0 16px;
+}
+
+a.fern-button.filled.primary.rounded .fern-button-text {
+  color: var(--paradex-dark);
 }
 
 :is(.light) .fern-background {
@@ -32,7 +48,7 @@ a[id*="playground-button"] {
 }
 
 a.white-cards:hover {
-  border-color: #1BC1CF !important;
+  border-color: var(--paradex-accent) !important;
 }
 
 .white-cards .text-body {
@@ -40,11 +56,11 @@ a.white-cards:hover {
 }
 
 .cyan-cards .text-body {
-  color: #1BC1CF !important;
+  color: var(--paradex-accent) !important;
 }
 
 a.cyan-cards:hover {
-  border-color: #1BC1CF !important;
+  border-color: var(--paradex-accent) !important;
 }
 
 .card-icon-w64 .card-icon {
@@ -55,33 +71,33 @@ a.cyan-cards:hover {
 [class*="callout"][data-intent="tip"],
 [class*="Callout"][data-intent="tip"],
 .fern-tip {
-  border-color: #1BC1CF !important;
+  border-color: var(--paradex-accent) !important;
   background-color: rgba(27, 193, 207, 0.1) !important;
-  color: #1BC1CF !important;
+  color: var(--paradex-accent) !important;
 }
 
 .fern-callout[data-intent="tip"] *,
 [class*="callout"][data-intent="tip"] *,
 [class*="Callout"][data-intent="tip"] *,
 .fern-tip * {
-  color: #1BC1CF !important;
+  color: var(--paradex-accent) !important;
 }
 
 .fern-docs-badge.green,
 .fern-docs-badge[data-intent="success"] {
-  color: #1BC1CF !important;
+  color: var(--paradex-accent) !important;
 }
 
 .fern-docs-badge.subtle.green,
 .fern-docs-badge.subtle[data-intent="success"] {
   background-color: rgba(27, 193, 207, 0.12) !important;
-  border-color: #1BC1CF !important;
-  color: #1BC1CF !important;
+  border-color: var(--paradex-accent) !important;
+  color: var(--paradex-accent) !important;
 }
 
 .fern-docs-badge.outlined.green,
 .fern-docs-badge.outlined[data-intent="success"] {
   background-color: transparent !important;
-  border-color: #1BC1CF !important;
-  color: #1BC1CF !important;
+  border-color: var(--paradex-accent) !important;
+  color: var(--paradex-accent) !important;
 }

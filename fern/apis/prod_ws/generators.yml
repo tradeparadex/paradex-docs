@@ -1,6 +1,7 @@
 api:
   specs:
     - asyncapi: ./asyncapi-2.6.0.yaml
+      # origin: http://localhost:8080/asyncapi-2.6.0.jsonrpc.yaml
       settings:
         title-as-schema-name: true
         idiomatic-request-names: false

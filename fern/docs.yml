@@ -975,6 +975,7 @@ redirects:
 
 layout:
   header-height: 72px
+  page-width: 1504px
   searchbar-placement: header
   tabs-placement: header
 typography:

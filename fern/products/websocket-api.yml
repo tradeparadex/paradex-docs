@@ -1,0 +1,38 @@
+navigation:
+  - section: General Information
+    path: ../pages/websockets/landing.mdx
+    contents:
+      - page: Introduction
+        path: ../pages/websockets/introduction.mdx
+      - page: Server Location
+        path: ../pages/websockets/server-location.mdx
+      - page: Authentication
+        path: ../pages/websockets/connection-authentication.mdx
+      - page: Subscription Channels
+        path: ../pages/websockets/subscription-channels.mdx
+      - page: Error Handling
+        path: ../pages/websockets/error-handling.mdx
+      - page: Code Examples
+        path: ../pages/websockets/code-examples.mdx
+      - page: Rate Limits
+        path: ../pages/websockets/rate-limits.mdx
+  - section: WebSocket Channels
+    contents:
+      - api: WS Endpoints
+        api-name: prod_ws
+        skip-slug: true
+        display-errors: true
+        flattened: true
+        paginated: true
+  - section: Useful Resources
+    contents:
+      - link: Paradex Github
+        href: https://github.com/tradeparadex
+      - link: Paradex CLI
+        href: https://github.com/tradeparadex/paradex-cli/
+      - link: Code Samples
+        href: https://github.com/tradeparadex/code-samples
+      - link: Python SDK
+        href: https://tradeparadex.github.io/paradex-py/
+      - link: CCXT Integration
+        href: https://docs.ccxt.com/#/exchanges/paradex

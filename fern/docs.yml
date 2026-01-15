@@ -132,7 +132,9 @@ colors:
   accent-primary:
     dark: "#1BC1CF"
   background:
-    dark: "#181c20"
+    dark: "#090A0A"
+  card-background:
+    dark: "#16191C"
 css: ./assets/styles.css
 js:
   - path: ./dist/dd-rum.js

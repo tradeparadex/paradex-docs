@@ -254,9 +254,6 @@ navigation:
                 - page: CC-USD-PERP
                   slug: cc-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/cc-usd-perp.mdx
-                - page: CLANKER-USD-PERP
-                  slug: clanker-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/clanker-usd-perp.mdx
                 - page: COAI-USD-PERP
                   slug: coai-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/coai-usd-perp.mdx
@@ -269,9 +266,6 @@ navigation:
                 - page: DOGE-USD-PERP
                   slug: doge-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/doge-usd-perp.mdx
-                - page: DOLO-USD-PERP
-                  slug: dolo-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/dolo-usd-perp.mdx
                 - page: DOT-USD-PERP
                   slug: dot-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/dot-usd-perp.mdx
@@ -287,9 +281,6 @@ navigation:
                 - page: ETHFI-USD-PERP
                   slug: ethfi-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/ethfi-usd-perp.mdx
-                - page: F-USD-PERP
-                  slug: f-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/f-usd-perp.mdx
                 - page: FARTCOIN-USD-PERP
                   slug: fartcoin-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/fartcoin-usd-perp.mdx
@@ -311,9 +302,6 @@ navigation:
                 - page: HYPER-USD-PERP
                   slug: hyper-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/hyper-usd-perp.mdx
-                - page: HYPE-USD-PERP
-                  slug: hype-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx
                 - page: ICP-USD-PERP
                   slug: icp-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/icp-usd-perp.mdx
@@ -374,9 +362,6 @@ navigation:
                 - page: MORPHO-USD-PERP
                   slug: morpho-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/morpho-usd-perp.mdx
-                - page: MNT-USD-PERP
-                  slug: mnt-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/mnt-usd-perp.mdx
                 - page: MYX-USD-PERP
                   slug: myx-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/myx-usd-perp.mdx
@@ -416,9 +401,6 @@ navigation:
                 - page: POPCAT-USD-PERP
                   slug: popcat-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/popcat-usd-perp.mdx
-                - page: PROVE-USD-PERP
-                  slug: prove-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/prove-usd-perp.mdx
                 - page: PUMP-USD-PERP
                   slug: pump-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/pump-usd-perp.mdx
@@ -440,15 +422,9 @@ navigation:
                 - page: SEI-USD-PERP
                   slug: sei-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/sei-usd-perp.mdx
-                - page: SNX-USD-PERP
-                  slug: snx-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/snx-usd-perp.mdx
                 - page: SPX-USD-PERP
                   slug: spx-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/spx-usd-perp.mdx
-                - page: STBL-USD-PERP
-                  slug: stbl-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/stbl-usd-perp.mdx
                 - page: STRK-USD-PERP
                   slug: strk-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/strk-usd-perp.mdx

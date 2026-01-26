@@ -605,6 +605,8 @@ navigation:
   - section: Release Notes
     path: ../pages/release-notes/overview.mdx
     contents:
+      - page: v1.130
+        path: ../pages/release-notes/v1.130.md
       - page: v1.128
         path: ../pages/release-notes/v1.128.md
       - page: v1.127

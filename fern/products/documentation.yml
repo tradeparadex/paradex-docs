@@ -251,6 +251,9 @@ navigation:
                 - page: BERA-USD-PERP
                   slug: bera-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/bera-usd-perp.mdx
+                - page: BIRB-USD-PERP
+                  slug: birb-usd-perp
+                  path: ../pages/instruments-guide/futures/tier-2/birb-usd-perp.mdx
                 - page: BNB-USD-PERP
                   slug: bnb-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx

@@ -116,6 +116,7 @@ a.cyan-cards:hover {
 div:has(> .fern-product-selector-radio-group) {
   margin-top: 0.125rem;
   padding: 0.5rem;
+  position: relative; /* Add this */
 }
 
 div:has(> .fern-product-selector-radio-group):before {
@@ -123,4 +124,7 @@ div:has(> .fern-product-selector-radio-group):before {
   font-weight: 700;
   display: block;
   margin: 0 0.5rem 0.5rem 0.5rem;
+  pointer-events: none; /* Add this - prevents blocking clicks */
+  position: relative; /* Add this - ensures proper stacking */
+  z-index: 0; /* Add this - keeps it behind interactive elements */
 }

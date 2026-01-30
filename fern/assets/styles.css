@@ -158,6 +158,84 @@ div:has(> .fern-product-selector-radio-group):before {
   z-index: 0;
 }
 
+/* Consistent styling for all product selector menu items */
+.fern-product-selector [role="menuitem"],
+.fern-product-selector .fern-selection-item,
+[role="menu"] [role="menuitem"],
+[role="menu"] .fern-selection-item,
+.fern-product-selector-radio-group [role="radio"],
+.fern-product-selector-radio-group .fern-selection-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  width: 100% !important;
+  text-align: left !important;
+  background: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important;
+}
+
+/* Consistent hover state for all menu items */
+.fern-product-selector [role="menuitem"]:hover,
+.fern-product-selector .fern-selection-item:hover,
+[role="menu"] [role="menuitem"]:hover,
+[role="menu"] .fern-selection-item:hover,
+.fern-product-selector-radio-group [role="radio"]:hover,
+.fern-product-selector-radio-group .fern-selection-item:hover {
+  background-color: var(--paradex-sidebar-active) !important;
+}
+
+/* Consistent active/selected state for all menu items */
+.fern-product-selector [role="menuitem"][data-state="checked"],
+.fern-product-selector [role="menuitem"][aria-checked="true"],
+.fern-product-selector .fern-selection-item[data-state="checked"],
+[role="menu"] [role="menuitem"][data-state="checked"],
+[role="menu"] [role="menuitem"][aria-checked="true"],
+.fern-product-selector-radio-group [role="radio"][data-state="checked"],
+.fern-product-selector-radio-group [role="radio"][aria-checked="true"] {
+  background-color: var(--paradex-sidebar-active) !important;
+  color: #ffffff !important;
+}
+
+/* Consistent styling for menu item titles */
+.fern-product-selector .fern-selection-item-title,
+.fern-product-selector [role="menuitem"] .fern-selection-item-title,
+[role="menu"] .fern-selection-item-title,
+.fern-product-selector-radio-group .fern-selection-item-title {
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  color: inherit !important;
+  margin: 0 !important;
+}
+
+/* Consistent styling for menu item subtitles */
+.fern-product-selector .fern-selection-item-subtitle,
+.fern-product-selector [role="menuitem"] .fern-selection-item-subtitle,
+[role="menu"] .fern-selection-item-subtitle,
+.fern-product-selector-radio-group .fern-selection-item-subtitle {
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  color: var(--grayscale-a9, rgba(255, 255, 255, 0.6)) !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+/* Consistent icon styling */
+.fern-product-selector .fern-selection-item-icon,
+.fern-product-selector [role="menuitem"] .fern-selection-item-icon,
+[role="menu"] .fern-selection-item-icon,
+.fern-product-selector-radio-group .fern-selection-item-icon {
+  width: 24px !important;
+  height: 24px !important;
+  flex-shrink: 0 !important;
+  color: inherit !important;
+}
+
 /* Ensure dropdown menu content is above any pseudo-elements */
 .fern-product-selector[data-state="open"] ~ *,
 .fern-product-selector + *,

@@ -58,7 +58,7 @@ a[id*="playground-button"]:not([href*="api"]):not([href*="doc"]) {
   display: none;
 }
 
-/* Ensure API doc links are visible and styled */
+/* Ensure API doc links are visible */
 a[id*="playground-button"][href*="api"],
 a[id*="playground-button"][href*="doc"],
 a[href*="api"][href*="doc"],
@@ -126,13 +126,15 @@ a.cyan-cards:hover {
   color: var(--paradex-accent) !important;
 }
 
-/* Product Switcher Styling */
+/* Product Switcher Styling - Updated for button-based selector */
+.fern-header-switchers:has(.fern-product-selector),
 div:has(> .fern-product-selector-radio-group) {
   margin-top: 0.125rem;
   padding: 0.5rem;
   position: relative;
 }
 
+/* Only add "Explore Paradex" text if radio group exists, not for button-based selector */
 div:has(> .fern-product-selector-radio-group):before {
   content: "Explore Paradex";
   font-weight: 700;
@@ -143,8 +145,34 @@ div:has(> .fern-product-selector-radio-group):before {
   z-index: 0;
 }
 
-/* Ensure links are not covered by pseudo-elements */
-div:has(> .fern-product-selector-radio-group) > * {
+/* Ensure dropdown menu content is above any pseudo-elements */
+.fern-product-selector[data-state="open"] ~ *,
+.fern-product-selector + *,
+[role="menu"],
+[data-radix-popper-content-wrapper] {
+  position: relative;
+  z-index: 100 !important;
+}
+
+/* Ensure all product selector children are clickable */
+.fern-product-selector,
+.fern-product-selector *,
+.fern-selection-item,
+.product-dropdown-trigger {
   position: relative;
   z-index: 1;
+  pointer-events: auto;
+}
+
+/* Ensure API doc links in dropdowns are visible */
+.fern-product-selector a,
+.fern-product-selector [role="menuitem"] a,
+[role="menu"] a[href*="api"],
+[role="menu"] a[href*="doc"] {
+  display: inline-block !important;
+  color: var(--paradex-accent) !important;
+  text-decoration: underline;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
 }

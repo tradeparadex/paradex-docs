@@ -126,7 +126,20 @@ a.cyan-cards:hover {
   color: var(--paradex-accent) !important;
 }
 
-/* Product Switcher Styling - Updated for button-based selector */
+/* Fix for "Complete guide to Paradex" visibility issue */
+.fern-header-switchers.px-2.py-4.lg\:hidden {
+  display: block !important;
+}
+
+.fern-header-switchers .fern-product-selector {
+  width: auto !important;
+  height: auto !important;
+  min-width: fit-content;
+  min-height: fit-content;
+  padding: 0.5rem;
+}
+
+/* Product Switcher Styling */
 .fern-header-switchers:has(.fern-product-selector),
 div:has(> .fern-product-selector-radio-group) {
   margin-top: 0.125rem;

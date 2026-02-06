@@ -1,0 +1,79 @@
+# Maintenance Modes
+
+## Paradex System Modes
+
+Paradex can operate under different system modes during maintenance or recovery events. Each mode defines what actions are allowed on the platform.
+
+### **CANCEL_ONLY**
+
+- Users can access the API/UI and monitor balances and positions
+- Existing orders can be cancelled
+- New orders cannot be created
+- Liquidations are paused
+- TP/SL orders cannot be triggered
+
+### **POST_ONLY**
+
+- Users can cancel existing orders.
+- Users can only place Post-Only / RPI orders. All other orders are rejected
+- Liquidations are paused
+- TP/SL orders cannot be triggered
+
+### **OK**
+
+- Platform is fully operational
+
+## Maintenance Price Bands
+
+During **CANCEL_ONLY** and **POST_ONLY** modes, special price protection bands around an **External Fair Price** are enforced to ensure fair price discovery and maintain market stability during system recovery.
+
+### External Fair Price
+
+The **_External Fair Price_** is used as a robust reference price during **CANCEL_ONLY** and **POST_ONLY** modes.
+
+It is derived from spot oracle price and basis data from different exchanges:
+
+**Formula**
+
+$$
+\text{External Fair Price}= \text{Spot Oracle Price} × (1+\text{External Basis Rate})
+$$
+
+Where **External Basis Rate** is the Median of:
+
+- Binance basis
+- OKX basis
+- Bybit basis
+- Hyperliquid basis
+- Paradex basis EMA with a 1h half-life
+
+### Price protection
+
+- Orders priced more that **5 bps** more aggressive than the **_External Fair Price_** are automatically cancelled.
+- This applies to both:
+  - Resting orders on the book
+  - New incoming orders
+
+### Example
+
+- BTC External Fair Price = **$100,000**
+- Maintenance price band = **±5 bps**
+
+This results in:
+
+- **Upper band:** $100,050
+- **Lower band:** $99,950
+
+### Accepted Incoming Orders
+
+Only **Post-Only** and **RPI** orders within the price band are accepted:
+
+- Buy orders with limit price **≤ $100,050**
+- Sell orders with limit price **≥ $99,950**
+
+### Auto-Cancelled Resting Orders
+
+The following resting orders are automatically cancelled:
+
+- Buy orders with limit price **> $100,050**
+- Sell orders with limit price **< $99,950**

@@ -66,6 +66,9 @@ navigation:
           - page: Non-USDC Balances & Collateral
             slug: non-usdc-balances-collateral
             path: ../pages/trading/spot-trading/non-usdc-balances-collateral.mdx
+          - page: Naming Convention
+            slug: naming-convention
+            path: ../pages/trading/spot-trading/naming-convention.mdx
       - section: Perpetual Options
         slug: perpetual-options
         contents:

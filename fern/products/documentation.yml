@@ -142,6 +142,9 @@ navigation:
           - page: How to Change Max Slippage
             slug: slippage
             path: ../pages/trading/slippage.mdx
+      - page: Maintenance Modes
+        slug: maintenance-mode
+        path: ../pages/trading/maintenance-mode.mdx
       - page: Margin Calculator
         slug: margin-calculator
         path: ../pages/trading/margin-calculator.mdx

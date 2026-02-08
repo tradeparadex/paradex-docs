@@ -635,13 +635,17 @@ navigation:
   - section: Release Notes
     path: ../pages/release-notes/overview.mdx
     contents:
+      - page: v1.132
+        path: ../pages/release-notes/v1.132.md
       - page: v1.131
         path: ../pages/release-notes/v1.131.md
-      - page: v1.130
-        path: ../pages/release-notes/v1.130.md
       - section: Archive
         path: ../pages/release-notes/archive.mdx
         contents:
+          - page: v1.130
+            path: ../pages/release-notes/v1.130.md
+          - page: v1.129
+            path: ../pages/release-notes/v1.129.md
           - page: v1.128
             path: ../pages/release-notes/v1.128.md
           - page: v1.127

@@ -257,9 +257,6 @@ navigation:
                 - page: CC-USD-PERP
                   slug: cc-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/cc-usd-perp.mdx
-                - page: CLANKER-USD-PERP
-                  slug: clanker-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/clanker-usd-perp.mdx
                 - page: CRV-USD-PERP
                   slug: crv-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx

@@ -550,6 +550,11 @@ navigation:
                 - page: ZRO-USD-PERP
                   slug: zro-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
+        - section: Spot
+          contents:
+            - page: ETH-USD
+              slug: eth-usd
+              path: ../pages/instruments-guide/spot/eth-usd.mdx
       - page: API Authentication
         slug: api-authentication
         path: ../pages/trading/api-authentication.mdx

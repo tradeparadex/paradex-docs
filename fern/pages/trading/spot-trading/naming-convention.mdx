@@ -1,0 +1,14 @@
+---
+title: Naming Convention
+description: Understanding the naming convention for spot markets and perpetual markets on Paradex
+---
+- Spot markets symbol use the following format: **<span style="white-space: nowrap;">`<BASE_CURRENCY>-<QUOTE_CURRENCY>`</span>**
+- The base currency is the asset being traded.
+- The quote currency is the currency used for pricing.
+
+**Example**
+
+- ETH spot market: `ETH-USD`
+- ETH perpetual market: `ETH-USD-PERP`
+
+Note: even if quoted in USD, trades are still settled in USDC, using the prevailing USDC/USD price

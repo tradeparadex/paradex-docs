@@ -232,15 +232,9 @@ navigation:
                 - page: ADA-USD-PERP
                   slug: ada-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/ada-usd-perp.mdx
-                - page: AERO-USD-PERP
-                  slug: aero-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/aero-usd-perp.mdx
                 - page: AIXBT-USD-PERP
                   slug: aixbt-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/aixbt-usd-perp.mdx
-                - page: APEX-USD-PERP
-                  slug: apex-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/apex-usd-perp.mdx
                 - page: APT-USD-PERP
                   slug: apt-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/apt-usd-perp.mdx
@@ -268,9 +262,6 @@ navigation:
                 - page: BERA-USD-PERP
                   slug: bera-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/bera-usd-perp.mdx
-                - page: BIRB-USD-PERP
-                  slug: birb-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/birb-usd-perp.mdx
                 - page: BNB-USD-PERP
                   slug: bnb-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/bnb-usd-perp.mdx
@@ -280,9 +271,6 @@ navigation:
                 - page: CC-USD-PERP
                   slug: cc-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/cc-usd-perp.mdx
-                - page: COAI-USD-PERP
-                  slug: coai-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/coai-usd-perp.mdx
                 - page: CRV-USD-PERP
                   slug: crv-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx
@@ -313,9 +301,6 @@ navigation:
                 - page: FTM-USD-PERP
                   slug: ftm-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/ftm-usd-perp.mdx
-                - page: FF-USD-PERP
-                  slug: ff-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/ff-usd-perp.mdx
                 - page: FIL-USD-PERP
                   slug: fil-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/fil-usd-perp.mdx
@@ -385,9 +370,6 @@ navigation:
                 - page: MET-USD-PERP
                   slug: met-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/met-usd-perp.mdx
-                - page: MERL-USD-PERP
-                  slug: merl-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/merl-usd-perp.mdx
                 - page: MON-USD-PERP
                   slug: mon-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/mon-usd-perp.mdx
@@ -403,9 +385,6 @@ navigation:
                 - page: NEAR-USD-PERP
                   slug: near-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/near-usd-perp.mdx
-                - page: NIGHT-USD-PERP
-                  slug: night-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/night-usd-perp.mdx
                 - page: OM-USD-PERP
                   slug: om-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/om-usd-perp.mdx
@@ -415,9 +394,6 @@ navigation:
                 - page: OP-USD-PERP
                   slug: op-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/op-usd-perp.mdx
-                - page: ORDER-USD-PERP
-                  slug: order-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/order-usd-perp.mdx
                 - page: ORDI-USD-PERP
                   slug: ordi-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/ordi-usd-perp.mdx
@@ -451,18 +427,12 @@ navigation:
                 - page: RIVER-USD-PERP
                   slug: river-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/river-usd-perp.mdx
-                - page: RUNE-USD-PERP
-                  slug: rune-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/rune-usd-perp.mdx
                 - page: S-USD-PERP
                   slug: s-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/s-usd-perp.mdx
                 - page: SEI-USD-PERP
                   slug: sei-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/sei-usd-perp.mdx
-                - page: SKR-USD-PERP
-                  slug: skr-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/skr-usd-perp.mdx
                 - page: SPX-USD-PERP
                   slug: spx-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/spx-usd-perp.mdx
@@ -505,18 +475,12 @@ navigation:
                 - page: VIRTUAL-USD-PERP
                   slug: virtual-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/virtual-usd-perp.mdx
-                - page: VVV-USD-PERP
-                  slug: vvv-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/vvv-usd-perp.mdx
                 - page: WAL-USD-PERP
                   slug: wal-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/wal-usd-perp.mdx
                 - page: WCT-USD-PERP
                   slug: wct-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/wct-usd-perp.mdx
-                - page: WET-USD-PERP
-                  slug: wet-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/wet-usd-perp.mdx
                 - page: WIF-USD-PERP
                   slug: wif-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/wif-usd-perp.mdx

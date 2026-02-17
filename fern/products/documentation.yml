@@ -379,15 +379,9 @@ navigation:
                 - page: MORPHO-USD-PERP
                   slug: morpho-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/morpho-usd-perp.mdx
-                - page: MYX-USD-PERP
-                  slug: myx-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/myx-usd-perp.mdx
                 - page: NEAR-USD-PERP
                   slug: near-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/near-usd-perp.mdx
-                - page: OM-USD-PERP
-                  slug: om-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/om-usd-perp.mdx
                 - page: ONDO-USD-PERP
                   slug: ondo-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/ondo-usd-perp.mdx
@@ -424,9 +418,6 @@ navigation:
                 - page: RESOLV-USD-PERP
                   slug: resolv-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/resolv-usd-perp.mdx
-                - page: RIVER-USD-PERP
-                  slug: river-usd-perp
-                  path: ../pages/instruments-guide/futures/tier-2/river-usd-perp.mdx
                 - page: S-USD-PERP
                   slug: s-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/s-usd-perp.mdx

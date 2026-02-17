@@ -253,6 +253,9 @@ navigation:
                 - page: AVNT-USD-PERP
                   slug: avnt-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/avnt-usd-perp.mdx
+                - page: AZTEC-USD-PERP
+                  slug: aztec-usd-perp
+                  path: ../pages/instruments-guide/futures/tier-2/aztec-usd-perp.mdx
                 - page: BAT-USD-PERP
                   slug: bat-usd-perp
                   path: ../pages/instruments-guide/futures/tier-2/bat-usd-perp.mdx

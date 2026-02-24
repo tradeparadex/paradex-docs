@@ -53,8 +53,22 @@ a.fern-button.filled.primary.rounded .fern-button-text {
   display: none;
 }
 
-a[id*="playground-button"] {
+/* More specific selector - only hide actual playground buttons, not API doc links */
+a[id*="playground-button"]:not([href*="api"]):not([href*="doc"]) {
   display: none;
+}
+
+/* Ensure API doc links are visible */
+a[id*="playground-button"][href*="api"],
+a[id*="playground-button"][href*="doc"],
+a[href*="api"][href*="doc"],
+a.fern-mdx-link[href*="api"],
+a.fern-mdx-link[href*="doc"] {
+  display: inline-block !important;
+  color: var(--paradex-accent) !important;
+  text-decoration: underline;
+  position: relative;
+  z-index: 10;
 }
 
 a.white-cards:hover {
@@ -112,15 +126,144 @@ a.cyan-cards:hover {
   color: var(--paradex-accent) !important;
 }
 
-/* Product Switcher Styling */
-div:has(> .fern-product-selector-radio-group) {
-  margin-top: 0.125rem;
+/* Fix for "Complete guide to Paradex" visibility issue */
+.fern-header-switchers.px-2.py-4.lg\:hidden {
+  display: block !important;
+}
+
+.fern-header-switchers .fern-product-selector {
+  width: auto !important;
+  height: auto !important;
+  min-width: fit-content;
+  min-height: fit-content;
   padding: 0.5rem;
 }
 
+/* Product Switcher Styling */
+.fern-header-switchers:has(.fern-product-selector),
+div:has(> .fern-product-selector-radio-group) {
+  margin-top: 0.125rem;
+  padding: 0.5rem;
+  position: relative;
+}
+
+/* Only add "Explore Paradex" text if radio group exists, not for button-based selector */
 div:has(> .fern-product-selector-radio-group):before {
   content: "Explore Paradex";
   font-weight: 700;
   display: block;
   margin: 0 0.5rem 0.5rem 0.5rem;
+  pointer-events: none;
+  position: relative;
+  z-index: 0;
+}
+
+/* Consistent styling for all product selector menu items */
+.fern-product-selector [role="menuitem"],
+.fern-product-selector .fern-selection-item,
+[role="menu"] [role="menuitem"],
+[role="menu"] .fern-selection-item,
+.fern-product-selector-radio-group [role="radio"],
+.fern-product-selector-radio-group .fern-selection-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  width: 100% !important;
+  text-align: left !important;
+  background: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important;
+}
+
+/* Consistent hover state for all menu items */
+.fern-product-selector [role="menuitem"]:hover,
+.fern-product-selector .fern-selection-item:hover,
+[role="menu"] [role="menuitem"]:hover,
+[role="menu"] .fern-selection-item:hover,
+.fern-product-selector-radio-group [role="radio"]:hover,
+.fern-product-selector-radio-group .fern-selection-item:hover {
+  background-color: var(--paradex-sidebar-active) !important;
+}
+
+/* Consistent active/selected state for all menu items */
+.fern-product-selector [role="menuitem"][data-state="checked"],
+.fern-product-selector [role="menuitem"][aria-checked="true"],
+.fern-product-selector .fern-selection-item[data-state="checked"],
+[role="menu"] [role="menuitem"][data-state="checked"],
+[role="menu"] [role="menuitem"][aria-checked="true"],
+.fern-product-selector-radio-group [role="radio"][data-state="checked"],
+.fern-product-selector-radio-group [role="radio"][aria-checked="true"] {
+  background-color: var(--paradex-sidebar-active) !important;
+  color: #ffffff !important;
+}
+
+/* Consistent styling for menu item titles */
+.fern-product-selector .fern-selection-item-title,
+.fern-product-selector [role="menuitem"] .fern-selection-item-title,
+[role="menu"] .fern-selection-item-title,
+.fern-product-selector-radio-group .fern-selection-item-title {
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  color: inherit !important;
+  margin: 0 !important;
+}
+
+/* Consistent styling for menu item subtitles */
+.fern-product-selector .fern-selection-item-subtitle,
+.fern-product-selector [role="menuitem"] .fern-selection-item-subtitle,
+[role="menu"] .fern-selection-item-subtitle,
+.fern-product-selector-radio-group .fern-selection-item-subtitle {
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  color: var(--grayscale-a9, rgba(255, 255, 255, 0.6)) !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+/* Consistent icon styling */
+.fern-product-selector .fern-selection-item-icon,
+.fern-product-selector [role="menuitem"] .fern-selection-item-icon,
+[role="menu"] .fern-selection-item-icon,
+.fern-product-selector-radio-group .fern-selection-item-icon {
+  width: 24px !important;
+  height: 24px !important;
+  flex-shrink: 0 !important;
+  color: inherit !important;
+}
+
+/* Ensure dropdown menu content is above any pseudo-elements */
+.fern-product-selector[data-state="open"] ~ *,
+.fern-product-selector + *,
+[role="menu"],
+[data-radix-popper-content-wrapper] {
+  position: relative;
+  z-index: 100 !important;
+}
+
+/* Ensure all product selector children are clickable */
+.fern-product-selector,
+.fern-product-selector *,
+.fern-selection-item,
+.product-dropdown-trigger {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Ensure API doc links in dropdowns are visible */
+.fern-product-selector a,
+.fern-product-selector [role="menuitem"] a,
+[role="menu"] a[href*="api"],
+[role="menu"] a[href*="doc"] {
+  display: inline-block !important;
+  color: var(--paradex-accent) !important;
+  text-decoration: underline;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
 }

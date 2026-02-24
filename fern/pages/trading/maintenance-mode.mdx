@@ -1,42 +1,60 @@
 ---
 title: Maintenance & Releases
-layout: reference
+subtitle: Release schedule, platform modes, and price protections during maintenance windows
 ---
 
 ## Release Schedule
 
-Paradex typically performs releases on **all weekdays** during the following window:
+Paradex performs releases on **all weekdays** during the following window:
 
-- **5:00 AM UTC** / **12:30 PM SGT**
-- Duration: **~15 minutes**
+<CardGroup cols={2}>
+  <Card title="5:00 AM UTC / 12:30 PM SGT" icon="fa-regular fa-clock">
+    Daily maintenance window
+  </Card>
+  <Card title="~15 Minutes" icon="fa-regular fa-hourglass-half">
+    Typical release duration
+  </Card>
+</CardGroup>
 
-<Note title="Schedule Updates">
-Check the [status page](https://status.paradex.trade) or the [Discord #network-upgrades channel](https://discord.gg/wTMyc6mb) for the latest schedule.
-</Note>
+<Tip title="Schedule Updates">
+Check the [status page](https://status.paradex.trade) or the [Discord #network-upgrades channel](https://discord.gg/wTMyc6mb) for the latest schedule and real-time notifications.
+</Tip>
 
-## System Modes
+## Release Sequence
 
-During maintenance or recovery events, Paradex transitions through controlled trading modes:
+During each release, the platform transitions through three modes in order:
 
-| Mode | Description |
-|------|-------------|
-| **CANCEL_ONLY** | Only order cancellations are allowed. New orders, liquidations, and TP/SL triggers are paused. |
-| **POST_ONLY** | Only Post-Only and RPI orders are accepted. Liquidations and TP/SL triggers remain paused. |
-| **OK** | Platform is fully operational. |
+<Steps>
+  <Step title="CANCEL_ONLY (~2 min)">
+    The platform enters a controlled shutdown to ensure a clean state before deployment.
 
-### Typical Release Sequence
+    - Users can cancel existing orders
+    - New orders **cannot** be placed
+    - Liquidations and TP/SL triggers are paused
+  </Step>
+  <Step title="POST_ONLY (~2 min)">
+    After services are back online, markets stabilize with maker-only liquidity.
 
-1. **CANCEL_ONLY** (~2 min) — Ensures a clean state before deployment.
-2. **POST_ONLY** (~2 min) — Allows markets to stabilize with maker orders only.
-3. **OK** — Full trading resumes.
+    - Only **Post-Only** and **RPI** orders are accepted
+    - All other order types are rejected
+    - Liquidations and TP/SL triggers remain paused
+  </Step>
+  <Step title="OK — Full Trading Resumes">
+    The platform is fully operational. All order types, liquidations, and TP/SL triggers are active.
+  </Step>
+</Steps>
 
 ## Maintenance Price Bands
 
-During **CANCEL_ONLY** and **POST_ONLY** modes, price protection bands around an **External Fair Price** are enforced to ensure fair price discovery.
+During **CANCEL_ONLY** and **POST_ONLY** modes, price protection bands around an **External Fair Price** prevent unfair pricing.
+
+<Warning>
+Orders priced more than **5 bps** beyond the External Fair Price are **automatically canceled** — both resting and incoming orders.
+</Warning>
 
 ### External Fair Price
 
-A robust reference price derived from spot oracle price and external basis data:
+A reference price derived from spot oracle price and external basis data:
 
 $$
 \text{External Fair Price} = \text{Spot Oracle Price} \times (1 + \text{External Basis Rate})
@@ -44,27 +62,34 @@ $$
 
 Where **External Basis Rate** is the median of:
 
-- Binance basis
-- OKX basis
-- Bybit basis
-- Hyperliquid basis
-- Paradex basis EMA (1h half-life)
+| Source | Type |
+|--------|------|
+| Binance | Basis |
+| OKX | Basis |
+| Bybit | Basis |
+| Hyperliquid | Basis |
+| Paradex | Basis EMA (1h half-life) |
 
-### Price Protection Rules
+### Price Band Example
 
-Orders priced more than **5 bps** beyond the External Fair Price are automatically canceled. This applies to both resting and incoming orders.
+For BTC with an External Fair Price of **$100,000** and a band of **+/-5 bps**:
 
-**Example** — BTC External Fair Price = **$100,000** (band = +/-5 bps):
+| | Limit | Accepted | Auto-Canceled |
+|---|---|---|---|
+| **Buy** | $100,050 (upper) | Price ≤ $100,050 | Price > $100,050 |
+| **Sell** | $99,950 (lower) | Price ≥ $99,950 | Price < $99,950 |
 
-| | Limit |
-|---|---|
-| **Upper band** | $100,050 |
-| **Lower band** | $99,950 |
-
-- **Accepted orders:** Buy ≤ $100,050 / Sell ≥ $99,950 (Post-Only and RPI only)
-- **Auto-canceled:** Buy > $100,050 / Sell < $99,950
+<Note>
+Only **Post-Only** and **RPI** orders within the price band are accepted during maintenance modes.
+</Note>
 
 ## Stay Informed
 
-- **Status page:** [status.paradex.trade](https://status.paradex.trade) — real-time system status, scheduled maintenance, and incident reports. Subscribe via email, Slack, or webhook.
-- **Discord:** [#network-upgrades channel](https://discord.gg/wTMyc6mb) — maintenance schedules, release notes, and live updates.
+<CardGroup cols={2}>
+  <Card title="Status Page" icon="fa-regular fa-signal" href="https://status.paradex.trade">
+    Real-time system status, scheduled maintenance, and incident reports. Subscribe via email, Slack, or webhook.
+  </Card>
+  <Card title="Discord" icon="fa-brands fa-discord" href="https://discord.gg/wTMyc6mb">
+    Join #network-upgrades for maintenance schedules, detailed release notes, and live updates.
+  </Card>
+</CardGroup>

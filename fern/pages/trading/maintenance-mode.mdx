@@ -34,14 +34,21 @@ During each release, the platform transitions through three modes:
 
 ## What You Can Do in Each Mode
 
+### Orders
+
 | Action | CANCEL_ONLY | POST_ONLY | OK |
 |--------|:-----------:|:---------:|:--:|
-| View balances & positions | Yes | Yes | Yes |
-| Cancel existing orders | Yes | Yes | Yes |
-| Place Post-Only / RPI orders | No | Yes | Yes |
-| Place other order types | No | No | Yes |
-| Liquidations | Paused | Paused | Active |
-| TP/SL triggers | Paused | Paused | Active |
+| View balances & positions | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> |
+| Cancel existing orders | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> |
+| Post-Only / RPI orders | <Badge intent="error" minimal>Blocked</Badge> | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> |
+| All other order types | <Badge intent="error" minimal>Blocked</Badge> | <Badge intent="error" minimal>Blocked</Badge> | <Badge intent="success" minimal>Available</Badge> |
+
+### System
+
+| Action | CANCEL_ONLY | POST_ONLY | OK |
+|--------|:-----------:|:---------:|:--:|
+| Liquidations | <Badge intent="warning" minimal>Paused</Badge> | <Badge intent="warning" minimal>Paused</Badge> | <Badge intent="success" minimal>Active</Badge> |
+| TP/SL triggers | <Badge intent="warning" minimal>Paused</Badge> | <Badge intent="warning" minimal>Paused</Badge> | <Badge intent="success" minimal>Active</Badge> |
 
 ## Maintenance Price Bands
 

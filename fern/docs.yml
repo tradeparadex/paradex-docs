@@ -137,7 +137,6 @@ colors:
     dark: "#16191C"
 css: ./assets/styles.css
 js:
-  - path: ./dist/dd-rum.js
   - path: ./dist/add-pixel.js
     strategy: lazyOnload
   - path: ./assets/tvl-limit.js

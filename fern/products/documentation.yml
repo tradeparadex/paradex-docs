@@ -13,9 +13,6 @@ navigation:
       - page: Official Links
         slug: official-links
         path: ../pages/introduction/official-links.mdx
-      - page: Maintenance & Releases
-        slug: maintenance
-        path: ../pages/maintenance.mdx
       - section: Architecture Overview
         path: ../pages/introduction/architecture-overview/overview.mdx
         contents:
@@ -156,7 +153,7 @@ navigation:
           - page: How to Change Max Slippage
             slug: slippage
             path: ../pages/trading/slippage.mdx
-      - page: Maintenance Modes
+      - page: Maintenance & Releases
         slug: maintenance-mode
         path: ../pages/trading/maintenance-mode.mdx
       - page: Margin Calculator

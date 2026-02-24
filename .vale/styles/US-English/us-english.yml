@@ -1,112 +1,442 @@
 extends: substitution
 message: Use the US spelling '%s' instead of the British '%s'
-link: https://www.notion.so/mui-org/Writing-style-guide-2a957a4168a54d47b14bae026d06a24b?pvs=4#25755bff02764565b954631236ab183d
+link: https://en.wikipedia.org/wiki/American_and_British_English_spelling_differences
 level: error
 ignorecase: true
 swap:
+  # -ae-/-e- and -oe-/-e- patterns
   aeon: eon
   aeroplane: airplane
-  ageing: aging
-  aluminium: aluminum
   anaemia: anemia
   anaesthesia: anesthesia
-  analyse: analyze
-  annexe: annex
+  anaesthetise: anesthetize
+  caesarean: cesarean
+  diarrhoea: diarrhea
+  encyclopaedia: encyclopedia
+  faecal: fecal
+  faeces: feces
+  foetal: fetal
+  foetus: fetus
+  gynaecological: gynecological
+  gynaecology: gynecology
+  haematological: hematological
+  haemoglobin: hemoglobin
+  haemorrhage: hemorrhage
+  homoeopathy: homeopathy
+  leukaemia: leukemia
+  mediaeval: medieval
+  oesophagus: esophagus
+  oestrogen: estrogen
+  orthopaedic: orthopedic
+  paediatrician: pediatrician
+  paediatric: pediatric
+  palaeolithic: paleolithic
+  palaeontologist: paleontologist
+
+  # -our/-or pattern
+  ardour: ardor
+  armour: armor
+  behaviour: behavior
+  candour: candor
+  clamour: clamor
+  colour: color
+  colourful: colorful
+  colourise: colorize
+  colourless: colorless
+  demeanour: demeanor
+  discolour: discolor
+  disfavour: disfavor
+  dishonour: dishonor
+  endeavour: endeavor
+  favour: favor
+  favourable: favorable
+  favourite: favorite
+  fervour: fervor
+  flavour: flavor
+  glamour: glamor
+  harbour: harbor
+  honour: honor
+  honourable: honorable
+  humour: humor
+  labour: labor
+  misbehaviour: misbehavior
+  misdemeanour: misdemeanor
+  multicoloured: multicolored
+  neighbour: neighbor
+  neighbourhood: neighborhood
+  odour: odor
+  parlour: parlor
+  rigour: rigor
+  rumour: rumor
+  savour: savor
+  savoury: savory
+  splendour: splendor
+  tumour: tumor
+  valour: valor
+  vapour: vapor
+  vigour: vigor
+
+  # -re/-er pattern
+  amphitheatre: amphitheater
+  calibre: caliber
+  centre: center
+  centrepiece: centerpiece
+  centimetre: centimeter
+  epicentre: epicenter
+  fibre: fiber
+  goitre: goiter
+  kilometre: kilometer
+  litre: liter
+  lustre: luster
+  manoeuvre: maneuver
+  meagre: meager
+  metre: meter
+  millimetre: millimeter
+  mitre: miter
+  reconnoitre: reconnoiter
+  sabre: saber
+  sepulchre: sepulcher
+  sombre: somber
+  spectre: specter
+  theatre: theater
+
+  # -ise/-ize pattern
+  accessorise: accessorize
+  acclimatise: acclimatize
+  agonise: agonize
+  amortise: amortize
+  antagonise: antagonize
   apologise: apologize
-  authorisation: authorization
   authorise: authorize
   authorised: authorized
   authorising: authorizing
-  behaviour: behavior
-  bellow: below
-  busses: buses
-  calibre: caliber
+  baptise: baptize
+  brutalise: brutalize
+  cannibalise: cannibalize
+  capitalise: capitalize
+  caramelise: caramelize
   categorise: categorize
   categorised: categorized
   categorises: categorizes
   categorising: categorizing
-  centre: center
-  cheque: check
-  civilisation: civilization
+  centralise: centralize
+  characterise: characterize
   civilise: civilize
-  colour: color
-  cosy: cozy
-  cypher: cipher
-  defence: defense
-  dependant: dependent
-  distil: distill
-  draught: draft
-  encyclopaedia: encyclopedia
-  enquiry: inquiry
-  enrol: enroll
-  enrolment: enrollment
-  enthral: enthrall
-  favourite: favorite
-  fibre: fiber
-  fillet: filet
-  flavour: flavor
-  fulfil: fulfill
-  furore: furor
-  gaol: jail
-  grey: gray
-  honour: honor
-  humour: humor
-  initialled: initialed
-  initialling: initialing
-  instil: instill
-  jewellery: jewelry
-  labelled: labeled
-  labelling: labeling
-  labour: labor
-  libellous: libelous
-  licence: license
-  likeable: likable
-  liveable: livable
-  lustre: luster
-  manoeuvre: maneuver
-  marvellous: marvelous
-  meagre: meager
-  metre: meter
-  modelling: modeling
-  moustache: mustache
-  neighbour: neighbor
+  colonise: colonize
+  commercialise: commercialize
+  computerise: computerize
+  criminalise: criminalize
+  criticise: criticize
+  customise: customize
+  decriminalise: decriminalize
+  democratise: democratize
+  demonise: demonize
+  deputise: deputize
+  destabilise: destabilize
+  digitise: digitize
+  dramatise: dramatize
+  economise: economize
+  emphasise: emphasize
+  energise: energize
+  epitomise: epitomize
+  equalise: equalize
+  evangelise: evangelize
+  externalise: externalize
+  familiarise: familiarize
+  fantasise: fantasize
+  feminise: feminize
+  fertilise: fertilize
+  finalise: finalize
+  formalise: formalize
+  fossilise: fossilize
+  fraternise: fraternize
+  galvanise: galvanize
+  generalise: generalize
+  globalise: globalize
+  harmonise: harmonize
+  hospitalise: hospitalize
+  humanise: humanize
+  hypothesise: hypothesize
+  idealise: idealize
+  idolise: idolize
+  immobilise: immobilize
+  immortalise: immortalize
+  immunise: immunize
+  individualise: individualize
+  industrialise: industrialize
+  initialise: initialize
+  institutionalise: institutionalize
+  internalise: internalize
+  ionise: ionize
+  italicise: italicize
+  itemise: itemize
+  jeopardise: jeopardize
+  legalise: legalize
+  legitimise: legitimize
+  liberalise: liberalize
+  lionise: lionize
+  localise: localize
+  magnetise: magnetize
+  marginalise: marginalize
+  materialise: materialize
+  maximise: maximize
+  mechanise: mechanize
+  memorise: memorize
+  mesmerise: mesmerize
+  militarise: militarize
+  miniaturise: miniaturize
+  minimise: minimize
+  mobilise: mobilize
+  modernise: modernize
+  moisturise: moisturize
+  monopolise: monopolize
+  moralise: moralize
+  nationalise: nationalize
+  naturalise: naturalize
+  neutralise: neutralize
   normalise: normalize
-  offence: offense
   optimise: optimize
   optimised: optimized
   optimising: optimizing
   organise: organize
-  orientated: oriented
+  ostracise: ostracize
+  oxidise: oxidize
   paralyse: paralyze
-  plough: plow
-  pretence: pretense
-  programme: program
-  pyjamas: pajamas
-  rateable: ratable
+  patronise: patronize
+  penalise: penalize
+  personalise: personalize
+  plagiarise: plagiarize
+  polarise: polarize
+  politicise: politicize
+  popularise: popularize
+  prioritise: prioritize
+  privatise: privatize
+  publicise: publicize
+  pulverise: pulverize
+  radicalise: radicalize
+  rationalise: rationalize
   realise: realize
   recognise: recognize
-  reconnoitre: reconnoiter
-  rumour: rumor
-  sabre: saber
-  saleable: salable
-  saltpetre: saltpeter
-  sceptic: skeptic
-  sepulchre: sepulcher
-  signalling: signaling
-  sizeable: sizable
-  skilful: skillful
-  smoulder: smolder
-  sombre: somber
-  speciality: specialty
-  spectre: specter
-  splendour: splendor
+  regularise: regularize
+  reorganise: reorganize
+  revolutionise: revolutionize
+  satirise: satirize
+  scandalise: scandalize
+  scrutinise: scrutinize
+  serialise: serialize
+  socialise: socialize
+  specialise: specialize
+  stabilise: stabilize
   standardise: standardize
   standardised: standardized
-  sulphur: sulfur
-  theatre: theater
+  sterilise: sterilize
+  subsidise: subsidize
+  summarise: summarize
+  symbolise: symbolize
+  sympathise: sympathize
+  synchronise: synchronize
+  systematise: systematize
+  tantalise: tantalize
+  terrorise: terrorize
+  theorise: theorize
+  trivialise: trivialize
+  tyrannise: tyrannize
+  unionise: unionize
+  urbanise: urbanize
+  utilise: utilize
+  vandalise: vandalize
+  vaporise: vaporize
+  verbalise: verbalize
+  victimise: victimize
+  visualise: visualize
+  vocalise: vocalize
+  weaponise: weaponize
+
+  # -isation/-ization pattern
+  authorisation: authorization
+  capitalisation: capitalization
+  centralisation: centralization
+  characterisation: characterization
+  civilisation: civilization
+  colonisation: colonization
+  commercialisation: commercialization
+  customisation: customization
+  decentralisation: decentralization
+  democratisation: democratization
+  digitalisation: digitalization
+  equalisation: equalization
+  familiarisation: familiarization
+  finalisation: finalization
+  formalisation: formalization
+  generalisation: generalization
+  globalisation: globalization
+  harmonisation: harmonization
+  hospitalisation: hospitalization
+  idealisation: idealization
+  industrialisation: industrialization
+  initialisation: initialization
+  institutionalisation: institutionalization
+  legalisation: legalization
+  liberalisation: liberalization
+  localisation: localization
+  marginalisation: marginalization
+  materialisation: materialization
+  maximisation: maximization
+  mechanisation: mechanization
+  memorisation: memorization
+  militarisation: militarization
+  minimisation: minimization
+  mobilisation: mobilization
+  modernisation: modernization
+  monopolisation: monopolization
+  nationalisation: nationalization
+  naturalisation: naturalization
+  neutralisation: neutralization
+  normalisation: normalization
+  optimisation: optimization
+  organisation: organization
+  personalisation: personalization
+  polarisation: polarization
+  politicisation: politicization
+  popularisation: popularization
+  prioritisation: prioritization
+  privatisation: privatization
+  radicalisation: radicalization
+  rationalisation: rationalization
+  realisation: realization
+  reorganisation: reorganization
+  serialisation: serialization
+  socialisation: socialization
+  specialisation: specialization
+  stabilisation: stabilization
+  standardisation: standardization
+  sterilisation: sterilization
+  subsidisation: subsidization
+  summarisation: summarization
+  symbolisation: symbolization
+  synchronisation: synchronization
+  trivialisation: trivialization
+  urbanisation: urbanization
+  utilisation: utilization
+  visualisation: visualization
+  vocalisation: vocalization
+  weaponisation: weaponization
+
+  # -lled/-led, -lling/-ling, -llous/-lous, -ller/-ler patterns
+  cancelled: canceled
+  cancelling: canceling
+  channelling: channeling
+  counsellor: counselor
+  counselling: counseling
+  dialling: dialing
+  dishevelled: disheveled
+  duelling: dueling
+  enamelled: enameled
+  equalling: equaling
+  fuelling: fueling
+  gruelling: grueling
+  initialled: initialed
+  initialling: initialing
+  jewelled: jeweled
+  jewellery: jewelry
+  labelled: labeled
+  labelling: labeling
+  levelling: leveling
+  libellous: libelous
+  marshalling: marshaling
+  marvellous: marvelous
+  modelling: modeling
+  panelled: paneled
+  panelling: paneling
+  pedalling: pedaling
+  quarrelling: quarreling
+  revelling: reveling
+  rivalling: rivaling
+  signalling: signaling
+  snorkelling: snorkeling
+  stencilling: stenciling
+  totalling: totaling
   travelled: traveled
   traveller: traveler
   travelling: traveling
-  unshakeable: unshakable
+  tunnelling: tunneling
+  unravelling: unraveling
+
+  # -l/-ll and -lment/-llment patterns
+  appal: appall
+  distil: distill
+  enrol: enroll
+  enrolment: enrollment
+  enthral: enthrall
+  fulfil: fulfill
+  fulfilment: fulfillment
+  instal: install
+  instalment: installment
+  instil: instill
+  skilful: skillful
   wilful: willful
+
+  # -ence/-ense pattern
+  defence: defense
+  defenceless: defenseless
+  licence: license
+  offence: offense
+  pretence: pretense
+
+  # -ogue/-og pattern
+  analogue: analog
+  catalogue: catalog
+  epilogue: epilog
+  monologue: monolog
+  prologue: prolog
+
+  # Other common substitutions
+  ageing: aging
+  aluminium: aluminum
+  analyse: analyze
+  annexe: annex
+  artefact: artifact
+  baulk: balk
+  busses: buses
+  cheque: check
+  cosy: cozy
+  cypher: cipher
+  dependant: dependent
+  draught: draft
+  draughtsman: draftsman
+  enquiry: inquiry
+  fillet: filet
+  furore: furor
+  gaol: jail
+  grey: gray
+  homogenised: homogenized
+  judgement: judgment
+  kerb: curb
+  liquorice: licorice
+  manoeuvrable: maneuverable
+  mould: mold
+  moult: molt
+  moustache: mustache
+  orientated: oriented
+  plough: plow
+  programme: program
+  pyjamas: pajamas
+  saltpetre: saltpeter
+  sceptic: skeptic
+  sceptical: skeptical
+  scepticism: skepticism
+  smoulder: smolder
+  speciality: specialty
+  sulphur: sulfur
+  tyre: tire
+  waggon: wagon
+  woollen: woolen
   yoghurt: yogurt
+
+  # -eable/-able pattern
+  likeable: likable
+  liveable: livable
+  rateable: ratable
+  saleable: salable
+  sizeable: sizable
+  unshakeable: unshakable

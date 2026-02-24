@@ -42,7 +42,7 @@ For example:
 
 <summary>How does a reduction in position affect reduce-only orders?</summary>
 
-When a position has been reduced / closed / reversed by other trades, existing reduce-only orders that has an amount greater than the current position will be cancelled.
+When a position has been reduced / closed / reversed by other trades, existing reduce-only orders that has an amount greater than the current position will be canceled.
 
 
 
@@ -52,7 +52,7 @@ Example 1:
   * Long 100 ETH position
   * Reduce-only Limit Sell Order of 100 ETH @ $4,500
 * If the trader submits a Market Sell Order of any amount of ETH:
-  * the Reduce-only Limit Sell Order will be cancelled.
+  * the Reduce-only Limit Sell Order will be canceled.
 
 
 
@@ -64,7 +64,7 @@ Example 2:
 * If the trader submits a Market Sell Order of 40 ETH or less:
   * the Reduce-only Limit Sell Order remains open.
 * If the trader submits a Market Sell Order of more than 40 ETH:
-  * the Reduce-only Limit Sell Order will be cancelled.
+  * the Reduce-only Limit Sell Order will be canceled.
 
 </details>
 
@@ -85,7 +85,7 @@ For example, a trader currently has:
 Scenario 1: If the trader submits a Limit Sell Order of 1 ETH @ $4,400
 
 * the Reduce-only Limit Sell Order of 50 ETH @ $4,500 remains open.
-* the Reduce-only Limit Sell Order of 50 ETH @ $4,600 will be cancelled.
+* the Reduce-only Limit Sell Order of 50 ETH @ $4,600 will be canceled.
 
 
 
@@ -98,7 +98,7 @@ Scenario 2: If the trader submits a Limit Sell Order of 1 ETH @ $4,700
 
 Scenario 3: If the trader submits a Reduce-only Limit Sell Order of 1 ETH @ $4,700
 
-* The new order (Reduce-only Limit Sell Order of 1 ETH @ $4,700) will be rejected (cancelled).
+* The new order (Reduce-only Limit Sell Order of 1 ETH @ $4,700) will be rejected (canceled).
 
 </details>
 
@@ -121,9 +121,9 @@ Post-only orders
 
 
 
-## Good Till Cancelled (GTC)
+## Good Till Canceled (GTC)
 
-A Good Till Cancelled (GTC) order remains active in the market until it's either executed or manually canceled by the trader.
+A Good Till Canceled (GTC) order remains active in the market until it's either executed or manually canceled by the trader.
 
 This type of order is beneficial for investors who do not wish to monitor their trades daily but have specific price points at which they wish to buy or sell a security. It ensures that the order will remain rested on the orderbook until it reaches the desired price level or is canceled.
 

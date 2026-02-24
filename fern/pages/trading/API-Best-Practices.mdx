@@ -21,7 +21,7 @@ Additionally, if you want to cancel all orders for a market, you can use the can
 **Implementation:** Batch operations support partial failures - individual order rejections won't block others. Process response arrays to handle mixed success/failure scenarios. All orders validated by risk engine independently.
 
 <Tip>
-Reference: [Orders API Documentation](https://docs.paradex.trade/api/prod/orders/batch)
+Reference: [Orders API Documentation](/api/prod/orders/batch)
 </Tip>
 
 ## Real-Time BBO Feeds
@@ -33,7 +33,7 @@ Reference: [Orders API Documentation](https://docs.paradex.trade/api/prod/orders
 **Multi-Market Strategy:** Subscribe to BBO feeds for all trading markets simultaneously. Each subscription costs minimal resources and provides real-time pricing for optimal execution decisions.
 
 <Tip>
-Reference: [WebSocket API Documentation](https://docs.paradex.trade/ws/general-information)
+Reference: [WebSocket API Documentation](/ws/general-information)
 </Tip>
 
 ## Rate Optimization
@@ -45,7 +45,7 @@ Reference: [WebSocket API Documentation](https://docs.paradex.trade/ws/general-i
 **Signing Optimization:** Order signing is computationally expensive. Pre-sign static order components and only process variable parts (price, size, timestamp) for each new order to reduce latency in high-frequency scenarios.
 
 <Tip>
-Reference: [Rate Limits Documentation](https://docs.paradex.trade/api/general-information/rate-limits/api)
+Reference: [Rate Limits Documentation](/api/general-information/rate-limits/api)
 </Tip>
 
 ## WebSocket Rate Management
@@ -61,7 +61,7 @@ Reference: [Rate Limits Documentation](https://docs.paradex.trade/api/general-in
 **Node Distribution:** Track `node_id` from authentication responses and avoid connecting to the same node multiple times. Distribute connections across different nodes for better load balancing and redundancy.
 
 <Tip>
-Reference: [WebSocket Rate Limits](https://docs.paradex.trade/ws/general-information/rate-limits)
+Reference: [WebSocket Rate Limits](/ws/general-information/rate-limits)
 </Tip>
 
 ## Clock Synchronization

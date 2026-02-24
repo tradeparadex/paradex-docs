@@ -16,33 +16,32 @@ Paradex performs releases on **all weekdays** during the following window:
   </Card>
 </CardGroup>
 
-<Tip title="Schedule Updates">
-Check the [status page](https://status.paradex.trade) or the [Discord #network-upgrades channel](https://discord.gg/wTMyc6mb) for the latest schedule and real-time notifications.
-</Tip>
-
 ## Release Sequence
 
-During each release, the platform transitions through three modes in order:
+During each release, the platform transitions through three modes:
 
 <Steps>
   <Step title="CANCEL_ONLY (~2 min)">
-    The platform enters a controlled shutdown to ensure a clean state before deployment.
-
-    - Users can cancel existing orders
-    - New orders **cannot** be placed
-    - Liquidations and TP/SL triggers are paused
+    Clean state preparation before deployment.
   </Step>
   <Step title="POST_ONLY (~2 min)">
-    After services are back online, markets stabilize with maker-only liquidity.
-
-    - Only **Post-Only** and **RPI** orders are accepted
-    - All other order types are rejected
-    - Liquidations and TP/SL triggers remain paused
+    Markets stabilize with maker-only liquidity.
   </Step>
-  <Step title="OK — Full Trading Resumes">
-    The platform is fully operational. All order types, liquidations, and TP/SL triggers are active.
+  <Step title="OK">
+    Full trading resumes.
   </Step>
 </Steps>
+
+## What You Can Do in Each Mode
+
+| Action | CANCEL_ONLY | POST_ONLY | OK |
+|--------|:-----------:|:---------:|:--:|
+| View balances & positions | Yes | Yes | Yes |
+| Cancel existing orders | Yes | Yes | Yes |
+| Place Post-Only / RPI orders | No | Yes | Yes |
+| Place other order types | No | No | Yes |
+| Liquidations | Paused | Paused | Active |
+| TP/SL triggers | Paused | Paused | Active |
 
 ## Maintenance Price Bands
 

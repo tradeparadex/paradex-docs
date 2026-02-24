@@ -43,7 +43,7 @@ Paradex utilizes hybrid encryption. Encryption is performed using the following 
 
    - For each council member `i` with public key `Pubᵢ`, a random variable `rᵢ` is randomly selected
    - Remainder of the data encrypts `k` for each council member `i` using the function `(Rᵢ= G*rᵢ , Yᵢ = blake(Pubᵢ*rᵢ) + k)`
-3. Finally, the entire blob is encrypted using `blake(i, k) + pᵢ`, where `pᵢ` is the `i`th element of the blob
+3. Finally, the entire blob is encrypted using `blake(i, k) + pᵢ`, where `pᵢ` is the `i`-th element of the blob
 </Note>
 
 <Note title="Decryption" icon="fa-regular fa-shield-halved">

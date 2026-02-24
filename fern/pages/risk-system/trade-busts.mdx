@@ -8,7 +8,7 @@ Once the order crosses against a matching order in the cloud order book, a fill 
 
 The chain independently checks the new account composition and can reject the trade when the account would violate the initial margin requirement if the trade had happened. Although the cloud risk assessment is usually more conservative than on-chain, the independent on-chain risk check can result in a rejection of the trade.
 
-If this happens, the account off-chain data data is rectified to revert the impact of the invalid trade.
+If this happens, the account off-chain data is rectified to revert the impact of the invalid trade.
 
 A significant amount of our focus is currently directed towards minimizing the occurrence of trade busts in order to make this kind of risk significantly low.
 

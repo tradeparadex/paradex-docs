@@ -7,7 +7,7 @@ Paradex can operate under different system modes during maintenance or recovery 
 ### **CANCEL_ONLY**
 
 - Users can access the API/UI and monitor balances and positions
-- Existing orders can be cancelled
+- Existing orders can be canceled
 - New orders cannot be created
 - Liquidations are paused
 - TP/SL orders cannot be triggered
@@ -49,7 +49,7 @@ Where **External Basis Rate** is the Median of:
 
 ### Price protection
 
-- Orders priced more that **5 bps** more aggressive than the **_External Fair Price_** are automatically cancelled.
+- Orders priced more that **5 bps** more aggressive than the **_External Fair Price_** are automatically canceled.
 - This applies to both:
   - Resting orders on the book
   - New incoming orders
@@ -71,9 +71,9 @@ Only **Post-Only** and **RPI** orders within the price band are accepted:
 - Buy orders with limit price **≤ $100,050**
 - Sell orders with limit price **≥ $99,950**
 
-### Auto-Cancelled Resting Orders
+### Auto-Canceled Resting Orders
 
-The following resting orders are automatically cancelled:
+The following resting orders are automatically canceled:
 
 - Buy orders with limit price **> $100,050**
 - Sell orders with limit price **< $99,950**

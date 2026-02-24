@@ -14,8 +14,8 @@ The main objective of deleveraging is to prevent orders from resulting in invali
 This check compares the [Account Value](margin-term-reference#account-value-usd) to the [Initial Margin Requirement](margin-term-reference#margin-requirement) (check [here](cross-margin-requirement#initial-margin-requirement-imr) how IMR is calculated in Cross Margin Mode).
 
 * If $$\text{Account Value} < \text{Account IMR}$$, **Account Deleveraging** kicks in :
-  * All orders that do not offset an open position on the same instrument (i.e. the account does not have an open position in this instrument **or** has an open position on the same side as the open order) are cancelled since these non-offsetting
-  * Order offsetting an open position (opposite side) are not cancelled unless the cumulative size of those orders exceeds the position size, in which case the most passive orders are cancelled until the remaining cumulative size of offsetting orders is equal or lower than the position size
+  * All orders that do not offset an open position on the same instrument (i.e. the account does not have an open position in this instrument **or** has an open position on the same side as the open order) are canceled since these non-offsetting
+  * Order offsetting an open position (opposite side) are not canceled unless the cumulative size of those orders exceeds the position size, in which case the most passive orders are canceled until the remaining cumulative size of offsetting orders is equal or lower than the position size
 
 ## Example
 
@@ -29,9 +29,9 @@ Alice account has :
 
 Due to ETH-USD-PERP price decrease, Alice account value drops below the account IMR and the exchange puts the account in **Deleveraging Mode** :
 
-* First, the buy order is cancelled since it is on the same side as the position
+* First, the buy order is canceled since it is on the same side as the position
 * The total size of sell orders is **11** which is higher than the position size (10) :
-  * The exchange starts by cancelling the most passive order (sell order of size 3 at price 2'200)
+  * The exchange starts by canceling the most passive order (sell order of size 3 at price 2'200)
   * The total remaining sell order is **8** which is less than the position size. Therefore, no more order cancellation is made
 
 After deleveraging, Alice end up with :

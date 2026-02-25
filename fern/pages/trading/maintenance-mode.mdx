@@ -32,23 +32,16 @@ During each release, the platform transitions through three modes:
   </Step>
 </Steps>
 
-## What's Available per Mode
+## Functionality Enabled per Mode
 
-### Orders
-
-| Action | CANCEL_ONLY | POST_ONLY | OK |
-|--------|:-----------:|:---------:|:--:|
-| View balances & positions | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> |
-| Cancel existing orders | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> |
-| Post-Only / RPI orders | <Badge intent="error" minimal>Blocked</Badge> | <Badge intent="success" minimal>Available</Badge> | <Badge intent="success" minimal>Available</Badge> |
-| All other order types | <Badge intent="error" minimal>Blocked</Badge> | <Badge intent="error" minimal>Blocked</Badge> | <Badge intent="success" minimal>Available</Badge> |
-
-### System
-
-| Action | CANCEL_ONLY | POST_ONLY | OK |
-|--------|:-----------:|:---------:|:--:|
-| Liquidations | <Badge intent="warning" minimal>Paused</Badge> | <Badge intent="warning" minimal>Paused</Badge> | <Badge intent="success" minimal>Active</Badge> |
-| TP/SL triggers | <Badge intent="warning" minimal>Paused</Badge> | <Badge intent="warning" minimal>Paused</Badge> | <Badge intent="success" minimal>Active</Badge> |
+| | CANCEL_ONLY | POST_ONLY | OK |
+|---|:-----------:|:---------:|:--:|
+| **View balances & positions** | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| **Cancel existing orders** | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| **Post-Only / RPI orders** | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| **All other order types** | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| **Liquidations** | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| **TP/SL triggers** | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
 
 ## Maintenance Price Bands
 

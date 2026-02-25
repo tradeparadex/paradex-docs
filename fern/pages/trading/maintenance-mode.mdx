@@ -32,7 +32,7 @@ During each release, the platform transitions through three modes:
   </Step>
 </Steps>
 
-## Functionality Enabled per Mode
+## Feature Availability
 
 | | CANCEL_ONLY | POST_ONLY | OK |
 |---|:-----------:|:---------:|:--:|
@@ -43,44 +43,39 @@ During each release, the platform transitions through three modes:
 | **Liquidations** | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
 | **TP/SL triggers** | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
 
-## Maintenance Price Bands
+## Price Protection
 
-During **CANCEL_ONLY** and **POST_ONLY** modes, price protection bands around an **External Fair Price** prevent unfair pricing.
+During **CANCEL_ONLY** and **POST_ONLY** modes, a price band of **±5 basis points** around the External Fair Price protects against unfair pricing.
 
 <Warning>
-Orders priced more than **5 bps** beyond the External Fair Price are **automatically canceled** — both resting and incoming orders.
+Orders outside the band are **automatically canceled** — both resting and incoming.
 </Warning>
 
-### External Fair Price
+<CardGroup cols={2}>
+  <Card title="Accepted" icon="fa-solid fa-circle-check">
+    Orders priced **within ±5 bps** of the External Fair Price. Only **Post-Only** and **RPI** order types.
+  </Card>
+  <Card title="Auto-Canceled" icon="fa-solid fa-circle-xmark">
+    Orders priced **beyond ±5 bps** of the External Fair Price, plus all non-Post-Only / non-RPI order types.
+  </Card>
+</CardGroup>
 
-A reference price derived from spot oracle price and external basis data:
+### Example
+
+BTC with an External Fair Price of **$100,000**:
+
+| Direction | Band Limit | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> Accepted | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> Auto-Canceled |
+|:---------:|:----------:|:--------:|:-------------:|
+| **Buy** | $100,050 | Price ≤ $100,050 | Price > $100,050 |
+| **Sell** | $99,950 | Price ≥ $99,950 | Price < $99,950 |
+
+### How the External Fair Price Is Calculated
 
 $$
 \text{External Fair Price} = \text{Spot Oracle Price} \times (1 + \text{External Basis Rate})
 $$
 
-Where **External Basis Rate** is the median of:
-
-| Source | Type |
-|--------|------|
-| Binance | Basis |
-| OKX | Basis |
-| Bybit | Basis |
-| Hyperliquid | Basis |
-| Paradex | Basis EMA (1h half-life) |
-
-### Price Band Example
-
-For BTC with an External Fair Price of **$100,000** and a band of **+/-5 bps**:
-
-| | Limit | Accepted | Auto-Canceled |
-|---|---|---|---|
-| **Buy** | $100,050 (upper) | Price ≤ $100,050 | Price > $100,050 |
-| **Sell** | $99,950 (lower) | Price ≥ $99,950 | Price < $99,950 |
-
-<Note>
-Only **Post-Only** and **RPI** orders within the price band are accepted during maintenance modes.
-</Note>
+**External Basis Rate** = median of basis rates from **Binance**, **OKX**, **Bybit**, **Hyperliquid**, and **Paradex** (1h EMA).
 
 ## Stay Informed
 

@@ -46,6 +46,7 @@ During each release, the platform transitions through three modes:
 ## Price Protection
 
 Modes: CANCEL_ONLY, POST_ONLY
+
 Band: ±5 bps of External Fair Price
 
 Orders outside the band are automatically canceled, both resting and incoming.
@@ -65,7 +66,9 @@ $$
 \text{External Fair Price} = \text{Spot Oracle Price} \times (1 + \text{External Basis Rate})
 $$
 
-External Basis Rate = median of basis rates from Binance, OKX, Bybit, Hyperliquid, and Paradex (1h EMA).
+$$
+\text{External Basis Rate} = \text{median}(\text{Binance, OKX, Bybit, Hyperliquid, Paradex 1h EMA})
+$$
 
 ## Stay Informed
 

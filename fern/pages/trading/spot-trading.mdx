@@ -39,28 +39,19 @@ Even though markets are quoted in USD, all trades settle in USDC at the prevaili
 The following order types are available for spot markets:
 
 | Order Type | Supported |
-| --- | --- |
-| Market | Yes |
-| Limit | Yes |
-| IOC (Immediate-or-Cancel) | Yes |
-| Post-Only | Yes |
-| Reduce-Only | No |
-| TP/SL | No |
+| --- | :---: |
+| Market | ✅ |
+| Limit | ✅ |
+| IOC (Immediate-or-Cancel) | ✅ |
+| Post-Only | ✅ |
+| Reduce-Only | ❌ |
+| TP/SL | ❌ |
 
 ## Non-USDC Balances & Collateral
 
-<CardGroup cols={2}>
-  <Card title="Account Value" icon="chart-line">
-    Non-USDC balances **do** contribute to your total account value
-  </Card>
+| | Counts toward Account Value | Counts toward Free Collateral | Subject to Liquidation |
+| --- | :---: | :---: | :---: |
+| USDC | ✅ | ✅ | ✅ |
+| Non-USDC (e.g. ETH) | ✅ | ❌ | ❌ |
 
-  <Card title="Free Collateral" icon="shield">
-    Non-USDC balances **do not** count toward free collateral — USDC is required to trade perpetual markets
-  </Card>
-</CardGroup>
-
-Since non-USDC balances are not eligible collateral, they are **not affected by liquidations**.
-
-<Note>
-Support for multi-collateral will be introduced in a future update.
-</Note>
+USDC is required to trade perpetual markets. Multi-collateral support is coming in a future update.

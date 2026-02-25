@@ -86,7 +86,7 @@ redirects:
   - source: "/documentation/points-referrals/:slug*"
     destination: "/docs/xp-referrals/:slug*"
   - source: "/documentation/trading/perpetual-options/trading-fees"
-    destination: "/docs/trading/trader-profiles"
+    destination: "/docs/trading/trading-fees"
   - source: "/documentation/:slug*"
     destination: "/docs/:slug*"
 
@@ -106,9 +106,9 @@ redirects:
   - source: "/risk/paradex-risk-system"
     destination: "/docs/risk/margin-system"
   - source: "/trading/trading-fee"
-    destination: "/docs/trading/trader-profiles"
+    destination: "/docs/trading/trading-fees"
   - source: "/docs/trading/trading-fee"
-    destination: "/docs/trading/trader-profiles"
+    destination: "/docs/trading/trading-fees"
 
 layout:
   header-height: 72px

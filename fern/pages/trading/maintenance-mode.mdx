@@ -1,79 +1,80 @@
-# Maintenance Modes
+---
+title: Maintenance & Releases
+subtitle: Release schedule, platform modes, and price protections during maintenance windows
+---
 
-## Paradex System Modes
+## Release Schedule
 
-Paradex can operate under different system modes during maintenance or recovery events. Each mode defines what actions are allowed on the platform.
+Paradex performs releases on all weekdays during the following window:
 
-### **CANCEL_ONLY**
+<CardGroup cols={2}>
+  <Card title="5:00 AM UTC / 12:30 PM SGT" icon="fa-regular fa-clock">
+    Daily maintenance window
+  </Card>
+  <Card title="~15 Minutes" icon="fa-regular fa-hourglass-half">
+    Typical release duration
+  </Card>
+</CardGroup>
 
-- Users can access the API/UI and monitor balances and positions
-- Existing orders can be canceled
-- New orders cannot be created
-- Liquidations are paused
-- TP/SL orders cannot be triggered
+## Release Sequence
 
-### **POST_ONLY**
+During each release, the platform transitions through three modes:
 
-- Users can cancel existing orders.
-- Users can only place Post-Only / RPI orders. All other orders are rejected
-- Liquidations are paused
-- TP/SL orders cannot be triggered
+<Steps>
+  <Step title="CANCEL_ONLY (~2 min)">
+    Clean state preparation before deployment.
+  </Step>
+  <Step title="POST_ONLY (~2 min)">
+    Markets stabilize with maker-only liquidity.
+  </Step>
+  <Step title="OK">
+    Full trading resumes.
+  </Step>
+</Steps>
 
-### **OK**
+## Feature Availability
 
-- Platform is fully operational
+| | CANCEL_ONLY | POST_ONLY | OK |
+|---|:-----------:|:---------:|:--:|
+| View balances & positions | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Cancel existing orders | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Post-Only / RPI orders | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| All other order types | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Liquidations | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| TP/SL triggers | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
 
-## Maintenance Price Bands
+## Price Protection
 
-During **CANCEL_ONLY** and **POST_ONLY** modes, special price protection bands around an **External Fair Price** are enforced to ensure fair price discovery and maintain market stability during system recovery.
-
-### External Fair Price
-
-The **_External Fair Price_** is used as a robust reference price during **CANCEL_ONLY** and **POST_ONLY** modes.
-
-It is derived from spot oracle price and basis data from different exchanges:
-
-**Formula**
-
-$$
-\text{External Fair Price}= \text{Spot Oracle Price} × (1+\text{External Basis Rate})
-$$
-
-Where **External Basis Rate** is the Median of:
-
-- Binance basis
-- OKX basis
-- Bybit basis
-- Hyperliquid basis
-- Paradex basis EMA with a 1h half-life
-
-### Price protection
-
-- Orders priced more that **5 bps** more aggressive than the **_External Fair Price_** are automatically canceled.
-- This applies to both:
-  - Resting orders on the book
-  - New incoming orders
+Orders in CANCEL_ONLY and POST_ONLY modes must be within **±5 bps** of the External Fair Price. Orders outside this band are automatically canceled.
 
 ### Example
 
-- BTC External Fair Price = **$100,000**
-- Maintenance price band = **±5 bps**
+BTC with an External Fair Price of $100,000:
 
-This results in:
+| | Band Limit | <span style={{color: '#22c55e'}}>Accepted</span> | <span style={{color: '#ef4444'}}>Auto-Canceled</span> |
+|---|---|---|---|
+| Buy | $100,050 | Price ≤ $100,050 | Price > $100,050 |
+| Sell | $99,950 | Price ≥ $99,950 | Price < $99,950 |
 
-- **Upper band:** $100,050
-- **Lower band:** $99,950
+### How the External Fair Price Is Calculated
 
-### Accepted Incoming Orders
+$
+\text{External Fair Price} = \text{Spot Oracle Price} \times (1 + \text{External Basis Rate})
+$
 
-Only **Post-Only** and **RPI** orders within the price band are accepted:
+$
+\text{External Basis Rate} = \operatorname{median}(\text{Binance},\ \text{OKX},\ \text{Bybit},\ \text{Hyperliquid},\ \text{Paradex}^*)
+$
 
-- Buy orders with limit price **≤ $100,050**
-- Sell orders with limit price **≥ $99,950**
+<sub>\* Paradex Basis is calculated as an EMA with a 1h half-life.</sub>
 
-### Auto-Canceled Resting Orders
+## Stay Informed
 
-The following resting orders are automatically canceled:
-
-- Buy orders with limit price **> $100,050**
-- Sell orders with limit price **< $99,950**
+<CardGroup cols={2}>
+  <Card title="Status Page" icon="fa-regular fa-signal" href="https://status.paradex.trade">
+    Real-time system status, scheduled maintenance, and incident reports. Subscribe via email, Slack, or webhook.
+  </Card>
+  <Card title="Discord" icon="fa-brands fa-discord" href="https://discord.gg/wTMyc6mb">
+    Join #network-upgrades for maintenance schedules, detailed release notes, and live updates.
+  </Card>
+</CardGroup>

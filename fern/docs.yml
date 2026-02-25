@@ -96,6 +96,10 @@ redirects:
   - source: "/websocket-reference/:slug*"
     destination: "/ws/:slug*"
 
+  # Redirect old maintenance page to consolidated trading page
+  - source: "/docs/getting-started/maintenance"
+    destination: "/docs/trading/maintenance-mode"
+
   # Specific page redirects for renamed/moved pages
   - source: "/docs/risk/paradex-risk-system"
     destination: "/docs/risk/margin-system"

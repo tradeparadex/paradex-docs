@@ -5,7 +5,7 @@ subtitle: Release schedule, platform modes, and price protections during mainten
 
 ## Release Schedule
 
-Paradex performs releases on **all weekdays** during the following window:
+Paradex performs releases on all weekdays during the following window:
 
 <CardGroup cols={2}>
   <Card title="5:00 AM UTC / 12:30 PM SGT" icon="fa-regular fa-clock">
@@ -36,38 +36,29 @@ During each release, the platform transitions through three modes:
 
 | | CANCEL_ONLY | POST_ONLY | OK |
 |---|:-----------:|:---------:|:--:|
-| **View balances & positions** | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
-| **Cancel existing orders** | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
-| **Post-Only / RPI orders** | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
-| **All other order types** | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
-| **Liquidations** | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
-| **TP/SL triggers** | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| View balances & positions | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Cancel existing orders | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Post-Only / RPI orders | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| All other order types | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Liquidations | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| TP/SL triggers | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-pause" color="#eab308" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
 
 ## Price Protection
 
-During **CANCEL_ONLY** and **POST_ONLY** modes, a price band of **±5 basis points** around the External Fair Price protects against unfair pricing.
+During CANCEL_ONLY and POST_ONLY modes, a price band of ±5 basis points around the External Fair Price protects against unfair pricing.
 
 <Warning>
-Orders outside the band are **automatically canceled** — both resting and incoming.
+Orders outside the band are automatically canceled — both resting and incoming.
 </Warning>
-
-<CardGroup cols={2}>
-  <Card title="Accepted" icon="fa-solid fa-circle-check">
-    Orders priced **within ±5 bps** of the External Fair Price. Only **Post-Only** and **RPI** order types.
-  </Card>
-  <Card title="Auto-Canceled" icon="fa-solid fa-circle-xmark">
-    Orders priced **beyond ±5 bps** of the External Fair Price, plus all non-Post-Only / non-RPI order types.
-  </Card>
-</CardGroup>
 
 ### Example
 
-BTC with an External Fair Price of **$100,000**:
+BTC with an External Fair Price of $100,000:
 
-| Direction | Band Limit | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> Accepted | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> Auto-Canceled |
-|:---------:|:----------:|:--------:|:-------------:|
-| **Buy** | $100,050 | Price ≤ $100,050 | Price > $100,050 |
-| **Sell** | $99,950 | Price ≥ $99,950 | Price < $99,950 |
+| | Band Limit | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> Accepted | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> Auto-Canceled |
+|---|:----------:|:--------:|:-------------:|
+| Buy | $100,050 | Price ≤ $100,050 | Price > $100,050 |
+| Sell | $99,950 | Price ≥ $99,950 | Price < $99,950 |
 
 ### How the External Fair Price Is Calculated
 
@@ -75,7 +66,7 @@ $$
 \text{External Fair Price} = \text{Spot Oracle Price} \times (1 + \text{External Basis Rate})
 $$
 
-**External Basis Rate** = median of basis rates from **Binance**, **OKX**, **Bybit**, **Hyperliquid**, and **Paradex** (1h EMA).
+External Basis Rate = median of basis rates from Binance, OKX, Bybit, Hyperliquid, and Paradex (1h EMA).
 
 ## Stay Informed
 

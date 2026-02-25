@@ -112,6 +112,15 @@ a.cyan-cards:hover {
   color: var(--paradex-accent) !important;
 }
 
+/* Mobile logo: show only the P icon on small screens */
+@media (max-width: 768px) {
+  img[alt="Logo"] {
+    width: 15px !important;
+    object-fit: cover !important;
+    object-position: left !important;
+  }
+}
+
 /* Product Switcher Styling */
 div:has(> .fern-product-selector-radio-group) {
   margin-top: 0.125rem;

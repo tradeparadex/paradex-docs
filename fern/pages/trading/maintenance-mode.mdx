@@ -45,17 +45,16 @@ During each release, the platform transitions through three modes:
 
 ## Price Protection
 
-During CANCEL_ONLY and POST_ONLY modes, a price band of ±5 basis points around the External Fair Price protects against unfair pricing.
+Modes: CANCEL_ONLY, POST_ONLY
+Band: ±5 bps of External Fair Price
 
-<Warning>
-Orders outside the band are automatically canceled — both resting and incoming.
-</Warning>
+Orders outside the band are automatically canceled, both resting and incoming.
 
 ### Example
 
 BTC with an External Fair Price of $100,000:
 
-| | Band Limit | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> Accepted | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> Auto-Canceled |
+| | Band Limit | <span style={{color: '#22c55e'}}>Accepted</span> | <span style={{color: '#ef4444'}}>Auto-Canceled</span> |
 |---|:----------:|:--------:|:-------------:|
 | Buy | $100,050 | Price ≤ $100,050 | Price > $100,050 |
 | Sell | $99,950 | Price ≥ $99,950 | Price < $99,950 |

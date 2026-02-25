@@ -110,6 +110,16 @@ redirects:
   - source: "/docs/trading/trading-fee"
     destination: "/docs/trading/trader-profiles"
 
+  # Redirects for consolidated spot trading pages
+  - source: "/docs/trading/spot-trading/supported-order-types"
+    destination: "/docs/trading/spot-trading"
+  - source: "/docs/trading/spot-trading/quoting-settlement"
+    destination: "/docs/trading/spot-trading"
+  - source: "/docs/trading/spot-trading/non-usdc-balances-collateral"
+    destination: "/docs/trading/spot-trading"
+  - source: "/docs/trading/spot-trading/naming-convention"
+    destination: "/docs/trading/spot-trading"
+
 layout:
   header-height: 72px
   searchbar-placement: header

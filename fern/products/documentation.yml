@@ -43,7 +43,7 @@ navigation:
       - page: Privacy Perps
         slug: privacy
         path: ../pages/trading/privacy.mdx
-      - page: Trader Profiles
+      - page: Fees / Trader Profiles
         slug: trader-profiles
         path: ../pages/trading/trader-profiles.mdx
       - page: Retail Price Improvement

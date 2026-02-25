@@ -1,0 +1,25 @@
+---
+title: Trading Fees
+subtitle: Fee structure for trading on Paradex
+---
+
+Trading fees vary based on your [Trader Profile](/docs/trading/trader-profiles). Retail traders trade with **zero** fees while Pro traders benefit from improved latency.
+
+## Spot and Perpetual Futures
+
+| Profile | Maker | Taker |
+|---------|:---:|:---:|
+| <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | <Tooltip tip="Powered by RPI"><Badge intent="success" minimal>FREE (0%)</Badge></Tooltip> | <Tooltip tip="Powered by RPI"><Badge intent="success" minimal>FREE (0%)</Badge></Tooltip> |
+| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0.003% | 0.02% <br /> <Tooltip tip={<div class="text-left"><Icon icon="fa-light fa-bolt" /> <strong>FastFills Taker Discount</strong> <Icon icon="fa-light fa-bolt" /><br />Pro taker fee is reduced by 75% to 0.005% when matching against retail orders.</div>}>vs retail: 0.005% <Icon icon="fa-regular fa-bolt" /></Tooltip> |
+
+<sub>Fees are calculated based on notional value.</sub>
+
+## Settlement Fees
+
+When a market is delisted, a settlement fee is applied to close any positions still open in that market.
+
+|                          | Fee    |
+|--------------------------|:------:|
+| Spot and Perpetual Futures | 0.015% |
+
+<sub>Fees are calculated based on notional value.</sub>

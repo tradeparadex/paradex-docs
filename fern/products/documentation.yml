@@ -43,6 +43,9 @@ navigation:
       - page: Privacy Perps
         slug: privacy
         path: ../pages/trading/privacy.mdx
+      - page: Trading Fees
+        slug: trading-fees
+        path: ../pages/trading/trading-fees.mdx
       - page: Trader Profiles
         slug: trader-profiles
         path: ../pages/trading/trader-profiles.mdx

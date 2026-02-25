@@ -21,33 +21,34 @@ subtitle: Users can choose between two trader profiles that best suits their str
 
 <sub>Retail orders exceeding rate limits automatically switch to Pro trader profile and lose access to RPI liquidity.</sub>
 
-## Fee Structure
+For detailed fee information, see [Trading Fees](/docs/trading/trading-fees).
 
-### Perpetual Futures
+## Identifying as Retail via API
 
-| Profile | Maker | Taker |
-|---------|:---:|:---:|
-| <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | <Tooltip tip="Powered by RPI"><Badge intent="success" minimal>FREE (0%)</Badge></Tooltip> | <Tooltip tip="Powered by RPI"><Badge intent="success" minimal>FREE (0%)</Badge></Tooltip> |
-| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0.003% | 0.02% <br /> <Tooltip tip={<div class="text-left"><Icon icon="fa-light fa-bolt" /> <strong>FastFills Taker Discount</strong> <Icon icon="fa-light fa-bolt" /><br />Pro taker fee is reduced by 75% to 0.005% when matching against retail orders.</div>}>vs retail: 0.005% <Icon icon="fa-regular fa-bolt" /></Tooltip> |
+By default, all orders submitted through the API are treated as <Badge intent="note" outlined minimal>Pro</Badge> orders. To have your API orders treated as <Badge intent="success" outlined minimal>Retail</Badge> orders, include the `INTERACTIVE` flag when submitting orders.
 
-<sub>Fees are calculated based on notional value.</sub>
+When the `INTERACTIVE` flag is set on an order:
 
-### Perpetual Options
+- The order is subject to **Retail speed bumps** and **rate limits**
+- The order qualifies for **free trading fees** (0% maker and taker)
+- The order is eligible for **[Retail Price Improvement (RPI)](/docs/trading/rpi)** liquidity
+- The order receives **queue priority** at each price level
 
-| Profile | Maker | Taker | Fee Cap (%) | Floor (%) |
-|---------|:---:|:---:|:---:|:---:|
-| <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | -0.01% | 0.03% | 12.5 | -4 |
-| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | -0.01% | 0.03% | 12.5 | -4 |
+<Warning>
+Orders with the `INTERACTIVE` flag are subject to Retail rate limits. If rate limits are exceeded, the account will automatically switch to the Pro trader profile and lose access to RPI liquidity.
+</Warning>
 
-<sub>Fees are calculated based on notional value.</sub>
+### Example
 
-## Settlement Fees
+Include `"INTERACTIVE"` in the `flags` array when creating an order:
 
-When a market is delisted, a settlement fee is applied to close any positions still open in that market.
-
-|         | Fee    | Cap |
-|---------|:------:|:---:|
-| Futures | 0.015% | N/A |
-| Options | 0.010% | 12.5% |
-
-<sub>Fees are calculated based on notional value.</sub>
+```json
+{
+  "market": "BTC-USD-PERP",
+  "side": "BUY",
+  "type": "LIMIT",
+  "size": "0.01",
+  "limit_price": "50000",
+  "flags": ["INTERACTIVE"]
+}
+```

@@ -112,6 +112,26 @@ a.cyan-cards:hover {
   color: var(--paradex-accent) !important;
 }
 
+/* Mobile logo: swap full wordmark for P icon on small screens */
+@media (max-width: 768px) {
+  img[alt="Logo"] {
+    display: none !important;
+  }
+
+  a:has(> img[alt="Logo"])::before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAAE90lEQVR42u1YW6hUVRj+vn+tfTlzzuloN4IiFe1kF62UwqSLIIqUB8KCJCQoMOgihBlBWC/R9SUJrIegQAuCCizJvD1ID1HhSwSRRBr5lHnUc2b2zOzZe62/hxmPVuey58xIPpzFeth7BjbfWv/3ff+3FuMfj+NiGoKLbMwAmmrYyf5U7ejbZHcBUQMLEFAo0ObHVZXOwTkSENMpIILwzvw1DNP2KpvgaSO9ZAD9A7nLkVSoCpHpA/LqbKlk3ny5vmeX9PfDuXaLRRvJlVeYRbcGK9bkd9yZ2xCVMszUW8Xxfch7V4p7j/xcXT/ERg0i7fJJVZE7BWjF3r483PRCuuxuP3qGlMnLb+yTm8dfYpr6uYNxeTT94Vv2lkjCmOKTxjAMGEUU64795nZ/GoQRl93lGxmJSTBNAAggqVnD3LwI+3b7UycZRwDBdqYqvAeUcQSY/NCBSIy7Z6XWa6S0WbLmtjsn/QPBvi/S557QtNEk7NQkGHsKQwZWvScACqBaq5W276itHuLoyER84uS9TL2XUm/w02Hs34v6eWTiP0U15gtNyEJ/4s/8u2/88En29sArAIhBvWbnXW8++SoNI3o3rlFx6ubqvZZKJgypBe1IFaTX4I+j+esvZgf2slRS9QAookk1emt746ENGDkFsdMCBMB7aLu2rSj1xS7PHluXHf5eemJ4TzEuqQb3D3Hbh65SGdeZivUykZZw2piWlXIa94SPP8OzldQml44eY7WiRsal5IVsrtZomubXzpVSH1wOEuoh1KTMagox44rkQgJSQIBGXfOMbKqBUIUx3pqJnLYoIKqirem95s729ptDB7Vea4mcgFe5/CqU+nQCldkiC1Uj3tjCtFYQFGP7+sIDX9c+eJdRBO9by1fILUvyUiSnqzB2OoDUiK1Ww2oCY1uGowB1fB8CAA+FGz4hB/dUd76v9ZSBbRUoV8Q9XDOkjQw07Qe0pqeIsZVyvnG9K58RE6gqoGwx4hwtx56bAcqNjLh6XeJwDA2DwI+W4wcfcbct1dEKJ0gjUwEiNU2zedcFa9fV33mDcQjnitgjrZW+3qaBAaAN3Gg5WjCILVvzWoMTh8kCxqjqjYmzRr7+vvz3XxmeJcSUEmsWUkQJrSThnPnBeztr8wdZTSYJawVURkqWNQZmBU9tZiMHAGNaG/4vZZEQ05pGIKLqfJKwksQr19gdn1cXDDKpTB4dWfCg6FXDqIcvPdv47OMWV4xBGJ5jEam1WvNNx9ba32cXL5WHH9XVazOvTOtT5msWPrl6FWMhsv/L4MgvsFLbu8sfP44mZ0lkWbB4SbT8Xs1zKFxcctdczYWL/IJBbyNXKYv6IrHaFvZdodOcOR9Y71Q5a1Y0+9Lqq1sZhXAOJJ2zm7dWV93P0TKMAPDea9ZAvU5fE2PADkI+JjyLECNnvHNQ2PM3X1WFXuGGT0pyjrMUglIk208LUCv0miaBOK60rIExBU88XT9Ks8AvM5cNM4AKR7HOL0u6CoiEiMYh9SIARBswqZobFmPwJtTqEP6vgIzNy2UzZ5555e08iuldh+LvABBBUkdG4hWrgo92ZwtvRK3aiSVO16nPdjafZaoab3reP70l9cpK0laL6CogUvOcsy/rfW1bY8PG7PQp8b4raNqKH/8Rlgii2CcVUqZ3v9nVkoHqFUlCMejq6IyD0n2jn+llM4A6HX8DWFhg+LyWb40AAAAASUVORK5CYII=");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+}
+
 /* Product Switcher Styling */
 div:has(> .fern-product-selector-radio-group) {
   margin-top: 0.125rem;

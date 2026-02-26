@@ -15,6 +15,11 @@ products:
     icon: fa-solid fa-book
     slug: docs
     subtitle: Complete guide to Paradex
+  - display-name: Trading
+    path: ./products/trading.yml
+    icon: fa-solid fa-chart-line
+    slug: trading
+    subtitle: Trading features and instruments
   - display-name: REST API Reference
     path: ./products/rest-api.yml
     icon: fa-solid fa-code
@@ -53,8 +58,9 @@ redirects:
     destination: "/docs/getting-started/:slug*"
   - source: "/xp-referrals/:slug*"
     destination: "/docs/xp-referrals/:slug*"
-  - source: "/trading/:slug*"
-    destination: "/docs/trading/:slug*"
+  # Redirect old /docs/trading/ URLs to new /trading/ product
+  - source: "/docs/trading/:slug*"
+    destination: "/trading/:slug*"
   - source: "/risk/:slug*"
     destination: "/docs/risk/:slug*"
   - source: "/security/:slug*"
@@ -66,27 +72,27 @@ redirects:
   - source: "/release-notes/:slug*"
     destination: "/docs/release-notes/:slug*"
   - source: "/accounts/:slug*"
-    destination: "/docs/trading/accounts/:slug*"
+    destination: "/trading/accounts/:slug*"
 
   # Legacy /documentation/ prefix redirects
   - source: "/documentation/getting-started/architecture-overview/wallet-integration"
-    destination: "/docs/trading/accounts/wallet-integration"
+    destination: "/trading/accounts/wallet-integration"
   - source: "/documentation/perpetual-options/:slug*"
-    destination: "/docs/trading/perpetual-options/:slug*"
+    destination: "/trading/perpetual-options/:slug*"
   - source: "/documentation/vaults/:slug*"
-    destination: "/docs/trading/vaults/:slug*"
+    destination: "/trading/vaults/:slug*"
   - source: "/documentation/instruments-guide/:slug*"
-    destination: "/docs/trading/instruments-guide/:slug*"
+    destination: "/trading/instruments-guide/:slug*"
   - source: "/documentation/risk-system/:slug*"
     destination: "/docs/risk/:slug*"
   - source: "/documentation/advanced-trading-features/self-trade-prevention"
-    destination: "/docs/trading/self-trade-prevention"
+    destination: "/trading/self-trade-prevention"
   - source: "/documentation/advanced-trading-features/receive-window"
-    destination: "/docs/trading/receive-window"
+    destination: "/trading/receive-window"
   - source: "/documentation/points-referrals/:slug*"
     destination: "/docs/xp-referrals/:slug*"
   - source: "/documentation/trading/perpetual-options/trading-fees"
-    destination: "/docs/trading/trading-fees"
+    destination: "/trading/trading-fees"
   - source: "/documentation/:slug*"
     destination: "/docs/:slug*"
 
@@ -98,7 +104,7 @@ redirects:
 
   # Redirect old maintenance page to consolidated trading page
   - source: "/docs/getting-started/maintenance"
-    destination: "/docs/trading/maintenance-mode"
+    destination: "/trading/maintenance-mode"
 
   # Specific page redirects for renamed/moved pages
   - source: "/docs/risk/paradex-risk-system"
@@ -106,9 +112,9 @@ redirects:
   - source: "/risk/paradex-risk-system"
     destination: "/docs/risk/margin-system"
   - source: "/trading/trading-fee"
-    destination: "/docs/trading/trading-fees"
+    destination: "/trading/trading-fees"
   - source: "/docs/trading/trading-fee"
-    destination: "/docs/trading/trading-fees"
+    destination: "/trading/trading-fees"
 
 layout:
   header-height: 72px

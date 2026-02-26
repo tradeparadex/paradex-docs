@@ -1,0 +1,152 @@
+---
+title: "CLI & Agent Setup"
+description: "Get Paradex documentation and tools locally for AI agents, CLI workflows, and offline reference."
+---
+
+## Fetch the Full Documentation
+
+Clone the complete Paradex docs repo for local reference, AI agent context, or offline use:
+
+```bash
+git clone https://github.com/tradeparadex/paradex-docs.git
+```
+
+To update to the latest version:
+
+```bash
+git -C paradex-docs pull origin main
+```
+
+<Note>
+The docs source lives in `fern/pages/` as `.mdx` files. The REST API spec is at `fern/apis/prod_rest/openapi/openapi.yml` (OpenAPI 3.0) and the WebSocket spec is at `fern/apis/prod_ws/asyncapi/asyncapi.yml` (AsyncAPI 2.6).
+</Note>
+
+### Feeding Docs to an AI Agent
+
+If you're using an AI coding assistant (Claude Code, Cursor, Copilot, etc.), point it at the cloned repo for full context:
+
+```bash
+# Clone once
+git clone https://github.com/tradeparadex/paradex-docs.git
+
+# In your project's AI config (e.g. CLAUDE.md), add:
+# Local path: ./paradex-docs
+# Use these docs as reference when answering questions about Paradex features, endpoints, or behavior
+```
+
+For a quick API-only reference without cloning the full repo, you can fetch the OpenAPI spec directly:
+
+```bash
+# REST API spec (OpenAPI 3.0)
+curl -sL https://raw.githubusercontent.com/tradeparadex/paradex-docs/main/fern/apis/prod_rest/openapi/openapi.yml -o paradex-rest-api.yml
+
+# WebSocket API spec (AsyncAPI 2.6)
+curl -sL https://raw.githubusercontent.com/tradeparadex/paradex-docs/main/fern/apis/prod_ws/asyncapi/asyncapi.yml -o paradex-ws-api.yml
+```
+
+---
+
+## Developer Tools & SDKs
+
+<CardGroup cols={2}>
+
+<Card
+  title="Paradex CLI"
+  icon="fa-solid fa-terminal"
+  href="https://github.com/tradeparadex/paradex-cli"
+>
+  Command-line interface for trading, account management, and querying Paradex directly from your terminal.
+</Card>
+
+<Card
+  title="Python SDK (paradex-py)"
+  icon="fa-brands fa-python"
+  href="https://github.com/tradeparadex/paradex-py"
+>
+  Python SDK with built-in authentication, subkey support, and typed API bindings. [Docs](https://tradeparadex.github.io/paradex-py/)
+</Card>
+
+<Card
+  title="Code Samples"
+  icon="fa-solid fa-code"
+  href="https://github.com/tradeparadex/code-samples"
+>
+  Ready-to-run examples for onboarding, authentication, placing orders, and streaming market data.
+</Card>
+
+<Card
+  title="CCXT Integration"
+  icon="fa-solid fa-arrows-rotate"
+  href="https://docs.ccxt.com/#/exchanges/paradex"
+>
+  Use Paradex through the CCXT unified trading library (Python, JavaScript, PHP).
+</Card>
+
+</CardGroup>
+
+### Quick Install
+
+<Tabs>
+<Tab title="Paradex CLI">
+```bash
+# Install via pip
+pip install paradex-cli
+
+# Verify installation
+paradex --help
+```
+</Tab>
+
+<Tab title="Python SDK">
+```bash
+# Install via pip
+pip install paradex-py
+
+# Quick test
+python -c "from paradex_py import Paradex; print('SDK ready')"
+```
+</Tab>
+
+<Tab title="CCXT">
+```bash
+# Install CCXT
+pip install ccxt
+
+# Quick test
+python -c "import ccxt; print('paradex' in ccxt.exchanges)"
+```
+</Tab>
+</Tabs>
+
+---
+
+## API Endpoints
+
+| Environment | REST API | WebSocket |
+|:------------|:---------|:----------|
+| **Production** | `https://api.prod.paradex.trade/v1` | `wss://ws.api.prod.paradex.trade/v1` |
+| **Testnet** | `https://api.testnet.paradex.trade/v1` | `wss://ws.api.testnet.paradex.trade/v1` |
+
+Test connectivity from your terminal:
+
+```bash
+# List all available markets
+curl -s https://api.prod.paradex.trade/v1/markets | python -m json.tool | head -50
+
+# Get system config
+curl -s https://api.prod.paradex.trade/v1/system/config | python -m json.tool
+
+# Get BBO for BTC
+curl -s "https://api.prod.paradex.trade/v1/bbo?market=BTC-USD-PERP" | python -m json.tool
+```
+
+---
+
+## GitHub Repositories
+
+| Repository | Description |
+|:-----------|:------------|
+| [tradeparadex/paradex-docs](https://github.com/tradeparadex/paradex-docs) | This documentation — full source, API specs, and page content |
+| [tradeparadex/paradex-cli](https://github.com/tradeparadex/paradex-cli) | CLI for trading and account management |
+| [tradeparadex/paradex-py](https://github.com/tradeparadex/paradex-py) | Python SDK with auth, subkeys, and typed bindings |
+| [tradeparadex/code-samples](https://github.com/tradeparadex/code-samples) | Authentication, order placement, and WebSocket examples |

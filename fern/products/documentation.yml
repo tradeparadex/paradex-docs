@@ -10,6 +10,9 @@ navigation:
       - page: Bridges and On-Ramps
         slug: bridges
         path: ../pages/introduction/bridges-onramps.mdx
+      - page: CLI & Agent Setup
+        slug: cli-and-agents
+        path: ../pages/introduction/cli-and-agents.mdx
       - page: Official Links
         slug: official-links
         path: ../pages/introduction/official-links.mdx

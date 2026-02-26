@@ -7,12 +7,12 @@ navigation:
       - page: Roadmap
         slug: roadmap
         path: ../pages/introduction/roadmap.mdx
-      - page: Bridges and On-Ramps
-        slug: bridges
-        path: ../pages/introduction/bridges-onramps.mdx
       - page: Official Links
         slug: official-links
         path: ../pages/introduction/official-links.mdx
+      - page: API Authentication
+        slug: api-authentication
+        path: ../pages/trading/api-authentication.mdx
       - section: Architecture Overview
         path: ../pages/introduction/architecture-overview/overview.mdx
         contents:
@@ -36,7 +36,6 @@ navigation:
         path: ../pages/points-and-referrals/xp.mdx
       - page: Affiliate & Referrals
         path: ../pages/points-and-referrals/affiliate-program.mdx
-
 
   - section: Trading
     contents:
@@ -93,34 +92,11 @@ navigation:
           - page: Automatic Options Listing
             slug: automatic-options-listing
             path: ../pages/options/automatic-options-listing.mdx
-      - section: Vaults
+      - section: Orders
         contents:
-          - page: Introduction
-            slug: vaults-introduction
-            path: ../pages/vaults/introduction.mdx
-          - page: Key Features
-            slug: key-features
-            path: ../pages/vaults/key-features.mdx
-          - section: Tutorials
-            contents:
-              - page: Create a Vault
-                slug: create-a-vault
-                path: ../pages/vaults/tutorials/create-a-vault.mdx
-              - page: Close Your Vault
-                slug: close-your-vault
-                path: ../pages/vaults/tutorials/close-your-vault.mdx
-              - page: Deposit
-                slug: vault-deposit
-                path: ../pages/vaults/tutorials/deposit.mdx
-              - page: Withdrawal
-                slug: vault-withdrawal
-                path: ../pages/vaults/tutorials/withdrawal.mdx
-          - page: FAQs
-            slug: faq
-            path: ../pages/vaults/faqs.mdx
-      - section: Placing Orders
-        path: ../pages/trading/placing-orders/placing-orders.mdx
-        contents:
+          - page: Placing Orders
+            slug: placing-orders
+            path: ../pages/trading/placing-orders/placing-orders.mdx
           - section: Order Types
             contents:
               - page: Limit Order
@@ -147,62 +123,21 @@ navigation:
           - page: VWAP Price Protection for Market Orders
             slug: vwap-price-protection
             path: ../pages/trading/placing-orders/vwap-orders.mdx
-
-
-      - section: Price Impact and Slippage
-        slug: price-impact-and-slippage
-        path: ../pages/trading/slippage-overview.mdx
+      - section: Risk & Execution
         contents:
-          - page: How to Change Max Slippage
-            slug: slippage
-            path: ../pages/trading/slippage.mdx
-      - page: Maintenance & Releases
-        slug: maintenance-mode
-        path: ../pages/trading/maintenance-mode.mdx
-      - page: Margin Calculator
-        slug: margin-calculator
-        path: ../pages/trading/margin-calculator.mdx
-      - page: Testnet FAQs
-        slug: testnet-faqs
-        path: ../pages/trading/testnet.mdx
-      - page: Self Trade Prevention
-        slug: self-trade-prevention
-        path: ../pages/advanced-trading-features/self-trade-prevention.mdx
-      - page: Receive Window
-        slug: receive-window
-        path: ../pages/advanced-trading-features/receive-window.mdx
-      - section: Accounts
-        contents:
-          - page: Wallet Overview
-            slug: wallet-overview
-            path: ../pages/accounts/overview.mdx
-          - section: Deposits And Withdrawals
+          - section: Price Impact and Slippage
+            slug: price-impact-and-slippage
+            path: ../pages/trading/slippage-overview.mdx
             contents:
-              - page: Ethereum Wallets
-                slug: ethereum-wallets
-                path: ../pages/accounts/deposits-and-withdrawals/ethereum-wallets.mdx
-              - page: Starknet Wallets
-                slug: starknet-wallets
-                path: ../pages/accounts/deposits-and-withdrawals/starknet-wallets.mdx
-              - page: Email and Social Wallets
-                slug: email-social-wallets
-                path: ../pages/accounts/deposits-and-withdrawals/email-social-wallets.mdx
-              - page: Cross Chain Bridging
-                slug: cross-chain-bridging
-                path: ../pages/accounts/deposits-and-withdrawals/cross-chain-bridging.mdx
-          - page: Wallet Integration
-            slug: wallet-integration
-            path: ../pages/introduction/architecture-overview/wallet-integration.mdx
-          - page: Sub-accounts
-            slug: sub-accounts
-            path: ../pages/accounts/sub-accounts.mdx
-          - page: Transfers
-            slug: transfers
-            path: ../pages/accounts/transfers.mdx
-      - page: Mobile Access Guide
-        slug: mobile-access-guide
-        path: ../pages/trading/mobile-access-guide.mdx
-
+              - page: How to Change Max Slippage
+                slug: slippage
+                path: ../pages/trading/slippage.mdx
+          - page: Margin Calculator
+            slug: margin-calculator
+            path: ../pages/trading/margin-calculator.mdx
+          - page: Self Trade Prevention
+            slug: self-trade-prevention
+            path: ../pages/advanced-trading-features/self-trade-prevention.mdx
       - section: Instruments Guide
         contents:
         - section: Futures
@@ -510,52 +445,126 @@ navigation:
             - page: ETH-USD
               slug: eth-usd
               path: ../pages/instruments-guide/spot/eth-usd.mdx
-      - page: API Authentication
-        slug: api-authentication
-        path: ../pages/trading/api-authentication.mdx
-      - page: API Best Practices
-        slug: api-best-practices
-        path: ../pages/trading/API-Best-Practices.mdx
+  - section: Accounts & Wallets
+    contents:
+      - page: Wallet Overview
+        slug: wallet-overview
+        path: ../pages/accounts/overview.mdx
+      - section: Deposits And Withdrawals
+        contents:
+          - page: Ethereum Wallets
+            slug: ethereum-wallets
+            path: ../pages/accounts/deposits-and-withdrawals/ethereum-wallets.mdx
+          - page: Starknet Wallets
+            slug: starknet-wallets
+            path: ../pages/accounts/deposits-and-withdrawals/starknet-wallets.mdx
+          - page: Email and Social Wallets
+            slug: email-social-wallets
+            path: ../pages/accounts/deposits-and-withdrawals/email-social-wallets.mdx
+          - page: Cross Chain Bridging
+            slug: cross-chain-bridging
+            path: ../pages/accounts/deposits-and-withdrawals/cross-chain-bridging.mdx
+      - page: Wallet Integration
+        slug: wallet-integration
+        path: ../pages/introduction/architecture-overview/wallet-integration.mdx
+      - page: Sub-accounts
+        slug: sub-accounts
+        path: ../pages/accounts/sub-accounts.mdx
+      - page: Transfers
+        slug: transfers
+        path: ../pages/accounts/transfers.mdx
 
   - section: Risk & Liquidations
     slug: risk
     contents:
-      - page: Margin System
-        slug: margin-system
-        path: ../pages/risk-system/paradex-risk-system.mdx
-      - page: Margin Term Reference
-        slug: margin-term-reference
-        path: ../pages/risk-system/margin-term-reference.mdx
-      - page: Paradex Risk Checks
-        slug: paradex-risk-checks
-        path: ../pages/risk-system/paradex-risk-checks.mdx
-      - page: Mark Price Calculation
-        slug: mark-price-calculation
-        path: ../pages/risk-system/mark-price-calculation.mdx
-      - page: Cross Margin Requirement
-        slug: cross-margin-requirement
-        path: ../pages/risk-system/cross-margin-requirement.mdx
-      - page: Price Bands
-        slug: price-bands
-        path: ../pages/risk-system/price-bands.mdx
-      - page: Position Limit
-        slug: position-limit
-        path: ../pages/risk-system/position-limit.mdx
-      - page: Funding Mechanism
-        slug: funding-mechanism
-        path: ../pages/risk-system/funding-mechanism.mdx
-      - page: Deleveraging
-        slug: deleveraging
-        path: ../pages/risk-system/deleveraging.mdx
-      - page: Liquidations
-        slug: liquidations
-        path: ../pages/risk-system/liquidations.mdx
-      - page: Socialized Losses
-        slug: socialized-losses
-        path: ../pages/risk-system/socialized-losses.mdx
-      - page: Trade Flow And Busts
-        slug: trade-busts
-        path: ../pages/risk-system/trade-busts.mdx
+      - section: Margin
+        contents:
+          - page: Margin System
+            slug: margin-system
+            path: ../pages/risk-system/paradex-risk-system.mdx
+          - page: Margin Term Reference
+            slug: margin-term-reference
+            path: ../pages/risk-system/margin-term-reference.mdx
+          - page: Cross Margin Requirement
+            slug: cross-margin-requirement
+            path: ../pages/risk-system/cross-margin-requirement.mdx
+      - section: Pricing & Limits
+        contents:
+          - page: Mark Price Calculation
+            slug: mark-price-calculation
+            path: ../pages/risk-system/mark-price-calculation.mdx
+          - page: Price Bands
+            slug: price-bands
+            path: ../pages/risk-system/price-bands.mdx
+          - page: Position Limit
+            slug: position-limit
+            path: ../pages/risk-system/position-limit.mdx
+          - page: Funding Mechanism
+            slug: funding-mechanism
+            path: ../pages/risk-system/funding-mechanism.mdx
+      - section: Liquidations & Safety
+        contents:
+          - page: Paradex Risk Checks
+            slug: paradex-risk-checks
+            path: ../pages/risk-system/paradex-risk-checks.mdx
+          - page: Liquidations
+            slug: liquidations
+            path: ../pages/risk-system/liquidations.mdx
+          - page: Deleveraging
+            slug: deleveraging
+            path: ../pages/risk-system/deleveraging.mdx
+          - page: Socialized Losses
+            slug: socialized-losses
+            path: ../pages/risk-system/socialized-losses.mdx
+          - page: Trade Flow And Busts
+            slug: trade-busts
+            path: ../pages/risk-system/trade-busts.mdx
+
+  - section: Platform
+    contents:
+      - page: Bridges and On-Ramps
+        slug: bridges
+        path: ../pages/introduction/bridges-onramps.mdx
+      - page: Mobile Access Guide
+        slug: mobile-access-guide
+        path: ../pages/trading/mobile-access-guide.mdx
+      - page: Maintenance & Releases
+        slug: maintenance-mode
+        path: ../pages/trading/maintenance-mode.mdx
+      - page: Testnet FAQs
+        slug: testnet-faqs
+        path: ../pages/trading/testnet.mdx
+      - page: API Best Practices
+        slug: api-best-practices
+        path: ../pages/trading/API-Best-Practices.mdx
+      - page: Receive Window
+        slug: receive-window
+        path: ../pages/advanced-trading-features/receive-window.mdx
+      - section: Vaults
+        contents:
+          - page: Introduction
+            slug: vaults-introduction
+            path: ../pages/vaults/introduction.mdx
+          - page: Key Features
+            slug: key-features
+            path: ../pages/vaults/key-features.mdx
+          - section: Tutorials
+            contents:
+              - page: Create a Vault
+                slug: create-a-vault
+                path: ../pages/vaults/tutorials/create-a-vault.mdx
+              - page: Close Your Vault
+                slug: close-your-vault
+                path: ../pages/vaults/tutorials/close-your-vault.mdx
+              - page: Deposit
+                slug: vault-deposit
+                path: ../pages/vaults/tutorials/deposit.mdx
+              - page: Withdrawal
+                slug: vault-withdrawal
+                path: ../pages/vaults/tutorials/withdrawal.mdx
+          - page: FAQs
+            slug: faq
+            path: ../pages/vaults/faqs.mdx
 
   - section: Security & Trust
     slug: security

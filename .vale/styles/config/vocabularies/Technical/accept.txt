@@ -1,6 +1,8 @@
 API
 APIs
 autoscaling
+CCXT
+ccxt
 backoff
 blockchains
 Config
@@ -23,6 +25,8 @@ Pentest
 Pentests
 Performant
 Readonly
+repo
+SDK[s]
 sandboxed
 Starkli
 STARKs

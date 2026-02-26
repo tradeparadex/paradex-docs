@@ -92,9 +92,11 @@ navigation:
           - page: Automatic Options Listing
             slug: automatic-options-listing
             path: ../pages/options/automatic-options-listing.mdx
-      - section: Placing Orders
-        path: ../pages/trading/placing-orders/placing-orders.mdx
+      - section: Orders
         contents:
+          - page: Placing Orders
+            slug: placing-orders
+            path: ../pages/trading/placing-orders/placing-orders.mdx
           - section: Order Types
             contents:
               - page: Limit Order
@@ -121,19 +123,21 @@ navigation:
           - page: VWAP Price Protection for Market Orders
             slug: vwap-price-protection
             path: ../pages/trading/placing-orders/vwap-orders.mdx
-      - section: Price Impact and Slippage
-        slug: price-impact-and-slippage
-        path: ../pages/trading/slippage-overview.mdx
+      - section: Risk & Execution
         contents:
-          - page: How to Change Max Slippage
-            slug: slippage
-            path: ../pages/trading/slippage.mdx
-      - page: Margin Calculator
-        slug: margin-calculator
-        path: ../pages/trading/margin-calculator.mdx
-      - page: Self Trade Prevention
-        slug: self-trade-prevention
-        path: ../pages/advanced-trading-features/self-trade-prevention.mdx
+          - section: Price Impact and Slippage
+            slug: price-impact-and-slippage
+            path: ../pages/trading/slippage-overview.mdx
+            contents:
+              - page: How to Change Max Slippage
+                slug: slippage
+                path: ../pages/trading/slippage.mdx
+          - page: Margin Calculator
+            slug: margin-calculator
+            path: ../pages/trading/margin-calculator.mdx
+          - page: Self Trade Prevention
+            slug: self-trade-prevention
+            path: ../pages/advanced-trading-features/self-trade-prevention.mdx
       - section: Instruments Guide
         contents:
         - section: Futures

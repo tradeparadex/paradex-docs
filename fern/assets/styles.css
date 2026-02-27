@@ -185,7 +185,7 @@ div:has(> .fern-product-selector-radio-group):before {
       content: "API Reference";
       font-weight: 700;
       position: absolute;
-      top: -1.75rem;
+      top: -2.25rem;
       left: 0.5rem;
     }
 

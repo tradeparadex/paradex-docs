@@ -20,16 +20,14 @@ products:
     icon: fa-solid fa-chart-line
     slug: trading
     subtitle: Trading features and instruments
-  - display-name: REST API Reference
+  - display-name: REST API
     path: ./products/rest-api.yml
     icon: fa-solid fa-code
     slug: api
-    subtitle: API endpoints for developers
-  - display-name: WebSocket API Reference
+  - display-name: WebSocket API
     path: ./products/websocket-api.yml
     icon: fa-solid fa-plug
     slug: ws
-    subtitle: Realtime API endpoints
 
 analytics:
   posthog:

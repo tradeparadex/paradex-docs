@@ -145,8 +145,70 @@ div:has(> .fern-product-selector-radio-group):before {
   margin: 0 0.5rem 0.5rem 0.5rem;
 }
 
-.fern-product-selector-radio-group {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.25rem;
+@media (min-width: 1024px) {
+  .fern-product-selector-radio-group {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) auto;
+    gap: 0.25rem;
+    padding: 0.25rem;
+
+    /* Documentation - top left */
+    > a[href*="docs"] {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    /* Trading - top right of left section */
+    > a[href*="trading"] {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    /* REST API - right column, row 1 with "API Reference" title */
+    > a[href*="api"]:not([href*="ws"]) {
+      grid-column: 3;
+      grid-row: 1;
+      position: relative;
+
+      .fern-selection-item-subtitle {
+        display: none;
+      }
+
+      .fern-selection-item-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+
+    > a[href*="api"]:not([href*="ws"]):before {
+      content: "API Reference";
+      font-weight: 700;
+      position: absolute;
+      top: -1.75rem;
+      left: 0.5rem;
+    }
+
+    /* WebSocket API - right column, row 2 */
+    > a[href*="ws"] {
+      grid-column: 3;
+      grid-row: 2;
+
+      .fern-selection-item-subtitle {
+        display: none;
+      }
+
+      .fern-selection-item-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .fern-product-selector-radio-group {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
 }

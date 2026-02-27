@@ -148,28 +148,31 @@ div:has(> .fern-product-selector-radio-group):before {
 @media (min-width: 1024px) {
   .fern-product-selector-radio-group {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) auto;
+    grid-template-columns: 1fr 1fr auto;
     gap: 0.25rem;
     padding: 0.25rem;
 
-    /* Documentation - top left */
+    > a {
+      margin: -0.5rem;
+    }
+
+    /* Documentation - left column */
     > a[href*="docs"] {
       grid-column: 1;
       grid-row: 1;
     }
 
-    /* Trading - top right of left section */
+    /* Trading - middle column */
     > a[href*="trading"] {
       grid-column: 2;
       grid-row: 1;
     }
 
-    /* REST API - right column, row 1 with "API Reference" title */
+    /* REST API - right column with "API Reference" title */
     > a[href*="api"]:not([href*="ws"]) {
       grid-column: 3;
       grid-row: 1;
       position: relative;
-      align-self: start;
 
       .fern-selection-item-subtitle {
         display: none;
@@ -189,11 +192,11 @@ div:has(> .fern-product-selector-radio-group):before {
       left: 0.5rem;
     }
 
-    /* WebSocket API - right column, row 2 */
+    /* WebSocket API - right column, pulled up to sit directly below REST API */
     > a[href*="ws"] {
       grid-column: 3;
       grid-row: 2;
-      align-self: start;
+      transform: translateY(-28px);
 
       .fern-selection-item-subtitle {
         display: none;

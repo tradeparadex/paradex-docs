@@ -148,76 +148,9 @@ div:has(> .fern-product-selector-radio-group):before {
 @media (min-width: 1024px) {
   .fern-product-selector-radio-group {
     display: grid !important;
-    grid-template-columns: 1fr 1fr auto;
-    column-gap: 0.25rem;
-    row-gap: 0;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
     padding: 0.25rem;
-
-    /* Documentation - column 1, row 1 */
-    > a[href*="docs"] {
-      grid-column: 1;
-      grid-row: 1;
-    }
-
-    /* Trading - column 2, row 1 */
-    > a[href*="trading"] {
-      grid-column: 2;
-      grid-row: 1;
-    }
-
-    /* Risk & Liquidations - column 1, row 2 */
-    > a[href*="risk"] {
-      grid-column: 1;
-      grid-row: 2;
-    }
-
-    /* Paradex Chain - column 2, row 2 */
-    > a[href*="chain"] {
-      grid-column: 2;
-      grid-row: 2;
-    }
-
-    /* REST API - right column, same cell as WebSocket */
-    > a[href*="api"]:not([href*="ws"]) {
-      grid-column: 3;
-      grid-row: 1;
-      align-self: start;
-      position: relative;
-
-      .fern-selection-item-subtitle {
-        display: none;
-      }
-
-      .fern-selection-item-icon {
-        width: 2rem;
-        height: 2rem;
-      }
-    }
-
-    > a[href*="api"]:not([href*="ws"]):before {
-      content: "API Reference";
-      font-weight: 700;
-      position: absolute;
-      top: -2.25rem;
-      left: 0.5rem;
-    }
-
-    /* WebSocket API - same cell as REST API, pushed down with margin */
-    > a[href*="ws"] {
-      grid-column: 3;
-      grid-row: 1;
-      align-self: start;
-      margin-top: 3.5rem;
-
-      .fern-selection-item-subtitle {
-        display: none;
-      }
-
-      .fern-selection-item-icon {
-        width: 2rem;
-        height: 2rem;
-      }
-    }
   }
 }
 

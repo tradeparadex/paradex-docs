@@ -34,10 +34,12 @@ products:
     path: ./products/rest-api.yml
     icon: fa-solid fa-code
     slug: api
+    subtitle: REST API reference
   - display-name: WebSocket API
     path: ./products/websocket-api.yml
     icon: fa-solid fa-plug
     slug: ws
+    subtitle: WebSocket API reference
 
 analytics:
   posthog:

@@ -169,14 +169,15 @@ div:has(> .fern-product-selector-radio-group):before {
       grid-column: 3;
       grid-row: 1;
       position: relative;
+      align-self: start;
 
       .fern-selection-item-subtitle {
         display: none;
       }
 
       .fern-selection-item-icon {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 2rem;
+        height: 2rem;
       }
     }
 
@@ -192,14 +193,15 @@ div:has(> .fern-product-selector-radio-group):before {
     > a[href*="ws"] {
       grid-column: 3;
       grid-row: 2;
+      align-self: start;
 
       .fern-selection-item-subtitle {
         display: none;
       }
 
       .fern-selection-item-icon {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 2rem;
+        height: 2rem;
       }
     }
   }

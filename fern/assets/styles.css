@@ -149,7 +149,8 @@ div:has(> .fern-product-selector-radio-group):before {
   .fern-product-selector-radio-group {
     display: grid !important;
     grid-template-columns: 1fr 1fr auto;
-    gap: 0.25rem;
+    column-gap: 0.25rem;
+    row-gap: 0;
     padding: 0.25rem;
 
     /* Documentation - column 1, row 1 */

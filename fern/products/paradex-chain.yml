@@ -1,0 +1,26 @@
+navigation:
+  - page: Introduction
+    slug: paradex-chain-introduction
+    path: ../pages/paradex-chain/introduction.mdx
+  - page: RPC Node
+    slug: paradex-chain-rpc-node
+    path: ../pages/paradex-chain/rpc-node.mdx
+  - page: Testnet
+    slug: paradex-chain-testnet
+    path: ../pages/paradex-chain/testnet.mdx
+
+  - section: Security & Trust
+    slug: security
+    contents:
+      - page: Security Lockdown
+        slug: security-lockdown
+        path: ../pages/security/security-lockdown.mdx
+      - page: Guardian Keys
+        slug: guardian-keys
+        path: ../pages/security/guardian-keys.mdx
+      - page: Audits & Pentests
+        slug: audit-pentests
+        path: ../pages/security/audit-pentests.mdx
+      - page: Bug Bounty
+        slug: bug-bounty
+        path: ../pages/security/bug-bounty.mdx

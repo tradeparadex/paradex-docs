@@ -152,16 +152,28 @@ div:has(> .fern-product-selector-radio-group):before {
     gap: 0.25rem;
     padding: 0.25rem;
 
-    /* Documentation - left column */
+    /* Documentation - column 1, row 1 */
     > a[href*="docs"] {
       grid-column: 1;
       grid-row: 1;
     }
 
-    /* Trading - middle column */
+    /* Trading - column 2, row 1 */
     > a[href*="trading"] {
       grid-column: 2;
       grid-row: 1;
+    }
+
+    /* Risk & Liquidations - column 1, row 2 */
+    > a[href*="risk"] {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    /* Paradex Chain - column 2, row 2 */
+    > a[href*="chain"] {
+      grid-column: 2;
+      grid-row: 2;
     }
 
     /* REST API - right column, same cell as WebSocket */

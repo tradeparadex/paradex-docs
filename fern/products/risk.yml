@@ -1,0 +1,37 @@
+navigation:
+  - page: Margin System
+    slug: margin-system
+    path: ../pages/risk-system/paradex-risk-system.mdx
+  - page: Margin Term Reference
+    slug: margin-term-reference
+    path: ../pages/risk-system/margin-term-reference.mdx
+  - page: Paradex Risk Checks
+    slug: paradex-risk-checks
+    path: ../pages/risk-system/paradex-risk-checks.mdx
+  - page: Mark Price Calculation
+    slug: mark-price-calculation
+    path: ../pages/risk-system/mark-price-calculation.mdx
+  - page: Cross Margin Requirement
+    slug: cross-margin-requirement
+    path: ../pages/risk-system/cross-margin-requirement.mdx
+  - page: Price Bands
+    slug: price-bands
+    path: ../pages/risk-system/price-bands.mdx
+  - page: Position Limit
+    slug: position-limit
+    path: ../pages/risk-system/position-limit.mdx
+  - page: Funding Mechanism
+    slug: funding-mechanism
+    path: ../pages/risk-system/funding-mechanism.mdx
+  - page: Deleveraging
+    slug: deleveraging
+    path: ../pages/risk-system/deleveraging.mdx
+  - page: Liquidations
+    slug: liquidations
+    path: ../pages/risk-system/liquidations.mdx
+  - page: Socialized Losses
+    slug: socialized-losses
+    path: ../pages/risk-system/socialized-losses.mdx
+  - page: Trade Flow And Busts
+    slug: trade-busts
+    path: ../pages/risk-system/trade-busts.mdx

@@ -20,6 +20,16 @@ products:
     icon: fa-solid fa-chart-line
     slug: trading
     subtitle: Trading features and instruments
+  - display-name: Risk & Liquidations
+    path: ./products/risk.yml
+    icon: fa-solid fa-shield-halved
+    slug: risk
+    subtitle: Risk management and margin system
+  - display-name: Paradex Chain
+    path: ./products/paradex-chain.yml
+    icon: fa-solid fa-link
+    slug: chain
+    subtitle: Appchain infrastructure and security
   - display-name: REST API
     path: ./products/rest-api.yml
     icon: fa-solid fa-code
@@ -59,12 +69,22 @@ redirects:
   # Redirect old /docs/trading/ URLs to new /trading/ product
   - source: "/docs/trading/:slug*"
     destination: "/trading/:slug*"
-  - source: "/risk/:slug*"
-    destination: "/docs/risk/:slug*"
+
+  # Redirect old /docs/risk/ URLs to new /risk/ product
+  - source: "/docs/risk/:slug*"
+    destination: "/risk/:slug*"
+
+  # Redirect old /docs/security/ URLs to new /chain/security/ product
+  - source: "/docs/security/:slug*"
+    destination: "/chain/security/:slug*"
   - source: "/security/:slug*"
-    destination: "/docs/security/:slug*"
+    destination: "/chain/security/:slug*"
+
+  # Redirect old /docs/paradex-chain/ URLs to new /chain/ product
+  - source: "/docs/paradex-chain/:slug*"
+    destination: "/chain/:slug*"
   - source: "/paradex-chain/:slug*"
-    destination: "/docs/paradex-chain/:slug*"
+    destination: "/chain/:slug*"
   - source: "/ecosystem/:slug*"
     destination: "/docs/ecosystem/:slug*"
   - source: "/release-notes/:slug*"
@@ -82,7 +102,7 @@ redirects:
   - source: "/documentation/instruments-guide/:slug*"
     destination: "/trading/instruments-guide/:slug*"
   - source: "/documentation/risk-system/:slug*"
-    destination: "/docs/risk/:slug*"
+    destination: "/risk/:slug*"
   - source: "/documentation/advanced-trading-features/self-trade-prevention"
     destination: "/trading/self-trade-prevention"
   - source: "/documentation/advanced-trading-features/receive-window"
@@ -106,9 +126,9 @@ redirects:
 
   # Specific page redirects for renamed/moved pages
   - source: "/docs/risk/paradex-risk-system"
-    destination: "/docs/risk/margin-system"
+    destination: "/risk/margin-system"
   - source: "/risk/paradex-risk-system"
-    destination: "/docs/risk/margin-system"
+    destination: "/risk/margin-system"
   - source: "/trading/trading-fee"
     destination: "/trading/trading-fees"
   - source: "/docs/trading/trading-fee"

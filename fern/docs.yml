@@ -30,6 +30,16 @@ products:
     icon: fa-solid fa-link
     slug: chain
     subtitle: Appchain infrastructure and security
+  - display-name: Ecosystem
+    path: ./products/ecosystem.yml
+    icon: fa-solid fa-globe
+    slug: ecosystem
+    subtitle: Community and integrations
+  - display-name: Release Notes
+    path: ./products/release-notes.yml
+    icon: fa-solid fa-clipboard-list
+    slug: releases
+    subtitle: Version history and updates
   - display-name: REST API
     path: ./products/rest-api.yml
     icon: fa-solid fa-code
@@ -87,10 +97,15 @@ redirects:
     destination: "/chain/:slug*"
   - source: "/paradex-chain/:slug*"
     destination: "/chain/:slug*"
-  - source: "/ecosystem/:slug*"
-    destination: "/docs/ecosystem/:slug*"
+  # Redirect old /docs/ecosystem/ URLs to new /ecosystem/ product
+  - source: "/docs/ecosystem/:slug*"
+    destination: "/ecosystem/:slug*"
+
+  # Redirect old /docs/release-notes/ URLs to new /releases/ product
+  - source: "/docs/release-notes/:slug*"
+    destination: "/releases/:slug*"
   - source: "/release-notes/:slug*"
-    destination: "/docs/release-notes/:slug*"
+    destination: "/releases/:slug*"
   - source: "/accounts/:slug*"
     destination: "/trading/accounts/:slug*"
 

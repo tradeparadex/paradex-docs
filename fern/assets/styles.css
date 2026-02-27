@@ -194,7 +194,7 @@ div:has(> .fern-product-selector-radio-group):before {
       grid-column: 3;
       grid-row: 1;
       align-self: start;
-      margin-top: 3rem;
+      margin-top: 3.5rem;
 
       .fern-selection-item-subtitle {
         display: none;

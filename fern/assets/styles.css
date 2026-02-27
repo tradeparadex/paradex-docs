@@ -152,10 +152,6 @@ div:has(> .fern-product-selector-radio-group):before {
     gap: 0.25rem;
     padding: 0.25rem;
 
-    > a {
-      margin: -0.5rem;
-    }
-
     /* Documentation - left column */
     > a[href*="docs"] {
       grid-column: 1;
@@ -168,10 +164,11 @@ div:has(> .fern-product-selector-radio-group):before {
       grid-row: 1;
     }
 
-    /* REST API - right column with "API Reference" title */
+    /* REST API - right column, same cell as WebSocket */
     > a[href*="api"]:not([href*="ws"]) {
       grid-column: 3;
       grid-row: 1;
+      align-self: start;
       position: relative;
 
       .fern-selection-item-subtitle {
@@ -192,11 +189,12 @@ div:has(> .fern-product-selector-radio-group):before {
       left: 0.5rem;
     }
 
-    /* WebSocket API - right column, pulled up to sit directly below REST API */
+    /* WebSocket API - same cell as REST API, pushed down with margin */
     > a[href*="ws"] {
       grid-column: 3;
-      grid-row: 2;
-      transform: translateY(-28px);
+      grid-row: 1;
+      align-self: start;
+      margin-top: 3rem;
 
       .fern-selection-item-subtitle {
         display: none;

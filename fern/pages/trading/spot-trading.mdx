@@ -1,0 +1,55 @@
+---
+title: Spot Trading
+subtitle: Trade spot markets on Paradex with USD-quoted, USDC-settled execution
+---
+
+## Overview
+
+Paradex spot markets let you buy and sell crypto assets directly. All markets are quoted in USD and settled in USDC at the prevailing USDC/USD rate.
+
+<CardGroup cols={3}>
+  <Card title="USD Quoted" icon="dollar-sign">
+    All spot markets are priced in USD
+  </Card>
+
+  <Card title="USDC Settled" icon="money-bill-transfer">
+    Trades settle in USDC using the prevailing USDC/USD price
+  </Card>
+
+  <Card title="USDC Fees" icon="receipt">
+    All trading fees are charged in USDC
+  </Card>
+</CardGroup>
+
+## Naming Convention
+
+Spot markets use the format **`<BASE>-<QUOTE>`**, where the base currency is the asset being traded and the quote currency is used for pricing.
+
+| Market Type | Symbol | Description |
+| --- | --- | --- |
+| Spot | `ETH-USD` | ETH priced in USD |
+| Perpetual | `ETH-USD-PERP` | ETH perpetual contract |
+
+<Note>
+Even though markets are quoted in USD, all trades settle in USDC at the prevailing USDC/USD price.
+</Note>
+
+## Supported Order Types
+
+| Order Type | Supported |
+| --- | :---: |
+| Market | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Limit | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| IOC (Immediate-or-Cancel) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Post-Only | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Reduce-Only | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> |
+| TP/SL | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> |
+
+## Collateral & Margin Eligibility
+
+| | Counts toward Account Value | Counts toward Free Collateral | Subject to Liquidation |
+| --- | :---: | :---: | :---: |
+| USDC | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| Non-USDC (e.g. ETH) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> | <Icon icon="fa-solid fa-circle-xmark" color="#ef4444" /> |
+
+USDC is required to trade perpetual markets. Multi-collateral support is coming in a future update.

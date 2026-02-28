@@ -55,20 +55,9 @@ navigation:
       - page: FastFill
         slug: fastfill
         path: ../pages/trading/fastfill.mdx
-      - section: Spot Trading
-        contents:
-          - page: Supported Order Types
-            slug: supported-order-types
-            path: ../pages/trading/spot-trading/supported-order-types.mdx
-          - page: Quoting & Settlement
-            slug: quoting-settlement
-            path: ../pages/trading/spot-trading/quoting-settlement.mdx
-          - page: Non-USDC Balances & Collateral
-            slug: non-usdc-balances-collateral
-            path: ../pages/trading/spot-trading/non-usdc-balances-collateral.mdx
-          - page: Naming Convention
-            slug: naming-convention
-            path: ../pages/trading/spot-trading/naming-convention.mdx
+      - page: Spot Trading
+        slug: spot-trading
+        path: ../pages/trading/spot-trading.mdx
       - section: Perpetual Options
         slug: perpetual-options
         contents:

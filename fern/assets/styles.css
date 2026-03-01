@@ -137,6 +137,13 @@ a.cyan-cards:hover {
   justify-content: center;
 }
 
+/* Constrain and center article on wide layouts (no sidebar, e.g. Home product).
+   On pages with sidebar, .fern-layout-reference is ~992px so article is already narrower than 896px. */
+.fern-layout-reference > article {
+  max-width: 896px;
+  margin: 0 auto;
+}
+
 /* Product Switcher Styling */
 @media (min-width: 1024px) {
   div[data-testid="product-dropdown-content"] {

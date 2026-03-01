@@ -133,24 +133,133 @@ a.cyan-cards:hover {
 }
 
 /* Product Switcher Styling */
-div:has(> .fern-product-selector-radio-group) {
-  margin-top: 0.125rem;
-  padding: 0.5rem;
-}
-
-div:has(> .fern-product-selector-radio-group):before {
-  content: "Explore Paradex";
-  font-weight: 700;
-  display: block;
-  margin: 0 0.5rem 0.5rem 0.5rem;
-}
-
 @media (min-width: 1024px) {
+  div[data-testid="product-dropdown-content"] {
+    border-radius: 1.5rem !important;
+  }
+
+  .product-dropdown-trigger svg {
+    transform: translateY(2px);
+  }
+
+  .fern-product-selector {
+    transform: translate(-2px, 2px);
+  }
+
+  .product-item-title {
+    font-size: 1.25rem;
+  }
+
+  div:has(> .fern-product-selector-radio-group) {
+    margin-top: 0.5rem;
+  }
+
+  div:has(> .fern-product-selector-radio-group):before {
+    content: "Explore Paradex";
+    font-weight: 500;
+    margin: 0.5rem 1rem 0 1rem;
+  }
+
   .fern-product-selector-radio-group {
     display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.25rem;
-    padding: 0.25rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 1.25rem;
+
+    > a {
+      max-width: 320px;
+      margin: -0.75rem;
+      position: relative;
+
+      .fern-selection-item {
+        border-radius: 1rem;
+      }
+    }
+
+    /* Documentation - column 1, row 1 */
+    > a[href*="/docs"] {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    /* Trading - column 2, row 1 */
+    > a[href*="trading"] {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    /* Risk & Liquidations - column 1, row 2 */
+    > a[href*="risk"] {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    /* Paradex Chain - column 2, row 2 */
+    > a[href*="chain"] {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    /* Ecosystem - column 1, row 3 */
+    > a[href*="ecosystem"] {
+      grid-column: 1;
+      grid-row: 3;
+    }
+
+    /* REST API - Reference section header + column 3, row 1 */
+    > a[href*="/api"]:before {
+      content: "Reference";
+      font-weight: 500;
+      position: absolute;
+      top: -2rem;
+      left: 0.5rem;
+    }
+
+    > a[href*="/api"] {
+      grid-column: 3;
+      grid-row: 1;
+
+      .fern-selection-item-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      .fern-selection-item-subtitle {
+        display: none;
+      }
+    }
+
+    /* WebSocket API - column 3, row 2 */
+    > a[href*="/ws"] {
+      grid-column: 3;
+      grid-row: 2;
+      transform: translateY(-32px);
+
+      .fern-selection-item-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      .fern-selection-item-subtitle {
+        display: none;
+      }
+    }
+
+    /* Release Notes - column 3, row 3 */
+    > a[href*="releases"] {
+      grid-column: 3;
+      grid-row: 3;
+      transform: translateY(-64px);
+
+      .fern-selection-item-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      .fern-selection-item-subtitle {
+        display: none;
+      }
+    }
   }
 }
 

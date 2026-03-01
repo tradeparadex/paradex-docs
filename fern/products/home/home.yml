@@ -1,3 +1,4 @@
 navigation:
-  - page: Home
-    path: ./pages/welcome.mdx
+  - page: What is Paradex?
+    slug: what-is-paradex
+    path: ../../pages/what-is-paradex.mdx

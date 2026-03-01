@@ -250,7 +250,7 @@ a.cyan-cards:hover {
       grid-column: 3;
       grid-row: 3;
       align-self: start;
-      margin-top: -5rem;
+      margin-top: -4rem;
 
       .fern-selection-item-icon {
         width: 1.5rem;

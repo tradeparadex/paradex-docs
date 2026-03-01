@@ -132,6 +132,11 @@ a.cyan-cards:hover {
   }
 }
 
+/* Center content when sidebar is hidden (e.g. Home product) */
+.fern-layout-reference {
+  justify-content: center;
+}
+
 /* Product Switcher Styling */
 @media (min-width: 1024px) {
   div[data-testid="product-dropdown-content"] {

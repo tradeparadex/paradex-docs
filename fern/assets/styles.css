@@ -146,9 +146,7 @@ a.cyan-cards:hover {
     transform: translate(-2px, 2px);
   }
 
-  .product-item-title {
-    font-size: 1.25rem;
-  }
+  /* product-item-title stays at default 16px */
 
   div:has(> .fern-product-selector-radio-group) {
     margin-top: 0.5rem;
@@ -233,7 +231,7 @@ a.cyan-cards:hover {
     > a[href*="/ws"] {
       grid-column: 3;
       grid-row: 2;
-      transform: translateY(-32px);
+      margin-top: -2.5rem;
 
       .fern-selection-item-icon {
         width: 1.5rem;
@@ -249,7 +247,7 @@ a.cyan-cards:hover {
     > a[href*="releases"] {
       grid-column: 3;
       grid-row: 3;
-      transform: translateY(-64px);
+      margin-top: -5rem;
 
       .fern-selection-item-icon {
         width: 1.5rem;

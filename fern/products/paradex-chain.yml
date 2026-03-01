@@ -1,4 +1,7 @@
 navigation:
+  - page: Overview
+    slug: overview
+    path: ../pages/paradex-chain/overview.mdx
   - page: Introduction
     slug: paradex-chain-introduction
     path: ../pages/paradex-chain/introduction.mdx

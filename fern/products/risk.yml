@@ -1,4 +1,7 @@
 navigation:
+  - page: Overview
+    slug: overview
+    path: ../pages/risk-system/overview.mdx
   - page: Margin System
     slug: margin-system
     path: ../pages/risk-system/paradex-risk-system.mdx

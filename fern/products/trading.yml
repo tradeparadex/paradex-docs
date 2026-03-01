@@ -1,4 +1,7 @@
 navigation:
+  - page: Overview
+    slug: overview
+    path: ../pages/trading/overview.mdx
   - page: Privacy Perps
     slug: privacy
     path: ../pages/trading/privacy.mdx

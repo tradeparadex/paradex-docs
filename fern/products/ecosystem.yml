@@ -1,4 +1,7 @@
 navigation:
+  - page: Overview
+    slug: overview
+    path: ../pages/ecosystem/overview.mdx
   - page: Community Content
     path: ../pages/ecosystem/community-content.mdx
   - section: Starknet Wallets

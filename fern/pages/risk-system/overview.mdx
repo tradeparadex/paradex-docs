@@ -1,0 +1,74 @@
+---
+title: Risk & Liquidations
+subtitle: Understand how Paradex protects traders and maintains platform stability through its margin system, risk checks, and liquidation mechanisms.
+layout: reference
+hide-toc: true
+---
+
+Paradex employs a comprehensive risk management framework designed to protect both individual traders and the overall platform. The system combines real-time margin monitoring, partial liquidations, and an insurance fund to minimize losses while maintaining fair and orderly markets.
+
+<CardGroup cols={3}>
+  <Card title="Cross & Isolated Margin" icon="fa-solid fa-scale-balanced" href="/risk/margin-system">
+    Choose between Cross Margin (shared across all positions) and Isolated Margin (per-position) modes to match your strategy.
+  </Card>
+
+  <Card title="Partial Liquidations" icon="fa-solid fa-shield-halved" href="/risk/liquidations">
+    Paradex uses partial liquidation to minimize impact on your assets, reducing positions incrementally rather than closing everything at once.
+  </Card>
+
+  <Card title="Insurance Fund" icon="fa-solid fa-piggy-bank" href="/risk/liquidations#insurance-fund">
+    A backstop fund that absorbs losses from liquidated positions, protecting the broader market from socialized losses.
+  </Card>
+</CardGroup>
+
+## Margin & Risk Framework
+
+<CardGroup cols={2}>
+  <Card title="Margin Term Reference" icon="fa-solid fa-book" href="/risk/margin-term-reference">
+    Detailed definitions of Account Value, Free Balance, Margin Ratio, and all key risk metrics used across the platform.
+  </Card>
+
+  <Card title="Risk Checks" icon="fa-solid fa-clipboard-check" href="/risk/paradex-risk-checks">
+    Learn about the periodic health checks, initial margin validation, and maintenance margin monitoring that keep accounts safe.
+  </Card>
+
+  <Card title="Cross Margin Requirement" icon="fa-solid fa-calculator" href="/risk/cross-margin-requirement">
+    How margin requirements are calculated for cross-margin accounts, including the benefits of PnL offsetting across positions.
+  </Card>
+
+  <Card title="Mark Price Calculation" icon="fa-solid fa-chart-bar" href="/risk/mark-price-calculation">
+    How Paradex calculates fair mark prices used for margin checks, PnL, and liquidation triggers.
+  </Card>
+</CardGroup>
+
+## Market Safeguards
+
+<CardGroup cols={3}>
+  <Card title="Price Bands" icon="fa-solid fa-arrows-left-right-to-line" href="/risk/price-bands">
+    Protective price boundaries that prevent orders from executing at extreme prices far from the market.
+  </Card>
+
+  <Card title="Position Limits" icon="fa-solid fa-gauge-high" href="/risk/position-limit">
+    Maximum position sizes enforced per instrument to manage concentration risk across the platform.
+  </Card>
+
+  <Card title="Funding Mechanism" icon="fa-solid fa-money-bill-transfer" href="/risk/funding-mechanism">
+    Periodic funding payments that keep perpetual contract prices aligned with their underlying spot prices.
+  </Card>
+</CardGroup>
+
+## Safety Nets
+
+<CardGroup cols={3}>
+  <Card title="Deleveraging" icon="fa-solid fa-triangle-exclamation" href="/risk/deleveraging">
+    Understand how automatic deleveraging works as a last resort when the insurance fund is insufficient.
+  </Card>
+
+  <Card title="Socialized Losses" icon="fa-solid fa-users" href="/risk/socialized-losses">
+    How losses are distributed in extreme scenarios when both liquidation and the insurance fund cannot cover deficits.
+  </Card>
+
+  <Card title="Trade Busts" icon="fa-solid fa-ban" href="/risk/trade-busts">
+    Conditions under which trades may be reversed to maintain market integrity and protect participants.
+  </Card>
+</CardGroup>

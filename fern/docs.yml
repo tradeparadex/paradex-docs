@@ -189,6 +189,7 @@ js:
   - path: ./dist/add-pixel.js
     strategy: lazyOnload
   - path: ./assets/tvl-limit.js
+  - path: ./assets/home-page.js
 
 experimental:
   openapi-parser-v3: true

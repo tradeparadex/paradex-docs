@@ -144,6 +144,12 @@ a.cyan-cards:hover {
   margin: 0 auto;
 }
 
+/* Hide "Copy page", "Was this page helpful", and "Edit this page" on Home page */
+body.is-home-page .fern-page-actions,
+body.is-home-page .fern-layout-footer-toolbar {
+  display: none !important;
+}
+
 /* Product Switcher Styling */
 @media (min-width: 1024px) {
   div[data-testid="product-dropdown-content"] {

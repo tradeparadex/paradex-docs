@@ -163,7 +163,7 @@ a.cyan-cards:hover {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     padding: 1.25rem;
-    height: 248px;
+    height: 290px;
 
     > a {
       max-width: 320px;
@@ -175,33 +175,39 @@ a.cyan-cards:hover {
       }
     }
 
-    /* Documentation - column 1, row 1 */
+    /* Home - column 1, row 1 */
+    > a[href*="/home"] {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    /* Getting Started - column 2, row 1 */
     > a[href*="/docs"] {
-      grid-column: 1;
+      grid-column: 2;
       grid-row: 1;
     }
 
-    /* Trading - column 2, row 1 */
+    /* Trading - column 1, row 2 */
     > a[href*="trading"] {
-      grid-column: 2;
-      grid-row: 1;
+      grid-column: 1;
+      grid-row: 2;
     }
 
-    /* Risk & Liquidations - column 1, row 2 */
+    /* Risk & Liquidations - column 2, row 2 */
     > a[href*="risk"] {
-      grid-column: 1;
-      grid-row: 2;
-    }
-
-    /* Paradex Chain - column 2, row 2 */
-    > a[href*="chain"] {
       grid-column: 2;
       grid-row: 2;
     }
 
-    /* Ecosystem - column 1, row 3 */
-    > a[href*="ecosystem"] {
+    /* Paradex Chain - column 1, row 3 */
+    > a[href*="chain"] {
       grid-column: 1;
+      grid-row: 3;
+    }
+
+    /* Ecosystem - column 2, row 3 */
+    > a[href*="ecosystem"] {
+      grid-column: 2;
       grid-row: 3;
     }
 
@@ -251,7 +257,7 @@ a.cyan-cards:hover {
       grid-column: 3;
       grid-row: 3;
       align-self: start;
-      transform: translateY(-64px);
+      transform: translateY(-96px);
 
       .fern-selection-item-icon {
         width: 1.5rem;

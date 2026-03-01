@@ -10,6 +10,10 @@ instances:
 title: Paradex | Documentation
 
 products:
+  - display-name: Home
+    path: ./products/home/home.yml
+    icon: fa-solid fa-house
+    subtitle: Welcome to Paradex
   - display-name: Getting Started
     path: ./products/documentation.yml
     icon: fa-solid fa-book
@@ -68,9 +72,9 @@ navbar-links:
     url: https://app.paradex.trade
 
 redirects:
-  # Redirect root to docs product landing
+  # Redirect root to Home product landing
   - source: "/"
-    destination: "/docs/getting-started/what-is-paradex"
+    destination: "/home"
 
   # Redirects from old root-level Documentation URLs to new /docs/ prefix
   # These handle all existing live site URLs that are at root level

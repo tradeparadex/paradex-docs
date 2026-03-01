@@ -163,6 +163,7 @@ a.cyan-cards:hover {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     padding: 1.25rem;
+    height: 248px;
 
     > a {
       max-width: 320px;
@@ -233,6 +234,7 @@ a.cyan-cards:hover {
       grid-column: 3;
       grid-row: 2;
       align-self: start;
+      transform: translateY(-32px);
 
       .fern-selection-item-icon {
         width: 1.5rem;
@@ -249,6 +251,7 @@ a.cyan-cards:hover {
       grid-column: 3;
       grid-row: 3;
       align-self: start;
+      transform: translateY(-64px);
 
       .fern-selection-item-icon {
         width: 1.5rem;

@@ -4,7 +4,7 @@
  */
 (function () {
   function updateHomeClass() {
-    var isHome = window.location.pathname === '/home' || window.location.pathname === '/home/';
+    var isHome = window.location.pathname === '/home' || window.location.pathname.startsWith('/home/');
     if (isHome) {
       document.body.classList.add('is-home-page');
     } else {

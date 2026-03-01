@@ -144,9 +144,10 @@ a.cyan-cards:hover {
   margin: 0 auto;
 }
 
-/* Hide "Copy page", "Was this page helpful", and "Edit this page" on Home page */
-body.is-home-page .fern-page-actions,
-body.is-home-page .fern-layout-footer-toolbar {
+/* Hide "Copy page", "Was this page helpful", and "Edit this page" on Home page.
+   Target pages whose sidebar contains a link to /home/ (only the Home product has these links). */
+body:has(.fern-sidebar a[href*="/home/"]) .fern-page-actions,
+body:has(.fern-sidebar a[href*="/home/"]) .fern-layout-footer-toolbar {
   display: none !important;
 }
 

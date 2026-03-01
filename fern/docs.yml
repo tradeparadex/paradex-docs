@@ -10,7 +10,7 @@ instances:
 title: Paradex | Documentation
 
 products:
-  - display-name: Documentation
+  - display-name: Getting Started
     path: ./products/documentation.yml
     icon: fa-solid fa-book
     slug: docs

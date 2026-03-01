@@ -4,7 +4,8 @@
  */
 (function () {
   function updateHomeClass() {
-    if (window.location.pathname === '/home' || window.location.pathname === '/home/') {
+    var isHome = window.location.pathname === '/home' || window.location.pathname === '/home/';
+    if (isHome) {
       document.body.classList.add('is-home-page');
     } else {
       document.body.classList.remove('is-home-page');
@@ -12,9 +13,16 @@
   }
 
   // Run on initial load
-  updateHomeClass();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateHomeClass);
+  } else {
+    updateHomeClass();
+  }
 
   // Watch for client-side navigation (SPA route changes)
-  const observer = new MutationObserver(updateHomeClass);
+  var observer = new MutationObserver(updateHomeClass);
   observer.observe(document.body, { childList: true, subtree: true });
+
+  // Also listen for popstate (browser back/forward)
+  window.addEventListener('popstate', updateHomeClass);
 })();

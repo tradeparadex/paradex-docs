@@ -1,5 +1,6 @@
 navigation:
   - section: Getting Started
+    slug: ""
     contents:
       - page: Overview
         slug: overview

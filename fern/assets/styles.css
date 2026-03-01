@@ -216,6 +216,7 @@ a.cyan-cards:hover {
     > a[href*="/api"] {
       grid-column: 3;
       grid-row: 1;
+      align-self: start;
 
       .fern-selection-item-icon {
         width: 1.5rem;
@@ -231,6 +232,7 @@ a.cyan-cards:hover {
     > a[href*="/ws"] {
       grid-column: 3;
       grid-row: 2;
+      align-self: start;
       margin-top: -2.5rem;
 
       .fern-selection-item-icon {
@@ -247,6 +249,7 @@ a.cyan-cards:hover {
     > a[href*="releases"] {
       grid-column: 3;
       grid-row: 3;
+      align-self: start;
       margin-top: -5rem;
 
       .fern-selection-item-icon {

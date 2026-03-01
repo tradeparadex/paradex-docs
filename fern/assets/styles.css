@@ -145,10 +145,9 @@ a.cyan-cards:hover {
 }
 
 /* Hide "Copy page", "Was this page helpful", and "Edit this page" on Home page.
-   The Home product injects a style[data-hidden-sidebar] element to hide the sidebar.
-   We use :has() to detect this unique marker and hide page actions/footer on Home pages. */
-body:has(style[data-hidden-sidebar]) .fern-page-actions,
-body:has(style[data-hidden-sidebar]) .fern-layout-footer-toolbar {
+   The home page MDX includes a hidden #home-page-marker div. We use :has() to detect it. */
+body:has(#home-page-marker) .fern-page-actions,
+body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: none !important;
 }
 

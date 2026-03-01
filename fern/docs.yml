@@ -35,11 +35,6 @@ products:
     icon: fa-solid fa-globe
     slug: ecosystem
     subtitle: Community and integrations
-  - display-name: Release Notes
-    path: ./products/release-notes.yml
-    icon: fa-solid fa-clipboard-list
-    slug: releases
-    subtitle: Version history and updates
   - display-name: REST API
     path: ./products/rest-api.yml
     icon: fa-solid fa-code
@@ -50,6 +45,11 @@ products:
     icon: fa-solid fa-plug
     slug: ws
     subtitle: WebSocket API reference
+  - display-name: Release Notes
+    path: ./products/release-notes.yml
+    icon: fa-solid fa-clipboard-list
+    slug: releases
+    subtitle: Version history and updates
 
 analytics:
   posthog:

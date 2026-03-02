@@ -313,46 +313,475 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   }
 }
 
-/* ─── Landing Page: Home Sections ─── */
+/* ═══════════════════════════════════════════════════════
+   Landing Page — seamless custom layout
+   ═══════════════════════════════════════════════════════ */
 
-/* Hero buttons row */
-.home-hero-buttons {
+.lp-container {
+  min-height: 100vh;
+  position: relative;
+}
+
+.lp-main {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  position: relative;
+}
+
+/* ── Shared helpers ── */
+.lp-btn {
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  width: fit-content !important;
+}
+
+.lp-btn svg {
+  display: none !important;
+}
+
+.lp-link {
+  font-size: 0.8125rem;
+  color: var(--paradex-accent);
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+
+.lp-value-desc {
+  font-size: 0.875rem;
+  color: var(--grayscale-10);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── 1. Hero ── */
+.lp-hero {
+  text-align: center;
+  padding: 3rem 0 4rem;
+}
+
+.lp-hero-title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--grayscale-12);
+  margin: 0 0 1rem;
+  line-height: 1.15;
+}
+
+.lp-hero-desc {
+  font-size: 1.125rem;
+  color: var(--grayscale-10);
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.lp-hero-actions {
   display: flex;
   justify-content: center;
-  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ── 2. Value prop grid ── */
+.lp-value-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--grayscale-5);
+  border-bottom: 1px solid var(--grayscale-5);
+}
+
+.lp-value-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
-  padding-top: 1rem;
+  text-decoration: none !important;
+  transition: background-color 0.15s;
+  border-left: 1px solid var(--grayscale-5);
 }
 
-/* Section headers */
-.home-section-header {
-  margin-top: 2.5rem;
-  margin-bottom: 0.5rem;
+.lp-value-card:first-child {
+  border-left: none;
 }
 
-.home-section-header h2 {
-  text-align: center;
+.lp-value-card:hover {
+  background-color: var(--grayscale-a2);
 }
 
-/* Profiles shared info */
-.home-profiles-shared {
-  text-align: center;
-  padding: 1rem 0 0.25rem;
-  color: rgba(255, 255, 255, 0.7);
+.lp-value-card:hover .lp-link {
+  opacity: 1;
 }
 
-.home-profiles-links {
-  padding-top: 0.25rem;
-}
-
-.home-profiles-links a {
+.lp-value-icon {
+  font-size: 1.25rem;
   color: var(--paradex-accent);
 }
 
-/* Responsive: value prop cards stack on mobile */
+.lp-value-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--grayscale-12);
+  margin: 0;
+}
+
+/* ── 3. Sections (profile, explore, releases) ── */
+.lp-section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--grayscale-5);
+}
+
+.lp-section-last {
+  border-bottom: none;
+}
+
+.lp-section-header {
+  margin-bottom: 2rem;
+}
+
+.lp-section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--grayscale-12);
+  margin: 0;
+}
+
+/* Profile grid */
+.lp-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+.lp-profile-card {
+  padding: 2rem;
+  border: 1px solid var(--grayscale-5);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lp-profile-card:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+
+.lp-profile-card:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.lp-profile-icon {
+  font-size: 1.25rem;
+  color: var(--paradex-accent);
+}
+
+.lp-profile-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--grayscale-12);
+  margin: 0;
+}
+
+.lp-profile-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--paradex-accent);
+  margin: 0;
+}
+
+.lp-profile-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.lp-profile-list li {
+  font-size: 0.875rem;
+  color: var(--grayscale-10);
+  padding-left: 1rem;
+  position: relative;
+}
+
+.lp-profile-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--paradex-accent);
+  font-weight: 700;
+}
+
+.lp-profile-shared {
+  font-size: 0.875rem;
+  color: var(--grayscale-10);
+  text-align: center;
+  margin: 1.5rem 0 0;
+}
+
+.lp-profile-shared strong {
+  color: var(--grayscale-12);
+}
+
+.lp-profile-links {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ── 4. Audience grid (Trade / Build) ── */
+.lp-audience-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--grayscale-5);
+  border-bottom: 1px solid var(--grayscale-5);
+}
+
+.lp-audience-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.lp-audience-card-border {
+  border-left: 1px solid var(--grayscale-5);
+}
+
+.lp-audience-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.lp-audience-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--grayscale-12);
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.15s;
+}
+
+.lp-audience-title:hover {
+  color: var(--paradex-accent);
+}
+
+.lp-audience-title i {
+  color: var(--paradex-accent);
+}
+
+.lp-audience-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lp-pill {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--grayscale-5);
+  color: var(--grayscale-12);
+  text-decoration: none !important;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.lp-pill:hover {
+  border-color: var(--paradex-accent);
+  background-color: rgba(27, 193, 207, 0.08);
+}
+
+.lp-audience-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.lp-audience-links a {
+  font-size: 0.875rem;
+  color: var(--grayscale-10);
+  text-decoration: none !important;
+  transition: color 0.15s;
+}
+
+.lp-audience-links a:hover {
+  color: var(--paradex-accent);
+}
+
+/* ── 5. Explore grid ── */
+.lp-explore-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.lp-explore-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-decoration: none !important;
+  border: 1px solid var(--grayscale-5);
+  margin-top: -1px;
+  margin-left: -1px;
+  transition: background-color 0.15s;
+}
+
+.lp-explore-card:hover {
+  background-color: var(--grayscale-a2);
+}
+
+.lp-explore-icon {
+  font-size: 1.125rem;
+  color: var(--paradex-accent);
+}
+
+.lp-explore-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--grayscale-12);
+  margin: 0;
+}
+
+/* ── 6. Release notes ── */
+.lp-release-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.lp-release-card {
+  padding: 1.5rem;
+  border: 1px solid var(--grayscale-5);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-decoration: none !important;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.lp-release-card:hover {
+  border-color: var(--paradex-accent);
+  background-color: rgba(27, 193, 207, 0.04);
+}
+
+.lp-release-version {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--grayscale-12);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lp-release-badge {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background-color: rgba(27, 193, 207, 0.15);
+  color: var(--paradex-accent);
+}
+
+.lp-release-cta {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Responsive ── */
 @media (max-width: 768px) {
-  .home-hero-buttons {
+  .lp-hero-title {
+    font-size: 2rem;
+  }
+
+  .lp-hero-desc {
+    font-size: 1rem;
+  }
+
+  .lp-hero-actions {
     flex-direction: column;
-    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .lp-value-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lp-value-card:nth-child(3) {
+    border-left: none;
+  }
+
+  .lp-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-profile-card:first-child {
+    border-radius: 0.75rem 0.75rem 0 0;
+    border-right: 1px solid var(--grayscale-5);
+    border-bottom: none;
+  }
+
+  .lp-profile-card:last-child {
+    border-radius: 0 0 0.75rem 0.75rem;
+  }
+
+  .lp-audience-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-audience-card-border {
+    border-left: none;
+    border-top: 1px solid var(--grayscale-5);
+  }
+
+  .lp-explore-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lp-release-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-main {
+    padding: 2rem 1rem;
+  }
+
+  .lp-value-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-value-card {
+    border-left: none;
+    border-bottom: 1px solid var(--grayscale-5);
+  }
+
+  .lp-value-card:last-child {
+    border-bottom: none;
+  }
+
+  .lp-explore-grid {
+    grid-template-columns: 1fr;
   }
 }

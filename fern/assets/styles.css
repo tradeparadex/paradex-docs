@@ -561,11 +561,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-audience-title {
-  color: var(--grayscale-12);
+  color: var(--paradex-accent);
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin: 0;
+  font-weight: bold;
 }
 
 .lp-audience-title i {
@@ -639,6 +640,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 .lp-explore-name {
   color: var(--grayscale-12);
   margin: 0;
+  font-weight: bold;
 }
 
 /* ── 6. Release notes ── */

@@ -1,0 +1,28 @@
+navigation:
+  - section: Getting Started
+    slug: ""
+    contents:
+      - page: Overview
+        slug: overview
+        path: ../pages/ecosystem/overview.mdx
+  - page: Community Content
+    path: ../pages/ecosystem/community-content.mdx
+  - section: Starknet Wallets
+    path: ../pages/ecosystem/starknet-wallets/starknet.mdx
+    contents:
+      - link: Argent
+        href: https://www.argent.xyz/
+      - link: Bravos
+        href: https://braavos.app/
+  - section: Cross Chain Bridges
+    contents:
+      - link: rhino.fi
+        href: https://rhino.fi/
+      - link: Layerswap
+        href: https://layerswap.io/
+  - section: Price Oracles
+    contents:
+      - link: Pyth
+        href: https://pyth.network/
+      - link: Stork
+        href: https://stork.network/

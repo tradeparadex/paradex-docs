@@ -132,15 +132,183 @@ a.cyan-cards:hover {
   }
 }
 
-/* Product Switcher Styling */
-div:has(> .fern-product-selector-radio-group) {
-  margin-top: 0.125rem;
-  padding: 0.5rem;
+/* Center content when sidebar is hidden (e.g. Home product) */
+.fern-layout-reference {
+  justify-content: center;
 }
 
-div:has(> .fern-product-selector-radio-group):before {
-  content: "Explore Paradex";
-  font-weight: 700;
-  display: block;
-  margin: 0 0.5rem 0.5rem 0.5rem;
+/* Constrain and center article on wide layouts (no sidebar, e.g. Home product).
+   On pages with sidebar, .fern-layout-reference is ~992px so article is already narrower than 896px. */
+.fern-layout-reference > article {
+  max-width: 896px;
+  margin: 0 auto;
+}
+
+/* Hide "Copy page", "Was this page helpful", and "Edit this page" on Home page.
+   The home page MDX includes a hidden #home-page-marker div. We use :has() to detect it. */
+body:has(#home-page-marker) .fern-page-actions,
+body:has(#home-page-marker) .fern-layout-footer-toolbar {
+  display: none !important;
+}
+
+/* Product Switcher Styling */
+@media (min-width: 1024px) {
+  div[data-testid="product-dropdown-content"] {
+    border-radius: 1.5rem !important;
+  }
+
+  .product-dropdown-trigger svg {
+    transform: translateY(2px);
+  }
+
+  .fern-product-selector {
+    transform: translate(-2px, 2px);
+  }
+
+  /* product-item-title stays at default 16px */
+
+  div:has(> .fern-product-selector-radio-group) {
+    margin-top: 0.5rem;
+  }
+
+  div:has(> .fern-product-selector-radio-group):before {
+    content: "Explore Paradex";
+    font-weight: 500;
+    margin: 0.5rem 1rem 0 1rem;
+  }
+
+  .fern-product-selector-radio-group {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 1.25rem;
+    height: 248px;
+
+    > a {
+      max-width: 320px;
+      margin: -0.75rem;
+      position: relative;
+
+      .fern-selection-item {
+        border-radius: 1rem;
+      }
+    }
+
+    /* Home - column 1, row 1 */
+    > a[href*="/home"] {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    /* Getting Started - column 2, row 1 */
+    > a[href*="/docs"] {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    /* Trading - column 1, row 2 */
+    > a[href*="trading"] {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    /* Risk & Liquidations - column 2, row 2 */
+    > a[href*="risk"] {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    /* Paradex Chain - column 1, row 3 */
+    > a[href*="chain"] {
+      grid-column: 1;
+      grid-row: 3;
+    }
+
+    /* Ecosystem - column 2, row 3 */
+    > a[href*="ecosystem"] {
+      grid-column: 2;
+      grid-row: 3;
+    }
+
+    /* REST API - Reference section header + column 3, row 1 */
+    > a[href*="/api"]:before {
+      content: "Reference";
+      font-weight: 500;
+      position: absolute;
+      top: -2rem;
+      left: 0.5rem;
+    }
+
+    > a[href*="/api"] {
+      grid-column: 3;
+      grid-row: 1;
+      align-self: start;
+
+      .fern-selection-item-icon {
+        width: 24px;
+        height: 24px;
+
+        svg, img {
+          width: 14px !important;
+          height: 14px !important;
+        }
+      }
+
+      .fern-selection-item-subtitle {
+        display: none;
+      }
+    }
+
+    /* WebSocket API - column 3, row 2 */
+    > a[href*="/ws"] {
+      grid-column: 3;
+      grid-row: 2;
+      align-self: start;
+      transform: translateY(-32px);
+
+      .fern-selection-item-icon {
+        width: 24px;
+        height: 24px;
+
+        svg, img {
+          width: 14px !important;
+          height: 14px !important;
+        }
+      }
+
+      .fern-selection-item-subtitle {
+        display: none;
+      }
+    }
+
+    /* Release Notes - column 3, row 3 */
+    > a[href*="releases"] {
+      grid-column: 3;
+      grid-row: 3;
+      align-self: start;
+      transform: translateY(-64px);
+
+      .fern-selection-item-icon {
+        width: 24px;
+        height: 24px;
+
+        svg, img {
+          width: 14px !important;
+          height: 14px !important;
+        }
+      }
+
+      .fern-selection-item-subtitle {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .fern-product-selector-radio-group {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
 }

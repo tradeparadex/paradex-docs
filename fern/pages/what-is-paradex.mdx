@@ -1,46 +1,208 @@
 ---
-title: Zero Fee Perps with Privacy
-subtitle: Trade 250+ markets on a super exchange with zero-fees, better-than-CEX liquidity, and institutional-grade privacy, all built on a blazingly fast blockchain. The Paradex era is here. Powered by $DIME.
-layout: reference
+title: Zero Fee Trading with Privacy
+slug: home
 hide-toc: true
+layout: custom
 ---
 
 <div id="home-page-marker" style={{display: 'none'}} />
 
-<embed class="w-full h-auto" src="../assets/superdex-banner.webp" type="image/png" />
+<div className="lp-container">
+  <div className="lp-main">
 
-<CardGroup cols={3}>
-  <Card class="cyan-cards" title="Trade Any Asset" icon={<img src="../assets/icons/trade-icon.svg" />}>
-    Trade Futures, Options (Dated and Perpetual), Pre-markets and Spot
-  </Card>
+    {/* ── 1. HERO ── */}
+    <div className="lp-hero">
+      <h1 className="lp-hero-title">Zero Fee Trading with Privacy</h1>
+      <p className="lp-hero-desc">
+        Trade 250+ markets on a super exchange with zero fees, better-than-CEX liquidity, and institutional-grade privacy, all built on a blazingly fast blockchain.
+      </p>
+      <div className="lp-hero-actions">
+        <a className="fern-button filled normal primary rounded gap-1 lp-btn" href="https://app.paradex.trade">
+          Start Trading
+        </a>
+        <a className="fern-button outlined normal rounded gap-1 lp-btn" href="/api">
+          Explore the API
+        </a>
+      </div>
+    </div>
 
-  <Card class="cyan-cards card-icon-w64" title="Zero Fee Perps" icon={<img src="../assets/icons/0-fee-icon.svg" />}>
-    Zero fees for retail traders (maker or taker) on 100+ Perpetual Futures markets
-  </Card>
+    {/* ── 2. VALUE PROPS ── */}
+    <div className="lp-value-grid">
+      <a className="lp-value-card" href="/trading/trading-fees">
+        <span className="lp-value-icon">
+          <i className="fa-solid fa-receipt" />
+        </span>
+        <h3 className="lp-value-title">Zero Fees</h3>
+        <p className="lp-value-desc">No maker or taker fees on 100+ markets for retail traders.</p>
+        <span className="lp-link">Learn more →</span>
+      </a>
+      <a className="lp-value-card" href="/trading/privacy">
+        <span className="lp-value-icon">
+          <i className="fa-solid fa-eye-slash" />
+        </span>
+        <h3 className="lp-value-title">Privacy</h3>
+        <p className="lp-value-desc">ZK-encrypted accounts hide positions, entries, PnL, and liquidation levels.</p>
+        <span className="lp-link">Learn more →</span>
+      </a>
+      <a className="lp-value-card" href="/risk/socialized-losses">
+        <span className="lp-value-icon">
+          <i className="fa-solid fa-shield-halved" />
+        </span>
+        <h3 className="lp-value-title">No ADL</h3>
+        <p className="lp-value-desc">No Auto-Deleveraging. Socialized loss distributes risk fairly and preserves portfolio integrity.</p>
+        <span className="lp-link">Learn more →</span>
+      </a>
+    </div>
 
-  <Card class="cyan-cards" title="Privacy" icon={<img src="../assets/icons/privacy-icon.svg" />}>
-    Zk-encrypted accounts hide your positions, entries, exists, liquidation levels and PnL
-  </Card>
+    {/* ── 3. CHOOSE YOUR PROFILE ── */}
+    <div className="lp-section">
+      <div className="lp-section-header">
+        <h2 className="lp-section-title">Choose your profile</h2>
+      </div>
+      <div className="lp-profile-grid">
+        <div className="lp-profile-card">
+          <div className="lp-profile-icon">
+            <i className="fa-solid fa-bolt" />
+          </div>
+          <h3 className="lp-profile-name">Pro</h3>
+          <p className="lp-profile-label">Fast Lane</p>
+          <p className="lp-value-desc">Paid taker fee, priority execution, and FastFill discounts for API traders who match with retail orders.</p>
+          <ul className="lp-profile-list">
+            <li>Priority execution</li>
+            <li>FastFill discounts</li>
+            <li>High rate limits</li>
+          </ul>
+        </div>
+        <div className="lp-profile-card">
+          <div className="lp-profile-icon">
+            <i className="fa-solid fa-gift" />
+          </div>
+          <h3 className="lp-profile-name">Retail</h3>
+          <p className="lp-profile-label">Free Lane</p>
+          <p className="lp-value-desc">Zero maker and taker fees, standard execution, and access to RPI liquidity with queue priority.</p>
+          <ul className="lp-profile-list">
+            <li>Zero trading fees</li>
+            <li>RPI liquidity</li>
+            <li>UI queue priority</li>
+          </ul>
+        </div>
+      </div>
+      <p className="lp-profile-shared">
+        Both lanes get: <strong>Privacy</strong> · <strong>250+ markets</strong> · <strong>Unified margin</strong>
+      </p>
+      <div className="lp-profile-links">
+        <a className="fern-button minimal normal gap-1 lp-btn" href="/trading/trader-profiles">Trader profiles →</a>
+        <a className="fern-button minimal normal gap-1 lp-btn" href="/trading/rpi">Retail Price Improvement →</a>
+        <a className="fern-button minimal normal gap-1 lp-btn" href="/trading/fastfill">FastFills →</a>
+      </div>
+    </div>
 
-  <Card class="white-cards" title="Fastest Listings" icon={<img src="../assets/icons/fast-listing-icon.svg" />}>
-    Trade new tokens before they list on major CEXs
-  </Card>
+    {/* ── 4. AUDIENCE CARDS ── */}
+    <div className="lp-audience-grid">
+      {/* Trade */}
+      <div className="lp-audience-card">
+        <div className="lp-audience-header">
+          <h2 className="lp-section-title">Trade on Paradex</h2>
+          <p className="lp-value-desc">Get started trading perps, spot, and vaults with zero fees.</p>
+        </div>
+        <div className="lp-audience-pills">
+          <a className="lp-pill" href="/trading/trading-fees">Zero Fees</a>
+          <a className="lp-pill" href="/trading/privacy">Privacy</a>
+          <a className="lp-pill" href="/trading/spot-trading/supported-order-types">Spot</a>
+          <a className="lp-pill" href="/trading/vaults/vaults-introduction">Vaults</a>
+        </div>
+        <div className="lp-audience-links">
+          <a href="/docs/getting-started/what-is-paradex">Getting started →</a>
+          <a href="/docs/getting-started/bridges">Bridges and on-ramps →</a>
+          <a href="/trading/placing-orders">Placing orders →</a>
+          <a href="/risk">Margin and risk →</a>
+          <a href="/trading/trading-fees">Trading fees →</a>
+        </div>
+      </div>
+      {/* Build */}
+      <div className="lp-audience-card lp-audience-card-border">
+        <div className="lp-audience-header">
+          <h2 className="lp-section-title">Build on Paradex</h2>
+          <p className="lp-value-desc">Integrate with the API, build bots, or deploy on Paradex Chain.</p>
+        </div>
+        <div className="lp-audience-pills">
+          <a className="lp-pill" href="https://tradeparadex.github.io/paradex-py/">Python SDK</a>
+          <a className="lp-pill" href="/api">REST API</a>
+          <a className="lp-pill" href="/ws">WebSocket API</a>
+          <a className="lp-pill" href="https://github.com/tradeparadex/paradex-cli/">CLI</a>
+        </div>
+        <div className="lp-audience-links">
+          <a href="/api/authentication">API authentication →</a>
+          <a href="/api/api-quick-start">API quick start →</a>
+          <a href="/chain/paradex-chain-rpc-node">Paradex Chain RPC →</a>
+          <a href="/trading/testnet-faqs">Testnet guide →</a>
+          <a href="https://github.com/tradeparadex/code-samples">Code samples →</a>
+        </div>
+      </div>
+    </div>
 
-  <Card class="white-cards" title="Unified Margin" icon={<img src="../assets/icons/unified-margin-icon.svg" />}>
-    Trade 250+ markets across Futures, Options (Dated and Perpetual) and Spot all in one account
-  </Card>
+    {/* ── 5. EXPLORE MORE ── */}
+    <div className="lp-section">
+      <div className="lp-section-header">
+        <h2 className="lp-section-title">Explore more</h2>
+      </div>
+      <div className="lp-explore-grid">
+        <a className="lp-explore-card" href="/chain/security">
+          <i className="fa-solid fa-lock lp-explore-icon" />
+          <p className="lp-explore-name">Security and trust</p>
+          <p className="lp-value-desc">Lockdown mode, guardian keys, audits, and bug bounty program.</p>
+        </a>
+        <a className="lp-explore-card" href="/chain">
+          <i className="fa-solid fa-link lp-explore-icon" />
+          <p className="lp-explore-name">Paradex Chain</p>
+          <p className="lp-value-desc">Paradex's own appchain on Starknet. Explore the architecture and RPC access.</p>
+        </a>
+        <a className="lp-explore-card" href="/ecosystem">
+          <i className="fa-solid fa-globe lp-explore-icon" />
+          <p className="lp-explore-name">Ecosystem</p>
+          <p className="lp-value-desc">Community content, wallets, cross-chain bridges, and price oracles.</p>
+        </a>
+        <a className="lp-explore-card" href="/docs/xp-referrals/xp">
+          <i className="fa-solid fa-trophy lp-explore-icon" />
+          <p className="lp-explore-name">XP and referrals</p>
+          <p className="lp-value-desc">Earn XP, climb the ranks, and refer friends for rewards.</p>
+        </a>
+        <a className="lp-explore-card" href="/risk">
+          <i className="fa-solid fa-scale-balanced lp-explore-icon" />
+          <p className="lp-explore-name">Risk and liquidations</p>
+          <p className="lp-value-desc">Margin system, funding, price bands, and deleveraging mechanics.</p>
+        </a>
+        <a className="lp-explore-card" href="/trading/vaults/vaults-introduction">
+          <i className="fa-solid fa-vault lp-explore-icon" />
+          <p className="lp-explore-name">Vaults</p>
+          <p className="lp-value-desc">Tokenized high-yield, multi-strategy products managed by professional operators.</p>
+        </a>
+      </div>
+    </div>
 
-  <Card class="white-cards" title="Tokenized High Yield Vaults"  icon={<img src="../assets/icons/vaults-icon.svg" />}>
-    Earn passive income with automated, multi-asset, multi-strategy products
-  </Card>
-</CardGroup>
+    {/* ── 6. WHAT'S NEW ── */}
+    <div className="lp-section lp-section-last">
+      <div className="lp-section-header">
+        <h2 className="lp-section-title">What's new</h2>
+      </div>
+      <div className="lp-release-grid">
+        <a className="lp-release-card" href="/releases/v-1-134">
+          <h3 className="lp-release-version">v1.134 <span className="lp-release-badge">Latest</span></h3>
+          <p className="lp-value-desc">Interactive limit orders from charts, revamped deposit flow, fast unrealized PnL updates, and new position share cards.</p>
+          <span className="lp-link">Read full notes →</span>
+        </a>
+        <a className="lp-release-card" href="/releases/v-1-133">
+          <h3 className="lp-release-version">v1.133</h3>
+          <p className="lp-value-desc">Spot PnL display, smart deposit addresses, improved leverage slider, and enhanced mobile browsing.</p>
+          <span className="lp-link">Read full notes →</span>
+        </a>
+      </div>
+      <div className="lp-release-cta">
+        <a className="fern-button outlined normal rounded gap-1 lp-btn" href="/releases">
+          View all releases
+        </a>
+      </div>
+    </div>
 
-<div class="w-full flex justify-center items-center gap-2 pt-4">
-  <Button href="https://app.paradex.trade" intent="primary" large rounded>
-    Trade on Paradex
-  </Button>
-
-  <Button href="/getting-started/roadmap" intent="primary" large rounded outlined>
-    Explore Roadmap
-  </Button>
+  </div>
 </div>

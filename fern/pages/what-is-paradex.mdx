@@ -1,46 +1,204 @@
 ---
-title: Zero Fee Perps with Privacy
-subtitle: Trade 250+ markets on a super exchange with zero-fees, better-than-CEX liquidity, and institutional-grade privacy, all built on a blazingly fast blockchain. The Paradex era is here. Powered by $DIME.
+title: Zero Fee Perpetuals with Privacy
+subtitle: Trade 250+ markets on a super exchange with zero-fees, better-than-CEX liquidity, and institutional-grade privacy, all built on a blazingly fast blockchain.
 layout: reference
 hide-toc: true
 ---
 
 <div id="home-page-marker" style={{display: 'none'}} />
 
-<embed class="w-full h-auto" src="../assets/superdex-banner.webp" type="image/png" />
+{/* ── 1. HERO SECTION ── */}
 
-<CardGroup cols={3}>
-  <Card class="cyan-cards" title="Trade Any Asset" icon={<img src="../assets/icons/trade-icon.svg" />}>
-    Trade Futures, Options (Dated and Perpetual), Pre-markets and Spot
+<div className="home-hero">
+
+<embed className="w-full h-auto" src="../assets/superdex-banner.webp" type="image/png" />
+
+<div className="home-hero-buttons">
+  <Button href="https://app.paradex.trade" intent="primary" large rounded>
+    Start Trading
+  </Button>
+
+  <Button href="/api" intent="primary" large rounded outlined>
+    Explore the API
+  </Button>
+</div>
+
+</div>
+
+{/* ── 2. VALUE PROP BANNER ── */}
+
+<CardGroup cols={4}>
+  <Card className="cyan-cards" title="Zero fees" icon="fa-solid fa-receipt">
+    No maker or taker fees on 100+ perp markets for retail traders.
+
+    [Learn more](/trading/trading-fees)
   </Card>
 
-  <Card class="cyan-cards card-icon-w64" title="Zero Fee Perps" icon={<img src="../assets/icons/0-fee-icon.svg" />}>
-    Zero fees for retail traders (maker or taker) on 100+ Perpetual Futures markets
+  <Card className="cyan-cards" title="Privacy perps" icon="fa-solid fa-eye-slash">
+    ZK-encrypted accounts hide positions, entries, PnL, and liquidation levels.
+
+    [Learn more](/trading/privacy)
   </Card>
 
-  <Card class="cyan-cards" title="Privacy" icon={<img src="../assets/icons/privacy-icon.svg" />}>
-    Zk-encrypted accounts hide your positions, entries, exists, liquidation levels and PnL
+  <Card className="cyan-cards" title="Trader profiles" icon="fa-solid fa-user-gear">
+    Choose your lane: fast and paid, or slow and free. Get RPI liquidity and FastFills.
+
+    [Learn more](/trading/trader-profiles)
   </Card>
 
-  <Card class="white-cards" title="Fastest Listings" icon={<img src="../assets/icons/fast-listing-icon.svg" />}>
-    Trade new tokens before they list on major CEXs
-  </Card>
+  <Card className="cyan-cards" title="No ADL" icon="fa-solid fa-shield-halved">
+    No auto-deleveraging. Socialized loss model protects your positions.
 
-  <Card class="white-cards" title="Unified Margin" icon={<img src="../assets/icons/unified-margin-icon.svg" />}>
-    Trade 250+ markets across Futures, Options (Dated and Perpetual) and Spot all in one account
-  </Card>
-
-  <Card class="white-cards" title="Tokenized High Yield Vaults"  icon={<img src="../assets/icons/vaults-icon.svg" />}>
-    Earn passive income with automated, multi-asset, multi-strategy products
+    [Learn more](/risk/deleveraging)
   </Card>
 </CardGroup>
 
-<div class="w-full flex justify-center items-center gap-2 pt-4">
-  <Button href="https://app.paradex.trade" intent="primary" large rounded>
-    Trade on Paradex
-  </Button>
+{/* ── 3. HOW PARADEX WORKS ── */}
 
-  <Button href="/getting-started/roadmap" intent="primary" large rounded outlined>
-    Explore Roadmap
+<div className="home-section-header">
+
+## Choose your profile
+
+</div>
+
+<div className="home-profiles">
+
+<CardGroup cols={2}>
+  <Card title="Fast lane" icon="fa-solid fa-bolt">
+    **Pro profile** — paid taker fee, priority execution, and FastFill discounts for API traders who match with retail orders.
+
+    - Priority execution
+    - FastFill eligible
+    - API access with 800 orders/sec
+  </Card>
+
+  <Card title="Free lane" icon="fa-solid fa-gift">
+    **Retail profile** — zero maker and taker fees, standard execution, and access to RPI liquidity with queue priority.
+
+    - Zero trading fees
+    - RPI liquidity
+    - UI queue priority
+  </Card>
+</CardGroup>
+
+<div className="home-profiles-shared">
+
+Both lanes get: **Privacy** | **250+ markets** | **Unified margin**
+
+<div className="home-profiles-links">
+
+[Trader profiles](/trading/trader-profiles) | [Retail Price Improvement](/trading/rpi) | [FastFill](/trading/fastfill)
+
+</div>
+
+</div>
+
+</div>
+
+{/* ── 4. TWO PRIMARY AUDIENCE CARDS ── */}
+
+<div className="home-section-header">
+
+## Get started
+
+</div>
+
+<CardGroup cols={2}>
+  <Card title="Trade on Paradex" icon="fa-solid fa-chart-line" href="/trading">
+    Get started trading perps, spot, and vaults with zero fees.
+
+    <CardGroup cols={2}>
+      <Card title="Zero fee perps" href="/trading/trading-fees" />
+      <Card title="Privacy perps" href="/trading/privacy" />
+      <Card title="Spot trading" href="/trading/spot-trading/supported-order-types" />
+      <Card title="Vaults" href="/trading/vaults/vaults-introduction" />
+    </CardGroup>
+
+    ---
+
+    - [Getting started](/docs/getting-started/what-is-paradex)
+    - [Bridges and on-ramps](/docs/getting-started/bridges)
+    - [Placing orders](/trading/placing-orders)
+    - [Margin and risk](/risk)
+    - [Trading fees](/trading/trading-fees)
+  </Card>
+
+  <Card title="Build on Paradex" icon="fa-solid fa-code" href="/api">
+    Integrate with the API, build bots, or deploy on Paradex Chain.
+
+    Quickstart with:
+
+    <CardGroup cols={4}>
+      <Card title="Python" href="https://tradeparadex.github.io/paradex-py/" />
+      <Card title="REST" href="/api" />
+      <Card title="WebSocket" href="/ws" />
+      <Card title="CLI" href="https://github.com/tradeparadex/paradex-cli/" />
+    </CardGroup>
+
+    ---
+
+    - [API authentication](/api/authentication)
+    - [API quick start](/api/api-quick-start)
+    - [Paradex Chain RPC](/chain/paradex-chain-rpc-node)
+    - [Testnet guide](/trading/testnet-faqs)
+    - [Code samples](https://github.com/tradeparadex/code-samples)
+  </Card>
+</CardGroup>
+
+{/* ── 5. EXPLORE MORE (TOPIC GRID) ── */}
+
+<div className="home-section-header">
+
+## Explore more
+
+</div>
+
+<CardGroup cols={3}>
+  <Card title="Security and trust" icon="fa-solid fa-lock" href="/chain/security">
+    Lockdown mode, guardian keys, audits, and bug bounty program.
+  </Card>
+
+  <Card title="Paradex Chain" icon="fa-solid fa-link" href="/chain">
+    Paradex's own appchain on Starknet. Explore the architecture and RPC access.
+  </Card>
+
+  <Card title="Ecosystem" icon="fa-solid fa-globe" href="/ecosystem">
+    Community content, wallets, cross-chain bridges, and price oracles.
+  </Card>
+
+  <Card title="XP and referrals" icon="fa-solid fa-trophy" href="/docs/xp-referrals/xp">
+    Earn XP, climb the ranks, and refer friends for rewards.
+  </Card>
+
+  <Card title="Risk and liquidations" icon="fa-solid fa-scale-balanced" href="/risk">
+    Margin system, funding, price bands, and deleveraging mechanics.
+  </Card>
+
+  <Card title="Vaults" icon="fa-solid fa-vault" href="/trading/vaults/vaults-introduction">
+    Tokenized high-yield, multi-strategy products managed by professional operators.
+  </Card>
+</CardGroup>
+
+{/* ── 6. WHAT'S NEW ── */}
+
+<div className="home-section-header">
+
+## What's new
+
+</div>
+
+<CardGroup cols={2}>
+  <Card title="v1.134 — Latest release" icon="fa-solid fa-clipboard-list" href="/releases/v1.134">
+    Interactive limit orders from charts, revamped deposit flow, fast unrealized PnL updates, and new position share cards.
+  </Card>
+
+  <Card title="v1.133" icon="fa-solid fa-clipboard-list" href="/releases/v1.133">
+    Spot PnL display, smart deposit addresses, improved leverage slider, and enhanced mobile browsing.
+  </Card>
+</CardGroup>
+
+<div className="home-hero-buttons">
+  <Button href="/releases" intent="primary" large rounded outlined>
+    View all releases
   </Button>
 </div>

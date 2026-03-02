@@ -312,3 +312,47 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
     gap: 0.25rem;
   }
 }
+
+/* ─── Landing Page: Home Sections ─── */
+
+/* Hero buttons row */
+.home-hero-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+}
+
+/* Section headers */
+.home-section-header {
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.home-section-header h2 {
+  text-align: center;
+}
+
+/* Profiles shared info */
+.home-profiles-shared {
+  text-align: center;
+  padding: 1rem 0 0.25rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.home-profiles-links {
+  padding-top: 0.25rem;
+}
+
+.home-profiles-links a {
+  color: var(--paradex-accent);
+}
+
+/* Responsive: value prop cards stack on mobile */
+@media (max-width: 768px) {
+  .home-hero-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

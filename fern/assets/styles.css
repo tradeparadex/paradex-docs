@@ -245,8 +245,8 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
       align-self: start;
 
       .fern-selection-item-icon {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 48px;
+        height: 48px;
       }
 
       .fern-selection-item-subtitle {
@@ -262,8 +262,8 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
       transform: translateY(-32px);
 
       .fern-selection-item-icon {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 48px;
+        height: 48px;
       }
 
       .fern-selection-item-subtitle {
@@ -279,8 +279,8 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
       transform: translateY(-64px);
 
       .fern-selection-item-icon {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 48px;
+        height: 48px;
       }
 
       .fern-selection-item-subtitle {

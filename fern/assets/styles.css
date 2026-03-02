@@ -315,7 +315,22 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 /* ═══════════════════════════════════════════════════════
    Landing Page — seamless custom layout
+   Only titles (h1, h2, h3) use bold. All other text is
+   normal weight inheriting Fern defaults.
    ═══════════════════════════════════════════════════════ */
+
+.lp-container h1,
+.lp-container h2,
+.lp-container h3 {
+  font-weight: bold;
+}
+
+.lp-container p,
+.lp-container li,
+.lp-container a,
+.lp-container span {
+  font-weight: normal;
+}
 
 .lp-container {
   min-height: 100vh;
@@ -547,15 +562,10 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 .lp-audience-title {
   color: var(--grayscale-12);
-  text-decoration: none !important;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: color 0.15s;
-}
-
-.lp-audience-title:hover {
-  color: var(--paradex-accent);
+  margin: 0;
 }
 
 .lp-audience-title i {

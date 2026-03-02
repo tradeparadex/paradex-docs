@@ -384,6 +384,11 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   flex-wrap: wrap;
 }
 
+.lp-hero-actions .lp-btn {
+  height: 40px;
+  padding: 0 16px;
+}
+
 /* ── 2. Value prop grid ── */
 .lp-value-grid {
   display: grid;

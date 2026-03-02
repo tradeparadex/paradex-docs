@@ -332,7 +332,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 /* ── Shared helpers ── */
 .lp-btn {
   text-decoration: none !important;
-  font-weight: 500 !important;
   width: fit-content !important;
 }
 
@@ -341,16 +340,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-link {
-  font-size: 0.8125rem;
   color: var(--paradex-accent);
-  font-weight: 500;
   transition: opacity 0.15s;
 }
 
 .lp-value-desc {
-  font-size: 0.875rem;
   color: var(--grayscale-10);
-  line-height: 1.5;
   margin: 0;
 }
 
@@ -361,20 +356,14 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-hero-title {
-  font-size: 2.75rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
   color: var(--grayscale-12);
   margin: 0 0 1rem;
-  line-height: 1.15;
 }
 
 .lp-hero-desc {
-  font-size: 1.125rem;
   color: var(--grayscale-10);
   max-width: 40rem;
   margin: 0 auto 2rem;
-  line-height: 1.6;
 }
 
 .lp-hero-actions {
@@ -420,13 +409,10 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-value-icon {
-  font-size: 1.25rem;
   color: var(--paradex-accent);
 }
 
 .lp-value-title {
-  font-size: 1rem;
-  font-weight: 600;
   color: var(--grayscale-12);
   margin: 0;
 }
@@ -446,9 +432,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
   color: var(--grayscale-12);
   margin: 0;
 }
@@ -481,20 +464,16 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-profile-icon {
-  font-size: 1.25rem;
   color: var(--paradex-accent);
 }
 
 .lp-profile-name {
-  font-size: 1.125rem;
-  font-weight: 600;
   color: var(--grayscale-12);
   margin: 0;
 }
 
 .lp-profile-label {
   font-size: 0.75rem;
-  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--paradex-accent);
@@ -511,7 +490,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-profile-list li {
-  font-size: 0.875rem;
   color: var(--grayscale-10);
   padding-left: 1rem;
   position: relative;
@@ -522,11 +500,9 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   position: absolute;
   left: 0;
   color: var(--paradex-accent);
-  font-weight: 700;
 }
 
 .lp-profile-shared {
-  font-size: 0.875rem;
   color: var(--grayscale-10);
   text-align: center;
   margin: 1.5rem 0 0;
@@ -570,8 +546,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-audience-title {
-  font-size: 1.25rem;
-  font-weight: 700;
   color: var(--grayscale-12);
   text-decoration: none !important;
   display: flex;
@@ -596,8 +570,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 .lp-pill {
   display: inline-block;
-  font-size: 0.8125rem;
-  font-weight: 500;
   padding: 0.375rem 0.75rem;
   border-radius: 999px;
   border: 1px solid var(--grayscale-5);
@@ -618,7 +590,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-audience-links a {
-  font-size: 0.875rem;
   color: var(--grayscale-10);
   text-decoration: none !important;
   transition: color 0.15s;
@@ -652,13 +623,10 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-explore-icon {
-  font-size: 1.125rem;
   color: var(--paradex-accent);
 }
 
 .lp-explore-name {
-  font-size: 1rem;
-  font-weight: 600;
   color: var(--grayscale-12);
   margin: 0;
 }
@@ -687,8 +655,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-release-version {
-  font-size: 1rem;
-  font-weight: 600;
   color: var(--grayscale-12);
   margin: 0;
   display: flex;
@@ -697,8 +663,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-release-badge {
-  font-size: 0.6875rem;
-  font-weight: 600;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 0.125rem 0.5rem;
@@ -715,14 +680,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .lp-hero-title {
-    font-size: 2rem;
-  }
-
-  .lp-hero-desc {
-    font-size: 1rem;
-  }
-
   .lp-hero-actions {
     flex-direction: column;
     align-items: center;

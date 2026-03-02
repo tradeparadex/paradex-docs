@@ -354,6 +354,11 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: none !important;
 }
 
+.lp-container a svg,
+.lp-container a::after {
+  display: none !important;
+}
+
 .lp-link {
   color: var(--paradex-accent);
   transition: opacity 0.15s;
@@ -586,6 +591,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   color: var(--grayscale-12);
   text-decoration: none !important;
   transition: border-color 0.15s, background-color 0.15s;
+  font-size: 14px;
 }
 
 .lp-pill:hover {

@@ -381,7 +381,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 /* ── 2. Value prop grid ── */
 .lp-value-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   border-top: 1px solid var(--grayscale-5);
   border-bottom: 1px solid var(--grayscale-5);
 }
@@ -491,7 +491,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 .lp-profile-list li {
   color: var(--grayscale-10);
-  padding-left: 1rem;
+  padding-left: 1.25rem;
   position: relative;
 }
 
@@ -686,11 +686,16 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   }
 
   .lp-value-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 
-  .lp-value-card:nth-child(3) {
+  .lp-value-card {
     border-left: none;
+    border-bottom: 1px solid var(--grayscale-5);
+  }
+
+  .lp-value-card:last-child {
+    border-bottom: none;
   }
 
   .lp-profile-grid {
@@ -728,19 +733,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 @media (max-width: 480px) {
   .lp-main {
     padding: 2rem 1rem;
-  }
-
-  .lp-value-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .lp-value-card {
-    border-left: none;
-    border-bottom: 1px solid var(--grayscale-5);
-  }
-
-  .lp-value-card:last-child {
-    border-bottom: none;
   }
 
   .lp-explore-grid {

@@ -513,7 +513,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 .lp-profile-list li::before {
   content: "✓";
   position: absolute;
-  left: 0.125rem;
   color: var(--paradex-accent);
 }
 
@@ -544,7 +543,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 .lp-audience-card {
-  padding: 2rem 2rem 2rem 0;
+  padding: 2rem 2rem 2rem 32px;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;

@@ -246,7 +246,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
       .fern-selection-item-icon {
         width: 24px;
-        height: 48px;
+        height: 24px;
+
+        svg, img {
+          width: 100% !important;
+          height: 100% !important;
+        }
       }
 
       .fern-selection-item-subtitle {
@@ -263,7 +268,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
       .fern-selection-item-icon {
         width: 24px;
-        height: 48px;
+        height: 24px;
+
+        svg, img {
+          width: 100% !important;
+          height: 100% !important;
+        }
       }
 
       .fern-selection-item-subtitle {
@@ -280,7 +290,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
       .fern-selection-item-icon {
         width: 24px;
-        height: 48px;
+        height: 24px;
+
+        svg, img {
+          width: 100% !important;
+          height: 100% !important;
+        }
       }
 
       .fern-selection-item-subtitle {

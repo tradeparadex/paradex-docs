@@ -401,7 +401,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 /* ── 2. Value prop grid ── */
 .lp-value-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--grayscale-5);
   border-bottom: 1px solid var(--grayscale-5);
 }
@@ -703,16 +703,11 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   }
 
   .lp-value-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .lp-value-card {
+  .lp-value-card:nth-child(odd) {
     border-left: none;
-    border-bottom: 1px solid var(--grayscale-5);
-  }
-
-  .lp-value-card:last-child {
-    border-bottom: none;
   }
 
   .lp-profile-grid {

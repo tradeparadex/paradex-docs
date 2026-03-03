@@ -362,6 +362,23 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: none !important;
 }
 
+/* Hide heading anchor link icons on hover */
+.lp-container .fern-anchor,
+.lp-container .fern-mdx-link,
+.lp-container h1 a,
+.lp-container h2 a,
+.lp-container h3 a {
+  pointer-events: none;
+}
+
+.lp-container h1 a svg,
+.lp-container h2 a svg,
+.lp-container h3 a svg,
+.lp-container .fern-anchor svg,
+.lp-container .fern-mdx-link svg {
+  display: none !important;
+}
+
 
 .lp-value-desc {
   color: var(--grayscale-10);
@@ -627,6 +644,10 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   background-color: rgba(27, 193, 207, 0.08);
 }
 
+.lp-audience-pills .lp-pill:hover {
+  background-color: rgba(27, 193, 207, 0.2);
+}
+
 .lp-audience-links {
   display: flex;
   flex-direction: column;
@@ -664,6 +685,10 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 .lp-explore-card:hover {
   background-color: var(--grayscale-a2);
+}
+
+.lp-explore-card:hover .lp-explore-name {
+  color: var(--paradex-accent);
 }
 
 .lp-explore-name {

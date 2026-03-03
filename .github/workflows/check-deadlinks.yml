@@ -2,9 +2,6 @@ name: "Check Deadlinks"
 
 on:
   pull_request:
-  schedule:
-    # Run every Monday at 9:00 UTC
-    - cron: "0 9 * * 1"
   workflow_dispatch:
 
 jobs:
@@ -13,15 +10,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - name: Fetch sitemap URLs
-        id: fetch-urls
-        run: |
-          curl -s https://docs.paradex.trade/sitemap.xml \
-            | grep -oP '<loc>\K[^<]+' \
-            > urls.txt
-          echo "url_count=$(wc -l < urls.txt)" >> "$GITHUB_OUTPUT"
-          echo "Fetched $(wc -l < urls.txt) URLs from sitemap"
 
       - name: Check for dead links
         uses: lycheeverse/lychee-action@v2
@@ -33,5 +21,9 @@ jobs:
             --timeout 30
             --max-retries 3
             --retry-wait-time 5
-            urls.txt
+            --exclude-path node_modules
+            "fern/**/*.mdx"
+            "fern/**/*.md"
+            "fern/**/*.yml"
+            "fern/**/*.yaml"
           fail: true

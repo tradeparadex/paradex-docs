@@ -434,6 +434,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 .lp-value-icon img {
   height: 32px;
   width: auto;
+  margin: 0 !important;
 }
 
 .lp-value-icon svg {

@@ -479,10 +479,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   border-bottom-left-radius: 0;
 }
 
-.lp-profile-icon {
-  color: var(--paradex-accent);
-}
-
 .lp-profile-name {
   color: var(--grayscale-12);
   margin: 0;

@@ -426,9 +426,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 .lp-value-icon {
   color: var(--paradex-accent);
+  display: flex;
+  align-items: flex-start;
 }
 
-.lp-value-icon img {
+.lp-value-icon img,
+.lp-value-icon svg {
   height: 32px;
   width: auto;
 }

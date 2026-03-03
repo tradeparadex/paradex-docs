@@ -454,7 +454,9 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   margin: 0 !important;
 }
 
-.lp-value-icon svg {
+.lp-value-icon svg,
+.lp-container .lp-value-icon svg,
+.lp-container .fern-mdx-link .lp-value-icon svg {
   height: 32px !important;
   width: auto !important;
   fill: var(--paradex-accent) !important;

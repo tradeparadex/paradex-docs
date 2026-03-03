@@ -1,6 +1,9 @@
 # Lychee link checker configuration
 # https://lychee.cli.rs/usage/config/
 
+# Only check HTTP(S) links — skip local file paths and root-relative doc paths
+scheme = ["https", "http"]
+
 # Accept these status codes as valid
 accept = [200, 204]
 
@@ -21,17 +24,11 @@ exclude = [
   # Paradex API endpoints (require authentication)
   "^https://api\\.prod\\.paradex\\.trade",
   "^https://api\\.testnet\\.paradex\\.trade",
-  # Localhost URLs (used in config/dev contexts)
-  "^http://localhost",
   # PostHog analytics endpoint
   "^https://eu\\.i\\.posthog\\.com",
-  # Internal doc paths that lychee cannot resolve locally
-  "^/",
 ]
 
 # Exclude these paths from being scanned
 exclude_path = [
   "node_modules",
-  # Skip API spec files (contain server URLs, not doc links)
-  "fern/apis",
 ]

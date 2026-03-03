@@ -15,6 +15,7 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
+            --config ./lychee.toml
             "fern/pages/**/*.mdx"
             "fern/pages/**/*.md"
             "fern/snippets/**/*.mdx"

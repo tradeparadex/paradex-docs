@@ -358,10 +358,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: none !important;
 }
 
-.lp-link {
-  color: var(--paradex-accent);
-  transition: opacity 0.15s;
-}
 
 .lp-value-desc {
   color: var(--grayscale-10);
@@ -423,9 +419,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   background-color: var(--grayscale-a2);
 }
 
-.lp-value-card:hover .lp-link {
-  opacity: 1;
-}
 
 .lp-value-icon {
   color: var(--paradex-accent);

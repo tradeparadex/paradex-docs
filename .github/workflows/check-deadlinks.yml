@@ -15,7 +15,15 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
-            --config ./lychee.toml
+            --include '^https?://'
+            --exclude '^https://api\.prod\.paradex\.trade'
+            --exclude '^https://api\.testnet\.paradex\.trade'
+            --exclude '^https://eu\.i\.posthog\.com'
+            --timeout 30
+            --max-retries 3
+            --retry-wait-time 5
+            --no-progress
+            --accept 200,204
             "fern/pages/**/*.mdx"
             "fern/pages/**/*.md"
             "fern/snippets/**/*.mdx"

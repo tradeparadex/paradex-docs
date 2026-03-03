@@ -354,9 +354,15 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: none !important;
 }
 
-.lp-container a svg,
+.lp-container a > svg:last-child,
 .lp-container a::after {
   display: none !important;
+}
+
+.lp-container a .lp-value-icon svg,
+.lp-container a .lp-explore-icon svg,
+.lp-container a i.fa-solid {
+  display: inline !important;
 }
 
 .lp-link {
@@ -525,6 +531,19 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   color: var(--grayscale-10);
   text-align: center;
   margin: 1.5rem 0 0;
+}
+
+.lp-profile-shared .lp-shared-check {
+  color: var(--paradex-accent);
+  margin-right: 0.25rem;
+}
+
+.lp-profile-shared .lp-shared-item {
+  margin-left: 1rem;
+}
+
+.lp-profile-shared .lp-shared-item:first-of-type {
+  margin-left: 0.75rem;
 }
 
 .lp-profile-shared strong {

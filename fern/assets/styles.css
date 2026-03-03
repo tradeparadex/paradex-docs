@@ -428,6 +428,17 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   color: var(--paradex-accent);
 }
 
+.lp-value-pill {
+  display: inline-block;
+  width: fit-content;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--paradex-accent);
+  color: var(--paradex-accent);
+  background-color: rgba(27, 193, 207, 0.08);
+}
+
 .lp-value-title {
   color: var(--grayscale-12);
   margin: 0;

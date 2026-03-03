@@ -377,6 +377,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 .lp-container .lp-pill,
 .lp-container .lp-audience-links a,
 .lp-container .lp-profile-links a,
+.lp-container .lp-profile-card,
 .lp-container .lp-hero-actions a,
 .lp-container .lp-release-cta a {
   pointer-events: auto;
@@ -513,6 +514,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  text-decoration: none !important;
+  transition: background-color 0.15s;
+}
+
+.lp-profile-card:hover {
+  background-color: var(--grayscale-a2);
 }
 
 .lp-profile-card:first-child {

@@ -364,11 +364,23 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 /* Hide heading anchor link icons on hover */
 .lp-container .fern-anchor,
-.lp-container .fern-mdx-link,
 .lp-container h1 a,
 .lp-container h2 a,
 .lp-container h3 a {
   pointer-events: none;
+}
+
+/* Re-enable pointer events on all clickable landing page elements */
+.lp-container .lp-value-card,
+.lp-container .lp-explore-card,
+.lp-container .lp-release-card,
+.lp-container .lp-pill,
+.lp-container .lp-audience-links a,
+.lp-container .lp-profile-links a,
+.lp-container .lp-profile-card,
+.lp-container .lp-hero-actions a,
+.lp-container .lp-release-cta a {
+  pointer-events: auto;
 }
 
 .lp-container h1 a svg,
@@ -502,6 +514,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  text-decoration: none !important;
+  transition: background-color 0.15s;
+}
+
+.lp-profile-card:hover {
+  background-color: var(--grayscale-a2);
 }
 
 .lp-profile-card:first-child {

@@ -354,15 +354,8 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: none !important;
 }
 
-.lp-container a > svg:last-child,
 .lp-container a::after {
   display: none !important;
-}
-
-.lp-container a .lp-value-icon svg,
-.lp-container a .lp-explore-icon svg,
-.lp-container a i.fa-solid {
-  display: inline !important;
 }
 
 .lp-link {
@@ -615,6 +608,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 .lp-pill:hover {
   border-color: var(--paradex-accent);
+  background-color: rgba(27, 193, 207, 0.08);
+}
+
+.lp-audience-pills .lp-pill {
+  border-color: var(--paradex-accent);
+  color: var(--paradex-accent);
   background-color: rgba(27, 193, 207, 0.08);
 }
 

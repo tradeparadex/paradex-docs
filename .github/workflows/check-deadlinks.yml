@@ -17,7 +17,6 @@ jobs:
           args: >-
             --no-progress
             --accept 200,204
-            --exclude-mail
             --timeout 30
             --max-retries 3
             --retry-wait-time 5

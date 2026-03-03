@@ -1,9 +1,6 @@
 # Lychee link checker configuration
 # https://lychee.cli.rs/usage/config/
 
-# Only check HTTP(S) links — skip local file paths and root-relative doc paths
-scheme = ["https", "http"]
-
 # Accept these status codes as valid
 accept = [200, 204]
 
@@ -18,6 +15,9 @@ retry_wait_time = 5
 
 # Don't show progress bar
 no_progress = true
+
+# Only check HTTP(S) links — skip local file paths and root-relative doc paths
+include = ["^https?://"]
 
 # Exclude these URL patterns from checking
 exclude = [

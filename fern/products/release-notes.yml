@@ -1,13 +1,15 @@
 navigation:
   - page: Overview
     path: ../pages/release-notes/overview.mdx
+  - page: v1.135
+    path: ../pages/release-notes/v1.135.md
   - page: v1.134
     path: ../pages/release-notes/v1.134.md
-  - page: v1.133
-    path: ../pages/release-notes/v1.133.md
   - section: Archive
     path: ../pages/release-notes/archive.mdx
     contents:
+      - page: v1.133
+        path: ../pages/release-notes/v1.133.md
       - page: v1.132
         path: ../pages/release-notes/v1.132.md
       - page: v1.131

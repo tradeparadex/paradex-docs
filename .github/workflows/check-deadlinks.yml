@@ -15,7 +15,8 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
-            --include '^https?://'
+            --scheme https
+            --scheme http
             --exclude '^https://api\.prod\.paradex\.trade'
             --exclude '^https://api\.testnet\.paradex\.trade'
             --exclude '^https://eu\.i\.posthog\.com'
@@ -23,8 +24,35 @@ jobs:
             --max-retries 3
             --retry-wait-time 5
             --no-progress
-            --accept 200,204
+            --format json
             "fern/pages/**/*.mdx"
             "fern/pages/**/*.md"
             "fern/snippets/**/*.mdx"
-          fail: true
+          fail: false
+          format: json
+
+      - name: Evaluate results
+        run: |
+          if [ ! -f lychee/out.md ]; then
+            echo "No lychee output found"
+            exit 1
+          fi
+          python3 -c "
+          import json, sys
+          with open('lychee/out.md') as f:
+              data = json.load(f)
+          broken = []
+          for source, links in data.get('fail_map', {}).items():
+              for link in links:
+                  url = link.get('url', '')
+                  status = link.get('status', {})
+                  if url.startswith('http://') or url.startswith('https://'):
+                      broken.append((source, url, status))
+          if broken:
+              print(f'Found {len(broken)} broken external link(s):')
+              for source, url, status in broken:
+                  print(f'  {source}: {url} ({status})')
+              sys.exit(1)
+          else:
+              print('All external links are valid.')
+          "

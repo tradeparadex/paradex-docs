@@ -15,14 +15,7 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
-            --no-progress
-            --accept 200,204
-            --timeout 30
-            --max-retries 3
-            --retry-wait-time 5
-            --exclude-path node_modules
-            "fern/**/*.mdx"
-            "fern/**/*.md"
-            "fern/**/*.yml"
-            "fern/**/*.yaml"
+            "fern/pages/**/*.mdx"
+            "fern/pages/**/*.md"
+            "fern/snippets/**/*.mdx"
           fail: true

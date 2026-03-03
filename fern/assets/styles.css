@@ -428,12 +428,20 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   color: var(--paradex-accent);
   display: flex;
   align-items: flex-start;
+  margin-left: 0;
 }
 
-.lp-value-icon img,
-.lp-value-icon svg {
+.lp-value-icon img {
   height: 32px;
   width: auto;
+}
+
+.lp-value-icon svg {
+  height: 32px !important;
+  width: auto !important;
+  fill: var(--paradex-accent) !important;
+  color: var(--paradex-accent) !important;
+  display: inline-block !important;
 }
 
 .lp-value-title {

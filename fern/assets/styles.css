@@ -358,6 +358,10 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: none !important;
 }
 
+.lp-container a > svg {
+  display: none !important;
+}
+
 
 .lp-value-desc {
   color: var(--grayscale-10);
@@ -647,10 +651,6 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 .lp-explore-card:hover {
   background-color: var(--grayscale-a2);
-}
-
-.lp-explore-icon {
-  color: var(--paradex-accent);
 }
 
 .lp-explore-name {

@@ -1,0 +1,34 @@
+# Lychee link checker configuration
+# https://lychee.cli.rs/usage/config/
+
+# Accept these status codes as valid
+accept = [200, 204]
+
+# Timeout per request in seconds
+timeout = 30
+
+# Max retries per request
+max_retries = 3
+
+# Wait time between retries in seconds
+retry_wait_time = 5
+
+# Don't show progress bar
+no_progress = true
+
+# Only check HTTP(S) links — skip local file paths and root-relative doc paths
+include = ["^https?://"]
+
+# Exclude these URL patterns from checking
+exclude = [
+  # Paradex API endpoints (require authentication)
+  "^https://api\\.prod\\.paradex\\.trade",
+  "^https://api\\.testnet\\.paradex\\.trade",
+  # PostHog analytics endpoint
+  "^https://eu\\.i\\.posthog\\.com",
+]
+
+# Exclude these paths from being scanned
+exclude_path = [
+  "node_modules",
+]

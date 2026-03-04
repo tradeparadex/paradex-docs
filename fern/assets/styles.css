@@ -152,12 +152,24 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 /* Right-align REST API, WebSocket API, and Release Notes tabs in header */
-.fern-header-tab-bar {
-  display: flex;
+.fern-header-tabs {
+  width: 100% !important;
 }
 
-.fern-header-tab-bar > a[href*="/api"]:not([href*="/api/"]) {
-  margin-left: auto;
+.fern-header-tabs > div {
+  width: 100% !important;
+}
+
+.fern-header-tabs [role="tablist"] {
+  width: 100% !important;
+}
+
+.fern-header-tabs [role="tablist"] > a {
+  flex: 0 0 auto !important;
+}
+
+.fern-header-tabs [role="tablist"] > a[href^="/api"] {
+  margin-left: auto !important;
 }
 
 /* Product Switcher Styling */

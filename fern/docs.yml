@@ -1141,6 +1141,7 @@ js:
     strategy: lazyOnload
   - path: ./assets/tvl-limit.js
   - path: ./assets/home-page.js
+  - path: ./assets/footer.js
 
 experimental:
   openapi-parser-v3: true

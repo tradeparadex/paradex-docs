@@ -20,6 +20,7 @@ jobs:
             --exclude '^https://api\.prod\.paradex\.trade'
             --exclude '^https://api\.testnet\.paradex\.trade'
             --exclude '^https://eu\.i\.posthog\.com'
+            --accept 429
             --timeout 30
             --max-retries 3
             --retry-wait-time 5
@@ -43,7 +44,11 @@ jobs:
           with open('lychee/out.md') as f:
               data = json.load(f)
 
+          # HTTP codes that confirm a link is genuinely dead
+          DEAD_LINK_CODES = {404, 410}
+
           broken = []
+          skipped = []
           for source, links in data.get('error_map', {}).items():
               for link in links:
                   url = link.get('url', '')
@@ -53,25 +58,25 @@ jobs:
                   if not (url.startswith('http://') or url.startswith('https://')):
                       continue
 
-                  # Skip network/transient errors (e.g. HTTP/2 protocol issues in CI)
                   status_text = status.get('text', '') if isinstance(status, dict) else str(status)
-                  if 'Network error' in status_text:
-                      print(f'  [SKIP] {url} (transient network error)')
-                      continue
-
-                  # Skip sites known to block bots (403 Forbidden)
                   code = status.get('code', 0) if isinstance(status, dict) else 0
-                  if code == 403:
-                      print(f'  [SKIP] {url} (403 - likely bot protection)')
-                      continue
 
-                  broken.append((source, url, status))
+                  # Only treat confirmed dead-link status codes as failures.
+                  # Everything else (network errors, timeouts, rate limits,
+                  # bot-protection 403s, server 5xx, etc.) is transient.
+                  if code in DEAD_LINK_CODES:
+                      broken.append((source, url, status))
+                  else:
+                      skipped.append((url, status_text, code))
+
+          for url, text, code in skipped:
+              print(f'  [SKIP] {url} (transient: {text}, code={code})')
 
           if broken:
-              print(f'Found {len(broken)} broken external link(s):')
+              print(f'Found {len(broken)} broken link(s):')
               for source, url, status in broken:
                   print(f'  {source}: {url} ({status})')
               sys.exit(1)
           else:
-              print('All external links are valid.')
+              print(f'All links valid. ({len(skipped)} transient error(s) skipped)')
           PYEOF

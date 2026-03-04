@@ -9,11 +9,11 @@ The funding mechanism calculates the funding PnL for each open perpetual positio
 
 The accrued funding contributes to the total unrealized PnL (hence to the account value). The accrued funding PnL is calculated in USDC (settlement asset).\
 \
-In order to reduce on-chain transaction spikes, Paradex has a continuous accrual mechanism. Funding is continuously accrued on an account with a perpetual futures position and the entire unrealized funding PnL of that account's position is settles every time the position is adjusted on-chain.
+In order to reduce on-chain transaction spikes, Paradex has a continuous accrual mechanism. Funding is continuously accrued on an account with a perpetual futures position and the entire unrealized funding PnL of that account's position is settled every time the position is adjusted on-chain.
 
 ### Funding Premium
 
-At a given time **t**, the **Funding Premium** represents the 8h amount paid by long positions to short positions. This value expressed in the settlement asset of the instrument (**USDC**) and depends on the Funding Rate using the relationship :
+At a given time **t**, the **Funding Premium** represents the 8h amount paid by long positions to short positions. This value is expressed in the settlement asset of the instrument (**USDC**) and depends on the Funding Rate using the relationship :
 
 $$
 \small \text{Funding~Premium}=\text{Funding~Rate}*\frac{\text{Spot Oracle Price}}{\text{USDC Oracle Price}}

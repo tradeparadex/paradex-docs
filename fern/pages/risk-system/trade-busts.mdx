@@ -8,14 +8,14 @@ Paradex is a hybrid trading system with off-chain (cloud) and on-chain component
 ## Trade flow
 
 ```mermaid
-flowchart LR
+flowchart TD
     A["User submits order"] --> B["Cloud risk check"]
-    B -->|Passes| C["Order matched\nin cloud order book"]
+    B -->|Passes| C["Order matched in cloud order book"]
     B -->|Fails| R1["Order rejected"]
     C --> D["Fill sent to chain"]
-    D --> E["On-chain\nrisk check"]
+    D --> E["On-chain risk check"]
     E -->|Passes| F["Trade settled"]
-    E -->|Fails| G["Trade bust\n(fill reverted)"]
+    E -->|Fails| G["Trade bust (fill reverted)"]
 ```
 
 <Steps>

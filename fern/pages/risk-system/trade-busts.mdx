@@ -46,7 +46,7 @@ Paradex continuously works to minimize trade bust occurrences through tighter al
 
 Trade busts can occur for several reasons:
 
-- **Margin requirement mismatch.** The off-chain and on-chain risk engines evaluate margin requirements using slightly different data snapshots. Differences in oracle prices, funding accruals, or timing between the two checks can cause a trade to pass off-chain validation but fail on-chain.
+- **Rounding differences.** The cloud and chain execute margin checks on the same data snapshots, but use different rounding logic. These small numerical differences can cause a trade to pass off-chain validation but fail on-chain, particularly for orders trading very close to the margin boundary.
 - **Counterparty risk check failure.** A trade involves two parties. Even if your account passes risk checks, the trade can bust if the counterparty's account fails the on-chain margin validation.
 - **Reduce-only order conflicts.** An order marked as `reduce_only` can bust when other order events (such as fills or cancellations) occur between matching and on-chain settlement, causing the `reduce_only` constraint to no longer be satisfiable.
 
@@ -56,6 +56,10 @@ Trade busts can occur for several reasons:
 2. Off-chain balances and positions are rectified to revert the invalid trade.
 3. Affected orders return to their pre-trade state.
 
+### Cascading busts
+
+When a trade bust occurs, other trades from the same account may already be inflight to the chain. Because the bust changes the account's on-chain state, the risk checks that the cloud performed for those inflight trades are no longer valid since the initial conditions have changed. This can cause a series of consecutive busts for the same account.
+
 ### Account resync
 
-When a trade bust occurs due to a mismatch between off-chain and on-chain values, the account is automatically placed into **RESYNC** mode. During resync, the system synchronizes the off-chain state with the on-chain state to prevent further busts caused by the same data discrepancy.
+When a trade bust occurs due to a mismatch between off-chain and on-chain values, the account is automatically placed into **RESYNC** mode. During resync, the system synchronizes the off-chain state with the on-chain state to prevent further busts from being generated. However, trades that are already inflight to the chain will continue to bust since they were submitted before the resync began.

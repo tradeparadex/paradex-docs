@@ -38,6 +38,6 @@ navigation:
   - page: Socialized Losses
     slug: socialized-losses
     path: ../pages/risk-system/socialized-losses.mdx
-  - page: Trade Flow And Busts
+  - page: Trade flow and busts
     slug: trade-busts
     path: ../pages/risk-system/trade-busts.mdx

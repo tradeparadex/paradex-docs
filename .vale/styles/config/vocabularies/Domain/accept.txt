@@ -36,6 +36,7 @@ PnL
 Pyth
 Rabby
 rebalance
+resync
 Rollups
 Scholes
 Sepolia

@@ -52,7 +52,7 @@ Paradex continuously works to minimize trade bust occurrences through tighter al
 
 ### Cascading busts
 
-When a bust occurs, other trades from the same account may already be inflight to the chain. The bust changes the on-chain state, invalidating the risk checks the cloud performed for those inflight trades. This can cause a series of consecutive busts for the same account.
+When a bust occurs, other trades from the same account may already be inflight to the chain. Since the chain is the source of truth, the cloud's risk checks for those inflight trades were based on assumptions that no longer reflect the actual on-chain state. This can cause a series of consecutive busts for the same account.
 
 ### Account resync
 

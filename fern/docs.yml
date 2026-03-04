@@ -991,7 +991,7 @@ analytics:
 
 navbar-links:
   - type: minimal
-    text: $DIME Nation
+    text: Join Community
     url: https://discord.gg/paradex
   - type: filled
     text: Start Trading

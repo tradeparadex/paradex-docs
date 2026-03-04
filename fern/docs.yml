@@ -990,8 +990,8 @@ analytics:
     container-id: GTM-W68Q2TWZ
 
 navbar-links:
-  - type: icon
-    icon: discord
+  - type: minimal
+    icon: fa-brands fa-discord
     url: https://discord.gg/paradex
   - type: filled
     text: Start Trading

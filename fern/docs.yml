@@ -990,8 +990,8 @@ analytics:
     container-id: GTM-W68Q2TWZ
 
 navbar-links:
-  - type: minimal
-    text: $DIME Nation
+  - type: icon
+    icon: discord
     url: https://discord.gg/paradex
   - type: filled
     text: Start Trading

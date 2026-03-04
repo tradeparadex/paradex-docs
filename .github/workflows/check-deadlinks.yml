@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Check for dead links
+      - name: Check for dead external links
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
@@ -32,7 +32,7 @@ jobs:
           fail: false
           format: json
 
-      - name: Evaluate results
+      - name: Evaluate external link results
         run: |
           if [ ! -f lychee/out.md ]; then
             echo "No lychee output found"
@@ -79,4 +79,156 @@ jobs:
               sys.exit(1)
           else:
               print(f'All links valid. ({len(skipped)} transient error(s) skipped)')
+          PYEOF
+
+      - name: Check for dead internal links
+        run: |
+          pip install pyyaml -q
+          python3 << 'PYEOF'
+          import yaml, re, os, sys
+
+          DOCS_YML = "fern/docs.yml"
+          SCAN_DIRS = ["fern/pages", "fern/snippets"]
+          ASSET_EXTENSIONS = {'.svg', '.png', '.jpg', '.jpeg', '.gif', '.css', '.js', '.woff2', '.ico', '.webp'}
+
+          # ── 1. Build valid URL map from docs.yml ──
+
+          with open(DOCS_YML) as f:
+              docs = yaml.safe_load(f)
+
+          tab_slugs = {}
+          for key, val in docs.get('tabs', {}).items():
+              tab_slugs[key] = val.get('slug', key)
+
+          def slugify(name):
+              """Approximate Fern's auto-slug: lowercase, split word boundaries, hyphenate."""
+              s = name.lower()
+              # Insert hyphens at letter-digit boundaries (e.g. "v1" -> "v-1")
+              s = re.sub(r'([a-z])(\d)', r'\1-\2', s)
+              s = re.sub(r'(\d)([a-z])', r'\1-\2', s)
+              # Replace any non-alphanumeric character with a hyphen
+              s = re.sub(r'[^a-z0-9-]', '-', s)
+              s = re.sub(r'-+', '-', s)
+              return s.strip('-')
+
+          def has_internal_content(items):
+              """True if items contain at least one page or API ref."""
+              for item in items:
+                  if isinstance(item, dict):
+                      if 'page' in item or 'api' in item:
+                          return True
+                      if 'section' in item:
+                          if 'path' in item:
+                              return True
+                          if 'contents' in item and has_internal_content(item['contents']):
+                              return True
+              return False
+
+          # Collect URL prefixes for API-reference sections (auto-generated pages)
+          api_prefixes = set()
+
+          def collect_urls(items, prefix, valid_urls):
+              for item in items:
+                  if not isinstance(item, dict):
+                      continue
+                  if 'link' in item:
+                      continue
+
+                  # API reference entries generate pages from OpenAPI specs.
+                  # Register the parent prefix so we can skip those links later.
+                  if 'api' in item:
+                      api_prefixes.add(prefix)
+                      continue
+
+                  if 'page' in item:
+                      slug = item.get('slug', slugify(item['page']))
+                      valid_urls.add(f"{prefix}/{slug}")
+
+                  elif 'section' in item:
+                      slug = item.get('slug')
+                      if slug is None:
+                          slug = slugify(item['section'])
+                      sec_url = prefix if slug == "" else f"{prefix}/{slug}"
+
+                      has_path = 'path' in item
+                      has_pages = 'contents' in item and has_internal_content(item['contents'])
+                      if (has_path or has_pages) and sec_url != prefix:
+                          valid_urls.add(sec_url)
+
+                      if 'contents' in item:
+                          collect_urls(item['contents'], sec_url, valid_urls)
+
+          valid_urls = set()
+          for nav in docs.get('navigation', []):
+              tab_prefix = f"/{tab_slugs.get(nav['tab'], nav['tab'])}"
+              valid_urls.add(tab_prefix)
+              collect_urls(nav.get('layout', []), tab_prefix, valid_urls)
+
+          # Include frontmatter slugs (e.g. custom landing pages)
+          for root, _, files in os.walk('fern/pages'):
+              for fname in files:
+                  if not (fname.endswith('.mdx') or fname.endswith('.md')):
+                      continue
+                  with open(os.path.join(root, fname)) as f:
+                      content = f.read()
+                  fm = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+                  if fm:
+                      m = re.search(r'^slug:\s*(.+)$', fm.group(1), re.MULTILINE)
+                      if m:
+                          slug = m.group(1).strip()
+                          valid_urls.add(slug if slug.startswith('/') else f"/{slug}")
+
+          # Include redirect sources as valid targets
+          for redir in docs.get('redirects', []):
+              src = redir.get('source', '')
+              if ':slug' not in src and src:
+                  valid_urls.add(src.rstrip('/'))
+
+          print(f"Built {len(valid_urls)} valid URL(s) from {DOCS_YML}")
+          if api_prefixes:
+              print(f"API reference prefixes (skipped): {sorted(api_prefixes)}")
+
+          # ── 2. Extract internal links from content files ──
+
+          internal_links = {}  # path -> [(file, line)]
+          for scan_dir in SCAN_DIRS:
+              if not os.path.isdir(scan_dir):
+                  continue
+              for root, _, files in os.walk(scan_dir):
+                  for fname in files:
+                      if not (fname.endswith('.mdx') or fname.endswith('.md')):
+                          continue
+                      fpath = os.path.join(root, fname)
+                      with open(fpath) as f:
+                          for i, line in enumerate(f, 1):
+                              for m in re.finditer(r'href="(/[^"#]*)"', line):
+                                  link = m.group(1).rstrip('/')
+                                  internal_links.setdefault(link, []).append((fpath, i))
+                              for m in re.finditer(r'\]\((/[^)#\s]*)\)', line):
+                                  link = m.group(1).rstrip('/')
+                                  internal_links.setdefault(link, []).append((fpath, i))
+
+          print(f"Found {len(internal_links)} unique internal link(s) to check")
+
+          # ── 3. Validate ──
+
+          broken = []
+          for path in sorted(internal_links.keys()):
+              ext = os.path.splitext(path)[1].lower()
+              if ext in ASSET_EXTENSIONS:
+                  continue
+              # Skip links under API-reference prefixes (pages are auto-generated)
+              if any(path.startswith(p + '/') for p in api_prefixes):
+                  continue
+              if path not in valid_urls:
+                  broken.append(path)
+
+          if broken:
+              print(f"\nFound {len(broken)} broken internal link(s):")
+              for path in broken:
+                  for src_file, src_line in internal_links[path]:
+                      print(f"  {src_file}:{src_line}: {path}")
+              sys.exit(1)
+          else:
+              print("All internal links valid.")
           PYEOF

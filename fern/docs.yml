@@ -195,7 +195,7 @@ navigation:
               - page: TP/SL
                 slug: tpsl-order
                 path: ./pages/trading/placing-orders/order-types/tp-sl.mdx
-          - page: Order Instuctions
+          - page: Order Instructions
             path: ./pages/trading/placing-orders/order-instructions.mdx
             slug: order-instructions
           - page: VWAP Price Protection for Market Orders

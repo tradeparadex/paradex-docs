@@ -1,15 +1,42 @@
 ---
-title: Trade Flow & Busts
+title: Trade flow and busts
+subtitle: How trades move from order submission to on-chain settlement, and when they can be reversed.
 ---
 
-Paradex is a hybrid trading system with off-chain (cloud) and on-chain components. The matching engine runs on the cloud. The users interact with it by submitting orders. The cloud assesses if the order causes the account to exceed risk limits (account value must not be below initial margin requirement) in which case cloud rejects the order. This check relies on the composition of the portfolio (collateral + positions + orders) as well as market data (e.g. external oracle price, funding data etc).
+Paradex is a hybrid trading system with off-chain (cloud) and on-chain components. The matching engine runs in the cloud for performance, while the chain provides independent trade validation. In rare cases, a trade that passes off-chain checks can be rejected on-chain, resulting in a **trade bust**.
 
-Once the order crosses against a matching order in the cloud order book, a fill is sent to the chain. The off-chain account balances are updated and the user can proceed with trading which gives a high-performance exchange experience.
+## Trade flow
 
-The chain independently checks the new account composition and can reject the trade when the account would violate the initial margin requirement if the trade had happened. Although the cloud risk assessment is usually more conservative than on-chain, the independent on-chain risk check can result in a rejection of the trade.
+<Steps>
+  <Step title="Order submission">
+    A user submits an order to the cloud matching engine. The cloud evaluates whether the order would cause the account to exceed risk limits — specifically, the [Initial Margin Requirement](cross-margin-requirement#initial-margin-requirement-imr). This check considers the full portfolio composition (collateral, positions, and orders) along with market data such as oracle prices and funding rates.
 
-If this happens, the account off-chain data is rectified to revert the impact of the invalid trade.
+    If the account would violate the requirement, the order is rejected. See [Order Risk Check](paradex-risk-checks#order-risk-check) for details.
+  </Step>
+  <Step title="Order matching">
+    When the order crosses against a matching order in the cloud order book, a fill is generated and sent to the chain. Off-chain account balances update immediately, allowing the user to continue trading without waiting for on-chain confirmation.
+  </Step>
+  <Step title="On-chain validation">
+    The chain independently verifies the new account composition. If the trade would cause the account to violate the Initial Margin Requirement, the chain rejects it — even though the off-chain check passed.
 
-A significant amount of our focus is currently directed towards minimizing the occurrence of trade busts in order to make this kind of risk significantly low.
+    The cloud risk assessment is typically more conservative than the on-chain check, so rejections are uncommon.
+  </Step>
+</Steps>
 
-####
+## Trade busts
+
+A trade bust occurs when the chain rejects a trade that was already matched off-chain. When this happens, the off-chain account data is reverted to undo the impact of the invalid trade.
+
+<Note>
+Paradex continuously works to minimize trade bust occurrences through tighter alignment between off-chain and on-chain risk checks.
+</Note>
+
+### Why busts happen
+
+The off-chain and on-chain risk engines evaluate margin requirements using slightly different data snapshots. Differences in oracle prices, funding accruals, or timing between the two checks can occasionally cause a trade to pass off-chain validation but fail on-chain.
+
+### What happens during a bust
+
+1. The chain rejects the fill during on-chain validation.
+2. Off-chain balances and positions are rectified to revert the invalid trade.
+3. Affected orders return to their pre-trade state.

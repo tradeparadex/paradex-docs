@@ -1,0 +1,91 @@
+---
+title: v1.118
+description: "Keep orderbook spread updates in sync with orderbook updates."
+---
+
+<Callout intent="info">
+  **Oct 27th–Oct 31st, 2025** — Keep orderbook spread updates in sync with orderbook updates.
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+      <Accordion title="v1.118.6 — Oct 31st" defaultOpen={true}>
+
+      ### 🖥️ UI Updates
+      * Keep orderbook spread updates in sync with orderbook updates.
+
+      </Accordion>
+
+      <Accordion title="v1.118.5 — Oct 30th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * All API responses include standard rate limiting headers i.e `X-RateLimit-Limit` , `X-RateLimit-Remaining`, `X-RateLimit-Reset`, `X-Ratelimit-Window`, `Retry-After`.
+
+      </Accordion>
+
+      <Accordion title="v1.118.3 — Oct 29th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Fixed validation to ensure `limit positional Take Profit and Stop Loss (TPSL)` orders cannot be submitted without both trigger price and limit price specified.
+
+      </Accordion>
+
+      <Accordion title="v1.118.1 — Oct 28th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Mobile: Added `TPSL Trigger Price`, `Avg Fill Price`, `Status` and `Cancel Reason` information to orders history tab.
+      * Spreads are now always calculated from BBO instead of aggregated orderbook.
+      * Added ability to modify `Take Profit and Stop Loss (TPSL)` orders directly on the `TradingView` chart by dragging order lines to a new trigger price level.
+      * Order modifications on the TradingView chart now update instantly when an order line is dragged to a new price.
+
+      </Accordion>
+
+      <Accordion title="v1.118.0 — Oct 27th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Mobile: Added Order History viewing functionality.
+
+      </Accordion>
+
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.118.6-rc.1 — Oct 31st" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Keep orderbook spread updates in sync with orderbook updates.
+
+      </Accordion>
+
+      <Accordion title="v1.118.5-rc.1 — Oct 30th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * All API responses include standard rate limiting headers i.e `X-RateLimit-Limit` , `X-RateLimit-Remaining`, `X-RateLimit-Reset`, `X-Ratelimit-Window`, `Retry-After`.
+
+      </Accordion>
+
+      <Accordion title="v1.118.3-rc.1 — Oct 29th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Fixed validation to ensure `limit positional Take Profit and Stop Loss (TPSL)` orders cannot be submitted without both trigger price and limit price specified.
+
+      </Accordion>
+
+      <Accordion title="v1.118.1-rc.1 — Oct 28th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Mobile: Added `TPSL Trigger Price`, `Avg Fill Price`, `Status` and `Cancel Reason` information to orders history tab.
+      * Spreads are now always calculated from BBO instead of aggregated orderbook.
+      * Added ability to modify `Take Profit and Stop Loss (TPSL)` orders directly on the `TradingView` chart by dragging order lines to a new trigger price level.
+      * Order modifications on the TradingView chart now update instantly when an order line is dragged to a new price.
+
+      </Accordion>
+
+      <Accordion title="v1.118.0-rc.1 — Oct 25th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Mobile: Added Order History viewing functionality.
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

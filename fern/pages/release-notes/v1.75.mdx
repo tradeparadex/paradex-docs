@@ -1,0 +1,66 @@
+---
+title: v1.75
+description: "Add support for Close All positions button."
+---
+
+<Callout intent="info">
+  **Jan 02nd–Jan 3rd, 2025** — Add support for Close All positions button.
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+      <Accordion title="v1.75.6 — Jan 3rd" defaultOpen={true}>
+
+      ### 🖥️ UI Updates
+      * Add support for `Close All` positions button..
+
+      </Accordion>
+
+      <Accordion title="v1.75.5 — Jan 3rd" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Fix trading view chart not updating in real time.
+
+      </Accordion>
+
+      <Accordion title="v1.75.0 — Jan 02nd" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Show Max Slippage in Stop Market, Edit TPSL and Market Close forms.
+      * Add Realized P&L to Trade History table.
+      * Improve visibility of TPSL column in Positions table.
+      * User now can see depositors count on vault card on mobile.
+      * Age value removed from the mobile card.
+      * Added USD estimation in Take Profit / Stop Loss modal.
+
+      ### ⚙️ Engine Updates
+      * Add `realized_pnl` attribute to `/fills` API and to `fills.{market}` WebSocket channel. The attribute is calculated only for new trades.
+
+      </Accordion>
+
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.75.0-rc.4 — Jan 01st" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Add option to choose between mark and last price on trading view.
+      * Show Max Slippage in Stop Market, Edit TPSL and Market Close forms.
+      * Add Realized P&L to Trade History table.
+
+      ### ⚙️ Engine Updates
+      * Add `realized_pnl` attribute to `/fills` API and to `fills.{market}` WebSocket channel. The attribute is calculated only for new trades.
+
+      </Accordion>
+
+      <Accordion title="v1.75.0-rc.3 — Dec 30th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Improve visibility of TPSL column in Positions table.
+      * User now can see depositors count on vault card on mobile.
+      * Age value removed from the mobile card.
+      * Added USD estimation in Take Profit / Stop Loss modal.
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

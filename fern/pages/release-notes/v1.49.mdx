@@ -1,0 +1,37 @@
+---
+title: v1.49
+description: "added Interest and Clamp rates to GET /markets API, and more."
+---
+
+<Callout intent="info">
+  **June 28th, 2024** — added Interest and Clamp rates to GET /markets API, and more.
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+
+      ## v1.49.1 — June 28th
+
+      ### ⚙️ Engine Updates
+      * added Interest and Clamp rates to GET /markets API
+
+      ### 🖥️ UI Updates
+      * Fixed Analytics market dropdown menu overflow on Points page, user can now scroll the markets list
+
+      * Added `SETTLE_MARKET` transaction type for GET /transactions response
+      * Updated GET /markets API endpoint with new fields
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.49.1-rc.1 — June 27th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * Changed Funding Rate calculation by applying Interest Rate clamping
+      * Changed Funding Premium calculation to be derived from Funding Rate
+
+      ### 🖥️ UI Updates
+      * Fixed Analytics market dropdown menu overflow on Points page, user can now scroll the markets list
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

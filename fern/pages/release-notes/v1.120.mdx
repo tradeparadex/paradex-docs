@@ -1,0 +1,67 @@
+---
+title: v1.120
+description: "Trigger sound effect when there's a fill, can be disabled via notification setting."
+---
+
+<Callout intent="info">
+  **Nov 10th–Nov 12th, 2025** — Trigger sound effect when there's a fill, can be disabled via notification setting.
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+      <Accordion title="v1.120.3 — Nov 12th" defaultOpen={true}>
+
+      ### 🖥️ UI Updates
+      * Trigger sound effect when there's a fill, can be disabled via notification setting.
+
+      </Accordion>
+
+      <Accordion title="v1.120.1 — Nov 11th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * Market summary now includes historically populated `open_interest` data.
+
+      </Accordion>
+
+      <Accordion title="v1.120.0 — Nov 10th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * `TPSL` Modal can now be dragged and repositioned on screen for better visibility.
+
+      ### ⚙️ Engine Updates
+      * Fixed issue where all `TWAP` orders were canceled if any sub-order was canceled due to `exceeded slippage`.
+      * Disabled maximum slippage check for `LIMIT` orders.
+      * Fixed race condition when modifying `TP/SL` orders that could cause the account to become stuck and prevent new order creation.
+
+      </Accordion>
+
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.120.3-rc.1 — Nov 12th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Trigger sound effect when there's a fill, can be disabled via notification setting.
+
+      </Accordion>
+
+      <Accordion title="v1.120.1-rc.1 — Nov 11th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * Market summary now includes historically populated `open_interest` data.
+
+      </Accordion>
+
+      <Accordion title="v1.120.0-rc.1 — Nov 7th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * `TPSL` Modal can now be dragged and repositioned on screen for better visibility.
+
+      ### ⚙️ Engine Updates
+      * Fixed issue where all `TWAP` orders were canceled if any sub-order was canceled due to `exceeded slippage`.
+      * Disabled maximum slippage check for `LIMIT` orders.
+      * Fixed race condition when modifying `TP/SL` orders that could cause the account to become stuck and prevent new order creation.
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

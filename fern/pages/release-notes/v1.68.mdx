@@ -1,0 +1,61 @@
+---
+title: v1.68
+description: "Max visible toast update to 2 on desktop and 1 on mobile, and more."
+---
+
+<Callout intent="info">
+  **Nov13th–Nov 19th, 2024** — Max visible toast update to 2 on desktop and 1 on mobile, and more.
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+      <Accordion title="v1.68.3 — Nov 19th" defaultOpen={true}>
+
+      ### 🖥️ UI Updates
+      * Max visible toast update to 2 on desktop and 1 on mobile.
+      * Display season volume with points summary.
+      * Include affiliate and discretionary in community XP on history tab.
+
+      </Accordion>
+
+      <Accordion title="v1.68.0 — Nov13th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Add ability to attach Take Profit/ Stop Loss to a Market or Limit order in Order Builder component
+      * Vaults
+      * Max vault name length is now 15 symbols
+      * Trade History is now available in the vault page.
+      * Add funding 8hr to Mobile trade summary page.
+      * In Markets Menu the `-PERP` is now omitted from market name.
+
+      ### ⚙️ Engine Updates
+      * Support TPSL with parent order.
+      * Vaults
+      * In GET /v1/vaults/summaries endpoint `tvl` was renamed to `net_deposits` and continues to indicate the net deposits in USDC.
+      * Max vault name length is now 15 symbols.
+
+      </Accordion>
+
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.68.0-rc.3 — Nov 8th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Simplified design across entire application
+
+      </Accordion>
+
+      <Accordion title="v1.68.0-rc.1 — Nov 7th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Add ability to attach Take Profit/ Stop Loss to a Market or Limit order in Order Builder component.
+      * Add funding 8hr to Mobile trade summary page.
+      * In Markets Menu the -PERP is now omitted from market name
+
+      ### ⚙️ Engine Updates
+      * Support TPSL with parent order.
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

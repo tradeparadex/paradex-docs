@@ -1,0 +1,47 @@
+---
+title: v1.38
+description: "Fixed Notification Center positioning and prices on market summary api and websockets are now returned as empty strin.."
+---
+
+<Callout intent="info">
+  **April 24th–April 26th, 2024** — Fixed Notification Center positioning and prices on market summary api and websockets are now returned as empty strin..
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+      <Accordion title="v1.38.2 — April 26th" defaultOpen={true}>
+
+      ### 🖥️ UI Updates
+      * Fixed Notification Center positioning
+
+      ### ⚙️ Engine Updates
+      * Prices on market summary API and WebSockets are now returned as empty string when not available
+
+      </Accordion>
+
+      <Accordion title="v1.38.1 — April 24th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Position sizes are now displayed consistently as absolute value throughout the app
+
+      ### ⚙️ Engine Updates
+      * Expose new field `trade_type` to “GET v1/trades” REST endpoint + “trades.{MARKET}” WS channel response
+      *   Expanded Data: `/v1/fills` & `/trades` now include positions changes due to liquidation, alongside regular fills
+
+      </Accordion>
+
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.38.0 — April 24th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Position sizes are now displayed consistently as absolute value throughout the app
+
+      ### ⚙️ Engine Updates
+      * Prices on “GET v1/markets/summary” will be returned as empty when missing
+      * Expose new field `trade_type` to “GET v1/trades” REST endpoint + “trades.{MARKET}” WS channel response
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

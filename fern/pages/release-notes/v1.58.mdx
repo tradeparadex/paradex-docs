@@ -1,0 +1,47 @@
+---
+title: v1.58
+description: "Show/hide, enable/disable actions create/deposit/withdraw/close depending on which user is connected, and more."
+---
+
+<Callout intent="info">
+  **Sept 5th–Sept 4th, 2024** — Show/hide, enable/disable actions create/deposit/withdraw/close depending on which user is connected, and more.
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+      <Accordion title="v1.58.0 — Sept 4th" defaultOpen={true}>
+
+      ### 🖥️ UI Updates
+      * Show/hide, enable/disable actions create/deposit/withdraw/close depending on which user is connected.
+      * Fix footer on trade page
+
+      ### ⚙️ Engine Updates
+      * Sub-Accounts and account info endpoints now return sub-account derivation path
+
+      </Accordion>
+
+      <Accordion title="v1.58.2 — Sept 5th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Fixed issue with TradingView timeframe being set to maximum zoom-in on page load. Now an appropriate timeframe is displayed on page load. Manually doing "Reset chart view" after page load is no longer required.
+
+      </Accordion>
+
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.58.0-rc.3 — Aug 31st" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Fix footer on trade page.
+
+      </Accordion>
+
+      <Accordion title="v1.58.0-rc.1 — Aug 29th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * Provide partial liquidation configuration information via `GET /system/config/` API.
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

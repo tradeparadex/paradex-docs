@@ -1,0 +1,97 @@
+---
+title: v1.119
+description: "Enhanced balance_event WebSocket feed to include detailed information on all balance change types, aligning its outpu.."
+---
+
+<Callout intent="info">
+  **Nov 3rd–Nov 7th, 2025** — Enhanced balance_event WebSocket feed to include detailed information on all balance change types, aligning its outpu..
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+      <Accordion title="v1.119.8 — Nov 7th" defaultOpen={true}>
+
+      ### ⚙️ Engine Updates
+      * Enhanced `balance_event` WebSocket feed to include detailed information on all `balance` change types, aligning its output with the REST API.
+
+      </Accordion>
+
+      <Accordion title="v1.119.6 — Nov 7th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Update `PERPETUAL OPTION` spreads to be unaggregated and calculated relative to the underlying price.
+
+      </Accordion>
+
+      <Accordion title="v1.119.3 — Nov 5th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Always show unaggregated spreads, including `RPI` prices.
+      * Increased the number of visible rows in the `Trade History` table.
+      * Added a new tab on the `XP` page to view the `live` feed of public `XP transfers`.
+
+      ### ⚙️ Engine Updates
+      * Included `relative_spread` in WebSocket `orderbook` updates.
+      * Anonymize `Public XP` transfers.
+
+      </Accordion>
+
+      <Accordion title="v1.119.2 — Nov 4th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Fixed `signature timestamp` error for orders placed via UI.
+
+      </Accordion>
+
+      <Accordion title="v1.119.0 — Nov 3rd" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * Query public XP Transfers with the new API endpoint: `/xp/public-transfers`.
+
+      </Accordion>
+
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.119.8 — Nov 7th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * Enhanced `balance_event` WebSocket feed to include detailed information on all `balance` change types, aligning its output with the REST API.
+
+      </Accordion>
+
+      <Accordion title="v1.119.6-rc.1 — Nov 6th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Update `PERPETUAL OPTION` spreads to be unaggregated and calculated relative to the underlying price.
+
+      </Accordion>
+
+      <Accordion title="v1.119.3-rc.1 — Nov 5th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Always show unaggregated spreads, including `RPI` prices.
+      * Increased the number of visible rows in the `Trade History` table.
+      * Added a new tab on the `XP` page to view the `live` feed of public `XP transfers`.
+
+      ### ⚙️ Engine Updates
+      * Included `relative_spread` in WebSocket `orderbook` updates.
+      * Anonymize `Public XP` transfers.
+
+      </Accordion>
+
+      <Accordion title="v1.119.2 — Nov 4th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Fixed `signature timestamp` error for orders placed via UI.
+
+      </Accordion>
+
+      <Accordion title="v1.119.0-rc.1 — Oct 31st" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * Query public XP Transfers with the new API endpoint: `/xp/public-transfers`.
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

@@ -1,0 +1,51 @@
+---
+title: v1.81
+description: "Add realized funding to get /fills and positions: realized_positional_pnl now includes realized funding payment."
+---
+
+<Callout intent="info">
+  **Feb 4th–Feb 5th, 2025** — Add realized funding to get /fills and positions: realized_positional_pnl now includes realized funding payment.
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+      <Accordion title="v1.81.2 — Feb 5th" defaultOpen={true}>
+
+      ### ⚙️ Engine Updates
+      * Add realized funding to get /fills.
+      * Positions: `realized_positional_pnl` now includes realized funding payment.
+
+      </Accordion>
+
+      <Accordion title="v1.81.1 — Feb 4th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Positions: fix breakeven price formula for short positions.
+      * Fix `Realized P&L` missing if chain `tx` has not been processed yet.
+      * `Portfolio Greeks` renamed to "Risk".
+      * Fix empty twitter handle on XP leaderboard.
+
+      </Accordion>
+
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.81.2-rc.1 — Feb 5th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * Add realized funding to get /fills.
+      * Positions: `realized_positional_pnl` now includes realized funding payment.
+
+      </Accordion>
+
+      <Accordion title="v1.81.1-rc.1 — Feb 4th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Positions: fix breakeven price formula for short positions.
+      * Fix `Realized P&L` missing if chain `tx` has not been processed yet.
+      * `Portfolio Greeks` renamed to "Risk".
+      * Fix empty twitter handle on XP leaderboard.
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

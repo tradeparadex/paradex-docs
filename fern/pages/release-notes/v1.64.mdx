@@ -1,0 +1,67 @@
+---
+title: v1.64
+description: "Improved vault name input placeholder when creating a new vault, and more."
+---
+
+<Callout intent="info">
+  **Oct 16th, 2024** — Improved vault name input placeholder when creating a new vault, and more.
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+
+      ## v1.64.0 — Oct 16th
+
+      ### 🖥️ UI Updates
+      * Improved vault name input placeholder when creating a new vault
+      * Fixed a bug where straight lines would not be drawn in vaults performance charts
+      * Added 3X points boost badge to the vaults list
+      * Allow user to aggregate order book prices by tick size.
+      * Fixed incorrect `vi` translation for TWAP on Trade Page
+      * Improve leverage slider to allow selecting percentage with USD amount.
+
+      ### ⚙️ Engine Updates
+      * Transfer API and WS will now include `direction`, `vault_address` and `vault_unwind_completion_percentage` fields.
+      * Added `price_tick` parameter to orderbook snapshot WebSocket for tick aggregation.
+
+      ### 🖥️ UI Updates
+      * Docs updated for orderbook `price_tick` option
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.64.0-rc.5 — Oct 15th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Vaults can now be closed
+
+      </Accordion>
+
+      <Accordion title="v1.64.0-rc.2 — Oct 15th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Improved vault name input placeholder when creating a new vault
+      * Fixed a bug where straight lines would not be drawn in vaults performance charts
+      * Added 3X points boost badge to the vaults list
+      * Allow user to aggregate order book prices by tick size.
+      * Fixed incorrect `vi` translation for TWAP on Trade Page
+
+      ### ⚙️ Engine Updates
+      * Rename cancel reason `PRICE_OUTSIDE_BANDS` to `EXCEEDS_MAX_SLIPPAGE`, default slippage is price band.
+
+      ### 🖥️ UI Updates
+      * Docs updated for orderbook `price_tick` option
+
+      </Accordion>
+
+      <Accordion title="v1.64.0-rc.1 — Oct 13th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * Improve leverage slider to allow selecting percentage with USD amount.
+
+      ### ⚙️ Engine Updates
+      * Transfer API and WS will now include `direction`, `vault_address` and `vault_unwind_completion_percentage` fields.
+      * Added `price_tick parameter` to orderbook snapshot WebSocket for tick aggregation.
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

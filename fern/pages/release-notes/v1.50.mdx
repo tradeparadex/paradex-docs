@@ -1,0 +1,62 @@
+---
+title: v1.50
+description: "Affiliate fee discount reduced from 20% to 10%."
+---
+
+<Callout intent="info">
+  **July 3rd–July 9th, 2024** — "Affiliate" fee discount reduced from 20% to 10%.
+</Callout>
+
+<Tabs>
+  <Tab title="🟢 Prod">
+      <Accordion title="v1.50.4 — July 9th" defaultOpen={true}>
+
+      ### 🖥️ UI Updates
+      * "Affiliate" fee discount reduced from 20% to 10%
+
+      </Accordion>
+
+      <Accordion title="v1.50.3 — July 8th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * New endpoint `/batch-orders` added to enable bulk order placement.
+      * Deprecated `oracle_price` field removed from `/markets/summary` API.
+
+      ### 🖥️ UI Updates
+      * "Post only" and "TIF" tooltips no longer obstruct the Submit button in the Order Builder.
+
+      * API docs update for deprecated `oracle_price` field
+
+      </Accordion>
+
+      <Accordion title="v1.50.0 — July 3rd" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * Introduced interest clamping of Funding Rate.
+      * Also changed Mark price to be calculated on Fair Basis and Funding Premium to be calculated from Funding Rate
+
+      </Accordion>
+
+  </Tab>
+  <Tab title="🟡 Testnet">
+      <Accordion title="v1.50.4-rc.3 — July 9th" defaultOpen={false}>
+
+      ### 🖥️ UI Updates
+      * "Affiliate" fee discount reduced from 20% to 10%
+
+      </Accordion>
+
+      <Accordion title="v1.50.3-rc.1 — July 5th" defaultOpen={false}>
+
+      ### ⚙️ Engine Updates
+      * New endpoint `/batch-orders` added to enable bulk order placement.
+      * USDC-USD price tick now published alongside USDC, providing more accurate market data.
+      * Deprecated `oracle_price` field removed from `/markets/summary` API.
+
+      ### 🖥️ UI Updates
+      * "Post only" and "TIF" tooltips no longer obstruct the Submit button in the Order Builder.
+
+      </Accordion>
+
+  </Tab>
+</Tabs>

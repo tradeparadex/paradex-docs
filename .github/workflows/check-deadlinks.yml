@@ -42,7 +42,7 @@ jobs:
           with open('lychee/out.md') as f:
               data = json.load(f)
           broken = []
-          for source, links in data.get('fail_map', {}).items():
+          for source, links in data.get('error_map', {}).items():
               for link in links:
                   url = link.get('url', '')
                   status = link.get('status', {})

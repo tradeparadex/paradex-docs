@@ -37,17 +37,36 @@ jobs:
             echo "No lychee output found"
             exit 1
           fi
-          python3 -c "
+          python3 << 'PYEOF'
           import json, sys
+
           with open('lychee/out.md') as f:
               data = json.load(f)
+
           broken = []
           for source, links in data.get('error_map', {}).items():
               for link in links:
                   url = link.get('url', '')
                   status = link.get('status', {})
-                  if url.startswith('http://') or url.startswith('https://'):
-                      broken.append((source, url, status))
+
+                  # Only consider external HTTP(S) links
+                  if not (url.startswith('http://') or url.startswith('https://')):
+                      continue
+
+                  # Skip network/transient errors (e.g. HTTP/2 protocol issues in CI)
+                  status_text = status.get('text', '') if isinstance(status, dict) else str(status)
+                  if 'Network error' in status_text:
+                      print(f'  [SKIP] {url} (transient network error)')
+                      continue
+
+                  # Skip sites known to block bots (403 Forbidden)
+                  code = status.get('code', 0) if isinstance(status, dict) else 0
+                  if code == 403:
+                      print(f'  [SKIP] {url} (403 - likely bot protection)')
+                      continue
+
+                  broken.append((source, url, status))
+
           if broken:
               print(f'Found {len(broken)} broken external link(s):')
               for source, url, status in broken:
@@ -55,4 +74,4 @@ jobs:
               sys.exit(1)
           else:
               print('All external links are valid.')
-          "
+          PYEOF

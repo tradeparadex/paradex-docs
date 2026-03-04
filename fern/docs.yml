@@ -992,7 +992,6 @@ analytics:
 navbar-links:
   - type: minimal
     text: Join Community
-    icon: fa-brands fa-discord
     url: https://discord.gg/paradex
   - type: filled
     text: Start Trading

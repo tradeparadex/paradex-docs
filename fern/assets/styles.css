@@ -151,12 +151,16 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 /* Right-align REST API, WebSocket API, and Release Notes tabs in header */
+/* Align tabs with the logo by constraining to the same page width */
 .fern-header-tabs {
   width: 100% !important;
 }
 
 .fern-header-tabs > div {
   width: 100% !important;
+  max-width: 1408px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .fern-header-tabs [role="tablist"] {

@@ -1,0 +1,43 @@
+---
+title: v1.103
+description: "Mobile : Users can access positions directly from Trade Summary Page."
+---
+
+<Callout intent="info">
+  **v1.103 — July 2025**
+
+  Mobile : Users can access positions directly from Trade Summary Page.
+</Callout>
+
+<Accordion title="v1.103.6 — Mobile : Users can access positions directly from Trade Summary Page" defaultOpen={true}>
+
+  <Badge color="green">PROD  Jul 17th</Badge> <Badge color="yellow">TESTNET  Jul 17th</Badge>
+
+  **🖥️ UI Updates**
+  -  Mobile : Users can access `positions` directly from `Trade Summary` Page.
+
+</Accordion>
+
+<Accordion title="v1.103.3 — Introduce per market default max slippage. Platform will be using" defaultOpen={false}>
+
+  <Badge color="green">PROD  Jul 16th</Badge> <Badge color="yellow">TESTNET  Jul 15th</Badge>
+
+  **⚙️ Engine Updates**
+  -  Introduce per market `default max slippage`. Platform will be using default max slippage value, if user has not set the max slippage.
+  -  Default Slippage is calculated based on leverage:
+  -  `PERP` markets Leverage: `1/cross_margin_params.imf_base`
+  -  `PERP_OPTION` markets Leverage: `1/cross_margin_params.imf.long_itm`
+  -  Leverage based max slippage defaults:
+  - Exposed `default` market slippage on API `GET /markets` endpoint.
+  - Updated Tick sizes for multiple `PERP` markets as below
+
+</Accordion>
+
+<Accordion title="v1.103.0 — Show Estimated P&L in order builder TPSL form" defaultOpen={false}>
+
+  <Badge color="green">PROD  Jul 14th</Badge> <Badge color="yellow">TESTNET  Jul 11th</Badge>
+
+  **🖥️ UI Updates**
+  -  Show `Estimated P&L` in order builder `TPSL` form.
+
+</Accordion>

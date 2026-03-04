@@ -1,0 +1,37 @@
+---
+title: v1.46
+description: "Trade page navigation bar UX improvements and visual adjustments."
+---
+
+<Callout intent="info">
+  **v1.46 — June 2024**
+
+  Trade page navigation bar UX improvements and visual adjustments.
+</Callout>
+
+<Accordion title="v1.46.3 — Trade page navigation bar UX improvements and visual adjustments" defaultOpen={true}>
+
+  <Badge color="green">PROD  Jun 14th</Badge> <Badge color="yellow">TESTNET  Jun 14th</Badge>
+
+  **🖥️ UI Updates**
+  - Trade page navigation bar UX improvements and visual adjustments
+
+</Accordion>
+
+<Accordion title="v1.46.1 — Funding payments are no longer notified on funding_payments WebSocket" defaultOpen={false}>
+
+  <Badge color="green">PROD  Jun 11th</Badge> <Badge color="yellow">TESTNET  Jun 10th</Badge>
+
+  **⚙️ Engine Updates**
+  - Funding payments are no longer notified on `funding_payments` WebSocket channel if amount is zero (consistently with API behavior)
+  - Added `/referrals/config` endpoints for referral configuration data
+
+  **🖥️ UI Updates**
+  - Sharable P\&L cards for positions
+  - Earn sub nav to group Points and Refer nav links.
+
+  **🐛 Bug Fixes**
+  - Bug fix for intermittent issue where enabling USDC during a deposit would not be reflected immediately.
+  - Fix for `Entry Price` on TradingView showed incorrect value due to summing up `unrealized_funding_pnl` twice
+
+</Accordion>

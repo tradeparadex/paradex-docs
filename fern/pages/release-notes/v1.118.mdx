@@ -1,0 +1,58 @@
+---
+title: v1.118
+description: "Keep orderbook spread updates in sync with orderbook updates."
+---
+
+<Callout intent="info">
+  **v1.118 — Oct 2025**
+
+  Keep orderbook spread updates in sync with orderbook updates.
+</Callout>
+
+<Accordion title="v1.118.6 — Keep orderbook spread updates in sync with orderbook updates" defaultOpen={true}>
+
+  <Badge color="green">PROD  Oct 31st</Badge> <Badge color="yellow">TESTNET  Oct 31st</Badge>
+
+  **🖥️ UI Updates**
+  - Keep orderbook spread updates in sync with orderbook updates.
+
+</Accordion>
+
+<Accordion title="v1.118.5 — All API responses include standard rate limiting headers i.e" defaultOpen={false}>
+
+  <Badge color="green">PROD  Oct 30th</Badge> <Badge color="yellow">TESTNET  Oct 30th</Badge>
+
+  **⚙️ Engine Updates**
+  - All API responses include standard rate limiting headers i.e `X-RateLimit-Limit` , `X-RateLimit-Remaining`, `X-RateLimit-Reset`, `X-Ratelimit-Window`, `Retry-After`.
+
+</Accordion>
+
+<Accordion title="v1.118.3 — Fixed validation to ensure limit positional Take Profit and Stop Loss" defaultOpen={false}>
+
+  <Badge color="green">PROD  Oct 29th</Badge> <Badge color="yellow">TESTNET  Oct 29th</Badge>
+
+  **🖥️ UI Updates**
+  - Fixed validation to ensure `limit positional Take Profit and Stop Loss (TPSL)` orders cannot be submitted without both trigger price and limit price specified.
+
+</Accordion>
+
+<Accordion title="v1.118.1 — Mobile: Added TPSL Trigger Price, Avg Fill Price, Status and Cancel" defaultOpen={false}>
+
+  <Badge color="green">PROD  Oct 28th</Badge> <Badge color="yellow">TESTNET  Oct 28th</Badge>
+
+  **🖥️ UI Updates**
+  - Mobile: Added `TPSL Trigger Price`, `Avg Fill Price`, `Status` and `Cancel Reason` information to orders history tab.
+  - Spreads are now always calculated from BBO instead of aggregated orderbook.
+  - Added ability to modify `Take Profit and Stop Loss (TPSL)` orders directly on the `TradingView` chart by dragging order lines to a new trigger price level.
+  - Order modifications on the TradingView chart now update instantly when an order line is dragged to a new price.
+
+</Accordion>
+
+<Accordion title="v1.118.0 — Mobile: Added Order History viewing functionality" defaultOpen={false}>
+
+  <Badge color="green">PROD  Oct 27th</Badge> <Badge color="yellow">TESTNET  Oct 25th</Badge>
+
+  **🖥️ UI Updates**
+  - Mobile: Added Order History viewing functionality.
+
+</Accordion>

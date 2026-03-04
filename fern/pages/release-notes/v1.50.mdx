@@ -1,0 +1,44 @@
+---
+title: v1.50
+description: "Affiliate fee discount reduced from 20% to 10%."
+---
+
+<Callout intent="info">
+  **v1.50 — July 2024**
+
+  Affiliate fee discount reduced from 20% to 10%.
+</Callout>
+
+<Accordion title="v1.50.4 — 'Affiliate' fee discount reduced from 20% to 10%" defaultOpen={true}>
+
+  <Badge color="green">PROD  Jul 9th</Badge> <Badge color="yellow">TESTNET  Jul 9th (rc.3)</Badge>
+
+  **🖥️ UI Updates**
+  - "Affiliate" fee discount reduced from 20% to 10%
+
+</Accordion>
+
+<Accordion title="v1.50.3 — New endpoint /batch-orders added to enable bulk order placement" defaultOpen={false}>
+
+  <Badge color="green">PROD  Jul 8th</Badge> <Badge color="yellow">TESTNET  Jul 5th</Badge>
+
+  **⚙️ Engine Updates**
+  - New endpoint `/batch-orders` added to enable bulk order placement.
+  - Deprecated `oracle_price` field removed from `/markets/summary` API.
+
+  **🖥️ UI Updates**
+  - "Post only" and "TIF" tooltips no longer obstruct the Submit button in the Order Builder.
+
+  - API docs update for deprecated `oracle_price` field
+
+</Accordion>
+
+<Accordion title="v1.50.0 — Introduced interest clamping of Funding Rate" defaultOpen={false}>
+
+  <Badge color="green">PROD  Jul 3rd</Badge> <Badge color="yellow">TESTNET  Jul 3rd</Badge>
+
+  **⚙️ Engine Updates**
+  - Introduced interest clamping of Funding Rate.
+  - Also changed Mark price to be calculated on Fair Basis and Funding Premium to be calculated from Funding Rate
+
+</Accordion>

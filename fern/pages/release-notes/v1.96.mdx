@@ -1,0 +1,43 @@
+---
+title: v1.96
+description: "Updated Click-on-OB feature to support Pro order types: TWAP and Scaled Order and added funding period to trade page.."
+---
+
+<Callout intent="info">
+  **v1.96 — May 2025**
+
+  Updated Click-on-OB feature to support Pro order types: TWAP and Scaled Order and added funding period to trade page..
+</Callout>
+
+<Accordion title="v1.96.6 — Updated Click-on-OB feature to support Pro order types: TWAP and" defaultOpen={true}>
+
+  <Badge color="green">PROD  May 23rd</Badge> <Badge color="yellow">TESTNET  May 23rd</Badge>
+
+  **🖥️ UI Updates**
+  - Updated Click-on-OB feature to support Pro order types: TWAP and Scaled Order.
+  - Added Funding Period to Trade Page Contract Summary.
+
+</Accordion>
+
+<Accordion title="v1.96.4 — Added option to share realized PnL card from Trade History" defaultOpen={false}>
+
+  <Badge color="green">PROD  May 22nd</Badge> <Badge color="yellow">TESTNET  May 22nd</Badge>
+
+  **🖥️ UI Updates**
+  - Added option to share realized PnL card from Trade History.
+
+</Accordion>
+
+<Accordion title="v1.96.2 — Added a new announcements page where users can view new listings," defaultOpen={false}>
+
+  <Badge color="green">PROD  May 21st</Badge> <Badge color="yellow">TESTNET  May 21st</Badge>
+
+  **🖥️ UI Updates**
+  - Added a new announcements page where users can view new listings, delistings and platform updates.
+
+  **⚙️ Engine Updates**
+  - Orders with status=NEW are visible on `GET /orders` endpoint and available for cancellation.
+  - **Deprecation Notice:** `programs_eligibility` field in GET /account/profile will be removed in the next release; use the referral field instead.
+  - Added a new API endpoint /system/announcements to retrieve platform announcements.
+
+</Accordion>

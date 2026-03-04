@@ -1,0 +1,45 @@
+---
+title: v1.75
+description: "Add support for Close All positions button."
+---
+
+<Callout intent="info">
+  **v1.75 — Jan 2025**
+
+  Add support for Close All positions button.
+</Callout>
+
+<Accordion title="v1.75.6 — Add support for Close All positions button" defaultOpen={true}>
+
+  <Badge color="green">PROD  Jan 3rd</Badge> <Badge color="yellow">TESTNET  Jan 3rd</Badge>
+
+  **🖥️ UI Updates**
+  - Add support for `Close All` positions button..
+
+</Accordion>
+
+<Accordion title="v1.75.5 — Fix trading view chart not updating in real time" defaultOpen={false}>
+
+  <Badge color="green">PROD  Jan 3rd</Badge> <Badge color="yellow">TESTNET  Jan 3rd</Badge>
+
+  **🖥️ UI Updates**
+  - Fix trading view chart not updating in real time.
+
+</Accordion>
+
+<Accordion title="v1.75.0 — Show Max Slippage in Stop Market, Edit TPSL and Market Close forms" defaultOpen={false}>
+
+  <Badge color="green">PROD  Jan 02nd</Badge> <Badge color="yellow">TESTNET  Jan 01st (rc.4)</Badge>
+
+  **🖥️ UI Updates**
+  - Show Max Slippage in Stop Market, Edit TPSL and Market Close forms.
+  - Add Realized P&L to Trade History table.
+  - Improve visibility of TPSL column in Positions table.
+  - User now can see depositors count on vault card on mobile.
+  - Age value removed from the mobile card.
+  - Added USD estimation in Take Profit / Stop Loss modal.
+
+  **⚙️ Engine Updates**
+  - Add `realized_pnl` attribute to `/fills` API and to `fills.{market}` WebSocket channel. The attribute is calculated only for new trades.
+
+</Accordion>

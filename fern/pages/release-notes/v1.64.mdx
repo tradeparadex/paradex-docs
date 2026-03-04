@@ -1,0 +1,31 @@
+---
+title: v1.64
+description: "Improved vault name input placeholder when creating a new vault, and more."
+---
+
+<Callout intent="info">
+  **v1.64 — Oct 2024**
+
+  Improved vault name input placeholder when creating a new vault, and more.
+</Callout>
+
+<Accordion title="v1.64.0 — Improved vault name input placeholder when creating a new vault" defaultOpen={true}>
+
+  <Badge color="green">PROD  Oct 16th</Badge> <Badge color="yellow">TESTNET  Oct 15th (rc.5)</Badge>
+
+  **🖥️ UI Updates**
+  - Improved vault name input placeholder when creating a new vault
+  - Fixed a bug where straight lines would not be drawn in vaults performance charts
+  - Added 3X points boost badge to the vaults list
+  - Allow user to aggregate order book prices by tick size.
+  - Fixed incorrect `vi` translation for TWAP on Trade Page
+  - Improve leverage slider to allow selecting percentage with USD amount.
+
+  **⚙️ Engine Updates**
+  - Transfer API and WS will now include `direction`, `vault_address` and `vault_unwind_completion_percentage` fields.
+  - Added `price_tick` parameter to orderbook snapshot WebSocket for tick aggregation.
+
+  **🖥️ UI Updates**
+  - Docs updated for orderbook `price_tick` option
+
+</Accordion>

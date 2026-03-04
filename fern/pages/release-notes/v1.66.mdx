@@ -1,0 +1,47 @@
+---
+title: v1.66
+description: "Underlying Price is now replaced with Spot Price in markets info on trade page, and more."
+---
+
+<Callout intent="info">
+  **v1.66 — Oct 2024**
+
+  Underlying Price is now replaced with Spot Price in markets info on trade page, and more.
+</Callout>
+
+<Accordion title="v1.66.0 — Underlying Price is now replaced with Spot Price in markets info on" defaultOpen={true}>
+
+  <Badge color="green">PROD  Oct 30th</Badge> <Badge color="yellow">TESTNET  Oct 30th</Badge>
+
+  **🖥️ UI Updates**
+  - `Underlying Price` is now replaced with `Spot Price` in markets info on trade page.
+  - Vaults
+  - Performance metrics P\&L, Max Drawdown and Volume in the vault page now update depending on the selected period in the chart.
+  - Added "number of depositors" to the "vault stats" tab in the vault page.
+  - Vaults are now marked with a color-coded status badge and label when initialising, awaiting deposit or closed.
+  - Added missing translations for lockup and age periods.
+  - "Vault value" (USD) was changed to "TVL" (USDC) in the vaults list and vault page.
+  - "30D Return (APR)" was renamed to "APY" in the vaults list and vault page.
+
+</Accordion>
+
+<Accordion title="v1.66.0 — Vaults" defaultOpen={false}>
+
+  <Badge color="green">PROD  rc.1 — Oct 24th</Badge> <Badge color="yellow">TESTNET  rc.1 — Oct 24th</Badge>
+
+  **🖥️ UI Updates**
+  - Vaults
+  - Performance metrics P\&L, Max Drawdown and Volume in the vault page now update depending on the selected period in the chart.
+  - Added "number of depositors" to the "vault stats" tab in the vault page.
+  - Vaults are now marked with a color-coded status badge and label when initializing, awaiting deposit or closed.
+  - Added missing translations for lockup and age periods.
+  - "Vault value" (USD) was changed to "TVL" (USDC) in the vaults list and vault page.
+  - "30D Return (APR)" was renamed to "APY" in the vaults list and vault page.
+  - `Underlying price` is now replaced with `spot price` in markets info on trade page.
+
+  **⚙️ Engine Updates**
+  - Get `vaults/summary` now returns the number of depositors.
+  - Get `vaults/summary` extend with 24h, 7d and 30d metrics.
+  - TWAP orders - execute first order immediately.
+
+</Accordion>

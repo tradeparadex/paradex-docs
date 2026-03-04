@@ -14,7 +14,7 @@ tabs:
     display-name: Home
     slug: home
   getting-started:
-    display-name: Getting Started
+    display-name: Overview
     slug: overview
   trading:
     display-name: Trading
@@ -47,7 +47,7 @@ navigation:
 
   - tab: getting-started
     layout:
-      - section: Overview
+      - section: Getting Started
         slug: getting-started
         contents:
           - page: What is Paradex?

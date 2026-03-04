@@ -151,6 +151,15 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: none !important;
 }
 
+/* Right-align REST API, WebSocket API, and Release Notes tabs in header */
+.fern-header-tab-bar {
+  display: flex;
+}
+
+.fern-header-tab-bar > a[href*="/api"]:not([href*="/api/"]) {
+  margin-left: auto;
+}
+
 /* Product Switcher Styling */
 @media (min-width: 1024px) {
   div[data-testid="product-dropdown-content"] {

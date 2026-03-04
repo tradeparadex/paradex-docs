@@ -321,8 +321,23 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 
 .lp-container h1,
 .lp-container h2,
-.lp-container h3 {
+.lp-container h3,
+.lp-container .lp-heading-h1,
+.lp-container .lp-heading-h2 {
   font-weight: bold;
+}
+
+/* Span-based headings: replicate native heading styles so Fern does not add hover link buttons */
+.lp-heading-h1 {
+  display: block;
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+.lp-heading-h2 {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1.3;
 }
 
 .lp-container p,
@@ -366,7 +381,9 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 .lp-container .fern-anchor,
 .lp-container h1 a,
 .lp-container h2 a,
-.lp-container h3 a {
+.lp-container h3 a,
+.lp-container .lp-heading-h1 a,
+.lp-container .lp-heading-h2 a {
   pointer-events: none;
 }
 
@@ -386,6 +403,8 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 .lp-container h1 a svg,
 .lp-container h2 a svg,
 .lp-container h3 a svg,
+.lp-container .lp-heading-h1 a svg,
+.lp-container .lp-heading-h2 a svg,
 .lp-container .fern-anchor svg,
 .lp-container .fern-mdx-link svg {
   display: none !important;

@@ -15,7 +15,7 @@ tabs:
     slug: home
   getting-started:
     display-name: Overview
-    slug: overview
+    slug: docs
   trading:
     display-name: Trading
     slug: trading
@@ -1003,25 +1003,27 @@ redirects:
   - source: "/"
     destination: "/home"
 
-  # Redirects from old /docs/ prefix to new /overview/ tab
-  - source: "/docs/getting-started/:slug*"
-    destination: "/overview/getting-started/:slug*"
-  - source: "/docs/xp-referrals/:slug*"
-    destination: "/overview/xp-referrals/:slug*"
-  - source: "/docs"
-    destination: "/overview"
+  # Redirects from old /overview/ prefix to new /docs/ tab
+  - source: "/overview/getting-started/:slug*"
+    destination: "/docs/getting-started/:slug*"
+  - source: "/overview/xp-referrals/:slug*"
+    destination: "/docs/xp-referrals/:slug*"
+  - source: "/overview/:slug*"
+    destination: "/docs/:slug*"
+  - source: "/overview"
+    destination: "/docs"
 
   # Legacy root-level redirects
   - source: "/xp-referrals/:slug*"
-    destination: "/overview/xp-referrals/:slug*"
+    destination: "/docs/xp-referrals/:slug*"
 
-  # Redirect old /getting-started/ URLs to new /overview/ tab
+  # Redirect old /getting-started/ URLs to new /docs/ tab
   - source: "/getting-started/:slug*"
-    destination: "/overview/:slug*"
+    destination: "/docs/:slug*"
 
-  # Redirect old /start/ URLs to new /overview/ tab
+  # Redirect old /start/ URLs to new /docs/ tab
   - source: "/start/:slug*"
-    destination: "/overview/:slug*"
+    destination: "/docs/:slug*"
 
   # Redirect old /docs/trading/ URLs to /trading/ tab
   - source: "/docs/trading/:slug*"
@@ -1072,11 +1074,11 @@ redirects:
   - source: "/documentation/advanced-trading-features/receive-window"
     destination: "/trading/receive-window"
   - source: "/documentation/points-referrals/:slug*"
-    destination: "/overview/xp-referrals/:slug*"
+    destination: "/docs/xp-referrals/:slug*"
   - source: "/documentation/trading/perpetual-options/trading-fees"
     destination: "/trading/trading-fees"
   - source: "/documentation/:slug*"
-    destination: "/overview/:slug*"
+    destination: "/docs/:slug*"
 
   # Legacy /api-reference/ and /websocket-reference/ redirects
   - source: "/api-reference/:slug*"
@@ -1087,9 +1089,9 @@ redirects:
   # Redirect old maintenance page to consolidated trading page
   # Redirect old /home/getting-started/ to /getting-started/getting-started/
   - source: "/home/getting-started/:slug*"
-    destination: "/overview/getting-started/:slug*"
+    destination: "/docs/getting-started/:slug*"
   - source: "/home/xp-referrals/:slug*"
-    destination: "/overview/xp-referrals/:slug*"
+    destination: "/docs/xp-referrals/:slug*"
 
   - source: "/docs/getting-started/maintenance"
     destination: "/trading/maintenance-mode"

@@ -4,31 +4,29 @@ description: "Add realized funding to fills and positions endpoints, now includi
 ---
 
 <Callout intent="info">
-  **🟢 Prod: Feb 4th–Feb 5th, 2025** — Add realized funding to fills and positions endpoints, now including realized funding payment.
+  **v1.81 — Feb 2025**
+
+  Add realized funding to fills and positions endpoints, now including realized funding payment.
 </Callout>
 
-<Accordion title="v1.81.2 — Feb 5th" defaultOpen={true}>
+<Accordion title="v1.81.2 — Add realized funding to get /fills" defaultOpen={true}>
 
-### ⚙️ Engine Updates
-* Add realized funding to get /fills.
-* Positions: `realized_positional_pnl` now includes realized funding payment.
+  <Badge color="green">PROD  Feb 5th</Badge> <Badge color="yellow">TESTNET  Feb 5th</Badge>
 
-<Callout intent="note">
-  **🟡 Testnet (v1.81.2-rc.1): Feb 5th** — Same changes, same date.
-</Callout>
+  **⚙️ Engine Updates**
+  - Add realized funding to get /fills.
+  - Positions: `realized_positional_pnl` now includes realized funding payment.
 
 </Accordion>
 
-<Accordion title="v1.81.1 — Feb 4th" defaultOpen={false}>
+<Accordion title="v1.81.1 — Positions: fix breakeven price formula for short positions" defaultOpen={false}>
 
-### 🖥️ UI Updates
-* Positions: fix breakeven price formula for short positions.
-* Fix `Realized P&L` missing if chain `tx` has not been processed yet.
-* `Portfolio Greeks` renamed to "Risk".
-* Fix empty twitter handle on XP leaderboard.
+  <Badge color="green">PROD  Feb 4th</Badge> <Badge color="yellow">TESTNET  Feb 4th</Badge>
 
-<Callout intent="note">
-  **🟡 Testnet (v1.81.1-rc.1): Feb 4th** — Same changes, same date.
-</Callout>
+  **🖥️ UI Updates**
+  - Positions: fix breakeven price formula for short positions.
+  - Fix `Realized P&L` missing if chain `tx` has not been processed yet.
+  - `Portfolio Greeks` renamed to "Risk".
+  - Fix empty twitter handle on XP leaderboard.
 
 </Accordion>

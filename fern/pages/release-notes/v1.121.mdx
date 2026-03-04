@@ -4,54 +4,52 @@ description: "Removed Max Slippage info under order TP/SL modal."
 ---
 
 <Callout intent="info">
-  **🟢 Prod: Nov 17th–Nov 21st, 2025** — Removed Max Slippage info under order TP/SL modal.
+  **v1.121 — Nov 2025**
+
+  Removed Max Slippage info under order TP/SL modal.
 </Callout>
 
-<Accordion title="v.121.8 — Nov 21st" defaultOpen={true}>
+<Accordion title="v.121.8 — Removed Max Slippage info under order TP/SL modal" defaultOpen={true}>
 
-### 🖥️ UI Updates
-* Removed `Max Slippage` info under order `TP/SL` modal.
+  <Badge color="green">PROD  Nov 21st</Badge> <Badge color="yellow">TESTNET  Nov 21st</Badge>
+
+  **🖥️ UI Updates**
+  - Removed `Max Slippage` info under order `TP/SL` modal.
 
 </Accordion>
 
-<Accordion title="v1.121.5 — Nov 20th" defaultOpen={false}>
+<Accordion title="v1.121.5 — Improved Referral and TAP affiliate pages" defaultOpen={false}>
 
-### 🖥️ UI Updates
-* Improved `Referral` and `TAP` affiliate pages.
+  <Badge color="green">PROD  Nov 20th</Badge> <Badge color="yellow">TESTNET  Nov 20th</Badge>
 
-### ⚙️ Engine Updates
-* TAP status added to the `account/profile` API endpoint.
-* Added new endpoints: `/orderbook/{market}/interactive` and `/bbo/{market}/interactive` to access interactive orderbook and `BBO`.
+  **🖥️ UI Updates**
+  - Improved `Referral` and `TAP` affiliate pages.
 
-<Callout intent="note">
-  **🟡 Testnet (v1.121.5-rc.1): Nov 20th** — Same changes, same date.
-</Callout>
+  **⚙️ Engine Updates**
+  - TAP status added to the `account/profile` API endpoint.
+  - Added new endpoints: `/orderbook/{market}/interactive` and `/bbo/{market}/interactive` to access interactive orderbook and `BBO`.
 
 </Accordion>
 
-<Accordion title="v1.121.2 — Nov 18th" defaultOpen={false}>
+<Accordion title="v1.121.2 — Include Funding and Realized PnL for Liquidation Fills" defaultOpen={false}>
 
-### 🖥️ UI Updates
-* Include `Funding` and `Realized PnL` for `Liquidation Fills`.
-* Use `best bid/offer` for `MAX_SLIPPAGE` calculation for mark_price.
-* Orders from UI - use a new request field `max_slippage_price` for `Market` orders based on calculated slippage price against `BBO`
+  <Badge color="green">PROD  Nov 18th</Badge> <Badge color="yellow">TESTNET  Nov 17th</Badge>
 
-### ⚙️ Engine Updates
-* `TP/SL` orders are not subject to max user defined slippage - These orders now use `price_bands` as configured for individual markets.
+  **🖥️ UI Updates**
+  - Include `Funding` and `Realized PnL` for `Liquidation Fills`.
+  - Use `best bid/offer` for `MAX_SLIPPAGE` calculation for mark_price.
+  - Orders from UI - use a new request field `max_slippage_price` for `Market` orders based on calculated slippage price against `BBO`
 
-<Callout intent="note">
-  **🟡 Testnet (v1.121.2-rc.1): Nov 17th** — Same changes.
-</Callout>
+  **⚙️ Engine Updates**
+  - `TP/SL` orders are not subject to max user defined slippage - These orders now use `price_bands` as configured for individual markets.
 
 </Accordion>
 
-<Accordion title="v1.121.0 — Nov 17th" defaultOpen={false}>
+<Accordion title="v1.121.0 — Users can now transfer up to 50% S2 XP and 100% of Preseason and S1 XP" defaultOpen={false}>
 
-### 🖥️ UI Updates
-* Users can now transfer up to `50% S2 XP` and `100% of Preseason and S1 XP`.
+  <Badge color="green">PROD  Nov 17th</Badge> <Badge color="yellow">TESTNET  Nov 14th</Badge>
 
-<Callout intent="note">
-  **🟡 Testnet (v1.121.0-rc.1): Nov 14th** — Same changes.
-</Callout>
+  **🖥️ UI Updates**
+  - Users can now transfer up to `50% S2 XP` and `100% of Preseason and S1 XP`.
 
 </Accordion>

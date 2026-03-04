@@ -4,42 +4,41 @@ description: "Affiliate fee discount reduced from 20% to 10%."
 ---
 
 <Callout intent="info">
-  **🟢 Prod: July 3rd–July 9th, 2024** — "Affiliate" fee discount reduced from 20% to 10%.
+  **v1.50 — July 2024**
+
+  Affiliate fee discount reduced from 20% to 10%.
 </Callout>
 
-<Accordion title="v1.50.4 — July 9th" defaultOpen={true}>
+<Accordion title="v1.50.4 — "Affiliate" fee discount reduced from 20% to 10%" defaultOpen={true}>
 
-### 🖥️ UI Updates
-* "Affiliate" fee discount reduced from 20% to 10%
+  <Badge color="green">PROD  Jul 9th</Badge> <Badge color="yellow">TESTNET  Jul 9th (rc.3)</Badge>
 
-<Callout intent="note">
-  **🟡 Testnet (v1.50.4-rc.3): July 9th** — Same changes, same date.
-</Callout>
+  **🖥️ UI Updates**
+  - "Affiliate" fee discount reduced from 20% to 10%
 
 </Accordion>
 
-<Accordion title="v1.50.3 — July 8th" defaultOpen={false}>
+<Accordion title="v1.50.3 — New endpoint /batch-orders added to enable bulk order placement" defaultOpen={false}>
 
-### ⚙️ Engine Updates
-* New endpoint `/batch-orders` added to enable bulk order placement.
-* Deprecated `oracle_price` field removed from `/markets/summary` API.
+  <Badge color="green">PROD  Jul 8th</Badge> <Badge color="yellow">TESTNET  Jul 5th</Badge>
 
-### 🖥️ UI Updates
-* "Post only" and "TIF" tooltips no longer obstruct the Submit button in the Order Builder.
+  **⚙️ Engine Updates**
+  - New endpoint `/batch-orders` added to enable bulk order placement.
+  - Deprecated `oracle_price` field removed from `/markets/summary` API.
 
-* API docs update for deprecated `oracle_price` field
+  **🖥️ UI Updates**
+  - "Post only" and "TIF" tooltips no longer obstruct the Submit button in the Order Builder.
 
-<Callout intent="note">
-  **🟡 Testnet (v1.50.3-rc.1): July 5th** — Same changes, plus:
-  * USDC-USD price tick now published alongside USDC, providing more accurate market data.
-</Callout>
+  - API docs update for deprecated `oracle_price` field
 
 </Accordion>
 
-<Accordion title="v1.50.0 — July 3rd" defaultOpen={false}>
+<Accordion title="v1.50.0 — Introduced interest clamping of Funding Rate" defaultOpen={false}>
 
-### ⚙️ Engine Updates
-* Introduced interest clamping of Funding Rate.
-* Also changed Mark price to be calculated on Fair Basis and Funding Premium to be calculated from Funding Rate
+  <Badge color="green">PROD  Jul 3rd</Badge> <Badge color="yellow">TESTNET  Jul 3rd</Badge>
+
+  **⚙️ Engine Updates**
+  - Introduced interest clamping of Funding Rate.
+  - Also changed Mark price to be calculated on Fair Basis and Funding Premium to be calculated from Funding Rate
 
 </Accordion>

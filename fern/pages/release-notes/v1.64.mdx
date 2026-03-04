@@ -4,27 +4,28 @@ description: "Improved vault name input placeholder when creating a new vault, a
 ---
 
 <Callout intent="info">
-  **🟢 Prod: Oct 16th, 2024** — Improved vault name input placeholder when creating a new vault, and more.
+  **v1.64 — Oct 2024**
+
+  Improved vault name input placeholder when creating a new vault, and more.
 </Callout>
 
-## v1.64.0 — Oct 16th
+<Accordion title="v1.64.0 — Improved vault name input placeholder when creating a new vault" defaultOpen={true}>
 
-### 🖥️ UI Updates
-* Improved vault name input placeholder when creating a new vault
-* Fixed a bug where straight lines would not be drawn in vaults performance charts
-* Added 3X points boost badge to the vaults list
-* Allow user to aggregate order book prices by tick size.
-* Fixed incorrect `vi` translation for TWAP on Trade Page
-* Improve leverage slider to allow selecting percentage with USD amount.
+  <Badge color="green">PROD  Oct 16th</Badge> <Badge color="yellow">TESTNET  Oct 15th (rc.5)</Badge>
 
-### ⚙️ Engine Updates
-* Transfer API and WS will now include `direction`, `vault_address` and `vault_unwind_completion_percentage` fields.
-* Added `price_tick` parameter to orderbook snapshot WebSocket for tick aggregation.
+  **🖥️ UI Updates**
+  - Improved vault name input placeholder when creating a new vault
+  - Fixed a bug where straight lines would not be drawn in vaults performance charts
+  - Added 3X points boost badge to the vaults list
+  - Allow user to aggregate order book prices by tick size.
+  - Fixed incorrect `vi` translation for TWAP on Trade Page
+  - Improve leverage slider to allow selecting percentage with USD amount.
 
-### 🖥️ UI Updates
-* Docs updated for orderbook `price_tick` option
+  **⚙️ Engine Updates**
+  - Transfer API and WS will now include `direction`, `vault_address` and `vault_unwind_completion_percentage` fields.
+  - Added `price_tick` parameter to orderbook snapshot WebSocket for tick aggregation.
 
-<Callout intent="note">
-  **🟡 Testnet (v1.64.0-rc.5): Oct 15th** — Same changes, plus:
-  * Vaults can now be closed
-</Callout>
+  **🖥️ UI Updates**
+  - Docs updated for orderbook `price_tick` option
+
+</Accordion>

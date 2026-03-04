@@ -4,63 +4,55 @@ description: "Keep orderbook spread updates in sync with orderbook updates."
 ---
 
 <Callout intent="info">
-  **🟢 Prod: Oct 27th–Oct 31st, 2025** — Keep orderbook spread updates in sync with orderbook updates.
+  **v1.118 — Oct 2025**
+
+  Keep orderbook spread updates in sync with orderbook updates.
 </Callout>
 
-<Accordion title="v1.118.6 — Oct 31st" defaultOpen={true}>
+<Accordion title="v1.118.6 — Keep orderbook spread updates in sync with orderbook updates" defaultOpen={true}>
 
-### 🖥️ UI Updates
-* Keep orderbook spread updates in sync with orderbook updates.
+  <Badge color="green">PROD  Oct 31st</Badge> <Badge color="yellow">TESTNET  Oct 31st</Badge>
 
-<Callout intent="note">
-  **🟡 Testnet (v1.118.6-rc.1): Oct 31st** — Same changes, same date.
-</Callout>
+  **🖥️ UI Updates**
+  - Keep orderbook spread updates in sync with orderbook updates.
 
 </Accordion>
 
-<Accordion title="v1.118.5 — Oct 30th" defaultOpen={false}>
+<Accordion title="v1.118.5 — All API responses include standard rate limiting headers i.e" defaultOpen={false}>
 
-### ⚙️ Engine Updates
-* All API responses include standard rate limiting headers i.e `X-RateLimit-Limit` , `X-RateLimit-Remaining`, `X-RateLimit-Reset`, `X-Ratelimit-Window`, `Retry-After`.
+  <Badge color="green">PROD  Oct 30th</Badge> <Badge color="yellow">TESTNET  Oct 30th</Badge>
 
-<Callout intent="note">
-  **🟡 Testnet (v1.118.5-rc.1): Oct 30th** — Same changes, same date.
-</Callout>
+  **⚙️ Engine Updates**
+  - All API responses include standard rate limiting headers i.e `X-RateLimit-Limit` , `X-RateLimit-Remaining`, `X-RateLimit-Reset`, `X-Ratelimit-Window`, `Retry-After`.
 
 </Accordion>
 
-<Accordion title="v1.118.3 — Oct 29th" defaultOpen={false}>
+<Accordion title="v1.118.3 — Fixed validation to ensure limit positional Take Profit and Stop Loss" defaultOpen={false}>
 
-### 🖥️ UI Updates
-* Fixed validation to ensure `limit positional Take Profit and Stop Loss (TPSL)` orders cannot be submitted without both trigger price and limit price specified.
+  <Badge color="green">PROD  Oct 29th</Badge> <Badge color="yellow">TESTNET  Oct 29th</Badge>
 
-<Callout intent="note">
-  **🟡 Testnet (v1.118.3-rc.1): Oct 29th** — Same changes, same date.
-</Callout>
+  **🖥️ UI Updates**
+  - Fixed validation to ensure `limit positional Take Profit and Stop Loss (TPSL)` orders cannot be submitted without both trigger price and limit price specified.
 
 </Accordion>
 
-<Accordion title="v1.118.1 — Oct 28th" defaultOpen={false}>
+<Accordion title="v1.118.1 — Mobile: Added TPSL Trigger Price, Avg Fill Price, Status and Cancel" defaultOpen={false}>
 
-### 🖥️ UI Updates
-* Mobile: Added `TPSL Trigger Price`, `Avg Fill Price`, `Status` and `Cancel Reason` information to orders history tab.
-* Spreads are now always calculated from BBO instead of aggregated orderbook.
-* Added ability to modify `Take Profit and Stop Loss (TPSL)` orders directly on the `TradingView` chart by dragging order lines to a new trigger price level.
-* Order modifications on the TradingView chart now update instantly when an order line is dragged to a new price.
+  <Badge color="green">PROD  Oct 28th</Badge> <Badge color="yellow">TESTNET  Oct 28th</Badge>
 
-<Callout intent="note">
-  **🟡 Testnet (v1.118.1-rc.1): Oct 28th** — Same changes, same date.
-</Callout>
+  **🖥️ UI Updates**
+  - Mobile: Added `TPSL Trigger Price`, `Avg Fill Price`, `Status` and `Cancel Reason` information to orders history tab.
+  - Spreads are now always calculated from BBO instead of aggregated orderbook.
+  - Added ability to modify `Take Profit and Stop Loss (TPSL)` orders directly on the `TradingView` chart by dragging order lines to a new trigger price level.
+  - Order modifications on the TradingView chart now update instantly when an order line is dragged to a new price.
 
 </Accordion>
 
-<Accordion title="v1.118.0 — Oct 27th" defaultOpen={false}>
+<Accordion title="v1.118.0 — Mobile: Added Order History viewing functionality" defaultOpen={false}>
 
-### 🖥️ UI Updates
-* Mobile: Added Order History viewing functionality.
+  <Badge color="green">PROD  Oct 27th</Badge> <Badge color="yellow">TESTNET  Oct 25th</Badge>
 
-<Callout intent="note">
-  **🟡 Testnet (v1.118.0-rc.1): Oct 25th** — Same changes.
-</Callout>
+  **🖥️ UI Updates**
+  - Mobile: Added Order History viewing functionality.
 
 </Accordion>

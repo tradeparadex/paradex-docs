@@ -4,38 +4,34 @@ description: "Trade page navigation bar UX improvements and visual adjustments."
 ---
 
 <Callout intent="info">
-  **🟢 Prod: June 11th–June 14th, 2024** — Trade page navigation bar UX improvements and visual adjustments.
+  **v1.46 — June 2024**
+
+  Trade page navigation bar UX improvements and visual adjustments.
 </Callout>
 
-<Accordion title="v1.46.3 — June 14th" defaultOpen={true}>
+<Accordion title="v1.46.3 — Trade page navigation bar UX improvements and visual adjustments" defaultOpen={true}>
 
-### 🖥️ UI Updates
-* Trade page navigation bar UX improvements and visual adjustments
+  <Badge color="green">PROD  Jun 14th</Badge> <Badge color="yellow">TESTNET  Jun 14th</Badge>
+
+  **🖥️ UI Updates**
+  - Trade page navigation bar UX improvements and visual adjustments
 
 </Accordion>
 
-<Accordion title="v1.46.1 — June 11th" defaultOpen={false}>
+<Accordion title="v1.46.1 — Funding payments are no longer notified on funding_payments WebSocket" defaultOpen={false}>
 
-### ⚙️ Engine Updates
-* Funding payments are no longer notified on `funding_payments` WebSocket channel if amount is zero (consistently with API behavior)
-* Added `/referrals/config` endpoints for referral configuration data
+  <Badge color="green">PROD  Jun 11th</Badge> <Badge color="yellow">TESTNET  Jun 10th</Badge>
 
-### 🖥️ UI Updates
-* Sharable P\&L cards for positions
-* Earn sub nav to group Points and Refer nav links.
+  **⚙️ Engine Updates**
+  - Funding payments are no longer notified on `funding_payments` WebSocket channel if amount is zero (consistently with API behavior)
+  - Added `/referrals/config` endpoints for referral configuration data
 
-### 🐛 Bug Fixes
-* Bug fix for intermittent issue where enabling USDC during a deposit would not be reflected immediately.
-* Fix for `Entry Price` on TradingView showed incorrect value due to summing up `unrealized_funding_pnl` twice
+  **🖥️ UI Updates**
+  - Sharable P\&L cards for positions
+  - Earn sub nav to group Points and Refer nav links.
 
-<Callout intent="note">
-  **🟡 Testnet (v1.46.1-rc.1): June 10th** — Same changes.
-</Callout>
+  **🐛 Bug Fixes**
+  - Bug fix for intermittent issue where enabling USDC during a deposit would not be reflected immediately.
+  - Fix for `Entry Price` on TradingView showed incorrect value due to summing up `unrealized_funding_pnl` twice
 
 </Accordion>
-
-<Callout intent="note">
-  **🟡 Testnet (v1.46.0-rc.1): June 6th** — Testnet-only changes:
-  * Funding payments are no longer notified on `funding_payments` WebSocket channel if amount is zero (consistently with API behavior)
-  * Added `/referrals/config` endpoints for referral configurations data
-</Callout>

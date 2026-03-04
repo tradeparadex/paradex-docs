@@ -4,26 +4,32 @@ description: "Fixed Notification Center positioning and prices on market summary
 ---
 
 <Callout intent="info">
-  **🟢 Prod: April 24th–April 26th, 2024** — Fixed Notification Center positioning and prices on market summary API and WebSockets updates.
+  **v1.38 — April 2024**
+
+  Fixed Notification Center positioning and prices on market summary API and WebSockets updates.
 </Callout>
 
-<Accordion title="v1.38.2 — April 26th" defaultOpen={true}>
+<Accordion title="v1.38.2 — Fixed Notification Center positioning" defaultOpen={true}>
 
-### 🖥️ UI Updates
-* Fixed Notification Center positioning
+  <Badge color="green">PROD  Apr 26th</Badge> <Badge color="yellow">TESTNET  Apr 26th</Badge>
 
-### ⚙️ Engine Updates
-* Prices on market summary API and WebSockets are now returned as empty string when not available
+  **🖥️ UI Updates**
+  - Fixed Notification Center positioning
+
+  **⚙️ Engine Updates**
+  - Prices on market summary API and WebSockets are now returned as empty string when not available
 
 </Accordion>
 
-<Accordion title="v1.38.1 — April 24th" defaultOpen={false}>
+<Accordion title="v1.38.1 — Position sizes are now displayed consistently as absolute value" defaultOpen={false}>
 
-### 🖥️ UI Updates
-* Position sizes are now displayed consistently as absolute value throughout the app
+  <Badge color="green">PROD  Apr 24th</Badge> <Badge color="yellow">TESTNET  Apr 24th</Badge>
 
-### ⚙️ Engine Updates
-* Expose new field `trade_type` to “GET v1/trades” REST endpoint + “trades.{MARKET}” WS channel response
-*   Expanded Data: `/v1/fills` & `/trades` now include positions changes due to liquidation, alongside regular fills
+  **🖥️ UI Updates**
+  - Position sizes are now displayed consistently as absolute value throughout the app
+
+  **⚙️ Engine Updates**
+  - Expose new field `trade_type` to “GET v1/trades” REST endpoint + “trades.{MARKET}” WS channel response
+  -   Expanded Data: `/v1/fills` & `/trades` now include positions changes due to liquidation, alongside regular fills
 
 </Accordion>

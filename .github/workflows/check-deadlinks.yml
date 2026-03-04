@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Check for dead links
+      - name: Check for dead external links
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
@@ -32,7 +32,7 @@ jobs:
           fail: false
           format: json
 
-      - name: Evaluate results
+      - name: Evaluate external link results
         run: |
           if [ ! -f lychee/out.md ]; then
             echo "No lychee output found"
@@ -79,4 +79,69 @@ jobs:
               sys.exit(1)
           else:
               print(f'All links valid. ({len(skipped)} transient error(s) skipped)')
+          PYEOF
+
+      - name: Check for dead internal links
+        run: |
+          python3 << 'PYEOF'
+          import re, os, sys
+          import urllib.request
+          import urllib.error
+          import time
+
+          BASE_URL = "https://docs.paradex.trade"
+          ASSET_EXTENSIONS = {'.svg', '.png', '.jpg', '.jpeg', '.gif', '.css', '.js', '.woff2', '.ico', '.webp'}
+
+          # Collect all internal links from MDX/MD files
+          internal_links = {}  # link_path -> [(source_file, line_number)]
+          scan_dirs = ["fern/pages", "fern/snippets"]
+
+          for scan_dir in scan_dirs:
+              if not os.path.isdir(scan_dir):
+                  continue
+              for root, dirs, files in os.walk(scan_dir):
+                  for fname in files:
+                      if not (fname.endswith('.mdx') or fname.endswith('.md')):
+                          continue
+                      fpath = os.path.join(root, fname)
+                      with open(fpath) as f:
+                          for i, line in enumerate(f, 1):
+                              # Match href="/..." (HTML/JSX) and [text](/...) (Markdown)
+                              for m in re.finditer(r'href="(/[^"#]*)"', line):
+                                  link = m.group(1).rstrip('/')
+                                  internal_links.setdefault(link, []).append((fpath, i))
+                              for m in re.finditer(r'\]\((/[^)#\s]*)\)', line):
+                                  link = m.group(1).rstrip('/')
+                                  internal_links.setdefault(link, []).append((fpath, i))
+
+          print(f"Found {len(internal_links)} unique internal link(s) to check")
+
+          broken = []
+          for path in sorted(internal_links.keys()):
+              # Skip asset/static file links
+              ext = os.path.splitext(path)[1].lower()
+              if ext in ASSET_EXTENSIONS:
+                  continue
+
+              url = f"{BASE_URL}{path}"
+              try:
+                  req = urllib.request.Request(url, method='HEAD', headers={"User-Agent": "Mozilla/5.0"})
+                  resp = urllib.request.urlopen(req, timeout=15)
+                  # 200 or redirect-followed-to-200 means the link is valid
+              except urllib.error.HTTPError as e:
+                  if e.code in (404, 410):
+                      broken.append((path, e.code))
+              except Exception:
+                  pass  # Transient errors are ignored, same as external links
+              time.sleep(0.1)  # Be polite to the server
+
+          if broken:
+              print(f"\nFound {len(broken)} broken internal link(s):")
+              for path, code in broken:
+                  sources = internal_links[path]
+                  for src_file, src_line in sources:
+                      print(f"  {src_file}:{src_line}: {path} (HTTP {code})")
+              sys.exit(1)
+          else:
+              print("All internal links valid.")
           PYEOF

@@ -15,7 +15,7 @@ tabs:
     slug: home
   getting-started:
     display-name: Getting Started
-    slug: start
+    slug: overview
   trading:
     display-name: Trading
     slug: trading
@@ -1003,21 +1003,25 @@ redirects:
   - source: "/"
     destination: "/home"
 
-  # Redirects from old /docs/ prefix to new /start/ tab
+  # Redirects from old /docs/ prefix to new /overview/ tab
   - source: "/docs/getting-started/:slug*"
-    destination: "/start/getting-started/:slug*"
+    destination: "/overview/getting-started/:slug*"
   - source: "/docs/xp-referrals/:slug*"
-    destination: "/start/xp-referrals/:slug*"
+    destination: "/overview/xp-referrals/:slug*"
   - source: "/docs"
-    destination: "/start"
+    destination: "/overview"
 
   # Legacy root-level redirects
   - source: "/xp-referrals/:slug*"
-    destination: "/start/xp-referrals/:slug*"
+    destination: "/overview/xp-referrals/:slug*"
 
-  # Redirect old /getting-started/ URLs to new /start/ tab
+  # Redirect old /getting-started/ URLs to new /overview/ tab
   - source: "/getting-started/:slug*"
-    destination: "/start/:slug*"
+    destination: "/overview/:slug*"
+
+  # Redirect old /start/ URLs to new /overview/ tab
+  - source: "/start/:slug*"
+    destination: "/overview/:slug*"
 
   # Redirect old /docs/trading/ URLs to /trading/ tab
   - source: "/docs/trading/:slug*"
@@ -1068,11 +1072,11 @@ redirects:
   - source: "/documentation/advanced-trading-features/receive-window"
     destination: "/trading/receive-window"
   - source: "/documentation/points-referrals/:slug*"
-    destination: "/start/xp-referrals/:slug*"
+    destination: "/overview/xp-referrals/:slug*"
   - source: "/documentation/trading/perpetual-options/trading-fees"
     destination: "/trading/trading-fees"
   - source: "/documentation/:slug*"
-    destination: "/start/:slug*"
+    destination: "/overview/:slug*"
 
   # Legacy /api-reference/ and /websocket-reference/ redirects
   - source: "/api-reference/:slug*"
@@ -1083,9 +1087,9 @@ redirects:
   # Redirect old maintenance page to consolidated trading page
   # Redirect old /home/getting-started/ to /getting-started/getting-started/
   - source: "/home/getting-started/:slug*"
-    destination: "/start/getting-started/:slug*"
+    destination: "/overview/getting-started/:slug*"
   - source: "/home/xp-referrals/:slug*"
-    destination: "/start/xp-referrals/:slug*"
+    destination: "/overview/xp-referrals/:slug*"
 
   - source: "/docs/getting-started/maintenance"
     destination: "/trading/maintenance-mode"

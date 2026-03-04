@@ -151,6 +151,27 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: none !important;
 }
 
+/* Right-align REST API, WebSocket API, and Release Notes tabs in header */
+.fern-header-tabs {
+  width: 100% !important;
+}
+
+.fern-header-tabs > div {
+  width: 100% !important;
+}
+
+.fern-header-tabs [role="tablist"] {
+  width: 100% !important;
+}
+
+.fern-header-tabs [role="tablist"] > a {
+  flex: 0 0 auto !important;
+}
+
+.fern-header-tabs [role="tablist"] > a[href^="/api"] {
+  margin-left: auto !important;
+}
+
 /* Product Switcher Styling */
 @media (min-width: 1024px) {
   div[data-testid="product-dropdown-content"] {

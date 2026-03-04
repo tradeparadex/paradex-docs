@@ -4,49 +4,19 @@ description: "Introduced global Settings modal to control Notification toasts an
 ---
 
 <Callout intent="info">
-  **April 8th, 2024** — Introduced global Settings modal to control Notification toasts and Chart settings, and more.
+  **🟢 Prod: April 8th, 2024** — Introduced global Settings modal to control Notification toasts and Chart settings, and more.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
+## v1.34.1 — April 8th
 
-      ## v1.34.1 — April 8th
+### 🖥️ UI Updates
+* Introduced global Settings modal to control Notification toasts and Chart settings
+* Added `Leaderboard Summary` on the top-level of Points UI page
+* Open Order Lines are now displayed on TradingView chart
+* On Points page, the top-level cards layout style updated to match latest design
+* Improved the display of Trade ID in the Trade History table and Order ID and Client Order ID in the Order History table. Also added a copy button to easily copy the IDs to the clipboard
+* Display Toast Notifications setting moved from Notifications Center to the global Settings modal
 
-      ### 🖥️ UI Updates
-      * Introduced global Settings modal to control Notification toasts and Chart settings
-      * Added `Leaderboard Summary` on the top-level of Points UI page
-      * Open Order Lines are now displayed on TradingView chart
-      * On Points page, the top-level cards layout style updated to match latest design
-      * Improved the display of Trade ID in the Trade History table and Order ID and Client Order ID in the Order History table. Also added a copy button to easily copy the IDs to the clipboard
-      * Display Toast Notifications setting moved from Notifications Center to the global Settings modal
-
-      ### ⚙️ Engine Updates
-      * Updated REST endpoint GET /system/stateto expose additional system status like maintenance, cancel_only(status used by oracle is refreshed every minute)
-      * Added checks to suspend funding updates during downtime and reset funding index after downtime
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.34.1 — April 5th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Improved the display of Trade ID in the Trade History table and Order ID and Client Order ID in the Order History table. Also added a copy button to easily copy the IDs to the clipboard
-      * Display Toast Notifications setting moved from Notifications Center to the global Settings modal
-
-      ### ⚙️ Engine Updates
-      * Updated REST endpoint GET /system/stateto expose additional system status like maintenance, cancel_only(status used by oracle is refreshed every minute)
-      * Remove deprecated 'order_book.{market_name}' WS channel
-
-      </Accordion>
-
-      <Accordion title="v1.34.1 — April 4th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Introduced Settings/User Preferences to control notification toasts and TV Chart settings
-      * Added `Leaderboard Summary` on the top-level of Points UI page
-      * Order Lines are now displayed on TradingView
-      * Minor Points page style updates
-      * On Points page, the top-level cards layout style updated to match latest
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+### ⚙️ Engine Updates
+* Updated REST endpoint GET /system/stateto expose additional system status like maintenance, cancel_only(status used by oracle is refreshed every minute)
+* Added checks to suspend funding updates during downtime and reset funding index after downtime

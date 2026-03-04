@@ -4,44 +4,31 @@ description: "Enable Authentication via QR Code on Mobile except iOS app and com
 ---
 
 <Callout intent="info">
-  **Feb 3rd–Feb 4th, 2025** — Enable Authentication via QR Code on Mobile except iOS app and combined price columns in order history.
+  **🟢 Prod: Feb 3rd–Feb 4th, 2025** — Enable Authentication via QR Code on Mobile except iOS app and combined price columns in order history.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
-      <Accordion title="v1.131.2 — Feb 4th" defaultOpen={true}>
+<Accordion title="v1.131.2 — Feb 4th" defaultOpen={true}>
 
-      ### 🖥️ UI Updates
-      * Enable Authentication via QR Code on Mobile except iOS app.
-      * Combined `Price` and `AvgFillPrice` columns in Order History.
+### 🖥️ UI Updates
+* Enable Authentication via QR Code on Mobile except iOS app.
+* Combined `Price` and `AvgFillPrice` columns in Order History.
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.131.2-rc.1): Feb 4th** — Same changes, same date.
+</Callout>
 
-      <Accordion title="v1.131.1 — Feb 3rd" defaultOpen={false}>
+</Accordion>
 
-      ### ⚙️ Engine Updates
-      * `starknet_gateway_url` field in the GET `/system/config` endpoint has been deprecated.
-      * During maintenance (`POST_ONLY`), the platform will reject aggressive orders placed outside a ±5 bps band from the `external fair price`.
+<Accordion title="v1.131.1 — Feb 3rd" defaultOpen={false}>
 
-      </Accordion>
+### ⚙️ Engine Updates
+* `starknet_gateway_url` field in the GET `/system/config` endpoint has been deprecated.
+* During maintenance (`POST_ONLY`), the platform will reject aggressive orders placed outside a ±5 bps band from the `external fair price`.
 
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.131.2-rc.1 — Feb 4th" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Enable Authentication via QR Code on Mobile except iOS app.
-      * Combined `Price` and `AvgFillPrice` columns in Order History.
-
-      </Accordion>
-
-      <Accordion title="v1.131.0-rc.1 — Jan 30th" defaultOpen={false}>
-
-      ### ⚙️ Engine Updates
-      * `starknet_gateway_url` field in the GET `/system/config` endpoint has been deprecated.
-      * During maintenance (`POST_ONLY`), the platform will reject aggressive orders placed outside a ±5 bps band from the `external fair price`.
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+<Callout intent="note">
+  **🟡 Testnet (v1.131.0-rc.1): Jan 30th** — Testnet-only changes:
+  * `starknet_gateway_url` field in the GET `/system/config` endpoint has been deprecated.
+  * During maintenance (`POST_ONLY`), the platform will reject aggressive orders placed outside a ±5 bps band from the `external fair price`.
+</Callout>

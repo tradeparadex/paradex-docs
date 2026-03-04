@@ -4,32 +4,19 @@ description: "Rename transaction hash fields for transfers, and more."
 ---
 
 <Callout intent="info">
-  **June 18th, 2024** — Rename transaction hash fields for transfers, and more.
+  **🟢 Prod: June 18th, 2024** — Rename transaction hash fields for transfers, and more.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
+## v1.47.1 — June 18th
 
-      ## v1.47.1 — June 18th
+### ⚙️ Engine Updates
+* Rename `txn_hash_l1` to `external_txn_hash` for transfers
 
-      ### ⚙️ Engine Updates
-      * Rename `txn_hash_l1` to `external_txn_hash` for transfers
+### 🖥️ UI Updates
+* Rename `Tx Hash L1 / Tx Hash L2` to `Tx Hash / External Tx Hash` in transfers tab
 
-      ### 🖥️ UI Updates
-      * Rename `Tx Hash L1 / Tx Hash L2` to `Tx Hash / External Tx Hash` in transfers tab
+* Update docs for GET /transfers API with the field rename (`txn_hash_l1` to `external_txn_hash` )
 
-      * Update docs for GET /transfers API with the field rename (`txn_hash_l1` to `external_txn_hash` )
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.47.0-rc.1 — June 13th" defaultOpen={false}>
-
-      ### ⚙️ Engine Updates
-      * Rename `txn_hash_l1` to `external_txn_hash` for transfers
-
-      ### 🖥️ UI Updates
-      * Update docs for GET /transfers API with the field rename (`txn_hash_l1` to `external_txn_hash` )
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+<Callout intent="note">
+  **🟡 Testnet (v1.47.0-rc.1): June 13th** — Same changes.
+</Callout>

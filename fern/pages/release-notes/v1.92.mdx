@@ -4,117 +4,86 @@ description: "Limit Position Close:, and more."
 ---
 
 <Callout intent="info">
-  **April 21st–April 25th, 2025** — Limit Position Close:, and more.
+  **🟢 Prod: April 21st–April 25th, 2025** — Limit Position Close:, and more.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
-      <Accordion title="v1.92.7 — April 25th" defaultOpen={true}>
+<Accordion title="v1.92.7 — April 25th" defaultOpen={true}>
 
-      ### 🖥️ UI Updates
-      * Limit Position Close:
-      * Added `Estimated P&L`.
-      * Bug fix for base/quote currency conversion.
+### 🖥️ UI Updates
+* Limit Position Close:
+* Added `Estimated P&L`.
+* Bug fix for base/quote currency conversion.
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.92.7-rc.1): April 25th** — Same changes, same date.
+</Callout>
 
-      <Accordion title="v1.92.5 — April 24th" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Portfolio Page: Added CSV export functionality for Trade History, Order History, Funding History, and Transfers.
-      * Added support for configuring `slippage` per market for Perpetual Futures and Options (for Options slippage configured for one strike is applied to all strikes for that market).
+<Accordion title="v1.92.5 — April 24th" defaultOpen={false}>
 
-      ### ⚙️ Engine Updates
-      * Added endpoint `profile/market_max_slippage` for configuring slippage per market.
-      * Slippage information configured would also be returned as part of GET `/account/profile` endpoint response.
+### 🖥️ UI Updates
+* Portfolio Page: Added CSV export functionality for Trade History, Order History, Funding History, and Transfers.
+* Added support for configuring `slippage` per market for Perpetual Futures and Options (for Options slippage configured for one strike is applied to all strikes for that market).
 
-      </Accordion>
+### ⚙️ Engine Updates
+* Added endpoint `profile/market_max_slippage` for configuring slippage per market.
+* Slippage information configured would also be returned as part of GET `/account/profile` endpoint response.
 
-      <Accordion title="v1.92.4 — April 23rd" defaultOpen={false}>
+<Callout intent="note">
+  **🟡 Testnet (v1.92.5-rc.1): April 24th** — Same changes, same date.
+</Callout>
 
-      ### 🖥️ UI Updates
-      * Order History: Updated column name from `Time(created at)` to `Updated at`. Order History table now sorted by `last updated` order.
+</Accordion>
 
-      </Accordion>
+<Accordion title="v1.92.4 — April 23rd" defaultOpen={false}>
 
-      <Accordion title="v1.92.3 — April 22nd" defaultOpen={false}>
+### 🖥️ UI Updates
+* Order History: Updated column name from `Time(created at)` to `Updated at`. Order History table now sorted by `last updated` order.
 
-      ### 🖥️ UI Updates
-      * Mobile: Portfolio Page & Trade Page: Added `Total PnL`, `Total Funding` to Positions/Derivatives tabs. These replace the `Realized PnL` and `Unrealized PnL` columns.
-      * Added `Rho` values to the `Risk tab` in Portfolio and Trade pages.
-      * Bug fix - `Order Slider` fixed to work with leverage settings for `Isolated Margin Mode`.
-      * Removed `Leverage` tag for Perpetual Options `open` positions.
+<Callout intent="note">
+  **🟡 Testnet (v1.92.4-rc.1): April 23rd** — Same changes, same date.
+</Callout>
 
-      </Accordion>
+</Accordion>
 
-      <Accordion title="v1.92.1 — April 21st" defaultOpen={false}>
+<Accordion title="v1.92.3 — April 22nd" defaultOpen={false}>
 
-      ### 🖥️ UI Updates
-      * Portfolio Page & Trade Page: Added `Total PnL`, `Total Funding` to Positions/Derivatives tabs. These replace the `Realized PnL` and `Unrealized PnL` columns.
+### 🖥️ UI Updates
+* Mobile: Portfolio Page & Trade Page: Added `Total PnL`, `Total Funding` to Positions/Derivatives tabs. These replace the `Realized PnL` and `Unrealized PnL` columns.
+* Added `Rho` values to the `Risk tab` in Portfolio and Trade pages.
+* Bug fix - `Order Slider` fixed to work with leverage settings for `Isolated Margin Mode`.
+* Removed `Leverage` tag for Perpetual Options `open` positions.
 
-      </Accordion>
+</Accordion>
 
-      <Accordion title="v1.92.0 — April 21st" defaultOpen={false}>
+<Accordion title="v1.92.1 — April 21st" defaultOpen={false}>
 
-      ### 🖥️ UI Updates
-      * Order Builder: Added `Greeks Summary` Card.
-      * Add support for Braavos wallet v1.2.0.
+### 🖥️ UI Updates
+* Portfolio Page & Trade Page: Added `Total PnL`, `Total Funding` to Positions/Derivatives tabs. These replace the `Realized PnL` and `Unrealized PnL` columns.
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.92.1-rc.1): April 21st** — Same changes, same date.
+</Callout>
 
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.92.7-rc.1 — April 25th" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Limit Position Close:
-      * Added `Estimated P&L`.
-      * Bug fix for base/quote currency conversion.
+<Accordion title="v1.92.0 — April 21st" defaultOpen={false}>
 
-      </Accordion>
+### 🖥️ UI Updates
+* Order Builder: Added `Greeks Summary` Card.
+* Add support for Braavos wallet v1.2.0.
 
-      <Accordion title="v1.92.5-rc.1 — April 24th" defaultOpen={false}>
+<Callout intent="note">
+  **🟡 Testnet (v1.92.0-rc.1): April 18th** — Same changes.
+</Callout>
 
-      ### 🖥️ UI Updates
-      * Portfolio Page: Added CSV export functionality for Trade History, Order History, Funding History, and Transfers.
-      * Added support for configuring `slippage` per market for Perpetual Futures and Options (for Options slippage configured for one strike is applied to all strikes for that market).
+</Accordion>
 
-      ### ⚙️ Engine Updates
-      * Added endpoint `profile/market_max_slippage` for configuring slippage per market.
-      * Slippage information configured would also be returned as part of GET `/account/profile` endpoint response.
-
-      </Accordion>
-
-      <Accordion title="v1.92.4-rc.1 — April 23rd" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Order History: Updated column name from `Time(created at)` to `Updated at`. Order History table now sorted by `last updated` order.
-
-      </Accordion>
-
-      <Accordion title="v1.92.2-rc.1 — April 22nd" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Mobile: Portfolio Page & Trade Page: Added `Total PnL`, `Total Funding` to Positions/Derivatives tabs. These replace the `Realized PnL` and `Unrealized PnL` columns.
-      * Added `Rho` values to the `Risk tab` in Portfolio and Trade pages.
-      * Bug fix - `Order Slider` fixed to work with leverage settings for `Isolated Margin Mode`.
-      * Removed `Leverage` tag for Perpetual Options `open` positions.
-
-      </Accordion>
-
-      <Accordion title="v1.92.1-rc.1 — April 21st" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Portfolio Page & Trade Page: Added `Total PnL`, `Total Funding` to Positions/Derivatives tabs. These replace the `Realized PnL` and `Unrealized PnL` columns.
-
-      </Accordion>
-
-      <Accordion title="v1.92.0-rc.1 — April 18th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Add support for Braavos wallet v1.2.0.
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+<Callout intent="note">
+  **🟡 Testnet (v1.92.2-rc.1): April 22nd** — Testnet-only changes:
+  * Mobile: Portfolio Page & Trade Page: Added `Total PnL`, `Total Funding` to Positions/Derivatives tabs. These replace the `Realized PnL` and `Unrealized PnL` columns.
+  * Added `Rho` values to the `Risk tab` in Portfolio and Trade pages.
+  * Bug fix - `Order Slider` fixed to work with leverage settings for `Isolated Margin Mode`.
+  * Removed `Leverage` tag for Perpetual Options `open` positions.
+</Callout>

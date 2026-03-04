@@ -4,48 +4,31 @@ description: "Add realized funding to fills and positions endpoints, now includi
 ---
 
 <Callout intent="info">
-  **Feb 4th–Feb 5th, 2025** — Add realized funding to fills and positions endpoints, now including realized funding payment.
+  **🟢 Prod: Feb 4th–Feb 5th, 2025** — Add realized funding to fills and positions endpoints, now including realized funding payment.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
-      <Accordion title="v1.81.2 — Feb 5th" defaultOpen={true}>
+<Accordion title="v1.81.2 — Feb 5th" defaultOpen={true}>
 
-      ### ⚙️ Engine Updates
-      * Add realized funding to get /fills.
-      * Positions: `realized_positional_pnl` now includes realized funding payment.
+### ⚙️ Engine Updates
+* Add realized funding to get /fills.
+* Positions: `realized_positional_pnl` now includes realized funding payment.
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.81.2-rc.1): Feb 5th** — Same changes, same date.
+</Callout>
 
-      <Accordion title="v1.81.1 — Feb 4th" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Positions: fix breakeven price formula for short positions.
-      * Fix `Realized P&L` missing if chain `tx` has not been processed yet.
-      * `Portfolio Greeks` renamed to "Risk".
-      * Fix empty twitter handle on XP leaderboard.
+<Accordion title="v1.81.1 — Feb 4th" defaultOpen={false}>
 
-      </Accordion>
+### 🖥️ UI Updates
+* Positions: fix breakeven price formula for short positions.
+* Fix `Realized P&L` missing if chain `tx` has not been processed yet.
+* `Portfolio Greeks` renamed to "Risk".
+* Fix empty twitter handle on XP leaderboard.
 
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.81.2-rc.1 — Feb 5th" defaultOpen={false}>
+<Callout intent="note">
+  **🟡 Testnet (v1.81.1-rc.1): Feb 4th** — Same changes, same date.
+</Callout>
 
-      ### ⚙️ Engine Updates
-      * Add realized funding to get /fills.
-      * Positions: `realized_positional_pnl` now includes realized funding payment.
-
-      </Accordion>
-
-      <Accordion title="v1.81.1-rc.1 — Feb 4th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Positions: fix breakeven price formula for short positions.
-      * Fix `Realized P&L` missing if chain `tx` has not been processed yet.
-      * `Portfolio Greeks` renamed to "Risk".
-      * Fix empty twitter handle on XP leaderboard.
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+</Accordion>

@@ -4,50 +4,33 @@ description: "Single Step deposits are now available."
 ---
 
 <Callout intent="info">
-  **May 23rd–May 28th, 2024** — Single Step deposits are now available.
+  **🟢 Prod: May 23rd–May 28th, 2024** — Single Step deposits are now available.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
-      <Accordion title="v1.44.1 — May 28th" defaultOpen={true}>
+<Accordion title="v1.44.1 — May 28th" defaultOpen={true}>
 
-      ### 🖥️ UI Updates
-      * Single Step deposits are now available
+### 🖥️ UI Updates
+* Single Step deposits are now available
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.44.1-rc.1): May 27th** — Same changes, plus:
+  * Added funding rate protection parameters (Max Funding Rate Change and Max TOB Spread) to API responses
+</Callout>
 
-      <Accordion title="v1.44.0 — May 23rd" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Added Open Interest and TVL points under Other Points on Points page
+<Accordion title="v1.44.0 — May 23rd" defaultOpen={false}>
 
-      ### ⚙️ Engine Updates
-      * Introduced TVL and Open Interest Points program
-      * Smooth funding rate change by capping TOB spread and bid/ask/trade EWMA
-      * referrals/summary now has total volume traded per referee
+### 🖥️ UI Updates
+* Added Open Interest and TVL points under Other Points on Points page
 
-      </Accordion>
+### ⚙️ Engine Updates
+* Introduced TVL and Open Interest Points program
+* Smooth funding rate change by capping TOB spread and bid/ask/trade EWMA
+* referrals/summary now has total volume traded per referee
 
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.44.1-rc.1 — May 27th" defaultOpen={false}>
+<Callout intent="note">
+  **🟡 Testnet (v1.44.0-rc.0): May 23rd** — Same changes, same date.
+</Callout>
 
-      ### 🖥️ UI Updates
-      * Added funding rate protection parameters (Max Funding Rate Change and Max TOB Spread) to API responses
-
-      </Accordion>
-
-      <Accordion title="v1.44.0-rc.0 — May 23rd" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Added Open Interest and TVL points under Other Points on Points page
-
-      ### ⚙️ Engine Updates
-      * Introduced TVL and Open Interest Points program
-      * Smooth funding rate change by capping TOB spread and bid/ask/trade EWMA
-      * referrals/summary now has total volume traded per referee
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+</Accordion>

@@ -4,49 +4,38 @@ description: "Favorites bar is now hidden on mobile, favorite markets available 
 ---
 
 <Callout intent="info">
-  **March 3rd–March 6th, 2025** — Favorites bar is now hidden on mobile, favorite markets available in the markets dropdown and added a new contract s..
+  **🟢 Prod: March 3rd–March 6th, 2025** — Favorites bar is now hidden on mobile, favorite markets available in the markets dropdown and added a new contract s..
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
-      <Accordion title="v1.85.5 — March 6th" defaultOpen={true}>
+<Accordion title="v1.85.5 — March 6th" defaultOpen={true}>
 
-      ### 🖥️ UI Updates
-      * Favorites bar is now hidden on mobile, favorite markets available in the markets dropdown.
-      * Added a new Contract section to the order builder that now displays the worst execution price estimate.
+### 🖥️ UI Updates
+* Favorites bar is now hidden on mobile, favorite markets available in the markets dropdown.
+* Added a new Contract section to the order builder that now displays the worst execution price estimate.
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.85.5-rc.1): March 6th** — Same changes, same date.
+</Callout>
 
-      <Accordion title="v1.85.4 — March 5th" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Open orders price and size can now be modified.
-      * Order price modification can also be done via TradingView by dragging the order.
+<Accordion title="v1.85.4 — March 5th" defaultOpen={false}>
 
-      ### ⚙️ Engine Updates
-      * Added PUT `orders` endpoint to modify open orders.
+### 🖥️ UI Updates
+* Open orders price and size can now be modified.
+* Order price modification can also be done via TradingView by dragging the order.
 
-      </Accordion>
+### ⚙️ Engine Updates
+* Added PUT `orders` endpoint to modify open orders.
 
-      <Accordion title="v1.85.0 — March 3rd" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Order Book: updated spread value formula for Option and Futures markets to match industry standards.
-      * TradingView: drag the limit order line to change limit price.
-      * Paradex app now initializes significantly faster.
-      * Enhanced UX for Order Builder.
+<Accordion title="v1.85.0 — March 3rd" defaultOpen={false}>
 
-      </Accordion>
+### 🖥️ UI Updates
+* Order Book: updated spread value formula for Option and Futures markets to match industry standards.
+* TradingView: drag the limit order line to change limit price.
+* Paradex app now initializes significantly faster.
+* Enhanced UX for Order Builder.
 
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.85.5-rc.1 — March 6th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Favorites bar is now hidden on mobile, favorite markets available in the markets dropdown.
-      * Added a new Contract section to the order builder that now displays the worst execution price estimate.
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+</Accordion>

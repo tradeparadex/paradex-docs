@@ -4,107 +4,75 @@ description: "Vault Positions UI: Introduce Total PnL and Total Funding data, an
 ---
 
 <Callout intent="info">
-  **April 15th–April 17th, 2025** — Vault Positions UI: Introduce Total PnL and Total Funding data, and more.
+  **🟢 Prod: April 15th–April 17th, 2025** — Vault Positions UI: Introduce Total PnL and Total Funding data, and more.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
-      <Accordion title="v1.91.5 — April 17th" defaultOpen={true}>
+<Accordion title="v1.91.5 — April 17th" defaultOpen={true}>
 
-      ### 🖥️ UI Updates
-      * Vault Positions UI: Introduce `Total PnL` and `Total Funding` data.
+### 🖥️ UI Updates
+* Vault Positions UI: Introduce `Total PnL` and `Total Funding` data.
 
-      ### ⚙️ Engine Updates
-      * Vaults Positions API:  `unrealized_funding_pnl`, `realized_positional_pnl` and `realized_positional_funding_pnl` are now available on API.
-      * Markets Summary API: Added option greeks `Rho`, `Vanna`, and `Volga` for perpetual option markets.
-      * Min Notional size updated for `Perpetual Options` to `$1000`
+### ⚙️ Engine Updates
+* Vaults Positions API:  `unrealized_funding_pnl`, `realized_positional_pnl` and `realized_positional_funding_pnl` are now available on API.
+* Markets Summary API: Added option greeks `Rho`, `Vanna`, and `Volga` for perpetual option markets.
+* Min Notional size updated for `Perpetual Options` to `$1000`
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.91.5-rc.1): April 16th** — Same changes.
+</Callout>
 
-      <Accordion title="v1.91.4 — April 16th" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Fixed `PNL %` calculation for `Perp Option` open positions.
+<Accordion title="v1.91.4 — April 16th" defaultOpen={false}>
 
-      </Accordion>
+### 🖥️ UI Updates
+* Fixed `PNL %` calculation for `Perp Option` open positions.
 
-      <Accordion title="v1.91.3 — April 16th" defaultOpen={false}>
+<Callout intent="note">
+  **🟡 Testnet (v1.91.4-rc.1): April 16th** — Same changes, plus:
+  * Fixed `PNL %` calculation for Perpetual Options open positions.
+</Callout>
 
-      ### 🖥️ UI Updates
-      * Options
-      * Markets Menu: update default sorting to strike price `ascending`.
-      * Default slippage set to `50%` if not set by user.
+</Accordion>
 
-      </Accordion>
+<Accordion title="v1.91.3 — April 16th" defaultOpen={false}>
 
-      <Accordion title="v1.91.2 — April 15th" defaultOpen={false}>
+### 🖥️ UI Updates
+* Options
+* Markets Menu: update default sorting to strike price `ascending`.
+* Default slippage set to `50%` if not set by user.
 
-      ### 🖥️ UI Updates
-      * Options, Markets Menu - User now sees the options table positioned/auto scrolled closest to the `Spot` strike
+<Callout intent="note">
+  **🟡 Testnet (v1.91.3-rc.1): April 16th** — Same changes, same date.
+</Callout>
 
-      </Accordion>
+</Accordion>
 
-      <Accordion title="v1.91.1 — April 15th" defaultOpen={false}>
+<Accordion title="v1.91.2 — April 15th" defaultOpen={false}>
 
-      ### 🖥️ UI Updates
-      * Enabled `Custom Slippage` for Perpetual Options `Market` order.
+### 🖥️ UI Updates
+* Options, Markets Menu - User now sees the options table positioned/auto scrolled closest to the `Spot` strike
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.91.2-rc.1): April 15th** — Same changes, same date.
+</Callout>
 
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.91.6-rc.1 — April 18th" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Order Builder: Added `Greeks Summary` Card.
-      * Funding Rate Comparison: Added `PAXG-USD-PERP`.
+<Accordion title="v1.91.1 — April 15th" defaultOpen={false}>
 
-      ### ⚙️ Engine Updates
-      * Funding Rate Comparison: Added `PAXG-USD-PERP`.
+### 🖥️ UI Updates
+* Enabled `Custom Slippage` for Perpetual Options `Market` order.
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.91.1-rc.1): April 15th** — Same changes, same date.
+</Callout>
 
-      <Accordion title="v1.91.5-rc.1 — April 16th" defaultOpen={false}>
+</Accordion>
 
-      ### 🖥️ UI Updates
-      * Vault Positions UI: Introduce `Total PnL` and `Total Funding` data.
-
-      ### ⚙️ Engine Updates
-      * Vaults Positions API:  `unrealized_funding_pnl`, `realized_positional_pnl` and `realized_positional_funding_pnl` are now available on API.
-      * Markets Summary API: Added option greeks `Rho`, `Vanna`, and `Volga` for perpetual option markets.
-      * Min Notional size updated for `Perpetual Options` to `$1000`
-
-      </Accordion>
-
-      <Accordion title="v1.91.4-rc.1 — April 16th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Fixed `PNL %` calculation for Perpetual Options open positions.
-
-      </Accordion>
-
-      <Accordion title="v1.91.3-rc.1 — April 16th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Options
-      * Markets Menu: update default sorting to strike price `ascending`.
-      * Default slippage set to `50%` if not set by user.
-
-      </Accordion>
-
-      <Accordion title="v1.91.2-rc.1 — April 15th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Options, Markets Menu - User now sees the options table positioned/auto scrolled closest to the `Spot` strike
-
-      </Accordion>
-
-      <Accordion title="v1.91.1-rc.1 — April 15th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Enabled `Custom Slippage` for Perpetual Options `Market` order.
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+<Callout intent="note">
+  **🟡 Testnet (v1.91.6-rc.1): April 18th** — Testnet-only changes:
+  * Order Builder: Added `Greeks Summary` Card.
+  * Funding Rate Comparison: Added `PAXG-USD-PERP`.
+  * Funding Rate Comparison: Added `PAXG-USD-PERP`.
+</Callout>

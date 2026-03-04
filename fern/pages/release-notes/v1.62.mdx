@@ -4,39 +4,19 @@ description: "Fixed short side overflow bug in positions table and added leverag
 ---
 
 <Callout intent="info">
-  **Oct 2nd, 2024** — Fixed short side overflow bug in positions table and added leverage to position endpoint.
+  **🟢 Prod: Oct 2nd, 2024** — Fixed short side overflow bug in positions table and added leverage to position endpoint.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
+## v1.62.0 — Oct 2nd
 
-      ## v1.62.0 — Oct 2nd
+### 🖥️ UI Updates
+* Fixed short side overflow bug in positions table.
 
-      ### 🖥️ UI Updates
-      * Fixed short side overflow bug in positions table.
+### ⚙️ Engine Updates
+* Added `leverage` to position endpoint.
 
-      ### ⚙️ Engine Updates
-      * Added `leverage` to position endpoint.
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.62.0-rc.5 — Sept 30th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Added vault positions on mobile.
-      * Allow user to aggregate prices in order book by different tick sizes.
-
-      </Accordion>
-
-      <Accordion title="v1.62.0-rc.4 — Sept 26th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Fixed short side overflow bug in positions table.
-      * Take Profit / Stop Loss (TPSL) order types are now available
-
-      ### ⚙️ Engine Updates
-      * Added `leverage` to position endpoint.
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+<Callout intent="note">
+  **🟡 Testnet (v1.62.0-rc.5): Sept 30th** — Same changes, plus:
+  * Added vault positions on mobile.
+  * Allow user to aggregate prices in order book by different tick sizes.
+</Callout>

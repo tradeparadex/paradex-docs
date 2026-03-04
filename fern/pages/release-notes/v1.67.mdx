@@ -4,48 +4,26 @@ description: "Max vault name length is now 35 symbols, and more."
 ---
 
 <Callout intent="info">
-  **Nov 7th, 2024** — Max vault name length is now 35 symbols, and more.
+  **🟢 Prod: Nov 7th, 2024** — Max vault name length is now 35 symbols, and more.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
+## v1.67.0 — Nov 7th
 
-      ## v1.67.0 — Nov 7th
+### 🖥️ UI Updates
+* Max vault name length is now 35 symbols
+* Added `Avg.Fill Price` to open orders and order history table.
+* Trade page, order book update frequency updated from 50ms to 100ms.
+* Fixed the `remember me` tooltip overlapping `continue` in `link wallet` modal.
+* Revamped balances page within portfolio.
+* Fix estimated liquidation prices for limit and stop limit orders - use limit price as base.
+* Vaults
+* You can now see the unwinding progress of your vault withdrawals in the relevant vault page or in the portfolio page, under the vaults tab.
+* The `Lockup Remaining` was moved from the top of the vault page to the `My vault deposit` section
+* You can now see the vaults you invested in on the portfolio page, under the `Vaults` tab, including the `Lockup Remaining`
+* Introduced `delta` to perpetual future's GET `/markets/summary` endpoint.
 
-      ### 🖥️ UI Updates
-      * Max vault name length is now 35 symbols
-      * Added `Avg.Fill Price` to open orders and order history table.
-      * Trade page, order book update frequency updated from 50ms to 100ms.
-      * Fixed the `remember me` tooltip overlapping `continue` in `link wallet` modal.
-      * Revamped balances page within portfolio.
-      * Fix estimated liquidation prices for limit and stop limit orders - use limit price as base.
-      * Vaults
-      * You can now see the unwinding progress of your vault withdrawals in the relevant vault page or in the portfolio page, under the vaults tab.
-      * The `Lockup Remaining` was moved from the top of the vault page to the `My vault deposit` section
-      * You can now see the vaults you invested in on the portfolio page, under the `Vaults` tab, including the `Lockup Remaining`
-      * Introduced `delta` to perpetual future's GET `/markets/summary` endpoint.
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.67.0-rc.2 — Nov 4th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Add `Avg.Fill Price` to open orders table
-      * Trade page & order book update frequency updated from 50ms to 100ms
-
-      </Accordion>
-
-      <Accordion title="v1.67.0-rc.1 — Oct 31st" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Vaults
-      * You can now see the unwinding progress of your vault withdrawals in the relevant vault page or in the portfolio page, under the vaults tab.
-      * The "lockup remaining" was moved from the top of the vault page to the "my vault deposit" section
-      * You can now see the vaults you invested in on the portfolio page, under the "vaults" tab, including the "lockup remaining"
-      * Revamp balances page within portfolio
-      * Add `Avg. Fill Price` column to order history table
-      * Introduced `delta` field to perpetual future's `/markets/summary` endpoint
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+<Callout intent="note">
+  **🟡 Testnet (v1.67.0-rc.2): Nov 4th** — Same changes, plus:
+  * Add `Avg.Fill Price` to open orders table
+  * Trade page & order book update frequency updated from 50ms to 100ms
+</Callout>

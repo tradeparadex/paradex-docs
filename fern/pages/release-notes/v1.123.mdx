@@ -4,128 +4,73 @@ description: "Wallet Support:, and more."
 ---
 
 <Callout intent="info">
-  **Dec 1st–Dec 5th, 2025** — Wallet Support:, and more.
+  **🟢 Prod: Dec 1st–Dec 5th, 2025** — Wallet Support:, and more.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
-      <Accordion title="v1.123.8 — Dec 5th" defaultOpen={true}>
+<Accordion title="v1.123.8 — Dec 5th" defaultOpen={true}>
 
-      ### 🖥️ UI Updates
-      * Wallet Support:
-      -  We now support `Keplr` and `Xverse` Starknet wallets! You can connect using your preferred wallet.
-      * The bars in the `orderbook` are now larger and fuller, making the data easier to read at a glance.
-      * New `orderbook` animation to make real-time updates clearer. You can easily toggle this feature ON or OFF in your settings.
-      * Volume Bars: The y-axis for volume bars now auto-scales, providing a clearer view of recent trading activity.
+### 🖥️ UI Updates
+* Wallet Support:
+-  We now support `Keplr` and `Xverse` Starknet wallets! You can connect using your preferred wallet.
+* The bars in the `orderbook` are now larger and fuller, making the data easier to read at a glance.
+* New `orderbook` animation to make real-time updates clearer. You can easily toggle this feature ON or OFF in your settings.
+* Volume Bars: The y-axis for volume bars now auto-scales, providing a clearer view of recent trading activity.
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.123.8-rc.1): Dec 4th** — Same changes.
+</Callout>
 
-      <Accordion title="v1.123.7 — Dec 4th" defaultOpen={false}>
+</Accordion>
 
-      ### ⚙️ Engine Updates
-      * Added `100ms` as a new interactive update frequency option for `orderbook` subscriptions (in addition to 200ms and 400ms).
+<Accordion title="v1.123.7 — Dec 4th" defaultOpen={false}>
 
-      </Accordion>
+### ⚙️ Engine Updates
+* Added `100ms` as a new interactive update frequency option for `orderbook` subscriptions (in addition to 200ms and 400ms).
 
-      <Accordion title="v1.123.5 — Dec 3rd" defaultOpen={false}>
+<Callout intent="note">
+  **🟡 Testnet (v1.123.7-rc.1): Dec 3rd** — Same changes.
+</Callout>
 
-      ### 🖥️ UI Updates
-      * Market Menu search input is cleared upon selecting a market.
+</Accordion>
 
-      ### ⚙️ Engine Updates
-      * Use `average fill price` for max slippage calculation for `MARKET` order ([detailed docs](/docs/trading/placing-orders/vwap-price-protection)).
-      * `max_slippage_price` field is deprecated and replaced by `vwap_price` now.
+<Accordion title="v1.123.5 — Dec 3rd" defaultOpen={false}>
 
-      </Accordion>
+### 🖥️ UI Updates
+* Market Menu search input is cleared upon selecting a market.
 
-      <Accordion title="v1.123.2 — Dec 2nd" defaultOpen={false}>
+### ⚙️ Engine Updates
+* Use `average fill price` for max slippage calculation for `MARKET` order ([detailed docs](/docs/trading/placing-orders/vwap-price-protection)).
+* `max_slippage_price` field is deprecated and replaced by `vwap_price` now.
 
-      ### 🖥️ UI Updates
-      * Mobile Fixes:
-      * Correct leverage shown for open orders.
-      * Add 'Value' to positions cards on mobile.
-      * Enable Y-Axis autoscaling on the chart. Y Axis snaps into the correct range when changing markets or timeframes.
+</Accordion>
 
-      ### ⚙️ Engine Updates
-      * Use `average fill price` for max slippage calculation for `MARKET` order ([detailed docs](/docs/trading/placing-orders/vwap-price-protection)).
-      * `max_slippage_price` field is deprecated and replaced by `vwap_price` now.
+<Accordion title="v1.123.2 — Dec 2nd" defaultOpen={false}>
 
-      </Accordion>
+### 🖥️ UI Updates
+* Mobile Fixes:
+* Correct leverage shown for open orders.
+* Add 'Value' to positions cards on mobile.
+* Enable Y-Axis autoscaling on the chart. Y Axis snaps into the correct range when changing markets or timeframes.
 
-      <Accordion title="v1.123.1 — Dec 1st" defaultOpen={false}>
+### ⚙️ Engine Updates
+* Use `average fill price` for max slippage calculation for `MARKET` order ([detailed docs](/docs/trading/placing-orders/vwap-price-protection)).
+* `max_slippage_price` field is deprecated and replaced by `vwap_price` now.
 
-      ### 🖥️ UI Updates
-      * Mobile Fixes:
-      * Restored the table display at the bottom of the chart page on mobile.
-      * Adjusted slider alignment.
-      * Increase size of `Back` button.
+</Accordion>
 
-      </Accordion>
+<Accordion title="v1.123.1 — Dec 1st" defaultOpen={false}>
 
-      <Accordion title="v1.123.0 — Dec 1st" defaultOpen={false}>
+### 🖥️ UI Updates
+* Mobile Fixes:
+* Restored the table display at the bottom of the chart page on mobile.
+* Adjusted slider alignment.
+* Increase size of `Back` button.
 
-      ### 🖥️ UI Updates
-      * Users will now see a warning when they toggle `Reduce Only` on Isolated Margin.
+</Accordion>
 
-      </Accordion>
+<Accordion title="v1.123.0 — Dec 1st" defaultOpen={false}>
 
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.123.8-rc.1 — Dec 4th" defaultOpen={false}>
+### 🖥️ UI Updates
+* Users will now see a warning when they toggle `Reduce Only` on Isolated Margin.
 
-      ### 🖥️ UI Updates
-      * Wallet Support:
-      -  We now support `Keplr` and `Xverse` Starknet wallets! You can connect using your preferred wallet.
-      * The bars in the `orderbook` are now larger and fuller, making the data easier to read at a glance.
-      * New `orderbook` animation to make real-time updates clearer. You can easily toggle this feature ON or OFF in your settings.
-      * Volume Bars: The y-axis for volume bars now auto-scales, providing a clearer view of recent trading activity.
-
-      </Accordion>
-
-      <Accordion title="v1.123.7-rc.1 — Dec 3rd" defaultOpen={false}>
-
-      ### ⚙️ Engine Updates
-      * Added `100ms` as a new interactive update frequency option for `orderbook` subscriptions (in addition to 200ms and 400ms).
-
-      </Accordion>
-
-      <Accordion title="v1.123.5 — Dec 3rd" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Market Menu search input is cleared upon selecting a market.
-
-      </Accordion>
-
-      <Accordion title="v1.123.2 — Dec 2nd" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Mobile Fixes:
-      * Correct leverage shown for open orders.
-      * Add 'Value' to positions cards on mobile.
-      * Enable Y-Axis autoscaling on the chart. Y Axis snaps into the correct range when changing markets or timeframes.
-
-      ### ⚙️ Engine Updates
-      * Use `average fill price` for max slippage calculation for `MARKET` order ([detailed docs](/docs/trading/placing-orders/vwap-price-protection)).
-      * `max_slippage_price` field is deprecated and replaced by `vwap_price` now.
-
-      </Accordion>
-
-      <Accordion title="v1.123.1 — Dec 1st" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Mobile Fixes:
-      * Restored the table display at the bottom of the chart page on mobile.
-      * Adjusted slider alignment.
-      * Increase size of `Back` button.
-
-      </Accordion>
-
-      <Accordion title="v1.123.0 — Nov 28th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Users will now see a warning when they toggle `Reduce Only` on Isolated Margin.
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+</Accordion>

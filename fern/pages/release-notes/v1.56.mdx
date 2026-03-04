@@ -4,66 +4,38 @@ description: "Shizomori Key NFT Mint flow."
 ---
 
 <Callout intent="info">
-  **Aug 21st–Aug 26st, 2024** — Shizomori Key NFT Mint flow.
+  **🟢 Prod: Aug 21st–Aug 26st, 2024** — Shizomori Key NFT Mint flow.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
-      <Accordion title="v1.56.3 — Aug 26st" defaultOpen={true}>
+<Accordion title="v1.56.3 — Aug 26st" defaultOpen={true}>
 
-      ### 🖥️ UI Updates
-      * Shizomori Key NFT Mint flow
+### 🖥️ UI Updates
+* Shizomori Key NFT Mint flow
 
-      </Accordion>
+</Accordion>
 
-      <Accordion title="v1.56.0 — Aug 21st" defaultOpen={false}>
+<Accordion title="v1.56.0 — Aug 21st" defaultOpen={false}>
 
-      ### 🖥️ UI Updates
-      * Introduced TWAP orders in Order Builder which provides ability to execute large orders over a specified period .
-      * UI Styling Update: Tabs, Checkboxes & Drop-down.
-      * Update grid layout for Trade page.
-      * Fixed issue with Sub-Accounts recovery due to normalized / non-normalized addresses.
-      * Improve mobile trade page draggable chart.
-      * Allow user to cancel all TWAP orders
-      * Revamped order builder
-      * Tab field renames - "Notional" to "Value"
-      * Order builder field renames -  "Amount" to "Size",  "Limit Price" to  "Price"
-      * Rename "Spot Oracle Price" to "Oracle Price" in the navigation bar
+### 🖥️ UI Updates
+* Introduced TWAP orders in Order Builder which provides ability to execute large orders over a specified period .
+* UI Styling Update: Tabs, Checkboxes & Drop-down.
+* Update grid layout for Trade page.
+* Fixed issue with Sub-Accounts recovery due to normalized / non-normalized addresses.
+* Improve mobile trade page draggable chart.
+* Allow user to cancel all TWAP orders
+* Revamped order builder
+* Tab field renames - "Notional" to "Value"
+* Order builder field renames -  "Amount" to "Size",  "Limit Price" to  "Price"
+* Rename "Spot Oracle Price" to "Oracle Price" in the navigation bar
 
-      ### ⚙️ Engine Updates
-      * Introduced `/algo/orders` endpoints.
-      * Added `/algo` endpoint API docs.
-      * Fixed docs for GET /account/subaccounts and GET /account/info endpoint
+### ⚙️ Engine Updates
+* Introduced `/algo/orders` endpoints.
+* Added `/algo` endpoint API docs.
+* Fixed docs for GET /account/subaccounts and GET /account/info endpoint
 
-      </Accordion>
+<Callout intent="note">
+  **🟡 Testnet (v1.56.0-rc.4): Aug 17th** — Same changes, plus:
+  * Add `/algo` endpoint API docs.
+</Callout>
 
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.56.0-rc.4 — Aug 17th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Introduced TWAP orders in Order Builder which provides ability to execute large orders over a specified period .
-      * UI Styling Update: Tabs, Checkboxes & Drop-down.
-      * Update grid layout for Trade page.
-      * Fixed issue with Sub-Accounts recovery due to normalized / non-normalized addresses.
-      * Improve mobile trade page draggable chart.
-
-      ### ⚙️ Engine Updates
-      * Introduced `/algo/orders` endpoints.
-      * Add `/algo` endpoint API docs.
-
-      </Accordion>
-
-      <Accordion title="v1.56.0-rc.2 — Aug 15th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Rename "Notional" to "Value" on bottom tabs.
-      * Rename "Amount" to "Size" on bottom tabs.
-      * Rename "Limit Price" order book input to "Price" .
-      * Rename "Spot Oracle Price" to "Oracle Price" on bottom tab.
-      * Revamped order builder form.
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+</Accordion>

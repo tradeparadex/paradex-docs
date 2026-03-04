@@ -4,60 +4,25 @@ description: "Updated Korean Translations, and more."
 ---
 
 <Callout intent="info">
-  **Aug 7th, 2024** — Updated Korean Translations, and more.
+  **🟢 Prod: Aug 7th, 2024** — Updated Korean Translations, and more.
 </Callout>
 
-<Tabs>
-  <Tab title="🟢 Prod">
+## v1.54.0 — Aug 7th
 
-      ## v1.54.0 — Aug 7th
+### 🖥️ UI Updates
+* Updated Korean Translations
+* **Scaled Order Enhancements**:
+* User can now see size skew chart next to the input.
+* Address inconsistent padding and margin in the scaled order interface.
+* Provide a summary of `End/Start` values in the form before submission.
+* Show the `Order Value` within the form before submitting.
+* Enable users to view their `Current Position` in the form and automatically populate the `Amount` field upon clicking.
+* Revamped points page.
+* Improve Markets loading in main screen.
 
-      ### 🖥️ UI Updates
-      * Updated Korean Translations
-      * **Scaled Order Enhancements**:
-      * User can now see size skew chart next to the input.
-      * Address inconsistent padding and margin in the scaled order interface.
-      * Provide a summary of `End/Start` values in the form before submission.
-      * Show the `Order Value` within the form before submitting.
-      * Enable users to view their `Current Position` in the form and automatically populate the `Amount` field upon clicking.
-      * Revamped points page.
-      * Improve Markets loading in main screen.
+### ⚙️ Engine Updates
+* Removed unsupported `realized_pnl` field from `GET /positions` API and `positions` WebSocket channel
 
-      ### ⚙️ Engine Updates
-      * Removed unsupported `realized_pnl` field from `GET /positions` API and `positions` WebSocket channel
-  </Tab>
-  <Tab title="🟡 Testnet">
-      <Accordion title="v1.54.0-rc.4 — Aug 6th" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * Updated Korean Translations
-
-      </Accordion>
-
-      <Accordion title="v1.54.0-rc.2 — Aug 1st" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * **Scaled Order Enhancements**:
-      * User can now see size skew chart next to the input.
-      * Address inconsistent padding and margin in the scaled order interface.
-      * Provide a summary of `End/Start` values in the form before submission.
-      * Show the `Order Value` within the form before submitting.
-      * Enable users to view their `Current Position` in the form and automatically populate the `Amount` field upon clicking.
-      * Revamped points page.
-      * Improve Markets loading in main screen.
-
-      ### ⚙️ Engine Updates
-      * Removed unsupported `realized_pnl` field from `GET /positions` API and `positions` WebSocket channel
-
-      </Accordion>
-
-      <Accordion title="v1.54.0-rc.1 — Aug 1st" defaultOpen={false}>
-
-      ### 🖥️ UI Updates
-      * onboarding modal now closes without 1s delay upon auth completion
-      * Improve PWA install guide step descriptions
-
-      </Accordion>
-
-  </Tab>
-</Tabs>
+<Callout intent="note">
+  **🟡 Testnet (v1.54.0-rc.4): Aug 6th** — Same changes.
+</Callout>

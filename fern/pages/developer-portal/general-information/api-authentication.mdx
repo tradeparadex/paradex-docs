@@ -9,7 +9,7 @@ There are 2 general types of credentials used to authenticate with the Paradex A
 1. JWT Tokens - JWT (JSON Web Tokens) are secure tokens that contain encoded information about your permissions. They grant access to most API endpoints that are non-public and are included in every request to the API.
 2. Private Keys - Grant full trading access. Private keys are used both for creating JWT Tokens and Signatures, which are both sent to the API to place orders. 
 
-<img src="../../assets/auth-credentials.png" alt="Auth Credentials"/>
+<img src="../../../assets/auth-credentials.png" alt="Auth Credentials"/>
 
 ## Full Trading Access
 In order to enable full trading access via API, users need to export a Private Key associated with their account.
@@ -28,7 +28,7 @@ For detailed API documentation, see our [API Reference](/api/general-information
 ### Private Keys
 The account's Private key can be obtained on the UI on the Wallet tab
 
-<img src="../../assets/copy-private-key.png" alt="Wallet Modal" width="400"/>
+<img src="../../../assets/copy-private-key.png" alt="Wallet Modal" width="400"/>
 
 Click on 'Copy Private Key' to obtain your account's main private key.
 
@@ -91,7 +91,7 @@ These keys provide a secure way to delegate trading permissions while maintainin
 
 1. Navigate to account security settings and locate Key Management
 2. Click on the 'Subkeys' toggle, then click on '+ Add New Key'
-<img src="../../assets/add-subkey.png" alt="Create New Subkey"/>
+<img src="../../../assets/add-subkey.png" alt="Create New Subkey"/>
 3. Give your subkey a name
 4. Generate and securely store your subkey private key. The private key is not stored on the server and will only be shown once.
 5. The public key component can be copied on the Subkeys tab. This public key can also be derived from the private key.
@@ -148,7 +148,7 @@ While JWT Tokens have reduced scope, they should still be stored securely and sh
 1. Navigate to account settings and locate the Key Management Section
 2. While on the 'Read-only' tab, click "+ Add New Key"
 
-<img src="../../assets/add-readonly-key.png" alt="Create Readonly Key"/>
+<img src="../../../assets/add-readonly-key.png" alt="Create Readonly Key"/>
 
 3. Configure key settings (name and expiration)
 4. Generate and securely store your API key. Note that this key will only be shown to you once and cannot be recovered after.

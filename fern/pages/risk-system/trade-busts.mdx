@@ -56,4 +56,4 @@ When a bust occurs, other trades from the same account may already be inflight t
 
 ### Account resync
 
-When the system detects a mismatch between the off-chain and on-chain state of an account, it automatically places the account into **RESYNC** mode. Resync synchronizes the off-chain state with the on-chain state to stop new busts from being generated. Trades already inflight to the chain will still bust since they were submitted before the resync began.
+Resync is a self-recovery mechanism on the platform. When the system detects a mismatch between the off-chain and on-chain state of an account, it automatically places the account into **RESYNC** mode. Resync synchronizes the off-chain state with the on-chain state to stop new busts from being generated. Trades already inflight to the chain will still bust since they were submitted before the resync began.

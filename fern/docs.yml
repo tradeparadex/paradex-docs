@@ -561,6 +561,9 @@ navigation:
             - page: ETH-USD
               slug: eth-usd
               path: ./pages/instruments-guide/spot/eth-usd.mdx
+            - page: DIME-USD
+              slug: dime-usd
+              path: ./pages/instruments-guide/spot/dime-usd.mdx
   - tab: risk
     layout:
       - section: Getting Started

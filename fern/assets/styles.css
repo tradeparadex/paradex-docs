@@ -847,6 +847,13 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
 }
 
 @media (max-width: 768px) {
+  /* Prevent horizontal overflow on reference-layout pages (e.g. Trading Overview) */
+  .fern-layout-reference > article {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
   .trading-overview-actions {
     flex-direction: column;
     align-items: stretch;

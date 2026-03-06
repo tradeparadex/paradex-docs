@@ -56,6 +56,9 @@ navigation:
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
+          - page: DIME Utility
+            slug: dime-utility
+            path: ./pages/introduction/dime-utility.mdx
           - page: Bridges and On-Ramps
             slug: bridges
             path: ./pages/introduction/bridges-onramps.mdx

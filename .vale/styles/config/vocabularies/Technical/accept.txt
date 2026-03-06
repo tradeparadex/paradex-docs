@@ -3,6 +3,7 @@ APIs
 autoscaling
 backoff
 blockchains
+composable
 Config
 configs
 datapoint
@@ -17,6 +18,7 @@ klines
 Multicall
 Multisig
 onboarding
+onchain
 param
 params
 Pentest

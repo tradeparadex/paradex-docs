@@ -835,3 +835,32 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Trading Overview page ── */
+.trading-overview-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  /* Prevent horizontal overflow on reference-layout pages (e.g. Trading Overview) */
+  .fern-layout-reference > article {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .trading-overview-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .trading-overview-actions .fern-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

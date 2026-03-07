@@ -1086,6 +1086,10 @@ redirects:
   - source: "/docs/getting-started/maintenance"
     destination: "/trading/maintenance-mode"
 
+  # Redirect old /docs/roadmap to /docs/getting-started/roadmap
+  - source: "/docs/roadmap"
+    destination: "/docs/getting-started/roadmap"
+
   # Specific page redirects for renamed/moved pages
   - source: "/docs/risk/paradex-risk-system"
     destination: "/risk/margin-system"

@@ -1,0 +1,34 @@
+# Available Resources
+
+<Note>
+No action needed — resources are loaded automatically by your AI assistant. This page is a reference for what's available.
+</Note>
+
+Resources are read-only data sources that your AI assistant can access in the background. Unlike [tools](/agentic-ai-hub/mcp/tools) (which are called on demand), resources provide always-available context.
+
+## System
+
+| Resource URI | Description |
+|---|---|
+| `paradex://system/config` | Global system configuration |
+| `paradex://system/time` | Current system time |
+| `paradex://system/state` | System operational state |
+
+## Markets
+
+| Resource URI | Description |
+|---|---|
+| `paradex://markets` | List of all available markets |
+| `paradex://market/summary/{market_id}` | Detailed info for a specific market |
+
+## Vaults
+
+| Resource URI | Description |
+|---|---|
+| `paradex://vaults` | List all vaults |
+| `paradex://vaults/config` | Global vault configuration |
+| `paradex://vaults/balance/{vault_id}` | Vault balance |
+| `paradex://vaults/summary/{vault_id}` | Comprehensive vault summary |
+| `paradex://vaults/transfers/{vault_id}` | Deposit and withdrawal history |
+| `paradex://vaults/positions/{vault_id}` | Current trading positions |
+| `paradex://vaults/account-summary/{vault_id}` | Trading account information |

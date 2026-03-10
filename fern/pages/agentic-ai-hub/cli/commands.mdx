@@ -1,0 +1,36 @@
+# Commands
+
+All commands accept an `--env` flag to specify the target environment (`prod`, `testnet`, or `nightly`).
+
+## Account Management
+
+```bash
+# Print account information
+paradex_cli print-account-info ACCOUNT_ADDRESS --env ENVIRONMENT
+
+# Add a guardian
+paradex_cli add-guardian PUB_KEY --env ENVIRONMENT
+
+# Add a backup guardian
+paradex_cli add-guardian-backup PUB_KEY --env ENVIRONMENT
+
+# Change the account signer
+paradex_cli change-signer PUB_KEY --env ENVIRONMENT
+```
+
+## Transaction Signing & Submission
+
+```bash
+# Sign an invoke transaction
+paradex_cli sign-invoke-tx FILE_PATH --env ENVIRONMENT
+
+# Submit a signed invoke transaction
+paradex_cli submit-invoke-tx TX_FILE_PATH SIG_FILES --env ENVIRONMENT
+```
+
+## Emergency Operations
+
+```bash
+# Trigger guardian escape mechanism
+paradex_cli trigger-escape-guardian --env ENVIRONMENT
+```

@@ -34,6 +34,9 @@ tabs:
   ws:
     display-name: WebSocket API
     slug: ws
+  agentic-ai-hub:
+    display-name: Agentic AI Hub
+    slug: agentic-ai-hub
   releases:
     display-name: Release Notes
     slug: releases
@@ -769,6 +772,41 @@ navigation:
             href: https://tradeparadex.github.io/paradex-py/
           - link: CCXT Integration
             href: https://docs.ccxt.com/#/exchanges/paradex
+
+  - tab: agentic-ai-hub
+    layout:
+      - page: Overview
+        path: ./pages/agentic-ai-hub/overview.mdx
+      - section: MCP
+        slug: mcp
+        path: ./pages/agentic-ai-hub/mcp/overview.mdx
+        contents:
+          - page: Quickstart Guide
+            slug: installation
+            path: ./pages/agentic-ai-hub/mcp/installation.mdx
+          - page: Configuration & Deployment
+            slug: configuration
+            path: ./pages/agentic-ai-hub/mcp/configuration.mdx
+          - page: Resources
+            slug: resources
+            path: ./pages/agentic-ai-hub/mcp/resources.mdx
+          - page: Tools
+            slug: tools
+            path: ./pages/agentic-ai-hub/mcp/tools.mdx
+          - page: Prompts
+            slug: prompts
+            path: ./pages/agentic-ai-hub/mcp/prompts.mdx
+      - section: CLI
+        slug: cli
+        path: ./pages/agentic-ai-hub/cli.mdx
+        contents:
+          - page: AI Agent Integration
+            slug: ai-integration
+            path: ./pages/agentic-ai-hub/cli/ai-integration.mdx
+      - section: Agentic Skills
+        slug: agentic-skills
+        path: ./pages/agentic-ai-hub/agentic-skills/overview.mdx
+        contents: []
 
   - tab: releases
     layout:

@@ -113,6 +113,72 @@ The main account address is required because subkeys are randomly generated keyp
 Additionally, we need to specify the subkey's public key so it can be used for signature verification instead of defaulting to the main account's public key.
 </Note>
 
+## EVM Authentication (v2)
+
+Paradex supports onboarding and authentication using EVM wallets via [SIWE (Sign-In with Ethereum, ERC-4361)](https://eips.ethereum.org/EIPS/eip-4361) messages. This provides an alternative to the Starknet-based authentication flow.
+
+### EVM Onboarding (`POST /v2/onboarding`)
+
+Onboards a new account using an EVM wallet.
+
+**Required headers:**
+- `PARADEX-STARKNET-ACCOUNT` — The deterministic Starknet address computed from the ETH address
+- `PARADEX-EVM-SIGNATURE` — EVM `personal_sign` (EIP-191) signature of the SIWE message
+- `PARADEX-SIWE-MESSAGE` — Base64-encoded SIWE (ERC-4361) message
+
+**Request body:**
+```json
+{
+  "public_key": "0x04..."
+}
+```
+- `public_key` — Uncompressed secp256k1 public key (65 bytes, starting with `0x04`)
+- `referral_code` *(optional)* — Referral code
+- `marketing_code` *(optional)* — Marketing code
+
+The SIWE onboarding message uses the statement: `"Paradex Onboarding"`.
+
+**Address computation:** The `PARADEX-STARKNET-ACCOUNT` address is deterministically derived from the ETH address and the EVM account class hash (available from `GET /system/config` as `evm_account_class_hash`). The computation follows the standard Starknet contract address formula:
+```
+pedersen(PREFIX, deployer=0, salt=ethAddress, classHash, hash(calldata))
+```
+
+### EVM Authentication (`POST /v2/auth`)
+
+Authenticates an existing EVM account and returns a JWT token.
+
+**Required headers:**
+- `PARADEX-STARKNET-ACCOUNT` — Starknet account address
+- `PARADEX-EVM-SIGNATURE` — EVM `personal_sign` (EIP-191) signature of the SIWE message
+- `PARADEX-SIWE-MESSAGE` — Base64-encoded SIWE auth message
+
+**Optional headers:**
+- `PARADEX-AUTHORIZE-ISOLATED-MARKETS` — Authorize all isolated market accounts
+
+**Response:**
+```json
+{
+  "jwt_token": "..."
+}
+```
+
+The JWT token format is the same as Starknet auth. The SIWE auth message includes the expiration time embedded within the message itself (via the `expirationTime` field), rather than using a separate header.
+
+### EVM Auth with Subkey (`POST /v2/auth/:pubkey`)
+
+Same as `/v2/auth` but validates against a registered subkey public key. The `:pubkey` path parameter must be a valid EVM public key (uncompressed secp256k1, 65 bytes starting with `0x04`).
+
+### Key Differences from Starknet Auth (v1)
+
+| Aspect | Starknet (v1) | EVM (v2) |
+|--------|--------------|----------|
+| **Signature type** | Starknet typed data | SIWE (ERC-4361) via `personal_sign` |
+| **Public key format** | Stark key (`0x` + 64 hex chars) | Uncompressed secp256k1 (`0x04` + 128 hex chars) |
+| **Timestamp handling** | `PARADEX-TIMESTAMP` header | Embedded in SIWE message (`issuedAt`) |
+| **Expiration** | `PARADEX-SIGNATURE-EXPIRATION` header | Embedded in SIWE message (`expirationTime`) |
+| **Ethereum account** | `PARADEX-ETHEREUM-ACCOUNT` header | Derived from public key |
+| **Account contract** | Cairo 0 proxy pattern | Argent v0.5.0 Cairo 1 (native upgradeability) |
+
 ## Readonly Access
 In order to query most APIs with account related information, a JWT Token needs to be attached to the auth headers of the request.
 

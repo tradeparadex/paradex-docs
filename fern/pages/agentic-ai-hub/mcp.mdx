@@ -35,15 +35,7 @@ All trading features require a Paradex account private key. Public market data w
 
 ## Claude Desktop
 
-**Fastest path:** use Smithery to install automatically:
-
-You will be required to create an account or Sign In into Smithery.
-
-```bash
-npx -y @smithery/cli@latest mcp add @tradeparadex/mcp-paradex-py --client claude
-```
-
-**Manual setup:**
+**Option A - Manual setup:**
 
 1. Find your config file:
    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
@@ -71,6 +63,16 @@ npx -y @smithery/cli@latest mcp add @tradeparadex/mcp-paradex-py --client claude
 <Note>
 **Don't have `uvx`?** Install it with `pip install uv` or from [astral.sh/uv](https://astral.sh/uv).
 </Note>
+
+**Option B - Connect via Smithery:**
+
+1. Run this in your terminal to install and auto-configure the Paradex server:
+
+   ```bash
+   npx -y @smithery/cli@latest mcp add @tradeparadex/mcp-paradex-py --client claude
+   ```
+
+2. You will be required to create an account or sign in into Smithery. Once connected, configure your settings and click **Connect**.
 
 ---
 

@@ -48,11 +48,13 @@ All trading features require a Paradex account private key. Public market data w
 
 ---
 
+## Step 3 — Install and Configure
+
 <Warning>
 Complete the [Prerequisites](#prerequisites) and [Step 1](#step-1--get-your-paradex-private-key) above before proceeding.
 </Warning>
 
-## Claude Desktop
+### Claude Desktop
 
 **Option A - Manual setup:**
 
@@ -101,7 +103,7 @@ Complete the [Prerequisites](#prerequisites) and [Step 1](#step-1--get-your-para
 
 ---
 
-## Claude Code (CLI)
+### Claude Code (CLI)
 
 Run this in your terminal:
 
@@ -119,7 +121,7 @@ claude mcp list
 
 ---
 
-## Cursor
+### Cursor
 
 **One-click install** (automatically configures everything):
 
@@ -144,7 +146,7 @@ Open Cursor **Settings → MCP** and add:
 
 ---
 
-## Windsurf
+### Windsurf
 
 Open **Windsurf Settings → MCP Servers** and paste the following into `~/.codeium/windsurf/mcp_config.json`:
 
@@ -167,7 +169,7 @@ Restart Windsurf to apply changes.
 
 ---
 
-## VS Code (GitHub Copilot)
+### VS Code (GitHub Copilot)
 
 Create a `.vscode/mcp.json` file in the root of your project folder (create the `.vscode` folder if it doesn't exist):
 
@@ -191,7 +193,7 @@ Reload VS Code. The tools will appear in Copilot Chat.
 
 ---
 
-## Claude.ai Web
+### Claude.ai Web
 
 Claude.ai web cannot run local programs — you need to deploy the MCP server to a remote URL first.
 
@@ -201,11 +203,11 @@ Once deployed, add the URL in **Claude.ai → Settings → Integrations → Add 
 
 ---
 
-## ChatGPT Desktop (app)
+### ChatGPT Desktop (app)
 
 ChatGPT Desktop app also requires a remote URL. Enable **Developer Mode** in ChatGPT settings first.
 
-### Option A — ngrok tunnel (no cloud account, good for trying it out)
+#### Option A — ngrok tunnel (no cloud account, good for trying it out)
 
 [ngrok](https://ngrok.com) creates a temporary public URL that forwards to your local machine.
 
@@ -235,13 +237,13 @@ ChatGPT Desktop app also requires a remote URL. Enable **Developer Mode** in Cha
 **Limitation:** The tunnel URL changes every time you restart ngrok (free tier). Update the connector URL each session.
 </Note>
 
-### Option B — Permanent remote endpoint (recommended for daily use)
+#### Option B — Permanent remote endpoint (recommended for daily use)
 
 See the [Configuration & Deployment guide](/agentic-ai-hub/mcp/configuration#remote-http-deployment) for step-by-step instructions (Railway, Render, Fly.io, AWS Lambda, Docker).
 
 Once you have a URL, add it in **ChatGPT → Settings → Connectors → Create**.
 
-### Option C — OpenAI Agents SDK (for developers building custom Python apps)
+#### Option C — OpenAI Agents SDK (for developers building custom Python apps)
 
 For custom Python apps (not the ChatGPT interface). No remote hosting needed.
 
@@ -280,7 +282,7 @@ asyncio.run(main())
 
 ---
 
-## Gemini CLI
+### Gemini CLI
 
 Open (or create) `~/.gemini/settings.json` in a text editor and add the `mcpServers` block:
 
@@ -312,7 +314,7 @@ Manage servers during a session with `/mcp enable paradex` or `/mcp disable para
 
 ---
 
-## OpenAI Codex CLI
+### OpenAI Codex CLI
 
 Run this in your terminal to add the Paradex server:
 

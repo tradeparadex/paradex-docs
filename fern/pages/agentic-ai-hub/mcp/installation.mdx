@@ -65,9 +65,7 @@ npx -y @smithery/cli install @tradeparadex/mcp-paradex-py --client claude
 
    - <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",position:"relative"}}><span><strong>Windows</strong>: <code>%APPDATA%\Claude\claude_desktop_config.json</code></span><details><summary style={{cursor:"pointer",color:"inherit",fontSize:"0.8rem",whiteSpace:"nowrap",marginLeft:"0.75rem",opacity:0.6}}>How to</summary><div style={{position:"absolute",left:0,top:"calc(100% + 6px)",background:"#0f172a",border:"1px solid #1e3a5f",borderRadius:"8px",padding:"1rem 1.25rem",zIndex:50,width:"100%",fontSize:"0.875rem"}}><p><strong>Option 1: The &#34;Run&#34; Command (Fastest)</strong></p><ol><li>Press <strong>Windows Key + R</strong> to open the Run dialog</li><li>Paste: <code>%APPDATA%\Claude</code> and press <strong>Enter</strong></li><li>Right-click <code>claude_desktop_config.json</code> &#8594; <strong>Open with &#8594; Notepad</strong> (or VS Code)</li></ol><hr/><p><strong>Option 2: File Explorer Address Bar</strong></p><ol><li>Open any folder or press <strong>Windows Key + E</strong></li><li>Click the <strong>Address Bar</strong> at the top</li><li>Paste <code>%APPDATA%\Claude</code> and press <strong>Enter</strong></li><li>The JSON file will be there</li></ol><hr/><p><strong>Option 3: PowerShell or Command Prompt</strong></p><ol><li>Open PowerShell or Command Prompt (search &#34;cmd&#34; in Start menu)</li><li>Run: <code>notepad $env:AppData\Claude\claude_desktop_config.json</code></li><li>If the file doesn&#39;t exist yet, Notepad will ask to create it &#8212; click <strong>Yes</strong></li></ol></div></details></div>
 
-   <Note>
-   **Can't find the file?** Open Claude Desktop → **Settings → Developer → Edit Config**. This opens the file directly. If it doesn't exist yet, create it at the path above.
-   </Note>
+   > **Can't find the file?** Open Claude Desktop → **Settings → Developer → Edit Config**. This opens the file directly. If it doesn't exist yet, create it at the path above.
 
 2. Paste the following (replace `your_private_key_here` with your actual key from Step 1):
 
@@ -88,7 +86,7 @@ npx -y @smithery/cli install @tradeparadex/mcp-paradex-py --client claude
 
 3. Restart Claude Desktop. It will automatically download and start the MCP server via `uvx` — no separate install needed. To verify, click the **+** icon in the bottom-left of the chat input → **Connectors**. You should see **mcp paradex** listed with its toggle enabled.
 
-   <img src="../../../assets/agentic-ai-hub/claude-desktop-connectors.png" alt="Claude Desktop Connectors panel showing mcp paradex enabled" />
+   <img src="../../../assets/agentic-ai-hub/claude-desktop-connectors.png" alt="Claude Desktop Connectors panel showing mcp paradex enabled" style={{maxWidth:"420px",display:"block",marginTop:"0.75rem"}} />
 
 ---
 

@@ -61,42 +61,7 @@ npx -y @smithery/cli install @tradeparadex/mcp-paradex-py --client claude
 **Manual setup:**
 
 1. Open the Claude Desktop config file in a text editor:
-   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-
-   <Accordion title="How to open this file on macOS">
-   **Option 1: The "Go to Folder" Shortcut (Fastest)**
-
-   1. Open Finder.
-   2. Press **Command + Shift + G** on your keyboard.
-   3. Paste the following path into the box: `~/Library/Application Support/Claude/`
-   4. Press **Enter**.
-   5. Right-click `claude_desktop_config.json` and select **Open With → TextEdit** (or VS Code).
-
-   ---
-
-   **Option 2: Using the Terminal**
-
-   1. Open Terminal (**Cmd + Space**, type "Terminal").
-   2. To open in your default text editor, run:
-      ```bash
-      open ~/Library/"Application Support"/Claude/claude_desktop_config.json
-      ```
-   3. Or to edit directly in the terminal:
-      ```bash
-      nano ~/Library/"Application Support"/Claude/claude_desktop_config.json
-      ```
-
-   ---
-
-   **Option 3: Manual Navigation**
-
-   The Library folder is hidden by default.
-
-   1. Open Finder.
-   2. Click the **Go** menu at the top of your screen.
-   3. Hold down the **Option (⌥)** key — the Library folder will appear in the list.
-   4. Click **Library → Application Support → Claude**.
-   </Accordion>
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json` <details style={{display:"inline-block",verticalAlign:"top",marginLeft:"0.5rem"}}><summary style={{listStyle:"none",cursor:"pointer",color:"#60a5fa",fontSize:"0.8rem",border:"1px solid #60a5fa",borderRadius:"4px",padding:"1px 8px",display:"inline-block"}}>How to</summary><div style={{marginTop:"0.75rem",fontSize:"0.9rem"}}><p><strong>Option 1: "Go to Folder" (Fastest)</strong></p><ol><li>Open Finder</li><li>Press <strong>Command + Shift + G</strong></li><li>Paste <code>~/Library/Application Support/Claude/</code> and press <strong>Enter</strong></li><li>Right-click <code>claude_desktop_config.json</code> → <strong>Open With → TextEdit</strong> (or VS Code)</li></ol><hr/><p><strong>Option 2: Terminal</strong></p><ol><li>Open Terminal (<strong>Cmd + Space</strong>, type "Terminal")</li><li>Run: <code>open ~/Library/"Application Support"/Claude/claude_desktop_config.json</code></li><li>Or edit in-place: <code>nano ~/Library/"Application Support"/Claude/claude_desktop_config.json</code></li></ol><hr/><p><strong>Option 3: Manual Navigation</strong> (Library folder is hidden)</p><ol><li>Open Finder → click <strong>Go</strong> menu at the top</li><li>Hold <strong>Option (⌥)</strong> — Library appears in the list</li><li>Navigate to <strong>Application Support → Claude</strong></li></ol></div></details>
 
    - **Windows**: `%APPDATA%\\Claude\\claude_desktop_config.json`
 

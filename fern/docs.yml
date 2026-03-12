@@ -808,7 +808,7 @@ navigation:
           - page: Remote Deployment
             slug: remote-deployment
             path: ./pages/agentic-ai-hub/mcp/remote-deployment.mdx
-          - page: Connect to Paradex MCP
+          - page: Paradex-hosted MCP
             slug: connect-to-paradex-mcp
             path: ./pages/agentic-ai-hub/mcp/connect-to-paradex-mcp.mdx
           - page: Resources

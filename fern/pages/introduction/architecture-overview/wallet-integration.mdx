@@ -8,6 +8,7 @@ Paradex, a [Starknet Appchain](/docs/getting-started/architecture-overview/stark
 1. **Key Generation**: visit the Paradex UI running in your browser. When you sign the Onboarding message, it will deterministically generate your private Paradex keys based on a signature from your connected wallet. Wallets that support deterministic signing are supported. Importantly, this process ensures that you can regenerate your Paradex keys using the same connected wallet. Your Paradex keys are never transmitted to Paradex servers or any external location; they remain securely stored in your browser.
 2. **Transaction Signing**: Your private Paradex key is employed to sign any transactions you authorize on Layer 2. The UI running on your machine automatically performs these signatures when required.
 3. **Starknet Wallets (Beta)**: We're extending our key generation flow to support wallets from Starknet, including [Argent X](https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb) and [Braavos](https://chrome.google.com/webstore/detail/braavos-wallet/jnlgamecbpmbajjfhmmmlhejkemejdma). This will allow users coming from the Starknet ecosystem to trade on Paradex. We're working on a deeper integration with our wallet partners to eventually store keys directly within the wallet itself, offering enhanced security compared to browser storage.
+4. **EVM Wallets**: EVM wallets (e.g., MetaMask) can onboard by signing a [SIWE (Sign-In with Ethereum)](https://eips.ethereum.org/EIPS/eip-4361) message instead of a Starknet typed data message. The Paradex account address is deterministically computed from the ETH address. EVM accounts use Argent v0.5.0 (Cairo 1) deployed directly — no proxy wrapper is needed. After onboarding, authentication also uses SIWE messages via the `/v2/auth` endpoint.
 
 ## Paradex internal wallet
 
@@ -70,10 +71,21 @@ If “Remember Me” is checked when connecting the wallet, the Ethereum Signatu
 You should update the date and time on your device to be set automatically, to avoid issues when signing requests (e.g. during Onboarding/Authentication).\
 See [MacOS documentation](https://support.apple.com/en-gb/guide/mac-help/mchlp2996/mac) or [Windows documentation](https://support.microsoft.com/en-us/windows/how-to-set-your-time-and-time-zone-dfaa7122-479f-5b98-2a7b-fa0b6e01b261)
 
-<Warning>
-The L1 wallet you connect during onboarding is permanently linked to your Paradex L2 account and cannot be updated later. 
+### EVM Account Onboarding
 
-If you want to operate with a different L1 wallet, you will need to create a new Paradex account.
+For EVM wallets, the onboarding flow differs from the Starknet-based flow described above:
+
+- **No key derivation**: Instead of using a KDF to derive a Stark-compatible key from an Ethereum signature, the wallet's secp256k1 public key is used directly. This eliminates the deterministic signature and KDF steps entirely.
+- **SIWE message**: The user signs a [SIWE (ERC-4361)](https://eips.ethereum.org/EIPS/eip-4361) message with their EVM wallet. This replaces the Starknet typed data signature used in the traditional flow.
+- **Address computation**: The Paradex Starknet account address is deterministically derived using `pedersen(PREFIX, deployer=0, salt=ethAddress, classHash, hash(calldata))`, where the class hash is the EVM account class hash from system config.
+- **Contract type**: EVM accounts use Argent v0.5.0 (Cairo 1) with native upgradeability, deployed directly on Starknet. This differs from Starknet-onboarded accounts which use a Cairo 0 proxy pattern.
+
+For full API-level details on EVM authentication endpoints, see [API Authentication](/api/general-information/api-authentication).
+
+<Warning>
+The wallet you connect during onboarding is permanently linked to your Paradex L2 account and cannot be updated later. This applies to both Starknet-onboarded and EVM-onboarded accounts.
+
+If you want to operate with a different wallet, you will need to create a new Paradex account.
 </Warning>
 
 ### References

@@ -22,33 +22,3 @@ subtitle: Users can choose between two trader profiles that best suits their str
 <sub>Retail orders exceeding rate limits automatically switch to Pro trader profile and lose access to RPI liquidity.</sub>
 
 For detailed fee information, see [Trading Fees](/trading/trading-fees).
-
-## Identifying as Retail via API
-
-By default, all orders submitted through the API are treated as <Badge intent="note" outlined minimal>Pro</Badge> orders. To have your API orders treated as <Badge intent="success" outlined minimal>Retail</Badge> orders, include the `INTERACTIVE` flag when submitting orders.
-
-When the `INTERACTIVE` flag is set on an order:
-
-- The order is subject to **Retail speed bumps** and **rate limits**
-- The order qualifies for **free trading fees** (0% maker and taker)
-- The order is eligible for **[Retail Price Improvement (RPI)](/trading/rpi)** liquidity
-- The order receives **queue priority** at each price level
-
-<Warning>
-Orders with the `INTERACTIVE` flag are subject to Retail rate limits. If rate limits are exceeded, the account will automatically switch to the Pro trader profile and lose access to RPI liquidity.
-</Warning>
-
-### Example
-
-Include `"INTERACTIVE"` in the `flags` array when creating an order:
-
-```json
-{
-  "market": "BTC-USD-PERP",
-  "side": "BUY",
-  "type": "LIMIT",
-  "size": "0.01",
-  "limit_price": "50000",
-  "flags": ["INTERACTIVE"]
-}
-```

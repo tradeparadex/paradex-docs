@@ -805,7 +805,7 @@ navigation:
           - page: Other Clients
             slug: other-clients
             path: ./pages/agentic-ai-hub/mcp/other-clients.mdx
-          - page: Remote Deployment
+          - page: Remote MCP Deployment
             slug: remote-deployment
             path: ./pages/agentic-ai-hub/mcp/remote-deployment.mdx
           - page: Paradex-hosted MCP

@@ -11,69 +11,13 @@ This page covers Windsurf and Gemini CLI. Each has two independent setup options
 
 ### Step 1 — Prerequisites
 
-Most steps require running commands in a terminal:
-
-- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter. You can also find it in **Applications → Utilities → Terminal**.
-- **Windows:** Right-click the Windows Start icon and select **Terminal**. Alternatively, search for "cmd", "PowerShell", or "Command Prompt" in the Start menu. Both PowerShell and Command Prompt will work for the commands in this guide.
-
-**Install Python 3.10 or higher:**
-
-```bash
-python3 --version
-```
-
-If you need to install or upgrade, visit [python.org/downloads](https://www.python.org/downloads/).
-
-**Install uvx:**
-
-```bash
-pip install uv
-```
-
-On macOS you can also use Homebrew:
-
-```bash
-brew install uv
-```
-
-Verify the installation:
-
-```bash
-uvx --version
-```
-
-<details>
-<summary>Alternative: Run with Docker</summary>
-
-If you prefer not to install Python or uvx directly, you can run the MCP server inside a Docker container. Requires Docker.
-
-```bash
-git clone https://github.com/tradeparadex/mcp-paradex-py.git
-cd mcp-paradex-py
-docker build . -t mcp-paradex-py
-
-# Read-only mode (public market data only)
-docker run --rm -i mcp-paradex-py
-
-# With trading capabilities
-docker run --rm -e PARADEX_ACCOUNT_PRIVATE_KEY=your_key -i mcp-paradex-py
-```
-
-</details>
+<Markdown src="../../../snippets/mcp-prerequisites.mdx" />
 
 ---
 
 ### Step 2 — Get Your Paradex Private Key
 
-All trading features require a Paradex account private key. Market data tools work without one — you can skip this step if you only need market data.
-
-1. Go to [Paradex](https://app.paradex.trade) and connect your wallet.
-2. Navigate to **Settings → API Keys** and create a new key.
-3. Copy the private key — you'll use it below.
-
-<Note>
-**Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
-</Note>
+<Markdown src="../../../snippets/mcp-private-key.mdx" />
 
 ---
 

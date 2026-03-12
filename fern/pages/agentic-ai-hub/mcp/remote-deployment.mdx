@@ -10,12 +10,19 @@ Remote deployments do **not support trading** at the moment. Only public market 
 
 ## How It Works
 
-When deploying remotely, the server runs in HTTP mode. Set the `MCP_TRANSPORT` environment variable to `streamable-http` — all platform guides below include this.
+The server supports two transport modes controlled by `MCP_TRANSPORT`:
+
+| Mode | Value | Use case |
+|---|---|---|
+| stdio (default) | `stdio` | Claude Desktop, Claude Code, Cursor — runs as a local subprocess |
+| HTTP | `streamable-http` | ChatGPT Desktop, Claude.ai web, any remote client |
 
 In HTTP mode the server listens on `MCP_PORT` (default `3000`) and exposes:
 
 - `POST /mcp` — MCP protocol endpoint (what clients connect to)
 - `GET /health` — health check, returns `{"status": "ok"}`
+
+For more details, see the [deploy-http guide](https://github.com/tradeparadex/mcp-paradex-py/blob/main/docs/deploy-http.md) in the repository.
 
 ---
 
@@ -127,7 +134,29 @@ More setup than Railway/Render but gives fine-grained control over region, scali
      PARADEX_ENVIRONMENT=prod
    ```
 
-4. Confirm the `[[services]]` block in `fly.toml` listens on port `8080` with health check path `/health`, then deploy:
+4. Confirm the `[[services]]` block in `fly.toml` listens on port `8080` with health check path `/health`:
+
+   ```toml
+   [[services]]
+     internal_port = 8080
+     protocol = "tcp"
+
+     [[services.tcp_checks]]
+       grace_period = "10s"
+       interval = "30s"
+       restart_limit = 0
+       timeout = "5s"
+
+     [[services.http_checks]]
+       interval = "10s"
+       grace_period = "5s"
+       method = "GET"
+       path = "/health"
+       protocol = "http"
+       timeout = "2s"
+   ```
+
+   Then deploy:
 
    ```bash
    fly deploy

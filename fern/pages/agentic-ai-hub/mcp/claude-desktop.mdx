@@ -1,0 +1,87 @@
+# Claude Desktop
+
+<Note>
+Complete the [Prerequisites & Setup](/agentic-ai-hub/mcp/prerequisites) before proceeding.
+</Note>
+
+## Option A — Manual Setup
+
+1. **Open the config file:**
+
+   Open Claude Desktop → **Settings → Developer → Edit Config**. This opens the config file path directly. Find and open `claude_desktop_config.json` with your text editor.
+
+   If the config file doesn't exist yet, create it at the path and name it `claude_desktop_config.json`. You can navigate to the path via the Claude Desktop app or manually:
+
+   - <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",position:"relative"}}><span><strong>macOS</strong>: <code>&#126;/Library/Application Support/Claude/claude_desktop_config.json</code></span><details><summary style={{cursor:"pointer",color:"inherit",fontSize:"0.8rem",whiteSpace:"nowrap",marginLeft:"0.75rem",opacity:0.6}}>How to</summary><div style={{position:"absolute",left:0,top:"calc(100% + 6px)",background:"#0f172a",border:"1px solid #1e3a5f",borderRadius:"8px",padding:"1rem 1.25rem",zIndex:50,width:"100%",fontSize:"0.875rem"}}><p><strong>Option 1: "Go to Folder" (Fastest)</strong></p><ol><li>Open Finder</li><li>Press <strong>Command + Shift + G</strong></li><li>Paste <code>&#126;/Library/Application Support/Claude/</code> and press <strong>Enter</strong></li><li>Right-click <code>claude_desktop_config.json</code> &#8594; <strong>Open With &#8594; TextEdit</strong> (or VS Code)</li></ol><hr/><p><strong>Option 2: Terminal</strong></p><ol><li>Open Terminal (<strong>Cmd + Space</strong>, type &#34;Terminal&#34;)</li><li>Run: <code>open &#126;/Library/&#34;Application Support&#34;/Claude/claude_desktop_config.json</code></li><li>Or: <code>nano &#126;/Library/&#34;Application Support&#34;/Claude/claude_desktop_config.json</code></li></ol><hr/><p><strong>Option 3: Manual Navigation</strong> (Library is hidden)</p><ol><li>Open Finder &#8594; click <strong>Go</strong> menu at the top</li><li>Hold <strong>Option (&#8984;)</strong> &#8212; Library appears</li><li>Navigate to <strong>Application Support &#8594; Claude</strong></li></ol></div></details></div>
+
+   - <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",position:"relative"}}><span><strong>Windows</strong>: <code>%APPDATA%\Claude\claude_desktop_config.json</code></span><details><summary style={{cursor:"pointer",color:"inherit",fontSize:"0.8rem",whiteSpace:"nowrap",marginLeft:"0.75rem",opacity:0.6}}>How to</summary><div style={{position:"absolute",left:0,top:"calc(100% + 6px)",background:"#0f172a",border:"1px solid #1e3a5f",borderRadius:"8px",padding:"1rem 1.25rem",zIndex:50,width:"100%",fontSize:"0.875rem"}}><p><strong>Option 1: The &#34;Run&#34; Command (Fastest)</strong></p><ol><li>Press <strong>Windows Key + R</strong> to open the Run dialog</li><li>Paste: <code>%APPDATA%\Claude</code> and press <strong>Enter</strong></li><li>Right-click <code>claude_desktop_config.json</code> &#8594; <strong>Open with &#8594; Notepad</strong> (or VS Code)</li></ol><hr/><p><strong>Option 2: File Explorer Address Bar</strong></p><ol><li>Open any folder or press <strong>Windows Key + E</strong></li><li>Click the <strong>Address Bar</strong> at the top</li><li>Paste <code>%APPDATA%\Claude</code> and press <strong>Enter</strong></li><li>The JSON file will be there</li></ol><hr/><p><strong>Option 3: PowerShell or Command Prompt</strong></p><ol><li>Open PowerShell or Command Prompt (search &#34;cmd&#34; in Start menu)</li><li>Run: <code>notepad $env:AppData\Claude\claude_desktop_config.json</code></li><li>If the file doesn&#39;t exist yet, Notepad will ask to create it &#8212; click <strong>Yes</strong></li></ol></div></details></div>
+
+2. **Add the Paradex server:**
+
+   Paste the following into the config file. Replace `your_private_key_here` with your actual key from the prerequisites:
+
+   ```json
+   {
+     "mcpServers": {
+       "paradex": {
+         "command": "uvx",
+         "args": ["mcp-paradex"],
+         "env": {
+           "PARADEX_ENVIRONMENT": "prod",
+           "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+         }
+       }
+     }
+   }
+   ```
+
+3. **Restart Claude Desktop:**
+
+   Claude Desktop will automatically download and start the MCP server via `uvx` — no separate install needed.
+
+## Option B — Connect via Smithery
+
+1. Run this in your terminal:
+
+   ```bash
+   npx -y @smithery/cli@latest mcp add @tradeparadex/mcp-paradex-py --client claude
+   ```
+
+2. Create an account or sign in to Smithery. Once signed in, configure your settings and click **Connect**:
+
+<img src="../../../assets/agentic-ai-hub/Smithery-setup.png" alt="Smithery Connect Paradex MCP Server dialog" style={{display:"block",marginTop:"0.75rem",maxWidth:"460px"}} />
+
+## Verify It's Working
+
+Click the **+** icon in the bottom-left of the chat input → **Connectors**. You should see **mcp paradex** listed with its toggle enabled.
+
+<img src="../../../assets/agentic-ai-hub/claude-desktop-connectors.png" alt="Claude Desktop Connectors panel showing mcp paradex enabled" style={{width:"100%",display:"block",marginTop:"0.75rem"}} />
+
+Then ask Claude:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're all set. To test trading access:
+
+> "Show me my Paradex account summary."
+
+## Troubleshooting
+
+**Tools not appearing / MCP not loading**
+- Make sure `uvx` is installed: `uvx --version`
+- Check that the config file has valid JSON (no trailing commas)
+- Restart Claude Desktop after config changes
+
+**Authentication errors**
+- Double-check your private key is correct and starts with `0x`
+- Verify `PARADEX_ENVIRONMENT` matches where your account was created (`prod` or `testnet`)
+
+**`uvx: command not found`**
+```bash
+pip install uv
+# or on macOS:
+brew install uv
+```
+
+**Want to test without a private key first?**
+Market data tools work without any credentials. Just omit `PARADEX_ACCOUNT_PRIVATE_KEY` from the config.

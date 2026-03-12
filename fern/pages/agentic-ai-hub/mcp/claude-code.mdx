@@ -1,0 +1,43 @@
+# Claude Code (CLI)
+
+<Note>
+Complete the [Prerequisites & Setup](/agentic-ai-hub/mcp/prerequisites) before proceeding.
+</Note>
+
+## Setup
+
+Run this in your terminal:
+
+```bash
+claude mcp add paradex uvx mcp-paradex \
+  -e PARADEX_ENVIRONMENT=prod \
+  -e PARADEX_ACCOUNT_PRIVATE_KEY=your_private_key_here
+```
+
+Replace `your_private_key_here` with your actual key from the prerequisites.
+
+## Verify It's Working
+
+Check that the server is registered:
+
+```bash
+claude mcp list
+```
+
+Then ask Claude Code:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're all set. To test trading access:
+
+> "Show me my Paradex account summary."
+
+## Troubleshooting
+
+**Server not appearing in `mcp list`**
+- Make sure `uvx` is installed: `uvx --version`
+- Re-run the `claude mcp add` command
+
+**Authentication errors**
+- Double-check your private key is correct and starts with `0x`
+- Verify `PARADEX_ENVIRONMENT` matches where your account was created (`prod` or `testnet`)

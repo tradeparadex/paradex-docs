@@ -799,6 +799,9 @@ navigation:
           - page: ChatGPT Desktop
             slug: chatgpt-desktop
             path: ./pages/agentic-ai-hub/mcp/chatgpt-desktop.mdx
+          - page: Claude.ai (Web)
+            slug: claudeai-web
+            path: ./pages/agentic-ai-hub/mcp/claudeai-web.mdx
           - page: Other Clients
             slug: other-clients
             path: ./pages/agentic-ai-hub/mcp/other-clients.mdx

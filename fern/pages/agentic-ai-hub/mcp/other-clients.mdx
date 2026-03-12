@@ -1,12 +1,59 @@
 # Other Clients
 
+## Local MCP Setup
+
+### Step 1 — Prerequisites
+
+Most steps require running commands in a terminal:
+
+- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter. You can also find it in **Applications → Utilities → Terminal**.
+- **Windows:** Right-click the Windows Start icon and select **Terminal**. Alternatively, search for "cmd", "PowerShell", or "Command Prompt" in the Start menu. Both PowerShell and Command Prompt will work for the commands in this guide.
+
+**Install Python 3.10 or higher:**
+
+```bash
+python3 --version
+```
+
+If you need to install or upgrade, visit [python.org/downloads](https://www.python.org/downloads/).
+
+**Install uvx:**
+
+```bash
+pip install uv
+```
+
+On macOS you can also use Homebrew:
+
+```bash
+brew install uv
+```
+
+Verify the installation:
+
+```bash
+uvx --version
+```
+
+---
+
+### Step 2 — Get Your Paradex Private Key
+
+All trading features require a Paradex account private key. Market data tools work without one — you can skip this step if you only need market data.
+
+1. Go to [Paradex](https://app.paradex.trade) and connect your wallet.
+2. Navigate to **Settings → API Keys** and create a new key.
+3. Copy the private key — you'll use it below.
+
 <Note>
-Complete the [Quickstart Guide prerequisites](/agentic-ai-hub/mcp/quickstart#step-2--prerequisites-local-setup) before proceeding.
+**Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
 </Note>
 
 ---
 
-## Windsurf
+### Step 3 — Configure
+
+#### Windsurf
 
 Open **Windsurf Settings → MCP Servers** and paste the following into `~/.codeium/windsurf/mcp_config.json`:
 
@@ -27,9 +74,7 @@ Open **Windsurf Settings → MCP Servers** and paste the following into `~/.code
 
 Restart Windsurf to apply changes.
 
----
-
-## Gemini CLI
+#### Gemini CLI
 
 Open (or create) `~/.gemini/settings.json` in a text editor and add the `mcpServers` block:
 
@@ -59,9 +104,7 @@ gemini
 
 Manage servers during a session with `/mcp enable paradex` or `/mcp disable paradex`.
 
----
-
-## OpenAI Codex CLI
+#### OpenAI Codex CLI
 
 Run this in your terminal:
 
@@ -82,7 +125,7 @@ The config is shared between the Codex CLI and the Codex VS Code extension — c
 
 ---
 
-## Verify It's Working
+### Verify It's Working
 
 Ask your AI assistant:
 
@@ -94,7 +137,7 @@ If you get a list of trading pairs, you're all set. To test trading access:
 
 ---
 
-## Troubleshooting
+### Troubleshooting
 
 **Tools not appearing / MCP not loading**
 - Make sure `uvx` is installed: `uvx --version`
@@ -107,3 +150,18 @@ pip install uv
 # or on macOS:
 brew install uv
 ```
+
+---
+
+## Connect to Paradex MCP
+
+<Warning>
+This setup does **not support trading** at the moment. Only public market data is available.
+</Warning>
+
+### Via Smithery
+
+1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+2. Select the Paradex MCP server.
+3. Choose your client from the list.
+4. Follow the guided setup and click **Connect**.

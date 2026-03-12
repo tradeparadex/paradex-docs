@@ -24,6 +24,25 @@ In HTTP mode the server listens on `MCP_PORT` (default `3000`) and exposes:
 
 ---
 
+## Environment Variables
+
+| Variable | Description | Default |
+|---|---|---|
+| `PARADEX_ENVIRONMENT` | Target environment: `prod`, `testnet`, or `nightly` | `prod` |
+| `PARADEX_ACCOUNT_PRIVATE_KEY` | Your Paradex account private key (required for trading) | — |
+| `MCP_TRANSPORT` | Transport mode: `stdio` or `streamable-http` | `stdio` |
+| `MCP_PORT` | Port for HTTP mode | `3000` |
+
+If you've cloned the repository locally, you can store these in a `.env` file:
+
+```bash
+cp .env.template .env
+```
+
+Then edit `.env` with your values. The server loads this file automatically on startup.
+
+---
+
 ## Platform Options
 
 | Option | Effort | Cost | Best for |

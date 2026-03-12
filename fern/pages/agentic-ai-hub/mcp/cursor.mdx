@@ -1,20 +1,57 @@
 # Cursor
 
-<Note>
-Complete the [Quickstart Guide prerequisites](/agentic-ai-hub/mcp/quickstart#step-2--prerequisites-local-setup) before proceeding.
-</Note>
+## Local MCP Setup
 
-## Option A — One-Click Install
+### Step 1 — Prerequisites
 
-This automatically configures everything:
+Most steps require running commands in a terminal:
 
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=paradex&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJtY3AtcGFyYWRleCJdLCJlbnYiOnsiUEFSQURFWF9FTlZJUk9OVUVOVCI6InRlc3RuZXQiLCJQQVJBREVYX0FDQ09VTlRfUFJJVkFURV9LRVkiOiJ5b3VyX3ByaXZhdGVfa2V5In19Cg%3D%3D)
+- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter. You can also find it in **Applications → Utilities → Terminal**.
+- **Windows:** Right-click the Windows Start icon and select **Terminal**. Alternatively, search for "cmd", "PowerShell", or "Command Prompt" in the Start menu. Both PowerShell and Command Prompt will work for the commands in this guide.
 
-After installing, open Cursor settings and update the private key to your actual key.
+**Install Python 3.10 or higher:**
+
+```bash
+python3 --version
+```
+
+If you need to install or upgrade, visit [python.org/downloads](https://www.python.org/downloads/).
+
+**Install uvx:**
+
+```bash
+pip install uv
+```
+
+On macOS you can also use Homebrew:
+
+```bash
+brew install uv
+```
+
+Verify the installation:
+
+```bash
+uvx --version
+```
 
 ---
 
-## Option B — Manual Setup
+### Step 2 — Get Your Paradex Private Key
+
+All trading features require a Paradex account private key. Market data tools work without one — you can skip this step if you only need market data.
+
+1. Go to [Paradex](https://app.paradex.trade) and connect your wallet.
+2. Navigate to **Settings → API Keys** and create a new key.
+3. Copy the private key — you'll use it below.
+
+<Note>
+**Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
+</Note>
+
+---
+
+### Step 3 — Configure
 
 Open Cursor **Settings → MCP** and add:
 
@@ -31,11 +68,11 @@ Open Cursor **Settings → MCP** and add:
 }
 ```
 
-Replace `your_private_key_here` with your actual key from the Quickstart Guide.
+Replace `your_private_key_here` with your actual key from Step 2.
 
 ---
 
-## Verify It's Working
+### Verify It's Working
 
 Ask Cursor:
 
@@ -47,9 +84,24 @@ If you get a list of trading pairs, you're all set. To test trading access:
 
 ---
 
-## Troubleshooting
+### Troubleshooting
 
 **Tools not appearing**
 - Make sure `uvx` is installed: `uvx --version`
 - Check that the config has valid JSON (no trailing commas)
 - Restart Cursor after config changes
+
+---
+
+## Connect to Paradex MCP
+
+<Warning>
+This setup does **not support trading** at the moment. Only public market data is available.
+</Warning>
+
+### Via Smithery
+
+1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+2. Select the Paradex MCP server.
+3. Choose **Cursor** as your client.
+4. Follow the guided setup and click **Connect**.

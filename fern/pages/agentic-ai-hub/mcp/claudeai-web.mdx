@@ -1,0 +1,40 @@
+# Claude.ai (Web)
+
+Claude.ai web cannot run local programs — it requires either a remote MCP server or a direct connection to the hosted Paradex endpoint.
+
+---
+
+## Remote MCP Deployment
+
+<Warning>
+Remote setups do **not support trading** at the moment — only market data is available.
+</Warning>
+
+Deploy the MCP server to a cloud platform. See the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment) for step-by-step instructions (Railway, Render, Fly.io, AWS Lambda, Docker).
+
+Once you have a URL:
+
+1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
+2. Click **Add MCP Server**.
+3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+
+---
+
+## Connect to Paradex MCP
+
+<Warning>
+This setup does **not support trading** at the moment. Only public market data is available.
+</Warning>
+
+### Via URL
+
+1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
+2. Click **Add MCP Server**.
+3. Enter `https://mcp.paradex.trade/mcp`.
+
+### Via Smithery
+
+1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+2. Select the Paradex MCP server.
+3. Choose **Claude** as your client.
+4. Follow the guided setup and click **Connect**.

@@ -1,25 +1,72 @@
 # ChatGPT Desktop
 
-ChatGPT Desktop supports MCP via both local and remote connections.
-
----
-
-## Local Setup (Recommended)
+## Local MCP Setup
 
 <Note>
-Complete the [Quickstart Guide prerequisites](/agentic-ai-hub/mcp/quickstart#step-2--prerequisites-local-setup) before proceeding. Local setup is the **only option that supports trading**.
+Local setup is the **only option that supports trading**.
 </Note>
 
 ChatGPT Desktop cannot run local programs directly, so you use ngrok to create a tunnel from your local MCP server to a public URL that ChatGPT can connect to.
 
-1. **Install ngrok**
+### Step 1 — Prerequisites
 
-   ```bash
-   brew install ngrok   # macOS
-   # Or download from https://ngrok.com
-   ```
+Most steps require running commands in a terminal:
 
-2. **Start the MCP server locally**
+- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter. You can also find it in **Applications → Utilities → Terminal**.
+- **Windows:** Right-click the Windows Start icon and select **Terminal**. Alternatively, search for "cmd", "PowerShell", or "Command Prompt" in the Start menu. Both PowerShell and Command Prompt will work for the commands in this guide.
+
+**Install Python 3.10 or higher:**
+
+```bash
+python3 --version
+```
+
+If you need to install or upgrade, visit [python.org/downloads](https://www.python.org/downloads/).
+
+**Install uvx:**
+
+```bash
+pip install uv
+```
+
+On macOS you can also use Homebrew:
+
+```bash
+brew install uv
+```
+
+Verify the installation:
+
+```bash
+uvx --version
+```
+
+**Install ngrok:**
+
+```bash
+brew install ngrok   # macOS
+# Or download from https://ngrok.com
+```
+
+---
+
+### Step 2 — Get Your Paradex Private Key
+
+All trading features require a Paradex account private key. Market data tools work without one — you can skip this step if you only need market data.
+
+1. Go to [Paradex](https://app.paradex.trade) and connect your wallet.
+2. Navigate to **Settings → API Keys** and create a new key.
+3. Copy the private key — you'll use it below.
+
+<Note>
+**Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
+</Note>
+
+---
+
+### Step 3 — Configure
+
+1. **Start the MCP server locally:**
 
    ```bash
    MCP_TRANSPORT=streamable-http MCP_PORT=8080 \
@@ -28,11 +75,9 @@ ChatGPT Desktop cannot run local programs directly, so you use ngrok to create a
    uvx mcp-paradex
    ```
 
-   Replace `your_private_key_here` with your actual key from the Quickstart Guide.
+   Replace `your_private_key_here` with your actual key from Step 2.
 
-3. **Open a tunnel**
-
-   In a second terminal:
+2. **Open a tunnel** in a second terminal:
 
    ```bash
    ngrok http 8080
@@ -40,7 +85,7 @@ ChatGPT Desktop cannot run local programs directly, so you use ngrok to create a
 
    Copy the `https://xxxx.ngrok.io` URL from the output.
 
-4. **Connect in ChatGPT**
+3. **Connect in ChatGPT:**
 
    1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
    2. Go to **Settings → Connectors → Create**.
@@ -53,19 +98,51 @@ ChatGPT Desktop cannot run local programs directly, so you use ngrok to create a
 
 ---
 
-## Remote Setup
+### Verify It's Working
 
-Remote setups do not support trading at the moment — only market data is available.
+Ask ChatGPT:
 
-### Option A — Permanent Remote Endpoint
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're all set. To test trading access:
+
+> "Show me my Paradex account summary."
+
+---
+
+### Troubleshooting
+
+**Tools not appearing**
+- Confirm Developer Mode is enabled in ChatGPT settings
+- Check that the connector URL ends with `/mcp`
+- Make sure the local server and ngrok tunnel are both running
+
+**Authentication errors**
+- Double-check your private key is correct and starts with `0x`
+- Verify `PARADEX_ENVIRONMENT` matches where your account was created (`prod` or `testnet`)
+
+---
+
+## Remote MCP Deployment
+
+<Warning>
+Remote setups do **not support trading** at the moment — only market data is available.
+</Warning>
 
 Deploy the MCP server to a cloud platform for a stable URL that doesn't change between sessions.
 
 See the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment) for step-by-step instructions (Railway, Render, Fly.io, AWS Lambda, Docker).
 
-Once you have a URL, add it in **ChatGPT → Settings → Connectors → Create**.
+Once you have a URL:
 
-### Option B — OpenAI Agents SDK (for developers)
+1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+2. Go to **Settings → Connectors → Create**.
+3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+4. Click **I trust this provider**.
+
+---
+
+## OpenAI Agents SDK (for developers)
 
 For custom Python apps (not the ChatGPT interface). No remote hosting needed.
 
@@ -104,25 +181,22 @@ asyncio.run(main())
 
 ---
 
-## Verify It's Working
+## Connect to Paradex MCP
 
-Ask ChatGPT:
+<Warning>
+This setup does **not support trading** at the moment. Only public market data is available.
+</Warning>
 
-> "What markets are available on Paradex?"
+### Via URL
 
-If you get a list of trading pairs, you're all set. To test trading access (local setup only):
+1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+2. Go to **Settings → Connectors → Create**.
+3. Enter `https://mcp.paradex.trade/mcp`.
+4. Click **I trust this provider**.
 
-> "Show me my Paradex account summary."
+### Via Smithery
 
----
-
-## Troubleshooting
-
-**Tools not appearing**
-- Confirm Developer Mode is enabled in ChatGPT settings
-- Check that the connector URL ends with `/mcp`
-- Make sure the local server and ngrok tunnel are both running (for local setup)
-
-**Authentication errors**
-- Double-check your private key is correct and starts with `0x`
-- Verify `PARADEX_ENVIRONMENT` matches where your account was created (`prod` or `testnet`)
+1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+2. Select the Paradex MCP server.
+3. Choose **ChatGPT** as your client.
+4. Follow the guided setup and click **Connect**.

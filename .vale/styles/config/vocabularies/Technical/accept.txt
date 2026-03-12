@@ -1,9 +1,11 @@
+Agentic
 API
 APIs
 args
 autoscaling
 backoff
 blockchains
+Caddy
 claude
 cmd
 Cmd
@@ -15,6 +17,9 @@ env
 EWMA
 EWMAs
 Favicon
+forex
+hardcode
+Hetzner
 interchain
 json
 JWTs
@@ -34,7 +39,11 @@ Pentests
 pseudocode
 Performant
 Readonly
+Rebalancing
+repo
+RWAs
 sandboxed
+Serverless
 Starkli
 subprocess
 STARKs
@@ -42,6 +51,7 @@ unsubscription
 upgradeability
 URL
 uvx
+walkthrough
 webapp
 Websocket
 wscat

@@ -1,0 +1,55 @@
+# Cursor
+
+<Note>
+Complete the [Quickstart Guide prerequisites](/agentic-ai-hub/mcp/quickstart#step-2--prerequisites-local-setup) before proceeding.
+</Note>
+
+## Option A — One-Click Install
+
+This automatically configures everything:
+
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=paradex&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJtY3AtcGFyYWRleCJdLCJlbnYiOnsiUEFSQURFWF9FTlZJUk9OVUVOVCI6InRlc3RuZXQiLCJQQVJBREVYX0FDQ09VTlRfUFJJVkFURV9LRVkiOiJ5b3VyX3ByaXZhdGVfa2V5In19Cg%3D%3D)
+
+After installing, open Cursor settings and update the private key to your actual key.
+
+---
+
+## Option B — Manual Setup
+
+Open Cursor **Settings → MCP** and add:
+
+```json
+{
+  "paradex": {
+    "command": "uvx",
+    "args": ["mcp-paradex"],
+    "env": {
+      "PARADEX_ENVIRONMENT": "prod",
+      "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+    }
+  }
+}
+```
+
+Replace `your_private_key_here` with your actual key from the Quickstart Guide.
+
+---
+
+## Verify It's Working
+
+Ask Cursor:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're all set. To test trading access:
+
+> "Show me my Paradex account summary."
+
+---
+
+## Troubleshooting
+
+**Tools not appearing**
+- Make sure `uvx` is installed: `uvx --version`
+- Check that the config has valid JSON (no trailing commas)
+- Restart Cursor after config changes

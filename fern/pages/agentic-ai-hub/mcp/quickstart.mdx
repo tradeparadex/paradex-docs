@@ -1,0 +1,191 @@
+# Quickstart Guide
+
+This guide helps you connect the Paradex MCP server to your AI assistant in minutes.
+
+Most setups require running commands in a terminal:
+
+- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter. You can also find it in **Applications → Utilities → Terminal**.
+- **Windows:** Right-click the Windows Start icon and select **Terminal**. Alternatively, search for "cmd", "PowerShell", or "Command Prompt" in the Start menu. Both PowerShell and Command Prompt will work for the commands in this guide.
+
+---
+
+## Step 1 — Pick Your Client & Setup Path
+
+Your choice depends on which MCP features you need and which AI client you prefer.
+
+### Option A — Local Setup (Recommended)
+
+MCP server runs on your machine.
+
+- Full API support including trading
+- Requires prerequisites below (Python 3.10+, uvx)
+- Requires a Paradex private key
+
+| Client | Notes |
+|---|---|
+| [**Claude Desktop**](/agentic-ai-hub/mcp/claude-desktop) (app) | Recommended. Best experience, full tool support |
+| [**Claude Code**](/agentic-ai-hub/mcp/claude-code) (CLI) | One-line setup |
+| [**Cursor**](/agentic-ai-hub/mcp/cursor) | One-click install available |
+| [**VS Code (GitHub Copilot)**](/agentic-ai-hub/mcp/vscode) | Via `.vscode/mcp.json` |
+| [**ChatGPT Desktop**](/agentic-ai-hub/mcp/chatgpt-desktop) (app) | Via ngrok tunnel |
+| [**Other clients**](/agentic-ai-hub/mcp/other-clients) | Windsurf, Gemini CLI, OpenAI Codex CLI |
+
+### Option B — Remote Deployment
+
+Host your own MCP server endpoint on a cloud platform.
+
+- No trading support at the moment
+- Works with clients that cannot run local programs
+
+| Client | Notes |
+|---|---|
+| [**ChatGPT Desktop**](/agentic-ai-hub/mcp/chatgpt-desktop) (app) | Via permanent endpoint or AWS Lambda |
+| **Claude.ai** (web) | Requires remote HTTP server |
+
+See the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment) for platform options and client connection instructions.
+
+### Option C — Connect to Paradex MCP
+
+Connect directly to the hosted Paradex MCP server — no local install or cloud deployment needed.
+
+- No trading support at the moment
+- Easiest setup
+
+| Client | Notes |
+|---|---|
+| **Claude.ai** (web) | Via Settings → Integrations |
+| **Claude Code** (CLI) | Via Smithery |
+| **Cursor** | Via Smithery |
+| **ChatGPT Desktop** (app) | Via Settings → Connectors |
+| **Codex CLI** | Via Smithery |
+| **Most MCP-compatible clients** | Any client that accepts a remote URL |
+
+See the [Connect to Paradex MCP guide](/agentic-ai-hub/mcp/connect-to-paradex-mcp) for setup instructions.
+
+---
+
+## Step 2 — Prerequisites (Local Setup)
+
+Skip this step if you chose Option B or C above.
+
+### Install Python
+
+Python 3.10 or higher is required. Check your version:
+
+```bash
+python3 --version
+```
+
+If you need to install or upgrade, visit [python.org/downloads](https://www.python.org/downloads/).
+
+### Install uvx
+
+`uvx` is a fast Python package runner used to download and start the MCP server automatically.
+
+```bash
+pip install uv
+```
+
+On macOS you can also use Homebrew:
+
+```bash
+brew install uv
+```
+
+Verify the installation:
+
+```bash
+uvx --version
+```
+
+### Alternative: Run with Docker
+
+If you prefer not to install Python or `uvx` directly, you can run the MCP server inside a Docker container. Requires Docker installed on your machine.
+
+```bash
+# Clone the repository
+git clone https://github.com/tradeparadex/mcp-paradex-py.git
+cd mcp-paradex-py
+
+# Build the image
+docker build . -t mcp-paradex-py
+
+# Run in read-only mode (public market data only)
+docker run --rm -i mcp-paradex-py
+
+# Run with trading capabilities
+docker run --rm -e PARADEX_ACCOUNT_PRIVATE_KEY=your_key -i mcp-paradex-py
+```
+
+To use Docker with a specific AI client, replace `"command": "uvx"` in that client's config with the appropriate Docker run command. See each client's setup page for details.
+
+---
+
+## Step 3 — Get Your Paradex Private Key
+
+All trading features require a Paradex account private key. Public market data tools work without one — you can skip this step if you only need market data.
+
+1. Go to [Paradex](https://app.paradex.trade) and connect your wallet.
+2. Navigate to **Settings → API Keys** and create a new key.
+3. Copy the private key — you'll use it when configuring your AI client.
+
+<Note>
+**Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
+</Note>
+
+### Environment Variables Reference
+
+These variables are used across all client configurations:
+
+| Variable | Description | Default |
+|---|---|---|
+| `PARADEX_ENVIRONMENT` | Target environment: `prod`, `testnet`, or `nightly` | `prod` |
+| `PARADEX_ACCOUNT_PRIVATE_KEY` | Your Paradex account private key (required for trading) | — |
+
+If you've cloned the repository locally, you can store these in a `.env` file instead of passing them on the command line:
+
+```bash
+cp .env.template .env
+```
+
+Then edit `.env` with your values:
+
+```bash
+PARADEX_ENVIRONMENT=testnet
+PARADEX_ACCOUNT_PRIVATE_KEY=0x_your_private_key_here
+```
+
+The server loads this file automatically on startup. Not needed if you set `env` in your client config — those take precedence.
+
+---
+
+## Step 4 — Configure Your Client
+
+Choose your AI client and follow the setup guide:
+
+- [Claude Desktop](/agentic-ai-hub/mcp/claude-desktop)
+- [Claude Code (CLI)](/agentic-ai-hub/mcp/claude-code)
+- [Cursor](/agentic-ai-hub/mcp/cursor)
+- [VS Code (GitHub Copilot)](/agentic-ai-hub/mcp/vscode)
+- [ChatGPT Desktop](/agentic-ai-hub/mcp/chatgpt-desktop)
+- [Other clients (Windsurf, Gemini CLI, OpenAI Codex CLI)](/agentic-ai-hub/mcp/other-clients)
+
+---
+
+## Troubleshooting
+
+**`uvx: command not found`**
+
+```bash
+pip install uv
+# or on macOS:
+brew install uv
+```
+
+**Authentication errors**
+
+- Double-check your private key is correct and starts with `0x`
+- Verify `PARADEX_ENVIRONMENT` matches where your account was created (`prod` or `testnet`)
+
+**Want to test without a private key first?**
+Market data tools work without any credentials. Just omit `PARADEX_ACCOUNT_PRIVATE_KEY` from the config.

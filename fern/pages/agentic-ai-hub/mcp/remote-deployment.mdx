@@ -1,55 +1,14 @@
-# Configuration & Deployment
+# Remote Deployment
 
-<Note>
-  For connecting an AI client (Claude Desktop, Cursor, ChatGPT, etc.) for the first time, see the [Quickstart Guide](/agentic-ai-hub/mcp/installation).
-</Note>
+Some AI clients — like Claude.ai (web) and ChatGPT Desktop — cannot run local programs and need a public URL to connect to the MCP server.
 
-## Environment Variables
-
-| Variable | Description | Default |
-|---|---|---|
-| `PARADEX_ENVIRONMENT` | Target environment: `prod`, `testnet`, or `nightly` | `prod` |
-| `PARADEX_ACCOUNT_PRIVATE_KEY` | Your Paradex account private key (required for trading) | — |
-
-If you've cloned the [MCP server repository](https://github.com/tradeparadex/mcp-paradex-py) locally (for development or to run via Docker), you can store these variables in a `.env` file instead of passing them on the command line:
-
-```bash
-cp .env.template .env
-```
-
-Then edit `.env` with your values:
-
-```bash
-PARADEX_ENVIRONMENT=testnet
-PARADEX_ACCOUNT_PRIVATE_KEY=0x_your_private_key_here
-```
-
-The server loads this file automatically on startup. Not needed if you already set `env` in your client config — those take precedence.
+<Warning>
+Remote deployments do **not support trading** at the moment. Use a [local setup](/agentic-ai-hub/mcp/quickstart) for full API access including trading.
+</Warning>
 
 ---
 
-## Running Locally with Docker
-
-Requires [Docker](https://docs.docker.com/get-docker/) installed on your machine. This runs the MCP server inside a container — useful if you don't want to install Python or `uvx` directly.
-
-```bash
-# Build the image
-docker build . -t sv/mcp-paradex-py
-
-# Run in read-only mode (public market data only)
-docker run --rm -i sv/mcp-paradex-py
-
-# Run with trading capabilities
-docker run --rm -e PARADEX_ACCOUNT_PRIVATE_KEY=your_key -i sv/mcp-paradex-py
-```
-
----
-
-## Remote HTTP Deployment
-
-Some AI clients (like ChatGPT Desktop and Claude.ai web) cannot run local programs — they need a public URL to connect to.
-
-### How it works
+## How It Works
 
 The server supports two transport modes, controlled by the `MCP_TRANSPORT` environment variable:
 
@@ -59,10 +18,13 @@ The server supports two transport modes, controlled by the `MCP_TRANSPORT` envir
 | HTTP | `streamable-http` | ChatGPT, Claude.ai web, any remote client |
 
 In HTTP mode the server listens on `MCP_PORT` (default `3000`) and exposes:
+
 - `POST /mcp` — MCP protocol endpoint (what clients connect to)
 - `GET /health` — health check, returns `{"status": "ok"}`
 
-### Choosing a platform
+---
+
+## Platform Options
 
 | Option | Effort | Cost | Best for |
 |---|---|---|---|
@@ -72,20 +34,17 @@ In HTTP mode the server listens on `MCP_PORT` (default `3000`) and exposes:
 | [AWS Lambda](#aws-lambda) | Medium | Pay-per-request | Scalable, zero idle cost |
 | [Docker / VPS](#docker--vps) | High | Varies | Full control |
 
-All options produce an endpoint of the form `https://your-domain.example.com/mcp`
-that you paste into your AI client's MCP settings.
+All options produce an endpoint of the form `https://your-domain.example.com/mcp` that you paste into your AI client's MCP settings.
 
 ---
 
-### Railway
+## Railway
 
-The quickest path to a permanent URL. Railway auto-detects the `Dockerfile` and
-handles TLS, routing, and restarts for you.
+The quickest path to a permanent URL. Railway auto-detects the `Dockerfile` and handles TLS, routing, and restarts.
 
 1. Push your fork (or the upstream repo) to GitHub.
 
-2. Go to [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo**
-   and select the repository.
+2. Go to [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo** and select the repository.
 
 3. Railway detects the `Dockerfile` automatically. Open **Variables** and add:
 
@@ -96,18 +55,17 @@ handles TLS, routing, and restarts for you.
    | `PARADEX_ENVIRONMENT` | `prod` |
    | `PARADEX_ACCOUNT_PRIVATE_KEY` | `your_private_key_here` |
 
-4. Open **Settings → Networking → Generate Domain**.
-   Your endpoint will be `https://<project>.up.railway.app/mcp`.
+4. Open **Settings → Networking → Generate Domain**. Your endpoint will be `https://<project>.up.railway.app/mcp`.
 
-5. Paste that URL into ChatGPT Desktop: **Settings → Connectors → Create**.
+5. Paste that URL into your AI client's MCP settings.
 
-**Notes:** Railway keeps the server running continuously (no cold starts). Redeploys happen automatically when you push to the connected branch. The free tier has usage limits; the Hobby plan ($5/mo) removes them.
+Railway keeps the server running continuously (no cold starts). Redeploys happen automatically when you push to the connected branch. The free tier has usage limits; the Hobby plan (~$5/mo) removes them.
 
 ---
 
-### Render
+## Render
 
-Similar to Railway. Free services spin down after 15 minutes of inactivity and have a cold start (~30 s) on the next request. Use a paid plan for daily use.
+Similar to Railway. Free services spin down after 15 minutes of inactivity and have a cold start (~30 s) on the next request.
 
 1. Go to [render.com](https://render.com) → **New → Web Service**.
 
@@ -126,15 +84,15 @@ Similar to Railway. Free services spin down after 15 minutes of inactivity and h
 
 5. Click **Create Web Service**. Your endpoint is `https://<service-name>.onrender.com/mcp`.
 
-**Notes:** Free tier sleeps after 15 min of inactivity — upgrade to Starter ($7/mo) to avoid cold starts. Render provides automatic TLS and a stable URL.
+Free tier sleeps after 15 min of inactivity — upgrade to Starter (~$7/mo) to avoid cold starts. Render provides automatic TLS and a stable URL.
 
 ---
 
-### Fly.io
+## Fly.io
 
 More setup than Railway/Render but gives fine-grained control over region, scaling, and resources.
 
-1. [Install `flyctl`](https://fly.io/docs/hands-on/install-flyctl/) and log in:
+1. Install `flyctl` and log in:
 
    ```bash
    brew install flyctl   # macOS
@@ -167,24 +125,25 @@ More setup than Railway/Render but gives fine-grained control over region, scali
 
    Your endpoint will be `https://<app-name>.fly.dev/mcp`.
 
-**Notes:** Fly.io keeps one VM running by default (no cold starts). Use `fly scale count 0` to pause billing, `fly scale count 1` to resume. `fly logs` streams live logs.
+Fly.io keeps one VM running by default (no cold starts). Use `fly scale count 0` to pause billing, `fly scale count 1` to resume. `fly logs` streams live logs.
 
 ---
 
-### AWS Lambda
+## AWS Lambda
 
 Serverless — no idle cost, scales automatically. The repo ships `Dockerfile.aws` which bundles the [Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter) so no Lambda-specific code is needed.
 
 See the [AWS Lambda section in the README](https://github.com/tradeparadex/mcp-paradex-py#docker-aws-lambda--http) for the full walkthrough.
 
-**Key differences vs. the options above:**
+Key differences vs. the other options:
+
 - Set `MCP_STATELESS=true` (required for Lambda, skip for all other options).
 - Use `Dockerfile.aws`, not `Dockerfile`.
 - Lambda Function URL invoke mode must be `RESPONSE_STREAM`.
 
 ---
 
-### Docker / VPS
+## Docker / VPS
 
 Run on any machine that can serve HTTPS — a DigitalOcean Droplet, Hetzner VPS, etc.
 
@@ -204,7 +163,7 @@ docker run -d \
   mcp-paradex-http
 ```
 
-AI clients require `https://`. Use a reverse proxy like [**Caddy**](https://caddyserver.com/) to add HTTPS (it handles certificates automatically):
+AI clients require `https://`. Use a reverse proxy like Caddy to add HTTPS (it handles certificates automatically):
 
 ```
 your-domain.com {
@@ -218,7 +177,7 @@ caddy run --config /etc/caddy/Caddyfile
 
 ---
 
-### Verifying the deployment
+## Verify Your Deployment
 
 Test your endpoint from the terminal (replace the URL with your actual deployment URL):
 
@@ -234,15 +193,17 @@ curl -X POST https://your-endpoint.example.com/mcp \
 
 ---
 
-### Connecting to ChatGPT Desktop
+## Connect Your AI Client
+
+### Claude.ai (Web)
+
+1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
+2. Click **Add MCP Server**.
+3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+
+### ChatGPT Desktop
 
 1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
 2. Go to **Settings → Connectors → Create**.
 3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
 4. Click **I trust this provider**.
-
-### Connecting to Claude.ai Web
-
-1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
-2. Click **Add MCP Server**.
-3. Enter the same endpoint URL.

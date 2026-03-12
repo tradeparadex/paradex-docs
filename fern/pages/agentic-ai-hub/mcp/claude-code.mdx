@@ -1,5 +1,12 @@
 # Claude Code (CLI)
 
+This page covers two independent setup options — choose one:
+
+- **Local MCP Setup** — Full API access including trading. Requires installing a few tools on your machine.
+- **Connect to Paradex MCP** — Market data only. No installation needed.
+
+---
+
 ## Local MCP Setup
 
 ### Step 1 — Prerequisites
@@ -35,6 +42,25 @@ Verify the installation:
 uvx --version
 ```
 
+<details>
+<summary>Alternative: Run with Docker</summary>
+
+If you prefer not to install Python or uvx directly, you can run the MCP server inside a Docker container. Requires Docker.
+
+```bash
+git clone https://github.com/tradeparadex/mcp-paradex-py.git
+cd mcp-paradex-py
+docker build . -t mcp-paradex-py
+
+# Read-only mode (public market data only)
+docker run --rm -i mcp-paradex-py
+
+# With trading capabilities
+docker run --rm -e PARADEX_ACCOUNT_PRIVATE_KEY=your_key -i mcp-paradex-py
+```
+
+</details>
+
 ---
 
 ### Step 2 — Get Your Paradex Private Key
@@ -53,7 +79,7 @@ All trading features require a Paradex account private key. Market data tools wo
 
 ### Step 3 — Configure
 
-Run this in your terminal:
+Run this command in your terminal:
 
 ```bash
 claude mcp add paradex uvx mcp-paradex \
@@ -110,3 +136,11 @@ This setup does **not support trading** at the moment. Only public market data i
 2. Select the Paradex MCP server.
 3. Choose **Claude Code** as your client.
 4. Follow the guided setup and click **Connect**.
+
+### Verify It's Working
+
+Ask Claude Code:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're connected. Note that trading features are not available with this setup.

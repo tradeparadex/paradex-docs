@@ -1,5 +1,12 @@
 # Claude Desktop
 
+This page covers two independent setup options — choose one:
+
+- **Local MCP Setup** — Full API access including trading. Requires installing a few tools on your machine.
+- **Connect to Paradex MCP** — Market data only. No installation needed, just add a URL.
+
+---
+
 ## Local MCP Setup
 
 ### Step 1 — Prerequisites
@@ -17,7 +24,7 @@ python3 --version
 
 If you need to install or upgrade, visit [python.org/downloads](https://www.python.org/downloads/).
 
-**Install uvx** — a fast Python package runner used to download and start the MCP server automatically:
+**Install uvx:**
 
 ```bash
 pip install uv
@@ -72,8 +79,6 @@ All trading features require a Paradex account private key. Market data tools wo
 
 ### Step 3 — Configure
 
-**Option A — Manual setup:**
-
 1. **Open the config file:**
 
    Open Claude Desktop → **Settings → Developer → Edit Config**. This opens the config file path directly. Find and open `claude_desktop_config.json` with your text editor.
@@ -102,18 +107,6 @@ All trading features require a Paradex account private key. Market data tools wo
    ```
 
 3. **Restart Claude Desktop.** It will automatically download and start the MCP server via `uvx` — no separate install needed.
-
-**Option B — Connect via Smithery:**
-
-1. Run this in your terminal:
-
-   ```bash
-   npx -y @smithery/cli@latest mcp add @tradeparadex/mcp-paradex-py --client claude
-   ```
-
-2. Create an account or sign in to Smithery. Configure your settings and click **Connect**.
-
-<img src="../../../assets/agentic-ai-hub/Smithery-setup.png" alt="Smithery Connect Paradex MCP Server dialog" style={{display:"block",marginTop:"0.75rem",maxWidth:"460px"}} />
 
 ---
 
@@ -169,10 +162,29 @@ This setup does **not support trading** at the moment. Only public market data i
 
 ### Via Smithery
 
-1. Run this in your terminal:
+**Option A — Website:**
 
-   ```bash
-   npx -y @smithery/cli@latest mcp add @tradeparadex/mcp-paradex-py --client claude
-   ```
+1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+2. Select the Paradex MCP server.
+3. Choose **Claude Desktop** as your client.
+4. Configure your settings and click **Connect**.
 
-2. Create an account or sign in to Smithery. Configure your settings and click **Connect**.
+<img src="../../../assets/agentic-ai-hub/Smithery-setup.png" alt="Smithery Connect Paradex MCP Server dialog" style={{display:"block",marginTop:"0.75rem",maxWidth:"460px"}} />
+
+**Option B — CLI:**
+
+Run this in your terminal:
+
+```bash
+npx -y @smithery/cli@latest mcp add @tradeparadex/mcp-paradex-py --client claude
+```
+
+You will be required to create an account or sign in to Smithery. Once signed in, configure your settings and click **Connect**.
+
+### Verify It's Working
+
+Ask Claude:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're connected. Note that trading features are not available with this setup.

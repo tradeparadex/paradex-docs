@@ -1,6 +1,9 @@
 # Claude.ai (Web)
 
-Claude.ai web cannot run local programs — it requires either a remote MCP server or a direct connection to the hosted Paradex endpoint.
+Claude.ai web cannot run local programs. This page covers two independent setup options — choose one:
+
+- **Remote MCP Deployment** — Market data only. Host your own MCP server on a cloud platform.
+- **Connect to Paradex MCP** — Market data only. No installation needed, just add a URL.
 
 ---
 
@@ -10,9 +13,9 @@ Claude.ai web cannot run local programs — it requires either a remote MCP serv
 Remote setups do **not support trading** at the moment — only market data is available.
 </Warning>
 
-Deploy the MCP server to a cloud platform. See the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment) for step-by-step instructions (Railway, Render, Fly.io, AWS Lambda, Docker).
+First, deploy the MCP server to a cloud platform by following the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment). Once you have your endpoint URL, return here to connect it to Claude.ai.
 
-Once you have a URL:
+**Connect your endpoint:**
 
 1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
 2. Click **Add MCP Server**.
@@ -38,3 +41,20 @@ This setup does **not support trading** at the moment. Only public market data i
 2. Select the Paradex MCP server.
 3. Choose **Claude** as your client.
 4. Follow the guided setup and click **Connect**.
+
+### Verify It's Working
+
+Ask Claude:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're connected.
+
+---
+
+### Troubleshooting
+
+**MCP server not loading**
+- Check that the URL is correct and ends with `/mcp`
+- Try removing and re-adding the server in **Settings → Integrations**
+- For remote deployments, verify your server is running: `curl https://your-endpoint.example.com/health`

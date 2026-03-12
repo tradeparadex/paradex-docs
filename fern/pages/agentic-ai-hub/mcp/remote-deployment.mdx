@@ -10,12 +10,7 @@ Remote deployments do **not support trading** at the moment. Use a [local setup]
 
 ## How It Works
 
-The server supports two transport modes, controlled by the `MCP_TRANSPORT` environment variable:
-
-| Mode | Value | Use case |
-|---|---|---|
-| stdio (default) | `stdio` | Claude Desktop, Claude Code, Cursor — local subprocess |
-| HTTP | `streamable-http` | ChatGPT, Claude.ai web, any remote client |
+When deploying remotely, the server runs in HTTP mode. Set the `MCP_TRANSPORT` environment variable to `streamable-http` — all platform guides below include this.
 
 In HTTP mode the server listens on `MCP_PORT` (default `3000`) and exposes:
 
@@ -28,12 +23,12 @@ In HTTP mode the server listens on `MCP_PORT` (default `3000`) and exposes:
 
 | Variable | Description | Default |
 |---|---|---|
+| `MCP_TRANSPORT` | Set to `streamable-http` for remote deployment | `stdio` |
+| `MCP_PORT` | Port the HTTP server listens on | `3000` |
 | `PARADEX_ENVIRONMENT` | Target environment: `prod`, `testnet`, or `nightly` | `prod` |
 | `PARADEX_ACCOUNT_PRIVATE_KEY` | Your Paradex account private key (required for trading) | — |
-| `MCP_TRANSPORT` | Transport mode: `stdio` or `streamable-http` | `stdio` |
-| `MCP_PORT` | Port for HTTP mode | `3000` |
 
-If you've cloned the repository locally, you can store these in a `.env` file:
+Most platforms let you set these as environment variables in their dashboard. If you've cloned the MCP server repository to build and deploy, you can also store them in a `.env` file at the repo root:
 
 ```bash
 cp .env.template .env

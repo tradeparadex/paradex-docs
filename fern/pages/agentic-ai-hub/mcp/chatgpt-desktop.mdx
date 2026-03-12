@@ -1,5 +1,13 @@
 # ChatGPT Desktop
 
+This page covers three independent setup options — choose one:
+
+- **Local MCP Setup** — Full API access including trading. Requires installing a few tools on your machine.
+- **Remote MCP Deployment** — Market data only. Host your own MCP server on a cloud platform.
+- **Connect to Paradex MCP** — Market data only. No installation needed, just add a URL.
+
+---
+
 ## Local MCP Setup
 
 <Note>
@@ -47,6 +55,25 @@ uvx --version
 brew install ngrok   # macOS
 # Or download from https://ngrok.com
 ```
+
+<details>
+<summary>Alternative: Run with Docker</summary>
+
+If you prefer not to install Python or uvx directly, you can run the MCP server inside a Docker container. Requires Docker.
+
+```bash
+git clone https://github.com/tradeparadex/mcp-paradex-py.git
+cd mcp-paradex-py
+docker build . -t mcp-paradex-py
+
+# Read-only mode (public market data only)
+docker run --rm -i mcp-paradex-py
+
+# With trading capabilities
+docker run --rm -e PARADEX_ACCOUNT_PRIVATE_KEY=your_key -i mcp-paradex-py
+```
+
+</details>
 
 ---
 
@@ -129,11 +156,9 @@ If you get a list of trading pairs, you're all set. To test trading access:
 Remote setups do **not support trading** at the moment — only market data is available.
 </Warning>
 
-Deploy the MCP server to a cloud platform for a stable URL that doesn't change between sessions.
+First, deploy the MCP server to a cloud platform by following the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment). Once you have your endpoint URL, return here to connect it to ChatGPT Desktop.
 
-See the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment) for step-by-step instructions (Railway, Render, Fly.io, AWS Lambda, Docker).
-
-Once you have a URL:
+**Connect your endpoint:**
 
 1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
 2. Go to **Settings → Connectors → Create**.
@@ -179,6 +204,14 @@ async def main():
 asyncio.run(main())
 ```
 
+### Verify It's Working
+
+Ask ChatGPT:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're connected. Note that trading features are not available with remote setups.
+
 ---
 
 ## Connect to Paradex MCP
@@ -200,3 +233,11 @@ This setup does **not support trading** at the moment. Only public market data i
 2. Select the Paradex MCP server.
 3. Choose **ChatGPT** as your client.
 4. Follow the guided setup and click **Connect**.
+
+### Verify It's Working
+
+Ask ChatGPT:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're connected. Note that trading features are not available with this setup.

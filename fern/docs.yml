@@ -781,30 +781,12 @@ navigation:
         slug: mcp
         path: ./pages/agentic-ai-hub/mcp/overview.mdx
         contents:
-          - page: Prerequisites & Setup
-            slug: prerequisites
-            path: ./pages/agentic-ai-hub/mcp/prerequisites.mdx
-          - page: Claude Desktop
-            slug: claude-desktop
-            path: ./pages/agentic-ai-hub/mcp/claude-desktop.mdx
-          - page: Claude Code (CLI)
-            slug: claude-code
-            path: ./pages/agentic-ai-hub/mcp/claude-code.mdx
-          - page: Cursor
-            slug: cursor
-            path: ./pages/agentic-ai-hub/mcp/cursor.mdx
-          - page: VS Code (GitHub Copilot)
-            slug: vscode
-            path: ./pages/agentic-ai-hub/mcp/vscode.mdx
-          - page: ChatGPT Desktop
-            slug: chatgpt-desktop
-            path: ./pages/agentic-ai-hub/mcp/chatgpt-desktop.mdx
-          - page: Other Clients
-            slug: other-clients
-            path: ./pages/agentic-ai-hub/mcp/other-clients.mdx
-          - page: Remote Deployment
-            slug: remote-deployment
-            path: ./pages/agentic-ai-hub/mcp/remote-deployment.mdx
+          - page: Quickstart Guide
+            slug: installation
+            path: ./pages/agentic-ai-hub/mcp/installation.mdx
+          - page: Configuration & Deployment
+            slug: configuration
+            path: ./pages/agentic-ai-hub/mcp/configuration.mdx
           - page: Resources
             slug: resources
             path: ./pages/agentic-ai-hub/mcp/resources.mdx

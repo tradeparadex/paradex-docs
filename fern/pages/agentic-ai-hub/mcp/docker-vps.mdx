@@ -1,0 +1,42 @@
+---
+title: Docker / VPS
+subtitle: Run on any machine that can serve HTTPS — a DigitalOcean Droplet, Hetzner VPS, etc.
+---
+
+<Steps>
+### Build and run the container
+
+```bash
+# Build
+docker build . -t mcp-paradex-http
+
+# Run
+docker run -d \
+  --name mcp-paradex \
+  --restart unless-stopped \
+  -p 8080:8080 \
+  -e MCP_TRANSPORT=streamable-http \
+  -e MCP_PORT=8080 \
+  -e PARADEX_ENVIRONMENT=prod \
+  mcp-paradex-http
+```
+
+### Add HTTPS with a reverse proxy
+
+AI clients require `https://`. Use a reverse proxy like Caddy to add HTTPS (it handles certificates automatically):
+
+```
+your-domain.com {
+    reverse_proxy localhost:8080
+}
+```
+
+```bash
+caddy run --config /etc/caddy/Caddyfile
+```
+
+### Connect your AI client
+
+Paste your URL (e.g. `https://your-domain.com/mcp`) into your AI client's MCP settings. See the [Remote MCP quickstart](/agentic-ai-hub/remote-mcp/quickstart#connect-your-ai-client) for client-specific instructions.
+
+</Steps>

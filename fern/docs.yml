@@ -790,41 +790,65 @@ navigation:
             slug: prerequisites
             path: ./pages/agentic-ai-hub/mcp/prerequisites.mdx
           - page: ChatGPT Desktop
+            icon: fa-solid fa-circle-caret-right
             slug: chatgpt-desktop
             path: ./pages/agentic-ai-hub/mcp/chatgpt-desktop.mdx
           - page: Claude Code CLI
+            icon: fa-solid fa-circle-caret-right
             slug: claude-code
             path: ./pages/agentic-ai-hub/mcp/claude-code.mdx
           - page: Claude Desktop
+            icon: fa-solid fa-circle-caret-right
             slug: claude-desktop
             path: ./pages/agentic-ai-hub/mcp/claude-desktop.mdx
           - page: Codex CLI
+            icon: fa-solid fa-circle-caret-right
             slug: codex-cli
             path: ./pages/agentic-ai-hub/mcp/codex-cli.mdx
           - page: Cursor
+            icon: fa-solid fa-circle-caret-right
             slug: cursor
             path: ./pages/agentic-ai-hub/mcp/cursor.mdx
           - page: Gemini CLI
+            icon: fa-solid fa-circle-caret-right
             slug: gemini-cli
             path: ./pages/agentic-ai-hub/mcp/gemini-cli.mdx
           - page: VS Code (GitHub Copilot)
+            icon: fa-solid fa-circle-caret-right
             slug: vscode
             path: ./pages/agentic-ai-hub/mcp/vscode.mdx
           - page: Windsurf
+            icon: fa-solid fa-circle-caret-right
             slug: windsurf
             path: ./pages/agentic-ai-hub/mcp/windsurf.mdx
           - page: Troubleshooting
             slug: troubleshooting
             path: ./pages/agentic-ai-hub/mcp/troubleshooting.mdx
-      - section: MCP
-        slug: mcp
+      - section: Remote MCP
+        slug: remote-mcp
         contents:
-          - page: Remote MCP
-            slug: remote-mcp
-            path: ./pages/agentic-ai-hub/mcp/remote-deployment.mdx
-          - page: Paradex-hosted MCP
-            slug: paradex-hosted-mcp
-            path: ./pages/agentic-ai-hub/mcp/connect-to-paradex-mcp.mdx
+          - page: Quickstart guide
+            slug: quickstart
+            path: ./pages/agentic-ai-hub/mcp/remote-quickstart.mdx
+          - page: Railway
+            slug: railway
+            path: ./pages/agentic-ai-hub/mcp/railway.mdx
+          - page: Render
+            slug: render
+            path: ./pages/agentic-ai-hub/mcp/render.mdx
+          - page: Fly.io
+            slug: flyio
+            path: ./pages/agentic-ai-hub/mcp/flyio.mdx
+          - page: AWS Lambda
+            slug: aws-lambda
+            path: ./pages/agentic-ai-hub/mcp/aws-lambda.mdx
+          - page: Docker / VPS
+            slug: docker-vps
+            path: ./pages/agentic-ai-hub/mcp/docker-vps.mdx
+      - section: Paradex-hosted MCP
+        slug: paradex-hosted-mcp
+        path: ./pages/agentic-ai-hub/mcp/connect-to-paradex-mcp.mdx
+        contents: []
       - page: CLI
         slug: cli
         path: ./pages/agentic-ai-hub/cli.mdx
@@ -1188,6 +1212,12 @@ redirects:
   # Redirect old consolidated page to quickstart
   - source: "/agentic-ai-hub/mcp/connect-your-client"
     destination: "/agentic-ai-hub/mcp/quickstart"
+  # Redirect old Remote MCP page to new Remote MCP section
+  - source: "/agentic-ai-hub/mcp/remote-mcp"
+    destination: "/agentic-ai-hub/remote-mcp/quickstart"
+  # Redirect old Paradex-hosted MCP URL to new section
+  - source: "/agentic-ai-hub/mcp/paradex-hosted-mcp"
+    destination: "/agentic-ai-hub/paradex-hosted-mcp"
 
 layout:
   header-height: 72px

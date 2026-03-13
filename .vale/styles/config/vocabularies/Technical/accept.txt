@@ -6,6 +6,7 @@ autoscaling
 backoff
 blockchains
 Caddy
+Caddyfile
 claude
 cmd
 Cmd
@@ -13,10 +14,12 @@ composable
 Config
 configs
 datapoint
+Droplet
 env
 EWMA
 EWMAs
 Favicon
+flyctl
 forex
 hardcode
 Hetzner

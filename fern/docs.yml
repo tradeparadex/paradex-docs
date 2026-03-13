@@ -831,18 +831,23 @@ navigation:
             slug: quickstart
             path: ./pages/agentic-ai-hub/mcp/remote-quickstart.mdx
           - page: Railway
+            icon: fa-solid fa-circle-caret-right
             slug: railway
             path: ./pages/agentic-ai-hub/mcp/railway.mdx
           - page: Render
+            icon: fa-solid fa-circle-caret-right
             slug: render
             path: ./pages/agentic-ai-hub/mcp/render.mdx
           - page: Fly.io
+            icon: fa-solid fa-circle-caret-right
             slug: flyio
             path: ./pages/agentic-ai-hub/mcp/flyio.mdx
           - page: AWS Lambda
+            icon: fa-solid fa-circle-caret-right
             slug: aws-lambda
             path: ./pages/agentic-ai-hub/mcp/aws-lambda.mdx
           - page: Docker / VPS
+            icon: fa-solid fa-circle-caret-right
             slug: docker-vps
             path: ./pages/agentic-ai-hub/mcp/docker-vps.mdx
       - section: Paradex-hosted MCP

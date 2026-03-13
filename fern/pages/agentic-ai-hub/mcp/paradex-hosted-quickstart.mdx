@@ -1,0 +1,86 @@
+---
+title: Quickstart guide
+subtitle: Connect to the Paradex-hosted MCP server in minutes — no local install or cloud deployment needed.
+---
+
+<Warning>
+This setup does **not support trading** at the moment. Only public market data is available. For full API access including trading, use a [local setup](/agentic-ai-hub/mcp/quickstart).
+</Warning>
+
+The Paradex MCP server is available at:
+
+```
+https://mcp.paradex.trade/mcp
+```
+
+Pick your client below to get connected.
+
+<Tabs>
+<Tab title="Claude.ai (Web)">
+
+<Steps>
+### Open Claude.ai settings
+
+Go to [claude.ai](https://claude.ai) → **Settings → Integrations**.
+
+### Add the MCP server
+
+Click **Add MCP Server** and enter `https://mcp.paradex.trade/mcp`.
+
+### Verify it's working
+
+<Markdown src="../../../snippets/verify-connection.mdx" />
+
+</Steps>
+
+</Tab>
+<Tab title="ChatGPT Desktop">
+
+<Steps>
+### Enable developer mode
+
+Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+
+### Add the connector
+
+Go to **Settings → Connectors → Create**, enter `https://mcp.paradex.trade/mcp`, and click **I trust this provider**.
+
+### Verify it's working
+
+<Markdown src="../../../snippets/verify-connection.mdx" />
+
+</Steps>
+
+</Tab>
+<Tab title="Smithery">
+
+Smithery provides a guided setup experience for connecting MCP servers to your AI client.
+
+<Steps>
+### Find Paradex on Smithery
+
+Visit [smithery.ai](https://smithery.ai) and search for **Paradex**. Select the Paradex MCP server.
+
+<img src="../../../assets/agentic-ai-hub/Smithery website.png" alt="Paradex MCP Server on Smithery" style={{display:"block",marginTop:"0.75rem",marginBottom:"0.75rem",maxWidth:"600px"}} />
+
+### Follow the guided setup
+
+Choose your AI client from the list (Claude Code, Cursor, Codex, and more are supported). No fields are required — leave `paradexAccountPrivateKey` empty (trading is not supported in this mode). Click **Connect**.
+
+### Verify it's working
+
+<Markdown src="../../../snippets/verify-connection.mdx" />
+
+</Steps>
+
+</Tab>
+<Tab title="Other Clients">
+
+Most clients that support remote MCP servers will accept the URL `https://mcp.paradex.trade/mcp` in their MCP or connector settings. Refer to your client's documentation for the exact location.
+
+Once connected, verify it's working:
+
+<Markdown src="../../../snippets/verify-connection.mdx" />
+
+</Tab>
+</Tabs>

@@ -7,73 +7,14 @@ subtitle: The simplest way to get started — connect directly to the Paradex-ho
 This setup does **not support trading** at the moment. Only public market data is available. For full API access including trading, use a [local setup](/agentic-ai-hub/mcp/quickstart).
 </Warning>
 
----
+Paradex hosts a public MCP server at `https://mcp.paradex.trade/mcp`. Connect any AI client that supports remote MCP servers — no installation, no API keys, no cloud deployment.
 
-## Via URL
+## What you can do
 
-If your AI client supports adding MCP servers by URL, connect directly with:
+- Query live and historical market data
+- Browse available trading pairs
+- Check funding rates, order book depth, and more
 
-```
-https://mcp.paradex.trade/mcp
-```
+## Get started
 
-<Tabs>
-<Tab title="Claude.ai (Web)">
-
-<Steps>
-### Open Claude.ai settings
-
-Go to [claude.ai](https://claude.ai) → **Settings → Integrations**.
-
-### Add the MCP server
-
-Click **Add MCP Server** and enter `https://mcp.paradex.trade/mcp`.
-
-</Steps>
-
-</Tab>
-<Tab title="ChatGPT Desktop">
-
-<Steps>
-### Enable developer mode
-
-Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
-
-### Add the connector
-
-Go to **Settings → Connectors → Create**, enter `https://mcp.paradex.trade/mcp`, and click **I trust this provider**.
-
-</Steps>
-
-</Tab>
-<Tab title="Other Clients">
-
-Most clients that support remote MCP servers will accept the URL `https://mcp.paradex.trade/mcp` in their MCP or connector settings. Refer to your client's documentation for the exact location.
-
-</Tab>
-</Tabs>
-
----
-
-## Via Smithery
-
-Smithery provides a guided setup experience for connecting MCP servers to your AI client.
-
-<Steps>
-### Find Paradex on Smithery
-
-Visit [smithery.ai](https://smithery.ai) and search for **Paradex**. Select the Paradex MCP server.
-
-<img src="../../../assets/agentic-ai-hub/Smithery website.png" alt="Paradex MCP Server on Smithery" style={{display:"block",marginTop:"0.75rem",marginBottom:"0.75rem",maxWidth:"600px"}} />
-
-### Follow the guided setup
-
-Choose your AI client from the list (Claude Code, Cursor, Codex, and more are supported). No fields are required — leave `paradexAccountPrivateKey` empty (trading is not supported in this mode). Click **Connect**.
-
-</Steps>
-
----
-
-## Verify it's working
-
-<Markdown src="../../../snippets/verify-connection.mdx" />
+Follow the [Quickstart guide](/agentic-ai-hub/paradex-hosted-mcp/quickstart) to connect your AI client in minutes. Supported options include Claude.ai (Web), ChatGPT Desktop, Smithery, and any client that accepts an MCP server URL.

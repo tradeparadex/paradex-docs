@@ -6,10 +6,10 @@ subtitle: Complete these steps before connecting your AI client. If you only nee
 <Steps>
 ### Install Python and uvx
 
-Most steps require running commands in a terminal:
+<Tabs>
+<Tab title="macOS">
 
-- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter.
-- **Windows:** Right-click the Windows Start icon and select **Terminal**.
+Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter.
 
 #### Python
 
@@ -25,24 +25,53 @@ If the version is below 3.10 or the command is not found, install Python from [p
 
 `uvx` is a fast Python package runner used to download and start the MCP server automatically.
 
-<Tabs>
-<Tab title="pip">
-```bash
-pip install uv
-```
-</Tab>
-<Tab title="Homebrew (macOS)">
 ```bash
 brew install uv
 ```
-</Tab>
-</Tabs>
+
+Or install via pip:
+
+```bash
+pip install uv
+```
 
 Verify the installation:
 
 ```bash
 uvx --version
 ```
+
+</Tab>
+<Tab title="Windows">
+
+Right-click the Windows Start icon and select **Terminal**.
+
+#### Python
+
+Python 3.10 or higher is required. Check your version:
+
+```bash
+python3 --version
+```
+
+If the version is below 3.10 or the command is not found, install Python from [python.org/downloads](https://www.python.org/downloads/).
+
+#### uvx
+
+`uvx` is a fast Python package runner used to download and start the MCP server automatically.
+
+```bash
+pip install uv
+```
+
+Verify the installation:
+
+```bash
+uvx --version
+```
+
+</Tab>
+</Tabs>
 
 <Accordion title="Alternative: Run with Docker">
 

@@ -1,0 +1,109 @@
+# Getting Started
+
+This page covers the common setup steps shared by all local MCP client configurations. Complete these steps first, then continue to your client's page for client-specific configuration.
+
+<Note>
+If you only need market data (no trading), you can use [Paradex-hosted MCP](/agentic-ai-hub/mcp/connect-to-paradex-mcp) instead. No installation needed.
+</Note>
+
+## Prerequisites
+
+Most steps require running commands in a terminal:
+
+- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter. You can also find it in **Applications → Utilities → Terminal**.
+- **Windows:** Right-click the Windows Start icon and select **Terminal**. Alternatively, search for "cmd", "PowerShell", or "Command Prompt" in the Start menu. Both PowerShell and Command Prompt will work for the commands in this guide.
+
+<Steps>
+  <Step title="Install Python">
+    Python 3.10 or higher is required. Check your version in your terminal:
+
+    ```bash
+    python3 --version
+    ```
+
+    You should see something like `Python 3.12.4`. If the version is below 3.10 or the command is not found, install Python from [python.org/downloads](https://www.python.org/downloads/).
+  </Step>
+  <Step title="Install uvx">
+    `uvx` is a fast Python package runner used to download and start the MCP server automatically.
+
+    ```bash
+    pip install uv
+    ```
+
+    On macOS you can also use Homebrew:
+
+    ```bash
+    brew install uv
+    ```
+
+    Verify the installation:
+
+    ```bash
+    uvx --version
+    ```
+  </Step>
+</Steps>
+
+<Accordion title="Alternative: Run with Docker">
+  If you prefer not to install Python or uvx directly, you can run the MCP server inside a Docker container. Requires Docker.
+
+  ```bash
+  git clone https://github.com/tradeparadex/mcp-paradex-py.git
+  cd mcp-paradex-py
+  docker build . -t mcp-paradex-py
+
+  # Read-only mode (public market data only)
+  docker run --rm -i mcp-paradex-py
+
+  # With trading capabilities
+  docker run --rm -e PARADEX_ACCOUNT_PRIVATE_KEY=your_key -i mcp-paradex-py
+  ```
+</Accordion>
+
+## Get Your Paradex Private Key
+
+All trading features require a Paradex account private key. Market data tools work without one — you can skip this step if you only need market data.
+
+<Steps>
+  <Step title="Create an account">
+    Go to [Paradex](https://app.paradex.trade) and connect your wallet.
+  </Step>
+  <Step title="Generate an API key">
+    Navigate to **Settings → API Keys** and create a new key.
+  </Step>
+  <Step title="Copy the private key">
+    Copy the private key — you'll use it in your client configuration.
+  </Step>
+</Steps>
+
+<Note>
+**Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
+</Note>
+
+## Next Steps
+
+Choose your AI client to continue with client-specific configuration:
+
+<CardGroup cols={3}>
+  <Card title="Claude Desktop" icon="fa-solid fa-message" href="/agentic-ai-hub/mcp/claude-desktop">
+    Desktop app
+  </Card>
+  <Card title="Claude Code CLI" icon="fa-solid fa-terminal" href="/agentic-ai-hub/mcp/claude-code">
+    Terminal-based
+  </Card>
+  <Card title="Cursor" icon="fa-solid fa-code" href="/agentic-ai-hub/mcp/cursor">
+    AI code editor
+  </Card>
+  <Card title="VS Code" icon="fa-solid fa-laptop-code" href="/agentic-ai-hub/mcp/vscode">
+    GitHub Copilot
+  </Card>
+  <Card title="ChatGPT Desktop" icon="fa-solid fa-robot" href="/agentic-ai-hub/mcp/chatgpt-desktop">
+    Via ngrok tunnel
+  </Card>
+  <Card title="Codex CLI" icon="fa-solid fa-terminal" href="/agentic-ai-hub/mcp/codex-cli">
+    OpenAI Codex
+  </Card>
+  <Card title="Other Clients" icon="fa-solid fa-ellipsis" href="/agentic-ai-hub/mcp/other-clients">
+    Windsurf, Gemini CLI
+  </Card>
+</CardGroup>

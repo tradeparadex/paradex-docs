@@ -6,8 +6,6 @@ Some AI clients — like Claude.ai (web) and ChatGPT Desktop — cannot run loca
 Remote deployments do **not support trading** at the moment. Only public market data is available. Use a [local setup](/agentic-ai-hub/mcp/quickstart) for full API access including trading.
 </Warning>
 
----
-
 ## How It Works
 
 The server supports two transport modes controlled by `MCP_TRANSPORT`:
@@ -23,8 +21,6 @@ In HTTP mode the server listens on `MCP_PORT` (default `3000`) and exposes:
 - `GET /health` — health check, returns `{"status": "ok"}`
 
 For more details, see the [deploy-http guide](https://github.com/tradeparadex/mcp-paradex-py/blob/main/docs/deploy-http.md) in the repository.
-
----
 
 ## Environment Variables
 
@@ -42,8 +38,6 @@ cp .env.template .env
 
 Then edit `.env` with your values. The server loads this file automatically on startup.
 
----
-
 ## Platform Options
 
 | Option | Effort | Cost | Best for |
@@ -56,117 +50,128 @@ Then edit `.env` with your values. The server loads this file automatically on s
 
 All options produce an endpoint of the form `https://your-domain.example.com/mcp` that you paste into your AI client's MCP settings.
 
----
-
 ## Railway
 
 The quickest path to a permanent URL. Railway auto-detects the `Dockerfile` and handles TLS, routing, and restarts.
 
-1. Push your fork (or the upstream repo) to GitHub.
+<Steps>
+  <Step title="Push your fork to GitHub">
+    Push your fork (or the upstream repo) to GitHub.
+  </Step>
+  <Step title="Create a Railway project">
+    Go to [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo** and select the repository.
+  </Step>
+  <Step title="Set environment variables">
+    Railway detects the `Dockerfile` automatically. Open **Variables** and add:
 
-2. Go to [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo** and select the repository.
-
-3. Railway detects the `Dockerfile` automatically. Open **Variables** and add:
-
-   | Key | Value |
-   |---|---|
-   | `MCP_TRANSPORT` | `streamable-http` |
-   | `MCP_PORT` | `8080` |
-   | `PARADEX_ENVIRONMENT` | `prod` |
-
-4. Open **Settings → Networking → Generate Domain**. Your endpoint will be `https://<project>.up.railway.app/mcp`.
-
-5. Paste that URL into your AI client's MCP settings.
+    | Key | Value |
+    |---|---|
+    | `MCP_TRANSPORT` | `streamable-http` |
+    | `MCP_PORT` | `8080` |
+    | `PARADEX_ENVIRONMENT` | `prod` |
+  </Step>
+  <Step title="Generate a domain">
+    Open **Settings → Networking → Generate Domain**. Your endpoint will be `https://<project>.up.railway.app/mcp`.
+  </Step>
+  <Step title="Connect your AI client">
+    Paste that URL into your AI client's MCP settings.
+  </Step>
+</Steps>
 
 Railway keeps the server running continuously (no cold starts). Redeploys happen automatically when you push to the connected branch. The free tier has usage limits; the Hobby plan (~$5/mo) removes them.
-
----
 
 ## Render
 
 Similar to Railway. Free services spin down after 15 minutes of inactivity and have a cold start (~30 s) on the next request.
 
-1. Go to [render.com](https://render.com) → **New → Web Service**.
+<Steps>
+  <Step title="Create a web service">
+    Go to [render.com](https://render.com) → **New → Web Service**.
+  </Step>
+  <Step title="Connect your repo">
+    Connect your GitHub repo. Render detects the `Dockerfile`.
+  </Step>
+  <Step title="Set environment variables">
+    Set the following under **Environment**:
 
-2. Connect your GitHub repo. Render detects the `Dockerfile`.
-
-3. Set the following under **Environment**:
-
-   | Key | Value |
-   |---|---|
-   | `MCP_TRANSPORT` | `streamable-http` |
-   | `MCP_PORT` | `8080` |
-   | `PARADEX_ENVIRONMENT` | `prod` |
-
-4. Set **Health Check Path** to `/health`.
-
-5. Click **Create Web Service**. Your endpoint is `https://<service-name>.onrender.com/mcp`.
+    | Key | Value |
+    |---|---|
+    | `MCP_TRANSPORT` | `streamable-http` |
+    | `MCP_PORT` | `8080` |
+    | `PARADEX_ENVIRONMENT` | `prod` |
+  </Step>
+  <Step title="Set health check">
+    Set **Health Check Path** to `/health`.
+  </Step>
+  <Step title="Deploy">
+    Click **Create Web Service**. Your endpoint is `https://<service-name>.onrender.com/mcp`.
+  </Step>
+</Steps>
 
 Free tier sleeps after 15 min of inactivity — upgrade to Starter (~$7/mo) to avoid cold starts. Render provides automatic TLS and a stable URL.
-
----
 
 ## Fly.io
 
 More setup than Railway/Render but gives fine-grained control over region, scaling, and resources.
 
-1. Install `flyctl` and log in:
+<Steps>
+  <Step title="Install flyctl and log in">
+    ```bash
+    brew install flyctl   # macOS
+    fly auth login
+    ```
+  </Step>
+  <Step title="Initialize the app">
+    From the repo root:
 
-   ```bash
-   brew install flyctl   # macOS
-   fly auth login
-   ```
+    ```bash
+    fly launch --no-deploy
+    ```
 
-2. From the repo root:
+    Accept the generated `fly.toml`. Pick a region close to you.
+  </Step>
+  <Step title="Set your secrets">
+    ```bash
+    fly secrets set \
+      MCP_TRANSPORT=streamable-http \
+      MCP_PORT=8080 \
+      PARADEX_ENVIRONMENT=prod
+    ```
+  </Step>
+  <Step title="Configure and deploy">
+    Confirm the `[[services]]` block in `fly.toml` listens on port `8080` with health check path `/health`:
 
-   ```bash
-   fly launch --no-deploy
-   ```
+    ```toml
+    [[services]]
+      internal_port = 8080
+      protocol = "tcp"
 
-   Accept the generated `fly.toml`. Pick a region close to you.
+      [[services.tcp_checks]]
+        grace_period = "10s"
+        interval = "30s"
+        restart_limit = 0
+        timeout = "5s"
 
-3. Set your secrets:
+      [[services.http_checks]]
+        interval = "10s"
+        grace_period = "5s"
+        method = "GET"
+        path = "/health"
+        protocol = "http"
+        timeout = "2s"
+    ```
 
-   ```bash
-   fly secrets set \
-     MCP_TRANSPORT=streamable-http \
-     MCP_PORT=8080 \
-     PARADEX_ENVIRONMENT=prod
-   ```
+    Then deploy:
 
-4. Confirm the `[[services]]` block in `fly.toml` listens on port `8080` with health check path `/health`:
+    ```bash
+    fly deploy
+    ```
 
-   ```toml
-   [[services]]
-     internal_port = 8080
-     protocol = "tcp"
-
-     [[services.tcp_checks]]
-       grace_period = "10s"
-       interval = "30s"
-       restart_limit = 0
-       timeout = "5s"
-
-     [[services.http_checks]]
-       interval = "10s"
-       grace_period = "5s"
-       method = "GET"
-       path = "/health"
-       protocol = "http"
-       timeout = "2s"
-   ```
-
-   Then deploy:
-
-   ```bash
-   fly deploy
-   ```
-
-   Your endpoint will be `https://<app-name>.fly.dev/mcp`.
+    Your endpoint will be `https://<app-name>.fly.dev/mcp`.
+  </Step>
+</Steps>
 
 Fly.io keeps one VM running by default (no cold starts). Use `fly scale count 0` to pause billing, `fly scale count 1` to resume. `fly logs` streams live logs.
-
----
 
 ## AWS Lambda
 
@@ -179,8 +184,6 @@ Key differences vs. the other options:
 - Set `MCP_STATELESS=true` (required for Lambda, skip for all other options).
 - Use `Dockerfile.aws`, not `Dockerfile`.
 - Lambda Function URL invoke mode must be `RESPONSE_STREAM`.
-
----
 
 ## Docker / VPS
 
@@ -213,8 +216,6 @@ your-domain.com {
 caddy run --config /etc/caddy/Caddyfile
 ```
 
----
-
 ## Verify Your Deployment
 
 Test your endpoint from the terminal (replace the URL with your actual deployment URL):
@@ -229,19 +230,32 @@ curl -X POST https://your-endpoint.example.com/mcp \
 # Expected: JSON list of available tools
 ```
 
----
-
 ## Connect Your AI Client
 
 ### Claude.ai (Web)
 
-1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
-2. Click **Add MCP Server**.
-3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+<Steps>
+  <Step title="Open Settings">
+    Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
+  </Step>
+  <Step title="Add MCP Server">
+    Click **Add MCP Server**.
+  </Step>
+  <Step title="Enter your endpoint URL">
+    Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+  </Step>
+</Steps>
 
 ### ChatGPT Desktop
 
-1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
-2. Go to **Settings → Connectors → Create**.
-3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
-4. Click **I trust this provider**.
+<Steps>
+  <Step title="Enable Developer Mode">
+    Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+  </Step>
+  <Step title="Add your endpoint">
+    Go to **Settings → Connectors → Create**.
+  </Step>
+  <Step title="Connect">
+    Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`) and click **I trust this provider**.
+  </Step>
+</Steps>

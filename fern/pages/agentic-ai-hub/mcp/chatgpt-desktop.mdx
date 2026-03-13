@@ -1,14 +1,10 @@
 # ChatGPT Desktop
 
-This page covers three independent setup options — choose one:
+<Note>
+Complete the [Getting Started](/agentic-ai-hub/mcp/getting-started) steps (install Python, uvx, and get your private key) before continuing.
+</Note>
 
-- **A.** [**Local MCP Setup**](#a-local-mcp-setup) — Full API access including trading. Requires installing a few tools on your machine.
-- **B.** [**Remote MCP Deployment**](#b-remote-mcp-deployment) — Market data only. Host your own MCP server on a cloud platform.
-- **C.** [**Paradex-hosted MCP**](#c-paradex-hosted-mcp) — Market data only. No installation needed, just add a URL.
-
----
-
-## A. Local MCP Setup
+## Local MCP Setup
 
 <Note>
 Local setup is the **only option that supports trading**.
@@ -16,58 +12,44 @@ Local setup is the **only option that supports trading**.
 
 ChatGPT Desktop cannot run local programs directly, so you use ngrok to create a tunnel from your local MCP server to a public URL that ChatGPT can connect to.
 
-### Step 1 — Prerequisites
-
-<Markdown src="../../../snippets/mcp-prerequisites.mdx" />
-
-**Install ngrok:**
+**Install ngrok** (in addition to the Getting Started prerequisites):
 
 ```bash
 brew install ngrok   # macOS
 # Or download from https://ngrok.com
 ```
 
----
+<Steps>
+  <Step title="Start the MCP server locally">
+    Replace `your_private_key_here` with your actual key from the Getting Started page:
 
-### Step 2 — Get Your Paradex Private Key
+    ```bash
+    MCP_TRANSPORT=streamable-http MCP_PORT=8080 \
+    PARADEX_ENVIRONMENT=prod \
+    PARADEX_ACCOUNT_PRIVATE_KEY=your_private_key_here \
+    uvx mcp-paradex
+    ```
+  </Step>
+  <Step title="Open a tunnel">
+    In a second terminal:
 
-<Markdown src="../../../snippets/mcp-private-key.mdx" />
+    ```bash
+    ngrok http 8080
+    ```
 
----
-
-### Step 3 — Configure
-
-1. **Start the MCP server locally:**
-
-   ```bash
-   MCP_TRANSPORT=streamable-http MCP_PORT=8080 \
-   PARADEX_ENVIRONMENT=prod \
-   PARADEX_ACCOUNT_PRIVATE_KEY=your_private_key_here \
-   uvx mcp-paradex
-   ```
-
-   Replace `your_private_key_here` with your actual key from Step 2.
-
-2. **Open a tunnel** in a second terminal:
-
-   ```bash
-   ngrok http 8080
-   ```
-
-   Copy the `https://xxxx.ngrok-free.app` URL from the output.
-
-3. **Connect in ChatGPT:**
-
-   1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
-   2. Go to **Settings → Connectors → Create**.
-   3. Paste `https://xxxx.ngrok-free.app/mcp`.
-   4. Click **I trust this provider**.
+    Copy the `https://xxxx.ngrok-free.app` URL from the output.
+  </Step>
+  <Step title="Connect in ChatGPT">
+    1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+    2. Go to **Settings → Connectors → Create**.
+    3. Paste `https://xxxx.ngrok-free.app/mcp`.
+    4. Click **I trust this provider**.
+  </Step>
+</Steps>
 
 <Note>
 **Limitation:** The tunnel URL changes every time you restart ngrok (free tier). Update the connector URL each session.
 </Note>
-
----
 
 ### Verify It's Working
 
@@ -78,8 +60,6 @@ Ask ChatGPT:
 If you get a list of trading pairs, you're all set. To test trading access:
 
 > "Show me my Paradex account summary."
-
----
 
 ### Troubleshooting
 
@@ -92,9 +72,7 @@ If you get a list of trading pairs, you're all set. To test trading access:
 - Double-check your private key is correct and starts with `0x`
 - Verify `PARADEX_ENVIRONMENT` matches where your account was created (`prod` or `testnet`)
 
----
-
-## B. Remote MCP Deployment
+## Remote MCP Deployment
 
 <Warning>
 Remote setups do **not support trading** at the moment — only market data is available.
@@ -102,14 +80,17 @@ Remote setups do **not support trading** at the moment — only market data is a
 
 First, deploy the MCP server to a cloud platform by following the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment). Once you have your endpoint URL, return here to connect it to ChatGPT Desktop.
 
-**Connect your endpoint:**
-
-1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
-2. Go to **Settings → Connectors → Create**.
-3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
-4. Click **I trust this provider**.
-
----
+<Steps>
+  <Step title="Enable Developer Mode">
+    Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+  </Step>
+  <Step title="Add your endpoint">
+    Go to **Settings → Connectors → Create** and enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+  </Step>
+  <Step title="Trust the provider">
+    Click **I trust this provider**.
+  </Step>
+</Steps>
 
 ## OpenAI Agents SDK (for developers)
 
@@ -156,9 +137,7 @@ Ask ChatGPT:
 
 If you get a list of trading pairs, you're connected. Note that trading features are not available with remote setups.
 
----
-
-## C. Paradex-hosted MCP
+## Paradex-hosted MCP
 
 <Warning>
 This setup does **not support trading** at the moment. Only public market data is available.
@@ -166,17 +145,31 @@ This setup does **not support trading** at the moment. Only public market data i
 
 ### Via URL
 
-1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
-2. Go to **Settings → Connectors → Create**.
-3. Enter `https://mcp.paradex.trade/mcp`.
-4. Click **I trust this provider**.
+<Steps>
+  <Step title="Enable Developer Mode">
+    Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+  </Step>
+  <Step title="Add the Paradex MCP server">
+    Go to **Settings → Connectors → Create** and enter `https://mcp.paradex.trade/mcp`.
+  </Step>
+  <Step title="Trust the provider">
+    Click **I trust this provider**.
+  </Step>
+</Steps>
 
 ### Via Smithery
 
-1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
-2. Select the Paradex MCP server.
-3. Choose **ChatGPT** as your client.
-4. Follow the guided setup and click **Connect**.
+<Steps>
+  <Step title="Find the Paradex server">
+    Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+  </Step>
+  <Step title="Select and configure">
+    Select the Paradex MCP server, choose **ChatGPT** as your client.
+  </Step>
+  <Step title="Connect">
+    Follow the guided setup and click **Connect**.
+  </Step>
+</Steps>
 
 ### Verify It's Working
 

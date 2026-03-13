@@ -1,13 +1,11 @@
 # Claude.ai (Web)
 
-Claude.ai web cannot run local programs. This page covers two independent setup options — choose one:
+Claude.ai web cannot run local programs. This page covers two setup options — choose one:
 
-- **A.** [**Remote MCP Deployment**](#a-remote-mcp-deployment) — Market data only. Host your own MCP server on a cloud platform.
-- **B.** [**Paradex-hosted MCP**](#b-paradex-hosted-mcp) — Market data only. No installation needed, just add a URL.
+- [**Remote MCP Deployment**](#remote-mcp-deployment) — Market data only. Host your own MCP server on a cloud platform.
+- [**Paradex-hosted MCP**](#paradex-hosted-mcp) — Market data only. No installation needed, just add a URL.
 
----
-
-## A. Remote MCP Deployment
+## Remote MCP Deployment
 
 <Warning>
 Remote setups do **not support trading** at the moment — only market data is available.
@@ -15,15 +13,19 @@ Remote setups do **not support trading** at the moment — only market data is a
 
 First, deploy the MCP server to a cloud platform by following the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment). Once you have your endpoint URL, return here to connect it to Claude.ai.
 
-**Connect your endpoint:**
+<Steps>
+  <Step title="Open Settings">
+    Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
+  </Step>
+  <Step title="Add MCP Server">
+    Click **Add MCP Server**.
+  </Step>
+  <Step title="Enter your endpoint URL">
+    Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+  </Step>
+</Steps>
 
-1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
-2. Click **Add MCP Server**.
-3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
-
----
-
-## B. Paradex-hosted MCP
+## Paradex-hosted MCP
 
 <Warning>
 This setup does **not support trading** at the moment. Only public market data is available.
@@ -31,16 +33,31 @@ This setup does **not support trading** at the moment. Only public market data i
 
 ### Via URL
 
-1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
-2. Click **Add MCP Server**.
-3. Enter `https://mcp.paradex.trade/mcp`.
+<Steps>
+  <Step title="Open Settings">
+    Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
+  </Step>
+  <Step title="Add MCP Server">
+    Click **Add MCP Server**.
+  </Step>
+  <Step title="Enter the Paradex MCP URL">
+    Enter `https://mcp.paradex.trade/mcp`.
+  </Step>
+</Steps>
 
 ### Via Smithery
 
-1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
-2. Select the Paradex MCP server.
-3. Choose **Claude** as your client.
-4. Follow the guided setup and click **Connect**.
+<Steps>
+  <Step title="Find the Paradex server">
+    Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+  </Step>
+  <Step title="Select and configure">
+    Select the Paradex MCP server, choose **Claude** as your client.
+  </Step>
+  <Step title="Connect">
+    Follow the guided setup and click **Connect**.
+  </Step>
+</Steps>
 
 ### Verify It's Working
 
@@ -49,8 +66,6 @@ Ask Claude:
 > "What markets are available on Paradex?"
 
 If you get a list of trading pairs, you're connected.
-
----
 
 ### Troubleshooting
 

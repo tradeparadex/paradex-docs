@@ -775,8 +775,12 @@ navigation:
 
   - tab: agentic-ai-hub
     layout:
-      - page: Overview
-        path: ./pages/agentic-ai-hub/overview.mdx
+      - section: Getting Started
+        slug: ""
+        contents:
+          - page: Overview
+            slug: overview
+            path: ./pages/agentic-ai-hub/overview.mdx
       - section: MCP
         slug: mcp
         path: ./pages/agentic-ai-hub/mcp/overview.mdx
@@ -784,30 +788,36 @@ navigation:
           - page: Quickstart Guide
             slug: quickstart
             path: ./pages/agentic-ai-hub/mcp/quickstart.mdx
-          - page: Claude Desktop
-            slug: claude-desktop
-            path: ./pages/agentic-ai-hub/mcp/claude-desktop.mdx
-          - page: Claude Code CLI
-            slug: claude-code
-            path: ./pages/agentic-ai-hub/mcp/claude-code.mdx
-          - page: Cursor
-            slug: cursor
-            path: ./pages/agentic-ai-hub/mcp/cursor.mdx
-          - page: VS Code (GitHub Copilot)
-            slug: vscode
-            path: ./pages/agentic-ai-hub/mcp/vscode.mdx
-          - page: ChatGPT Desktop
-            slug: chatgpt-desktop
-            path: ./pages/agentic-ai-hub/mcp/chatgpt-desktop.mdx
-          - page: Claude.ai (Web)
-            slug: claudeai-web
-            path: ./pages/agentic-ai-hub/mcp/claudeai-web.mdx
-          - page: OpenAI Codex CLI
-            slug: codex-cli
-            path: ./pages/agentic-ai-hub/mcp/codex-cli.mdx
-          - page: Other Clients
-            slug: other-clients
-            path: ./pages/agentic-ai-hub/mcp/other-clients.mdx
+          - page: Getting Started
+            slug: getting-started
+            path: ./pages/agentic-ai-hub/mcp/getting-started.mdx
+          - section: Local MCP Setup
+            slug: local
+            contents:
+              - page: Claude Desktop
+                slug: claude-desktop
+                path: ./pages/agentic-ai-hub/mcp/claude-desktop.mdx
+              - page: Claude Code CLI
+                slug: claude-code
+                path: ./pages/agentic-ai-hub/mcp/claude-code.mdx
+              - page: Cursor
+                slug: cursor
+                path: ./pages/agentic-ai-hub/mcp/cursor.mdx
+              - page: VS Code (GitHub Copilot)
+                slug: vscode
+                path: ./pages/agentic-ai-hub/mcp/vscode.mdx
+              - page: ChatGPT Desktop
+                slug: chatgpt-desktop
+                path: ./pages/agentic-ai-hub/mcp/chatgpt-desktop.mdx
+              - page: Claude.ai (Web)
+                slug: claudeai-web
+                path: ./pages/agentic-ai-hub/mcp/claudeai-web.mdx
+              - page: OpenAI Codex CLI
+                slug: codex-cli
+                path: ./pages/agentic-ai-hub/mcp/codex-cli.mdx
+              - page: Other Clients
+                slug: other-clients
+                path: ./pages/agentic-ai-hub/mcp/other-clients.mdx
           - page: Remote MCP Deployment
             slug: remote-deployment
             path: ./pages/agentic-ai-hub/mcp/remote-deployment.mdx

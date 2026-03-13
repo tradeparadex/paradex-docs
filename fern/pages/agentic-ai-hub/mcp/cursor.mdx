@@ -1,46 +1,32 @@
 # Cursor
 
-This page covers two independent setup options — choose one:
+<Note>
+Complete the [Getting Started](/agentic-ai-hub/mcp/getting-started) steps (install Python, uvx, and get your private key) before continuing.
+</Note>
 
-- **A.** [**Local MCP Setup**](#a-local-mcp-setup) — Full API access including trading. Requires installing a few tools on your machine.
-- **B.** [**Paradex-hosted MCP**](#b-paradex-hosted-mcp) — Market data only. No installation needed.
+## Local MCP Setup
 
----
+<Steps>
+  <Step title="Open Cursor MCP settings">
+    Open Cursor **Settings → MCP**.
+  </Step>
+  <Step title="Add the Paradex MCP server">
+    Add the following configuration. Replace `your_private_key_here` with your actual key from the Getting Started page:
 
-## A. Local MCP Setup
-
-### Step 1 — Prerequisites
-
-<Markdown src="../../../snippets/mcp-prerequisites.mdx" />
-
----
-
-### Step 2 — Get Your Paradex Private Key
-
-<Markdown src="../../../snippets/mcp-private-key.mdx" />
-
----
-
-### Step 3 — Configure
-
-Open Cursor **Settings → MCP** and add:
-
-```json
-{
-  "paradex": {
-    "command": "uvx",
-    "args": ["mcp-paradex"],
-    "env": {
-      "PARADEX_ENVIRONMENT": "prod",
-      "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+    ```json
+    {
+      "paradex": {
+        "command": "uvx",
+        "args": ["mcp-paradex"],
+        "env": {
+          "PARADEX_ENVIRONMENT": "prod",
+          "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+        }
+      }
     }
-  }
-}
-```
-
-Replace `your_private_key_here` with your actual key from Step 2.
-
----
+    ```
+  </Step>
+</Steps>
 
 ### Verify It's Working
 
@@ -52,8 +38,6 @@ If you get a list of trading pairs, you're all set. To test trading access:
 
 > "Show me my Paradex account summary."
 
----
-
 ### Troubleshooting
 
 **Tools not appearing**
@@ -61,9 +45,7 @@ If you get a list of trading pairs, you're all set. To test trading access:
 - Check that the config has valid JSON (no trailing commas)
 - Restart Cursor after config changes
 
----
-
-## B. Paradex-hosted MCP
+## Paradex-hosted MCP
 
 <Warning>
 This setup does **not support trading** at the moment. Only public market data is available.
@@ -71,10 +53,17 @@ This setup does **not support trading** at the moment. Only public market data i
 
 ### Via Smithery
 
-1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
-2. Select the Paradex MCP server.
-3. Choose **Cursor** as your client.
-4. Follow the guided setup and click **Connect**.
+<Steps>
+  <Step title="Find the Paradex server">
+    Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+  </Step>
+  <Step title="Select and configure">
+    Select the Paradex MCP server, choose **Cursor** as your client.
+  </Step>
+  <Step title="Connect">
+    Follow the guided setup and click **Connect**.
+  </Step>
+</Steps>
 
 ### Verify It's Working
 

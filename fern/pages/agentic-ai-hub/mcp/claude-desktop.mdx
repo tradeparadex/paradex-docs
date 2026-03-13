@@ -1,58 +1,42 @@
 # Claude Desktop
 
-This page covers two independent setup options — choose one:
+<Note>
+Complete the [Getting Started](/agentic-ai-hub/mcp/getting-started) steps (install Python, uvx, and get your private key) before continuing.
+</Note>
 
-- **A.** [**Local MCP Setup**](#a-local-mcp-setup) — Full API access including trading. Requires installing a few tools on your machine.
-- **B.** [**Paradex-hosted MCP**](#b-paradex-hosted-mcp) — Market data only. No installation needed, just add a URL.
+## Local MCP Setup
 
----
+<Steps>
+  <Step title="Open the config file">
+    Open Claude Desktop → **Settings → Developer → Edit Config**. This opens the config file path directly. Find and open `claude_desktop_config.json` with your text editor.
 
-## A. Local MCP Setup
+    If the config file doesn't exist yet, create it at the appropriate path:
 
-### Step 1 — Prerequisites
+    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+    - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+  </Step>
+  <Step title="Add the Paradex MCP server">
+    Paste the following into the config file. Replace `your_private_key_here` with your actual key from the Getting Started page:
 
-<Markdown src="../../../snippets/mcp-prerequisites.mdx" />
-
----
-
-### Step 2 — Get Your Paradex Private Key
-
-<Markdown src="../../../snippets/mcp-private-key.mdx" />
-
----
-
-### Step 3 — Configure
-
-1. **Open the config file:**
-
-   Open Claude Desktop → **Settings → Developer → Edit Config**. This opens the config file path directly. Find and open `claude_desktop_config.json` with your text editor.
-
-   If the config file doesn't exist yet, create it at the appropriate path:
-
-   - <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",position:"relative"}}><span><strong>macOS</strong>: <code>&#126;/Library/Application Support/Claude/claude_desktop_config.json</code></span><details><summary style={{cursor:"pointer",color:"inherit",fontSize:"0.8rem",whiteSpace:"nowrap",marginLeft:"0.75rem",opacity:0.6}}>How to find it</summary><div style={{position:"absolute",left:0,top:"calc(100% + 6px)",background:"#0f172a",border:"1px solid #1e3a5f",borderRadius:"8px",padding:"1rem 1.25rem",zIndex:50,width:"100%",fontSize:"0.875rem"}}><p><strong>Option 1: "Go to Folder" (Fastest)</strong></p><ol><li>Open Finder</li><li>Press <strong>Command + Shift + G</strong></li><li>Paste <code>&#126;/Library/Application Support/Claude/</code> and press <strong>Enter</strong></li><li>Right-click <code>claude_desktop_config.json</code> &#8594; <strong>Open With &#8594; TextEdit</strong> (or VS Code)</li></ol><hr/><p><strong>Option 2: Terminal</strong></p><ol><li>Open Terminal (<strong>Cmd + Space</strong>, type &#34;Terminal&#34;)</li><li>Run: <code>open &#126;/Library/&#34;Application Support&#34;/Claude/claude_desktop_config.json</code></li><li>Or: <code>nano &#126;/Library/&#34;Application Support&#34;/Claude/claude_desktop_config.json</code></li></ol><hr/><p><strong>Option 3: Manual Navigation</strong> (Library is hidden)</p><ol><li>Open Finder &#8594; click <strong>Go</strong> menu at the top</li><li>Hold <strong>Option (&#8984;)</strong> &#8212; Library appears</li><li>Navigate to <strong>Application Support &#8594; Claude</strong></li></ol></div></details></div>
-
-   - <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",position:"relative"}}><span><strong>Windows</strong>: <code>%APPDATA%\Claude\claude_desktop_config.json</code></span><details><summary style={{cursor:"pointer",color:"inherit",fontSize:"0.8rem",whiteSpace:"nowrap",marginLeft:"0.75rem",opacity:0.6}}>How to find it</summary><div style={{position:"absolute",left:0,top:"calc(100% + 6px)",background:"#0f172a",border:"1px solid #1e3a5f",borderRadius:"8px",padding:"1rem 1.25rem",zIndex:50,width:"100%",fontSize:"0.875rem"}}><p><strong>Option 1: The &#34;Run&#34; Command (Fastest)</strong></p><ol><li>Press <strong>Windows Key + R</strong> to open the Run dialog</li><li>Paste: <code>%APPDATA%\Claude</code> and press <strong>Enter</strong></li><li>Right-click <code>claude_desktop_config.json</code> &#8594; <strong>Open with &#8594; Notepad</strong> (or VS Code)</li></ol><hr/><p><strong>Option 2: File Explorer Address Bar</strong></p><ol><li>Open any folder or press <strong>Windows Key + E</strong></li><li>Click the <strong>Address Bar</strong> at the top</li><li>Paste <code>%APPDATA%\Claude</code> and press <strong>Enter</strong></li><li>The JSON file will be there</li></ol><hr/><p><strong>Option 3: PowerShell or Command Prompt</strong></p><ol><li>Open PowerShell or Command Prompt (search &#34;cmd&#34; in Start menu)</li><li>Run: <code>notepad $env:AppData\Claude\claude_desktop_config.json</code></li><li>If the file doesn&#39;t exist yet, Notepad will ask to create it &#8212; click <strong>Yes</strong></li></ol></div></details></div>
-
-2. **Paste the following into the config file.** Replace `your_private_key_here` with your actual key from Step 2:
-
-   ```json
-   {
-     "mcpServers": {
-       "paradex": {
-         "command": "uvx",
-         "args": ["mcp-paradex"],
-         "env": {
-           "PARADEX_ENVIRONMENT": "prod",
-           "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
-         }
-       }
-     }
-   }
-   ```
-
-3. **Restart Claude Desktop.** It will automatically download and start the MCP server via `uvx` — no separate install needed.
-
----
+    ```json
+    {
+      "mcpServers": {
+        "paradex": {
+          "command": "uvx",
+          "args": ["mcp-paradex"],
+          "env": {
+            "PARADEX_ENVIRONMENT": "prod",
+            "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+          }
+        }
+      }
+    }
+    ```
+  </Step>
+  <Step title="Restart Claude Desktop">
+    It will automatically download and start the MCP server via `uvx` — no separate install needed.
+  </Step>
+</Steps>
 
 ### Verify It's Working
 
@@ -67,8 +51,6 @@ Then ask Claude:
 If you get a list of trading pairs, you're all set. To test trading access:
 
 > "Show me my Paradex account summary."
-
----
 
 ### Troubleshooting
 
@@ -90,9 +72,7 @@ brew install uv
 
 **Want to test without a private key first?** Market data tools work without any credentials. Just omit `PARADEX_ACCOUNT_PRIVATE_KEY` from the config.
 
----
-
-## B. Paradex-hosted MCP
+## Paradex-hosted MCP
 
 <Warning>
 This setup does **not support trading** at the moment. Only public market data is available.
@@ -100,18 +80,30 @@ This setup does **not support trading** at the moment. Only public market data i
 
 ### Via URL
 
-1. Open Claude Desktop → **Settings → Integrations** (or **Settings → Connectors**).
-2. Add a new MCP server.
-3. Enter `https://mcp.paradex.trade/mcp`.
+<Steps>
+  <Step title="Open Claude Desktop settings">
+    Open Claude Desktop → **Settings → Integrations** (or **Settings → Connectors**).
+  </Step>
+  <Step title="Add a new MCP server">
+    Enter `https://mcp.paradex.trade/mcp`.
+  </Step>
+</Steps>
 
 ### Via Smithery
 
 **Option A — Website:**
 
-1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
-2. Select the Paradex MCP server.
-3. Choose **Claude Desktop** as your client.
-4. Configure your settings and click **Connect**.
+<Steps>
+  <Step title="Find the Paradex server">
+    Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+  </Step>
+  <Step title="Select and configure">
+    Select the Paradex MCP server, choose **Claude Desktop** as your client.
+  </Step>
+  <Step title="Connect">
+    Configure your settings and click **Connect**.
+  </Step>
+</Steps>
 
 **Option B — CLI:**
 

@@ -792,7 +792,7 @@ navigation:
             slug: getting-started
             path: ./pages/agentic-ai-hub/mcp/getting-started.mdx
           - section: Local MCP Setup
-            slug: local
+            slug: ""
             contents:
               - page: Claude Desktop
                 slug: claude-desktop

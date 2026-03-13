@@ -17,6 +17,7 @@ env
 EWMA
 EWMAs
 Favicon
+flyctl
 forex
 hardcode
 Hetzner

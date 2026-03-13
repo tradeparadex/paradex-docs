@@ -779,7 +779,7 @@ navigation:
         contents:
           - page: Overview
             path: ./pages/agentic-ai-hub/overview.mdx
-      - section: Local MCP setup
+      - section: Local MCP
         slug: mcp
         path: ./pages/agentic-ai-hub/mcp/overview.mdx
         contents:
@@ -789,52 +789,48 @@ navigation:
           - page: Prerequisites
             slug: prerequisites
             path: ./pages/agentic-ai-hub/mcp/prerequisites.mdx
-          - page: Claude.ai (web)
-            slug: claudeai-web
-            path: ./pages/agentic-ai-hub/mcp/claudeai-web.mdx
+          - page: ChatGPT Desktop
+            slug: chatgpt-desktop
+            path: ./pages/agentic-ai-hub/mcp/chatgpt-desktop.mdx
           - page: Claude Code CLI
             slug: claude-code
             path: ./pages/agentic-ai-hub/mcp/claude-code.mdx
           - page: Claude Desktop
             slug: claude-desktop
             path: ./pages/agentic-ai-hub/mcp/claude-desktop.mdx
-          - page: Cursor
-            slug: cursor
-            path: ./pages/agentic-ai-hub/mcp/cursor.mdx
-          - page: ChatGPT Desktop
-            slug: chatgpt-desktop
-            path: ./pages/agentic-ai-hub/mcp/chatgpt-desktop.mdx
           - page: Codex CLI
             slug: codex-cli
             path: ./pages/agentic-ai-hub/mcp/codex-cli.mdx
+          - page: Cursor
+            slug: cursor
+            path: ./pages/agentic-ai-hub/mcp/cursor.mdx
+          - page: Gemini CLI
+            slug: gemini-cli
+            path: ./pages/agentic-ai-hub/mcp/gemini-cli.mdx
           - page: VS Code (GitHub Copilot)
             slug: vscode
             path: ./pages/agentic-ai-hub/mcp/vscode.mdx
           - page: Windsurf
             slug: windsurf
             path: ./pages/agentic-ai-hub/mcp/windsurf.mdx
-          - page: Gemini CLI
-            slug: gemini-cli
-            path: ./pages/agentic-ai-hub/mcp/gemini-cli.mdx
           - page: Troubleshooting
             slug: troubleshooting
             path: ./pages/agentic-ai-hub/mcp/troubleshooting.mdx
-      - section: Remote MCP setup
+      - section: MCP
         slug: mcp
         contents:
-          - page: Paradex-hosted MCP
-            slug: connect-to-paradex-mcp
-            path: ./pages/agentic-ai-hub/mcp/connect-to-paradex-mcp.mdx
-          - page: Remote MCP deployment
-            slug: remote-deployment
+          - page: Remote MCP
+            slug: remote-mcp
             path: ./pages/agentic-ai-hub/mcp/remote-deployment.mdx
+          - page: Paradex-hosted MCP
+            slug: paradex-hosted-mcp
+            path: ./pages/agentic-ai-hub/mcp/connect-to-paradex-mcp.mdx
       - page: CLI
         slug: cli
         path: ./pages/agentic-ai-hub/cli.mdx
-      - section: Agentic Skills
+      - page: Agentic Skills
         slug: agentic-skills
         path: ./pages/agentic-ai-hub/agentic-skills/overview.mdx
-        contents: []
       - section: MCP Reference
         slug: mcp-reference
         contents:

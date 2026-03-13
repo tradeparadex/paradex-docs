@@ -1,44 +1,46 @@
 # Other Clients
 
-This page covers Windsurf and Gemini CLI. Each has two independent setup options — choose one:
+This page covers Windsurf and Gemini CLI.
 
-- **A.** [**Local MCP Setup**](#a-local-mcp-setup) — Full API access including trading. Requires installing a few tools on your machine.
-- **B.** [**Paradex-hosted MCP**](#b-paradex-hosted-mcp) — Market data only. No installation needed.
+<Tabs>
+<Tab title="Local MCP setup">
 
----
+Full API access including trading. Requires installing a few tools on your machine.
 
-## A. Local MCP Setup
-
-### Step 1 — Prerequisites
+<Steps>
+### Install prerequisites
 
 Most steps require running commands in a terminal:
 
-- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter. You can also find it in **Applications → Utilities → Terminal**.
-- **Windows:** Right-click the Windows Start icon and select **Terminal**. Alternatively, search for "cmd", "PowerShell", or "Command Prompt" in the Start menu. Both PowerShell and Command Prompt will work for the commands in this guide.
+- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter.
+- **Windows:** Right-click the Windows Start icon and select **Terminal**.
 
 #### Install Python
 
-Python 3.10 or higher is required. Check your version in your terminal:
+Python 3.10 or higher is required. Check your version:
 
 ```bash
 python3 --version
 ```
 
-You should see something like `Python 3.12.4`. If the version is below 3.10 or the command is not found, install Python from [python.org/downloads](https://www.python.org/downloads/).
+If the version is below 3.10 or the command is not found, install Python from [python.org/downloads](https://www.python.org/downloads/).
 
 #### Install uvx
 
 `uvx` is a fast Python package runner used to download and start the MCP server automatically.
 
+<Tabs>
+<Tab title="pip">
 ```bash
 pip install uv
 ```
-
-On macOS you can also use Homebrew:
-
+</Tab>
+<Tab title="Homebrew (macOS)">
 ```bash
 brew install uv
 ```
+</Tab>
+</Tabs>
 
 Verify the installation:
 
@@ -46,8 +48,7 @@ Verify the installation:
 uvx --version
 ```
 
-<details>
-<summary>Alternative: Run with Docker</summary>
+<Accordion title="Alternative: Run with Docker">
 
 If you prefer not to install Python or uvx directly, you can run the MCP server inside a Docker container. Requires Docker.
 
@@ -63,11 +64,9 @@ docker run --rm -i mcp-paradex-py
 docker run --rm -e PARADEX_ACCOUNT_PRIVATE_KEY=your_key -i mcp-paradex-py
 ```
 
-</details>
+</Accordion>
 
----
-
-### Step 2 — Get Your Paradex Private Key
+### Get your Paradex private key
 
 All trading features require a Paradex account private key. Market data tools work without one — you can skip this step if you only need market data.
 
@@ -83,11 +82,10 @@ Your private key controls access to your trading account. Never share it publicl
 **Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
 </Note>
 
----
+### Configure your client
 
-### Step 3 — Configure
-
-#### Windsurf
+<Tabs>
+<Tab title="Windsurf">
 
 Open **Windsurf Settings → MCP Servers** and paste the following into `~/.codeium/windsurf/mcp_config.json`:
 
@@ -108,7 +106,8 @@ Open **Windsurf Settings → MCP Servers** and paste the following into `~/.code
 
 Restart Windsurf to apply changes.
 
-#### Gemini CLI
+</Tab>
+<Tab title="Gemini CLI">
 
 <Note>
 Requires the Gemini CLI. Install with `npm install -g @google/gemini-cli` or see the [Gemini CLI GitHub repo](https://github.com/google-gemini/gemini-cli) for details.
@@ -131,11 +130,12 @@ Open (or create) the file `~/.gemini/settings.json` and paste the following:
 }
 ```
 
-Replace `your_private_key_here` with your actual key from Step 2.
+</Tab>
+</Tabs>
 
----
+Replace `your_private_key_here` with your actual key.
 
-### Verify It's Working
+### Verify it's working
 
 Ask your AI assistant:
 
@@ -145,7 +145,7 @@ If you get a list of trading pairs, you're all set. To test trading access:
 
 > "Show me my Paradex account summary."
 
----
+</Steps>
 
 ### Troubleshooting
 
@@ -161,25 +161,31 @@ pip install uv
 brew install uv
 ```
 
----
+</Tab>
+<Tab title="Paradex-hosted MCP">
 
-## B. Paradex-hosted MCP
+Market data only. No installation needed.
 
 <Warning>
 This setup does **not support trading** at the moment. Only public market data is available.
 </Warning>
 
-### Via Smithery
+<Steps>
+### Connect via Smithery
 
 1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
 2. Select the Paradex MCP server.
 3. Choose your client from the list.
 4. Follow the guided setup and click **Connect**.
 
-### Verify It's Working
+### Verify it's working
 
 Ask your AI assistant:
 
 > "What markets are available on Paradex?"
 
-If you get a list of trading pairs, you're connected. Note that trading features are not available with this setup.
+If you get a list of trading pairs, you're connected.
+</Steps>
+
+</Tab>
+</Tabs>

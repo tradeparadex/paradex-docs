@@ -1,0 +1,59 @@
+---
+title: Available tools
+subtitle: Tools are actions your AI assistant can perform when you ask it to — like fetching market data, placing orders, or checking your account. You don't need to call these directly; just ask your assistant in plain language and it will use the right tool automatically.
+---
+
+<Note>
+No action needed — tools are available automatically once you've completed the [Quickstart Guide](/agentic-ai-hub/mcp/quickstart). This page is a reference for what your assistant can do.
+</Note>
+
+## System
+
+| Tool | Description |
+|---|---|
+| `paradex_system_config` | Get global system configuration |
+| `paradex_system_state` | Get current system state |
+
+## Markets
+
+| Tool | Description |
+|---|---|
+| `paradex_markets` | Get detailed market information |
+| `paradex_market_summaries` | Get market summaries with metrics |
+| `paradex_funding_data` | Get historical funding rate data |
+| `paradex_orderbook` | Get current orderbook with configurable depth |
+| `paradex_klines` | Get historical candlestick / price chart data (open, high, low, close, volume) |
+| `paradex_trades` | Get recent trades |
+| `paradex_bbo` | Get best bid and offer (current top buy/sell prices) |
+
+## Account
+
+| Tool | Description |
+|---|---|
+| `paradex_account_summary` | Get account summary |
+| `paradex_account_positions` | Get current open positions |
+| `paradex_account_fills` | Get trade fill history |
+| `paradex_account_funding_payments` | Get funding payment history |
+| `paradex_account_transactions` | Get full transaction history |
+
+## Orders
+
+| Tool | Description |
+|---|---|
+| `paradex_open_orders` | List all open orders |
+| `paradex_create_order` | Place a new order |
+| `paradex_cancel_orders` | Cancel one or more existing orders |
+| `paradex_order_status` | Get the status of a specific order |
+| `paradex_orders_history` | Get historical order records |
+
+## Vaults
+
+| Tool | Description |
+|---|---|
+| `paradex_vaults` | Get detailed vault information |
+| `paradex_vaults_config` | Get global vault configuration |
+| `paradex_vault_balance` | Get vault balance |
+| `paradex_vault_summary` | Get comprehensive vault summary |
+| `paradex_vault_transfers` | Get deposit and withdrawal history |
+| `paradex_vault_positions` | Get current vault positions |
+| `paradex_vault_account_summary` | Get vault trading account info |

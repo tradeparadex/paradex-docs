@@ -1,0 +1,94 @@
+---
+title: Remote MCP quickstart
+subtitle: Deploy the Paradex MCP server to a cloud platform and connect your AI client via a public URL.
+---
+
+<Warning>
+Remote deployments do **not support trading** at the moment. Only public market data is available. Use a [local setup](/agentic-ai-hub/mcp/quickstart) for full API access including trading.
+</Warning>
+
+## How it works
+
+The MCP server supports two transport modes controlled by `MCP_TRANSPORT`:
+
+| Mode | Value | Use case |
+|---|---|---|
+| stdio (default) | `stdio` | Claude Desktop, Claude Code, Cursor — runs as a local subprocess |
+| HTTP | `streamable-http` | ChatGPT Desktop, Claude.ai web, any remote client |
+
+In HTTP mode the server listens on `MCP_PORT` (default `3000`) and exposes:
+
+- `POST /mcp` — MCP protocol endpoint (what clients connect to)
+- `GET /health` — health check, returns `{"status": "ok"}`
+
+For more details, see the [deploy-http guide](https://github.com/tradeparadex/mcp-paradex-py/blob/main/docs/deploy-http.md) in the repository.
+
+---
+
+## Environment variables
+
+| Variable | Description | Default |
+|---|---|---|
+| `MCP_TRANSPORT` | Set to `streamable-http` for remote deployment | `stdio` |
+| `MCP_PORT` | Port the HTTP server listens on | `3000` |
+| `PARADEX_ENVIRONMENT` | Target environment: `prod`, `testnet`, or `nightly` | `prod` |
+
+Most platforms let you set these as environment variables in their dashboard. If you've cloned the MCP server repository to build and deploy, you can also store them in a `.env` file at the repo root:
+
+```bash
+cp .env.template .env
+```
+
+Then edit `.env` with your values. The server loads this file automatically on startup.
+
+---
+
+## Choose a platform
+
+| Option | Effort | Cost | Best for |
+|---|---|---|---|
+| [Railway](/agentic-ai-hub/remote-mcp/railway) | Low | ~$5/mo | Quickest permanent setup |
+| [Render](/agentic-ai-hub/remote-mcp/render) | Low | Free tier available | Low-traffic / evaluation |
+| [Fly.io](/agentic-ai-hub/remote-mcp/flyio) | Medium | ~$2–5/mo | Global, low-latency |
+| [AWS Lambda](/agentic-ai-hub/remote-mcp/aws-lambda) | Medium | Pay-per-request | Scalable, zero idle cost |
+| [Docker / VPS](/agentic-ai-hub/remote-mcp/docker-vps) | High | Varies | Full control |
+
+All options produce an endpoint of the form `https://your-domain.example.com/mcp` that you paste into your AI client's MCP settings.
+
+---
+
+## Verify your deployment
+
+Test your endpoint from the terminal (replace the URL with your actual deployment URL):
+
+```bash
+curl https://your-endpoint.example.com/health
+# Expected: {"status":"ok"}
+
+curl -X POST https://your-endpoint.example.com/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+# Expected: JSON list of available tools
+```
+
+---
+
+## Connect your AI client
+
+<Tabs>
+<Tab title="Claude.ai (Web)">
+
+1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
+2. Click **Add MCP Server**.
+3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+
+</Tab>
+<Tab title="ChatGPT Desktop">
+
+1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+2. Go to **Settings → Connectors → Create**.
+3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+4. Click **I trust this provider**.
+
+</Tab>
+</Tabs>

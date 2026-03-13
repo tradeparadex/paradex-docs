@@ -1,0 +1,44 @@
+---
+title: Gemini CLI
+subtitle: Connect the Paradex MCP server to Gemini CLI in a few steps.
+---
+
+<Note>
+Requires the Gemini CLI. Install with `npm install -g @google/gemini-cli` or see the [Gemini CLI GitHub repo](https://github.com/google-gemini/gemini-cli).
+</Note>
+
+<Steps>
+### Complete prerequisites
+
+Follow the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) guide to install Python, uvx, and get your Paradex private key.
+
+### Add the Paradex MCP server
+
+Open (or create) the file `~/.gemini/settings.json` and paste the following:
+
+```json
+{
+  "mcpServers": {
+    "paradex": {
+      "command": "uvx",
+      "args": ["mcp-paradex"],
+      "env": {
+        "PARADEX_ENVIRONMENT": "prod",
+        "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+      }
+    }
+  }
+}
+```
+
+Replace `your_private_key_here` with your actual key.
+
+### Verify it's working
+
+<Markdown src="../../../snippets/verify-connection.mdx" />
+
+To test trading access, ask:
+
+> "Show me my Paradex account summary."
+
+</Steps>

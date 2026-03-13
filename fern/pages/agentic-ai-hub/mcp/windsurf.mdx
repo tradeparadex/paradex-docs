@@ -1,0 +1,44 @@
+---
+title: Windsurf
+subtitle: Connect the Paradex MCP server to Windsurf in a few steps.
+---
+
+<Steps>
+### Complete prerequisites
+
+Follow the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) guide to install Python, uvx, and get your Paradex private key.
+
+### Add the Paradex MCP server
+
+Open **Windsurf Settings → MCP Servers** and paste the following into `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "paradex": {
+      "command": "uvx",
+      "args": ["mcp-paradex"],
+      "env": {
+        "PARADEX_ENVIRONMENT": "prod",
+        "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+      }
+    }
+  }
+}
+```
+
+Replace `your_private_key_here` with your actual key.
+
+### Restart Windsurf
+
+Restart Windsurf to apply changes.
+
+### Verify it's working
+
+<Markdown src="../../../snippets/verify-connection.mdx" />
+
+To test trading access, ask:
+
+> "Show me my Paradex account summary."
+
+</Steps>

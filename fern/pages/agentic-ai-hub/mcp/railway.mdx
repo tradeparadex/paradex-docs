@@ -1,0 +1,37 @@
+---
+title: Railway
+subtitle: The quickest path to a permanent URL. Railway auto-detects the Dockerfile and handles TLS, routing, and restarts.
+---
+
+<Steps>
+### Push the repository to GitHub
+
+Push your fork (or the upstream repo) to GitHub.
+
+### Create a Railway project
+
+Go to [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo** and select the repository.
+
+### Set environment variables
+
+Railway detects the `Dockerfile` automatically. Open **Variables** and add:
+
+| Key | Value |
+|---|---|
+| `MCP_TRANSPORT` | `streamable-http` |
+| `MCP_PORT` | `8080` |
+| `PARADEX_ENVIRONMENT` | `prod` |
+
+### Generate a domain
+
+Open **Settings → Networking → Generate Domain**. Your endpoint will be `https://<project>.up.railway.app/mcp`.
+
+### Connect your AI client
+
+Paste the URL into your AI client's MCP settings. See the [Remote MCP quickstart](/agentic-ai-hub/remote-mcp/quickstart#connect-your-ai-client) for client-specific instructions.
+
+</Steps>
+
+---
+
+Railway keeps the server running continuously (no cold starts). Redeploys happen automatically when you push to the connected branch. The free tier has usage limits; the Hobby plan (~$5/mo) removes them.

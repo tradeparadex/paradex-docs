@@ -1,0 +1,65 @@
+---
+title: Quickstart guide
+subtitle: The Paradex MCP server implements the [Model Context Protocol](https://modelcontextprotocol.io/) standard, giving AI assistants structured, authenticated access to the Paradex trading platform.
+---
+
+**Repository:** [github.com/tradeparadex/mcp-paradex-py](https://github.com/tradeparadex/mcp-paradex-py)
+
+Once configured, your AI assistant can:
+
+- Fetch live and historical market data
+- Manage trading accounts and vaults
+- Place, monitor, and cancel orders
+- Track positions, balances, and funding payments
+
+Your setup choice depends on:
+
+- **Which MCP features you need** — trading is only available with a local setup at the moment. Remote and Paradex-hosted options provide market data only.
+- **Which AI client you prefer** — Claude Desktop, Cursor, ChatGPT, and others are supported. Not every client supports every setup path.
+
+<Steps>
+### Pick your client
+
+Use the table below to see which setup paths are available for your client, then pick your setup path.
+
+| Client | Local MCP setup | Remote MCP deployment | Paradex-hosted MCP |
+|---|:---:|:---:|:---:|
+| [ChatGPT Desktop](/agentic-ai-hub/mcp/chatgpt-desktop) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| [Claude Code CLI](/agentic-ai-hub/mcp/claude-code) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |  | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| [Claude Desktop](/agentic-ai-hub/mcp/claude-desktop) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" />|  | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| [Claude.ai (web)](/agentic-ai-hub/remote-mcp/quickstart) |  | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| [Codex CLI](/agentic-ai-hub/mcp/codex-cli) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |  |<Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| [Cursor](/agentic-ai-hub/mcp/cursor) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |  | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| [Gemini CLI](/agentic-ai-hub/mcp/gemini-cli) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |  | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| [VS Code (GitHub Copilot)](/agentic-ai-hub/mcp/vscode) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |  | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+| [Windsurf](/agentic-ai-hub/mcp/windsurf) | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |  | <Icon icon="fa-solid fa-circle-check" color="#22c55e" /> |
+
+### Pick your setup path
+
+<Tabs>
+<Tab title="Local MCP setup (Recommended)">
+
+MCP server runs on your machine. Full API support including trading.
+
+1. Complete the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) — install Python, uvx, and get your Paradex private key.
+2. Click your client name in the table above and follow the setup instructions.
+
+</Tab>
+<Tab title="Remote MCP deployment">
+
+You host your own MCP server on a cloud platform (Railway, Render, Fly.io, etc.) and connect your AI client to it via a URL. Market data only — no trading support at the moment.
+
+1. Follow the [Remote MCP quickstart](/agentic-ai-hub/remote-mcp/quickstart) to deploy your server.
+2. Click your client name in the table above and enter your endpoint URL.
+
+</Tab>
+<Tab title="Paradex-hosted MCP">
+
+The fastest way to get started — no installation, no cloud deployment. Market data only — no trading support at the moment.
+
+Follow the [Paradex-hosted MCP quickstart](/agentic-ai-hub/paradex-hosted-mcp/quickstart) to connect via URL or Smithery.
+
+</Tab>
+</Tabs>
+
+</Steps>

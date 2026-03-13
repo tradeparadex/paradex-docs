@@ -1,0 +1,99 @@
+---
+title: ChatGPT Desktop
+subtitle: Connect the Paradex MCP server to ChatGPT Desktop in a few steps.
+---
+
+ChatGPT Desktop cannot run local programs directly, so you use ngrok to create a tunnel from your local MCP server to a public URL that ChatGPT can connect to.
+
+<Steps>
+### Complete prerequisites
+
+Follow the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) guide to install Python, uvx, and get your Paradex private key.
+
+### Install ngrok
+
+```bash
+brew install ngrok   # macOS
+# Or download from https://ngrok.com
+```
+
+### Start the MCP server
+
+```bash
+MCP_TRANSPORT=streamable-http MCP_PORT=8080 \
+PARADEX_ENVIRONMENT=prod \
+PARADEX_ACCOUNT_PRIVATE_KEY=your_private_key_here \
+uvx mcp-paradex
+```
+
+Replace `your_private_key_here` with your actual key.
+
+### Open a tunnel
+
+In a second terminal:
+
+```bash
+ngrok http 8080
+```
+
+Copy the `https://xxxx.ngrok-free.app` URL from the output.
+
+### Connect in ChatGPT
+
+1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+2. Go to **Settings → Connectors → Create**.
+3. Paste `https://xxxx.ngrok-free.app/mcp`.
+4. Click **I trust this provider**.
+
+<Note>
+**Limitation:** The tunnel URL changes every time you restart ngrok (free tier). Update the connector URL each session.
+</Note>
+
+### Verify it's working
+
+<Markdown src="../../../snippets/verify-connection.mdx" />
+
+To test trading access, ask:
+
+> "Show me my Paradex account summary."
+
+</Steps>
+
+---
+
+## OpenAI Agents SDK (for developers)
+
+For custom Python apps (not the ChatGPT interface). No remote hosting needed.
+
+```bash
+pip install openai-agents
+```
+
+```python
+import asyncio, os
+from agents import Agent, Runner
+from agents.mcp import MCPServerStdio
+
+async def main():
+    async with MCPServerStdio(
+        name="paradex",
+        params={
+            "command": "uvx",
+            "args": ["mcp-paradex"],
+            "env": {
+                **os.environ,
+                "PARADEX_ENVIRONMENT": "prod",
+                "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here",
+            },
+        },
+    ) as server:
+        agent = Agent(
+            name="Paradex Trader",
+            instructions="You are a trading assistant with access to Paradex.",
+            mcp_servers=[server],
+        )
+        result = await Runner.run(agent, "What are the top markets by volume?")
+        print(result.final_output)
+
+asyncio.run(main())
+```

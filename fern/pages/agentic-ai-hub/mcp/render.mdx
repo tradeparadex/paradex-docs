@@ -1,0 +1,41 @@
+---
+title: Render
+subtitle: Similar to Railway with a free tier. Free services spin down after 15 minutes of inactivity and have a cold start (~30 s) on the next request.
+---
+
+<Steps>
+### Create a web service
+
+Go to [render.com](https://render.com) → **New → Web Service**.
+
+### Connect your repository
+
+Connect your GitHub repo. Render detects the `Dockerfile`.
+
+### Set environment variables
+
+Set the following under **Environment**:
+
+| Key | Value |
+|---|---|
+| `MCP_TRANSPORT` | `streamable-http` |
+| `MCP_PORT` | `8080` |
+| `PARADEX_ENVIRONMENT` | `prod` |
+
+### Configure the health check
+
+Set **Health Check Path** to `/health`.
+
+### Deploy
+
+Click **Create Web Service**. Your endpoint is `https://<service-name>.onrender.com/mcp`.
+
+### Connect your AI client
+
+Paste the URL into your AI client's MCP settings. See the [Remote MCP quickstart](/agentic-ai-hub/remote-mcp/quickstart#connect-your-ai-client) for client-specific instructions.
+
+</Steps>
+
+---
+
+Free tier sleeps after 15 min of inactivity — upgrade to Starter (~$7/mo) to avoid cold starts. Render provides automatic TLS and a stable URL.

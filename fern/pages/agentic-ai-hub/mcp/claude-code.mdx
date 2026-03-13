@@ -1,0 +1,41 @@
+---
+title: Claude Code CLI
+subtitle: Connect the Paradex MCP server to Claude Code in a few steps.
+---
+
+<Note>
+If you haven't installed Claude Code yet, run `npm install -g @anthropic-ai/claude-code` or see the [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code).
+</Note>
+
+<Steps>
+### Complete prerequisites
+
+Follow the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) guide to install Python, uvx, and get your Paradex private key.
+
+### Add the Paradex MCP server
+
+Run this command in your terminal:
+
+```bash
+claude mcp add paradex uvx mcp-paradex \
+  -e PARADEX_ENVIRONMENT=prod \
+  -e PARADEX_ACCOUNT_PRIVATE_KEY=your_private_key_here
+```
+
+Replace `your_private_key_here` with your actual key.
+
+### Confirm the server is registered
+
+```bash
+claude mcp list
+```
+
+### Verify it's working
+
+<Markdown src="../../../snippets/verify-connection.mdx" />
+
+To test trading access, ask:
+
+> "Show me my Paradex account summary."
+
+</Steps>

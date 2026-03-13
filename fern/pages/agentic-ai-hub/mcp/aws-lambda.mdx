@@ -1,0 +1,16 @@
+---
+title: AWS Lambda
+subtitle: Serverless deployment with no idle cost that scales automatically.
+---
+
+The repo ships `Dockerfile.aws` which bundles the [Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter) so no Lambda-specific code is needed.
+
+See the [AWS Lambda section in the README](https://github.com/tradeparadex/mcp-paradex-py#docker-aws-lambda--http) for the full walkthrough.
+
+Key differences vs. the other options:
+
+- Set `MCP_STATELESS=true` (required for Lambda, skip for all other options).
+- Use `Dockerfile.aws`, not `Dockerfile`.
+- Lambda Function URL invoke mode must be `RESPONSE_STREAM`.
+
+Once deployed, paste your Lambda Function URL into your AI client's MCP settings. See the [Remote MCP quickstart](/agentic-ai-hub/remote-mcp/quickstart#connect-your-ai-client) for client-specific instructions.

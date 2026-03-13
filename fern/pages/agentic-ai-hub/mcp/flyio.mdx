@@ -1,0 +1,73 @@
+---
+title: Fly.io
+subtitle: More setup than Railway or Render, but gives fine-grained control over region, scaling, and resources.
+---
+
+<Steps>
+### Install flyctl and log in
+
+```bash
+brew install flyctl   # macOS
+fly auth login
+```
+
+### Initialize the app
+
+From the repo root:
+
+```bash
+fly launch --no-deploy
+```
+
+Accept the generated `fly.toml`. Pick a region close to you.
+
+### Set your secrets
+
+```bash
+fly secrets set \
+  MCP_TRANSPORT=streamable-http \
+  MCP_PORT=8080 \
+  PARADEX_ENVIRONMENT=prod
+```
+
+### Configure and deploy
+
+Confirm the `[[services]]` block in `fly.toml` listens on port `8080` with health check path `/health`:
+
+```toml
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
+
+  [[services.tcp_checks]]
+    grace_period = "10s"
+    interval = "30s"
+    restart_limit = 0
+    timeout = "5s"
+
+  [[services.http_checks]]
+    interval = "10s"
+    grace_period = "5s"
+    method = "GET"
+    path = "/health"
+    protocol = "http"
+    timeout = "2s"
+```
+
+Then deploy:
+
+```bash
+fly deploy
+```
+
+Your endpoint will be `https://<app-name>.fly.dev/mcp`.
+
+### Connect your AI client
+
+Paste the URL into your AI client's MCP settings. See the [Remote MCP quickstart](/agentic-ai-hub/remote-mcp/quickstart#connect-your-ai-client) for client-specific instructions.
+
+</Steps>
+
+---
+
+Fly.io keeps one VM running by default (no cold starts). Use `fly scale count 0` to pause billing, `fly scale count 1` to resume. `fly logs` streams live logs.

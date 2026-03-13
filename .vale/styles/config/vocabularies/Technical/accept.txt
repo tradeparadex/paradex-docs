@@ -48,6 +48,7 @@ repo
 RWAs
 sandboxed
 Serverless
+Smithery
 Starkli
 subprocess
 STARKs

@@ -857,6 +857,18 @@ navigation:
           - page: Quickstart guide
             slug: quickstart
             path: ./pages/agentic-ai-hub/mcp/paradex-hosted-quickstart.mdx
+          - page: Claude.ai (Web)
+            icon: fa-solid fa-circle-caret-right
+            slug: claudeai
+            path: ./pages/agentic-ai-hub/mcp/paradex-hosted-claudeai.mdx
+          - page: ChatGPT Desktop
+            icon: fa-solid fa-circle-caret-right
+            slug: chatgpt
+            path: ./pages/agentic-ai-hub/mcp/paradex-hosted-chatgpt.mdx
+          - page: Smithery
+            icon: fa-solid fa-circle-caret-right
+            slug: smithery
+            path: ./pages/agentic-ai-hub/mcp/paradex-hosted-smithery.mdx
       - page: CLI
         slug: cli
         path: ./pages/agentic-ai-hub/cli.mdx

@@ -790,9 +790,10 @@ navigation:
             path: ./pages/agentic-ai-hub/mcp/quickstart.mdx
           - section: Local MCP Setup
             slug: ""
-            expanded: true
-            path: ./pages/agentic-ai-hub/mcp/getting-started.mdx
             contents:
+              - page: Local MCP Setup
+                slug: getting-started
+                path: ./pages/agentic-ai-hub/mcp/getting-started.mdx
               - page: Claude Desktop
                 slug: claude-desktop
                 path: ./pages/agentic-ai-hub/mcp/claude-desktop.mdx

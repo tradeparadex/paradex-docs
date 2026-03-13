@@ -50,6 +50,7 @@ STARKs
 unsubscription
 upgradeability
 URL
+uv
 uvx
 walkthrough
 webapp

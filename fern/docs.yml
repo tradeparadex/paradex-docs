@@ -869,6 +869,10 @@ navigation:
             icon: fa-solid fa-circle-caret-right
             slug: smithery
             path: ./pages/agentic-ai-hub/mcp/paradex-hosted-smithery.mdx
+          - page: Other Clients
+            icon: fa-solid fa-circle-caret-right
+            slug: other-clients
+            path: ./pages/agentic-ai-hub/mcp/paradex-hosted-other-clients.mdx
       - page: CLI
         slug: cli
         path: ./pages/agentic-ai-hub/cli.mdx

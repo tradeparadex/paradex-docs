@@ -1,0 +1,27 @@
+---
+title: Other Clients
+subtitle: Connect any MCP-compatible AI client to the Paradex-hosted MCP server.
+---
+
+<Warning>
+This setup does **not support trading** at the moment. Only public market data is available. For full API access including trading, use a [local setup](/agentic-ai-hub/mcp/quickstart).
+</Warning>
+
+Most clients that support remote MCP servers will accept the Paradex-hosted URL in their MCP or connector settings:
+
+```
+https://mcp.paradex.trade/mcp
+```
+
+Refer to your client's documentation for the exact location of the MCP server configuration.
+
+<Steps>
+### Add the server URL
+
+Open your AI client's MCP or connector settings and enter `https://mcp.paradex.trade/mcp`.
+
+### Verify it's working
+
+<Markdown src="../../../snippets/verify-connection.mdx" />
+
+</Steps>

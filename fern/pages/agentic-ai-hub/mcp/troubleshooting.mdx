@@ -1,0 +1,70 @@
+# Troubleshooting
+
+Common issues and fixes when connecting the Paradex MCP server to your AI client.
+
+<Accordion title="Tools not appearing / MCP not loading">
+
+- Make sure `uvx` is installed: `uvx --version`
+- Check that any config file has valid JSON (no trailing commas)
+- Restart your AI client after config changes
+- For Claude Desktop, check that the config file is at the correct path:
+  - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+  - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+- For VS Code, confirm the `.vscode/mcp.json` file is in your project root and reload the window (**Command Palette → Developer: Reload Window**)
+- For ChatGPT Desktop, confirm Developer Mode is enabled and that the connector URL ends with `/mcp`
+
+</Accordion>
+
+<Accordion title="uvx: command not found">
+
+Install `uv` (which includes `uvx`):
+
+```bash
+pip install uv
+# or on macOS:
+brew install uv
+```
+
+Then verify:
+
+```bash
+uvx --version
+```
+
+</Accordion>
+
+<Accordion title="Authentication errors">
+
+- Double-check your private key is correct and starts with `0x`
+- Verify `PARADEX_ENVIRONMENT` matches where your account was created (`prod` or `testnet`)
+- Make sure you're using the Paradex account private key (from **Settings → API Keys**), not your wallet's seed phrase
+
+</Accordion>
+
+<Accordion title="Server not appearing in Claude Code (claude mcp list)">
+
+- Make sure `uvx` is installed: `uvx --version`
+- Re-run the `claude mcp add` command
+- Check that the scope is correct (use `--scope user` for global access or `--scope project` for the current project)
+
+</Accordion>
+
+<Accordion title="ChatGPT Desktop: tunnel URL changes every session">
+
+On the free ngrok tier, the tunnel URL changes every restart. Update the connector URL in **Settings → Connectors** each session, or use a paid ngrok plan for a stable domain.
+
+</Accordion>
+
+<Accordion title="Want to test without a private key?">
+
+Market data tools work without any credentials. Just omit `PARADEX_ACCOUNT_PRIVATE_KEY` from the config. You can browse markets, view order books, and check funding rates — only trading actions require a key.
+
+</Accordion>
+
+<Accordion title="MCP server not loading (Claude.ai web / remote deployments)">
+
+- Check that the URL is correct and ends with `/mcp`
+- Try removing and re-adding the server in **Settings → Integrations**
+- For remote deployments, verify your server is running: `curl https://your-endpoint.example.com/health`
+
+</Accordion>

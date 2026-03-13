@@ -1,19 +1,16 @@
-# Cursor
+# Prerequisites
 
-<Tabs>
-<Tab title="Local MCP setup">
-
-Full API access including trading. Requires installing a few tools on your machine.
+Complete these steps before connecting your AI client. If you only need market data (no trading), you can skip the private key step and go straight to [Connect your client](/agentic-ai-hub/mcp/connect-your-client).
 
 <Steps>
-### Install prerequisites
+### Install Python and uvx
 
 Most steps require running commands in a terminal:
 
 - **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter.
 - **Windows:** Right-click the Windows Start icon and select **Terminal**.
 
-#### Install Python
+#### Python
 
 Python 3.10 or higher is required. Check your version:
 
@@ -23,7 +20,7 @@ python3 --version
 
 If the version is below 3.10 or the command is not found, install Python from [python.org/downloads](https://www.python.org/downloads/).
 
-#### Install uvx
+#### uvx
 
 `uvx` is a fast Python package runner used to download and start the MCP server automatically.
 
@@ -70,7 +67,7 @@ All trading features require a Paradex account private key. Market data tools wo
 
 1. Go to [Paradex](https://app.paradex.trade) and connect your wallet.
 2. Navigate to **Settings → API Keys** and create a new key.
-3. Copy the private key — you'll use it below.
+3. Copy the private key — you'll use it in the next step.
 
 <Warning>
 Your private key controls access to your trading account. Never share it publicly or commit it to version control. For more details, see [Authentication](/api/general-information/authentication).
@@ -80,69 +77,8 @@ Your private key controls access to your trading account. Never share it publicl
 **Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
 </Note>
 
-### Configure Cursor
+### Connect your client
 
-Open Cursor **Settings → MCP** and add:
-
-```json
-{
-  "paradex": {
-    "command": "uvx",
-    "args": ["mcp-paradex"],
-    "env": {
-      "PARADEX_ENVIRONMENT": "prod",
-      "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
-    }
-  }
-}
-```
-
-Replace `your_private_key_here` with your actual key.
-
-### Verify it's working
-
-Ask Cursor:
-
-> "What markets are available on Paradex?"
-
-If you get a list of trading pairs, you're all set. To test trading access:
-
-> "Show me my Paradex account summary."
+Head to [Connect your client](/agentic-ai-hub/mcp/connect-your-client) and follow the instructions for your AI client.
 
 </Steps>
-
-### Troubleshooting
-
-**Tools not appearing**
-- Make sure `uvx` is installed: `uvx --version`
-- Check that the config has valid JSON (no trailing commas)
-- Restart Cursor after config changes
-
-</Tab>
-<Tab title="Paradex-hosted MCP">
-
-Market data only. No installation needed.
-
-<Warning>
-This setup does **not support trading** at the moment. Only public market data is available.
-</Warning>
-
-<Steps>
-### Connect via Smithery
-
-1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
-2. Select the Paradex MCP server.
-3. Choose **Cursor** as your client.
-4. Follow the guided setup and click **Connect**.
-
-### Verify it's working
-
-Ask Cursor:
-
-> "What markets are available on Paradex?"
-
-If you get a list of trading pairs, you're connected.
-</Steps>
-
-</Tab>
-</Tabs>

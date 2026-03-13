@@ -10,53 +10,44 @@ Your setup choice depends on two things:
 <Steps>
 ### Pick your client
 
-Use the table below to see which setup paths are available for your client, then proceed to the next step.
+Use the table below to see which setup paths are available for your client, then pick your setup path.
 
-| Client | Local MCP setup (recommended) | Remote MCP deployment | Paradex-hosted MCP |
+| Client | Local MCP setup | Remote MCP deployment | Paradex-hosted MCP |
 |---|:---:|:---:|:---:|
-| [**Claude.ai**](/agentic-ai-hub/mcp/claudeai-web) (web) | — | ✅ | ✅ |
-| [**Claude Code CLI**](/agentic-ai-hub/mcp/claude-code) | ✅ | — | ✅ |
-| [**Claude Desktop**](/agentic-ai-hub/mcp/claude-desktop) (app) | ✅ | — | ✅ |
-| [**Cursor**](/agentic-ai-hub/mcp/cursor) | ✅ | — | ✅ |
-| [**OpenAI ChatGPT Desktop**](/agentic-ai-hub/mcp/chatgpt-desktop) (app) | ✅ | ✅ | ✅ |
-| [**OpenAI Codex CLI**](/agentic-ai-hub/mcp/codex-cli) | ✅ | — | ✅ |
-| [**VS Code (GitHub Copilot)**](/agentic-ai-hub/mcp/vscode) | ✅ | — | ✅ |
-| [**Windsurf**](/agentic-ai-hub/mcp/other-clients) | ✅ | — | ✅ |
-| [**Gemini CLI**](/agentic-ai-hub/mcp/other-clients) | ✅ | — | ✅ |
+| Claude.ai (web) | — | ✅ | ✅ |
+| Claude Code CLI | ✅ | — | ✅ |
+| Claude Desktop (app) | ✅ | — | ✅ |
+| Cursor | ✅ | — | ✅ |
+| OpenAI ChatGPT Desktop (app) | ✅ | ✅ | ✅ |
+| OpenAI Codex CLI | ✅ | — | ✅ |
+| VS Code (GitHub Copilot) | ✅ | — | ✅ |
+| Windsurf | ✅ | — | ✅ |
+| Gemini CLI | ✅ | — | ✅ |
 
 ### Pick your setup path
 
 <Tabs>
 <Tab title="Local MCP setup (recommended)">
 
-MCP server runs on your machine.
+MCP server runs on your machine. Full API support including trading.
 
-- Full API support including trading
-- Requires prerequisites (Python 3.10+, uvx) and a Paradex private key
-- Steps are included on each client page
-
-Click your client name in the table above to go to its setup page — each page includes prerequisites, private key setup, and configuration instructions.
+1. Complete the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) — install Python, uvx, and get your Paradex private key.
+2. Go to [Connect your client](/agentic-ai-hub/mcp/connect-your-client) and follow the instructions for your AI client.
 
 </Tab>
 <Tab title="Remote MCP deployment">
 
-You host your own MCP server on a cloud platform (Railway, Render, Fly.io, etc.) and connect your AI client to it via a URL.
+You host your own MCP server on a cloud platform (Railway, Render, Fly.io, etc.) and connect your AI client to it via a URL. Market data only — no trading support at the moment.
 
-- No trading support at the moment — market data only
-- Required for clients that cannot run local programs (such as Claude.ai web)
-- Also available for ChatGPT Desktop as an alternative to local setup
-
-Follow the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment) to deploy your server, then return to your client's page for instructions on how to connect it.
+1. Follow the [Remote Deployment guide](/agentic-ai-hub/mcp/remote-deployment) to deploy your server.
+2. Go to [Connect your client](/agentic-ai-hub/mcp/connect-your-client) and enter your endpoint URL.
 
 </Tab>
 <Tab title="Paradex-hosted MCP">
 
-The fastest way to get started. You connect your AI client directly to the Paradex-hosted MCP server — no installation, no cloud deployment.
+The fastest way to get started — no installation, no cloud deployment. Market data only — no trading support at the moment.
 
-- No trading support at the moment — market data only
-- Just add a URL to your client or use Smithery for guided setup
-
-Each client page includes a "Paradex-hosted MCP" tab with instructions. You can also see the [dedicated guide](/agentic-ai-hub/mcp/connect-to-paradex-mcp) for all options in one place.
+Follow the [Paradex-hosted MCP guide](/agentic-ai-hub/mcp/connect-to-paradex-mcp) to connect via URL or Smithery.
 
 </Tab>
 </Tabs>

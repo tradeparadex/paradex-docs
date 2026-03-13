@@ -788,11 +788,10 @@ navigation:
           - page: Quickstart Guide
             slug: quickstart
             path: ./pages/agentic-ai-hub/mcp/quickstart.mdx
-          - page: Getting Started
-            slug: getting-started
-            path: ./pages/agentic-ai-hub/mcp/getting-started.mdx
           - section: Local MCP Setup
             slug: ""
+            expanded: true
+            path: ./pages/agentic-ai-hub/mcp/getting-started.mdx
             contents:
               - page: Claude Desktop
                 slug: claude-desktop

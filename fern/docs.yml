@@ -775,8 +775,10 @@ navigation:
 
   - tab: agentic-ai-hub
     layout:
-      - page: Getting Started
-        path: ./pages/agentic-ai-hub/overview.mdx
+      - section: Getting Started
+        contents:
+          - page: Overview
+            path: ./pages/agentic-ai-hub/overview.mdx
       - section: MCP
         slug: mcp
         path: ./pages/agentic-ai-hub/mcp/overview.mdx
@@ -787,9 +789,33 @@ navigation:
           - page: Prerequisites
             slug: prerequisites
             path: ./pages/agentic-ai-hub/mcp/prerequisites.mdx
-          - page: Connect your client
-            slug: connect-your-client
-            path: ./pages/agentic-ai-hub/mcp/connect-your-client.mdx
+          - page: Claude.ai (web)
+            slug: claudeai-web
+            path: ./pages/agentic-ai-hub/mcp/claudeai-web.mdx
+          - page: Claude Code CLI
+            slug: claude-code
+            path: ./pages/agentic-ai-hub/mcp/claude-code.mdx
+          - page: Claude Desktop
+            slug: claude-desktop
+            path: ./pages/agentic-ai-hub/mcp/claude-desktop.mdx
+          - page: Cursor
+            slug: cursor
+            path: ./pages/agentic-ai-hub/mcp/cursor.mdx
+          - page: ChatGPT Desktop
+            slug: chatgpt-desktop
+            path: ./pages/agentic-ai-hub/mcp/chatgpt-desktop.mdx
+          - page: Codex CLI
+            slug: codex-cli
+            path: ./pages/agentic-ai-hub/mcp/codex-cli.mdx
+          - page: VS Code (GitHub Copilot)
+            slug: vscode
+            path: ./pages/agentic-ai-hub/mcp/vscode.mdx
+          - page: Windsurf
+            slug: windsurf
+            path: ./pages/agentic-ai-hub/mcp/windsurf.mdx
+          - page: Gemini CLI
+            slug: gemini-cli
+            path: ./pages/agentic-ai-hub/mcp/gemini-cli.mdx
           - page: Paradex-hosted MCP
             slug: connect-to-paradex-mcp
             path: ./pages/agentic-ai-hub/mcp/connect-to-paradex-mcp.mdx
@@ -1157,23 +1183,12 @@ redirects:
   - source: "/trading/api-best-practices"
     destination: "/api/general-information/api-best-practices"
 
-  # Redirects for consolidated MCP client pages
-  - source: "/agentic-ai-hub/mcp/claudeai-web"
-    destination: "/agentic-ai-hub/mcp/connect-your-client"
-  - source: "/agentic-ai-hub/mcp/claude-code"
-    destination: "/agentic-ai-hub/mcp/connect-your-client"
-  - source: "/agentic-ai-hub/mcp/claude-desktop"
-    destination: "/agentic-ai-hub/mcp/connect-your-client"
-  - source: "/agentic-ai-hub/mcp/cursor"
-    destination: "/agentic-ai-hub/mcp/connect-your-client"
-  - source: "/agentic-ai-hub/mcp/chatgpt-desktop"
-    destination: "/agentic-ai-hub/mcp/connect-your-client"
-  - source: "/agentic-ai-hub/mcp/codex-cli"
-    destination: "/agentic-ai-hub/mcp/connect-your-client"
-  - source: "/agentic-ai-hub/mcp/vscode"
-    destination: "/agentic-ai-hub/mcp/connect-your-client"
+  # Redirect old combined other-clients page to Windsurf
   - source: "/agentic-ai-hub/mcp/other-clients"
-    destination: "/agentic-ai-hub/mcp/connect-your-client"
+    destination: "/agentic-ai-hub/mcp/windsurf"
+  # Redirect old consolidated page to quickstart
+  - source: "/agentic-ai-hub/mcp/connect-your-client"
+    destination: "/agentic-ai-hub/mcp/quickstart"
 
 layout:
   header-height: 72px

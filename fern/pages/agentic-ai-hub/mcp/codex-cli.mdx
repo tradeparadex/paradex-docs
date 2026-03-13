@@ -1,0 +1,41 @@
+# Codex CLI
+
+Complete the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) first, then follow the steps below.
+
+<Note>
+If you haven't installed the OpenAI Codex CLI yet, run `npm install -g @openai/codex` or see [Codex CLI on GitHub](https://github.com/openai/codex).
+</Note>
+
+<Tabs>
+<Tab title="CLI command">
+```bash
+codex mcp add paradex -- uvx mcp-paradex
+```
+</Tab>
+<Tab title="Config file">
+Edit `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.paradex]
+command = "uvx"
+args = ["mcp-paradex"]
+env = { PARADEX_ENVIRONMENT = "prod", PARADEX_ACCOUNT_PRIVATE_KEY = "your_private_key_here" }
+```
+
+Replace `your_private_key_here` with your actual key.
+</Tab>
+</Tabs>
+
+The config is shared between the Codex CLI and the Codex VS Code extension — configure once and both clients pick it up.
+
+---
+
+## Verify it's working
+
+Ask your AI assistant:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're connected. To test trading access:
+
+> "Show me my Paradex account summary."

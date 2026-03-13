@@ -1,0 +1,94 @@
+# ChatGPT Desktop
+
+Complete the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) first, then follow the steps below.
+
+ChatGPT Desktop cannot run local programs directly, so you use ngrok to create a tunnel from your local MCP server to a public URL that ChatGPT can connect to.
+
+### Additional prerequisite: ngrok
+
+```bash
+brew install ngrok   # macOS
+# Or download from https://ngrok.com
+```
+
+### Configure
+
+1. Start the MCP server locally:
+
+   ```bash
+   MCP_TRANSPORT=streamable-http MCP_PORT=8080 \
+   PARADEX_ENVIRONMENT=prod \
+   PARADEX_ACCOUNT_PRIVATE_KEY=your_private_key_here \
+   uvx mcp-paradex
+   ```
+
+   Replace `your_private_key_here` with your actual key.
+
+2. Open a tunnel in a second terminal:
+
+   ```bash
+   ngrok http 8080
+   ```
+
+   Copy the `https://xxxx.ngrok-free.app` URL from the output.
+
+3. Connect in ChatGPT:
+   1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+   2. Go to **Settings → Connectors → Create**.
+   3. Paste `https://xxxx.ngrok-free.app/mcp`.
+   4. Click **I trust this provider**.
+
+<Note>
+**Limitation:** The tunnel URL changes every time you restart ngrok (free tier). Update the connector URL each session.
+</Note>
+
+---
+
+## OpenAI Agents SDK (for developers)
+
+For custom Python apps (not the ChatGPT interface). No remote hosting needed.
+
+```bash
+pip install openai-agents
+```
+
+```python
+import asyncio, os
+from agents import Agent, Runner
+from agents.mcp import MCPServerStdio
+
+async def main():
+    async with MCPServerStdio(
+        name="paradex",
+        params={
+            "command": "uvx",
+            "args": ["mcp-paradex"],
+            "env": {
+                **os.environ,
+                "PARADEX_ENVIRONMENT": "prod",
+                "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here",
+            },
+        },
+    ) as server:
+        agent = Agent(
+            name="Paradex Trader",
+            instructions="You are a trading assistant with access to Paradex.",
+            mcp_servers=[server],
+        )
+        result = await Runner.run(agent, "What are the top markets by volume?")
+        print(result.final_output)
+
+asyncio.run(main())
+```
+
+---
+
+## Verify it's working
+
+Ask your AI assistant:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're connected. To test trading access:
+
+> "Show me my Paradex account summary."

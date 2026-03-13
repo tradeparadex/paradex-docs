@@ -1,0 +1,154 @@
+# VS Code (GitHub Copilot)
+
+This page covers two independent setup options — choose one:
+
+- **A.** [**Local MCP Setup**](#a-local-mcp-setup) — Full API access including trading. Requires installing a few tools on your machine.
+- **B.** [**Paradex-hosted MCP**](#b-paradex-hosted-mcp) — Market data only. No installation needed.
+
+---
+
+## A. Local MCP Setup
+
+### Step 1 — Prerequisites
+
+Most steps require running commands in a terminal:
+
+- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter. You can also find it in **Applications → Utilities → Terminal**.
+- **Windows:** Right-click the Windows Start icon and select **Terminal**. Alternatively, search for "cmd", "PowerShell", or "Command Prompt" in the Start menu. Both PowerShell and Command Prompt will work for the commands in this guide.
+
+#### Install Python
+
+Python 3.10 or higher is required. Check your version in your terminal:
+
+```bash
+python3 --version
+```
+
+You should see something like `Python 3.12.4`. If the version is below 3.10 or the command is not found, install Python from [python.org/downloads](https://www.python.org/downloads/).
+
+#### Install uvx
+
+`uvx` is a fast Python package runner used to download and start the MCP server automatically.
+
+```bash
+pip install uv
+```
+
+On macOS you can also use Homebrew:
+
+```bash
+brew install uv
+```
+
+Verify the installation:
+
+```bash
+uvx --version
+```
+
+<details>
+<summary>Alternative: Run with Docker</summary>
+
+If you prefer not to install Python or uvx directly, you can run the MCP server inside a Docker container. Requires Docker.
+
+```bash
+git clone https://github.com/tradeparadex/mcp-paradex-py.git
+cd mcp-paradex-py
+docker build . -t mcp-paradex-py
+
+# Read-only mode (public market data only)
+docker run --rm -i mcp-paradex-py
+
+# With trading capabilities
+docker run --rm -e PARADEX_ACCOUNT_PRIVATE_KEY=your_key -i mcp-paradex-py
+```
+
+</details>
+
+---
+
+### Step 2 — Get Your Paradex Private Key
+
+All trading features require a Paradex account private key. Market data tools work without one — you can skip this step if you only need market data.
+
+1. Go to [Paradex](https://app.paradex.trade) and connect your wallet.
+2. Navigate to **Settings → API Keys** and create a new key.
+3. Copy the private key — you'll use it below.
+
+<Warning>
+Your private key controls access to your trading account. Never share it publicly or commit it to version control. For more details, see [Authentication](/api/general-information/authentication).
+</Warning>
+
+<Note>
+**Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
+</Note>
+
+---
+
+### Step 3 — Configure
+
+Create a `.vscode/mcp.json` file in the root of your project folder (create the `.vscode` folder if it doesn't exist):
+
+```json
+{
+  "servers": {
+    "paradex": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-paradex"],
+      "env": {
+        "PARADEX_ENVIRONMENT": "prod",
+        "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+      }
+    }
+  }
+}
+```
+
+Replace `your_private_key_here` with your actual key from Step 2.
+
+Reload VS Code. The tools will appear in Copilot Chat.
+
+---
+
+### Verify It's Working
+
+Ask Copilot Chat:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're all set. To test trading access:
+
+> "Show me my Paradex account summary."
+
+---
+
+### Troubleshooting
+
+**Tools not appearing in Copilot Chat**
+- Make sure `uvx` is installed: `uvx --version`
+- Confirm the `.vscode/mcp.json` file is in your project root
+- Reload VS Code (**Command Palette → Developer: Reload Window**)
+
+---
+
+## B. Paradex-hosted MCP
+
+<Warning>
+This setup does **not support trading** at the moment. Only public market data is available.
+</Warning>
+
+### Via Smithery
+
+1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+2. Select the Paradex MCP server.
+3. Choose **VS Code** as your client.
+4. Follow the guided setup and click **Connect**.
+
+### Verify It's Working
+
+Ask Copilot Chat:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're connected. Note that trading features are not available with this setup.

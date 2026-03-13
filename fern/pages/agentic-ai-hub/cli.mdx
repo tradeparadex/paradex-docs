@@ -1,0 +1,82 @@
+# CLI
+
+**Repository:** [github.com/tradeparadex/paradex-cli](https://github.com/tradeparadex/paradex-cli)
+
+A crypto DEX AI-native command-line interface for managing Paradex account contracts. Designed for both direct use and AI agent integration, the CLI provides full Paradex API access in a single binary.
+
+What the CLI supports:
+- Fetch live and historical market data
+- Manage trading accounts and vaults
+- Place, monitor, and cancel orders
+- Track positions, balances, and funding payments
+
+<Warning>
+Gigavault operations are not currently supported through the CLI. The CLI focuses on account contract management — guardians, signers, transaction signing, and emergency operations.
+</Warning>
+
+## Installation
+
+<CodeBlocks>
+<CodeBlock title="pip">
+```bash
+pip install paradex_cli
+```
+</CodeBlock>
+<CodeBlock title="Poetry">
+```bash
+poetry add paradex_cli
+```
+</CodeBlock>
+</CodeBlocks>
+
+## Commands
+
+All commands accept an `--env` flag to specify the target environment (`prod`, `testnet`, or `nightly`).
+
+### Account Management
+
+```bash
+# Print account information
+paradex_cli print-account-info ACCOUNT_ADDRESS --env ENVIRONMENT
+
+# Add a guardian
+paradex_cli add-guardian PUB_KEY --env ENVIRONMENT
+
+# Add a backup guardian
+paradex_cli add-guardian-backup PUB_KEY --env ENVIRONMENT
+
+# Change the account signer
+paradex_cli change-signer PUB_KEY --env ENVIRONMENT
+```
+
+### Transaction Signing & Submission
+
+```bash
+# Sign an invoke transaction
+paradex_cli sign-invoke-tx FILE_PATH --env ENVIRONMENT
+
+# Submit a signed invoke transaction
+paradex_cli submit-invoke-tx TX_FILE_PATH SIG_FILES --env ENVIRONMENT
+```
+
+### Emergency Operations
+
+```bash
+# Trigger guardian escape mechanism
+paradex_cli trigger-escape-guardian --env ENVIRONMENT
+```
+
+## AI Agent Integration
+
+AI assistants like Claude, Cursor, Codex, Copilot, Gemini, Goose, and OpenClaw can use CLI directly to interact with Paradex APIs — no separate server needed.
+
+## Try It
+
+Paste these prompts directly into your AI assistant:
+
+> "Use paradex_cli to check my open positions and summarize my current exposure across all markets."
+
+> "Fetch the last 24 hours of BTC and ETH funding rates using paradex_cli and tell me which position would have been more profitable to hold."
+
+> "Using paradex_cli on testnet, open a small BTC long, check my account margin, and explain the risk."
+

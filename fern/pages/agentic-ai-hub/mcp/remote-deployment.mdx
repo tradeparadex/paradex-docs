@@ -1,0 +1,247 @@
+# Remote MCP Deployment
+
+Some AI clients — like Claude.ai (web) and ChatGPT Desktop — cannot run local programs and need a public URL to connect to the MCP server.
+
+<Warning>
+Remote deployments do **not support trading** at the moment. Only public market data is available. Use a [local setup](/agentic-ai-hub/mcp/quickstart) for full API access including trading.
+</Warning>
+
+---
+
+## How It Works
+
+The server supports two transport modes controlled by `MCP_TRANSPORT`:
+
+| Mode | Value | Use case |
+|---|---|---|
+| stdio (default) | `stdio` | Claude Desktop, Claude Code, Cursor — runs as a local subprocess |
+| HTTP | `streamable-http` | ChatGPT Desktop, Claude.ai web, any remote client |
+
+In HTTP mode the server listens on `MCP_PORT` (default `3000`) and exposes:
+
+- `POST /mcp` — MCP protocol endpoint (what clients connect to)
+- `GET /health` — health check, returns `{"status": "ok"}`
+
+For more details, see the [deploy-http guide](https://github.com/tradeparadex/mcp-paradex-py/blob/main/docs/deploy-http.md) in the repository.
+
+---
+
+## Environment Variables
+
+| Variable | Description | Default |
+|---|---|---|
+| `MCP_TRANSPORT` | Set to `streamable-http` for remote deployment | `stdio` |
+| `MCP_PORT` | Port the HTTP server listens on | `3000` |
+| `PARADEX_ENVIRONMENT` | Target environment: `prod`, `testnet`, or `nightly` | `prod` |
+
+Most platforms let you set these as environment variables in their dashboard. If you've cloned the MCP server repository to build and deploy, you can also store them in a `.env` file at the repo root:
+
+```bash
+cp .env.template .env
+```
+
+Then edit `.env` with your values. The server loads this file automatically on startup.
+
+---
+
+## Platform Options
+
+| Option | Effort | Cost | Best for |
+|---|---|---|---|
+| [Railway](#railway) | Low | ~$5/mo | Quickest permanent setup |
+| [Render](#render) | Low | Free tier available | Low-traffic / evaluation |
+| [Fly.io](#flyio) | Medium | ~$2–5/mo | Global, low-latency |
+| [AWS Lambda](#aws-lambda) | Medium | Pay-per-request | Scalable, zero idle cost |
+| [Docker / VPS](#docker--vps) | High | Varies | Full control |
+
+All options produce an endpoint of the form `https://your-domain.example.com/mcp` that you paste into your AI client's MCP settings.
+
+---
+
+## Railway
+
+The quickest path to a permanent URL. Railway auto-detects the `Dockerfile` and handles TLS, routing, and restarts.
+
+1. Push your fork (or the upstream repo) to GitHub.
+
+2. Go to [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo** and select the repository.
+
+3. Railway detects the `Dockerfile` automatically. Open **Variables** and add:
+
+   | Key | Value |
+   |---|---|
+   | `MCP_TRANSPORT` | `streamable-http` |
+   | `MCP_PORT` | `8080` |
+   | `PARADEX_ENVIRONMENT` | `prod` |
+
+4. Open **Settings → Networking → Generate Domain**. Your endpoint will be `https://<project>.up.railway.app/mcp`.
+
+5. Paste that URL into your AI client's MCP settings.
+
+Railway keeps the server running continuously (no cold starts). Redeploys happen automatically when you push to the connected branch. The free tier has usage limits; the Hobby plan (~$5/mo) removes them.
+
+---
+
+## Render
+
+Similar to Railway. Free services spin down after 15 minutes of inactivity and have a cold start (~30 s) on the next request.
+
+1. Go to [render.com](https://render.com) → **New → Web Service**.
+
+2. Connect your GitHub repo. Render detects the `Dockerfile`.
+
+3. Set the following under **Environment**:
+
+   | Key | Value |
+   |---|---|
+   | `MCP_TRANSPORT` | `streamable-http` |
+   | `MCP_PORT` | `8080` |
+   | `PARADEX_ENVIRONMENT` | `prod` |
+
+4. Set **Health Check Path** to `/health`.
+
+5. Click **Create Web Service**. Your endpoint is `https://<service-name>.onrender.com/mcp`.
+
+Free tier sleeps after 15 min of inactivity — upgrade to Starter (~$7/mo) to avoid cold starts. Render provides automatic TLS and a stable URL.
+
+---
+
+## Fly.io
+
+More setup than Railway/Render but gives fine-grained control over region, scaling, and resources.
+
+1. Install `flyctl` and log in:
+
+   ```bash
+   brew install flyctl   # macOS
+   fly auth login
+   ```
+
+2. From the repo root:
+
+   ```bash
+   fly launch --no-deploy
+   ```
+
+   Accept the generated `fly.toml`. Pick a region close to you.
+
+3. Set your secrets:
+
+   ```bash
+   fly secrets set \
+     MCP_TRANSPORT=streamable-http \
+     MCP_PORT=8080 \
+     PARADEX_ENVIRONMENT=prod
+   ```
+
+4. Confirm the `[[services]]` block in `fly.toml` listens on port `8080` with health check path `/health`:
+
+   ```toml
+   [[services]]
+     internal_port = 8080
+     protocol = "tcp"
+
+     [[services.tcp_checks]]
+       grace_period = "10s"
+       interval = "30s"
+       restart_limit = 0
+       timeout = "5s"
+
+     [[services.http_checks]]
+       interval = "10s"
+       grace_period = "5s"
+       method = "GET"
+       path = "/health"
+       protocol = "http"
+       timeout = "2s"
+   ```
+
+   Then deploy:
+
+   ```bash
+   fly deploy
+   ```
+
+   Your endpoint will be `https://<app-name>.fly.dev/mcp`.
+
+Fly.io keeps one VM running by default (no cold starts). Use `fly scale count 0` to pause billing, `fly scale count 1` to resume. `fly logs` streams live logs.
+
+---
+
+## AWS Lambda
+
+Serverless — no idle cost, scales automatically. The repo ships `Dockerfile.aws` which bundles the [Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter) so no Lambda-specific code is needed.
+
+See the [AWS Lambda section in the README](https://github.com/tradeparadex/mcp-paradex-py#docker-aws-lambda--http) for the full walkthrough.
+
+Key differences vs. the other options:
+
+- Set `MCP_STATELESS=true` (required for Lambda, skip for all other options).
+- Use `Dockerfile.aws`, not `Dockerfile`.
+- Lambda Function URL invoke mode must be `RESPONSE_STREAM`.
+
+---
+
+## Docker / VPS
+
+Run on any machine that can serve HTTPS — a DigitalOcean Droplet, Hetzner VPS, etc.
+
+```bash
+# Build
+docker build . -t mcp-paradex-http
+
+# Run
+docker run -d \
+  --name mcp-paradex \
+  --restart unless-stopped \
+  -p 8080:8080 \
+  -e MCP_TRANSPORT=streamable-http \
+  -e MCP_PORT=8080 \
+  -e PARADEX_ENVIRONMENT=prod \
+  mcp-paradex-http
+```
+
+AI clients require `https://`. Use a reverse proxy like Caddy to add HTTPS (it handles certificates automatically):
+
+```
+your-domain.com {
+    reverse_proxy localhost:8080
+}
+```
+
+```bash
+caddy run --config /etc/caddy/Caddyfile
+```
+
+---
+
+## Verify Your Deployment
+
+Test your endpoint from the terminal (replace the URL with your actual deployment URL):
+
+```bash
+curl https://your-endpoint.example.com/health
+# Expected: {"status":"ok"}
+
+curl -X POST https://your-endpoint.example.com/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+# Expected: JSON list of available tools
+```
+
+---
+
+## Connect Your AI Client
+
+### Claude.ai (Web)
+
+1. Open [claude.ai](https://claude.ai) → **Settings → Integrations**.
+2. Click **Add MCP Server**.
+3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+
+### ChatGPT Desktop
+
+1. Open ChatGPT Desktop → **Settings → Advanced → Developer Mode** (enable if not already).
+2. Go to **Settings → Connectors → Create**.
+3. Enter your endpoint URL (e.g. `https://your-domain.example.com/mcp`).
+4. Click **I trust this provider**.

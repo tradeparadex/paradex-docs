@@ -1,0 +1,198 @@
+# Claude Desktop
+
+This page covers two independent setup options — choose one:
+
+- **A.** [**Local MCP Setup**](#a-local-mcp-setup) — Full API access including trading. Requires installing a few tools on your machine.
+- **B.** [**Paradex-hosted MCP**](#b-paradex-hosted-mcp) — Market data only. No installation needed, just add a URL.
+
+---
+
+## A. Local MCP Setup
+
+### Step 1 — Prerequisites
+
+Most steps require running commands in a terminal:
+
+- **macOS:** Open Terminal — press **Cmd + Space**, type "Terminal", and press Enter. You can also find it in **Applications → Utilities → Terminal**.
+- **Windows:** Right-click the Windows Start icon and select **Terminal**. Alternatively, search for "cmd", "PowerShell", or "Command Prompt" in the Start menu. Both PowerShell and Command Prompt will work for the commands in this guide.
+
+#### Install Python
+
+Python 3.10 or higher is required. Check your version in your terminal:
+
+```bash
+python3 --version
+```
+
+You should see something like `Python 3.12.4`. If the version is below 3.10 or the command is not found, install Python from [python.org/downloads](https://www.python.org/downloads/).
+
+#### Install uvx
+
+`uvx` is a fast Python package runner used to download and start the MCP server automatically.
+
+```bash
+pip install uv
+```
+
+On macOS you can also use Homebrew:
+
+```bash
+brew install uv
+```
+
+Verify the installation:
+
+```bash
+uvx --version
+```
+
+<details>
+<summary>Alternative: Run with Docker</summary>
+
+If you prefer not to install Python or uvx directly, you can run the MCP server inside a Docker container. Requires Docker.
+
+```bash
+git clone https://github.com/tradeparadex/mcp-paradex-py.git
+cd mcp-paradex-py
+docker build . -t mcp-paradex-py
+
+# Read-only mode (public market data only)
+docker run --rm -i mcp-paradex-py
+
+# With trading capabilities
+docker run --rm -e PARADEX_ACCOUNT_PRIVATE_KEY=your_key -i mcp-paradex-py
+```
+
+</details>
+
+---
+
+### Step 2 — Get Your Paradex Private Key
+
+All trading features require a Paradex account private key. Market data tools work without one — you can skip this step if you only need market data.
+
+1. Go to [Paradex](https://app.paradex.trade) and connect your wallet.
+2. Navigate to **Settings → API Keys** and create a new key.
+3. Copy the private key — you'll use it below.
+
+<Warning>
+Your private key controls access to your trading account. Never share it publicly or commit it to version control. For more details, see [Authentication](/api/general-information/authentication).
+</Warning>
+
+<Note>
+**Testnet first?** Use `PARADEX_ENVIRONMENT=testnet` and get test funds from the Paradex testnet faucet.
+</Note>
+
+---
+
+### Step 3 — Configure
+
+1. **Open the config file:**
+
+   Open Claude Desktop → **Settings → Developer → Edit Config**. This opens the config file path directly. Find and open `claude_desktop_config.json` with your text editor.
+
+   If the config file doesn't exist yet, create it at the appropriate path:
+
+   - <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",position:"relative"}}><span><strong>macOS</strong>: <code>&#126;/Library/Application Support/Claude/claude_desktop_config.json</code></span><details><summary style={{cursor:"pointer",color:"inherit",fontSize:"0.8rem",whiteSpace:"nowrap",marginLeft:"0.75rem",opacity:0.6}}>How to find it</summary><div style={{position:"absolute",left:0,top:"calc(100% + 6px)",background:"#0f172a",border:"1px solid #1e3a5f",borderRadius:"8px",padding:"1rem 1.25rem",zIndex:50,width:"100%",fontSize:"0.875rem"}}><p><strong>Option 1: "Go to Folder" (Fastest)</strong></p><ol><li>Open Finder</li><li>Press <strong>Command + Shift + G</strong></li><li>Paste <code>&#126;/Library/Application Support/Claude/</code> and press <strong>Enter</strong></li><li>Right-click <code>claude_desktop_config.json</code> &#8594; <strong>Open With &#8594; TextEdit</strong> (or VS Code)</li></ol><hr/><p><strong>Option 2: Terminal</strong></p><ol><li>Open Terminal (<strong>Cmd + Space</strong>, type &#34;Terminal&#34;)</li><li>Run: <code>open &#126;/Library/&#34;Application Support&#34;/Claude/claude_desktop_config.json</code></li><li>Or: <code>nano &#126;/Library/&#34;Application Support&#34;/Claude/claude_desktop_config.json</code></li></ol><hr/><p><strong>Option 3: Manual Navigation</strong> (Library is hidden)</p><ol><li>Open Finder &#8594; click <strong>Go</strong> menu at the top</li><li>Hold <strong>Option (&#8984;)</strong> &#8212; Library appears</li><li>Navigate to <strong>Application Support &#8594; Claude</strong></li></ol></div></details></div>
+
+   - <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",position:"relative"}}><span><strong>Windows</strong>: <code>%APPDATA%\Claude\claude_desktop_config.json</code></span><details><summary style={{cursor:"pointer",color:"inherit",fontSize:"0.8rem",whiteSpace:"nowrap",marginLeft:"0.75rem",opacity:0.6}}>How to find it</summary><div style={{position:"absolute",left:0,top:"calc(100% + 6px)",background:"#0f172a",border:"1px solid #1e3a5f",borderRadius:"8px",padding:"1rem 1.25rem",zIndex:50,width:"100%",fontSize:"0.875rem"}}><p><strong>Option 1: The &#34;Run&#34; Command (Fastest)</strong></p><ol><li>Press <strong>Windows Key + R</strong> to open the Run dialog</li><li>Paste: <code>%APPDATA%\Claude</code> and press <strong>Enter</strong></li><li>Right-click <code>claude_desktop_config.json</code> &#8594; <strong>Open with &#8594; Notepad</strong> (or VS Code)</li></ol><hr/><p><strong>Option 2: File Explorer Address Bar</strong></p><ol><li>Open any folder or press <strong>Windows Key + E</strong></li><li>Click the <strong>Address Bar</strong> at the top</li><li>Paste <code>%APPDATA%\Claude</code> and press <strong>Enter</strong></li><li>The JSON file will be there</li></ol><hr/><p><strong>Option 3: PowerShell or Command Prompt</strong></p><ol><li>Open PowerShell or Command Prompt (search &#34;cmd&#34; in Start menu)</li><li>Run: <code>notepad $env:AppData\Claude\claude_desktop_config.json</code></li><li>If the file doesn&#39;t exist yet, Notepad will ask to create it &#8212; click <strong>Yes</strong></li></ol></div></details></div>
+
+2. **Paste the following into the config file.** Replace `your_private_key_here` with your actual key from Step 2:
+
+   ```json
+   {
+     "mcpServers": {
+       "paradex": {
+         "command": "uvx",
+         "args": ["mcp-paradex"],
+         "env": {
+           "PARADEX_ENVIRONMENT": "prod",
+           "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+         }
+       }
+     }
+   }
+   ```
+
+3. **Restart Claude Desktop.** It will automatically download and start the MCP server via `uvx` — no separate install needed.
+
+---
+
+### Verify It's Working
+
+Click the **+** icon in the bottom-left of the chat input → **Connectors**. You should see **mcp paradex** listed with its toggle enabled.
+
+<img src="../../../assets/agentic-ai-hub/claude-desktop-connectors.png" alt="Claude Desktop Connectors panel showing mcp paradex enabled" style={{width:"100%",display:"block",marginTop:"0.75rem"}} />
+
+Then ask Claude:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're all set. To test trading access:
+
+> "Show me my Paradex account summary."
+
+---
+
+### Troubleshooting
+
+**Tools not appearing / MCP not loading**
+- Make sure `uvx` is installed: `uvx --version`
+- Check that the config file has valid JSON (no trailing commas)
+- Restart Claude Desktop after config changes
+
+**Authentication errors**
+- Double-check your private key is correct and starts with `0x`
+- Verify `PARADEX_ENVIRONMENT` matches where your account was created (`prod` or `testnet`)
+
+**`uvx: command not found`**
+```bash
+pip install uv
+# or on macOS:
+brew install uv
+```
+
+**Want to test without a private key first?** Market data tools work without any credentials. Just omit `PARADEX_ACCOUNT_PRIVATE_KEY` from the config.
+
+---
+
+## B. Paradex-hosted MCP
+
+<Warning>
+This setup does **not support trading** at the moment. Only public market data is available.
+</Warning>
+
+### Via URL
+
+1. Open Claude Desktop → **Settings → Integrations** (or **Settings → Connectors**).
+2. Add a new MCP server.
+3. Enter `https://mcp.paradex.trade/mcp`.
+
+### Via Smithery
+
+**Option A — Website:**
+
+1. Visit [smithery.ai](https://smithery.ai) and search for **Paradex**.
+2. Select the Paradex MCP server.
+3. Choose **Claude Desktop** as your client.
+4. Configure your settings and click **Connect**.
+
+**Option B — CLI:**
+
+Run this in your terminal:
+
+```bash
+npx -y @smithery/cli@latest mcp add @tradeparadex/mcp-paradex-py --client claude
+```
+
+You will be required to create an account or sign in to Smithery. Once signed in, a browser window opens with configuration settings — no fields are required, leave `paradexAccountPrivateKey` empty (trading is not supported in this mode). Click **Connect**.
+
+<img src="../../../assets/agentic-ai-hub/Smithery-setup.png" alt="Smithery Connect Paradex MCP Server dialog" style={{display:"block",marginTop:"0.75rem",maxWidth:"460px"}} />
+
+### Verify It's Working
+
+Ask Claude:
+
+> "What markets are available on Paradex?"
+
+If you get a list of trading pairs, you're connected. Note that trading features are not available with this setup.

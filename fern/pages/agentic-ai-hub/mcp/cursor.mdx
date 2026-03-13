@@ -3,7 +3,14 @@ title: Cursor
 subtitle: Complete the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) first, then follow the steps below.
 ---
 
-Open Cursor **Settings → MCP** and add:
+<Steps>
+### Open MCP settings
+
+Open Cursor **Settings → MCP**.
+
+### Add the Paradex MCP server
+
+Add the following configuration:
 
 ```json
 {
@@ -20,14 +27,12 @@ Open Cursor **Settings → MCP** and add:
 
 Replace `your_private_key_here` with your actual key.
 
----
+### Verify it's working
 
-## Verify it's working
+<Markdown src="../../../snippets/verify-connection.mdx" />
 
-Ask your AI assistant:
-
-> "What markets are available on Paradex?"
-
-If you get a list of trading pairs, you're connected. To test trading access:
+To test trading access, ask:
 
 > "Show me my Paradex account summary."
+
+</Steps>

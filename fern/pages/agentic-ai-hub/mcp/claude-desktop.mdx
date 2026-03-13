@@ -3,43 +3,48 @@ title: Claude Desktop
 subtitle: Complete the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) first, then follow the steps below.
 ---
 
-1. Open Claude Desktop → **Settings → Developer → Edit Config**. This opens the config file path directly. Find and open `claude_desktop_config.json` with your text editor.
+<Steps>
+### Open the config file
 
-   If the config file doesn't exist yet, create it at:
-   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+Open Claude Desktop → **Settings → Developer → Edit Config**. This opens the config file path directly. Find and open `claude_desktop_config.json` with your text editor.
 
-2. Paste the following into the config file. Replace `your_private_key_here` with your actual key:
+If the config file doesn't exist yet, create it at:
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
-   ```json
-   {
-     "mcpServers": {
-       "paradex": {
-         "command": "uvx",
-         "args": ["mcp-paradex"],
-         "env": {
-           "PARADEX_ENVIRONMENT": "prod",
-           "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
-         }
-       }
-     }
-   }
-   ```
+### Add the Paradex MCP server
 
-3. Restart Claude Desktop. It will automatically download and start the MCP server via `uvx`.
+Paste the following into the config file. Replace `your_private_key_here` with your actual key:
+
+```json
+{
+  "mcpServers": {
+    "paradex": {
+      "command": "uvx",
+      "args": ["mcp-paradex"],
+      "env": {
+        "PARADEX_ENVIRONMENT": "prod",
+        "PARADEX_ACCOUNT_PRIVATE_KEY": "your_private_key_here"
+      }
+    }
+  }
+}
+```
+
+### Restart Claude Desktop
+
+Claude Desktop will automatically download and start the MCP server via `uvx`.
 
 Click the **+** icon in the bottom-left of the chat input → **Connectors**. You should see **mcp paradex** listed with its toggle enabled.
 
 <img src="../../../assets/agentic-ai-hub/claude-desktop-connectors.png" alt="Claude Desktop Connectors panel showing mcp paradex enabled" style={{width:"100%",display:"block",marginTop:"0.75rem"}} />
 
----
+### Verify it's working
 
-## Verify it's working
+<Markdown src="../../../snippets/verify-connection.mdx" />
 
-Ask your AI assistant:
-
-> "What markets are available on Paradex?"
-
-If you get a list of trading pairs, you're connected. To test trading access:
+To test trading access, ask:
 
 > "Show me my Paradex account summary."
+
+</Steps>

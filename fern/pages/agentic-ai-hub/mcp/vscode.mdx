@@ -3,6 +3,9 @@ title: VS Code (GitHub Copilot)
 subtitle: Complete the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) first, then follow the steps below.
 ---
 
+<Steps>
+### Add the Paradex MCP server
+
 Create a `.vscode/mcp.json` file in the root of your project folder (create the `.vscode` folder if it doesn't exist):
 
 ```json
@@ -21,16 +24,18 @@ Create a `.vscode/mcp.json` file in the root of your project folder (create the 
 }
 ```
 
-Replace `your_private_key_here` with your actual key. Reload VS Code — the tools will appear in Copilot Chat.
+Replace `your_private_key_here` with your actual key.
 
----
+### Reload VS Code
 
-## Verify it's working
+Reload the window — the tools will appear in Copilot Chat.
 
-Ask your AI assistant:
+### Verify it's working
 
-> "What markets are available on Paradex?"
+<Markdown src="../../../snippets/verify-connection.mdx" />
 
-If you get a list of trading pairs, you're connected. To test trading access:
+To test trading access, ask:
 
 > "Show me my Paradex account summary."
+
+</Steps>

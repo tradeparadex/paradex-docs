@@ -7,6 +7,9 @@ subtitle: Complete the [Prerequisites](/agentic-ai-hub/mcp/prerequisites) first,
 If you haven't installed Claude Code yet, run `npm install -g @anthropic-ai/claude-code` or see the [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code).
 </Note>
 
+<Steps>
+### Add the Paradex MCP server
+
 Run this command in your terminal:
 
 ```bash
@@ -17,20 +20,18 @@ claude mcp add paradex uvx mcp-paradex \
 
 Replace `your_private_key_here` with your actual key.
 
-Check that the server is registered:
+### Confirm the server is registered
 
 ```bash
 claude mcp list
 ```
 
----
+### Verify it's working
 
-## Verify it's working
+<Markdown src="../../../snippets/verify-connection.mdx" />
 
-Ask your AI assistant:
-
-> "What markets are available on Paradex?"
-
-If you get a list of trading pairs, you're connected. To test trading access:
+To test trading access, ask:
 
 > "Show me my Paradex account summary."
+
+</Steps>

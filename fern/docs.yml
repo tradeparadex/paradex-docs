@@ -779,13 +779,13 @@ navigation:
         contents:
           - page: Overview
             path: ./pages/agentic-ai-hub/overview.mdx
-      - section: MCP
-        slug: mcp
-        path: ./pages/agentic-ai-hub/mcp/overview.mdx
-        contents:
           - page: Quickstart guide
             slug: quickstart
             path: ./pages/agentic-ai-hub/mcp/quickstart.mdx
+      - section: Local MCP
+        slug: mcp
+        path: ./pages/agentic-ai-hub/mcp/overview.mdx
+        contents:
           - page: Prerequisites
             slug: prerequisites
             path: ./pages/agentic-ai-hub/mcp/prerequisites.mdx
@@ -816,15 +816,17 @@ navigation:
           - page: Gemini CLI
             slug: gemini-cli
             path: ./pages/agentic-ai-hub/mcp/gemini-cli.mdx
+          - page: Troubleshooting
+            slug: troubleshooting
+            path: ./pages/agentic-ai-hub/mcp/troubleshooting.mdx
+      - section: Remote MCP
+        contents:
           - page: Paradex-hosted MCP
             slug: connect-to-paradex-mcp
             path: ./pages/agentic-ai-hub/mcp/connect-to-paradex-mcp.mdx
           - page: Remote MCP deployment
             slug: remote-deployment
             path: ./pages/agentic-ai-hub/mcp/remote-deployment.mdx
-          - page: Troubleshooting
-            slug: troubleshooting
-            path: ./pages/agentic-ai-hub/mcp/troubleshooting.mdx
       - page: CLI
         slug: cli
         path: ./pages/agentic-ai-hub/cli.mdx

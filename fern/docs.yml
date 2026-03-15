@@ -168,12 +168,6 @@ navigation:
           - page: Margin requirements
             slug: margin-requirements
             path: ./pages/dated-options/margin-requirements.mdx
-          - page: Fees
-            slug: fees
-            path: ./pages/dated-options/fees.mdx
-          - page: BTC options configuration
-            slug: btc-options-config
-            path: ./pages/dated-options/btc-options-config.mdx
       - section: Vaults
         contents:
           - page: Introduction
@@ -576,6 +570,11 @@ navigation:
             - page: DIME-USD
               slug: dime-usd
               path: ./pages/instruments-guide/spot/dime-usd.mdx
+        - section: Dated Options
+          contents:
+            - page: BTC-USD
+              slug: btc-usd
+              path: ./pages/instruments-guide/dated-options/btc-usd.mdx
   - tab: risk
     layout:
       - section: Getting Started

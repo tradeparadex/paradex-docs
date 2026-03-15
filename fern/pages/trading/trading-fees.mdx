@@ -14,6 +14,26 @@ Trading fees vary based on your [Trader Profile](/trading/trader-profiles). Reta
 
 <sub>Fees are calculated based on notional value.</sub>
 
+## Dated Options
+
+Dated Option fees are expressed as a percentage of the underlying notional. All trading fees are capped at **12.5% of the option premium**.
+
+### Orderbook
+
+| Profile | Maker | Taker |
+|---------|:-----:|:-----:|
+| Retail | 0% | 0% |
+| Pro | 0.01% | vs Pro: 0.02%, vs Retail: 0.005% |
+
+### Paradigm RFQ
+
+| | Fee |
+|--|:---:|
+| Maker | 0.01% |
+| Taker | 0% |
+
+<sub>Fees are calculated based on notional value.</sub>
+
 ## Settlement Fees
 
 When a market is delisted, a settlement fee is applied to close any positions still open in that market.
@@ -21,5 +41,6 @@ When a market is delisted, a settlement fee is applied to close any positions st
 |                          | Fee    |
 |--------------------------|:------:|
 | Spot and Perpetual Futures | 0.015% |
+| Dated Options | 0.01% |
 
 <sub>Fees are calculated based on notional value.</sub>

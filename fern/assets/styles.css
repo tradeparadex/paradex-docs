@@ -161,7 +161,6 @@ a.cyan-cards:hover {
   }
 
   .fern-layout-reference table {
-    display: block;
     overflow-x: auto;
     max-width: 100%;
   }
@@ -169,6 +168,11 @@ a.cyan-cards:hover {
   .fern-layout-reference pre {
     max-width: 100%;
     overflow-x: auto;
+  }
+
+  .fern-layout-reference img {
+    max-width: 100%;
+    height: auto;
   }
 }
 

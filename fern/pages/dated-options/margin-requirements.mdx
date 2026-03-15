@@ -1,0 +1,134 @@
+---
+title: Margin requirements
+---
+
+Paradex supports two margin modes for Dated Options: **Cross Margin** for all users and **Portfolio Margin** (currently in beta for whitelisted users).
+
+## Cross margin
+
+<Tabs>
+  <Tab title="Buying options">
+    $$
+    \text{Margin} = \min(\text{Option Mark Price},~\text{Long ITM Fraction} \times \text{Spot Price})
+    $$
+  </Tab>
+  <Tab title="Selling options">
+    $$
+    \text{Margin} = \max(\text{Short ITM Fraction} \times \text{Spot Price} - \text{OTM Amount},~\text{Short OTM Fraction} \times \text{Spot Price})
+    $$
+
+    where OTM Amount is:
+    - **Calls:** max(0, Strike Price - Spot Price)
+    - **Puts:** max(0, Spot Price - Strike Price)
+  </Tab>
+</Tabs>
+
+### Cross margin parameters
+
+| Parameter | IMR | MMR |
+|-----------|:---:|:---:|
+| Premium Multiplier | 100% | 50% |
+| Long ITM Fraction | 20% | 10% |
+| Short ITM Fraction | 15% | 7.5% |
+| Short OTM Fraction | 10% | 5% |
+| Short Put Cap | 50% | 25% |
+
+## Portfolio margin (beta)
+
+<Note>
+Portfolio Margin is currently in beta and only available to whitelisted users.
+</Note>
+
+Portfolio Margin evaluates risk at the portfolio level rather than per-position. The **Initial Margin Requirement (IMR)** is:
+
+$$
+\text{IMR} = \text{Net Portfolio Initial Margin Requirement} + \text{Fee Provision}
+$$
+
+where the Net Portfolio Initial Margin Requirement is the greater of **SCAN Risk** and **Minimum Delta Requirement**.
+
+The **Maintenance Margin Requirement (MMR)** is:
+
+$$
+\text{MMR} = 50\% \times \text{Net Portfolio Initial Margin Requirement} + \text{Fee Provision}
+$$
+
+### SCAN risk
+
+SCAN Risk stress-tests the portfolio across **24 scenarios** by shocking spot price and implied volatility simultaneously. The SCAN Risk equals the maximum weighted loss across all scenarios.
+
+Each scenario applies:
+
+$$
+\text{Shocked Spot} = \text{Spot Price} \times (1 + \text{Spot Shock})
+$$
+
+$$
+\text{Shocked IV} = \text{Mark IV} \times \bigg(1 + \text{Vol Shock} \times \Big(\frac{30}{\max(1, \text{DTE})}\Big)^{\text{Vega Power}}\bigg)
+$$
+
+where Vega Power is 30% if DTE < 30, or 13% if DTE >= 30.
+
+<Accordion title="Full scenario table">
+
+| Scenario | Spot shock | Vol shock | Weight |
+|:--------:|:----------:|:---------:|:------:|
+| 1 | +16% | +40% | 100% |
+| 2 | +12% | +40% | 100% |
+| 3 | +12% | -22% | 100% |
+| 4 | +8% | +40% | 100% |
+| 5 | +8% | -22% | 100% |
+| 6 | +4% | +40% | 100% |
+| 7 | +4% | -22% | 100% |
+| 8 | 0% | +40% | 100% |
+| 9 | 0% | -22% | 100% |
+| 10 | -4% | +40% | 100% |
+| 11 | -4% | -22% | 100% |
+| 12 | -8% | +40% | 100% |
+| 13 | -8% | -22% | 100% |
+| 14 | -12% | +40% | 100% |
+| 15 | -12% | -22% | 100% |
+| 16 | -16% | +40% | 100% |
+| 17 | -66% | +40% | 24% |
+| 18 | -33% | +40% | 48% |
+| 19 | +50% | +40% | 32% |
+| 20 | +100% | +40% | 16% |
+| 21 | +200% | +40% | 8% |
+| 22 | +300% | +40% | 5.33% |
+| 23 | +400% | +40% | 4% |
+| 24 | +500% | +40% | 3.20% |
+
+</Accordion>
+
+### Minimum delta requirement
+
+The Minimum Delta Requirement charges based on the portfolio's net and hedged delta exposure:
+
+$$
+\text{Min Delta Risk} = (2\% \times |\text{Net Delta}| + 1\% \times \text{Hedged Delta}) \times \text{Spot Price}
+$$
+
+where:
+
+$$
+\text{Hedged Delta} = \frac{\text{Gross Delta} - |\text{Net Delta}|}{2}
+$$
+
+<Accordion title="Example calculation">
+
+**Portfolio:**
+- Long 1 BTC-USD-PERP (delta = +1)
+- Short 5 BTC 70k Calls (delta = +0.3 each)
+
+**Calculations:**
+- Net Delta = +1 - 5(0.3) = -0.5
+- Gross Delta = 1 + 5(0.3) = 2.5
+- Hedged Delta = (2.5 - 0.5) / 2 = 1.0
+
+With BTC Spot = $70,000:
+
+$$
+\text{Min Delta Risk} = (2\% \times 0.5 + 1\% \times 1.0) \times 70{,}000 = \$1{,}400
+$$
+
+</Accordion>

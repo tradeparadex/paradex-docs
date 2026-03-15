@@ -1,0 +1,25 @@
+---
+title: Mark price
+---
+
+Dated Option pricing and risk metrics are computed using the **Black-Scholes model**. The mark price depends on three dynamic inputs:
+
+1. **Spot Oracle Price** - the current underlying price from the Paradex oracle
+2. **Mark Implied Volatility (Mark IV)** - derived from the Mark Variance
+3. **Risk-free interest rate** - derived from SOFR and US Treasury rates
+
+## Mark Implied Volatility
+
+Mark IV is derived from the Mark Variance, which blends internal market data with external reference data from Deribit:
+
+$$
+\text{Mark IV} = \sqrt{\text{Mark Variance}}
+$$
+
+where:
+
+$$
+\small\text{Mark Variance} = \text{Median}\big(\text{Median}(\text{Ask Variance EWMA},~\text{Bid Variance EWMA},~\text{Last Trade Variance EWMA}),\\ \text{Mid Variance EWMA},\\ \text{External Variance EWMA}\big)
+$$
+
+Internal variance values are derived from bid, ask, last trade, and mid prices. External variance inputs are calibrated to reference data from Deribit.

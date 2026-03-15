@@ -1,0 +1,41 @@
+---
+title: Dated Options overview
+description: European-style options on Paradex with fixed expiration dates, settled in USDC.
+---
+
+Dated Options are European-style options with fixed expiration dates. Unlike [Perpetual Options](/trading/perpetual-options/intro), which never expire and use continuous funding, Dated Options have a defined expiry and premium paid upfront.
+
+<CardGroup cols={3}>
+  <Card title="European exercise" icon="fa-solid fa-calendar-check">
+    <p class="text-sm">Options can only be exercised at expiration, not before</p>
+  </Card>
+  <Card title="USDC settled" icon="fa-solid fa-coins">
+    <p class="text-sm">All settlement is cash-settled in USDC based on the settlement price at expiry</p>
+  </Card>
+  <Card title="Multiple expiries" icon="fa-solid fa-clock">
+    <p class="text-sm">Choose from daily, weekly, and monthly expiration cycles</p>
+  </Card>
+</CardGroup>
+
+## Settlement
+
+All Dated Options settle at **08:00 UTC** on their expiration date.
+
+The settlement price is determined by a **30-minute TWAP** (time-weighted average price) of the Paradex Spot Oracle Price ending at expiry. The payoff at settlement is:
+
+- **Call:** max(0, Settlement Price - Strike Price)
+- **Put:** max(0, Strike Price - Settlement Price)
+
+<Note>
+The delta of options gradually decays toward 0 during the 30-minute TWAP settlement period. As the TWAP forms, part of the settlement price becomes fixed, making the option progressively less sensitive to spot price movements.
+</Note>
+
+## Symbol format
+
+Dated Option symbols follow the format:
+
+```
+BTC-USD-{Expiry}-{Strike}-{Type}
+```
+
+For example, `BTC-USD-25FEB26-70000-C` represents a BTC call option with a $70,000 strike expiring on February 25, 2026.

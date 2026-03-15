@@ -570,10 +570,10 @@ navigation:
             - page: DIME-USD
               slug: dime-usd
               path: ./pages/instruments-guide/spot/dime-usd.mdx
-        - section: Dated Options
+        - section: Options
           contents:
-            - page: BTC-USD
-              slug: btc-usd
+            - page: BTC Options
+              slug: btc-options
               path: ./pages/instruments-guide/dated-options/btc-usd.mdx
   - tab: risk
     layout:

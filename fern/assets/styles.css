@@ -135,6 +135,43 @@ a.cyan-cards:hover {
   margin: 0 auto;
 }
 
+/* Mobile responsiveness for layout: reference pages */
+@media (max-width: 768px) {
+  .fern-layout-reference {
+    padding-left: var(--page-padding, 1rem) !important;
+    padding-right: var(--page-padding, 1rem) !important;
+    overflow-x: hidden;
+  }
+
+  .fern-layout-reference > article {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0;
+  }
+
+  .fern-layout-reference-content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  .fern-layout-reference-content > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .fern-layout-reference table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  .fern-layout-reference pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
 /* Hide "Copy page", "Was this page helpful", and "Edit this page" on Home page.
    The home page MDX includes a hidden #home-page-marker div. We use :has() to detect it. */
 body:has(#home-page-marker) .fern-page-actions,

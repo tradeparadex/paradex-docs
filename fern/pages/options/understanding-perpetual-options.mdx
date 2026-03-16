@@ -30,7 +30,7 @@ The mark price of a Perpetual Option depends on 6 major inputs:
     <p class="text-sm">Derived from Paradex Futures Funding Rate</p>
   </Card>
   <Card title="Funding Period" icon="fa-solid fa-clock">
-    <p class="text-sm">Set at 24 hours for continuous funding</p>
+    <p class="text-sm">Set at 5 days for continuous funding</p>
   </Card>
 </CardGroup>
 
@@ -80,7 +80,7 @@ For a BTC-USD-104000-C with:
 - Time Value: $500
 
 If Dave buys 5 contracts and holds for 8 hours with unchanged prices:
-- Funding PnL = -5 × ($500 / 5) * 8/24 = -$166.67
+- Funding PnL = -5 × ($500 / 5) * 8/(24*5) = -$33.33
 
 Funding accrues continuously as unrealized PnL and is realized whenever the position is updated.
 

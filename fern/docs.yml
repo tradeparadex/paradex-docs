@@ -115,9 +115,6 @@ navigation:
       - page: FastFill
         slug: fastfill
         path: ./pages/trading/fastfill.mdx
-      - page: Portfolio Margin
-        slug: portfolio-margin
-        path: ./pages/trading/portfolio-margin.mdx
       - section: Spot Trading
         contents:
           - page: Supported Order Types
@@ -601,6 +598,9 @@ navigation:
       - page: Cross Margin Requirement
         slug: cross-margin-requirement
         path: ./pages/risk-system/cross-margin-requirement.mdx
+      - page: Portfolio Margin
+        slug: portfolio-margin
+        path: ./pages/risk-system/portfolio-margin.mdx
       - page: Price Bands
         slug: price-bands
         path: ./pages/risk-system/price-bands.mdx

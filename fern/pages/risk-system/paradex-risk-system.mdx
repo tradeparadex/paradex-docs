@@ -52,9 +52,9 @@ All margin checks follow a simple comparison formula:
 Account Value ≥ Margin Requirement
 ```
 
-| Component | Cross Margin | Isolated Margin |
-|-----------|--------------|-----------------|
-| **Account Value** | Sum of<br/>• USD Collateral (USDC balance)<br/>• Unrealized PnL from all positions<br/>• Benefits from PnL offsetting across positions | Position Value only |
-| **Margin Requirement** | Based on<br/>• All open positions<br/>• Exchange-level parameters<br/>• [Cross Margin Requirement](cross-margin-requirement) methodology | Based on<br/>• Individual position only<br/>• Exchange-level parameters |
+| Component | Cross Margin | Isolated Margin | Portfolio Margin |
+|-----------|--------------|-----------------|------------------|
+| **Account Value** | Sum of<br/>• USD Collateral (USDC balance)<br/>• Unrealized PnL from all positions<br/>• Benefits from PnL offsetting across positions | Position Value only | Sum of<br/>• USD Collateral (USDC balance)<br/>• Unrealized PnL from all positions |
+| **Margin Requirement** | Based on<br/>• All open positions<br/>• Exchange-level parameters<br/>• [Cross Margin Requirement](cross-margin-requirement) methodology | Based on<br/>• Individual position only<br/>• Exchange-level parameters | Based on<br/>• Portfolio-level risk evaluation<br/>• SCAN risk scenarios<br/>• [Portfolio Margin](portfolio-margin) methodology |
 
 For detailed calculations of Account Value and related risk metrics, see the [Margin Term Reference](margin-term-reference).

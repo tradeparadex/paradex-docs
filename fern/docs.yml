@@ -115,6 +115,9 @@ navigation:
       - page: FastFill
         slug: fastfill
         path: ./pages/trading/fastfill.mdx
+      - page: Real world assets (RWA)
+        slug: real-world-assets
+        path: ./pages/trading/real-world-assets.mdx
       - section: Spot Trading
         contents:
           - page: Supported Order Types

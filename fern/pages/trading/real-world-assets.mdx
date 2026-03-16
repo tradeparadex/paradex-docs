@@ -1,0 +1,59 @@
+---
+title: Real world assets (RWA)
+subtitle: Oracle pricing methodology for real world asset markets on Paradex
+---
+
+The Spot Oracle Price for RWA assets is calculated as a weighted median of prices from different sources. The weight assigned to each source is proportional to its score relative to the total score of all available feeds.
+
+Paradex currently supports precious metals assets. More RWA asset classes will be introduced soon.
+
+## Market hours
+
+Precious metals markets are open 23/5, from Sunday 6:00 PM ET to Friday 5:00 PM ET, with a daily maintenance break from 5:00 PM to 6:00 PM ET.
+
+## Source scores
+
+Source scores determine their contribution to the weighted median.
+
+| Source | Score | Availability |
+|--------|:-----:|:------------:|
+| Pyth | 3 | Open hours |
+| Stork | 2 | Open hours |
+| Binance | 1 | Open hours |
+| Hyperliquid | 1 | 24/7 |
+| OKX | 1 | 24/7 |
+| Lighter | 0.7 | 24/7 |
+| Closing Price | 0.5 | Closing hours |
+| Internal Price | 0.5 | Closing hours |
+
+Where:
+
+- **Closing Price** is equal to the oracle price at the market closing time.
+- **Internal Price** is the EMA of the Mark Price with a 1-hour half-life. At the start of the closing period, the Internal Price is initialized to the Closing Price.
+
+## Weights during open hours
+
+During open hours, only sources available during open hours contribute to the weighted median.
+
+| Source | Score | Weight |
+|--------|:-----:|:------:|
+| Pyth | 3 | 34.5% |
+| Stork | 2 | 23.0% |
+| Binance | 1 | 11.5% |
+| Hyperliquid | 1 | 11.5% |
+| OKX | 1 | 11.5% |
+| Lighter | 0.7 | 8.0% |
+| **Total** | **8.7** | **100%** |
+
+## Weights during closing hours
+
+During closing hours, only 24/7 sources and closing-specific sources contribute.
+
+| Source | Score | Weight |
+|--------|:-----:|:------:|
+| Hyperliquid | 1 | 27.03% |
+| OKX | 1 | 27.03% |
+| Lighter | 0.7 | 18.92% |
+| Closing Price | 0.5 | 13.51% |
+| Internal Price | 0.5 | 13.51% |
+| **Total** | **3.7** | **100%** |

@@ -116,7 +116,7 @@ navigation:
         slug: fastfill
         path: ./pages/trading/fastfill.mdx
       - page: Real World Assets (RWA)
-        slug: real-world-assets
+        slug: rwa
         path: ./pages/trading/real-world-assets.mdx
       - section: Spot Trading
         contents:

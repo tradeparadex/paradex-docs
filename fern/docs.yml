@@ -115,6 +115,9 @@ navigation:
       - page: FastFill
         slug: fastfill
         path: ./pages/trading/fastfill.mdx
+      - page: Portfolio Margin
+        slug: portfolio-margin
+        path: ./pages/trading/portfolio-margin.mdx
       - section: Spot Trading
         contents:
           - page: Supported Order Types
@@ -168,9 +171,6 @@ navigation:
           - page: Margin requirements
             slug: margin-requirements
             path: ./pages/dated-options/margin-requirements.mdx
-      - page: Portfolio margin
-        slug: portfolio-margin
-        path: ./pages/trading/portfolio-margin.mdx
       - section: Vaults
         contents:
           - page: Introduction

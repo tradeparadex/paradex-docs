@@ -129,30 +129,6 @@ navigation:
           - page: Naming Convention
             slug: naming-convention
             path: ./pages/trading/spot-trading/naming-convention.mdx
-      - section: Perpetual Options
-        slug: perpetual-options
-        contents:
-          - page: Introduction
-            slug: intro
-            path: ./pages/options/intro.mdx
-          - page: Understanding Perpetual Options
-            slug: understanding-perpetual-options
-            path: ./pages/options/understanding-perpetual-options.mdx
-          - page: Margin Requirements
-            slug: margin-requirements
-            path: ./pages/options/margin-requirements.mdx
-          - page: Pricing
-            slug: pricing
-            path: ./pages/options/pricing.mdx
-          - page: Mark Implied Volatility
-            slug: mark-iv
-            path: ./pages/options/mark-iv.mdx
-          - page: Trade Examples
-            slug: trade-examples
-            path: ./pages/options/trade-examples.mdx
-          - page: Automatic Options Listing
-            slug: automatic-options-listing
-            path: ./pages/options/automatic-options-listing.mdx
       - section: Dated Options
         slug: dated-options
         contents:
@@ -1195,8 +1171,6 @@ redirects:
   # Legacy /documentation/ prefix redirects
   - source: "/documentation/getting-started/architecture-overview/wallet-integration"
     destination: "/trading/accounts/wallet-integration"
-  - source: "/documentation/perpetual-options/:slug*"
-    destination: "/trading/perpetual-options/:slug*"
   - source: "/documentation/vaults/:slug*"
     destination: "/trading/vaults/:slug*"
   - source: "/documentation/instruments-guide/:slug*"
@@ -1209,8 +1183,6 @@ redirects:
     destination: "/trading/receive-window"
   - source: "/documentation/points-referrals/:slug*"
     destination: "/docs/xp-referrals/:slug*"
-  - source: "/documentation/trading/perpetual-options/trading-fees"
-    destination: "/trading/trading-fees"
   - source: "/documentation/:slug*"
     destination: "/docs/:slug*"
 

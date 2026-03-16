@@ -153,6 +153,21 @@ navigation:
           - page: Automatic Options Listing
             slug: automatic-options-listing
             path: ./pages/options/automatic-options-listing.mdx
+      - section: Dated Options
+        slug: dated-options
+        contents:
+          - page: Overview
+            slug: overview
+            path: ./pages/dated-options/overview.mdx
+          - page: Expiries and listing schedule
+            slug: expiries-and-listing
+            path: ./pages/dated-options/expiries-and-listing.mdx
+          - page: Mark price
+            slug: mark-price
+            path: ./pages/dated-options/mark-price.mdx
+          - page: Margin requirements
+            slug: margin-requirements
+            path: ./pages/dated-options/margin-requirements.mdx
       - section: Vaults
         contents:
           - page: Introduction
@@ -555,6 +570,11 @@ navigation:
             - page: DIME-USD
               slug: dime-usd
               path: ./pages/instruments-guide/spot/dime-usd.mdx
+        - section: Options
+          contents:
+            - page: BTC Options
+              slug: btc-options
+              path: ./pages/instruments-guide/dated-options/btc-usd.mdx
   - tab: risk
     layout:
       - section: Getting Started
@@ -578,6 +598,9 @@ navigation:
       - page: Cross Margin Requirement
         slug: cross-margin-requirement
         path: ./pages/risk-system/cross-margin-requirement.mdx
+      - page: Portfolio Margin
+        slug: portfolio-margin
+        path: ./pages/risk-system/portfolio-margin.mdx
       - page: Price Bands
         slug: price-bands
         path: ./pages/risk-system/price-bands.mdx

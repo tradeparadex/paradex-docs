@@ -1,0 +1,34 @@
+---
+title: Margin requirements
+---
+
+Paradex supports two margin modes for Dated Options: **Cross Margin** for all users and **[Portfolio Margin](/risk/portfolio-margin)** (currently in beta for whitelisted users).
+
+## Cross margin
+
+<Tabs>
+  <Tab title="Buying options">
+    $$
+    \text{Margin} = \min(\text{Option Mark Price},~\text{Long ITM Fraction} \times \text{Spot Price})
+    $$
+  </Tab>
+  <Tab title="Selling options">
+    $$
+    \text{Margin} = \max(\text{Short ITM Fraction} \times \text{Spot Price} - \text{OTM Amount},~\text{Short OTM Fraction} \times \text{Spot Price})
+    $$
+
+    where OTM Amount is:
+    - **Calls:** max(0, Strike Price - Spot Price)
+    - **Puts:** max(0, Spot Price - Strike Price)
+  </Tab>
+</Tabs>
+
+### Cross margin parameters
+
+| Parameter | IMR | MMR |
+|-----------|:---:|:---:|
+| Premium Multiplier | 100% | 50% |
+| Long ITM Fraction | 20% | 10% |
+| Short ITM Fraction | 15% | 7.5% |
+| Short OTM Fraction | 10% | 5% |
+| Short Put Cap | 50% | 25% |

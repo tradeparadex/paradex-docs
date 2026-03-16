@@ -1,0 +1,55 @@
+---
+title: Expiries and listing schedule
+---
+
+## Available expiries
+
+Paradex lists Dated Options across three expiry cycles:
+
+| Cycle | Contracts listed | Expiry day |
+|-------|-----------------|------------|
+| Daily | 1, 2, 3 days out | Daily at 08:00 UTC |
+| Weekly | 1, 2, 3 weeks out | Friday at 08:00 UTC |
+| Monthly | 1, 2, 3 months out | Last Friday of the month at 08:00 UTC |
+
+## Listing schedule
+
+New contracts are listed automatically on the following schedule:
+
+<Tabs>
+  <Tab title="Daily">
+    Listed every day at **04:00 UTC**.
+  </Tab>
+  <Tab title="Weekly">
+    Listed every **Friday at 04:00 UTC**:
+    - 1-week expiry (~7 days to expiry)
+    - 2-week expiry (~14 days to expiry)
+  </Tab>
+  <Tab title="Monthly">
+    Listed on the **last Thursday of each month** at 04:00 UTC.
+
+    These options expire on the last Friday of the following month.
+  </Tab>
+</Tabs>
+
+## Strike listing
+
+Strikes are dynamically classified based on call delta:
+
+| Moneyness | Call delta range |
+|-----------|----------------|
+| ATM | 0.40 - 0.60 |
+| Outer | 0.20 - 0.40 and 0.60 - 0.80 |
+| Wings | < 0.20 or > 0.80 |
+
+Strikes are automatically listed for deltas between **0.10 and 0.90**, and the listing process runs every **8 hours** at 00:00, 08:00, and 16:00 UTC.
+
+### Strike step sizes
+
+Each moneyness bucket uses a different step size for BTC:
+
+| Moneyness | BTC |
+|-----------|-----|
+| ATM | $500 |
+| Outer | $1,000 |
+| Wings | $5,000 |

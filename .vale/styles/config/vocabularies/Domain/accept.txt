@@ -12,6 +12,7 @@ crypto
 cryptocurrencies
 delisted
 Deribit
+expiries
 Ethereum
 Gigavault
 GitHub

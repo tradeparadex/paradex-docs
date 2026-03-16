@@ -100,24 +100,24 @@ navigation:
           - page: Overview
             slug: overview
             path: ./pages/trading/overview.mdx
-      - page: Privacy Perps
-        slug: privacy
-        path: ./pages/trading/privacy.mdx
-      - page: Trading Fees
-        slug: trading-fees
-        path: ./pages/trading/trading-fees.mdx
-      - page: Trader Profiles
-        slug: trader-profiles
-        path: ./pages/trading/trader-profiles.mdx
-      - page: Retail Price Improvement
-        slug: rpi
-        path: ./pages/trading/rpi.mdx
-      - page: FastFill
-        slug: fastfill
-        path: ./pages/trading/fastfill.mdx
-      - page: Real world assets (RWA)
-        slug: real-world-assets
-        path: ./pages/trading/real-world-assets.mdx
+      - section: Trading features
+        slug: ""
+        contents:
+          - page: Trading Fees
+            slug: trading-fees
+            path: ./pages/trading/trading-fees.mdx
+          - page: Trader Profiles
+            slug: trader-profiles
+            path: ./pages/trading/trader-profiles.mdx
+          - page: Privacy Perps
+            slug: privacy
+            path: ./pages/trading/privacy.mdx
+          - page: Retail Price Improvement
+            slug: rpi
+            path: ./pages/trading/rpi.mdx
+          - page: FastFill
+            slug: fastfill
+            path: ./pages/trading/fastfill.mdx
       - section: Spot Trading
         contents:
           - page: Supported Order Types
@@ -171,6 +171,9 @@ navigation:
           - page: Margin requirements
             slug: margin-requirements
             path: ./pages/dated-options/margin-requirements.mdx
+      - page: Real World Assets (RWA)
+        slug: real-world-assets
+        path: ./pages/trading/real-world-assets.mdx
       - section: Vaults
         contents:
           - page: Introduction
@@ -232,21 +235,18 @@ navigation:
           - page: How to Change Max Slippage
             slug: slippage
             path: ./pages/trading/slippage.mdx
-      - page: Maintenance & Releases
-        slug: maintenance-mode
-        path: ./pages/trading/maintenance-mode.mdx
-      - page: Margin Calculator
-        slug: margin-calculator
-        path: ./pages/trading/margin-calculator.mdx
-      - page: Testnet FAQs
-        slug: testnet-faqs
-        path: ./pages/trading/testnet.mdx
-      - page: Self Trade Prevention
-        slug: self-trade-prevention
-        path: ./pages/advanced-trading-features/self-trade-prevention.mdx
-      - page: Receive Window
-        slug: receive-window
-        path: ./pages/advanced-trading-features/receive-window.mdx
+      - section: Advanced trading
+        slug: ""
+        contents:
+          - page: Self Trade Prevention
+            slug: self-trade-prevention
+            path: ./pages/advanced-trading-features/self-trade-prevention.mdx
+          - page: Receive Window
+            slug: receive-window
+            path: ./pages/advanced-trading-features/receive-window.mdx
+          - page: Margin Calculator
+            slug: margin-calculator
+            path: ./pages/trading/margin-calculator.mdx
       - section: Accounts
         contents:
           - page: Wallet Overview
@@ -275,9 +275,18 @@ navigation:
           - page: Transfers
             slug: transfers
             path: ./pages/accounts/transfers.mdx
-      - page: Mobile Access Guide
-        slug: mobile-access-guide
-        path: ./pages/trading/mobile-access-guide.mdx
+      - section: Resources
+        slug: ""
+        contents:
+          - page: Mobile Access Guide
+            slug: mobile-access-guide
+            path: ./pages/trading/mobile-access-guide.mdx
+          - page: Maintenance & Releases
+            slug: maintenance-mode
+            path: ./pages/trading/maintenance-mode.mdx
+          - page: Testnet FAQs
+            slug: testnet-faqs
+            path: ./pages/trading/testnet.mdx
       - section: Instruments Guide
         contents:
         - section: Futures

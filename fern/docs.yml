@@ -168,6 +168,9 @@ navigation:
           - page: Margin requirements
             slug: margin-requirements
             path: ./pages/dated-options/margin-requirements.mdx
+      - page: Portfolio margin
+        slug: portfolio-margin
+        path: ./pages/trading/portfolio-margin.mdx
       - section: Vaults
         contents:
           - page: Introduction

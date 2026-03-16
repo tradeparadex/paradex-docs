@@ -11,7 +11,7 @@ This prevents those orders from being matched resulting in a fill that is likely
 
 The main objective of deleveraging is to prevent orders from resulting in invalid fills
 
-This check compares the [Account Value](margin-term-reference#account-value-usd) to the [Initial Margin Requirement](margin-term-reference#margin-requirement) (check [here](cross-margin-requirement#initial-margin-requirement-imr) how IMR is calculated in Cross Margin Mode).
+This check compares the [Account Value](margin-term-reference#account-value-usd) to the [Initial Margin Requirement](margin-term-reference#margin-requirement) (see how IMR is calculated in [Cross Margin](cross-margin-requirement#initial-margin-requirement-imr) or [Portfolio Margin](portfolio-margin) mode).
 
 * If $$\text{Account Value} < \text{Account IMR}$$, **Account Deleveraging** kicks in :
   * All orders that do not offset an open position on the same instrument (i.e. the account does not have an open position in this instrument **or** has an open position on the same side as the open order) are canceled since these non-offsetting

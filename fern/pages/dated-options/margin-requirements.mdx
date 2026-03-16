@@ -9,12 +9,17 @@ Paradex supports two margin modes for Dated Options: **Cross Margin** for all us
 <Tabs>
   <Tab title="Buying options">
     $$
-    \text{Margin} = \min(\text{Option Mark Price},~\text{Long ITM Fraction} \times \text{Spot Price})
+    \text{Margin} = \min\big(\text{Option Mark Price},
+    ~\text{Long ITM Fraction} \times \text{Spot Price}\big)
     $$
   </Tab>
   <Tab title="Selling options">
     $$
-    \text{Margin} = \max(\text{Short ITM Fraction} \times \text{Spot Price} - \text{OTM Amount},~\text{Short OTM Fraction} \times \text{Spot Price})
+    \begin{align*}
+    \text{Margin} = \max\big(
+    &\text{Short ITM Fraction} \times \text{Spot Price} - \text{OTM Amount}, \\
+    &\text{Short OTM Fraction} \times \text{Spot Price}\big)
+    \end{align*}
     $$
 
     where OTM Amount is:

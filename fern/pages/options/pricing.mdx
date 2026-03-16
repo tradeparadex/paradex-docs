@@ -18,7 +18,10 @@ The price of a perpetual option depends on :
 - $S$ : Spot Price of the underlying asset
 - $K$ : Strike Price of the option
 - $\sigma$ : The volatility of the underlying asset
-- $r$ : The annualised instantaneous interest rate. Paradex derives this from the perpetual future funding rate $\text{FR}$. The relationship is : $r=\frac{1}{T_{Future}}*\frac{\text{FR}}{1+\text{FR}}$
+- $r$ : The annualised instantaneous interest rate. Paradex derives this from the perpetual future funding rate $\text{FR}$. The relationship is :
+$$
+r=\frac{1}{T_{Future}}*\frac{\text{FR}}{1+\text{FR}}
+$$
   where $T_{Future}=\frac{8}{24*365}\approx 0.00091324$ corresponds to the 8-hour funding period of the perpetual future
 - $T$ : The funding period of the option. Currently set to 5 days, i.e. $T\approx \frac{5}{365}=0.01369863014$
 
@@ -108,8 +111,12 @@ $$
 
 \Delta_{TV} =
     \begin{cases}
-      A~*~(1-\frac{(1+u)~p}{2})-B~*~\frac{K}{S}~\frac{(1+\omega)~q}{2} & \text{if }S\ge K\\
-      A~*~(1-\frac{(1-u)~p}{2})-B~*~\frac{K}{S}~\frac{(1-\omega)~q}{2} & \text{if }S< K
+      A \cdot \Big(1-\dfrac{(1+u)\,p}{2}\Big)
+      - B \cdot \dfrac{K}{S} \cdot \dfrac{(1+\omega)\,q}{2}
+      & \text{if }S\ge K \\
+      A \cdot \Big(1-\dfrac{(1-u)\,p}{2}\Big)
+      - B \cdot \dfrac{K}{S} \cdot \dfrac{(1-\omega)\,q}{2}
+      & \text{if }S< K
     \end{cases}
 $$
 
@@ -119,8 +126,16 @@ $$
 
 \Gamma =
     \begin{cases}
-      \frac{A}{S}~[\frac{(1+u)~p}{2}-1].\frac{(1+u)~p}{2}-\frac{B.K}{S^2}~[\frac{(1+\omega)}{2}.q-1].\frac{(1+\omega)}{2}.q & \text{if }S\ge K\\
-      \frac{A}{S}~[\frac{(1-u)~p}{2}-1].\frac{(1-u)~p}{2}-\frac{B.K}{S^2}~[\frac{(1-\omega)}{2}.q-1].\frac{(1-\omega)}{2}.q & \text{if }S< K
+      \dfrac{A}{S}\Big[\dfrac{(1+u)\,p}{2}-1\Big]
+      \cdot \dfrac{(1+u)\,p}{2}
+      - \dfrac{B \cdot K}{S^2}\Big[\dfrac{(1+\omega)}{2} \cdot q-1\Big]
+      \cdot \dfrac{(1+\omega)}{2} \cdot q
+      & \text{if }S\ge K \\
+      \dfrac{A}{S}\Big[\dfrac{(1-u)\,p}{2}-1\Big]
+      \cdot \dfrac{(1-u)\,p}{2}
+      - \dfrac{B \cdot K}{S^2}\Big[\dfrac{(1-\omega)}{2} \cdot q-1\Big]
+      \cdot \dfrac{(1-\omega)}{2} \cdot q
+      & \text{if }S< K
     \end{cases}
 $$
 
@@ -136,8 +151,16 @@ $$
 
   \frac{\delta A}{\delta \sigma} =
     \begin{cases}
-      \frac{4*A}{\sigma^3}*\Big(\big(\frac{r*u}{p}-\frac{r}{p*u}-\frac{2}{p^2 * u*T}\big)*\big(\frac{1}{u^2-u}-\frac{p}{2}*\log(\frac{S}{K})\big)~\\~~~~~~~~~~~~~~~~~~~~~~~~~~+~\frac{r*(1+u)}{2}*\log(\frac{S}{K})\Big) & \text{if }S\ge K\\
-      \frac{4*A}{\sigma^3}*\Big(\big(\frac{r*u}{p}-\frac{r}{p*u}-\frac{2}{p^2 * u*T}\big)*\big(\frac{-1}{u^2+u}+\frac{p}{2}*\log(\frac{S}{K})\big)~\\~~~~~~~~~~~~~~~~~~~~~~~~~~+~\frac{r*(1-u)}{2}*\log(\frac{S}{K})\Big) & \text{if }S< K
+      \dfrac{4A}{\sigma^3}\Big(
+        \big(\dfrac{ru}{p}-\dfrac{r}{pu}-\dfrac{2}{p^2 uT}\big)
+        \big(\dfrac{1}{u^2-u}-\dfrac{p}{2}\log\dfrac{S}{K}\big) \\
+        \quad+\dfrac{r(1+u)}{2}\log\dfrac{S}{K}
+      \Big) & \text{if }S\ge K \\
+      \dfrac{4A}{\sigma^3}\Big(
+        \big(\dfrac{ru}{p}-\dfrac{r}{pu}-\dfrac{2}{p^2 uT}\big)
+        \big(\dfrac{-1}{u^2+u}+\dfrac{p}{2}\log\dfrac{S}{K}\big) \\
+        \quad+\dfrac{r(1-u)}{2}\log\dfrac{S}{K}
+      \Big) & \text{if }S< K
     \end{cases}
 $$
 
@@ -145,7 +168,15 @@ $$
 
   \frac{\delta B}{\delta \sigma} =
     \begin{cases}
-      \frac{4*B}{\sigma^3}*\Big(\big(\frac{-r*\omega}{q}+\frac{r}{q*\omega}-\frac{2(1+rT)}{q^2 * \omega*T}\big)*\big(\frac{1}{\omega^2-\omega}+\frac{q}{2}*\log(\frac{S}{K})\big)~\\~~~~~~~~~~~~~~~~~~~~~~~~~~+~\frac{r*(1+\omega)}{2}*\log(\frac{S}{K})\Big) & \text{if }S\ge K\\
-      \frac{4*B}{\sigma^3}*\Big(\big(\frac{r*\omega}{q}-\frac{r}{q*\omega}+\frac{2(1+rT)}{q^2 * \omega*T}\big)*\big(\frac{1}{\omega^2+\omega}+\frac{q}{2}*\log(\frac{S}{K})\big)~\\~~~~~~~~~~~~~~~~~~~~~~~~~~+~\frac{r*(1-\omega)}{2}*\log(\frac{S}{K})\Big) & \text{if }S< K
+      \dfrac{4B}{\sigma^3}\Big(
+        \big(\dfrac{-r\omega}{q}+\dfrac{r}{q\omega}-\dfrac{2(1+rT)}{q^2 \omega T}\big)
+        \big(\dfrac{1}{\omega^2-\omega}+\dfrac{q}{2}\log\dfrac{S}{K}\big) \\
+        \quad+\dfrac{r(1+\omega)}{2}\log\dfrac{S}{K}
+      \Big) & \text{if }S\ge K \\
+      \dfrac{4B}{\sigma^3}\Big(
+        \big(\dfrac{r\omega}{q}-\dfrac{r}{q\omega}+\dfrac{2(1+rT)}{q^2 \omega T}\big)
+        \big(\dfrac{1}{\omega^2+\omega}+\dfrac{q}{2}\log\dfrac{S}{K}\big) \\
+        \quad+\dfrac{r(1-\omega)}{2}\log\dfrac{S}{K}
+      \Big) & \text{if }S< K
     \end{cases}
 $$

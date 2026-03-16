@@ -9,7 +9,13 @@ By inverting the [Black Scholes Pricing formula for perpetual options](/trading/
 The **Mark Variance** is then derived by combining the Variance EWMAs :
 
 $$
-\small\text{Mark Variance}=\text{Median}\big(\text{Median}\big(\text{Ask Variance EWMA},~\text{Bid Variance EWMA},~\text{Last Trade Variance EWMA}\big),\\ \text{Mid Variance EWMA},\\ \text{External Variance EWMA}\big)
+\begin{align*}
+\small\text{Mark Variance} = \text{Median}\big(
+& \text{Median}(\text{Ask Variance EWMA},~\text{Bid Variance EWMA}, \\
+& \quad\text{Last Trade Variance EWMA}), \\
+& \text{Mid Variance EWMA}, \\
+& \text{External Variance EWMA}\big)
+\end{align*}
 $$
 
 and Mark IV is finally calculated as the square root of the Mark Variance :

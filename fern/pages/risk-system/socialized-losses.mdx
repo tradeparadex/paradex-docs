@@ -17,7 +17,11 @@ Once the Insurance Fund is re-capitalized (though profitable liquidations or fun
 For a given trading account, USDC Settlement Balance represents the USDC balance that this account would have if all its open positions were closed at current Mark Price :
 
 $$
-\small\text{Account USDC Settlement Balance}=\text{Account USDC Balance}+\frac{\text{Account Unrealized PnL}}{\text{USDC Oracle Price}}
+\begin{align*}
+\small\text{Account USDC Settlement Balance} = \\
+\text{Account USDC Balance}
++ \frac{\text{Account Unrealized PnL}}{\text{USDC Oracle Price}}
+\end{align*}
 $$
 
 The Bankruptcy Amount of an account is equal to :
@@ -42,7 +46,9 @@ $$
 ### Socialized Loss Factor
 
 $$
-\small\text{Socialized Loss Factor}=\frac{\text{Exchange Bankruptcy Amount}}{\text{Total Exchange USDC Balance + \text{Exchange Bankruptcy Amount}}}
+\small\text{Socialized Loss Factor}
+= \frac{\text{Exchange Bankruptcy Amount}}
+{\text{Total Exchange USDC Balance} + \text{Exchange Bankruptcy Amount}}
 $$
 
 If Exchange Bankruptcy Amount is positive (i.e. Insurance fund has negative value or shortfall from bankrupt user accounts is higher than Insurance Fund value), Socialized Loss Factor is greater than 0 and all withdrawals will be penalized by this factor.

@@ -17,7 +17,8 @@ $$
 This is the value of all tokens on account **in USD terms**.
 
 $$
-\text{Total Collateral Value}=\text{USDC Balance}*\text{USDC Oracle Price}
+\text{Total Collateral Value}
+= \text{USDC Balance} * \text{USDC Oracle Price}
 $$
 
 ### _**Position Cost (USDC)**_
@@ -43,8 +44,12 @@ Unrealized PnL on a derivative asset position determines how much money an accou
 
 $$
 \begin{align*}
-& \underline{\textbf{Unrealized PnL}}= \\
-& \sum\limits_{j=1}^{m} \bigg(\small\text{Position Notional}(D_j)-\small\text{Position Cost}(D_j)*\small\text{USDC Oracle Price}+\small\text{Accrued Funding}(D_j)\bigg)
+& \underline{\textbf{Unrealized PnL}} = \\
+& \sum\limits_{j=1}^{m} \bigg(
+  \small\text{Position Notional}(D_j) \\
+& \quad - \small\text{Position Cost}(D_j) * \small\text{USDC Oracle Price} \\
+& \quad + \small\text{Accrued Funding}(D_j)
+\bigg)
 \end{align*}
 $$
 
@@ -75,7 +80,11 @@ _Note :_ Calculation of IMR and MMR in a cross-margin account can be found in th
 The USD value of the collateral that can be immediately withdrawn subject to an upper bound of the user's Account USDC Balance.
 
 $$
-\text{Free Collateral Balance} = \text{min}(\text{Account Value} - \text{Account Initial Margin Requirement}, \text{Account USDC Balance})
+\begin{align*}
+\text{Free Collateral Balance} = \min\big(
+& \text{Account Value} - \text{Account IMR}, \\
+& \text{Account USDC Balance}\big)
+\end{align*}
 $$
 
 ### _**Account USDC Balance**_

@@ -19,7 +19,13 @@ $$
 where:
 
 $$
-\small\text{Mark Variance} = \text{Median}\big(\text{Median}(\text{Ask Variance EWMA},~\text{Bid Variance EWMA},~\text{Last Trade Variance EWMA}),\\ \text{Mid Variance EWMA},\\ \text{External Variance EWMA}\big)
+\begin{align*}
+\small\text{Mark Variance} = \text{Median}\big(
+& \text{Median}(\text{Ask Variance EWMA},~\text{Bid Variance EWMA}, \\
+& \quad\text{Last Trade Variance EWMA}), \\
+& \text{Mid Variance EWMA}, \\
+& \text{External Variance EWMA}\big)
+\end{align*}
 $$
 
 Internal variance values are derived from bid, ask, last trade, and mid prices. External variance inputs are calibrated to reference data from Deribit.

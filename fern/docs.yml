@@ -1261,6 +1261,12 @@ redirects:
   - source: "/trading/mobile-access-guide"
     destination: "/docs/mobile-access-guide"
 
+  # Redirects for Placing Orders restructured under Orders section
+  - source: "/trading/placing-orders/:slug*"
+    destination: "/trading/orders/:slug*"
+  - source: "/trading/placing-orders"
+    destination: "/trading/orders/placing-orders"
+
 layout:
   header-height: 72px
   searchbar-placement: header

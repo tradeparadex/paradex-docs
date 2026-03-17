@@ -22,3 +22,30 @@ subtitle: Users can choose between two trader profiles that best suits their str
 <sub>Retail orders exceeding rate limits automatically switch to Pro trader profile and lose access to RPI liquidity.</sub>
 
 For detailed fee information, see [Trading Fees](/trading/trading-fees).
+
+## Identifying as Retail via API
+
+By default, all orders submitted through the API are treated as <Badge intent="note" outlined minimal>Pro</Badge> orders. To have your API orders treated as <Badge intent="success" outlined minimal>Retail</Badge> orders, request a JWT token with the `token_usage=interactive` query parameter.
+
+When using an interactive token:
+
+- The order is subject to **Retail speed bumps** and **rate limits**
+- The order qualifies for **free trading fees** (0% maker and taker)
+- The order is eligible for **[Retail Price Improvement (RPI)](/trading/rpi)** liquidity
+- The order receives **queue priority** at each price level
+
+<Warning>
+Orders placed with an interactive token are subject to Retail rate limits. If rate limits are exceeded, the account automatically switches to the Pro trader profile and loses access to RPI liquidity.
+</Warning>
+
+### Steps
+
+1. Request a JWT token with the `token_usage=interactive` query parameter:
+
+```bash
+POST /v1/auth?token_usage=interactive
+```
+
+See the [Get JWT](/api/prod/auth/get-jwt) endpoint for full details.
+
+2. Use the returned JWT token as usual for all authenticated requests. Orders placed with this token are recognized as Retail.

@@ -38,14 +38,17 @@ When using an interactive token:
 Orders placed with an interactive token are subject to Retail rate limits. If rate limits are exceeded, the account automatically switches to the Pro trader profile and loses access to RPI liquidity.
 </Warning>
 
-### Steps
+<Steps>
+  <Step title="Request a JWT token with token_usage=interactive">
+    Include the `token_usage=interactive` query parameter when requesting a JWT token:
 
-1. Request a JWT token with the `token_usage=interactive` query parameter:
+    ```bash
+    POST /v1/auth?token_usage=interactive
+    ```
 
-```bash
-POST /v1/auth?token_usage=interactive
-```
-
-See the [Get JWT](/api/prod/auth/get-jwt) endpoint for full details.
-
-2. Use the returned JWT token as usual for all authenticated requests. Orders placed with this token are recognized as Retail.
+    See the [Get JWT](/api/prod/auth/get-jwt) endpoint for full details.
+  </Step>
+  <Step title="Use the JWT token as usual">
+    Use the returned JWT token for all authenticated requests. Orders placed with this token are recognized as <Badge intent="success" outlined minimal>Retail</Badge>.
+  </Step>
+</Steps>

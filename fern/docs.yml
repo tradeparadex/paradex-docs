@@ -541,6 +541,11 @@ navigation:
                 - page: ZRO-USD-PERP
                   slug: zro-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
+            - section: RWA
+              contents:
+                - page: XAG-USD-PERP
+                  slug: xag-usd-perp
+                  path: ./pages/instruments-guide/futures/rwa/xag-usd-perp.mdx
         - section: Spot
           contents:
             - page: ETH-USD

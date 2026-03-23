@@ -874,13 +874,15 @@ navigation:
     layout:
       - page: Overview
         path: ./pages/release-notes/overview.mdx
+      - page: v1.138
+        path: ./pages/release-notes/v1.138.md
       - page: v1.137
         path: ./pages/release-notes/v1.137.md
-      - page: v1.136
-        path: ./pages/release-notes/v1.136.md
       - section: Archive
         path: ./pages/release-notes/archive.mdx
         contents:
+          - page: v1.136
+            path: ./pages/release-notes/v1.136.md
           - page: v1.135
             path: ./pages/release-notes/v1.135.md
           - page: v1.134

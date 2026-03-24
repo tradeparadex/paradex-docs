@@ -640,7 +640,7 @@ channels:
                 summary: JSON-RPC subscription request
             tags:
                 - name: market
-        x-fern-display-name: order_book.{market_symbol}.{feed_type}@15@{refresh_rate}[@{price_tick}]
+        x-fern-display-name: Order Book
     /orders.{market_symbol}:
         parameters:
             market_symbol:

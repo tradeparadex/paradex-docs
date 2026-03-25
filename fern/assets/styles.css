@@ -471,9 +471,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   position: relative;
   overflow: hidden;
   height: 3.2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
 }
 
 .lp-marquee-track {

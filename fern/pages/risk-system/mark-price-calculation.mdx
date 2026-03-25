@@ -54,7 +54,7 @@ In this example, an EWMA weight of 20% is applied to the latest rate observation
 <img src="../../assets/risk/mark_price_ewma_rates.png" alt=""/>
 </Frame>
 
-### 5. Calculate the EWMA **(Exponentially Weighted Moving Average) of the Mid Rate**
+### 4. Calculate the EWMA **(Exponentially Weighted Moving Average) of the Mid Rate**
 
 The **Mid Rate EWMA** is calculated from the implied rate of the Mid Price relative to the Spot Price, where Mid Price is calculated as:
 
@@ -62,7 +62,7 @@ $$
 \text{Mid Price}=\frac{\big(\text{Best Ask} + \text{Best Bid}\big)}{2}
 $$
 
-### 6. Calculate the median of the External Rates
+### 5. Calculate the median of the External Rates
 
 The **External Rates** are determined from Mark Prices and Index Prices fetched from external exchanges (actually, Bybit, Binance and OKX) and calculated as:
 
@@ -73,7 +73,7 @@ $$
 
 Where Paradex Funding Interval is actually 8h for all instruments
 
-### 7. Calculate the Fair Basis
+### 6. Calculate the Fair Basis
 
 Finally, the **Fair Basis** is calculated as the median of the three components
 
@@ -86,7 +86,7 @@ $$
 \end{align*}
 $$
 
-### 8. Calculate the Mark Price by applying the Fair Basis to the Spot Price
+### 7. Calculate the Mark Price by applying the Fair Basis to the Spot Price
 
 <Frame caption="SOL-USD-PERP mark price compared to the underlying spot price">
 <img src="../../assets/risk/mark_price_vs_spot.png" alt=""/>

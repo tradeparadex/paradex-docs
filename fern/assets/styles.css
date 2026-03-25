@@ -466,15 +466,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   margin: 0;
 }
 
-/* Vertical text cycling marquee (matches paradex.trade hero) — pure CSS */
-@keyframes lp-marquee-cycle {
-  0%   { opacity: 0; transform: translateY(20px); }
-  5%   { opacity: 1; transform: translateY(0); }
-  25%  { opacity: 1; transform: translateY(0); }
-  30%  { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 0; transform: translateY(-20px); }
-}
-
+/* Vertical text cycling marquee (matches paradex.trade hero) — JS-driven */
 .lp-marquee {
   position: relative;
   overflow: hidden;
@@ -501,13 +493,9 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   top: 0;
   left: 0;
   opacity: 0;
-  animation: lp-marquee-cycle 10s infinite;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
-
-.lp-marquee-item-1 { animation-delay: 0s; }
-.lp-marquee-item-2 { animation-delay: 2.5s; }
-.lp-marquee-item-3 { animation-delay: 5s; }
-.lp-marquee-item-4 { animation-delay: 7.5s; }
 
 @media (max-width: 768px) {
   .lp-marquee {

@@ -366,6 +366,20 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   line-height: 1.2;
 }
 
+/* Hero heading: match paradex.trade 72px sizing */
+.lp-hero-heading .lp-heading-h1 {
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 4.5rem;
+}
+
+@media (max-width: 768px) {
+  .lp-hero-heading .lp-heading-h1 {
+    font-size: 3rem;
+    line-height: 3rem;
+  }
+}
+
 .lp-heading-h2 {
   display: block;
   font-size: 1.5rem;

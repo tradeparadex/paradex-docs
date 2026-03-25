@@ -178,8 +178,8 @@ navigation:
         slug: rpi
         path: ./pages/trading/rpi.mdx
       - page: FastFills
-        slug: fastfill
-        path: ./pages/trading/fastfill.mdx
+        slug: fastfills
+        path: ./pages/trading/fastfills.mdx
       - page: Real World Assets (RWA)
         slug: rwa
         path: ./pages/trading/real-world-assets.mdx
@@ -1232,6 +1232,10 @@ redirects:
     destination: "/docs/testnet-faqs"
   - source: "/trading/mobile-access-guide"
     destination: "/docs/mobile-access-guide"
+
+  # Redirect old fastfill slug to fastfills
+  - source: "/trading/fastfill"
+    destination: "/trading/fastfills"
 
   # Redirects for Placing Orders restructured under Orders section
   - source: "/trading/placing-orders/:slug*"

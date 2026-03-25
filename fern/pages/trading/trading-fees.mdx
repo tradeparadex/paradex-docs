@@ -3,27 +3,24 @@ title: Trading Fees
 subtitle: Fee structure for trading on Paradex
 ---
 
-Trading fees vary based on your [Trader Profile](/trading/trader-profiles).
+Trading fees vary based on your [Trader Profile](/trading/trader-profiles). All fees are calculated based on notional value.
 
 <Info>
-All fees are calculated based on notional value. Dated option fees are capped at 12.5% of the option premium.
+Dated option fees are capped at 12.5% of the option premium.
 </Info>
 
-## Orderbook
-
-<Warning>
-Effective March 25, 2026 at 1:00 PM SGT (5:00 UTC) for Spot and Futures:
-
-  • Retail Taker Fees will be updated to 0.0075%  
-  • Pro Maker Fees will be updated to 0%
-</Warning>
+## Orderbook fees
 
 | Profile | Maker | Taker |
 |---------|:---:|:---:|
 | <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | 0% | 0.0075% |
-| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0% | 0.02% <br /> <Tooltip tip={<div class="text-left"><Icon icon="fa-light fa-bolt" /> <strong>FastFills Taker Discount</strong> <Icon icon="fa-light fa-bolt" /><br />Pro taker fee is reduced by 30% to 0.014% when matching against retail orders.</div>}>vs retail: 0.014% <Icon icon="fa-regular fa-bolt" /></Tooltip> |
+| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0% | 0.02% |
 
-## Settlement Fees
+<Tip>
+**FastFill taker discount** — Pro taker fee is reduced by 30% to **0.014%** when matching against retail orders. See [FastFill](/trading/fastfill) for details.
+</Tip>
+
+## Settlement fees
 
 When a market is delisted, a settlement fee is applied to close any positions still open in that market.
 

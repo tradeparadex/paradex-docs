@@ -177,7 +177,7 @@ navigation:
       - page: Retail Price Improvement
         slug: rpi
         path: ./pages/trading/rpi.mdx
-      - page: FastFill
+      - page: FastFills
         slug: fastfill
         path: ./pages/trading/fastfill.mdx
       - page: Real World Assets (RWA)

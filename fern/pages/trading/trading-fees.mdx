@@ -5,20 +5,28 @@ subtitle: Fee structure for trading on Paradex
 
 Trading fees vary based on your [Trader Profile](/trading/trader-profiles). All fees are calculated based on notional value.
 
-<Info>
-Dated option fees are capped at 12.5% of the option premium.
-</Info>
+<Tip title="FastFill taker discount">
+Pro taker fees are reduced by 30% when matching against retail orders. See [FastFill](/trading/fastfill) for details.
+</Tip>
 
-## Orderbook fees
+## Spot & futures fees
 
 | Profile | Maker | Taker |
 |---------|:---:|:---:|
 | <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | 0% | 0.0075% |
-| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0% | 0.02% |
+| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0% | vs Pro: 0.02% <br /> vs Retail: 0.014% |
 
-<Tip title="FastFill taker discount">
-Pro taker fee is reduced by 30% to **0.014%** when matching against retail orders. See [FastFill](/trading/fastfill) for details.
-</Tip>
+
+## Option fees
+
+| Profile | Maker | Taker |
+|---------|:---:|:---:|
+| <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | 0.0075% | 0.0075% |
+| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0.0075% | vs Pro: 0.0075% <br /> vs Retail: 0.00525% |
+
+<Info>
+Dated option fees are capped at 12.5% of the option premium.
+</Info>
 
 ## Settlement fees
 

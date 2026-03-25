@@ -34,12 +34,9 @@
 (function () {
   var INTERVAL = 2500;
   var timerId = null;
+  var pollId = null;
 
-  function initMarquee() {
-    var items = document.querySelectorAll('.lp-marquee-item');
-    if (!items.length) return;
-
-    // Clear any previous timer (SPA navigation)
+  function startCycling(items) {
     if (timerId) { clearInterval(timerId); timerId = null; }
 
     var index = 0;
@@ -55,17 +52,34 @@
     }, INTERVAL);
   }
 
-  // Run after DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMarquee);
-  } else {
-    initMarquee();
+  function tryInit() {
+    var items = document.querySelectorAll('.lp-marquee-item');
+    if (items.length) {
+      if (pollId) { clearInterval(pollId); pollId = null; }
+      startCycling(items);
+      return true;
+    }
+    return false;
   }
 
-  // Re-init on SPA navigation
+  // Poll until marquee elements appear (handles React/SSR hydration timing)
+  function waitForMarquee() {
+    if (tryInit()) return;
+    if (pollId) clearInterval(pollId);
+    pollId = setInterval(function () { tryInit(); }, 200);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', waitForMarquee);
+  } else {
+    waitForMarquee();
+  }
+
+  // Re-init on SPA navigation when marquee re-enters the DOM
   var marqueeObserver = new MutationObserver(function () {
-    if (document.querySelector('.lp-marquee-item') && !document.querySelector('.lp-marquee-item.active')) {
-      initMarquee();
+    var items = document.querySelectorAll('.lp-marquee-item');
+    if (items.length && !document.querySelector('.lp-marquee-item.active')) {
+      startCycling(items);
     }
   });
   marqueeObserver.observe(document.body, { childList: true, subtree: true });

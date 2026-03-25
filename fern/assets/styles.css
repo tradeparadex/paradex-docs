@@ -472,7 +472,7 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 60px;
 }
 
 .lp-hero-title {

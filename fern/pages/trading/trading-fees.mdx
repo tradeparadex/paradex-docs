@@ -7,6 +7,7 @@ Trading fees vary based on your [Trader Profile](/trading/trader-profiles).
 
 <Tip title="FastFills taker discount" icon="fa-solid fa-bolt">
 Pro taker fees are reduced by 30% when matching against retail orders.
+
 See [FastFills](/trading/fastfills) for details.
 </Tip>
 
@@ -15,7 +16,7 @@ See [FastFills](/trading/fastfills) for details.
 | Profile | Maker | Taker |
 |---------|:---:|:---:|
 | <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | 0% | 0.0075% |
-| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0% | 0.02% ⚡ |
+| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0% | <Tooltip tip="Eligible for FastFills taker discount">0.02%</Tooltip> |
 
 <sub>Fees are calculated on trade notional (Size * Trade Price)</sub>
 
@@ -24,7 +25,7 @@ See [FastFills](/trading/fastfills) for details.
 | Profile | Maker | Taker |
 |---------|:---:|:---:|
 | <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | 0.0075% | 0.0075% |
-| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0.0075% | 0.0075% ⚡ |
+| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0.0075% | <Tooltip tip="Eligible for FastFills taker discount">0.0075%</Tooltip> |
 
 <sub>1. Dated option fees are calculated on underlying spot notional (Size × Spot Price)</sub><br/>
 <sub>2. Fees are always capped at 12.5% of Option Premium (Size × Option Trade Price)</sub><br />

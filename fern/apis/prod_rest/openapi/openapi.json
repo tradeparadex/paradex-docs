@@ -9224,7 +9224,7 @@
           "block_explorer_url": {
             "type": "string",
             "description": "Block explorer URL for the current SN Instance",
-            "example": "https://voyager.testnet.paradex.trade/"
+            "example": "https://app.paradex.trade/explorer/"
           },
           "bridged_tokens": {
             "type": "array",

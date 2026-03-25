@@ -366,6 +366,20 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   line-height: 1.2;
 }
 
+/* Hero heading: match paradex.trade 72px sizing */
+.lp-hero-heading .lp-heading-h1 {
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 4.5rem;
+}
+
+@media (max-width: 768px) {
+  .lp-hero-heading .lp-heading-h1 {
+    font-size: 3rem;
+    line-height: 3rem;
+  }
+}
+
 .lp-heading-h2 {
   display: block;
   font-size: 1.5rem;
@@ -454,9 +468,60 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   padding: 3rem 0 4rem;
 }
 
+.lp-hero-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
 .lp-hero-title {
   color: var(--grayscale-12);
-  margin: 0 0 1rem;
+  margin: 0;
+}
+
+/* Vertical text cycling marquee (matches paradex.trade hero) — JS-driven */
+.lp-marquee {
+  position: relative;
+  overflow: hidden;
+  height: 4.5rem;
+  width: 100%;
+}
+
+.lp-marquee-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.lp-marquee-item {
+  color: var(--paradex-accent);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 4.5rem;
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 4.5rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .lp-marquee {
+    height: 3rem;
+  }
+
+  .lp-marquee-item {
+    height: 3rem;
+    font-size: 3rem;
+    line-height: 3rem;
+  }
 }
 
 .lp-hero-desc {

@@ -835,6 +835,12 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
     border-bottom: 1px solid var(--grayscale-5);
   }
 
+  .lp-value-card:nth-child(3) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    border-left: none;
+  }
+
   .lp-profile-grid {
     grid-template-columns: 1fr;
   }

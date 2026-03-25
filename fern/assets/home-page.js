@@ -40,27 +40,29 @@
     if (timerId) { clearInterval(timerId); timerId = null; }
 
     var index = 0;
-    // Set initial state: first item visible
+    // Set initial state: first item visible, others waiting below
     items.forEach(function (el, i) {
       el.style.opacity = i === 0 ? '1' : '0';
-      el.style.transform = i === 0 ? 'translateY(0)' : 'translateY(20px)';
+      el.style.transform = i === 0 ? 'translateY(0)' : 'translateY(100%)';
     });
 
     timerId = setInterval(function () {
-      // Fade out current item (slide up)
+      // Current item scrolls up and out
       items[index].style.opacity = '0';
-      items[index].style.transform = 'translateY(-20px)';
+      items[index].style.transform = 'translateY(-100%)';
 
       // Move to next
       index = (index + 1) % items.length;
 
-      // Fade in next item (slide up from below)
-      items[index].style.transform = 'translateY(20px)';
-      // Small delay so the translateY(20px) is applied before transition starts
-      setTimeout(function () {
-        items[index].style.opacity = '1';
-        items[index].style.transform = 'translateY(0)';
-      }, 50);
+      // Next item starts below, then scrolls up into place
+      items[index].style.transition = 'none';
+      items[index].style.transform = 'translateY(100%)';
+      items[index].style.opacity = '0';
+      // Force reflow so the reset takes effect before transition starts
+      void items[index].offsetHeight;
+      items[index].style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      items[index].style.opacity = '1';
+      items[index].style.transform = 'translateY(0)';
     }, INTERVAL);
   }
 

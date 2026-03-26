@@ -22,12 +22,13 @@ $$
 
 ### Funding Rate
 
-The **Funding Rate** is derived from [**Fair Basis**](mark-price-calculation#steps-to-calculate-the-fair-basis-and-the-mark-price) by applying interest rate clamping and by constraining the resulting value to the interval \[ − 𝑀 , + 𝑀 ] where M is the Maximum Funding Rate.
+The **Funding Rate** is derived from [**Fair Basis**](mark-price-calculation#steps-to-calculate-the-fair-basis-and-the-mark-price) by applying interest rate clamping, scaling by the **Funding Multiplier**, and constraining the resulting value to the interval \[ − 𝑀 , + 𝑀 ] where M is the Maximum Funding Rate.
 
 $$
 \begin{aligned}
-& \text{Funding Rate} = \text{capped}\Big(\text{Fair Basis} \\
-& \quad + \text{clamp}(\text{Interest Rate},\, \text{Fair Basis},\, \text{Clamp Rate})\Big) \\
+& \text{Funding Rate} = \text{capped}\Big(\text{Funding Multiplier} \\
+& \quad \times \big(\text{Fair Basis} \\
+& \quad + \text{clamp}(\text{Interest Rate},\, \text{Fair Basis},\, \text{Clamp Rate})\big)\Big) \\
 & ~\\
 & \large\text{and} \\
 & ~\\
@@ -41,12 +42,14 @@ $$
 \end{aligned}
 $$
 
+The **Funding Multiplier** is a per-market parameter between 0 and 1 that scales the funding rate before the max funding rate cap is applied. Most markets use a multiplier of 1 (no scaling). RWA markets use a Funding Multiplier of 0.5.
 
 **Current values for the above settings are:**
 
 * Interest Rate = 0.01%
 * Clamp Rate = 0.05%
 * Maximum Funding Rate = 5%
+* Funding Multiplier = 1 (default; 0.5 for RWA markets)
 
 <img src="../../assets/risk/funding_rate_clamping_diagram.png" alt=""/>
 

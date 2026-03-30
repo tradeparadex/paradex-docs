@@ -14,6 +14,7 @@ delisted
 Deribit
 expiries
 Ethereum
+Fiddy
 Gigavault
 GitHub
 Hyperlane

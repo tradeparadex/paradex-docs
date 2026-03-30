@@ -212,6 +212,9 @@ navigation:
           - page: Margin requirements
             slug: margin-requirements
             path: ./pages/dated-options/margin-requirements.mdx
+          - page: FAQ
+            slug: faq
+            path: ./pages/dated-options/faq.mdx
       - section: Orders
         contents:
           - page: Placing Orders

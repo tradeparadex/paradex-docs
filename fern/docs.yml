@@ -529,6 +529,15 @@ navigation:
                 - page: XPT-USD-PERP
                   slug: xpt-usd-perp
                   path: ./pages/instruments-guide/futures/rwa/xpt-usd-perp.mdx
+                - page: BZ-USD-PERP
+                  slug: bz-usd-perp
+                  path: ./pages/instruments-guide/futures/rwa/bz-usd-perp.mdx
+                - page: CL-USD-PERP
+                  slug: cl-usd-perp
+                  path: ./pages/instruments-guide/futures/rwa/cl-usd-perp.mdx
+                - page: NG-USD-PERP
+                  slug: ng-usd-perp
+                  path: ./pages/instruments-guide/futures/rwa/ng-usd-perp.mdx
         - section: Spot
           contents:
             - page: ETH-USD

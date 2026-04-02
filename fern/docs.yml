@@ -520,9 +520,18 @@ navigation:
                   path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
             - section: RWA
               contents:
+                - page: BZ-USD-PERP
+                  slug: bz-usd-perp
+                  path: ./pages/instruments-guide/futures/rwa/bz-usd-perp.mdx
+                - page: CL-USD-PERP
+                  slug: cl-usd-perp
+                  path: ./pages/instruments-guide/futures/rwa/cl-usd-perp.mdx
                 - page: EUR-USD-PERP
                   slug: eur-usd-perp
                   path: ./pages/instruments-guide/futures/rwa/eur-usd-perp.mdx
+                - page: NG-USD-PERP
+                  slug: ng-usd-perp
+                  path: ./pages/instruments-guide/futures/rwa/ng-usd-perp.mdx
                 - page: XAG-USD-PERP
                   slug: xag-usd-perp
                   path: ./pages/instruments-guide/futures/rwa/xag-usd-perp.mdx

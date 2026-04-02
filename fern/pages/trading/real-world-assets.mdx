@@ -76,12 +76,12 @@ The price consumed from external exchanges (Binance, Bybit, Hyperliquid, OKX, Li
 
 From Pyth, the price of the active front future is tracked. The active contract at the start of each month is defined by the following schedule:
 
-| Asset        | Underlying                                  | Jan | Feb | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec |
-|--------------|---------------------------------------------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-| WTIOIL (CL)  | 1 barrel of WTI Light Sweet Crude Oil       | G   | H   | J   | K   | M   | N   | Q   | U   | V   | X   | Z   | F   |
-| NATGAS       | 1 MMBtu of Henry Hub Natural Gas            | G   | H   | J   | K   | M   | N   | Q   | U   | V   | X   | Z   | F   |
-| BRENTOIL     | 1 barrel of Brent Crude Oil                 | H   | J   | K   | M   | N   | Q   | U   | V   | X   | Z   | F   | G   |
+| Asset | Underlying                                | Jan | Feb | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec |
+|-------|-------------------------------------------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+| CL    | 1 barrel of WTI Light Sweet Crude Oil     | G   | H   | J   | K   | M   | N   | Q   | U   | V   | X   | Z   | F   |
+| NG    | 1 MMBtu of Henry Hub Natural Gas          | G   | H   | J   | K   | M   | N   | Q   | U   | V   | X   | Z   | F   |
+| BZ    | 1 barrel of Brent Crude Oil               | H   | J   | K   | M   | N   | Q   | U   | V   | X   | Z   | F   | G   |
 
 The roll from the current active future to the next active future occurs between the 5th and 10th business day of the month. The price matches the current active future before the 5th business day, then fully transitions to the next active future by the start of the 10th business day.
 
-The rolling weight is a continuous linear function of time to minimize price jumps, with the transition starting and ending at 00:00 EST.
+The rolling weight is a continuous linear function of time, with the transition starting and ending at 00:00 EST for CL/NG and 00:00 UTC for BZ.

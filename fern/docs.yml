@@ -180,8 +180,8 @@ navigation:
       - page: FastFills
         slug: fastfills
         path: ./pages/trading/fastfills.mdx
-      - page: Real World Assets (RWA)
-        slug: rwa
+      - page: TradFi Markets
+        slug: tradfi-markets
         path: ./pages/trading/real-world-assets.mdx
       - section: Spot Trading
         contents:
@@ -518,26 +518,26 @@ navigation:
                 - page: ZRO-USD-PERP
                   slug: zro-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/zro-usd-perp.mdx
-            - section: RWA
+            - section: TradFi
               contents:
                 - page: BZ-USD-PERP
                   slug: bz-usd-perp
-                  path: ./pages/instruments-guide/futures/rwa/bz-usd-perp.mdx
+                  path: ./pages/instruments-guide/futures/tradfi/bz-usd-perp.mdx
                 - page: CL-USD-PERP
                   slug: cl-usd-perp
-                  path: ./pages/instruments-guide/futures/rwa/cl-usd-perp.mdx
+                  path: ./pages/instruments-guide/futures/tradfi/cl-usd-perp.mdx
                 - page: EUR-USD-PERP
                   slug: eur-usd-perp
-                  path: ./pages/instruments-guide/futures/rwa/eur-usd-perp.mdx
+                  path: ./pages/instruments-guide/futures/tradfi/eur-usd-perp.mdx
                 - page: NG-USD-PERP
                   slug: ng-usd-perp
-                  path: ./pages/instruments-guide/futures/rwa/ng-usd-perp.mdx
+                  path: ./pages/instruments-guide/futures/tradfi/ng-usd-perp.mdx
                 - page: XAG-USD-PERP
                   slug: xag-usd-perp
-                  path: ./pages/instruments-guide/futures/rwa/xag-usd-perp.mdx
+                  path: ./pages/instruments-guide/futures/tradfi/xag-usd-perp.mdx
                 - page: XPT-USD-PERP
                   slug: xpt-usd-perp
-                  path: ./pages/instruments-guide/futures/rwa/xpt-usd-perp.mdx
+                  path: ./pages/instruments-guide/futures/tradfi/xpt-usd-perp.mdx
         - section: Spot
           contents:
             - page: ETH-USD
@@ -1256,6 +1256,10 @@ redirects:
   # Redirect old fastfill slug to fastfills
   - source: "/trading/fastfill"
     destination: "/trading/fastfills"
+
+  # Redirect old RWA page to TradFi Markets
+  - source: "/trading/rwa"
+    destination: "/trading/tradfi-markets"
 
   # Redirects for Placing Orders restructured under Orders section
   - source: "/trading/placing-orders/:slug*"

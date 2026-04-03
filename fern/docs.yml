@@ -305,9 +305,6 @@ navigation:
                 - page: AVNT-USD-PERP
                   slug: avnt-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/avnt-usd-perp.mdx
-                - page: BAT-USD-PERP
-                  slug: bat-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/bat-usd-perp.mdx
                 - page: BCH-USD-PERP
                   slug: bch-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/bch-usd-perp.mdx
@@ -320,9 +317,6 @@ navigation:
                 - page: CC-USD-PERP
                   slug: cc-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/cc-usd-perp.mdx
-                - page: CRV-USD-PERP
-                  slug: crv-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/crv-usd-perp.mdx
                 - page: DOGE-USD-PERP
                   slug: doge-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/doge-usd-perp.mdx
@@ -335,9 +329,6 @@ navigation:
                 - page: ENA-USD-PERP
                   slug: ena-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/ena-usd-perp.mdx
-                - page: EIGEN-USD-PERP
-                  slug: eigen-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/eigen-usd-perp.mdx
                 - page: ETHFI-USD-PERP
                   slug: ethfi-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/ethfi-usd-perp.mdx
@@ -389,9 +380,6 @@ navigation:
                 - page: LDO-USD-PERP
                   slug: ldo-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/ldo-usd-perp.mdx
-                - page: LINEA-USD-PERP
-                  slug: linea-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/linea-usd-perp.mdx
                 - page: LINK-USD-PERP
                   slug: link-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/link-usd-perp.mdx
@@ -407,9 +395,6 @@ navigation:
                 - page: MON-USD-PERP
                   slug: mon-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/mon-usd-perp.mdx
-                - page: MOODENG-USD-PERP
-                  slug: moodeng-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/moodeng-usd-perp.mdx
                 - page: MORPHO-USD-PERP
                   slug: morpho-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/morpho-usd-perp.mdx
@@ -509,9 +494,6 @@ navigation:
                 - page: ZEC-USD-PERP
                   slug: zec-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/zec-usd-perp.mdx
-                - page: ZK-USD-PERP
-                  slug: zk-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/zk-usd-perp.mdx
                 - page: ZORA-USD-PERP
                   slug: zora-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/zora-usd-perp.mdx

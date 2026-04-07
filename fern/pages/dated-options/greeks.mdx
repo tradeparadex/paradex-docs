@@ -1,0 +1,28 @@
+---
+title: Greeks
+---
+
+Greeks measure the sensitivity of an option's price to changes in underlying factors such as spot price, implied volatility, interest rates, and time. Paradex provides both **Raw Greeks** and **Cash Greeks**.
+
+Raw Greeks are available on the API via the [markets summary endpoint](/api/prod/markets/get-markets-summary). On the UI, users can choose to display Cash Greeks by changing their Greeks preference setting from **Raw** to **Cash**.
+
+## Assumptions for examples
+
+The examples below use the following assumptions:
+
+- BTC spot price = $60,000
+- Implied volatility (IV) = 40%
+- Interest rate = 10%
+- Position size = 1 BTC
+
+## Definitions and examples
+
+| Factor | Greek | Raw Greek (definition) | Cash Greek (definition) | Examples |
+|--------|-------|------------------------|-------------------------|----------|
+| Spot | Delta | Sensitivity of option value to a move in the underlying | Expected PnL for a 1% move in spot | Raw Delta = 0.5 → 1% of spot = $600 → Cash Delta = 0.5 × $600 = $300 → Option gains ~$300 if BTC rises 1% |
+| Spot | Gamma | Sensitivity of Raw Delta to a move in the underlying | Second-order PnL for a 1% move in spot | Raw Gamma = 0.0002 → Cash Gamma = ½ × 0.0002 × $600² = $36 → Additional ~$36 of convex PnL from a 1% BTC rise |
+| IV | Vega | Sensitivity of option value to a 1% absolute change in IV | Same as Raw Greek | Vega = 80 → If IV moves from 40% to 41% → Option gains ~$80 |
+| IV | Vanna | Sensitivity of Raw Delta to a 1% absolute change in IV (equivalently, sensitivity of Vega to a move in spot) | Additional expected PnL assuming 1% move in spot and 1% increase in IV | Vanna = 0.01 → If IV moves from 40% to 41% → Delta shifts such that the position gains an additional ~$6 per subsequent 1% spot move |
+| IV | Volga | Sensitivity of Vega to a 1% absolute change in IV | Same as Raw Volga | Volga = 1.5 → If IV moves from 40% to 41% → Option gains an additional ~$1.50 of convex PnL on top of Vega |
+| Interest Rate | Rho | Sensitivity of option value to a 1% absolute change in interest rates | Same as Raw Rho | Rho = 25 → Rates move from 10% to 11% → Cash Rho = $25 → Option gains ~$25 |
+| Time | Theta | Sensitivity of option value to 1 day of time decay | Same as Raw Theta | Theta = −10 → Option loses ~$10 after 1 day, all else equal |

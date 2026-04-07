@@ -24,5 +24,5 @@ The examples below use the following assumptions:
 | IV | Vega | Sensitivity of option value to a 1% absolute change in IV | Same as Raw Greek | Vega = 80 → If IV moves from 40% to 41% → Option gains ~$80 |
 | IV | Vanna | Sensitivity of Raw Delta to a 1% absolute change in IV (equivalently, sensitivity of Vega to a move in spot) | Additional expected PnL assuming 1% move in spot and 1% increase in IV | Vanna = 0.01 → If IV moves from 40% to 41% → Delta shifts such that the position gains an additional ~$6 per subsequent 1% spot move |
 | IV | Volga | Sensitivity of Vega to a 1% absolute change in IV | Same as Raw Volga | Volga = 1.5 → If IV moves from 40% to 41% → Option gains an additional ~$1.50 of convex PnL on top of Vega |
-| Interest Rate | Rho | Sensitivity of option value to a 1% absolute change in interest rates | Same as Raw Rho | Rho = 25 → Rates move from 10% to 11% → Cash Rho = $25 → Option gains ~$25 |
+| Interest Rate | Rho | Sensitivity of option value to a 1% absolute change in interest rates | Same as Raw Rho | Rho = 25 → Rates move from 10% to 11% → Option gains ~$25 |
 | Time | Theta | Sensitivity of option value to 1 day of time decay | Same as Raw Theta | Theta = −10 → Option loses ~$10 after 1 day, all else equal |

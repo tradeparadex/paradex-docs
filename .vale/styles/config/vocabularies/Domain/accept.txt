@@ -52,6 +52,7 @@ Subkeys
 sybil
 Sybils
 Testnet
+Vanna
 waitlist
 Zellic
 zkrollup

@@ -209,6 +209,9 @@ navigation:
           - page: Mark price
             slug: mark-price
             path: ./pages/dated-options/mark-price.mdx
+          - page: Greeks
+            slug: greeks
+            path: ./pages/dated-options/greeks.mdx
           - page: Margin requirements
             slug: margin-requirements
             path: ./pages/dated-options/margin-requirements.mdx

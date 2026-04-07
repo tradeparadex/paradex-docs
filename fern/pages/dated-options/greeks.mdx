@@ -1,0 +1,103 @@
+---
+title: Greeks
+---
+
+Greeks measure the sensitivity of an option's price to changes in underlying factors such as spot price, implied volatility, interest rates, and time. Paradex provides both **Raw Greeks** and **Cash Greeks**.
+
+## Assumptions for examples
+
+The examples below use the following assumptions:
+
+- BTC spot price = $60,000
+- Implied volatility (IV) = 40%
+- Interest rate = 10%
+- Position size = 1 BTC
+
+## Spot Greeks
+
+### Delta
+
+Delta measures the sensitivity of an option's value to a move in the underlying spot price.
+
+| Type | Definition |
+|------|------------|
+| Raw Delta | Sensitivity of option value to a move in the underlying |
+| Cash Delta | Expected PnL for a 1% move in spot |
+
+**Example:** Raw Delta = 0.5. A 1% move in spot = $600. Cash Delta = 0.5 x $600 = $300. The option gains approximately $300 if BTC rises 1%.
+
+### Gamma
+
+Gamma measures the sensitivity of Raw Delta to a move in the underlying spot price.
+
+| Type | Definition |
+|------|------------|
+| Raw Gamma | Sensitivity of Raw Delta to a move in the underlying |
+| Cash Gamma | Second-order PnL for a 1% move in spot |
+
+**Example:** Raw Gamma = 0.0002. Cash Gamma = 1/2 x 0.0002 x $600^2 = $36. An additional ~$36 of convex PnL from a 1% BTC rise.
+
+## Volatility Greeks
+
+### Vega
+
+Vega measures the sensitivity of an option's value to a 1% absolute change in implied volatility.
+
+| Type | Definition |
+|------|------------|
+| Raw Vega | Sensitivity of option value to a 1% absolute change in IV |
+| Cash Vega | Same as Raw Vega |
+
+**Example:** Vega = 80. If IV moves from 40% to 41%, the option gains approximately $80.
+
+### Vanna
+
+Vanna measures the sensitivity of Raw Delta to a 1% absolute change in IV. Equivalently, it measures the sensitivity of Vega to a move in spot.
+
+| Type | Definition |
+|------|------------|
+| Raw Vanna | Sensitivity of Raw Delta to a 1% absolute change in IV |
+| Cash Vanna | Additional expected PnL assuming a 1% move in spot and a 1% increase in IV |
+
+**Example:** Vanna = 0.01. If IV moves from 40% to 41%, Delta shifts such that the position gains an additional ~$6 per subsequent 1% spot move.
+
+### Volga
+
+Volga measures the sensitivity of Vega to a 1% absolute change in implied volatility.
+
+| Type | Definition |
+|------|------------|
+| Raw Volga | Sensitivity of Vega to a 1% absolute change in IV |
+| Cash Volga | Same as Raw Volga |
+
+**Example:** Volga = 1.5. If IV moves from 40% to 41%, the option gains an additional ~$1.50 of convex PnL on top of Vega.
+
+## Interest rate Greeks
+
+### Rho
+
+Rho measures the sensitivity of an option's value to a 1% absolute change in interest rates.
+
+| Type | Definition |
+|------|------------|
+| Raw Rho | Sensitivity of option value to a 1% absolute change in interest rates |
+| Cash Rho | Same as Raw Rho |
+
+**Example:** Rho = 25. If rates move from 10% to 11%, the option gains approximately $25.
+
+## Time Greeks
+
+### Theta
+
+Theta measures the sensitivity of an option's value to the passage of one day.
+
+| Type | Definition |
+|------|------------|
+| Raw Theta | Sensitivity of option value to 1 day of time decay |
+| Cash Theta | Same as Raw Theta |
+
+**Example:** Theta = -10. The option loses approximately $10 after 1 day, all else equal.
+
+## Raw vs. Cash Greeks
+
+Raw Greeks are available on the API via the [markets summary endpoint](/api/reference/markets/markets-summary). On the UI, users can choose to display Cash Greeks by changing their Greeks preference setting from **Raw** to **Cash**.

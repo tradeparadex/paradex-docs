@@ -4,6 +4,8 @@ title: Greeks
 
 Greeks measure the sensitivity of an option's price to changes in underlying factors such as spot price, implied volatility, interest rates, and time. Paradex provides both **Raw Greeks** and **Cash Greeks**.
 
+Raw Greeks are available on the API via the [markets summary endpoint](/api/reference/markets/markets-summary). On the UI, users can choose to display Cash Greeks by changing their Greeks preference setting from **Raw** to **Cash**.
+
 ## Assumptions for examples
 
 The examples below use the following assumptions:
@@ -24,7 +26,3 @@ The examples below use the following assumptions:
 | IV | Volga | Sensitivity of Vega to a 1% absolute change in IV | Same as Raw Volga | Volga = 1.5 → If IV moves from 40% to 41% → Option gains an additional ~$1.50 of convex PnL on top of Vega |
 | Interest Rate | Rho | Sensitivity of option value to a 1% absolute change in interest rates | Same as Raw Rho | Rho = 25 → Rates move from 10% to 11% → Cash Rho = $25 → Option gains ~$25 |
 | Time | Theta | Sensitivity of option value to 1 day of time decay | Same as Raw Theta | Theta = −10 → Option loses ~$10 after 1 day, all else equal |
-
-<Note>
-Raw Greeks are available on the API via the [markets summary endpoint](/api/reference/markets/markets-summary). On the UI, users can choose to display Cash Greeks by changing their Greeks preference setting from **Raw** to **Cash**.
-</Note>

@@ -877,13 +877,15 @@ navigation:
     layout:
       - page: Overview
         path: ./pages/release-notes/overview.mdx
+      - page: v1.140
+        path: ./pages/release-notes/v1.140.md
       - page: v1.139
         path: ./pages/release-notes/v1.139.md
-      - page: v1.138
-        path: ./pages/release-notes/v1.138.md
       - section: Archive
         path: ./pages/release-notes/archive.mdx
         contents:
+          - page: v1.138
+            path: ./pages/release-notes/v1.138.md
           - page: v1.137
             path: ./pages/release-notes/v1.137.md
           - page: v1.136

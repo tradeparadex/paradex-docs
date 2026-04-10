@@ -523,6 +523,9 @@ navigation:
                 - page: XPT-USD-PERP
                   slug: xpt-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/xpt-usd-perp.mdx
+                - page: XCU-USD-PERP
+                  slug: xcu-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/xcu-usd-perp.mdx
         - section: Spot
           contents:
             - page: ETH-USD

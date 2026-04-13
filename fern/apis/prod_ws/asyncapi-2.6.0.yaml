@@ -12,308 +12,52 @@ channels:
     /account:
         subscribe:
             summary: Private websocket channel for receiving updates of account status
-            description: Subscribe to account messages
             message:
                 name: accountsummary
                 title: AccountSummaryResponse
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: account
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesAccountSummaryResponse'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
+                    $ref: '#/components/schemas/ResponsesAccountSummaryResponse'
                 summary: Private websocket channel for receiving updates of account status
                 description: Subscribe to account messages
-            tags:
-                - name: account
-        publish:
-            summary: Subscribe request
-            description: Subscribe to account messages
-            message:
-                name: accountsummary
-                title: AccountSummaryRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: account
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: account
         x-fern-display-name: account
     /balance_events:
         subscribe:
             summary: Private websocket channel to receive PnL calculation data
-            description: Subscribe to balance event messages
             message:
                 name: balanceevent
                 title: BalanceEventResponse
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: balance_events
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesBalanceEventResponse'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
+                    $ref: '#/components/schemas/ResponsesBalanceEventResponse'
                 summary: Private websocket channel to receive PnL calculation data
                 description: Subscribe to balance event messages
-            tags:
-                - name: account
-        publish:
-            summary: Subscribe request
-            description: Subscribe to balance event messages
-            message:
-                name: balanceevent
-                title: BalanceEventRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: balance_events
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: account
         x-fern-display-name: balance_events
     /bbo.{market_symbol}:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
         subscribe:
-            summary: >-
-                Public websocket channel for tick updates of orderbook best bid/ask prices and amounts
-            description: Subscribe to market messages
+            summary: Public websocket channel for tick updates of orderbook best bid/ask prices and amounts
             message:
                 name: bboresp
                 title: BBOResp
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: bbo.{market_symbol}
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesBBOResp'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
-                summary: >-
-                    Public websocket channel for tick updates of orderbook best bid/ask prices and amounts
+                    $ref: '#/components/schemas/ResponsesBBOResp'
+                summary: Public websocket channel for tick updates of orderbook best bid/ask prices and amounts
                 description: Subscribe to market messages
-            tags:
-                - name: market
-        publish:
-            summary: Subscribe request
-            description: Subscribe to market messages
-            message:
-                name: bboresp
-                title: BBORespRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: bbo.{market_symbol}
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: market
         x-fern-display-name: bbo.{market_symbol}
     /fills.{market_symbol}:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
         subscribe:
-            summary: >-
-                Private websocket channel to receive details of fills for specific account
-            description: Subscribe to fill messages for a market
+            summary: Private websocket channel to receive details of fills for specific account
             message:
                 name: fillresult
                 title: FillResult
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: fills.{market_symbol}
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesFillResult'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
-                summary: >-
-                    Private websocket channel to receive details of fills for specific account
+                    $ref: '#/components/schemas/ResponsesFillResult'
+                summary: Private websocket channel to receive details of fills for specific account
                 description: Subscribe to fill messages for a market
-            tags:
-                - name: trading
-        publish:
-            summary: Subscribe request
-            description: Subscribe to fill messages for a market
-            message:
-                name: fillresult
-                title: FillResultRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: fills.{market_symbol}
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: trading
         x-fern-display-name: fills.{market_symbol}
     /funding_data.{market_symbol}:
         parameters:
@@ -321,78 +65,13 @@ channels:
                 $ref: '#/components/parameters/market_symbol'
         subscribe:
             summary: Public websocket channel to receive funding data updates
-            description: Subscribe to funding data messages for a market
             message:
                 name: fundingdataresult
                 title: FundingDataResult
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: funding_data.{market_symbol}
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesFundingDataResult'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
+                    $ref: '#/components/schemas/ResponsesFundingDataResult'
                 summary: Public websocket channel to receive funding data updates
                 description: Subscribe to funding data messages for a market
-            tags:
-                - name: market
-                - name: funding
-        publish:
-            summary: Subscribe request
-            description: Subscribe to funding data messages for a market
-            message:
-                name: fundingdataresult
-                title: FundingDataResultRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: funding_data.{market_symbol}
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: market
-                - name: funding
         x-fern-display-name: funding_data.{market_symbol}
     /funding_payments.{market_symbol}:
         parameters:
@@ -400,76 +79,13 @@ channels:
                 $ref: '#/components/parameters/market_symbol'
         subscribe:
             summary: Private websocket channel to receive funding payments of an account
-            description: Subscribe to funding payment messages for a market
             message:
                 name: fundingpayment
                 title: FundingPayment
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: funding_payments.{market_symbol}
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesFundingPayment'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
+                    $ref: '#/components/schemas/ResponsesFundingPayment'
                 summary: Private websocket channel to receive funding payments of an account
                 description: Subscribe to funding payment messages for a market
-            tags:
-                - name: funding
-        publish:
-            summary: Subscribe request
-            description: Subscribe to funding payment messages for a market
-            message:
-                name: fundingpayment
-                title: FundingPaymentRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: funding_payments.{market_symbol}
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: funding
         x-fern-display-name: funding_payments.{market_symbol}
     /markets_summary[.{market_symbol}]:
         parameters:
@@ -477,79 +93,13 @@ channels:
                 $ref: '#/components/parameters/market_symbol'
         subscribe:
             summary: Public websocket channel for updates of available markets
-            description: >-
-                Subscribe to market summary messages for specific markets or all markets. Supports both markets_summary (all markets) and markets_summary.{market_symbol} (specific market) subscription patterns.
             message:
                 name: marketsummaryresp
                 title: MarketSummaryResp
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: markets_summary[.{market_symbol}]
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesMarketSummaryResp'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
+                    $ref: '#/components/schemas/ResponsesMarketSummaryResp'
                 summary: Public websocket channel for updates of available markets
-                description: >-
-                    Subscribe to market summary messages for specific markets or all markets. Supports both markets_summary (all markets) and markets_summary.{market_symbol} (specific market) subscription patterns.
-            tags:
-                - name: market
-        publish:
-            summary: Subscribe request
-            description: >-
-                Subscribe to market summary messages for specific markets or all markets. Supports both markets_summary (all markets) and markets_summary.{market_symbol} (specific market) subscription patterns.
-            message:
-                name: marketsummaryresp
-                title: MarketSummaryRespRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: markets_summary[.{market_symbol}]
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: market
+                description: Subscribe to market summary messages for specific markets or all markets. Supports both markets_summary (all markets) and markets_summary.{market_symbol} (specific market) subscription patterns.
         x-fern-display-name: markets_summary[.{market_symbol}]
     /order_book.{market_symbol}.{feed_type}@15@{refresh_rate}[@{price_tick}]:
         parameters:
@@ -562,84 +112,14 @@ channels:
             refresh_rate:
                 $ref: '#/components/parameters/refresh_rate'
         subscribe:
-            summary: >-
-                Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
-            description: >-
-                Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
+            summary: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
             message:
                 name: pricebookupdate
                 title: PriceBookUpdate
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: >-
-                                        order_book.{market_symbol}.{feed_type}@15@{refresh_rate}[@{price_tick}]
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesPriceBookUpdate'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
-                summary: >-
-                    Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
-                description: >-
-                    Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
-            tags:
-                - name: market
-        publish:
-            summary: Subscribe request
-            description: >-
-                Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
-            message:
-                name: pricebookupdate
-                title: PriceBookUpdateRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: >-
-                                        order_book.{market_symbol}.{feed_type}@15@{refresh_rate}[@{price_tick}]
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: market
+                    $ref: '#/components/schemas/ResponsesPriceBookUpdate'
+                summary: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
+                description: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
         x-fern-display-name: order_book.{market_symbol}.{feed_type}@15@{refresh_rate}[@{price_tick}]
     /orders.{market_symbol}:
         parameters:
@@ -647,495 +127,78 @@ channels:
                 $ref: '#/components/parameters/market_symbol'
         subscribe:
             summary: Private websocket channel to receive order updates
-            description: Subscribe to order messages for a market
             message:
                 name: orderresp
                 title: OrderResp
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: orders.{market_symbol}
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesOrderResp'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
+                    $ref: '#/components/schemas/ResponsesOrderResp'
                 summary: Private websocket channel to receive order updates
                 description: Subscribe to order messages for a market
-            tags:
-                - name: trading
-        publish:
-            summary: Subscribe request
-            description: Subscribe to order messages for a market
-            message:
-                name: orderresp
-                title: OrderRespRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: orders.{market_symbol}
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: trading
         x-fern-display-name: orders.{market_symbol}
     /positions:
         subscribe:
             summary: Private websocket channel to receive updates when position is changed
-            description: Subscribe to position messages
             message:
                 name: positionresp
                 title: PositionResp
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: positions
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesPositionResp'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
+                    $ref: '#/components/schemas/ResponsesPositionResp'
                 summary: Private websocket channel to receive updates when position is changed
                 description: Subscribe to position messages
-            tags:
-                - name: trading
-        publish:
-            summary: Subscribe request
-            description: Subscribe to position messages
-            message:
-                name: positionresp
-                title: PositionRespRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: positions
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: trading
         x-fern-display-name: positions
     /tradebusts:
         subscribe:
-            summary: >-
-                Private websocket channel to receive fills that are busted by a blockchain
-            description: >-
-                Private websocket channel to receive fills that are busted by a blockchain
+            summary: Private websocket channel to receive fills that are busted by a blockchain
             message:
                 name: tradebustresult
                 title: TradebustResult
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: tradebusts
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesTradebustResult'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
-                summary: >-
-                    Private websocket channel to receive fills that are busted by a blockchain
-                description: >-
-                    Private websocket channel to receive fills that are busted by a blockchain
-            tags:
-                - name: trading
-        publish:
-            summary: Subscribe request
-            description: >-
-                Private websocket channel to receive fills that are busted by a blockchain
-            message:
-                name: tradebustresult
-                title: TradebustResultRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: tradebusts
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: trading
+                    $ref: '#/components/schemas/ResponsesTradebustResult'
+                summary: Private websocket channel to receive fills that are busted by a blockchain
+                description: Private websocket channel to receive fills that are busted by a blockchain
         x-fern-display-name: tradebusts
     /trades.{market_symbol}:
         parameters:
             market_symbol:
                 $ref: '#/components/parameters/market_symbol'
         subscribe:
-            summary: >-
-                Public websocket channel to receive updates on trades in particular market
-            description: Subscribe to trade messages for a market
+            summary: Public websocket channel to receive updates on trades in particular market
             message:
                 name: traderesult
                 title: TradeResult
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: trades.{market_symbol}
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesTradeResult'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
-                summary: >-
-                    Public websocket channel to receive updates on trades in particular market
+                    $ref: '#/components/schemas/ResponsesTradeResult'
+                summary: Public websocket channel to receive updates on trades in particular market
                 description: Subscribe to trade messages for a market
-            tags:
-                - name: market
-        publish:
-            summary: Subscribe request
-            description: Subscribe to trade messages for a market
-            message:
-                name: traderesult
-                title: TradeResultRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: trades.{market_symbol}
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: market
         x-fern-display-name: trades.{market_symbol}
     /transaction:
         subscribe:
             summary: Private websocket channel for receiving transaction details of fills
-            description: Subscribe to transaction messages
             message:
                 name: transaction
                 title: TransactionResponse
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: transaction
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesTransactionResponse'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
+                    $ref: '#/components/schemas/ResponsesTransactionResponse'
                 summary: Private websocket channel for receiving transaction details of fills
                 description: Subscribe to transaction messages
-            tags:
-                - name: account
-        publish:
-            summary: Subscribe request
-            description: Subscribe to transaction messages
-            message:
-                name: transaction
-                title: TransactionRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: transaction
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: account
         x-fern-display-name: transaction
     /transfers:
         subscribe:
             summary: Websocket channel for receiving transfer updates
-            description: >-
-                <p>Meaning of each transfer status:</p>
-
-                <ul>
-
-                <li><code>PENDING</code>: L2 txn calling Paraclear contract is in flight: For Withdrawals it's the initial status; refers to the L2 txn status being <code>RECEIVED</code>, <code>PENDING</code>, <code>ACCEPTED_ON_L2</code>. For Deposits refers to L2 txn status being <code>RECEIVED</code>, <code>PENDING</code>.</li>
-
-                <li><code>AVAILABLE</code>: Action is required from user: For Withdrawals refers to L2 txn status being <code>ACCEPTED_ON_L1</code> and funds available for collection on Ethereum bridge. For Deposits refers to funds being available in the L2 account, ready to be deposited to Paraclear contract.</li>
-
-                <li><code>COMPLETED</code>: Transfer has completed (final state): For Withdrawals funds have been collected and have moved to the requested Ethereum account; refers to L1 bridge withdraw txn status <code>SUCCESS</code>. For Deposits funds have become available in Paradex; refers to the L2 txn status being <code>ACCEPTED_ON_L2</code>.</li>
-
-                <li><code>FAILED</code>: L2 txn calling Paraclear contract failed with <code>REJECTED</code> status. Deposits can be retried when they fail by repeating the L2 txn.</li>
-
-                </ul>
             message:
                 name: transferresult
                 title: TransferResult
                 payload:
-                    additionalProperties: false
-                    properties:
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscription
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: transfers
-                                    type: string
-                                data:
-                                    $ref: '#/components/schemas/ResponsesTransferResult'
-                            required:
-                                - channel
-                                - data
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                    type: object
+                    $ref: '#/components/schemas/ResponsesTransferResult'
                 summary: Websocket channel for receiving transfer updates
-                description: >-
+                description: |-
                     <p>Meaning of each transfer status:</p>
-
                     <ul>
-
                     <li><code>PENDING</code>: L2 txn calling Paraclear contract is in flight: For Withdrawals it's the initial status; refers to the L2 txn status being <code>RECEIVED</code>, <code>PENDING</code>, <code>ACCEPTED_ON_L2</code>. For Deposits refers to L2 txn status being <code>RECEIVED</code>, <code>PENDING</code>.</li>
-
                     <li><code>AVAILABLE</code>: Action is required from user: For Withdrawals refers to L2 txn status being <code>ACCEPTED_ON_L1</code> and funds available for collection on Ethereum bridge. For Deposits refers to funds being available in the L2 account, ready to be deposited to Paraclear contract.</li>
-
                     <li><code>COMPLETED</code>: Transfer has completed (final state): For Withdrawals funds have been collected and have moved to the requested Ethereum account; refers to L1 bridge withdraw txn status <code>SUCCESS</code>. For Deposits funds have become available in Paradex; refers to the L2 txn status being <code>ACCEPTED_ON_L2</code>.</li>
-
                     <li><code>FAILED</code>: L2 txn calling Paraclear contract failed with <code>REJECTED</code> status. Deposits can be retried when they fail by repeating the L2 txn.</li>
-
                     </ul>
-            tags:
-                - name: account
-        publish:
-            summary: Subscribe request
-            description: >-
-                <p>Meaning of each transfer status:</p>
-
-                <ul>
-
-                <li><code>PENDING</code>: L2 txn calling Paraclear contract is in flight: For Withdrawals it's the initial status; refers to the L2 txn status being <code>RECEIVED</code>, <code>PENDING</code>, <code>ACCEPTED_ON_L2</code>. For Deposits refers to L2 txn status being <code>RECEIVED</code>, <code>PENDING</code>.</li>
-
-                <li><code>AVAILABLE</code>: Action is required from user: For Withdrawals refers to L2 txn status being <code>ACCEPTED_ON_L1</code> and funds available for collection on Ethereum bridge. For Deposits refers to funds being available in the L2 account, ready to be deposited to Paraclear contract.</li>
-
-                <li><code>COMPLETED</code>: Transfer has completed (final state): For Withdrawals funds have been collected and have moved to the requested Ethereum account; refers to L1 bridge withdraw txn status <code>SUCCESS</code>. For Deposits funds have become available in Paradex; refers to the L2 txn status being <code>ACCEPTED_ON_L2</code>.</li>
-
-                <li><code>FAILED</code>: L2 txn calling Paraclear contract failed with <code>REJECTED</code> status. Deposits can be retried when they fail by repeating the L2 txn.</li>
-
-                </ul>
-            message:
-                name: transferresult
-                title: TransferResultRequest
-                payload:
-                    additionalProperties: false
-                    properties:
-                        id:
-                            description: Client-generated request identifier
-                            type: integer
-                        jsonrpc:
-                            const: '2.0'
-                            type: string
-                        method:
-                            const: subscribe
-                            type: string
-                        params:
-                            additionalProperties: false
-                            properties:
-                                channel:
-                                    const: transfers
-                                    type: string
-                            required:
-                                - channel
-                            type: object
-                    required:
-                        - jsonrpc
-                        - method
-                        - params
-                        - id
-                    type: object
-                summary: JSON-RPC subscription request
-            tags:
-                - name: account
         x-fern-display-name: transfers
 components:
     parameters:
@@ -1159,17 +222,17 @@ components:
             description: Optional price tick for grouping order book prices
             schema:
                 enum:
-                    - '0_0000001'
-                    - '0_0000005'
-                    - '0_000001'
-                    - '0_00001'
-                    - '0_0001'
-                    - '0_001'
-                    - '0_01'
-                    - '0_1'
-                    - '1'
-                    - '10'
-                    - '100'
+                    - "0_0000001"
+                    - "0_0000005"
+                    - "0_000001"
+                    - "0_00001"
+                    - "0_0001"
+                    - "0_001"
+                    - "0_01"
+                    - "0_1"
+                    - "1"
+                    - "10"
+                    - "100"
                 type: string
         refresh_rate:
             description: Rate of sending updates (used in BBO channels)
@@ -1184,33 +247,31 @@ components:
             properties:
                 account:
                     description: User's starknet account
-                    example: 2.073967317963419e+75
+                    example: 0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d9454fa
                     type: string
                 account_value:
                     description: Current account value [with unrealized P&Ls]
-                    example: '136285.06918911'
+                    example: "136285.06918911"
                     type: string
                 free_collateral:
-                    description: >-
-                        Free collateral available (Account value in excess of Initial Margin required)
-                    example: '73276.47229774'
+                    description: Free collateral available (Account value in excess of Initial Margin required)
+                    example: "73276.47229774"
                     type: string
                 initial_margin_requirement:
                     description: Amount required to open trade for the existing positions
-                    example: '63008.59689218'
+                    example: "63008.59689218"
                     type: string
                 maintenance_margin_requirement:
                     description: Amount required to maintain exisiting positions
-                    example: '31597.25239676'
+                    example: "31597.25239676"
                     type: string
                 margin_cushion:
                     description: Acc value in excess of maintenance margin required
-                    example: '104687.8167956'
+                    example: "104687.8167956"
                     type: string
                 seq_no:
-                    description: >-
-                        Unique increasing number (non-sequential) that is assigned to this account update. Can be used to deduplicate multiple feeds
-                    example: '1681471234972000000'
+                    description: Unique increasing number (non-sequential) that is assigned to this account update. Can be used to deduplicate multiple feeds
+                    example: "1681471234972000000"
                     type: integer
                 settlement_asset:
                     description: Settlement asset for the account
@@ -1222,11 +283,11 @@ components:
                     type: string
                 total_collateral:
                     description: User's total collateral
-                    example: '123003.62047353'
+                    example: "123003.62047353"
                     type: string
                 updated_at:
                     description: Account last updated time
-                    example: '1681471234972'
+                    example: "1681471234972"
                     type: integer
             required:
                 - account
@@ -1246,23 +307,23 @@ components:
             properties:
                 ask:
                     description: Best ask price
-                    example: '30130.15'
+                    example: "30130.15"
                     type: string
                 ask_size:
                     description: Best ask size
-                    example: '0.05'
+                    example: "0.05"
                     type: string
                 bid:
                     description: Best bid price
-                    example: '30112.22'
+                    example: "30112.22"
                     type: string
                 bid_size:
                     description: Best bid size
-                    example: '0.04'
+                    example: "0.04"
                     type: string
                 last_updated_at:
                     description: Last update to the orderbook in milliseconds
-                    example: '1681493939981'
+                    example: "1681493939981"
                     type: integer
                 market:
                     description: Symbol of the market
@@ -1270,7 +331,7 @@ components:
                     type: string
                 seq_no:
                     description: Sequence number of the orderbook
-                    example: '20784'
+                    example: "20784"
                     type: integer
             required:
                 - market
@@ -1286,46 +347,54 @@ components:
             properties:
                 created_at:
                     description: Unix Millisecond timestamp at which the event occurred
-                    example: '1681497002041'
+                    example: "1681497002041"
                     type: integer
                 fees:
-                    description: Fees in USDC
-                    example: '0.000000000000000000'
+                    description: Fees in USDC (for fill events)
+                    example: "0.000000000000000000"
                     type: string
                 fill_id:
-                    description: Unique string ID for the fill
-                    example: '8615262148007718462'
+                    description: Unique string ID of the fill (for fill events)
+                    example: "8615262148007718462"
                     type: string
                 funding_index:
-                    description: Funding index used for the fill
-                    example: '0.000000000000000000'
+                    description: Funding index used for the fill (for fill events)
+                    example: "0.000000000000000000"
                     type: string
                 market:
-                    description: Name of the market the update is referring to
+                    description: Name of the market the update is referring to (for fill events)
                     example: ETH-USD-PERP
                     type: string
                 realized_funding:
-                    description: Fill's Realized Funding in USDC
-                    example: '0.000000000000000000'
+                    description: Realized Funding in USDC (for fill events)
+                    example: "0.000000000000000000"
                     type: string
                 realized_pnl:
-                    description: Fill's realized PnL (excluding funding) in USDC
-                    example: '0.000000000000000000'
+                    description: Realized PnL (excluding funding) in USDC (for fill events)
+                    example: "0.000000000000000000"
+                    type: string
+                settlement_asset_address:
+                    description: L2 Address of the settlement asset
+                    example: "0x1234567890"
                     type: string
                 settlement_asset_balance_after:
-                    description: Settlement asset balance after the fill
-                    example: '0.000000000000000000'
+                    description: Balance of the settled asset after the update
+                    example: "0.000000000000000000"
                     type: string
                 settlement_asset_balance_before:
-                    description: Settlement asset balance before the fill
-                    example: '0.000000000000000000'
+                    description: Balance of the settled asset before the update
+                    example: "0.000000000000000000"
+                    type: string
+                settlement_asset_name:
+                    description: Name of the settlement asset
+                    example: USDC
                     type: string
                 settlement_asset_price:
-                    description: Settlement asset price
-                    example: '0.000000000000000000'
+                    description: Price of the settled asset at the update
+                    example: "0.000000000000000000"
                     type: string
                 status:
-                    description: Status of the fill
+                    description: Status of the balance event on chain
                     example: ON_BLOCKCHAIN
                     type: string
                 type:
@@ -1337,6 +406,8 @@ components:
                 - fill_id
                 - market
                 - status
+                - settlement_asset_name
+                - settlement_asset_address
                 - settlement_asset_balance_before
                 - settlement_asset_balance_after
                 - settlement_asset_price
@@ -1351,7 +422,7 @@ components:
             properties:
                 account:
                     description: Account that made the fill
-                    example: 8.650280442862716e+47
+                    example: 0x978532f46745d7fFBa1CDfa1D8C8202D09D89C9E
                     type: string
                 client_id:
                     description: Unique client assigned ID for the order
@@ -1359,11 +430,11 @@ components:
                     type: string
                 created_at:
                     description: Fill time
-                    example: '1681375176910'
+                    example: "1681375176910"
                     type: integer
                 fee:
                     description: Fee paid by the user
-                    example: '7.56'
+                    example: "7.56"
                     type: string
                 fee_currency:
                     description: Asset that fee is charged in
@@ -1388,7 +459,7 @@ components:
                     type: array
                 id:
                     description: Unique string ID of fill per FillType
-                    example: '8615262148007718462'
+                    example: "8615262148007718462"
                     type: string
                 liquidity:
                     description: Maker or Taker
@@ -1402,28 +473,27 @@ components:
                     type: string
                 order_id:
                     description: Order ID
-                    example: '1681462103821101699438490000'
+                    example: "1681462103821101699438490000"
                     type: string
                 orderbook_seq_no:
-                    description: >-
-                        Orderbook sequence number after trade execution (post-execution state). Use seqno-1 for pre-execution. 0 for position transfers (liquidations, settlements)
-                    example: '12345'
+                    description: Orderbook sequence number after trade execution (post-execution state). Use seqno-1 for pre-execution. 0 for position transfers (liquidations, settlements)
+                    example: "12345"
                     type: integer
                 price:
                     description: Price at which order was filled
-                    example: '30000.12'
+                    example: "30000.12"
                     type: string
                 realized_funding:
                     description: Realized funding of the fill
-                    example: '7.56'
+                    example: "7.56"
                     type: string
                 realized_pnl:
                     description: Realized PnL of the fill
-                    example: '7.56'
+                    example: "7.56"
                     type: string
                 remaining_size:
                     description: Remaining size of the order
-                    example: '0.5'
+                    example: "0.5"
                     type: string
                 side:
                     description: Taker side
@@ -1433,11 +503,11 @@ components:
                     type: string
                 size:
                     description: Size of the fill
-                    example: '0.5'
+                    example: "0.5"
                     type: string
                 underlying_price:
                     description: Underlying asset price of the fill (spot price)
-                    example: '7.56'
+                    example: "7.56"
                     type: string
             required:
                 - id
@@ -1500,19 +570,19 @@ components:
                     type: string
                 created_at:
                     description: Funding payment time
-                    example: '1681375481000'
+                    example: "1681375481000"
                     type: integer
                 fill_id:
                     description: Fill id that triggered the payment (if any)
-                    example: '8615262148007718462'
+                    example: "8615262148007718462"
                     type: string
                 id:
                     description: Unique string ID to identify the payment
-                    example: '1681375578221101699352320000'
+                    example: "1681375578221101699352320000"
                     type: string
                 index:
                     description: Value of the funding index at the time of payment
-                    example: '-2819.53434361'
+                    example: "-2819.53434361"
                     type: string
                 market:
                     description: Market against which payment is made
@@ -1520,7 +590,7 @@ components:
                     type: string
                 payment:
                     description: Payment amount in settlement asset
-                    example: '34.4490622'
+                    example: "34.4490622"
                     type: string
             required:
                 - id
@@ -1536,35 +606,46 @@ components:
             properties:
                 ask:
                     description: Best ask price
-                    example: '30130.15'
+                    example: "30130.15"
                     type: string
                 ask_iv:
                     description: Ask implied volatility, for options
-                    example: '0.2'
+                    example: "0.2"
+                    type: string
+                ask_size:
+                    description: Size at best ask price
+                    example: "0.05"
                     type: string
                 bid:
                     description: Best bid price
-                    example: '30112.22'
+                    example: "30112.22"
                     type: string
                 bid_iv:
                     description: Bid implied volatility, for options
-                    example: '0.2'
+                    example: "0.2"
+                    type: string
+                bid_size:
+                    description: Size at best bid price
+                    example: "0.04"
                     type: string
                 created_at:
                     description: Market summary creation time
                     type: integer
                 delta:
                     description: 'Deprecated: Use greeks.delta instead'
-                    example: '1'
+                    example: "1"
+                    type: string
+                external_fair_price:
+                    description: 'External fair price, calculated from spot price and an external basis: spot_price * (1 + external_basis). where external basis is the median basis rate on different external exchanges'
+                    example: "29876.3"
                     type: string
                 funding_rate:
-                    description: >-
-                        This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate.
-                    example: '0.3'
+                    description: This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate.
+                    example: "0.3"
                     type: string
                 future_funding_rate:
                     description: For options it's a smoothed version of future's funding rate
-                    example: '0.3'
+                    example: "0.3"
                     type: string
                 greeks:
                     additionalProperties: false
@@ -1572,27 +653,31 @@ components:
                     properties:
                         delta:
                             description: Market Delta
-                            example: '1'
+                            example: "1"
                             type: string
                         gamma:
                             description: Market Gamma
-                            example: '0.2'
+                            example: "0.2"
                             type: string
                         rho:
                             description: Market Rho
-                            example: '0.2'
+                            example: "0.2"
+                            type: string
+                        theta:
+                            description: Market Theta
+                            example: "-0.2"
                             type: string
                         vanna:
                             description: Market Vanna
-                            example: '0.2'
+                            example: "0.2"
                             type: string
                         vega:
                             description: Market Vega
-                            example: '0.2'
+                            example: "0.2"
                             type: string
                         volga:
                             description: Market Volga
-                            example: '0.2'
+                            example: "0.2"
                             type: string
                     required:
                         - delta
@@ -1601,28 +686,27 @@ components:
                     type: object
                 last_iv:
                     description: Last traded price implied volatility, for options
-                    example: '0.2'
+                    example: "0.2"
                     type: string
                 last_traded_price:
                     description: Last traded price
-                    example: '30109.53'
+                    example: "30109.53"
                     type: string
                 mark_iv:
                     description: Mark implied volatility, for options
-                    example: '0.2'
+                    example: "0.2"
                     type: string
                 mark_price:
-                    description: >-
-                        [Mark price](https://docs.paradex.trade/risk-system/mark-price-calculation)
-                    example: '29799.70877478'
+                    description: '[Mark price](https://docs.paradex.trade/risk-system/mark-price-calculation)'
+                    example: "29799.70877478"
                     type: string
                 open_interest:
                     description: Open interest in base currency
-                    example: '6100048.3'
+                    example: "6100048.3"
                     type: string
                 price_change_rate_24h:
                     description: Price change rate in the last 24 hours
-                    example: '0.05'
+                    example: "0.05"
                     type: string
                 symbol:
                     description: Market symbol
@@ -1630,22 +714,24 @@ components:
                     type: string
                 total_volume:
                     description: Lifetime total traded volume in USD
-                    example: '141341.0424'
+                    example: "141341.0424"
                     type: string
                 underlying_price:
                     description: Underlying asset price (spot price)
-                    example: '29876.3'
+                    example: "29876.3"
                     type: string
                 volume_24h:
                     description: 24 hour volume in USD
-                    example: '47041.0424'
+                    example: "47041.0424"
                     type: string
             required:
                 - symbol
                 - mark_price
                 - last_traded_price
                 - bid
+                - bid_size
                 - ask
+                - ask_size
                 - volume_24h
                 - total_volume
                 - created_at
@@ -1663,7 +749,7 @@ components:
                     type: string
                 avg_fill_price:
                     description: Average fill price of the order
-                    example: '26000'
+                    example: "26000"
                     type: string
                 cancel_reason:
                     description: Reason for order cancellation if it was closed by cancel
@@ -1675,7 +761,7 @@ components:
                     type: string
                 created_at:
                     description: Order creation time
-                    example: '1681493746016'
+                    example: "1681493746016"
                     type: integer
                 flags:
                     description: 'Order flags, allow flag: REDUCE_ONLY'
@@ -1684,7 +770,7 @@ components:
                     type: array
                 id:
                     description: Unique order identifier generated by Paradex
-                    example: '123456'
+                    example: "123456"
                     type: string
                 instruction:
                     description: Execution instruction for order matching
@@ -1697,7 +783,7 @@ components:
                     type: string
                 last_updated_at:
                     description: Order last update time.  No changes once status=CLOSED
-                    example: '1681493746016'
+                    example: "1681493746016"
                     type: integer
                 market:
                     description: Market
@@ -1705,19 +791,19 @@ components:
                     type: string
                 price:
                     description: Order price. 0 for MARKET orders
-                    example: '26000'
+                    example: "26000"
                     type: string
                 published_at:
                     description: Timestamp in milliseconds when order was sent to the client
-                    example: '1681493746016'
+                    example: "1681493746016"
                     type: integer
                 received_at:
                     description: Timestamp in milliseconds when order was received by API service
-                    example: '1681493746016'
+                    example: "1681493746016"
                     type: integer
                 remaining_size:
                     description: Remaining size of the order
-                    example: '0'
+                    example: "0"
                     type: string
                 request_info:
                     additionalProperties: false
@@ -1742,9 +828,8 @@ components:
                         - request_type
                     type: object
                 seq_no:
-                    description: >-
-                        Unique increasing number (non-sequential) that is assigned to this order update and changes on every order update. Can be used to deduplicate multiple feeds. WebSocket and REST responses use independently generated seq_no per event.
-                    example: '1681471234972000000'
+                    description: Unique increasing number (non-sequential) that is assigned to this order update and changes on every order update. Can be used to deduplicate multiple feeds. WebSocket and REST responses use independently generated seq_no per event.
+                    example: "1681471234972000000"
                     type: integer
                 side:
                     description: Order side
@@ -1754,7 +839,7 @@ components:
                     type: string
                 size:
                     description: Order size
-                    example: '0.05'
+                    example: "0.05"
                     type: string
                 status:
                     description: Order status
@@ -1774,11 +859,11 @@ components:
                     type: string
                 timestamp:
                     description: Order signature timestamp
-                    example: '1681493746016'
+                    example: "1681493746016"
                     type: integer
                 trigger_price:
                     description: Trigger price for stop order
-                    example: '26000'
+                    example: "26000"
                     type: string
                 type:
                     description: Order type
@@ -1824,47 +909,47 @@ components:
                     type: string
                 average_entry_price:
                     description: Average entry price
-                    example: '29001.34'
+                    example: "29001.34"
                     type: string
                 average_entry_price_usd:
                     description: Average entry price in USD
-                    example: '29001.34'
+                    example: "29001.34"
                     type: string
                 average_exit_price:
                     description: Average exit price
-                    example: '29001.34'
+                    example: "29001.34"
                     type: string
                 cached_funding_index:
                     description: Position cached funding index
-                    example: '1234.3'
+                    example: "1234.3"
                     type: string
                 closed_at:
                     description: Position closed time
-                    example: '1681493939981'
+                    example: "1681493939981"
                     type: integer
                 cost:
                     description: Position cost
-                    example: '-10005.4623'
+                    example: "-10005.4623"
                     type: string
                 cost_usd:
                     description: Position cost in USD
-                    example: '-10005.4623'
+                    example: "-10005.4623"
                     type: string
                 created_at:
                     description: Position creation time
-                    example: '1681493939981'
+                    example: "1681493939981"
                     type: integer
                 id:
                     description: Unique string ID for the position
-                    example: '1234234'
+                    example: "1234234"
                     type: string
                 last_fill_id:
                     description: Last fill ID to which the position is referring
-                    example: '1234234'
+                    example: "1234234"
                     type: string
                 last_updated_at:
                     description: Position last update time
-                    example: '1681493939981'
+                    example: "1681493939981"
                     type: integer
                 leverage:
                     description: Leverage of the position
@@ -1877,39 +962,34 @@ components:
                     example: BTC-USD-PERP
                     type: string
                 realized_positional_funding_pnl:
-                    description: >-
-                        Realized Funding PnL for the position. Reset to 0 when position is closed or flipped.
-                    example: '12.234'
+                    description: Realized Funding PnL for the position. Reset to 0 when position is closed or flipped.
+                    example: "12.234"
                     type: string
                 realized_positional_pnl:
-                    description: >-
-                        Realized PnL including both positional PnL and funding payments. Reset to 0 when position is closed or flipped.
-                    example: '-123.23'
+                    description: Realized PnL including both positional PnL and funding payments. Reset to 0 when position is closed or flipped.
+                    example: "-123.23"
                     type: string
                 seq_no:
-                    description: >-
-                        Unique increasing number (non-sequential) that is assigned to this position update. Can be used to deduplicate multiple feeds
-                    example: '1681471234972000000'
+                    description: Unique increasing number (non-sequential) that is assigned to this position update. Can be used to deduplicate multiple feeds
+                    example: "1681471234972000000"
                     type: integer
                 side:
                     description: 'Position Side : Long or Short'
                     type: string
                 size:
-                    description: >-
-                        Size of the position with sign (positive if long or negative if short)
-                    example: '-0.345'
+                    description: Size of the position with sign (positive if long or negative if short)
+                    example: "-0.345"
                     type: string
                 status:
                     description: 'Status of Position : Open or Closed'
                     type: string
                 unrealized_funding_pnl:
                     description: Unrealized running funding P&L for the position
-                    example: '12.234'
+                    example: "12.234"
                     type: string
                 unrealized_pnl:
-                    description: >-
-                        Unrealized P&L of the position in the quote asset. Includes the unrealized running funding P&L.
-                    example: '-123.23'
+                    description: Unrealized P&L of the position in the quote asset. Includes the unrealized running funding P&L.
+                    example: "-123.23"
                     type: string
             required:
                 - id
@@ -2052,8 +1132,7 @@ components:
                 market:
                     type: string
                 relative_spread:
-                    description: >-
-                        Relative spread: (ask-bid)/midpoint. Only included for interactive feed.
+                    description: 'Relative spread: (ask-bid)/midpoint. Only included for interactive feed.'
                     type: string
                 seq_no:
                     type: integer
@@ -2095,11 +1174,11 @@ components:
             properties:
                 created_at:
                     description: Unix Millisecond timestamp at which trade was done
-                    example: '1681497002041'
+                    example: "1681497002041"
                     type: integer
                 id:
                     description: Unique Trade ID per TradeType
-                    example: '12345643'
+                    example: "12345643"
                     type: string
                 market:
                     description: Market for which trade was done
@@ -2107,7 +1186,7 @@ components:
                     type: string
                 price:
                     description: Trade price
-                    example: '30001.2'
+                    example: "30001.2"
                     type: string
                 side:
                     description: Taker side
@@ -2117,7 +1196,7 @@ components:
                     type: string
                 size:
                     description: Trade size
-                    example: '0.01'
+                    example: "0.01"
                     type: string
                 trade_type:
                     description: Trade type, can be FILL, LIQUIDATION, or RPI
@@ -2144,15 +1223,15 @@ components:
             properties:
                 account:
                     description: Paradex Account
-                    example: 2.073967317963419e+75
+                    example: 0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d9454fa
                     type: string
                 busted_fill_id:
                     description: Unique ID of the busted fill
-                    example: '12342345'
+                    example: "12342345"
                     type: string
                 created_at:
                     description: Unix timestamp in milliseconds when bust was created
-                    example: '1681497002041'
+                    example: "1681497002041"
                     type: integer
             required:
                 - account
@@ -2169,14 +1248,12 @@ components:
                     description: Timestamp from when the transaction was sent to blockchain gateway
                     type: integer
                 hash:
-                    description: >-
-                        Tx Hash of the settled trade                                                // Hash of the transaction
-                    example: 1.9324914957482895e+75
+                    description: Tx Hash of the settled trade                                                // Hash of the transaction
+                    example: 0x445c05d6bfb899e39338440d199971c4d7f4cde7878ed3888df3f716efb8df2
                     type: string
                 id:
-                    description: >-
-                        Unique string ID of the event that triggered the transaction. For example, fill ID or liquidation ID
-                    example: '12342423'
+                    description: Unique string ID of the event that triggered the transaction. For example, fill ID or liquidation ID
+                    example: "12342423"
                     type: string
                 state:
                     description: Status of the transaction on Starknet
@@ -2197,20 +1274,20 @@ components:
             properties:
                 account:
                     description: Starknet Account address
-                    example: 2.073967317963419e+75
+                    example: 0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d9454fa
                     type: string
                 amount:
                     description: Transferred amount
-                    example: '100'
+                    example: "100"
                     type: string
                 auto_withdrawal_fee:
                     description: Fee for auto withdrawal in USDC
-                    example: '4.5'
+                    example: "4.5"
                     type: string
                 bridge:
                     description: Bridge used for the transfer
                     enum:
-                        - ''
+                        - ""
                         - STARKGATE
                         - LAYERSWAP
                         - RHINOFI
@@ -2219,11 +1296,11 @@ components:
                     type: string
                 counterparty:
                     description: Counterparty address
-                    example: 2.073967317963419e+75
+                    example: 0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d9454fa
                     type: string
                 created_at:
                     description: Unix Millis timestamp transfer was created on L2
-                    example: '1681497002041'
+                    example: "1681497002041"
                     type: integer
                 direction:
                     description: Transfer direction (IN, OUT)
@@ -2234,7 +1311,7 @@ components:
                     type: string
                 external_account:
                     description: External chain account address
-                    example: 2.073967317963419e+75
+                    example: 0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d9454fa
                     type: string
                 external_chain:
                     description: External chain used for the transfer
@@ -2242,7 +1319,7 @@ components:
                     type: string
                 external_txn_hash:
                     description: Transaction hash on the external chain
-                    example: 2.073967317963419e+75
+                    example: 0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d9454fa
                     type: string
                 failure_reason:
                     description: Reason for transfer failure
@@ -2250,7 +1327,7 @@ components:
                     type: string
                 id:
                     description: Transfer auto-generated ID
-                    example: '123456789'
+                    example: "123456789"
                     type: string
                 kind:
                     description: Transfer Kind (DEPOSIT, WITHDRAWAL)
@@ -2261,15 +1338,16 @@ components:
                         - VAULT_DEPOSIT
                         - VAULT_WITHDRAWAL
                         - AUTO_WITHDRAWAL
+                        - AIRDROP
                     example: DEPOSIT
                     type: string
                 last_updated_at:
                     description: Unix Millis timestamp transfer was last updated on L2
-                    example: '1681497002041'
+                    example: "1681497002041"
                     type: integer
                 socialized_loss_factor:
                     description: Withdrawal's socialized loss factor
-                    example: '0'
+                    example: "0"
                     type: string
                 status:
                     description: Transfer External State (PENDING, AVAILABLE, COMPLETED, FAILED)
@@ -2286,15 +1364,15 @@ components:
                     type: string
                 txn_hash:
                     description: Transaction hash on Paradex chain
-                    example: 2.073967317963419e+75
+                    example: 0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d9454fa
                     type: string
                 vault_address:
                     description: Vault address
-                    example: 6.978151060218596e+47
+                    example: 0x7a3b1c8f9e2d4e6f8a0c2b4d6e8f0a2c4b6e8d0a
                     type: string
                 vault_unwind_completion_percentage:
                     description: Vault unwind completion percentage
-                    example: '0.35'
+                    example: "0.35"
                     type: string
             required:
                 - id
@@ -2319,338 +1397,6 @@ components:
                 - auto_withdrawal_fee
             type: object
     messages:
-        AccountSummaryRequest:
-            name: accountsummary
-            title: AccountSummaryRequest
-            summary: Subscription request
-            tags:
-                - name: account
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: account
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        BBORespRequest:
-            name: bboresp
-            title: BBORespRequest
-            summary: Subscription request
-            tags:
-                - name: market
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: bbo.{market_symbol}
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        BalanceEventRequest:
-            name: balanceevent
-            title: BalanceEventRequest
-            summary: Subscription request
-            tags:
-                - name: account
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: balance_events
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        FillResultRequest:
-            name: fillresult
-            title: FillResultRequest
-            summary: Subscription request
-            tags:
-                - name: trading
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: fills.{market_symbol}
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        FundingDataResultRequest:
-            name: fundingdataresult
-            title: FundingDataResultRequest
-            summary: Subscription request
-            tags:
-                - name: market
-                - name: funding
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: funding_data.{market_symbol}
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        FundingPaymentRequest:
-            name: fundingpayment
-            title: FundingPaymentRequest
-            summary: Subscription request
-            tags:
-                - name: funding
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: funding_payments.{market_symbol}
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        MarketSummaryRespRequest:
-            name: marketsummaryresp
-            title: MarketSummaryRespRequest
-            summary: Subscription request
-            tags:
-                - name: market
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: markets_summary[.{market_symbol}]
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        OrderRespRequest:
-            name: orderresp
-            title: OrderRespRequest
-            summary: Subscription request
-            tags:
-                - name: trading
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: orders.{market_symbol}
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        PositionRespRequest:
-            name: positionresp
-            title: PositionRespRequest
-            summary: Subscription request
-            tags:
-                - name: trading
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: positions
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        PriceBookUpdateRequest:
-            name: pricebookupdate
-            title: PriceBookUpdateRequest
-            summary: Subscription request
-            tags:
-                - name: market
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: >-
-                                    order_book.{market_symbol}.{feed_type}@15@{refresh_rate}[@{price_tick}]
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
         ResponsesAccountSummaryResponse:
             name: accountsummary
             title: AccountSummaryResponse
@@ -2658,66 +1404,13 @@ components:
             description: Subscribe to account messages
             tags:
                 - name: account
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: account
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesAccountSummaryResponse'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesBBOResp:
             name: bboresp
             title: BBOResp
-            summary: >-
-                Public websocket channel for tick updates of orderbook best bid/ask prices and amounts
+            summary: Public websocket channel for tick updates of orderbook best bid/ask prices and amounts
             description: Subscribe to market messages
             tags:
                 - name: market
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: bbo.{market_symbol}
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesBBOResp'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesBalanceEventResponse:
             name: balanceevent
             title: BalanceEventResponse
@@ -2725,66 +1418,13 @@ components:
             description: Subscribe to balance event messages
             tags:
                 - name: account
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: balance_events
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesBalanceEventResponse'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesFillResult:
             name: fillresult
             title: FillResult
-            summary: >-
-                Private websocket channel to receive details of fills for specific account
+            summary: Private websocket channel to receive details of fills for specific account
             description: Subscribe to fill messages for a market
             tags:
                 - name: trading
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: fills.{market_symbol}
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesFillResult'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesFundingDataResult:
             name: fundingdataresult
             title: FundingDataResult
@@ -2793,32 +1433,6 @@ components:
             tags:
                 - name: market
                 - name: funding
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: funding_data.{market_symbol}
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesFundingDataResult'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesFundingPayment:
             name: fundingpayment
             title: FundingPayment
@@ -2826,66 +1440,13 @@ components:
             description: Subscribe to funding payment messages for a market
             tags:
                 - name: funding
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: funding_payments.{market_symbol}
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesFundingPayment'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesMarketSummaryResp:
             name: marketsummaryresp
             title: MarketSummaryResp
             summary: Public websocket channel for updates of available markets
-            description: >-
-                Subscribe to market summary messages for specific markets or all markets. Supports both markets_summary (all markets) and markets_summary.{market_symbol} (specific market) subscription patterns.
+            description: Subscribe to market summary messages for specific markets or all markets. Supports both markets_summary (all markets) and markets_summary.{market_symbol} (specific market) subscription patterns.
             tags:
                 - name: market
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: markets_summary[.{market_symbol}]
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesMarketSummaryResp'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesOrderResp:
             name: orderresp
             title: OrderResp
@@ -2893,32 +1454,6 @@ components:
             description: Subscribe to order messages for a market
             tags:
                 - name: trading
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: orders.{market_symbol}
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesOrderResp'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesPositionResp:
             name: positionresp
             title: PositionResp
@@ -2926,137 +1461,27 @@ components:
             description: Subscribe to position messages
             tags:
                 - name: trading
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: positions
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesPositionResp'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesPriceBookUpdate:
             name: pricebookupdate
             title: PriceBookUpdate
-            summary: >-
-                Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
-            description: >-
-                Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
+            summary: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
+            description: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
             tags:
                 - name: market
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: >-
-                                    order_book.{market_symbol}.{feed_type}@15@{refresh_rate}[@{price_tick}]
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesPriceBookUpdate'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesTradeResult:
             name: traderesult
             title: TradeResult
-            summary: >-
-                Public websocket channel to receive updates on trades in particular market
+            summary: Public websocket channel to receive updates on trades in particular market
             description: Subscribe to trade messages for a market
             tags:
                 - name: market
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: trades.{market_symbol}
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesTradeResult'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesTradebustResult:
             name: tradebustresult
             title: TradebustResult
-            summary: >-
-                Private websocket channel to receive fills that are busted by a blockchain
-            description: >-
-                Private websocket channel to receive fills that are busted by a blockchain
+            summary: Private websocket channel to receive fills that are busted by a blockchain
+            description: Private websocket channel to receive fills that are busted by a blockchain
             tags:
                 - name: trading
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: tradebusts
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesTradebustResult'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesTransactionResponse:
             name: transaction
             title: TransactionResponse
@@ -3064,208 +1489,18 @@ components:
             description: Subscribe to transaction messages
             tags:
                 - name: account
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: transaction
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesTransactionResponse'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
         ResponsesTransferResult:
             name: transferresult
             title: TransferResult
             summary: Websocket channel for receiving transfer updates
-            description: >-
+            description: |-
                 <p>Meaning of each transfer status:</p>
-
                 <ul>
-
                 <li><code>PENDING</code>: L2 txn calling Paraclear contract is in flight: For Withdrawals it's the initial status; refers to the L2 txn status being <code>RECEIVED</code>, <code>PENDING</code>, <code>ACCEPTED_ON_L2</code>. For Deposits refers to L2 txn status being <code>RECEIVED</code>, <code>PENDING</code>.</li>
-
                 <li><code>AVAILABLE</code>: Action is required from user: For Withdrawals refers to L2 txn status being <code>ACCEPTED_ON_L1</code> and funds available for collection on Ethereum bridge. For Deposits refers to funds being available in the L2 account, ready to be deposited to Paraclear contract.</li>
-
                 <li><code>COMPLETED</code>: Transfer has completed (final state): For Withdrawals funds have been collected and have moved to the requested Ethereum account; refers to L1 bridge withdraw txn status <code>SUCCESS</code>. For Deposits funds have become available in Paradex; refers to the L2 txn status being <code>ACCEPTED_ON_L2</code>.</li>
-
                 <li><code>FAILED</code>: L2 txn calling Paraclear contract failed with <code>REJECTED</code> status. Deposits can be retried when they fail by repeating the L2 txn.</li>
-
                 </ul>
             tags:
                 - name: account
-            payload:
-                additionalProperties: false
-                properties:
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscription
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: transfers
-                                type: string
-                            data:
-                                $ref: '#/components/schemas/ResponsesTransferResult'
-                        required:
-                            - channel
-                            - data
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                type: object
-        TradeResultRequest:
-            name: traderesult
-            title: TradeResultRequest
-            summary: Subscription request
-            tags:
-                - name: market
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: trades.{market_symbol}
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        TradebustResultRequest:
-            name: tradebustresult
-            title: TradebustResultRequest
-            summary: Subscription request
-            tags:
-                - name: trading
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: tradebusts
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        TransactionRequest:
-            name: transaction
-            title: TransactionRequest
-            summary: Subscription request
-            tags:
-                - name: account
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: transaction
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
-        TransferResultRequest:
-            name: transferresult
-            title: TransferResultRequest
-            summary: Subscription request
-            tags:
-                - name: account
-            payload:
-                additionalProperties: false
-                properties:
-                    id:
-                        description: Client-generated request identifier
-                        type: integer
-                    jsonrpc:
-                        const: '2.0'
-                        type: string
-                    method:
-                        const: subscribe
-                        type: string
-                    params:
-                        additionalProperties: false
-                        properties:
-                            channel:
-                                const: transfers
-                                type: string
-                        required:
-                            - channel
-                        type: object
-                required:
-                    - jsonrpc
-                    - method
-                    - params
-                    - id
-                type: object
 defaultContentType: application/json

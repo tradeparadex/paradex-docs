@@ -7,7 +7,7 @@
     "dev": "fern docs dev"
   },
   "devDependencies": {
-    "fern-api": "^4.45.0",
+    "fern-api": "^4.67.1",
     "swagger2openapi": "^7.0.8"
   },
   "packageManager": "yarn@4.5.3"

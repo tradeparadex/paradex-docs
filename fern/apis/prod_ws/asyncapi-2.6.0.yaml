@@ -200,6 +200,907 @@ channels:
                     <li><code>FAILED</code>: L2 txn calling Paraclear contract failed with <code>REJECTED</code> status. Deposits can be retried when they fail by repeating the L2 txn.</li>
                     </ul>
         x-fern-display-name: transfers
+    /auth:
+        publish:
+            summary: Authenticate the WebSocket session
+            description: >-
+                Validates the JWT bearer token and associates the account with the
+                connection. Must be called before subscribing to private channels or
+                using order management methods.
+            tags:
+                - name: Session
+            message:
+                name: AuthRequest
+                title: AuthRequest
+                payload:
+                    type: object
+                    required:
+                        - bearer
+                    properties:
+                        bearer:
+                            type: string
+                            description: JWT string obtained from POST /auth
+                            example: eyJhbGci...
+        subscribe:
+            summary: auth response
+            tags:
+                - name: Session
+            message:
+                name: AuthResponse
+                title: AuthResponse
+                payload:
+                    type: object
+                    properties:
+                        node_id:
+                            type: string
+                            description: Opaque server node identifier
+        x-fern-display-name: auth
+    /subscribe:
+        publish:
+            summary: Subscribe to a WebSocket channel
+            description: >-
+                Starts receiving real-time messages for the given channel. Private
+                channels require prior authentication. See the WebSocket Channels
+                reference for all available channel names.
+            tags:
+                - name: Session
+            message:
+                name: SubscribeRequest
+                title: SubscribeRequest
+                payload:
+                    type: object
+                    required:
+                        - channel
+                    properties:
+                        channel:
+                            type: string
+                            description: Channel name to subscribe to (e.g. trades.BTC-USD-PERP)
+                            example: trades.BTC-USD-PERP
+        subscribe:
+            summary: subscribe response
+            tags:
+                - name: Session
+            message:
+                name: SubscribeResponse
+                title: SubscribeResponse
+                payload:
+                    type: object
+                    properties:
+                        channel:
+                            type: string
+                            description: Channel name that was subscribed
+        x-fern-display-name: subscribe
+    /unsubscribe:
+        publish:
+            summary: Unsubscribe from a WebSocket channel
+            tags:
+                - name: Session
+            message:
+                name: UnsubscribeRequest
+                title: UnsubscribeRequest
+                payload:
+                    type: object
+                    required:
+                        - channel
+                    properties:
+                        channel:
+                            type: string
+                            description: Channel name to unsubscribe from
+                            example: trades.BTC-USD-PERP
+        subscribe:
+            summary: unsubscribe response
+            tags:
+                - name: Session
+            message:
+                name: UnsubscribeResponse
+                title: UnsubscribeResponse
+                payload:
+                    type: object
+                    properties:
+                        channel:
+                            type: string
+                            description: Channel name that was unsubscribed
+        x-fern-display-name: unsubscribe
+    /order.create:
+        publish:
+            summary: Submit a new order
+            description: >-
+                Creates a single order. Requires authentication and a valid Starknet
+                signature over the order payload. Rate limits are shared with the
+                REST API (same Redis counters).
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCreateRequest
+                title: OrderCreateRequest
+                payload:
+                    type: object
+                    required:
+                        - market
+                        - side
+                        - type
+                        - size
+                        - price
+                        - instruction
+                        - signature
+                        - signature_timestamp
+                    properties:
+                        market:
+                            type: string
+                            description: Market symbol
+                            example: BTC-USD-PERP
+                        side:
+                            type: string
+                            description: Order side
+                            enum:
+                                - BUY
+                                - SELL
+                        type:
+                            type: string
+                            description: Order type
+                            enum:
+                                - LIMIT
+                                - MARKET
+                                - STOP_LIMIT
+                                - STOP_MARKET
+                        size:
+                            type: string
+                            description: Order size (decimal string)
+                            example: '0.01'
+                        price:
+                            type: string
+                            description: 'Limit price; use "0" for MARKET orders'
+                            example: '29500.00'
+                        instruction:
+                            type: string
+                            description: Time-in-force instruction
+                            enum:
+                                - GTC
+                                - IOC
+                                - POST_ONLY
+                                - RPI
+                        signature:
+                            type: string
+                            description: 'Starknet signature "[r,s]" over the order payload'
+                            example: '[r_value,s_value]'
+                        signature_timestamp:
+                            type: integer
+                            description: Unix timestamp in milliseconds used for signature verification
+                            example: 1696291200000
+                        client_id:
+                            type: string
+                            description: Client-assigned order ID (max 64 chars)
+                            example: my-order-001
+                        stp:
+                            type: string
+                            description: Self-trade prevention
+                            enum:
+                                - EXPIRE_MAKER
+                                - EXPIRE_TAKER
+                                - EXPIRE_BOTH
+                        recv_window:
+                            type: integer
+                            description: Max milliseconds between signature_timestamp and server receipt (min 10)
+                        flags:
+                            type: array
+                            description: Order flags
+                            items:
+                                type: string
+                                enum:
+                                    - REDUCE_ONLY
+                        trigger_price:
+                            type: string
+                            description: Trigger price for stop orders
+                            example: '29000.00'
+                        on_behalf_of_account:
+                            type: string
+                            description: Isolated margin account address for isolated margin orders
+                            example: '0x1234567890abcdef'
+        subscribe:
+            summary: order.create response
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCreateResponse
+                title: OrderCreateResponse
+                payload:
+                    type: object
+                    properties:
+                        created_at:
+                            type: integer
+                            description: Matching-engine timestamp in milliseconds
+                            example: 1696291200000
+                        received_at:
+                            type: integer
+                            description: Server receipt timestamp in nanoseconds, recorded before any speedbump
+                            example: 1696291200123456789
+                        order:
+                            type: object
+                            description: Created order
+                            properties:
+                                account:
+                                    type: string
+                                    description: Account address that owns the order
+                                    example: 0x4638e30...
+                                avg_fill_price:
+                                    type: string
+                                    description: 'Volume-weighted average fill price; "0" if unfilled'
+                                    example: '0'
+                                cancel_reason:
+                                    type: string
+                                    description: Reason for cancellation (populated when status=CLOSED)
+                                    example: USER_CANCELED
+                                client_id:
+                                    type: string
+                                    description: Client-assigned order ID
+                                    example: my-order-001
+                                created_at:
+                                    type: integer
+                                    description: Order creation time in milliseconds
+                                    example: 1696291200000
+                                flags:
+                                    type: array
+                                    description: Order flags applied
+                                    example: '["REDUCE_ONLY"]'
+                                    items:
+                                        type: string
+                                id:
+                                    type: string
+                                    description: Unique order identifier assigned by exchange
+                                    example: '1234567890'
+                                instruction:
+                                    type: string
+                                    description: Time-in-force instruction
+                                    enum:
+                                        - GTC
+                                        - IOC
+                                        - POST_ONLY
+                                        - RPI
+                                last_updated_at:
+                                    type: integer
+                                    description: Order last update time in milliseconds
+                                    example: 1696291200000
+                                market:
+                                    type: string
+                                    description: Market symbol
+                                    example: BTC-USD-PERP
+                                price:
+                                    type: string
+                                    description: Limit price
+                                    example: '29500.00'
+                                published_at:
+                                    type: integer
+                                    description: Exchange publish time in milliseconds
+                                    example: 1696291200000
+                                received_at:
+                                    type: integer
+                                    description: Exchange receipt time in milliseconds
+                                    example: 1696291200000
+                                remaining_size:
+                                    type: string
+                                    description: Remaining unfilled size
+                                    example: '0.01'
+                                seq_no:
+                                    type: integer
+                                    description: Monotonically increasing sequence number for this order's updates
+                                    example: 20784
+                                side:
+                                    type: string
+                                    description: Order side
+                                    enum:
+                                        - BUY
+                                        - SELL
+                                size:
+                                    type: string
+                                    description: Order size
+                                    example: '0.01'
+                                status:
+                                    type: string
+                                    description: Order status
+                                    enum:
+                                        - NEW
+                                        - OPEN
+                                        - CLOSED
+                                timestamp:
+                                    type: integer
+                                    description: Signature timestamp supplied at creation
+                                    example: 1696291200000
+                                trigger_price:
+                                    type: string
+                                    description: Trigger price for stop orders
+                                    example: '29000.00'
+                                type:
+                                    type: string
+                                    description: Order type
+                                    enum:
+                                        - LIMIT
+                                        - MARKET
+                                        - STOP_LIMIT
+                                        - STOP_MARKET
+        x-fern-display-name: order.create
+    /order.create_batch:
+        publish:
+            summary: Submit multiple orders in a single request
+            description: >-
+                Creates up to the configured maximum number of orders atomically.
+                All signatures are validated before any orders reach the matching
+                engine. Rate limit is consumed once for the entire batch.
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCreateBatchRequest
+                title: OrderCreateBatchRequest
+                payload:
+                    type: object
+                    required:
+                        - orders
+                    properties:
+                        orders:
+                            type: array
+                            description: Array of order create requests (max batch size enforced server-side)
+                            items:
+                                type: object
+                                required:
+                                    - market
+                                    - side
+                                    - type
+                                    - size
+                                    - price
+                                    - instruction
+                                    - signature
+                                    - signature_timestamp
+                                properties:
+                                    market:
+                                        type: string
+                                        description: Market symbol
+                                        example: BTC-USD-PERP
+                                    side:
+                                        type: string
+                                        description: Order side
+                                        enum:
+                                            - BUY
+                                            - SELL
+                                    type:
+                                        type: string
+                                        description: Order type
+                                        enum:
+                                            - LIMIT
+                                            - MARKET
+                                            - STOP_LIMIT
+                                            - STOP_MARKET
+                                    size:
+                                        type: string
+                                        description: Order size (decimal string)
+                                        example: '0.01'
+                                    price:
+                                        type: string
+                                        description: 'Limit price; use "0" for MARKET orders'
+                                        example: '29500.00'
+                                    instruction:
+                                        type: string
+                                        description: Time-in-force instruction
+                                        enum:
+                                            - GTC
+                                            - IOC
+                                            - POST_ONLY
+                                            - RPI
+                                    signature:
+                                        type: string
+                                        description: 'Starknet signature "[r,s]" over the order payload'
+                                        example: '[r_value,s_value]'
+                                    signature_timestamp:
+                                        type: integer
+                                        description: Unix timestamp in milliseconds used for signature verification
+                                        example: 1696291200000
+                                    client_id:
+                                        type: string
+                                        description: Client-assigned order ID (max 64 chars)
+                                        example: my-order-001
+                                    stp:
+                                        type: string
+                                        description: Self-trade prevention
+                                        enum:
+                                            - EXPIRE_MAKER
+                                            - EXPIRE_TAKER
+                                            - EXPIRE_BOTH
+                                    recv_window:
+                                        type: integer
+                                        description: Max milliseconds between signature_timestamp and server receipt (min 10)
+                                    flags:
+                                        type: array
+                                        description: Order flags
+                                        items:
+                                            type: string
+                                            enum:
+                                                - REDUCE_ONLY
+                                    trigger_price:
+                                        type: string
+                                        description: Trigger price for stop orders
+                                        example: '29000.00'
+                                    on_behalf_of_account:
+                                        type: string
+                                        description: Isolated margin account address for isolated margin orders
+                                        example: '0x1234567890abcdef'
+        subscribe:
+            summary: order.create_batch response
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCreateBatchResponse
+                title: OrderCreateBatchResponse
+                payload:
+                    type: object
+                    properties:
+                        results:
+                            type: array
+                            description: Per-order outcomes in the same order as the request array
+                            items:
+                                type: object
+                                properties:
+                                    created_at:
+                                        type: integer
+                                        description: Matching-engine timestamp in milliseconds (present on success)
+                                    error:
+                                        type: string
+                                        description: Error message (present on failure)
+                                    received_at:
+                                        type: integer
+                                        description: Server receipt timestamp in nanoseconds (present on success)
+                                    order:
+                                        type: object
+                                        description: Created order (present on success)
+                                        properties:
+                                            account:
+                                                type: string
+                                                description: Account address that owns the order
+                                                example: 0x4638e30...
+                                            avg_fill_price:
+                                                type: string
+                                                description: 'Volume-weighted average fill price; "0" if unfilled'
+                                                example: '0'
+                                            cancel_reason:
+                                                type: string
+                                                description: Reason for cancellation (populated when status=CLOSED)
+                                                example: USER_CANCELED
+                                            client_id:
+                                                type: string
+                                                description: Client-assigned order ID
+                                                example: my-order-001
+                                            created_at:
+                                                type: integer
+                                                description: Order creation time in milliseconds
+                                                example: 1696291200000
+                                            flags:
+                                                type: array
+                                                description: Order flags applied
+                                                example: '["REDUCE_ONLY"]'
+                                                items:
+                                                    type: string
+                                            id:
+                                                type: string
+                                                description: Unique order identifier assigned by exchange
+                                                example: '1234567890'
+                                            instruction:
+                                                type: string
+                                                description: Time-in-force instruction
+                                                enum:
+                                                    - GTC
+                                                    - IOC
+                                                    - POST_ONLY
+                                                    - RPI
+                                            last_updated_at:
+                                                type: integer
+                                                description: Order last update time in milliseconds
+                                                example: 1696291200000
+                                            market:
+                                                type: string
+                                                description: Market symbol
+                                                example: BTC-USD-PERP
+                                            price:
+                                                type: string
+                                                description: Limit price
+                                                example: '29500.00'
+                                            published_at:
+                                                type: integer
+                                                description: Exchange publish time in milliseconds
+                                                example: 1696291200000
+                                            received_at:
+                                                type: integer
+                                                description: Exchange receipt time in milliseconds
+                                                example: 1696291200000
+                                            remaining_size:
+                                                type: string
+                                                description: Remaining unfilled size
+                                                example: '0.01'
+                                            seq_no:
+                                                type: integer
+                                                description: Monotonically increasing sequence number for this order's updates
+                                                example: 20784
+                                            side:
+                                                type: string
+                                                description: Order side
+                                                enum:
+                                                    - BUY
+                                                    - SELL
+                                            size:
+                                                type: string
+                                                description: Order size
+                                                example: '0.01'
+                                            status:
+                                                type: string
+                                                description: Order status
+                                                enum:
+                                                    - NEW
+                                                    - OPEN
+                                                    - CLOSED
+                                            timestamp:
+                                                type: integer
+                                                description: Signature timestamp supplied at creation
+                                                example: 1696291200000
+                                            trigger_price:
+                                                type: string
+                                                description: Trigger price for stop orders
+                                                example: '29000.00'
+                                            type:
+                                                type: string
+                                                description: Order type
+                                                enum:
+                                                    - LIMIT
+                                                    - MARKET
+                                                    - STOP_LIMIT
+                                                    - STOP_MARKET
+        x-fern-display-name: order.create_batch
+    /order.modify:
+        publish:
+            summary: Modify an existing open order
+            description: >-
+                Updates the price and/or size of an open order. A new Starknet
+                signature over the updated order payload is required.
+            tags:
+                - name: Order Management
+            message:
+                name: OrderModifyRequest
+                title: OrderModifyRequest
+                payload:
+                    type: object
+                    required:
+                        - id
+                        - market
+                        - side
+                        - type
+                        - size
+                        - price
+                        - signature
+                        - signature_timestamp
+                    properties:
+                        id:
+                            type: string
+                            description: Order ID to modify
+                            example: '1234567890'
+                        market:
+                            type: string
+                            description: Market symbol of the existing order
+                            example: BTC-USD-PERP
+                        side:
+                            type: string
+                            description: Existing side of the order
+                            enum:
+                                - BUY
+                                - SELL
+                        type:
+                            type: string
+                            description: Existing type of the order
+                            enum:
+                                - LIMIT
+                                - MARKET
+                                - STOP_LIMIT
+                                - STOP_MARKET
+                        size:
+                            type: string
+                            description: New (or unchanged) size
+                            example: '0.02'
+                        price:
+                            type: string
+                            description: New (or unchanged) limit price
+                            example: '29600.00'
+                        trigger_price:
+                            type: string
+                            description: New (or unchanged) trigger price for TPSL orders
+                            example: '29000.00'
+                        signature:
+                            type: string
+                            description: 'Starknet signature "[r,s]" over the modified order payload'
+                            example: '[r_value,s_value]'
+                        signature_timestamp:
+                            type: integer
+                            description: Unix timestamp in milliseconds used for signature verification
+                            example: 1696291300000
+                        on_behalf_of_account:
+                            type: string
+                            description: Isolated margin account address
+                            example: '0x1234567890abcdef'
+        subscribe:
+            summary: order.modify response
+            tags:
+                - name: Order Management
+            message:
+                name: OrderModifyResponse
+                title: OrderModifyResponse
+                payload:
+                    type: object
+                    properties:
+                        order:
+                            type: object
+                            description: Modified order
+                            properties:
+                                account:
+                                    type: string
+                                    description: Account address that owns the order
+                                    example: 0x4638e30...
+                                avg_fill_price:
+                                    type: string
+                                    description: 'Volume-weighted average fill price; "0" if unfilled'
+                                    example: '0'
+                                cancel_reason:
+                                    type: string
+                                    description: Reason for cancellation (populated when status=CLOSED)
+                                    example: USER_CANCELED
+                                client_id:
+                                    type: string
+                                    description: Client-assigned order ID
+                                    example: my-order-001
+                                created_at:
+                                    type: integer
+                                    description: Order creation time in milliseconds
+                                    example: 1696291200000
+                                flags:
+                                    type: array
+                                    description: Order flags applied
+                                    example: '["REDUCE_ONLY"]'
+                                    items:
+                                        type: string
+                                id:
+                                    type: string
+                                    description: Unique order identifier assigned by exchange
+                                    example: '1234567890'
+                                instruction:
+                                    type: string
+                                    description: Time-in-force instruction
+                                    enum:
+                                        - GTC
+                                        - IOC
+                                        - POST_ONLY
+                                        - RPI
+                                last_updated_at:
+                                    type: integer
+                                    description: Order last update time in milliseconds
+                                    example: 1696291200000
+                                market:
+                                    type: string
+                                    description: Market symbol
+                                    example: BTC-USD-PERP
+                                price:
+                                    type: string
+                                    description: Limit price
+                                    example: '29500.00'
+                                published_at:
+                                    type: integer
+                                    description: Exchange publish time in milliseconds
+                                    example: 1696291200000
+                                received_at:
+                                    type: integer
+                                    description: Exchange receipt time in milliseconds
+                                    example: 1696291200000
+                                remaining_size:
+                                    type: string
+                                    description: Remaining unfilled size
+                                    example: '0.01'
+                                seq_no:
+                                    type: integer
+                                    description: Monotonically increasing sequence number for this order's updates
+                                    example: 20784
+                                side:
+                                    type: string
+                                    description: Order side
+                                    enum:
+                                        - BUY
+                                        - SELL
+                                size:
+                                    type: string
+                                    description: Order size
+                                    example: '0.01'
+                                status:
+                                    type: string
+                                    description: Order status
+                                    enum:
+                                        - NEW
+                                        - OPEN
+                                        - CLOSED
+                                timestamp:
+                                    type: integer
+                                    description: Signature timestamp supplied at creation
+                                    example: 1696291200000
+                                trigger_price:
+                                    type: string
+                                    description: Trigger price for stop orders
+                                    example: '29000.00'
+                                type:
+                                    type: string
+                                    description: Order type
+                                    enum:
+                                        - LIMIT
+                                        - MARKET
+                                        - STOP_LIMIT
+                                        - STOP_MARKET
+        x-fern-display-name: order.modify
+    /order.cancel:
+        publish:
+            summary: Cancel a single order
+            description: >-
+                Cancels an order by exchange order ID or by client_id + market.
+                Either id or (client_id + market) must be provided.
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCancelRequest
+                title: OrderCancelRequest
+                payload:
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                            description: Order ID to cancel; either id or client_id+market is required
+                            example: '1234567890'
+                        client_id:
+                            type: string
+                            description: Client-assigned order ID; requires market when used
+                            example: my-order-001
+                        market:
+                            type: string
+                            description: Market symbol; required when cancelling by client_id
+                            example: BTC-USD-PERP
+        subscribe:
+            summary: order.cancel response
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCancelResponse
+                title: OrderCancelResponse
+                payload:
+                    type: object
+                    properties:
+                        order_id:
+                            type: string
+                            description: Cancelled order ID
+                            example: '1234567890'
+                        status:
+                            type: string
+                            description: 'Always "cancelled"'
+                            example: cancelled
+        x-fern-display-name: order.cancel
+    /order.cancel_batch:
+        publish:
+            summary: Cancel multiple orders by ID
+            description: >-
+                Cancels a list of orders by their exchange IDs. Returns a per-order
+                status; the request does not fail if individual orders are not found
+                or already closed.
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCancelBatchRequest
+                title: OrderCancelBatchRequest
+                payload:
+                    type: object
+                    required:
+                        - order_ids
+                    properties:
+                        order_ids:
+                            type: array
+                            description: List of order IDs to cancel
+                            example: '["111","222"]'
+                            items:
+                                type: string
+        subscribe:
+            summary: order.cancel_batch response
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCancelBatchResponse
+                title: OrderCancelBatchResponse
+                payload:
+                    type: object
+                    properties:
+                        results:
+                            type: array
+                            description: Per-order outcomes in the same order as order_ids
+                            items:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                        description: Order ID
+                                        example: '1234567890'
+                                    market:
+                                        type: string
+                                        description: Market symbol (absent when status is NOT_FOUND)
+                                        example: BTC-USD-PERP
+                                    status:
+                                        type: string
+                                        description: Outcome for this order
+                                        enum:
+                                            - QUEUED_FOR_CANCELLATION
+                                            - ALREADY_CLOSED
+                                            - NOT_FOUND
+        x-fern-display-name: order.cancel_batch
+    /order.cancel_all:
+        publish:
+            summary: Cancel all open orders
+            description: >-
+                Cancels all open orders for the authenticated account. If market is
+                provided only orders in that market are cancelled.
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCancelAllRequest
+                title: OrderCancelAllRequest
+                payload:
+                    type: object
+                    properties:
+                        market:
+                            type: string
+                            description: If set, only cancel orders in this market; omit to cancel all open orders
+                            example: BTC-USD-PERP
+        subscribe:
+            summary: order.cancel_all response
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCancelAllResponse
+                title: OrderCancelAllResponse
+                payload:
+                    type: object
+                    properties:
+                        status:
+                            type: string
+                            description: 'Always "ok"'
+                            example: ok
+        x-fern-display-name: order.cancel_all
+    /order.cancel_on_disconnect:
+        publish:
+            summary: Toggle Cancel on Disconnect (CoD)
+            description: >-
+                When enabled, all orders placed (or already tracked) during this
+                connection are automatically cancelled if the WebSocket disconnects
+                unexpectedly. CoD state is scoped to the connection and does not
+                persist across reconnects.
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCancelOnDisconnectRequest
+                title: OrderCancelOnDisconnectRequest
+                payload:
+                    type: object
+                    required:
+                        - enabled
+                    properties:
+                        enabled:
+                            type: boolean
+                            description: true to enable Cancel on Disconnect, false to disable
+        subscribe:
+            summary: order.cancel_on_disconnect response
+            tags:
+                - name: Order Management
+            message:
+                name: OrderCancelOnDisconnectResponse
+                title: OrderCancelOnDisconnectResponse
+                payload:
+                    type: object
+                    properties:
+                        enabled:
+                            type: boolean
+                            description: The new Cancel on Disconnect state for this connection
+        x-fern-display-name: order.cancel_on_disconnect
 components:
     parameters:
         feed_type:

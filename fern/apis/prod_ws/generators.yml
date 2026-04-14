@@ -9,4 +9,3 @@ api:
         wrap-references-to-nullable-in-optional: true
         coerce-optional-schemas-to-nullable: true
         coerce-enums-to-literals: true
-    - openrpc: ./openrpc.json

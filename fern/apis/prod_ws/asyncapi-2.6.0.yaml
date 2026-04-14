@@ -171,8 +171,10 @@ channels:
                             example: "1234567890"
                             type: string
                         status:
-                            description: Always "cancelled"
-                            example: cancelled
+                            description: Cancellation status
+                            enum:
+                                - QUEUED_FOR_CANCELLATION
+                            example: QUEUED_FOR_CANCELLATION
                             type: string
                     type: object
         x-fern-display-name: order.cancel

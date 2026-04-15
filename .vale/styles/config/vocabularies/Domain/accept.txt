@@ -47,6 +47,7 @@ Shizopunk
 Solana
 Starknet
 Starkware
+subaccounts
 Subkey
 Subkeys
 sybil

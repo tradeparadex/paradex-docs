@@ -171,6 +171,9 @@ navigation:
       - page: Trading Fees
         slug: trading-fees
         path: ./pages/trading/trading-fees.mdx
+      - page: Trading Fees v2
+        slug: trading-fees-v2
+        path: ./pages/trading/trading-fees-v2.mdx
       - page: Trader Profiles
         slug: trader-profiles
         path: ./pages/trading/trader-profiles.mdx

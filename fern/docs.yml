@@ -1262,6 +1262,10 @@ redirects:
   - source: "/trading/placing-orders"
     destination: "/trading/orders/placing-orders"
 
+  # Redirect staking to Trading Fees v2 staking section
+  - source: "/staking"
+    destination: "/trading/trading-fees-v2#staking-discounts-pro--retail"
+
 layout:
   header-height: 72px
   searchbar-placement: header

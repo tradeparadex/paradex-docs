@@ -8242,11 +8242,12 @@
         "properties": {
           "asset_kind": {
             "type": "string",
-            "description": "Type of asset",
+            "description": "Type of asset (PERP for perpetual futures, PERP_OPTION for perpetual options, SPOT for spot markets)",
             "example": "PERP",
             "enum": [
               "PERP",
-              "PERP_OPTION"
+              "PERP_OPTION",
+              "SPOT"
             ]
           },
           "base_currency": {

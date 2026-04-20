@@ -66,9 +66,13 @@ Pro taker fees for Spot & Perps are determined by the user's 14-day (14D) Spot &
 
 <sub>Fees are calculated on trade notional (Size × Trade Price).</sub>
 
+### Minimum fee
+
+Pro fees after all discounts are subject to a minimum of 1.75 bps (0.0175%). Combined discounts from staking (up to 30%), \$DIME fee discount (40%), and [FastFills](/trading/fastfills) (30%) can total up to 100%.
+
 ### FastFills discount
 
-Pro taker fees are reduced by an additional 30% (stackable with staking and \$DIME fee discounts) when matching against retail orders, with minimum fees capped at 1 bps (0.01%). See [FastFills](/trading/fastfills) for details.
+Pro taker fees are reduced by an additional 30% (stackable with staking and \$DIME fee discounts) when matching against retail orders. See [FastFills](/trading/fastfills) for details.
 
 ## Spot & Perps fee scenarios
 
@@ -78,8 +82,10 @@ The table below illustrates how volume tiers, \$DIME fee discounts, and staking 
 |---|---|---|---|---|---|---|---|---|
 | Retail A | VIP 5 | 0.012% | 40% | 1M \$DIME | 25% | — | 65% | 0.0042% |
 | Retail B | VIP 1 | 0.02% | 40% | 50K \$DIME | 10% | — | 50% | 0.01% |
-| Pro A | Pro 1 | 0.042% | 40% | 10K \$DIME | 5% | 30% | 75% | 0.0105% |
-| Pro B | Pro 4 | 0.035% | 40% | 2M \$DIME | 30% | — | 70% | 0.0105% |
+| Pro A | Pro 1 | 0.042% | 40% | 10K \$DIME | 5% | 30% | 75% | 0.0175%* |
+| Pro B | Pro 4 | 0.035% | 40% | 2M \$DIME | 30% | — | 70% | 0.0175%* |
+
+<sub>*Minimum Pro fee of 1.75 bps (0.0175%) applies.</sub>
 
 ## Options fees (Pro & Retail)
 

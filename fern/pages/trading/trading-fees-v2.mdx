@@ -1,6 +1,6 @@
 ---
 title: Trading Fees v2
-subtitle: Trading fees vary based on your [Trader Profile](/trading/trader-profiles), 14-day trading volume, \$DIME staking amount, and whether you opt to pay fees in \$DIME.
+subtitle: Trading fees vary based on your [Trader Profile](/trading/trader-profiles), 14-day trading volume, \$DIME staking tier, and whether you pay fees in \$DIME.
 ---
 
 <Note title="Transition period" icon="fa-solid fa-circle-info">
@@ -9,9 +9,9 @@ During the transition period of one week (April 22 - April 29, 1PM SGT), all use
 
 ## Trading volume tiers (Retail) — Spot & Perps
 
-Retail taker fees for Spot & Perps are determined by the user's 14-day (14D) Spot & Perps trading volume across main account and all subaccounts.
+Retail taker fees are determined by the user's 14-day (14D) trading volume across main account and all subaccounts.
 
-Holders of a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [ShizoPunks](https://opensea.io/collection/shizopunks) NFT on their connected wallet qualify for reduced volume thresholds as shown below.
+Holders of a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [ShizoPunks](https://opensea.io/collection/shizopunks) NFT on their connected wallet qualify for reduced volume thresholds.
 
 | Tier | 14D Volume (USD) | OR | 14D Volume (USD) + NFT | Taker Fee | Maker Fee |
 |---|---|---|---|---|---|
@@ -27,7 +27,7 @@ Holders of a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [Shiz
 
 ## Trading volume tiers (Pro) — Spot & Perps
 
-Pro taker fees for Spot & Perps are determined by the user's 14-day (14D) Spot & Perps trading volume across main account and all subaccounts.
+Pro taker fees are determined by the user's 14-day (14D) trading volume across main account and all subaccounts.
 
 | Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
 |---|---|---|---|
@@ -49,7 +49,7 @@ Pro taker fees are reduced by an additional 30% (stackable with staking and \$DI
 
 ## Staking discounts (Pro & Retail)
 
-Users who stake \$DIME receive a discount on their Spot & Perps trading fees. The discount scales with the amount staked, up to 30%. See [How does staking work?](#faq) for more details.
+Users who stake \$DIME receive a discount on their Spot & Perps taker fees, scaling up to 30%. See [How does staking work?](#faq).
 
 - Applies to the user's volume-based taker fees
 - Stackable with \$DIME fee discount
@@ -65,19 +65,19 @@ Users who stake \$DIME receive a discount on their Spot & Perps trading fees. Th
 
 ## \$DIME fee discounts (Pro & Retail)
 
-Users who opt to pay their Spot & Perps trading fees in \$DIME receive an additional flat discount. \$DIME fees are deducted from the user's spot \$DIME deposit on Paradex.
+Users who pay their Spot & Perps trading fees in \$DIME receive an additional flat discount, deducted from their spot \$DIME deposit on Paradex.
 
 - Flat 40% discount initially
 - Stackable on top of staking discount
 - Mark price exchange rate (\$DIME ↔ USDC) at the time of the user's transaction applies
 
 <Tip title="Example" icon="fa-solid fa-lightbulb">
-If a user stakes 100K \$DIME (15% staking discount) and pays trading fees in \$DIME (40% \$DIME fee discount), the ultimate discount rate would be 55% (15% + 40%) applied to the user's volume-based taker fee.
+If a user stakes 100K \$DIME (15% staking discount) and pays trading fees in \$DIME (40% \$DIME fee discount), the total discount is 55% (15% + 40%), applied to the volume-based taker fee.
 </Tip>
 
 ## Spot & Perps fee scenarios
 
-The table below illustrates how volume tiers, \$DIME fee discounts, and staking discounts combine to determine a user's ultimate fee rate.
+Examples of how volume tiers, \$DIME fee discounts, and staking discounts combine to determine a user's final fee rate.
 
 | Scenario | Volume Tier | Taker Fee | \$DIME Fee DC (40%) | Staking Amount | Staking DC | FastFills DC | Total DC | Final Fee |
 |---|---|---|---|---|---|---|---|---|
@@ -103,7 +103,7 @@ Options Pro taker fees are reduced by an additional 30% when matching against re
 
 ## Settlement fees
 
-When a market is delisted, a settlement fee is applied to close any positions still open in that market.
+When a market is delisted, a settlement fee applies to any positions still open.
 
 | Market | Fee |
 |---|---|
@@ -114,10 +114,10 @@ When a market is delisted, a settlement fee is applied to close any positions st
 
 <AccordionGroup>
 <Accordion title="How does staking work?">
-Staked \$DIME provides access to platform benefits such as reduced trading fees. The more \$DIME you stake, the higher your staking discount tier — ranging from 5% (Wood) to 30% (Diamond). Staking discounts apply to your volume-based taker fees and are stackable with the \$DIME fee discount.
+Stake \$DIME to unlock tiered fee discounts ranging from 5% (Wood) to 30% (Diamond), applied to your volume-based taker fees and stackable with the \$DIME fee discount.
 
-You can request unstaking at any time after locking your funds. A 24-hour cooldown period begins once you submit the unstaking request. After the cooldown period ends, you must confirm the unstaking to receive your funds.
+To unstake, submit an unstaking request at any time. A 24-hour cooldown follows, after which you must confirm to receive your funds.
 
-For more details on \$DIME utility, see [\$DIME Utility](/docs/getting-started/dime-utility).
+For more on \$DIME, see [\$DIME Utility](/docs/getting-started/dime-utility).
 </Accordion>
 </AccordionGroup>

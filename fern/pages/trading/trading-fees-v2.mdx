@@ -7,26 +7,9 @@ subtitle: Trading fees vary based on your [Trader Profile](/trading/trader-profi
 During one week (April 22 - April 29, 1PM SGT), all users will enjoy VIP 6 and Special Pro tier fees along with Diamond tier staking discounts of 30% (taker fees of 0.7 bps for Retail and 1.96 bps for Pro; maker fees of 0% for everyone). Additional \$DIME fee discounts can be enabled immediately.
 </Note>
 
-## Maximize your discounts
+## Your base fees
 
-<CardGroup cols={2}>
-  <Card title="Increase trading volume" icon="fa-solid fa-chart-line">
-    Unlock lower base taker fees through higher 14-day volume tiers.
-  </Card>
-  <Card title="Stake \$DIME" icon="fa-solid fa-lock">
-    Earn up to 30% off taker fees based on your staking tier.
-  </Card>
-  <Card title="Pay fees in \$DIME" icon="fa-solid fa-coins">
-    Get a flat 40% discount, stackable with staking.
-  </Card>
-  <Card title="FastFills (Pro only)" icon="fa-solid fa-bolt">
-    30% off when matching against retail orders.
-  </Card>
-</CardGroup>
-
-## Trading volume tiers — Spot & Perps
-
-Maker fees are 0% for all tiers. Taker fees depend on your [Trader Profile](/trading/trader-profiles) and 14-day trading volume across main account and all subaccounts.
+Maker fees are 0% for all tiers and profiles. Your taker fee depends on your [Trader Profile](/trading/trader-profiles) and 14-day trading volume across main account and all subaccounts.
 
 <Tabs>
   <Tab title="Retail">
@@ -54,21 +37,18 @@ Maker fees are 0% for all tiers. Taker fees depend on your [Trader Profile](/tra
     | Pro 4 | ≥ 25M | 0.035% | 0% |
 
     <sub>Fees are calculated on trade notional (Size × Trade Price).</sub>
-
-    **Minimum fee** — Pro fees are subject to a minimum of 1.75 bps (0.0175%), regardless of the total discount applied.
-
-    **FastFills discount** — Pro taker fees are reduced by an additional 30% (stackable with staking and \$DIME fee discounts) when matching against retail orders. See [FastFills](/trading/fastfills) for details.
   </Tab>
 </Tabs>
 
-## Staking discounts (Pro & Retail)
+## Lower your fees
 
-Users who stake \$DIME receive a discount on their Spot & Perps taker fees, scaling up to 30%. See [How does staking work?](#faq).
+Stack these discounts to reduce your Spot & Perps taker fee. Pro fees have a minimum of 1.75 bps (0.0175%) regardless of total discount.
 
-- Applies to the user's volume-based taker fees
-- Stackable with \$DIME fee discount
+### Stake \$DIME — up to 30% off
 
-| Staking Discount Tier | Staking Amount (\$DIME) | Fee Discount |
+Stake \$DIME to receive a discount on your taker fees. See [How does staking work?](#faq).
+
+| Staking Tier | Staking Amount (\$DIME) | Fee Discount |
 |---|---|---|
 | Wood | 10K | 5% |
 | Bronze | 50K | 10% |
@@ -77,22 +57,23 @@ Users who stake \$DIME receive a discount on their Spot & Perps taker fees, scal
 | Platinum | 1M | 25% |
 | Diamond | 2M | 30% |
 
-## \$DIME fee discount (Pro & Retail)
+### Pay fees in \$DIME — 40% off
 
-Users who pay their Spot & Perps trading fees in \$DIME receive an additional flat discount, deducted from their spot \$DIME deposit on Paradex.
+Pay your trading fees in \$DIME for a flat 40% discount, deducted from your spot \$DIME deposit on Paradex. Stackable on top of staking discount.
 
-- Flat 40% discount initially
-- Stackable on top of staking discount
-- Mark price exchange rate (\$DIME ↔ USDC) at the time of the user's transaction applies
+- Mark price exchange rate (\$DIME ↔ USDC) at the time of the transaction applies
 
 <Tip title="Example" icon="fa-solid fa-lightbulb">
-If a user stakes 100K \$DIME (15% staking discount) and pays trading fees in \$DIME (40% \$DIME fee discount), the total discount is 55% (15% + 40%), applied to the volume-based taker fee.
+100K \$DIME staked (15% staking discount) + \$DIME fee payment (40%) = 55% total discount on your taker fee.
 </Tip>
 
-## Spot & Perps fee scenarios
+### FastFills — 30% off (Pro only)
 
-<Accordion title="How discounts combine" defaultOpen={true}>
-Examples of how volume tiers, \$DIME fee discounts, and staking discounts combine to determine a user's final fee rate.
+Pro taker fees are reduced by 30% when matching against retail orders. Stackable with staking and \$DIME fee discounts. See [FastFills](/trading/fastfills) for details.
+
+## Fee scenarios
+
+<Accordion title="Example combinations" defaultOpen={true}>
 
 | Scenario | Volume Tier | Taker Fee | \$DIME Fee DC (40%) | Staking Amount | Staking DC | FastFills DC | Total DC | Final Fee |
 |---|---|---|---|---|---|---|---|---|
@@ -104,7 +85,7 @@ Examples of how volume tiers, \$DIME fee discounts, and staking discounts combin
 <sub>*Minimum Pro fee of 1.75 bps (0.0175%) applies.</sub>
 </Accordion>
 
-## Options fees (Pro & Retail)
+## Options fees
 
 Fees are capped at 12.5% of the option price (premium). FastFills discount applies to the fee amount.
 
@@ -113,9 +94,7 @@ Fees are capped at 12.5% of the option price (premium). FastFills discount appli
 | <Badge intent="success" outlined minimal>Retail</Badge> | 0.0075% | 0.0075% |
 | <Badge intent="note" outlined minimal>Pro</Badge> | 0.0075% | 0.0125% |
 
-### FastFills discount
-
-Options Pro taker fees are reduced by an additional 30% when matching against retail orders. See [FastFills](/trading/fastfills) for details.
+Options Pro taker fees are reduced by 30% via [FastFills](/trading/fastfills) when matching against retail orders.
 
 ## Settlement fees
 

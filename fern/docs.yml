@@ -883,13 +883,15 @@ navigation:
     layout:
       - page: Overview
         path: ./pages/release-notes/overview.mdx
+      - page: v1.142
+        path: ./pages/release-notes/v1.142.md
       - page: v1.141
         path: ./pages/release-notes/v1.141.md
-      - page: v1.140
-        path: ./pages/release-notes/v1.140.md
       - section: Archive
         path: ./pages/release-notes/archive.mdx
         contents:
+          - page: v1.140
+            path: ./pages/release-notes/v1.140.md
           - page: v1.139
             path: ./pages/release-notes/v1.139.md
           - page: v1.138

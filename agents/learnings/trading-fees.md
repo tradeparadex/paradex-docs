@@ -14,7 +14,7 @@
 
 ## Anti-patterns
 
-- Don't maintain parallel copies of the fees page (there was an orphaned `trading-fees-v2.mdx` that duplicated `trading-fees.mdx` but wasn't in `docs.yml`; `docs.yml` already redirects `/trading/trading-fees-v2` → `/trading/trading-fees`, so the file was removed).
+- `fern/pages/trading/trading-fees-v2.mdx` exists as a duplicate of `trading-fees.mdx` but is not referenced in `docs.yml`. The v2 URL is already redirected to `/trading/trading-fees` via a `docs.yml` redirect, so the file is unreachable. A previous deletion of this file was reverted by the team, so leave it in place; just do not use it as canonical content.
 
 ## Last updated
 2026-04-22

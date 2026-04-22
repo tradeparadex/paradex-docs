@@ -12,6 +12,7 @@ Liveness
 Lockdown
 Pre
 scrollable
+stackable
 themself
 timeframe
 timeframes

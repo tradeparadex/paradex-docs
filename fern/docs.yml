@@ -171,9 +171,6 @@ navigation:
       - page: Trading Fees
         slug: trading-fees
         path: ./pages/trading/trading-fees.mdx
-      - page: Trading Fees v2
-        slug: trading-fees-v2
-        path: ./pages/trading/trading-fees-v2.mdx
       - page: Trader Profiles
         slug: trader-profiles
         path: ./pages/trading/trader-profiles.mdx
@@ -1264,9 +1261,12 @@ redirects:
   - source: "/trading/placing-orders"
     destination: "/trading/orders/placing-orders"
 
-  # Redirect staking to Trading Fees v2 staking section
+  # Redirect staking to Trading Fees staking section
   - source: "/staking"
-    destination: "/trading/trading-fees-v2#staking-discounts-pro--retail"
+    destination: "/trading/trading-fees#staking-discounts-pro--retail"
+  # Redirect old v2 URL to Trading Fees
+  - source: "/trading/trading-fees-v2"
+    destination: "/trading/trading-fees"
 
 layout:
   header-height: 72px

@@ -1,38 +1,124 @@
 ---
 title: Trading Fees
-subtitle: Trading fees vary based on your [Trader Profile](/trading/trader-profiles).
+subtitle: Trading fees vary based on your [Trader Profile](/trading/trader-profiles), 14-day trading volume, \$DIME staking tier, and whether you pay fees in \$DIME.
 ---
 
-<Tip title="FastFills taker discount" icon="fa-solid fa-bolt">
-Pro taker fees are reduced by 30% when matching against retail orders.<br/>
-See [FastFills](/trading/fastfills) for details.
+<Note title="Transition period" icon="fa-solid fa-circle-info">
+During one week (April 22 - April 29, 1PM SGT), all users will enjoy VIP 6 and Special Pro tier fees along with Diamond tier staking discounts of 30% (taker fees of 0.7 bps for Retail and 1.96 bps for Pro; maker fees of 0% for everyone). Additional \$DIME fee discounts can be enabled immediately.
+</Note>
+
+## Trading volume tiers (Retail) — Spot & Perps
+
+Retail taker fees are determined by the user's 14-day (14D) trading volume across main account and all subaccounts.
+
+Holders of a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [ShizoPunks](https://opensea.io/collection/shizopunks) NFT on their connected wallet qualify for reduced volume thresholds.
+
+| Tier | 14D Volume (USD) | OR | 14D Volume (USD) + NFT | Taker Fee | Maker Fee |
+|---|---|---|---|---|---|
+| Regular (VIP 0) | — | OR | — | 0.024% | 0% |
+| VIP 1 | ≥ 100K | OR | NFT | 0.02% | 0% |
+| VIP 2 | ≥ 500K | OR | ≥ 250K + NFT | 0.018% | 0% |
+| VIP 3 | ≥ 1M | OR | ≥ 500K + NFT | 0.016% | 0% |
+| VIP 4 | ≥ 5M | OR | ≥ 2.5M + NFT | 0.014% | 0% |
+| VIP 5 | ≥ 10M | OR | ≥ 6M + NFT | 0.012% | 0% |
+| VIP 6 | ≥ 50M | OR | ≥ 35M + NFT | 0.01% | 0% |
+
+<sub>Fees are calculated on trade notional (Size × Trade Price).</sub>
+
+## Trading volume tiers (Pro) — Spot & Perps
+
+Pro taker fees are determined by the user's 14-day (14D) trading volume across main account and all subaccounts.
+
+| Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
+|---|---|---|---|
+| Pro 0 | — | 0.045% | 0% |
+| Pro 1 | ≥ 1M | 0.042% | 0% |
+| Pro 2 | ≥ 5M | 0.039% | 0% |
+| Pro 3 | ≥ 10M | 0.037% | 0% |
+| Pro 4 | ≥ 25M | 0.035% | 0% |
+| Pro (Special) | ≥ 1B | 0.028% | 0% |
+
+<sub>Fees are calculated on trade notional (Size × Trade Price).</sub>
+
+### Minimum fee
+
+Pro fees are subject to a minimum of 1.75 bps (0.0175%), regardless of the total discount applied.
+
+### FastFills discount
+
+Pro taker fees are reduced by an additional 30% (stackable with staking and \$DIME fee discounts) when matching against retail orders. See [FastFills](/trading/fastfills) for details.
+
+## Staking discounts (Pro & Retail)
+
+Users who stake \$DIME receive a discount on their Spot & Perps taker fees, scaling up to 30%. See [How does staking work?](#faq).
+
+- Applies to the user's volume-based taker fees
+- Stackable with \$DIME fee discount
+
+| Staking Discount Tier | Staking Amount (\$DIME) | Fee Discount |
+|---|---|---|
+| Wood | 10K | 5% |
+| Bronze | 50K | 10% |
+| Silver | 100K | 15% |
+| Gold | 500K | 20% |
+| Platinum | 1M | 25% |
+| Diamond | 2M | 30% |
+
+## \$DIME fee discounts (Pro & Retail)
+
+Users who pay their Spot & Perps trading fees in \$DIME receive an additional flat discount, deducted from their spot \$DIME deposit on Paradex.
+
+- Flat 40% discount initially
+- Stackable on top of staking discount
+- Mark price exchange rate (\$DIME ↔ USDC) at the time of the user's transaction applies
+
+<Tip title="Example" icon="fa-solid fa-lightbulb">
+If a user stakes 100K \$DIME (15% staking discount) and pays trading fees in \$DIME (40% \$DIME fee discount), the total discount is 55% (15% + 40%), applied to the volume-based taker fee.
 </Tip>
 
-## Spot & futures fees
+## Spot & Perps fee scenarios
 
-| Profile | Maker | Taker |
-|---------|:---:|:---:|
-| <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | 0% | 0.0075% |
-| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0% | <Tooltip tip="Eligible for FastFills taker discount">0.02%</Tooltip> |
+Examples of how volume tiers, \$DIME fee discounts, and staking discounts combine to determine a user's final fee rate.
 
-<sub>Fees are calculated on trade notional (Size * Trade Price)</sub>
+| Scenario | Volume Tier | Taker Fee | \$DIME Fee DC (40%) | Staking Amount | Staking DC | FastFills DC | Total DC | Final Fee |
+|---|---|---|---|---|---|---|---|---|
+| Retail A | VIP 5 | 0.012% | 40% | 1M \$DIME | 25% | — | 65% | 0.0042% |
+| Retail B | VIP 1 | 0.02% | 40% | 50K \$DIME | 10% | — | 50% | 0.01% |
+| Pro A | Pro 1 | 0.042% | 40% | 10K \$DIME | 5% | 30% | 75% | 0.0175%* |
+| Pro B | Pro 4 | 0.035% | 40% | 2M \$DIME | 30% | — | 70% | 0.0175%* |
 
-## Dated options fees
+<sub>*Minimum Pro fee of 1.75 bps (0.0175%) applies.</sub>
 
-| Profile | Maker | Taker |
-|---------|:---:|:---:|
-| <Tooltip tip="UI Default"><Badge intent="success" outlined minimal>Retail</Badge></Tooltip> | 0.0075% | 0.0075% |
-| <Tooltip tip="API Default"><Badge intent="note" outlined minimal>Pro</Badge></Tooltip> | 0.0075% | <Tooltip tip="Eligible for FastFills taker discount">0.0125%</Tooltip> |
+## Options fees (Pro & Retail)
 
-<sub>1. Dated option fees are calculated on underlying spot notional (Size × Spot Price)</sub><br/>
-<sub>2. Fees are always capped at 12.5% of Option Premium (Size × Option Trade Price)</sub><br />
-<sub>3. FastFills taker discount only applies to the base fee rate and does not affect the 12.5% cap</sub>
+Fees are capped at 12.5% of the option price (premium). FastFills discount applies to the fee amount.
+
+| Profile | Maker Fee | Taker Fee |
+|---|---|---|
+| <Badge intent="success" outlined minimal>Retail</Badge> | 0.0075% | 0.0075% |
+| <Badge intent="note" outlined minimal>Pro</Badge> | 0.0075% | 0.0125% |
+
+### FastFills discount
+
+Options Pro taker fees are reduced by an additional 30% when matching against retail orders. See [FastFills](/trading/fastfills) for details.
 
 ## Settlement fees
 
-When a market is delisted, a settlement fee is applied to close any positions still open in that market.
+When a market is delisted, a settlement fee applies to any positions still open.
 
-|                          | Fee    |
-|--------------------------|:------:|
+| Market | Fee |
+|---|---|
 | Spot and Perpetual Futures | 0.015% |
 | Dated Options | 0.0075% |
+
+## FAQ
+
+<AccordionGroup>
+<Accordion title="How does staking work?">
+Stake \$DIME to unlock tiered fee discounts ranging from 5% (Wood) to 30% (Diamond), applied to your volume-based taker fees and stackable with the \$DIME fee discount.
+
+To unstake, submit an unstaking request at any time. A 24-hour cooldown follows, after which you must confirm to receive your funds.
+
+For more on \$DIME, see [\$DIME Utility](/docs/getting-started/dime-utility).
+</Accordion>
+</AccordionGroup>

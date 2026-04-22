@@ -11,6 +11,7 @@ leaderboard
 Liveness
 Lockdown
 Pre
+rollout
 scrollable
 stackable
 themself

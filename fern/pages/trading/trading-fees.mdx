@@ -9,32 +9,34 @@ During one week (April 22 - April 29, 1PM SGT), all users will enjoy VIP 6 and S
 
 ## How fees work
 
-Your Spot & Perps trading fee is the **base rate** set by your [Trader Profile](/trading/trader-profiles) and 14-day (14D) trading volume, minus any discounts that apply. Fees are charged on trade notional (Size × Trade Price).
+Spot & Perps fees are based on your [Trader Profile](/trading/trader-profiles) and 14D volume, less any applicable discounts.
 
 `Your fee = base rate × (1 − total discount)`
 
-Maker fees are 0% for both profiles. Pro fees are subject to a minimum of 1.75 bps (0.0175%), regardless of total discount.
+- Maker fees are 0% for both profiles. 
+- Pro fees cannot go below 1.75 bps (0.0175%), regardless of total discount.
+- Fees are charged on trade notional (Size × Trade Price).
 
 ## Your base rate
 
-Your base rate is determined by your Trader Profile and your 14D volume across your main account and all subaccounts.
+Your base rate is set by your Trader Profile and combined 14D volume across your main account and subaccount(s).
 
 <Tabs>
   <Tab title="Retail">
-    Holders of a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [ShizoPunks](https://opensea.io/collection/shizopunks) NFT on their connected wallet qualify at lower volume thresholds.
+    Connected wallets holding a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [ShizoPunks](https://opensea.io/collection/shizopunks) NFT qualify at lower volume thresholds.
 
     | Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
     |---|---|---|---|
     | VIP 0 (Default) |   | 0.024% | 0% |
-    | VIP 1 | <span style={{display: 'inline-grid', gridTemplateColumns: '5em 2em auto', columnGap: '1.5em'}}><span>≥ 100K</span><span>OR</span><span>NFT</span></span> | 0.02% | 0% |
-    | VIP 2 | <span style={{display: 'inline-grid', gridTemplateColumns: '5em 2em auto', columnGap: '1.5em'}}><span>≥ 500K</span><span>OR</span><span>≥ 250K + NFT</span></span> | 0.018% | 0% |
-    | VIP 3 | <span style={{display: 'inline-grid', gridTemplateColumns: '5em 2em auto', columnGap: '1.5em'}}><span>≥ 1M</span><span>OR</span><span>≥ 500K + NFT</span></span> | 0.016% | 0% |
-    | VIP 4 | <span style={{display: 'inline-grid', gridTemplateColumns: '5em 2em auto', columnGap: '1.5em'}}><span>≥ 5M</span><span>OR</span><span>≥ 2.5M + NFT</span></span> | 0.014% | 0% |
-    | VIP 5 | <span style={{display: 'inline-grid', gridTemplateColumns: '5em 2em auto', columnGap: '1.5em'}}><span>≥ 10M</span><span>OR</span><span>≥ 6M + NFT</span></span> | 0.012% | 0% |
-    | VIP 6 | <span style={{display: 'inline-grid', gridTemplateColumns: '5em 2em auto', columnGap: '1.5em'}}><span>≥ 50M</span><span>OR</span><span>≥ 35M + NFT</span></span> | 0.01% | 0% |
+    | VIP 1 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 100K</span><span>OR</span><span>NFT</span></span> | 0.02% | 0% |
+    | VIP 2 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 500K</span><span>OR</span><span>≥ 250K + NFT</span></span> | 0.018% | 0% |
+    | VIP 3 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 1M</span><span>OR</span><span>≥ 500K + NFT</span></span> | 0.016% | 0% |
+    | VIP 4 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 5M</span><span>OR</span><span>≥ 2.5M + NFT</span></span> | 0.014% | 0% |
+    | VIP 5 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 10M</span><span>OR</span><span>≥ 6M + NFT</span></span> | 0.012% | 0% |
+    | VIP 6 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 50M</span><span>OR</span><span>≥ 35M + NFT</span></span> | 0.01% | 0% |
   </Tab>
   <Tab title="Pro">
-    Pro fees are subject to a minimum of **1.75 bps (0.0175%)**, regardless of total discount.
+    Pro fees cannot go below 1.75 bps (0.0175%), regardless of total discount.
 
     | Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
     |---|---|---|---|
@@ -51,13 +53,21 @@ Your base rate is determined by your Trader Profile and your 14D volume across y
 
 Three discounts are additive and apply to your volume-based taker fee:
 
-- [**Stake \$DIME**](#stake-dime): up to 30% off, scaling with the amount staked.
-- [**Pay fees in \$DIME**](#pay-fees-in-dime): flat 40% off.
-- [**FastFills**](#fastfills-pro-only): 30% off for Pro orders matching Retail.
+<CardGroup cols={3}>
+  <Card title="Stake $DIME" icon="fa-vault" href="#stake-dime">
+  Up to 30% off, scaling with the amount staked
+  </Card>
+  <Card title="Pay fees in $DIME" icon="fa-coins" href="#pay-fees-in-dime">
+  40% off for all orders during initial rollout
+  </Card>
+  <Card title="FastFills" icon="fa-bolt" href="#fastfills">
+  30% off for Pro orders matching Retail
+  </Card>
+</CardGroup>
 
 ### Stake \$DIME
 
-Stake \$DIME to unlock a tiered discount on your Spot & Perps taker fees, scaling up to 30%.
+Stake $DIME for tiered Spot & Perps taker fee discounts, up to 30%.
 
 | Staking Tier | Staking Amount (\$DIME) | Fee Discount |
 |---|---|---|
@@ -72,15 +82,17 @@ To unstake, submit an unstaking request at any time. A 24-hour cooldown follows,
 
 ### Pay fees in \$DIME
 
-Pay your Spot & Perps trading fees in \$DIME for a **flat 40% discount**, deducted from your spot \$DIME deposit on Paradex. The mark price exchange rate (\$DIME ↔ USDC) at the time of the user's transaction applies.
+Pay fees in \$DIME for a flat 40% discount. Fees are deducted from your spot \$DIME balance at the \$DIME ↔ USDC mark price at transaction time.
 
 <Tip title="Example" icon="fa-solid fa-lightbulb">
 A user who stakes 100K \$DIME (15% staking discount) and pays fees in \$DIME (40% \$DIME fee discount) gets a total discount of 55% (15% + 40%), applied to their volume-based taker fee.
 </Tip>
 
-### FastFills (Pro only)
+### FastFills
 
-Pro taker fees are reduced by an additional **30%** when matching against Retail orders, stackable with staking and \$DIME fee discounts. The 1.75 bps Pro minimum still applies. See [FastFills](/trading/fastfills) for details.
+Pro taker fees get an additional 30% off when matching Retail orders, stackable with staking and $DIME discounts. The 1.75 bps (0.0175%) miminimum fee still applies.
+
+See [FastFills](/trading/fastfills) for details.
 
 ## Fee scenarios
 

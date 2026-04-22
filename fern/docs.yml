@@ -1266,7 +1266,7 @@ redirects:
 
   # Redirect staking to Trading Fees v2 staking section
   - source: "/staking"
-    destination: "/trading/trading-fees-v2#stake-dime--up-to-30-off"
+    destination: "/trading/trading-fees-v2#stake-dime-up-to-30-off"
 
 layout:
   header-height: 72px

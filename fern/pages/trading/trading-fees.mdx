@@ -7,84 +7,55 @@ subtitle: Trading fees vary based on your [Trader Profile](/trading/trader-profi
 During one week (April 22 - April 29, 1PM SGT), all users will enjoy VIP 6 and Special Pro tier fees along with Diamond tier staking discounts of 30% (taker fees of 0.7 bps for Retail and 1.96 bps for Pro; maker fees of 0% for everyone). Additional \$DIME fee discounts can be enabled immediately.
 </Note>
 
-## Fees at a glance
+## How fees work
 
-- **Maker fees are 0%** for Retail and Pro across all Spot & Perps markets.
-- **Taker fees** depend on your [Trader Profile](/trading/trader-profiles) and 14-day (14D) trading volume across your main account and all subaccounts.
-- **Fees are charged on notional** (Size × Trade Price).
-- **Discounts stack.** Staking, \$DIME fee discount, and FastFills (Pro only) are additive percentages applied to your volume-based taker fee.
-- **Pro fees have a 1.75 bps (0.0175%) minimum**, regardless of combined discounts.
+Your Spot & Perps trading fee is the **base rate** set by your [Trader Profile](/trading/trader-profiles) and 14-day (14D) trading volume, minus any discounts that apply. Fees are charged on trade notional (Size × Trade Price).
 
-## Ways to save on fees
+`Your fee = base rate × (1 − total discount)`
 
-<CardGroup cols={2}>
-  <Card title="Trade more volume" icon="fa-solid fa-chart-line" href="#trading-volume-tiers-retail--spot--perps">
-    Unlock lower taker fees by building up 14-day volume across your main account and subaccounts.
-  </Card>
-  <Card title="Hold a qualifying NFT" icon="fa-solid fa-image" href="#trading-volume-tiers-retail--spot--perps">
-    Retail traders with a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [ShizoPunks](https://opensea.io/collection/shizopunks) NFT qualify at lower volume thresholds.
-  </Card>
-  <Card title="Stake \$DIME" icon="fa-solid fa-coins" href="#staking-discounts-pro--retail">
-    Up to 30% off your volume-based taker fees, scaling with the amount staked.
-  </Card>
-  <Card title="Pay fees in \$DIME" icon="fa-solid fa-badge-dollar" href="#dime-fee-discounts-pro--retail">
-    A flat 40% discount on Spot & Perps fees, stackable with staking discounts.
-  </Card>
-</CardGroup>
+Maker fees are 0% for both profiles. Pro fees are subject to a minimum of 1.75 bps (0.0175%), regardless of total discount.
 
-<Tip title="FastFills (Pro only)" icon="fa-solid fa-bolt">
-Pro taker fees drop by an additional 30% when matching against Retail orders — stackable with staking and \$DIME fee discounts, subject to the 1.75 bps Pro minimum. See [FastFills](/trading/fastfills).
-</Tip>
+## Your base rate
 
-## Trading volume tiers (Retail) — Spot & Perps
+Your base rate is determined by your Trader Profile and your 14D volume across your main account and all subaccounts.
 
-Retail taker fees are determined by the user's 14-day (14D) trading volume across main account and all subaccounts.
+<Tabs>
+  <Tab title="Retail">
+    Holders of a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [ShizoPunks](https://opensea.io/collection/shizopunks) NFT on their connected wallet qualify at lower volume thresholds.
 
-Holders of a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [ShizoPunks](https://opensea.io/collection/shizopunks) NFT on their connected wallet qualify for reduced volume thresholds.
+    | Tier | 14D Volume (USD) | OR | 14D Volume (USD) + NFT | Taker Fee | Maker Fee |
+    |---|---|---|---|---|---|
+    | Regular (VIP 0) | — | OR | — | 0.024% | 0% |
+    | VIP 1 | ≥ 100K | OR | NFT | 0.02% | 0% |
+    | VIP 2 | ≥ 500K | OR | ≥ 250K + NFT | 0.018% | 0% |
+    | VIP 3 | ≥ 1M | OR | ≥ 500K + NFT | 0.016% | 0% |
+    | VIP 4 | ≥ 5M | OR | ≥ 2.5M + NFT | 0.014% | 0% |
+    | VIP 5 | ≥ 10M | OR | ≥ 6M + NFT | 0.012% | 0% |
+    | VIP 6 | ≥ 50M | OR | ≥ 35M + NFT | 0.01% | 0% |
+  </Tab>
+  <Tab title="Pro">
+    Pro fees are subject to a minimum of **1.75 bps (0.0175%)**, regardless of total discount.
 
-| Tier | 14D Volume (USD) | OR | 14D Volume (USD) + NFT | Taker Fee | Maker Fee |
-|---|---|---|---|---|---|
-| Regular (VIP 0) | — | OR | — | 0.024% | 0% |
-| VIP 1 | ≥ 100K | OR | NFT | 0.02% | 0% |
-| VIP 2 | ≥ 500K | OR | ≥ 250K + NFT | 0.018% | 0% |
-| VIP 3 | ≥ 1M | OR | ≥ 500K + NFT | 0.016% | 0% |
-| VIP 4 | ≥ 5M | OR | ≥ 2.5M + NFT | 0.014% | 0% |
-| VIP 5 | ≥ 10M | OR | ≥ 6M + NFT | 0.012% | 0% |
-| VIP 6 | ≥ 50M | OR | ≥ 35M + NFT | 0.01% | 0% |
+    | Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
+    |---|---|---|---|
+    | Pro 0 | — | 0.045% | 0% |
+    | Pro 1 | ≥ 1M | 0.042% | 0% |
+    | Pro 2 | ≥ 5M | 0.039% | 0% |
+    | Pro 3 | ≥ 10M | 0.037% | 0% |
+    | Pro 4 | ≥ 25M | 0.035% | 0% |
+    | Pro (Special) | ≥ 1B | 0.028% | 0% |
+  </Tab>
+</Tabs>
 
-<sub>Fees are calculated on trade notional (Size × Trade Price).</sub>
+## Discounts
 
-## Trading volume tiers (Pro) — Spot & Perps
+Discounts are additive and apply to your volume-based taker fee.
 
-Pro taker fees are determined by the user's 14-day (14D) trading volume across main account and all subaccounts.
+### Stake \$DIME
 
-| Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
-|---|---|---|---|
-| Pro 0 | — | 0.045% | 0% |
-| Pro 1 | ≥ 1M | 0.042% | 0% |
-| Pro 2 | ≥ 5M | 0.039% | 0% |
-| Pro 3 | ≥ 10M | 0.037% | 0% |
-| Pro 4 | ≥ 25M | 0.035% | 0% |
-| Pro (Special) | ≥ 1B | 0.028% | 0% |
+Stake \$DIME to unlock a tiered discount on your Spot & Perps taker fees, scaling up to 30%. See [How does staking work?](#faq).
 
-<sub>Fees are calculated on trade notional (Size × Trade Price).</sub>
-
-### Minimum fee
-
-Pro fees are subject to a minimum of 1.75 bps (0.0175%), regardless of the total discount applied.
-
-### FastFills discount
-
-Pro taker fees are reduced by an additional 30% (stackable with staking and \$DIME fee discounts) when matching against retail orders. See [FastFills](/trading/fastfills) for details.
-
-## Staking discounts (Pro & Retail)
-
-Users who stake \$DIME receive a discount on their Spot & Perps taker fees, scaling up to 30%. See [How does staking work?](#faq).
-
-- Applies to the user's volume-based taker fees
-- Stackable with \$DIME fee discount
-
-| Staking Discount Tier | Staking Amount (\$DIME) | Fee Discount |
+| Staking Tier | Staking Amount (\$DIME) | Fee Discount |
 |---|---|---|
 | Wood | 10K | 5% |
 | Bronze | 50K | 10% |
@@ -93,23 +64,23 @@ Users who stake \$DIME receive a discount on their Spot & Perps taker fees, scal
 | Platinum | 1M | 25% |
 | Diamond | 2M | 30% |
 
-## \$DIME fee discounts (Pro & Retail)
+### Pay fees in \$DIME
 
-Users who pay their Spot & Perps trading fees in \$DIME receive an additional flat discount, deducted from their spot \$DIME deposit on Paradex.
-
-- Flat 40% discount initially
-- Stackable on top of staking discount
-- Mark price exchange rate (\$DIME ↔ USDC) at the time of the user's transaction applies
+Pay your Spot & Perps trading fees in \$DIME for a **flat 40% discount**, deducted from your spot \$DIME deposit on Paradex. The mark price exchange rate (\$DIME ↔ USDC) at the time of the user's transaction applies.
 
 <Tip title="Example" icon="fa-solid fa-lightbulb">
-If a user stakes 100K \$DIME (15% staking discount) and pays trading fees in \$DIME (40% \$DIME fee discount), the total discount is 55% (15% + 40%), applied to the volume-based taker fee.
+A user who stakes 100K \$DIME (15% staking discount) and pays fees in \$DIME (40% \$DIME fee discount) gets a total discount of 55% (15% + 40%), applied to their volume-based taker fee.
 </Tip>
 
-## Spot & Perps fee scenarios
+### FastFills (Pro only)
 
-Examples of how volume tiers, \$DIME fee discounts, and staking discounts combine to determine a user's final fee rate.
+Pro taker fees are reduced by an additional **30%** when matching against Retail orders, stackable with staking and \$DIME fee discounts. The 1.75 bps Pro minimum still applies. See [FastFills](/trading/fastfills) for details.
 
-| Scenario | Volume Tier | Taker Fee | \$DIME Fee Discount | Staking Amount | Staking Discount | FastFills Discount | Total Discount | Final Fee |
+## Worked examples
+
+How volume tiers, staking, \$DIME fee payment, and FastFills combine to determine a user's final taker fee.
+
+| Scenario | Volume Tier | Base Taker Fee | \$DIME Fee Discount | Staking Amount | Staking Discount | FastFills Discount | Total Discount | Final Fee |
 |---|---|---|---|---|---|---|---|---|
 | Retail A | VIP 5 | 0.012% | 40% | 1M \$DIME | 25% | — | 65% | 0.0042% |
 | Retail B | VIP 1 | 0.02% | 40% | 50K \$DIME | 10% | — | 50% | 0.01% |
@@ -118,20 +89,18 @@ Examples of how volume tiers, \$DIME fee discounts, and staking discounts combin
 
 <sub>*Minimum Pro fee of 1.75 bps (0.0175%) applies.</sub>
 
-## Options fees (Pro & Retail)
+## Other fees
 
-Fees are capped at 12.5% of the option price (premium). FastFills discount applies to the fee amount.
+### Options
+
+Fees are capped at 12.5% of the option price (premium). The FastFills 30% discount applies to Pro taker fees matching Retail orders.
 
 | Profile | Maker Fee | Taker Fee |
 |---|---|---|
 | <Badge intent="success" outlined minimal>Retail</Badge> | 0.0075% | 0.0075% |
 | <Badge intent="note" outlined minimal>Pro</Badge> | 0.0075% | 0.0125% |
 
-### FastFills discount
-
-Options Pro taker fees are reduced by an additional 30% when matching against retail orders. See [FastFills](/trading/fastfills) for details.
-
-## Settlement fees
+### Settlement
 
 When a market is delisted, a settlement fee applies to any positions still open.
 

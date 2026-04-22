@@ -1263,7 +1263,7 @@ redirects:
 
   # Redirect staking to Trading Fees staking section
   - source: "/staking"
-    destination: "/trading/trading-fees#staking-discounts-pro--retail"
+    destination: "/trading/trading-fees#stake-dime"
   # Redirect old v2 URL to Trading Fees
   - source: "/trading/trading-fees-v2"
     destination: "/trading/trading-fees"

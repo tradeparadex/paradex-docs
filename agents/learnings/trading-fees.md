@@ -8,7 +8,8 @@
 
 ## Patterns
 
-- Frame the page around the mental model: `fee = base rate × (1 − total discount)`, with a Pro minimum of 1.75 bps (0.0175%).
+- **Trader profile badges**: every inline reference to a trader profile in prose, callouts, or table cells uses the same badge styling. Retail: `<Badge intent="success" outlined minimal>Retail</Badge>`. Pro: `<Badge intent="note" outlined minimal>Pro</Badge>`. Leave tab titles and H2/H3 headings as plain text so heading/tab styling stays clean; tier identifiers like `Pro 0` or `Pro (Special)` inside volume tables are tier names, not profile references, so they stay plain too.
+- Frame the page around the mental model: `fee = base rate × (1 − total discount)`, with a <Badge intent="note" outlined minimal>Pro</Badge> minimum of 1.75 bps (0.0175%).
 - Information architecture:
   1. `## How fees work`: short lead paragraph with the formula and floor.
   2. `## Your base rate`: `<Tabs>` split into `<Tab title="Retail">` and `<Tab title="Pro">`, each with its own volume-tier table. NFT thresholds stay inline in the Retail table (they modify the base rate, not a post-hoc discount).

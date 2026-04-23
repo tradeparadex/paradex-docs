@@ -63,17 +63,9 @@ For how Fair Basis drives the Mark Price, see [Mark Price Calculation](mark-pric
 
 ### Liquidity weight
 
-A tick is *liquid* when both bid and ask are present and the relative spread $(\text{ask} - \text{bid}) / \text{mid} \le \text{MaxTOBSpread}$ (per-market, default 1%). Let $\text{liquid}_t \in \{0, 1\}$ be the liquidity indicator at time $t$.
+A tick is *liquid* when both bid and ask are present and the relative spread is within the per-market Max Top-of-book Spread (default 1%). The weight $w$ ramps linearly toward 1 on liquid ticks and toward 0 on illiquid ticks, traversing the full 0-to-1 range over 30 minutes of sustained conditions.
 
-The weight $w$ moves linearly each tick, ramping toward 1 on liquid ticks and toward 0 on illiquid ticks. The full-scale traversal window is 30 minutes, so each 1-second tick moves $w$ by at most $1 / 1800$:
-
-$$
-w_t = \text{clip}\!\left( w_{t-1} + \text{step},\ 0,\ 1 \right),\quad \text{step} = \begin{cases} +1/1800 & \text{if liquid}_t = 1 \\ -1/1800 & \text{otherwise} \end{cases}
-$$
-
-Starting from $w = 0$, 30 minutes of sustained liquid ticks bring $w$ all the way to 1; 30 minutes of sustained illiquid ticks take it back to 0. Mixed conditions leave $w$ somewhere in between.
-
-The effect: sustained thinness drives $w \to 0$ and Fair Basis follows external consensus; sustained tightness drives $w \to 1$ and on-venue signals regain equal weight.
+Sustained thinness drives $w \to 0$ and Fair Basis follows external consensus; sustained tightness drives $w \to 1$ and on-venue signals regain equal weight.
 
 ## Raw Funding Rate
 

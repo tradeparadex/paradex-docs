@@ -65,7 +65,7 @@ For how Fair Basis drives the Mark Price, see [Mark Price Calculation](mark-pric
 
 A tick is *liquid* when both bid and ask are present and the relative spread $(\text{ask} - \text{bid}) / \text{mid} \le \text{MaxTOBSpread}$ (per-market, default 1%). Let $\text{liquid}_t \in \{0, 1\}$ be the liquidity indicator at time $t$.
 
-The weight $w$ moves linearly each tick, ramping toward 1 on liquid ticks and toward 0 on illiquid ticks. The full-scale traversal window is approximately 30 minutes, so each 1-second tick moves $w$ by at most $1 / 1800$:
+The weight $w$ moves linearly each tick, ramping toward 1 on liquid ticks and toward 0 on illiquid ticks. The full-scale traversal window is 30 minutes, so each 1-second tick moves $w$ by at most $1 / 1800$:
 
 $$
 w_t = \text{clip}\!\left( w_{t-1} + \text{step},\ 0,\ 1 \right),\quad \text{step} = \begin{cases} +1/1800 & \text{if liquid}_t = 1 \\ -1/1800 & \text{otherwise} \end{cases}
@@ -123,10 +123,10 @@ Smoothing is specified by **half-life**: the time for a step change in the Raw R
 
 | Market state | Half-life of published rate |
 |--------------|-----------------------------|
-| Regular perpetual | ≈ 30 min |
-| Post-only period | ≈ 30s |
+| Regular perpetual | 30 min |
+| Post-only period | 30s |
 
-A separate ~8-hour smoothing of the Raw Rate feeds option pricing; it is not the rate published on the perp.
+A separate 8-hour smoothing of the Raw Rate feeds option pricing; it is not the rate published on the perp.
 
 ## Funding Premium
 
@@ -206,13 +206,13 @@ Listing defaults (individual markets may override):
 
 | Parameter | Default | Purpose |
 |-----------|---------|---------|
-| Baseline Rate (Interest Rate) | 0.01% per 8h | Rate the market converges toward when basis ≈ 0. |
+| Baseline Rate (Interest Rate) | 0.01% per 8h | Rate the market converges toward when basis is near 0. |
 | Clamp Rate | 0.05% per 8h | Maximum pull of the Baseline toward or away from Fair Basis. |
 | Max Funding Rate | 5% per 8h | Cap on the raw rate. |
 | Funding Period | 8h | Reference window for the three rates above. |
-| External Basis Half-life | ≈ 3s | Smoothing half-life on each external venue's basis. |
-| Funding Rate Half-life | ≈ 30 min | Smoothing half-life on the published rate. |
-| Liquidity Weight Ramp | ≈ 30 min | Full 0 → 1 (or 1 → 0) traversal time for the on-venue liquidity weight $w$, moved linearly. |
+| External Basis Half-life | 3s | Smoothing half-life on each external venue's basis. |
+| Funding Rate Half-life | 30 min | Smoothing half-life on the published rate. |
+| Liquidity Weight Ramp | 30 min | Full 0 → 1 (or 1 → 0) traversal time for the on-venue liquidity weight $w$, moved linearly. |
 | Max Top-of-book Spread | 1% | Relative spread above which a tick is considered illiquid. |
 
 Live values per market are available via the [market-details endpoint](../api/prod/market/get-markets).

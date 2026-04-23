@@ -17,6 +17,7 @@
   5. `## Other fees`: H3 for Options and Settlement (secondary products).
   6. `## FAQ`: `<AccordionGroup>`.
 - Use full words in the wide scenario table (e.g. `Fee Discount`, `Total Discount`) instead of abbreviations like `DC`.
+- Prefix each staking tier name in the Staking Tier table with a colored dot using an inline `<span>` (inline-block, 0.6em square, `borderRadius: '50%'`, `verticalAlign: 'middle'`, 0.5em right margin). Tier colors: Wood `#a8826d`, Bronze `#c65d2e`, Silver `#c0c0c0`, Gold `#e8a33d`, Platinum `#b87fb8`, Diamond `#4bccc4`.
 
 ## Anti-patterns
 
@@ -26,4 +27,4 @@
 - Don't split Retail and Pro into two stacked tables without a `Tabs` switcher. Readers have to scroll past a table that doesn't apply to them.
 
 ## Last updated
-2026-04-22
+2026-04-23

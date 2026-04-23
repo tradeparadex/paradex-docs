@@ -188,7 +188,7 @@ Accrued funding settles into realized PnL whenever the position is modified (tra
 ## Publication
 
 - The funding rate is recomputed every **1 second**.
-- It is published on the `funding_data` WebSocket channel and embedded in every price tick.
+- It is published on the [`funding_data` WebSocket channel](https://docs.paradex.trade/ws/web-socket-channels/funding-data-market-symbol) and embedded in every price tick.
 - History is available via the account funding-history REST endpoint.
 - Funding is paused when the oracle is in maintenance, the USDC price is invalid, or the perp market is halted.
 

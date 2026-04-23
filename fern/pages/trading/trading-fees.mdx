@@ -3,6 +3,8 @@ title: Trading Fees
 subtitle: Trading fees vary based on your [Trader Profile](/trading/trader-profiles), 14-day trading volume, \$DIME staking tier, and whether you pay fees in \$DIME.
 ---
 
+export const Dot = ({color}) => <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: color, marginRight: '0.5em', verticalAlign: 'middle'}} />;
+
 <Note title="Transition period" icon="fa-solid fa-circle-info">
 During one week (April 22 - April 29, 1PM SGT), all users will enjoy VIP 6 and Special Pro tier fees along with Diamond tier staking discounts of 30% (taker fees of 0.7 bps for Retail and 1.96 bps for Pro; maker fees of 0% for everyone). Additional \$DIME fee discounts can be enabled immediately.
 </Note>
@@ -71,13 +73,13 @@ Stake $DIME for tiered Spot & Perps taker fee discounts, up to 30%.
 
 | Staking Tier | \$DIME Staked | Fee Discount |
 |---|---|---|
-| <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: '#B9BBBD', marginRight: '0.5em', verticalAlign: 'middle'}} />Base | 0 | 0% |
-| <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: '#A0764E', marginRight: '0.5em', verticalAlign: 'middle'}} />Wood | ≥ 10K | 5% |
-| <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: '#C4693D', marginRight: '0.5em', verticalAlign: 'middle'}} />Bronze | ≥ 50K | 10% |
-| <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: '#B9BBBD', marginRight: '0.5em', verticalAlign: 'middle'}} />Silver | ≥ 100K | 15% |
-| <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: '#FFB23D', marginRight: '0.5em', verticalAlign: 'middle'}} />Gold | ≥ 500K | 20% |
-| <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: '#A97DBF', marginRight: '0.5em', verticalAlign: 'middle'}} />Platinum | ≥ 1M | 25% |
-| <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: '#69B8BF', marginRight: '0.5em', verticalAlign: 'middle'}} />Diamond | ≥ 2M | 30% |
+| <Dot color="#B9BBBD" />Base | 0 | 0% |
+| <Dot color="#A0764E" />Wood | ≥ 10K | 5% |
+| <Dot color="#C4693D" />Bronze | ≥ 50K | 10% |
+| <Dot color="#B9BBBD" />Silver | ≥ 100K | 15% |
+| <Dot color="#FFB23D" />Gold | ≥ 500K | 20% |
+| <Dot color="#A97DBF" />Platinum | ≥ 1M | 25% |
+| <Dot color="#69B8BF" />Diamond | ≥ 2M | 30% |
 
 To unstake, submit an unstaking request at any time. A 24-hour cooldown follows, after which you must confirm to receive your funds. For more on \$DIME, see [\$DIME Utility](/docs/getting-started/dime-utility).
 

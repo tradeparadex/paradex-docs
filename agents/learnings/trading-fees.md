@@ -17,6 +17,7 @@
   5. `## Other fees`: H3 for Options and Settlement (secondary products).
   6. `## FAQ`: `<AccordionGroup>`.
 - Use full words in the wide scenario table (e.g. `Fee Discount`, `Total Discount`) instead of abbreviations like `DC`.
+- Prefix each staking tier name in the Staking Tier table with a colored dot using the `<Dot color="#..." />` helper defined via `export const` at the top of `trading-fees.mdx`. The helper wraps the inline-block span with camelCase style keys (`borderRadius`, `backgroundColor`, `marginRight`, `verticalAlign`) that Vale flags as spelling errors when written inline in prose, so keep the span inside the `export const` block (which `.vale.ini`'s `BlockIgnores` skips). Tier colors: Base `#B9BBBD`, Wood `#A0764E`, Bronze `#C4693D`, Silver `#B9BBBD`, Gold `#FFB23D`, Platinum `#A97DBF`, Diamond `#69B8BF`. The Base row represents the default (0 \$DIME staked, 0% discount) state.
 
 ## Anti-patterns
 
@@ -26,4 +27,4 @@
 - Don't split Retail and Pro into two stacked tables without a `Tabs` switcher. Readers have to scroll past a table that doesn't apply to them.
 
 ## Last updated
-2026-04-22
+2026-04-23

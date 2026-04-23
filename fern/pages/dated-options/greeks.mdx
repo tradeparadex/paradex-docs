@@ -19,7 +19,7 @@ The examples below use the following assumptions:
 
 | Factor | Greek | Raw Greek (definition) | Cash Greek (definition) | Examples |
 |--------|-------|------------------------|-------------------------|----------|
-| Spot | Delta | Sensitivity of option value to a move in the underlying | Expected PnL for a 1% move in spot | Raw Delta = 0.5 → 1% of spot = $600 → Cash Delta = 0.5 × $600 = $300 → Option gains ~$300 if BTC rises 1% |
+| Spot | Delta | Sensitivity of option value to a move in the underlying | Expected PnL for a 1% move in spot | Raw Delta = 0.5 → 1% of spot = ~$600 → Cash Delta = 0.5 × $600 = $300 → Option gains ~$300 if BTC rises 1% |
 | Spot | Gamma | Sensitivity of Raw Delta to a move in the underlying | Second-order PnL for a 1% move in spot | Raw Gamma = 0.0002 → Cash Gamma = ½ × 0.0002 × $600² = $36 → Additional ~$36 of convex PnL from a 1% BTC rise |
 | IV | Vega | Sensitivity of option value to a 1% absolute change in IV | Same as Raw Greek | Vega = 80 → If IV moves from 40% to 41% → Option gains ~$80 |
 | IV/Spot | Vanna | Sensitivity of Raw Delta to a 1% absolute change in IV (equivalently, sensitivity of Vega to a move in spot) | Additional expected PnL assuming 1% move in spot and 1% increase in IV | Vanna = 0.01 → If IV moves from 40% to 41% → Delta shifts such that the position gains an additional ~$6 per subsequent 1% spot move |

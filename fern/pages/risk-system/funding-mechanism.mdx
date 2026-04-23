@@ -1,6 +1,6 @@
 ---
 title: Funding Mechanism
-subtitle: An overview of how Paradex's continuous funding mechanism works
+subtitle: An overview of how Paradex's unique continuous funding mechanism works
 ---
 
 ## Mechanism
@@ -9,7 +9,7 @@ Paradex perpetuals use **continuous funding**. The funding rate is recomputed ev
 
 The accrued funding contributes to the total unrealized PnL (and therefore to the account value), and is calculated in USDC, the settlement asset. The continuous accrual model reduces on-chain transaction spikes compared to discrete funding events.
 
-### Pipeline overview
+### Funding calculation flow
 
 Each second:
 
@@ -124,7 +124,7 @@ Smoothing is specified by **half-life**: the time for a step change in the Raw R
 | Market state | Half-life of published rate |
 |--------------|-----------------------------|
 | Regular perpetual | ≈ 30 min |
-| Post-only / pre-market | ≈ 30s |
+| Post-only period | ≈ 30s |
 
 A separate ~8-hour smoothing of the Raw Rate feeds option pricing; it is not the rate published on the perp.
 

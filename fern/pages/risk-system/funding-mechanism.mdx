@@ -206,14 +206,14 @@ Listing defaults (individual markets may override):
 
 | Parameter | Default | Purpose |
 |-----------|---------|---------|
-| `baseline_rate` (interest_rate) | 0.01% per 8h | Rate the market converges toward when basis ≈ 0. |
-| `clamp_rate` | 0.05% per 8h | Maximum pull of the Baseline toward or away from Fair Basis. |
-| `max_funding_rate` | 5% per 8h | Cap on the raw rate. |
-| `funding_period_hours` | 8 | Reference window for the three rates above. |
-| `external_basis_halflife` | ≈ 3s | Smoothing half-life on each external venue's basis. |
-| `funding_rate_halflife` | ≈ 30 min | Smoothing half-life on the published rate. |
-| `liquidity_weight_ramp` | ≈ 30 min | Full 0 → 1 (or 1 → 0) traversal time for the on-venue liquidity weight $w$, moved linearly. |
-| `max_tob_spread` | 1% | Relative spread above which a tick is considered illiquid. |
+| Baseline Rate (Interest Rate) | 0.01% per 8h | Rate the market converges toward when basis ≈ 0. |
+| Clamp Rate | 0.05% per 8h | Maximum pull of the Baseline toward or away from Fair Basis. |
+| Max Funding Rate | 5% per 8h | Cap on the raw rate. |
+| Funding Period | 8h | Reference window for the three rates above. |
+| External Basis Half-life | ≈ 3s | Smoothing half-life on each external venue's basis. |
+| Funding Rate Half-life | ≈ 30 min | Smoothing half-life on the published rate. |
+| Liquidity Weight Ramp | ≈ 30 min | Full 0 → 1 (or 1 → 0) traversal time for the on-venue liquidity weight $w$, moved linearly. |
+| Max Top-of-book Spread | 1% | Relative spread above which a tick is considered illiquid. |
 
 Live values per market are available via the [market-details endpoint](../api/prod/market/get-markets).
 

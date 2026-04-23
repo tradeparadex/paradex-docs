@@ -11,6 +11,8 @@ counterparty
 crypto
 cryptocurrencies
 delisted
+depeg
+depegs
 Deribit
 expiries
 Ethereum

@@ -188,7 +188,7 @@ Accrued funding settles into realized PnL whenever the position is modified (tra
 ## Publication
 
 - The funding rate is recomputed every **1 second**.
-- It is published on the `funding_data` WebSocket channel and embedded in every price tick.
+- It is published on the [`funding_data` WebSocket channel](https://docs.paradex.trade/ws/web-socket-channels/funding-data-market-symbol) and embedded in every price tick.
 - History is available via the account funding-history REST endpoint.
 - Funding is paused when the oracle is in maintenance, the USDC price is invalid, or the perp market is halted.
 
@@ -217,7 +217,7 @@ Assume **BTC-USD-PERP** with the default 8h funding period. We look at a 1-minut
 |----------|-------|
 | Spot Price | 60,000 USD |
 | USDC Price | 1.00 |
-| Fair Basis | 0.0008 (8 bps rich) |
+| Fair Basis | 0.08% (8 bps) |
 | Position Size | +0.5 BTC (long) |
 | Holding window | 60s |
 

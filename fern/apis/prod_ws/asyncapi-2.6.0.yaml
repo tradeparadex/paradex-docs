@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.1.0
+    version: 1.2.0
     description: Channels for real-time updates.
 servers:
     production:
@@ -75,7 +75,7 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesBBOResp'
                 summary: Public websocket channel for tick updates of orderbook best bid/ask prices and amounts
-                description: Subscribe to market messages
+                description: 'Subscribe to market messages. Use `bbo.{market_symbol}` for a single market, `bbo.ALL` for every market, or pass `{"channel": "bbo", "base_asset": "{base_asset}"}` to receive updates for every active options market (OPTION and PERP_OPTION) for the given base asset.'
         x-fern-display-name: bbo.{market_symbol}
     /fills.{market_symbol}:
         parameters:
@@ -1016,7 +1016,7 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesTradeResult'
                 summary: Public websocket channel to receive updates on trades in particular market
-                description: Subscribe to trade messages for a market
+                description: 'Subscribe to trade messages. Use `trades.{market_symbol}` for a single market, `trades.ALL` for every market, or pass `{"channel": "trades", "base_asset": "{base_asset}"}` to receive updates for every active options market (OPTION and PERP_OPTION) for the given base asset.'
         x-fern-display-name: trades.{market_symbol}
     /transaction:
         subscribe:
@@ -1139,6 +1139,10 @@ components:
                     description: Amount required to open trade for the existing positions
                     example: "63008.59689218"
                     type: string
+                last_seen_notification:
+                    description: Latest notification event timestamp (ms) the user has seen — used for cross-device dedup
+                    example: "1713400000000"
+                    type: integer
                 maintenance_margin_requirement:
                     description: Amount required to maintain exisiting positions
                     example: "31597.25239676"
@@ -1179,6 +1183,7 @@ components:
                 - updated_at
                 - status
                 - seq_no
+                - last_seen_notification
             type: object
         ResponsesBBOResp:
             additionalProperties: false
@@ -2310,7 +2315,7 @@ components:
             name: bboresp
             title: BBOResp
             summary: Public websocket channel for tick updates of orderbook best bid/ask prices and amounts
-            description: Subscribe to market messages
+            description: 'Subscribe to market messages. Use `bbo.{market_symbol}` for a single market, `bbo.ALL` for every market, or pass `{"channel": "bbo", "base_asset": "{base_asset}"}` to receive updates for every active options market (OPTION and PERP_OPTION) for the given base asset.'
             tags:
                 - name: market
         ResponsesBalanceEventResponse:
@@ -2374,7 +2379,7 @@ components:
             name: traderesult
             title: TradeResult
             summary: Public websocket channel to receive updates on trades in particular market
-            description: Subscribe to trade messages for a market
+            description: 'Subscribe to trade messages. Use `trades.{market_symbol}` for a single market, `trades.ALL` for every market, or pass `{"channel": "trades", "base_asset": "{base_asset}"}` to receive updates for every active options market (OPTION and PERP_OPTION) for the given base asset.'
             tags:
                 - name: market
         ResponsesTradebustResult:

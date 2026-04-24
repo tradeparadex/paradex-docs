@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.120.0"
+    "version": "1.120.1"
   },
   "paths": {
     "/account": {
@@ -980,6 +980,43 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/profile/notifications/last_seen": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Records current server time as the notification dedup watermark for cross-device dedup.",
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates the last-seen notification timestamp",
+        "operationId": "update-last-seen",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.AccountProfileResp"
                 }
               }
             }
@@ -7507,6 +7544,10 @@
             "type": "boolean",
             "example": true
           },
+          "last_seen_notification": {
+            "type": "integer",
+            "example": 1713400000000
+          },
           "market_max_slippage": {
             "type": "object",
             "additionalProperties": {
@@ -7597,6 +7638,11 @@
             "description": "Amount required to open trade for the existing positions",
             "type": "string",
             "example": "63008.59689218"
+          },
+          "last_seen_notification": {
+            "description": "Latest notification event timestamp (ms) the user has seen — used for cross-device dedup",
+            "type": "integer",
+            "example": 1713400000000
           },
           "maintenance_margin_requirement": {
             "description": "Amount required to maintain exisiting positions",

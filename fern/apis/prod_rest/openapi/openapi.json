@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.120.1"
+    "version": "1.120.2"
   },
   "paths": {
     "/account": {
@@ -5061,6 +5061,15 @@
         "operationId": "trades",
         "parameters": [
           {
+            "example": "BTC",
+            "description": "Base asset symbol; returns trades across all active options (OPTION and PERP_OPTION) for this base asset. Mutually exclusive with market.",
+            "name": "baseAsset",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "description": "Returns the ‘next’ paginated page.",
             "name": "cursor",
             "in": "query",
@@ -5078,10 +5087,9 @@
           },
           {
             "example": "BTC-USD-PERP",
-            "description": "Market name",
+            "description": "Market name. Mutually exclusive with base_asset.",
             "name": "market",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "string"
             }

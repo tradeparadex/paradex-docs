@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.120.2"
+    "version": "1.120.3"
   },
   "paths": {
     "/account": {
@@ -5053,7 +5053,7 @@
     },
     "/trades": {
       "get": {
-        "description": "Returns a paginated list of trades that have occurred on the exchange.\nDefault page size is 100, maximum is 5000.\n\nThe `side` field in the response indicates the taker side of the trade.\n\n### Example\n\n```http\nGET /trades?market=BTC-USD-PERP&page_size=100\n```\n\nThis endpoint supports cursor-based pagination for efficiently traversing large\nresult sets.\n",
+        "description": "Returns a paginated list of trades that have occurred on the exchange.\nDefault page size is 100, maximum is 1000.\n\nThe `side` field in the response indicates the taker side of the trade.\n\n### Example\n\n```http\nGET /trades?market=BTC-USD-PERP&page_size=100\n```\n\nThis endpoint supports cursor-based pagination for efficiently traversing large\nresult sets.\n",
         "tags": [
           "Trades"
         ],
@@ -8608,7 +8608,6 @@
           "INVALID_ORDER_SIZE",
           "CLIENT_ORDER_ID_NOT_FOUND",
           "DUPLICATED_CLIENT_ID",
-          "INVALID_PRICE_PRECISION",
           "INVALID_SYMBOL",
           "INVALID_TOKEN",
           "INVALID_ETHEREUM_ADDRESS",
@@ -8616,7 +8615,6 @@
           "INVALID_STARKNET_ADDRESS",
           "INVALID_STARKNET_SIGNATURE",
           "STARKNET_SIGNATURE_VERIFICATION_FAILED",
-          "BAD_STARKNET_REQUEST",
           "ETHEREUM_SIGNER_MISMATCH",
           "ETHEREUM_HASH_MISMATCH",
           "NOT_ONBOARDED",
@@ -8666,7 +8664,6 @@
           "SYSTEM_STATUS_POST_ONLY",
           "SYSTEM_STATUS_CANCEL_ONLY",
           "INVALID_MARKETING_CODE",
-          "TRANSACTION_NOT_FOUND",
           "OFFER_NOT_FOUND",
           "MARKET_MARGIN_RESTRICTED",
           "NOT_UNIQUE",
@@ -8717,7 +8714,6 @@
           "ErrorCodeString_InvalidSizeForModifyOrder",
           "ErrorCodeString_ClientOrderIdNotFound",
           "ErrorCodeString_DuplicatedClientOrderId",
-          "ErrorCodeString_InvalidPricePrecision",
           "ErrorCodeString_InvalidSymbol",
           "ErrorCodeString_InvalidToken",
           "ErrorCodeString_BadEthAddress",
@@ -8725,7 +8721,6 @@
           "ErrorCodeString_BadStarkNetAddress",
           "ErrorCodeString_BadStarkNetSignature",
           "ErrorCodeString_StarknetSigVerificationFailed",
-          "ErrorCodeString_BadFormatStarknetCall",
           "ErrorCodeString_SignerMismatch",
           "ErrorCodeString_HashMismatch",
           "ErrorCodeString_NotOnboarded",
@@ -8775,7 +8770,6 @@
           "ErrorCodeString_SystemStatusPostOnly",
           "ErrorCodeString_SystemStatusCancelOnly",
           "ErrorCodeString_InvalidMarketingCode",
-          "ErrorCodeString_TransactionNotFound",
           "ErrorCodeString_OfferNotFound",
           "ErrorCodeString_MarketMarginRestricted",
           "ErrorCodeString_NotUnique",

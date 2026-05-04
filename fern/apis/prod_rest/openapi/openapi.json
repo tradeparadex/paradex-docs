@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.120.3"
+    "version": "1.120.5"
   },
   "paths": {
     "/account": {
@@ -7109,6 +7109,10 @@
             "type": "string",
             "example": "abcd:code1"
           },
+          "portfolio_margin": {
+            "description": "When true, the new account is onboarded directly into Portfolio Margin mode. Only valid for main accounts and subaccounts.",
+            "type": "boolean"
+          },
           "public_key": {
             "description": "Public key of the user being onboarded.",
             "type": "string",
@@ -7461,6 +7465,11 @@
           },
           "fees": {
             "$ref": "#/components/schemas/responses.Fees"
+          },
+          "has_ecosystem_nft": {
+            "description": "True if account owns an ecosystem NFT (Money Badgers / ShizoPunk) — qualifies for the lower retail tier thresholds",
+            "type": "boolean",
+            "example": false
           },
           "isolated_market": {
             "description": "Isolated market for the account",
@@ -8627,6 +8636,7 @@
           "UNAUTHORIZED_ETHEREUM_ADDRESS",
           "UNAUTHORIZED_ERROR",
           "ETHEREUM_ADDRESS_ALREADY_ONBOARDED",
+          "EVM_ADDRESS_ALREADY_ONBOARDED",
           "MARKET_NOT_FOUND",
           "ALLOWLIST_ENTRY_NOT_FOUND",
           "USERNAME_IN_USE",
@@ -8672,6 +8682,9 @@
           "ONBOARDING_RATE_LIMITED",
           "SUBACCOUNTS_LIMIT_EXCEEDED",
           "INSUFFICIENT_MIN_CHAIN_BALANCE",
+          "INSUFFICIENT_EVM_BALANCE",
+          "PORTFOLIO_MARGIN_ONBOARDING_DISABLED",
+          "PORTFOLIO_MARGIN_INVALID_ACCOUNT_KIND",
           "INVALID_EVM_SIGNATURE",
           "EVM_SIGNATURE_VERIFICATION_FAILED",
           "INVALID_SUBKEY",
@@ -8733,6 +8746,7 @@
           "ErrorCodeString_UnauthorizedEthAddress",
           "ErrorCodeString_UnauthorizedError",
           "ErrorCodeString_EthAddressAlreadyOnboarded",
+          "ErrorCodeString_EvmAddressAlreadyOnboarded",
           "ErrorCodeString_MarketNotFound",
           "ErrorCodeString_AllowlistNotFound",
           "ErrorCodeString_UsernameInUse",
@@ -8778,6 +8792,9 @@
           "ErrorCodeString_OnboardingRateLimited",
           "ErrorCodeString_SubaccountsLimitExceeded",
           "ErrorCodeString_InsufficientMinChainBalance",
+          "ErrorCodeString_InsufficientEvmBalance",
+          "ErrorCodeString_PortfolioMarginOnboardingDisabled",
+          "ErrorCodeString_PortfolioMarginInvalidAccountKind",
           "ErrorCodeString_BadEvmSignature",
           "ErrorCodeString_EvmSigVerificationFailed",
           "ErrorCodeString_InvalidSubkey",
@@ -10801,7 +10818,7 @@
           "starknet_fullnode_rpc_url": {
             "description": "Full node RPC Proxy URL for Starknet",
             "type": "string",
-            "example": "https://rpc.api.testnet.paradex.trade/rpc/v0_9"
+            "example": "https://rpc.api.testnet.paradex.trade/rpc/v0_10"
           },
           "starknet_gateway_url": {
             "description": "This field is deprecated",

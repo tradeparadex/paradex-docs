@@ -9733,6 +9733,11 @@
             "type": "string",
             "example": "29876.3"
           },
+          "forward_rate": {
+            "description": "EWMA-smoothed annualized forward rate for dated options",
+            "type": "string",
+            "example": "0.05"
+          },
           "funding_rate": {
             "description": "This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate.",
             "type": "string",

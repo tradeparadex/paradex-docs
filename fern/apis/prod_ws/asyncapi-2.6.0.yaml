@@ -1522,6 +1522,10 @@ components:
                     description: 'External fair price, calculated from spot price and an external basis: spot_price * (1 + external_basis). where external basis is the median basis rate on different external exchanges'
                     example: "29876.3"
                     type: string
+                forward_rate:
+                    description: EWMA-smoothed annualized forward rate for dated options
+                    example: "0.05"
+                    type: string
                 funding_rate:
                     description: This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate.
                     example: "0.3"

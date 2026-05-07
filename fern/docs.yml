@@ -637,8 +637,6 @@ navigation:
             href: https://braavos.app/
       - section: Cross Chain Bridges
         contents:
-          - link: rhino.fi
-            href: https://rhino.fi/
           - link: Layerswap
             href: https://layerswap.io/
       - section: Price Oracles

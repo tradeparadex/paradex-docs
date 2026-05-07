@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.120.5"
+    "version": "1.120.6"
   },
   "paths": {
     "/account": {
@@ -8313,7 +8313,7 @@
         ],
         "properties": {
           "account": {
-            "description": "Starknet account address of the order owner",
+            "description": "Paradex account address of the order owner",
             "type": "string",
             "example": "0x1234567890abcdef"
           },
@@ -8412,9 +8412,14 @@
             "example": "STARKNET"
           },
           "signer_account": {
-            "description": "Starknet account address of the signer",
+            "description": "Paradex account address of the signer",
             "type": "string",
             "example": "0x1234567890abcdef"
+          },
+          "signer_public_key": {
+            "description": "Hex pubkey used to sign (main account key or active subkey). Empty defaults to account main key.",
+            "type": "string",
+            "example": "0xabc..."
           }
         }
       },
@@ -8704,6 +8709,8 @@
           "BLOCK_TRADE_MISSING_SIGNERS",
           "BLOCK_TRADE_MISSING_SIGNATURE",
           "BLOCK_TRADE_ACCOUNT_MISMATCH",
+          "BLOCK_TRADE_INVALID_SIGNATURE",
+          "BLOCK_TRADE_SIGNER_KEY_UNAUTHORIZED",
           "OFFER_ALREADY_CANCELLED",
           "OFFER_INVALID_STATUS",
           "OFFER_UNAUTHORIZED",
@@ -8814,6 +8821,8 @@
           "ErrorCodeString_BlockTradeMissingSigners",
           "ErrorCodeString_BlockTradeMissingSignature",
           "ErrorCodeString_BlockTradeAccountMismatch",
+          "ErrorCodeString_BlockTradeInvalidSignature",
+          "ErrorCodeString_BlockTradeSignerKeyUnauthorized",
           "ErrorCodeString_OfferAlreadyCancelled",
           "ErrorCodeString_OfferInvalidStatus",
           "ErrorCodeString_OfferUnauthorized",

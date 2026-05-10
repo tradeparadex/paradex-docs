@@ -29,6 +29,12 @@ Source release notes for a given month live at `fern/pages/release-notes/v1.<n>.
 
 Example: March 2026 (v1.135–v1.139) had no new markets, so the card uses just `**Performance & Infra**` and `**UX**` (2 categories, both well under the 4-category cap).
 
+Example: April 2026 (v1.139.2–v1.143.6) had no new markets but introduced DIME fee programs, a new portfolio-margin order slider, and several API additions, so the card uses `**Liquidity & Trading**`, `**Performance & Infra**`, and `**UX**` (3 categories).
+
+## Quarter headings
+
+Use `### YYYY QN` headings inside each year's `<Tab>` (e.g. `### 2026 Q1`, `### 2026 Q2`). Add the next quarter heading the first time a month in that quarter is added — keep one `<CardGroup cols={3}>` per quarter, with monthly `<Card>` entries inside it.
+
 ## Last updated
 
 2026-05-10

@@ -35,6 +35,8 @@ Example: April 2026 (v1.139.2–v1.143.6) had no new markets but introduced DIME
 
 Use `### YYYY QN` headings inside each year's `<Tab>` (e.g. `### 2026 Q1`, `### 2026 Q2`). Add the next quarter heading the first time a month in that quarter is added — keep one `<CardGroup cols={3}>` per quarter, with monthly `<Card>` entries inside it.
 
+Quarters are listed in **descending order** (most recent first) within each year's tab, matching the pattern used for past years (e.g. 2025 shows Q4, then Q3, then Q2, then Q1). When adding a new quarter, insert its heading and `<CardGroup>` above the previous quarter.
+
 ## Last updated
 
 2026-05-10

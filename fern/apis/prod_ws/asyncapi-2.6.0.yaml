@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.2.0
+    version: 1.2.1
     description: Channels for real-time updates.
 servers:
     production:
@@ -1593,6 +1593,10 @@ components:
                     type: string
                 price_change_rate_24h:
                     description: Price change rate in the last 24 hours
+                    example: "0.05"
+                    type: string
+                risk_free_rate:
+                    description: Risk-free discounting rate used for option pricing
                     example: "0.05"
                     type: string
                 rolling_details:

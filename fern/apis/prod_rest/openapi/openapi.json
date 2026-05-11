@@ -9795,6 +9795,11 @@
             "type": "string",
             "example": "0.05"
           },
+          "risk_free_rate": {
+            "description": "Risk-free discounting rate used for option pricing",
+            "type": "string",
+            "example": "0.05"
+          },
           "rolling_details": {
             "description": "Rolling futures details — only populated for rolling futures markets",
             "allOf": [

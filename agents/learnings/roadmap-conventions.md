@@ -14,8 +14,11 @@ Standard category names (in this order when used):
 
 1. `**New Markets**` — perpetual or spot market launches, NFT launches
 2. `**Liquidity & Trading**` — trading mechanics, order behavior, fees, programs
-3. `**Performance & Infra**` — API additions, latency, infra upgrades
-4. `**UX**` — UI redesigns, new themes, builder improvements, mobile
+3. `**Products**` — new product launches (e.g. Dated Options beta), expanded asset coverage (e.g. TradFi listings). Use this instead of (or in addition to) `**New Markets**` when the launch is a product line rather than a single market. Mirrors the "Products" card used in the Upcoming section.
+4. `**Performance & Infra**` — API additions, latency, infra upgrades
+5. `**UX**` — UI redesigns, new themes, builder improvements, mobile
+
+Max 4 categories per monthly card. Pick the 4 most relevant for that month.
 
 Recent monthly cards typically include 2–3 categories with 2–6 bullets each. Keep bullets concise (3–8 words each) and high-signal — collapse small related changes into a single bullet.
 
@@ -29,7 +32,7 @@ Source release notes for a given month live at `fern/pages/release-notes/v1.<n>.
 
 Example: March 2026 (v1.135–v1.139) had no new markets, so the card uses just `**Performance & Infra**` and `**UX**` (2 categories, both well under the 4-category cap).
 
-Example: April 2026 (v1.139.2–v1.143.6) had no new markets but introduced DIME fee programs, a new portfolio-margin order slider, and several API additions, so the card uses `**Liquidity & Trading**`, `**Performance & Infra**`, and `**UX**` (3 categories).
+Example: April 2026 (v1.139.2–v1.143.6) launched the $DIME utility (fees + staking), Dated Options Public Beta, expanded TradFi listings (Silver, Platinum, Oil, Gas, ...), a portfolio-margin order slider, and several API additions — so the card uses 4 categories: `**Liquidity & Trading**`, `**Products**`, `**Performance & Infra**`, and `**UX**`.
 
 ## Quarter headings
 

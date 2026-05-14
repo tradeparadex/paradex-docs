@@ -51,6 +51,7 @@ Solana
 Starknet
 Starkware
 subaccounts
+undiscounted
 unstake
 unstaking
 Subkey

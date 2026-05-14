@@ -42,6 +42,6 @@ Internal variance values are derived from bid, ask, last trade, and mid prices a
 
 ## Forward rate calibration
 
-Paradex does not run an internal forward curve. For each option expiry, the **annualized forward rate $f$** is calibrated from Deribit's listed instruments on the same underlying — using Deribit's dated futures and put-call parity on its listed options around the relevant expiry — and then combined with the Paradex spot oracle to build the synthetic forward $F = S \times e^{\,f\,T}$. The calibrated annualized forward rate is refreshed continuously.
+The **annualized forward rate $f$** is calibrated externally from Deribit for each option expiry and refreshed continuously. It is combined with the Paradex spot oracle to produce the synthetic forward $F = S \times e^{\,f\,T}$.
 
-The **risk-free rate $r$** is a separate platform parameter used solely to discount the Black-76 payoff. It is currently set to **0%** and may be revised in the future; any change will be announced ahead of time.
+The **risk-free rate $r$** is a separate platform parameter used solely for discounting. It is currently set to **0%**.

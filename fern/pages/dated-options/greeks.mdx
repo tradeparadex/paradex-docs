@@ -10,10 +10,13 @@ Raw Greeks are available on the API via the [markets summary endpoint](/api/prod
 
 The examples below use the following assumptions:
 
-- BTC spot price = $60,000
+- BTC spot price (S) = $60,000
+- Annualized forward rate (f) = 10%
 - Implied volatility (IV) = 40%
-- Interest rate = 10%
+- Risk-free rate (r) = 0% *(current platform setting; used only for discounting)*
 - Position size = 1 BTC
+
+Under Black-76, the option is priced against the synthetic forward $F = S \times e^{\,f\,T}$, but Greeks are reported as sensitivities with respect to **spot (S)** — i.e., a 1% move in $S$ in the examples below corresponds to \$600. With $r = 0\%$, the discount factor $e^{-rT} = 1$, so option values equal the undiscounted Black-76 payoff. The Rho example uses a non-zero rate purely to illustrate the sensitivity.
 
 ## Definitions and examples
 
@@ -24,5 +27,5 @@ The examples below use the following assumptions:
 | IV | Vega | Sensitivity of option value to a 1% absolute change in IV | Same as Raw Greek | Vega = 80 → If IV moves from 40% to 41% → Option gains ~$80 |
 | IV/Spot | Vanna | Sensitivity of Raw Delta to a 1% absolute change in IV (equivalently, sensitivity of Vega to a move in spot) | Additional expected PnL assuming 1% move in spot and 1% increase in IV | Vanna = 0.01 → If IV moves from 40% to 41% → Delta shifts such that the position gains an additional ~$6 per subsequent 1% spot move |
 | IV | Volga | Sensitivity of Vega to a 1% absolute change in IV | Same as Raw Volga | Volga = 1.5 → If IV moves from 40% to 41% → Option gains an additional ~$1.50 of convex PnL on top of Vega |
-| Interest Rate | Rho | Sensitivity of option value to a 1% absolute change in interest rates | Same as Raw Rho | Rho = 25 → Rates move from 10% to 11% → Option gains ~$25 |
+| Interest Rate | Rho | Sensitivity of option value to a 1% absolute change in the risk-free rate (r) used for discounting, holding the forward F constant | Same as Raw Rho | Rho = 25 → If r moves from 0% to 1% → Option value changes by ~$25 through the discount factor. Sensitivities to the underlying level are captured by Delta and Gamma. |
 | Time | Theta | Sensitivity of option value to 1 day of time decay | Same as Raw Theta | Theta = −10 → Option loses ~$10 after 1 day, all else equal |

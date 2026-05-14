@@ -43,6 +43,7 @@ rebalance
 resync
 Rollups
 Scholes
+Black-76
 Sepolia
 Shizomori
 Shizopunk

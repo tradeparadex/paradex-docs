@@ -119,6 +119,20 @@ channels:
                 summary: Private websocket channel to receive funding payments of an account
                 description: Subscribe to funding payment messages for a market
         x-fern-display-name: funding_payments.{market_symbol}
+    /markets[.{market_symbol}]:
+        parameters:
+            market_symbol:
+                $ref: '#/components/parameters/market_symbol'
+        subscribe:
+            summary: Public websocket channel for live updates to market specifications
+            message:
+                name: marketevent
+                title: MarketEvent
+                payload:
+                    $ref: '#/components/schemas/ResponsesMarketEvent'
+                summary: Public websocket channel for live updates to market specifications
+                description: 'Subscribe to market spec changes: new listings (CREATED), settlements (SETTLED), market removals (DELETED) and parameter updates (UPDATED — e.g. price tick size, position limits, margin params). Supports `markets` (all markets) and `markets.{market_symbol}` (specific market). Payload shape mirrors GET /markets/history.'
+        x-fern-display-name: markets[.{market_symbol}]
     /markets_summary[.{market_symbol}]:
         parameters:
             market_symbol:
@@ -1484,6 +1498,123 @@ components:
                 - fill_id
                 - created_at
             type: object
+        ResponsesMarketEvent:
+            additionalProperties: false
+            properties:
+                changed_fields:
+                    additionalProperties: false
+                    properties:
+                        asset_kind:
+                            example: PERP
+                            type: string
+                        base_currency:
+                            example: BTC
+                            type: string
+                        clamp_rate:
+                            example: "0.05"
+                            type: number
+                        delta1_cross_margin_params:
+                            type: object
+                        expiry_at:
+                            example: "0"
+                            type: integer
+                        fee_config:
+                            type: object
+                        funding_multiplier:
+                            example: "1"
+                            type: number
+                        funding_period_hours:
+                            example: "8"
+                            type: number
+                        interest_rate:
+                            example: "0.01"
+                            type: number
+                        market_kind:
+                            example: cross
+                            type: string
+                        max_funding_rate:
+                            example: "0.05"
+                            type: number
+                        max_funding_rate_change:
+                            example: "0.0005"
+                            type: number
+                        max_open_orders:
+                            example: "100"
+                            type: integer
+                        max_order_size:
+                            example: "100"
+                            type: string
+                        max_slippage:
+                            example: "0.05"
+                            type: number
+                        max_tob_spread:
+                            example: "0.2"
+                            type: number
+                        min_notional:
+                            example: "3"
+                            type: string
+                        open_at:
+                            example: "1762809600000"
+                            type: integer
+                        option_cross_margin_params:
+                            type: object
+                        option_type:
+                            example: CALL
+                            type: string
+                        oracle_ewma_factor:
+                            example: "0.2"
+                            type: number
+                        order_size_increment:
+                            example: "0.001"
+                            type: string
+                        position_limit:
+                            example: "500"
+                            type: string
+                        price_bands_width:
+                            example: "0.05"
+                            type: number
+                        price_tick_size:
+                            example: "0.01"
+                            type: string
+                        quote_currency:
+                            example: USD
+                            type: string
+                        settlement_currency:
+                            example: USDC
+                            type: string
+                        settlement_price:
+                            example: "50000"
+                            type: number
+                        strike_price:
+                            example: "66500"
+                            type: string
+                        underlying_twap_price:
+                            example: "50000"
+                            type: number
+                    type: object
+                event_type:
+                    description: Type of change
+                    enum:
+                        - CREATED
+                        - DELETED
+                        - SETTLED
+                        - UPDATED
+                    example: UPDATED
+                    type: string
+                symbol:
+                    description: Market symbol
+                    example: BTC-USD-PERP
+                    type: string
+                updated_at:
+                    description: Time of change (unix time millisecond)
+                    example: "1762809600000"
+                    type: integer
+            required:
+                - symbol
+                - event_type
+                - updated_at
+                - changed_fields
+            type: object
         ResponsesMarketSummaryResp:
             additionalProperties: false
             properties:
@@ -2355,6 +2486,13 @@ components:
             description: Subscribe to funding payment messages for a market
             tags:
                 - name: funding
+        ResponsesMarketEvent:
+            name: marketevent
+            title: MarketEvent
+            summary: Public websocket channel for live updates to market specifications
+            description: 'Subscribe to market spec changes: new listings (CREATED), settlements (SETTLED), market removals (DELETED) and parameter updates (UPDATED — e.g. price tick size, position limits, margin params). Supports `markets` (all markets) and `markets.{market_symbol}` (specific market). Payload shape mirrors GET /markets/history.'
+            tags:
+                - name: market
         ResponsesMarketSummaryResp:
             name: marketsummaryresp
             title: MarketSummaryResp

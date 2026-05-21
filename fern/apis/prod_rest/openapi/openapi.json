@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.120.6"
+    "version": "1.123.0"
   },
   "paths": {
     "/account": {
@@ -639,6 +639,87 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/keys/subkeys/{public_key}/allowed-cidrs": {
+      "put": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Replace the IP CIDR allowlist for a subkey. Empty array clears the allowlist (unrestricted). Only callable with the main account; subkeys cannot widen their own allowlist.",
+        "tags": [
+          "Subkey"
+        ],
+        "summary": "Update subkey IP allowlist",
+        "operationId": "update-subkey-allowed-cidrs",
+        "parameters": [
+          {
+            "description": "Subkey public key",
+            "name": "public_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/requests.UpdateAllowedCIDRs"
+        },
+        "responses": {
+          "200": {
+            "description": "Updated subkey details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.Subkey"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1647,6 +1728,87 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/tokens/{lookup_id}/allowed-cidrs": {
+      "put": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Replace the IP CIDR allowlist for an auth token. Empty array clears the allowlist (unrestricted). Only callable from the main account session; subkey sessions cannot modify token allowlists.",
+        "tags": [
+          "Token"
+        ],
+        "summary": "Update token IP allowlist",
+        "operationId": "update-token-allowed-cidrs",
+        "parameters": [
+          {
+            "description": "Token lookup ID",
+            "name": "lookup_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/requests.UpdateAllowedCIDRs"
+        },
+        "responses": {
+          "200": {
+            "description": "Updated token details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiToken"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -3371,6 +3533,39 @@
         }
       }
     },
+    "/markets/history": {
+      "get": {
+        "description": "Returns audit-driven events for market spec changes (listing, settlement, parameter updates) over the last 7 days. Source: market audit table; includes Ops manual changes.",
+        "tags": [
+          "Markets"
+        ],
+        "summary": "History of changes to market specifications",
+        "operationId": "get-markets-history",
+        "parameters": [
+          {
+            "example": "BTC-USD-PERP",
+            "description": "Market symbol to filter history. Omit or pass \"ALL\" for all markets.",
+            "name": "market",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.MarketHistoryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/markets/klines": {
       "get": {
         "description": "Klines for a symbol",
@@ -3438,6 +3633,49 @@
         "responses": {
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/markets/settlement-price": {
+      "get": {
+        "description": "Returns the settlement price and the underlying spot TWAP used to compute it. The market must have already settled; otherwise returns 404.",
+        "tags": [
+          "Markets"
+        ],
+        "summary": "Settlement price for a single market",
+        "operationId": "get-market-settlement-price",
+        "parameters": [
+          {
+            "description": "Market symbol, e.g. BTC-USD-15SEP25-55000-C",
+            "name": "market",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.MarketSettlementResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -5687,6 +5925,59 @@
         }
       }
     },
+    "/vaults/analytics": {
+      "get": {
+        "description": "Returns the vault-level analytics row plus per-substrategy analytics rows for a single vault. vault_level is null when the vault has no analytics blob yet; substrategies only contains entries whose Redis blob is present. 404 only when the vault itself does not exist — missing analytics data returns 200 with empty fields.",
+        "tags": [
+          "Vaults"
+        ],
+        "summary": "Get combined vault-level and substrategy analytics for a vault",
+        "operationId": "vaults-get-analytics",
+        "parameters": [
+          {
+            "description": "Vault address",
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.VaultAnalyticsResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/vaults/balance": {
       "get": {
         "description": "Get spot balance of a vault\n",
@@ -6519,6 +6810,17 @@
   ],
   "components": {
     "requestBodies": {
+      "requests.UpdateAllowedCIDRs": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/requests.UpdateAllowedCIDRs"
+            }
+          }
+        },
+        "description": "Replacement CIDR list",
+        "required": true
+      },
       "requests.Onboarding": {
         "content": {
           "application/json": {
@@ -6925,6 +7227,11 @@
             "type": "string",
             "example": "0x123..."
           },
+          "evm_signature": {
+            "description": "EVM (EIP-191) registration signature, used in place of `signature` /\n`signature_timestamp` / `signature_expiry` when the account's main\nkey is a secp256k1 key (AccountSignerType == EIP191). The server\nreconstructs nothing — the raw SIWE message presented to the user is\nsupplied verbatim in `siwe_message` and the personal_sign signature\nin `evm_signature`. The SIWE message's Statement must equal\n\"Paradex Subkey Registration: 0x<new_subkey_pubkey>\" (lowercased\npubkey); that line is what binds the authorisation to the specific\nsubkey being registered.",
+            "type": "string",
+            "example": "0x..."
+          },
           "name": {
             "description": "User-friendly name for the subkey.",
             "type": "string",
@@ -6934,6 +7241,31 @@
             "description": "Public key to be registered as a subkey.",
             "type": "string",
             "example": "0x3d9f2b2e5f50c1aade60ca540368cd7490160f41270c192c05729fe35b656a9"
+          },
+          "signature": {
+            "description": "Signature from the account's main StarkNet private key over\npedersen_array(account, public_key, signature_timestamp, signature_expiry).\nRequired when the server enforces main-key authorization on subkey\nregistration (feature flag EnableSubkeyRegistrationSignature). Format: [r, s].",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "[\"0xr...\"",
+              "\"0xs...\"]"
+            ]
+          },
+          "signature_expiry": {
+            "description": "Unix seconds; included in signed message and bounds replay window.",
+            "type": "integer",
+            "example": 1706400600
+          },
+          "signature_timestamp": {
+            "description": "Unix seconds; included in signed message.",
+            "type": "integer",
+            "example": 1706400000
+          },
+          "siwe_message": {
+            "type": "string",
+            "example": "app.paradex.trade wants you to sign in..."
           },
           "state": {
             "description": "State of the subkey: 'active' or 'pending'. Defaults to 'active'.",
@@ -6970,6 +7302,11 @@
       "requests.CreateVault": {
         "type": "object",
         "properties": {
+          "curator_name": {
+            "description": "Curator name for the vault (optional)",
+            "type": "string",
+            "example": "Some Curator"
+          },
           "deposit_tx_signature": {
             "description": "Initial deposit transfer by vault owner",
             "type": "string",
@@ -7004,6 +7341,11 @@
             "description": "Public key of vault operator",
             "type": "string",
             "example": "0x1234567890abcdef"
+          },
+          "strategy_description": {
+            "description": "Strategy description for the vault (optional)",
+            "type": "string",
+            "example": "Delta Neutral"
           }
         }
       },
@@ -7334,6 +7676,22 @@
           }
         }
       },
+      "requests.UpdateAllowedCIDRs": {
+        "type": "object",
+        "properties": {
+          "allowed_cidrs": {
+            "description": "Full replacement list. Empty = unrestricted.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "[\"203.0.113.0/24\"",
+              "\"198.51.100.42/32\"]"
+            ]
+          }
+        }
+      },
       "requests.UpdateNotificationPreferencesRequest": {
         "type": "object",
         "properties": {
@@ -7426,6 +7784,89 @@
           }
         }
       },
+      "responses.AccountAnalytics": {
+        "type": "object",
+        "properties": {
+          "account_address": {
+            "type": "string",
+            "example": "0x1234567890abcdef"
+          },
+          "annualized_volatility": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "apr": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "apr_simple_itd": {
+            "type": "string"
+          },
+          "cum_return": {
+            "type": "string"
+          },
+          "cumulative_pnl_series": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.AccountDailyPnlPoint"
+            }
+          },
+          "cumulative_pnl_usd": {
+            "type": "string"
+          },
+          "end_value": {
+            "type": "string"
+          },
+          "hourly_cumulative_pnl_series": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.AccountHourlyPnlPoint"
+            }
+          },
+          "max_dd": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "max_drawdown_to_date": {
+            "type": "string"
+          },
+          "monthly_pnl_last_12m": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.AccountMonthlyPnlEntry"
+            }
+          },
+          "pnl": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "return": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "sharpe": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "sharpe_annualized_itd": {
+            "type": "string"
+          },
+          "strategy_name": {
+            "type": "string",
+            "example": "Spot LP"
+          },
+          "vol_annualized_itd": {
+            "type": "string"
+          }
+        }
+      },
+      "responses.AccountDailyPnlPoint": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "string",
+            "example": "2026-05-05"
+          },
+          "value": {
+            "type": "string",
+            "example": "1234.56"
+          }
+        }
+      },
       "responses.AccountHistoricalDataResp": {
         "type": "object",
         "properties": {
@@ -7442,6 +7883,19 @@
             "items": {
               "type": "integer"
             }
+          }
+        }
+      },
+      "responses.AccountHourlyPnlPoint": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "type": "string",
+            "example": "2026-05-05 09:00:00.000"
+          },
+          "value": {
+            "type": "string",
+            "example": "1234.56"
           }
         }
       },
@@ -7544,6 +7998,19 @@
           "market": {
             "description": "Market symbol",
             "type": "string"
+          }
+        }
+      },
+      "responses.AccountMonthlyPnlEntry": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "string",
+            "example": "2026-05-01"
+          },
+          "month_return_canonical": {
+            "type": "string",
+            "example": "0.0123"
           }
         }
       },
@@ -7868,6 +8335,16 @@
       "responses.ApiToken": {
         "type": "object",
         "properties": {
+          "allowed_cidrs": {
+            "description": "IP CIDR allowlist; empty means unrestricted",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "[\"203.0.113.0/24\"]"
+            ]
+          },
           "created_at": {
             "description": "Token creation timestamp (nanoseconds since epoch)",
             "type": "integer",
@@ -8651,6 +9128,7 @@
           "PROGRAM_NOT_SUPPORTED",
           "INVALID_DASHBOARD",
           "MARKET_NOT_OPEN",
+          "MARKET_NOT_SETTLED",
           "INVALID_REFERRAL_CODE",
           "REQUEST_NOT_ALLOWED",
           "PARENT_ADDRESS_ALREADY_ONBOARDED",
@@ -8696,6 +9174,7 @@
           "SUBKEY_NOT_ACTIVATABLE",
           "TOKEN_LIMIT_REACHED",
           "INVALID_TOKEN_SCOPE",
+          "IP_NOT_ALLOWED",
           "INSUFFICIENT_TRANSFERRABLE_XP",
           "TRANSFER_LIMIT_REACHED",
           "XP_TRANSFERS_DISABLED",
@@ -8763,6 +9242,7 @@
           "ErrorCodeString_ProgramNotSupported",
           "ErrorCodeString_InvalidDashboard",
           "ErrorCodeString_MarketNotOpen",
+          "ErrorCodeString_MarketNotSettled",
           "ErrorCodeString_InvalidReferralCode",
           "ErrorCodeString_RequestNotAllowed",
           "ErrorCodeString_ParentAddressAlreadyOnboarded",
@@ -8808,6 +9288,7 @@
           "ErrorCodeString_SubkeyNotActivatable",
           "ErrorCodeString_TokenLimitReached",
           "ErrorCodeString_InvalidTokenScope",
+          "ErrorCodeString_IPNotAllowed",
           "ErrorCodeString_InsufficientTransferrableXP",
           "ErrorCodeString_TransferLimitReached",
           "ErrorCodeString_XPTransfersDisabled",
@@ -9441,6 +9922,54 @@
           }
         }
       },
+      "responses.MarketEvent": {
+        "type": "object",
+        "properties": {
+          "changed_fields": {
+            "$ref": "#/components/schemas/responses.MarketHistoryFields"
+          },
+          "event_type": {
+            "description": "Type of change",
+            "enum": [
+              "CREATED",
+              "DELETED",
+              "SETTLED",
+              "UPDATED"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.MarketEventType"
+              }
+            ],
+            "example": "UPDATED"
+          },
+          "symbol": {
+            "description": "Market symbol",
+            "type": "string",
+            "example": "BTC-USD-PERP"
+          },
+          "updated_at": {
+            "description": "Time of change (unix time millisecond)",
+            "type": "integer",
+            "example": 1762809600000
+          }
+        }
+      },
+      "responses.MarketEventType": {
+        "type": "string",
+        "enum": [
+          "CREATED",
+          "DELETED",
+          "SETTLED",
+          "UPDATED"
+        ],
+        "x-enum-varnames": [
+          "MarketEventCreated",
+          "MarketEventDeleted",
+          "MarketEventSettled",
+          "MarketEventUpdated"
+        ]
+      },
       "responses.MarketFeeConfig": {
         "type": "object",
         "properties": {
@@ -9467,6 +9996,133 @@
                 "$ref": "#/components/schemas/responses.MakerTakerFee"
               }
             ]
+          }
+        }
+      },
+      "responses.MarketHistoryFields": {
+        "type": "object",
+        "properties": {
+          "asset_kind": {
+            "type": "string",
+            "example": "PERP"
+          },
+          "base_currency": {
+            "type": "string",
+            "example": "BTC"
+          },
+          "clamp_rate": {
+            "type": "number",
+            "example": 0.05
+          },
+          "delta1_cross_margin_params": {},
+          "expiry_at": {
+            "type": "integer",
+            "example": 0
+          },
+          "fee_config": {},
+          "funding_multiplier": {
+            "type": "number",
+            "example": 1
+          },
+          "funding_period_hours": {
+            "type": "number",
+            "example": 8
+          },
+          "interest_rate": {
+            "type": "number",
+            "example": 0.01
+          },
+          "market_kind": {
+            "type": "string",
+            "example": "cross"
+          },
+          "max_funding_rate": {
+            "type": "number",
+            "example": 0.05
+          },
+          "max_funding_rate_change": {
+            "type": "number",
+            "example": 0.0005
+          },
+          "max_open_orders": {
+            "type": "integer",
+            "example": 100
+          },
+          "max_order_size": {
+            "type": "string",
+            "example": "100"
+          },
+          "max_slippage": {
+            "type": "number",
+            "example": 0.05
+          },
+          "max_tob_spread": {
+            "type": "number",
+            "example": 0.2
+          },
+          "min_notional": {
+            "type": "string",
+            "example": "3"
+          },
+          "open_at": {
+            "type": "integer",
+            "example": 1762809600000
+          },
+          "option_cross_margin_params": {},
+          "option_type": {
+            "type": "string",
+            "example": "CALL"
+          },
+          "oracle_ewma_factor": {
+            "type": "number",
+            "example": 0.2
+          },
+          "order_size_increment": {
+            "type": "string",
+            "example": "0.001"
+          },
+          "position_limit": {
+            "type": "string",
+            "example": "500"
+          },
+          "price_bands_width": {
+            "type": "number",
+            "example": 0.05
+          },
+          "price_tick_size": {
+            "type": "string",
+            "example": "0.01"
+          },
+          "quote_currency": {
+            "type": "string",
+            "example": "USD"
+          },
+          "settlement_currency": {
+            "type": "string",
+            "example": "USDC"
+          },
+          "settlement_price": {
+            "type": "number",
+            "example": 50000
+          },
+          "strike_price": {
+            "type": "string",
+            "example": "66500"
+          },
+          "underlying_twap_price": {
+            "type": "number",
+            "example": 50000
+          }
+        }
+      },
+      "responses.MarketHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.MarketEvent"
+            }
           }
         }
       },
@@ -9692,6 +10348,30 @@
               "MEME",
               "DEFI"
             ]
+          }
+        }
+      },
+      "responses.MarketSettlementResp": {
+        "type": "object",
+        "properties": {
+          "expiry_at": {
+            "description": "Scheduled expiry (unix ms); settlement is computed at or shortly after this time",
+            "type": "integer",
+            "example": 1758326400000
+          },
+          "settlement_price": {
+            "description": "Option payoff for option markets; spot TWAP for perp/future",
+            "type": "string",
+            "example": "5000"
+          },
+          "symbol": {
+            "type": "string",
+            "example": "BTC-USD-15SEP25-55000-C"
+          },
+          "underlying_twap_price": {
+            "description": "30-min spot TWAP at expiry",
+            "type": "string",
+            "example": "60000"
           }
         }
       },
@@ -10697,6 +11377,16 @@
             "type": "string",
             "example": "0x1234567890abcdef"
           },
+          "allowed_cidrs": {
+            "description": "IP CIDR allowlist; empty means unrestricted",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "[\"203.0.113.0/24\"]"
+            ]
+          },
           "created_at": {
             "description": "Subkey creation timestamp (nanoseconds since epoch)",
             "type": "integer",
@@ -11273,6 +11963,80 @@
           }
         }
       },
+      "responses.VaultAnalytics": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "example": "0x1234567890abcdef"
+          },
+          "annualized_volatility": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "apr": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "as_of": {
+            "type": "string",
+            "example": "2026-05-05 09:00:00.000"
+          },
+          "best_period_return": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "max_drawdown": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "monthly_pnl_last_12m": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.VaultMonthlyPnlEntry"
+            }
+          },
+          "pct_positive": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "pnl": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "recovery_hours": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "sharpe_ratio": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          },
+          "top_holders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.VaultTopHolder"
+            }
+          },
+          "worst_period_return": {
+            "$ref": "#/components/schemas/responses.WindowedMetrics"
+          }
+        }
+      },
+      "responses.VaultAnalyticsResp": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "example": "0x1234567890abcdef"
+          },
+          "as_of": {
+            "type": "string",
+            "example": "2026-05-05 09:00:00.000"
+          },
+          "substrategies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.AccountAnalytics"
+            }
+          },
+          "vault_level": {
+            "$ref": "#/components/schemas/responses.VaultAnalytics"
+          }
+        }
+      },
       "responses.VaultHistoricalDataResp": {
         "type": "object",
         "properties": {
@@ -11308,6 +12072,19 @@
           "VaultKindProtocol"
         ]
       },
+      "responses.VaultMonthlyPnlEntry": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "string",
+            "example": "2026-05-01"
+          },
+          "month_return_pct": {
+            "type": "string",
+            "example": "0.0123"
+          }
+        }
+      },
       "responses.VaultResp": {
         "type": "object",
         "properties": {
@@ -11320,6 +12097,11 @@
             "description": "Unix timestamp in milliseconds of when the vault has been created",
             "type": "integer",
             "example": 1517171717
+          },
+          "curator_name": {
+            "description": "Curator name of the vault (empty string if not set)",
+            "type": "string",
+            "example": "Some Curator"
           },
           "description": {
             "description": "Description of the vault",
@@ -11385,6 +12167,11 @@
             "items": {
               "$ref": "#/components/schemas/responses.Strategy"
             }
+          },
+          "strategy_description": {
+            "description": "Strategy description of the vault (empty string if not set)",
+            "type": "string",
+            "example": "Delta Neutral"
           },
           "token_address": {
             "description": "LP token address",
@@ -11532,6 +12319,23 @@
           }
         }
       },
+      "responses.VaultTopHolder": {
+        "type": "object",
+        "properties": {
+          "percentage": {
+            "type": "string",
+            "example": "24.6371578053709186"
+          },
+          "rank": {
+            "type": "integer",
+            "example": 1
+          },
+          "value_usdc": {
+            "type": "string",
+            "example": "3758808.50501487823"
+          }
+        }
+      },
       "responses.VaultsConfigResponse": {
         "type": "object",
         "properties": {
@@ -11633,6 +12437,29 @@
           "tier_name": {
             "type": "string",
             "example": "VIP 1"
+          }
+        }
+      },
+      "responses.WindowedMetrics": {
+        "type": "object",
+        "properties": {
+          "window_1y": {
+            "type": "string"
+          },
+          "window_24h": {
+            "type": "string"
+          },
+          "window_30d": {
+            "type": "string"
+          },
+          "window_7d": {
+            "type": "string"
+          },
+          "window_90d": {
+            "type": "string"
+          },
+          "window_all": {
+            "type": "string"
           }
         }
       },

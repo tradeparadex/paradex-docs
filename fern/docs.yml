@@ -1269,6 +1269,12 @@ colors:
     dark: "#16191C"
 css: ./assets/styles.css
 js:
+  # Google Consent Mode defaults — must run before Fern injects GTM.
+  - path: ./assets/consent-defaults.js
+    strategy: beforeInteractive
+  # Cookie consent banner — wires user choice into Google Consent Mode.
+  - path: ./assets/cookie-consent.js
+    strategy: afterInteractive
   - path: ./dist/add-pixel.js
     strategy: lazyOnload
   - path: ./assets/tvl-limit.js

@@ -44,12 +44,38 @@ Strikes are automatically listed for deltas between **0.10 and 0.90**, and the l
 
 ### Strike step sizes
 
-Each moneyness bucket uses a different step size for BTC:
+Each moneyness bucket uses a different step size depending on the underlying asset:
 
-| Time to Expiry | ATM   | Outer  | Wings   |
-|----------------|-------|--------|---------|
-| 8h–7d          | $500  | $500   | $1,000  |
-| 7d–1m          | $1,000| $1,000 | $2,000  |
-| 1m–3m          | $1,000| $2,000 | $5,000  |
-| > 3 month      | $2,000| $5,000 | $10,000 |
+<Tabs>
+  <Tab title="BTC">
+
+| Time to Expiry | ATM    | Outer  | Wings   |
+|----------------|--------|--------|---------|
+| 8h–7d          | $500   | $500   | $1,000  |
+| 7d–1m          | $1,000 | $1,000 | $2,000  |
+| 1m–3m          | $1,000 | $2,000 | $5,000  |
+| > 3 months     | $2,000 | $5,000 | $10,000 |
+
+  </Tab>
+  <Tab title="ETH">
+
+| Time to Expiry | ATM  | Outer | Wings  |
+|----------------|------|-------|--------|
+| 8h–7d          | $25  | $50   | $100   |
+| 7d–1m          | $50  | $100  | $200   |
+| 1m–3m          | $50  | $100  | $200   |
+| > 3 months     | $100 | $200  | $1,000 |
+
+  </Tab>
+  <Tab title="HYPE">
+
+| Time to Expiry | ATM  | Outer | Wings |
+|----------------|------|-------|-------|
+| 8h–7d          | $0.5 | $1    | $1    |
+| 7d–1m          | $1   | $1    | $2    |
+| 1m–3m          | $1   | $2    | $5    |
+| > 3 months     | $2   | $5    | $10   |
+
+  </Tab>
+</Tabs>
 

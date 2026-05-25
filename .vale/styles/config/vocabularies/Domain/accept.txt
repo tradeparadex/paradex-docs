@@ -52,6 +52,7 @@ Starknet
 Starkware
 subaccounts
 undiscounted
+Unhedged
 unstake
 unstaking
 Subkey

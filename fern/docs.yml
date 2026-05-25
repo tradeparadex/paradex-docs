@@ -497,6 +497,12 @@ navigation:
             - page: BTC Options
               slug: btc-options
               path: ./pages/instruments-guide/dated-options/btc-usd.mdx
+            - page: ETH Options
+              slug: eth-options
+              path: ./pages/instruments-guide/dated-options/eth-usd.mdx
+            - page: HYPE Options
+              slug: hype-options
+              path: ./pages/instruments-guide/dated-options/hype-usd.mdx
   - tab: risk
     layout:
       - section: Getting Started

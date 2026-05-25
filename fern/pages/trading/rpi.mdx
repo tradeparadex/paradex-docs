@@ -23,11 +23,13 @@ Retail Price Improvement (RPI) is a specialized order type that provides better 
 
 RPI orders follow specific matching rules to ensure fair and efficient trading:
 
-1. **Retail-Only Matching**: RPI orders will only match with orders placed by non-algorithmic users and do not execute against orders submitted via API.
+1. **Retail Only Matching Guarantee**: RPI orders are guaranteed by the matching engine to match only against Retail Taker orders, and are never eligible to match against regular API orders. Retail Taker orders are orders submitted with a JWT token using the `token_usage=interactive` query parameter and are subject to Retail lane [speed bumps and rate limits](/trading/trader-profiles).
 
-2. **Post-Only Requirement**: All RPI orders must be [Post-Only](/trading/orders/order-instructions#post-only), meaning they will only provide liquidity and never take liquidity.
+2. **Quote Protection**: Because RPI orders can only interact with Retail Taker flow, they are protected from latency sensitive regular API flow. Retail Taker orders are subject to a `300ms` speed bump and rate limits that are between `267-575x` lower than standard API limits, reducing adverse selection and providing quote protection for RPI orders.
 
-3. **Execution Priority**: RPI orders have the lowest execution priority, regardless of when they're placed. They will only be filled after all non-RPI orders at the same price level have been executed.
+3. **Post-Only Requirement**: All RPI orders must be [Post-Only](/trading/orders/order-instructions#post-only), meaning they will only provide liquidity and never take liquidity.
+
+4. **Execution Priority**: RPI orders have the lowest execution priority, regardless of when they're placed. They will only be filled after all non-RPI orders at the same price level have been executed.
 
 ## Order Behavior and Visibility
 

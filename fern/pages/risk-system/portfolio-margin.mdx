@@ -15,10 +15,12 @@ $$
 
 where the Net Portfolio Initial Margin Requirement is the greater of **SCAN Risk** and **Minimum Delta Requirement**.
 
+**Fee Provision** is the expected funding payment over the next 8 hours, reserving margin to cover upcoming funding obligations.
+
 The **Maintenance Margin Requirement (MMR)** is:
 
 $$
-\text{MMR} = \text{MMF\_FACTOR} \times \text{Net Portfolio Initial Margin Requirement} + \text{Fee Provision}
+\text{MMR} = 50\% \times \text{Net Portfolio Initial Margin Requirement} + \text{Fee Provision}
 $$
 
 ## SCAN risk
@@ -33,10 +35,15 @@ $$
 
 $$
 \text{Shocked IV} = \text{Mark IV} \times \bigg(1 + \text{Vol Shock}
-\times \Big(\frac{30}{\max(\text{DTE\_FLOOR}, \text{DTE})}\Big)^{\text{Vega Power}}\bigg)
+\times \Big(\frac{30}{\max(\text{DTE Floor}, \text{DTE})}\Big)^{\text{Vega Power}}\bigg)
 $$
 
-where Vega Power is 30% if DTE < 30, or 13% if DTE >= 30. These Vega Power values are common across all assets.
+where:
+- **DTE Floor** = 1
+- **Vega Power** = 0.30 (30%) if DTE < 30, or 0.13 (13%) if DTE ≥ 30
+- **Min Vol Shock Up** = 40% — floor applied to the upside vol shock
+
+These values are common across all assets.
 
 ### Scenario tables
 
@@ -177,24 +184,3 @@ $$
 $$
 
 </Accordion>
-
-## Parameters
-
-### Global constants
-
-| Constant | Definition | Value |
-|----------|------------|:-----:|
-| Vega Power (short-term) | Vega-power exponent for DTE < 30 | 0.30 |
-| Vega Power (long-term) | Vega-power exponent for DTE ≥ 30 | 0.13 |
-| DTE Floor | Floor applied to DTE in the vol-shock formula | 1 |
-| Min Vol Shock Up | Floor applied to the upside vol shock | 40% |
-| MMF Factor | MMR-to-IMR ratio | 50% |
-| Funding Provision Hours | Hours of funding accrual reserved as Fee Provision | 8 |
-
-### Per-asset margin factors
-
-| Asset | Unhedged Margin Factor | Hedged Margin Factor |
-|-------|:----------------------:|:--------------------:|
-| BTC   | 2%                     | 1%                   |
-| ETH   | 2%                     | 1%                   |
-| HYPE  | 3%                     | 1.5%                 |

@@ -18,7 +18,7 @@ where the Net Portfolio Initial Margin Requirement is the greater of **SCAN Risk
 The **Maintenance Margin Requirement (MMR)** is:
 
 $$
-\text{MMR} = 50\% \times \text{Net Portfolio Initial Margin Requirement} + \text{Fee Provision}
+\text{MMR} = \text{MMF\_FACTOR} \times \text{Net Portfolio Initial Margin Requirement} + \text{Fee Provision}
 $$
 
 ## SCAN risk
@@ -33,12 +33,17 @@ $$
 
 $$
 \text{Shocked IV} = \text{Mark IV} \times \bigg(1 + \text{Vol Shock}
-\times \Big(\frac{30}{\max(1, \text{DTE})}\Big)^{\text{Vega Power}}\bigg)
+\times \Big(\frac{30}{\max(\text{DTE\_FLOOR}, \text{DTE})}\Big)^{\text{Vega Power}}\bigg)
 $$
 
-where Vega Power is 30% if DTE < 30, or 13% if DTE >= 30.
+where Vega Power is 30% if DTE < 30, or 13% if DTE >= 30. These Vega Power values are common across all assets.
 
-<Accordion title="Full scenario table">
+### Scenario tables
+
+Spot shocks, vol shocks, and tail weights differ per asset. The 24-scenario structure (16 standard + 8 tail) is shared.
+
+<Tabs>
+  <Tab title="BTC">
 
 | Scenario | Spot shock | Vol shock | Weight |
 |:--------:|:----------:|:---------:|:------:|
@@ -67,14 +72,77 @@ where Vega Power is 30% if DTE < 30, or 13% if DTE >= 30.
 | 23 | +400% | +40% | 3% |
 | 24 | +500% | +40% | 2.4% |
 
-</Accordion>
+  </Tab>
+  <Tab title="ETH">
+
+ETH uses the same 24-scenario configuration as BTC.
+
+| Scenario | Spot shock | Vol shock | Weight |
+|:--------:|:----------:|:---------:|:------:|
+| 1 | +16% | +40% | 100% |
+| 2 | +12% | +40% | 100% |
+| 3 | +12% | -22% | 100% |
+| 4 | +8% | +40% | 100% |
+| 5 | +8% | -22% | 100% |
+| 6 | +4% | +40% | 100% |
+| 7 | +4% | -22% | 100% |
+| 8 | 0% | +40% | 100% |
+| 9 | 0% | -22% | 100% |
+| 10 | -4% | +40% | 100% |
+| 11 | -4% | -22% | 100% |
+| 12 | -8% | +40% | 100% |
+| 13 | -8% | -22% | 100% |
+| 14 | -12% | +40% | 100% |
+| 15 | -12% | -22% | 100% |
+| 16 | -16% | +40% | 100% |
+| 17 | -66% | +40% | 18% |
+| 18 | -33% | +40% | 36% |
+| 19 | +50% | +40% | 24% |
+| 20 | +100% | +40% | 12% |
+| 21 | +200% | +40% | 6% |
+| 22 | +300% | +40% | 4% |
+| 23 | +400% | +40% | 3% |
+| 24 | +500% | +40% | 2.4% |
+
+  </Tab>
+  <Tab title="HYPE">
+
+| Scenario | Spot shock | Vol shock | Weight |
+|:--------:|:----------:|:---------:|:------:|
+| 1 | +28% | +64% | 100% |
+| 2 | +21% | +64% | 100% |
+| 3 | +21% | -35.2% | 100% |
+| 4 | +14% | +64% | 100% |
+| 5 | +14% | -35.2% | 100% |
+| 6 | +7% | +64% | 100% |
+| 7 | +7% | -35.2% | 100% |
+| 8 | 0% | +64% | 100% |
+| 9 | 0% | -35.2% | 100% |
+| 10 | -7% | +64% | 100% |
+| 11 | -7% | -35.2% | 100% |
+| 12 | -14% | +64% | 100% |
+| 13 | -14% | -35.2% | 100% |
+| 14 | -21% | +64% | 100% |
+| 15 | -21% | -35.2% | 100% |
+| 16 | -28% | +64% | 100% |
+| 17 | -66% | +64% | 30% |
+| 18 | -33% | +64% | 50% |
+| 19 | +50% | +64% | 40% |
+| 20 | +100% | +64% | 20% |
+| 21 | +200% | +64% | 10% |
+| 22 | +300% | +64% | 7% |
+| 23 | +400% | +64% | 5% |
+| 24 | +500% | +64% | 4% |
+
+  </Tab>
+</Tabs>
 
 ## Minimum delta requirement
 
 The Minimum Delta Requirement charges based on the portfolio's net and hedged delta exposure:
 
 $$
-\text{Min Delta Risk} = (2\% \times |\text{Net Delta}| + 1\% \times \text{Hedged Delta}) \times \text{Spot Price}
+\text{Min Delta Risk} = (\text{UNHEDGED\_MARGIN\_FACTOR} \times |\text{Net Delta}| + \text{HEDGED\_MARGIN\_FACTOR} \times \text{Hedged Delta}) \times \text{Spot Price}
 $$
 
 where:
@@ -82,6 +150,14 @@ where:
 $$
 \text{Hedged Delta} = \frac{\text{Gross Delta} - |\text{Net Delta}|}{2}
 $$
+
+### Min-delta coefficients
+
+| Asset | UNHEDGED_MARGIN_FACTOR | HEDGED_MARGIN_FACTOR |
+|-------|:----------------------:|:--------------------:|
+| BTC   | 2%                     | 1%                   |
+| ETH   | 2%                     | 1%                   |
+| HYPE  | 2%                     | 1.5%                 |
 
 <Accordion title="Example calculation">
 
@@ -101,3 +177,16 @@ $$
 $$
 
 </Accordion>
+
+## Parameters
+
+| Constant | Definition | BTC / ETH | HYPE |
+|----------|------------|:---------:|:----:|
+| VEGA_POWER_ST | Vega-power exponent for DTE < 30 | 0.30 | 0.30 |
+| VEGA_POWER_LT | Vega-power exponent for DTE ≥ 30 | 0.13 | 0.13 |
+| DTE_FLOOR | Floor applied to DTE in the vol-shock formula | 1 | 1 |
+| MIN_VOL_SHOCK_UP | Floor applied to the upside vol shock | 40% | 60% |
+| MMF_FACTOR | MMR-to-IMR ratio | 50% | 50% |
+| HEDGED_MARGIN_FACTOR | Coefficient on Hedged Delta in Min-Delta requirement | 1% | 1.5% |
+| UNHEDGED_MARGIN_FACTOR | Coefficient on \|Net Delta\| in Min-Delta requirement | 2% | 2% |
+| FUNDING_PROVISION_HOUR | Hours of funding accrual reserved as Fee Provision | 8 | 8 |

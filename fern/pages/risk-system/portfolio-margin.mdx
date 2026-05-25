@@ -142,7 +142,7 @@ ETH uses the same 24-scenario configuration as BTC.
 The Minimum Delta Requirement charges based on the portfolio's net and hedged delta exposure:
 
 $$
-\text{Min Delta Risk} = (\text{UNHEDGED\_MARGIN\_FACTOR} \times |\text{Net Delta}| + \text{HEDGED\_MARGIN\_FACTOR} \times \text{Hedged Delta}) \times \text{Spot Price}
+\text{Min Delta Risk} = (\text{Unhedged Margin Factor} \times |\text{Net Delta}| + \text{Hedged Margin Factor} \times \text{Hedged Delta}) \times \text{Spot Price}
 $$
 
 where:
@@ -153,7 +153,7 @@ $$
 
 ### Min-delta coefficients
 
-| Asset | UNHEDGED_MARGIN_FACTOR | HEDGED_MARGIN_FACTOR |
+| Asset | Unhedged Margin Factor | Hedged Margin Factor |
 |-------|:----------------------:|:--------------------:|
 | BTC   | 2%                     | 1%                   |
 | ETH   | 2%                     | 1%                   |
@@ -180,13 +180,21 @@ $$
 
 ## Parameters
 
-| Constant | Definition | BTC / ETH | HYPE |
-|----------|------------|:---------:|:----:|
-| VEGA_POWER_ST | Vega-power exponent for DTE < 30 | 0.30 | 0.30 |
-| VEGA_POWER_LT | Vega-power exponent for DTE ≥ 30 | 0.13 | 0.13 |
-| DTE_FLOOR | Floor applied to DTE in the vol-shock formula | 1 | 1 |
-| MIN_VOL_SHOCK_UP | Floor applied to the upside vol shock | 40% | 60% |
-| MMF_FACTOR | MMR-to-IMR ratio | 50% | 50% |
-| HEDGED_MARGIN_FACTOR | Coefficient on Hedged Delta in Min-Delta requirement | 1% | 1.5% |
-| UNHEDGED_MARGIN_FACTOR | Coefficient on \|Net Delta\| in Min-Delta requirement | 2% | 2% |
-| FUNDING_PROVISION_HOUR | Hours of funding accrual reserved as Fee Provision | 8 | 8 |
+### Global constants
+
+| Constant | Definition | Value |
+|----------|------------|:-----:|
+| Vega Power (short-term) | Vega-power exponent for DTE < 30 | 0.30 |
+| Vega Power (long-term) | Vega-power exponent for DTE ≥ 30 | 0.13 |
+| DTE Floor | Floor applied to DTE in the vol-shock formula | 1 |
+| Min Vol Shock Up | Floor applied to the upside vol shock | 40% |
+| MMF Factor | MMR-to-IMR ratio | 50% |
+| Funding Provision Hours | Hours of funding accrual reserved as Fee Provision | 8 |
+
+### Per-asset margin factors
+
+| Asset | Unhedged Margin Factor | Hedged Margin Factor |
+|-------|:----------------------:|:--------------------:|
+| BTC   | 2%                     | 1%                   |
+| ETH   | 2%                     | 1%                   |
+| HYPE  | 2%                     | 1.5%                 |

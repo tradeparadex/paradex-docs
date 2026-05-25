@@ -10,17 +10,17 @@ Portfolio Margin is currently in beta and only available to whitelisted users.
 Portfolio Margin evaluates risk at the portfolio level rather than per-position. The **Initial Margin Requirement (IMR)** is:
 
 $$
-\text{IMR} = \text{Net Portfolio Initial Margin Requirement} + \text{Fee Provision}
+\text{IMR} = \text{Net Portfolio Initial Margin Requirement} + \text{Funding Provision} + \text{Fee Provision}
 $$
 
 where the Net Portfolio Initial Margin Requirement is the greater of **SCAN Risk** and **Minimum Delta Requirement**.
 
-**Fee Provision** is the expected funding payment over the next 8 hours, reserving margin to cover upcoming funding obligations.
+**Funding Provision** is the expected funding payment over the next 8 hours, reserving margin to cover upcoming funding obligations.
 
 The **Maintenance Margin Requirement (MMR)** is:
 
 $$
-\text{MMR} = 50\% \times \text{Net Portfolio Initial Margin Requirement} + \text{Fee Provision}
+\text{MMR} = 50\% \times \text{Net Portfolio Initial Margin Requirement} + \text{Funding Provision} + \text{Fee Provision}
 $$
 
 ## SCAN risk

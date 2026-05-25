@@ -3,88 +3,46 @@ title: "Order Lanes: Retail and Pro"
 subtitle: How Paradex routes orders through Retail and Pro/API lanes for speed bumps, rate limits, fees, queue priority, and RPI access.
 ---
 
-Paradex routes orders through two lanes: the **Retail Lane** and the **Pro/API Lane**.
-
-These lanes determine how an order is handled by the matching engine, including speed bumps, rate limits, fee eligibility, queue priority, and access to [Retail Price Improvement](/trading/rpi) liquidity.
-
-This is not a permanent label on a trader. It is determined by how the order is submitted.
+Paradex routes every order through one of two lanes — **Retail** or **Pro/API** — based on how the order is submitted, not a permanent label on the trader.
 
 <CardGroup cols={2}>
   <Card title="Retail Lane" icon="fa-thin fa-user">
-    A protected slow lane for UI traders and interactive API orders. Subject to speed bumps and lower rate limits, but receives Retail fee eligibility, queue priority, and RPI access.
+    Protected slow lane for UI and interactive API orders. Speed bumps, lower rate limits, Retail fee eligibility, queue priority, and [RPI](/trading/rpi) access.
   </Card>
   <Card title="Pro/API Lane" icon="fa-thin fa-rectangle-pro">
-    A fast lane for standard API flow. Designed for latency-sensitive and high-throughput trading. Not subject to Retail speed bumps with higher rate limits, but no Retail Lane protections or RPI access.
+    Fast lane for standard API flow. No speed bumps, higher rate limits, but no Retail fee eligibility, queue priority, or RPI access.
   </Card>
 </CardGroup>
 
 ## Why Order Lanes Exist
 
-Paradex separates order flow into lanes to improve market quality for different types of participants.
+Retail users benefit from execution protections; API traders need low latency and high throughput. Separating these flows lets Paradex provide:
 
-Retail users are generally less latency-sensitive and benefit from stronger execution protections. Professional and API traders are generally more latency-sensitive and require higher throughput.
-
-By separating these flows, Paradex can provide:
-
-- Better protection for Retail orders
+- Stronger protection and better pricing for Retail orders via [RPI](/trading/rpi)
 - Lower latency and higher throughput for API traders
-- Better pricing opportunities through [Retail Price Improvement](/trading/rpi)
-- Clearer matching rules for different types of order flow
-- More predictable behavior for market makers quoting on Paradex
+- Clearer matching rules and more predictable behavior for market makers
 
 ## Retail Lane
 
-The Retail Lane is the protected slow lane for UI traders and interactive API orders.
+The protected slow lane for UI traders and interactive API orders.
 
-Orders in the Retail Lane are subject to speed bumps and lower rate limits. In exchange, they receive Retail-specific benefits, including Retail fee eligibility, queue priority at each price level, and access to RPI liquidity.
+- **300ms speed bump** on order submission and cancellation
+- Subject to Retail rate limits
+- Qualifies for [Retail trading fees](/trading/trading-fees)
+- Eligible for [RPI](/trading/rpi) liquidity
+- Queue priority at each price level
 
-### Retail Lane Behavior
-
-Retail Lane orders:
-
-- Are subject to a **300ms speed bump** on order submission
-- Are subject to a **300ms speed bump** on order cancellation
-- Are subject to Retail rate limits
-- Qualify for [Retail trading fees](/trading/trading-fees)
-- Are eligible to interact with [RPI](/trading/rpi) liquidity
-- Receive queue priority at each price level
-
-### Retail Lane Use Cases
-
-The Retail Lane is intended for:
-
-- Orders submitted through the Paradex web interface
-- Interactive API orders submitted using an interactive JWT token
-- Non-latency-sensitive order flow
-- Users who want Retail fee eligibility and RPI access
-- Users who benefit from queue priority and execution protection
+**Intended for:** Paradex web UI orders, interactive API orders (via interactive JWT), and non-latency-sensitive flow.
 
 ## Pro/API Lane
 
-The Pro/API Lane is the fast lane for standard API flow.
+The fast lane for standard API flow.
 
-Orders in the Pro/API Lane are designed for latency-sensitive, programmatic, and high-throughput trading. They are not subject to Retail speed bumps and have significantly higher rate limits.
+- **No** speed bumps
+- Higher rate limits (see table below)
+- No Retail fee eligibility, queue priority, or RPI access
 
-### Pro/API Lane Behavior
-
-Pro/API Lane orders:
-
-- Are **not** subject to Retail speed bumps
-- Have higher rate limits than Retail Lane orders
-- Are treated as standard API flow
-- Do not receive Retail queue priority
-- Do not receive Retail fee eligibility
-- Do not have access to RPI liquidity
-
-### Pro/API Lane Use Cases
-
-The Pro/API Lane is intended for:
-
-- Standard API trading
-- Market making
-- Programmatic trading strategies
-- Latency-sensitive order flow
-- High-throughput trading systems
+**Intended for:** standard API trading, market making, programmatic strategies, and latency-sensitive or high-throughput systems.
 
 ## Lane Comparison
 
@@ -105,85 +63,46 @@ The Pro/API Lane is intended for:
 
 ## How Orders Are Classified
 
-Order lane classification is based on how the order is submitted.
+All API orders default to the **Pro/API Lane**.
 
-By default, all orders submitted through the API are treated as **Pro/API Lane** orders.
+To route an API order through the Retail Lane, request a JWT with `token_usage=interactive`:
 
-To submit an API order through the Retail Lane, request a JWT token using the `token_usage=interactive` query parameter.
+```bash
+POST /v1/auth?token_usage=interactive
+```
 
-### Interactive API Orders
+Orders submitted with this token receive full Retail Lane treatment — speed bumps, Retail rate limits, Retail fees, RPI access, and queue priority. Orders submitted without it are Pro/API Lane orders.
 
-Interactive API orders are API orders that use an interactive JWT token.
-
-When an order is submitted with an interactive token, it receives Retail Lane treatment. This means the order is subject to Retail speed bumps and Retail rate limits, but also receives Retail-specific benefits.
-
-Interactive API orders:
-
-- Use a JWT token requested with `token_usage=interactive`
-- Are treated as Retail Lane orders
-- Are subject to the 300ms Retail speed bump for order submission
-- Are subject to the 300ms Retail speed bump for order cancellation
-- Are subject to Retail rate limits
-- Qualify for Retail trading fees
-- Are eligible for RPI liquidity
-- Receive queue priority at each price level
-
-### Standard API Orders
-
-Standard API orders are API orders that do not use an interactive JWT token.
-
-These orders are treated as Pro/API Lane orders by default.
-
-Standard API orders:
-
-- Do not use `token_usage=interactive`
-- Are treated as Pro/API Lane orders
-- Are not subject to Retail speed bumps
-- Have higher API rate limits
-- Do not qualify for Retail fee eligibility
-- Are not eligible for RPI liquidity
-- Do not receive Retail queue priority
-
-### What Happens If Retail Rate Limits Are Exceeded
+See the [Get JWT](/api/prod/auth/get-jwt) endpoint for details.
 
 <Warning>
-Retail Lane orders are subject to Retail rate limits. If an account exceeds Retail rate limits, the account automatically switches to the Pro/API Lane and loses access to RPI liquidity.
+If an account exceeds Retail rate limits, it automatically switches to the Pro/API Lane and loses RPI access. This protects the Retail Lane from high-frequency order flow.
 </Warning>
 
-This protects the Retail Lane from high-frequency or high-throughput order flow while preserving the fast lane for API trading.
+## Relationship to RPI
 
-## Relationship to Retail Price Improvement
+[Retail Price Improvement](/trading/rpi) is available only to Retail Lane orders. RPI orders are posted by liquidity providers to offer better pricing for Retail flow while staying protected from latency-sensitive API flow.
 
-[Retail Price Improvement](/trading/rpi) is available only to Retail Lane flow.
-
-RPI orders are posted by liquidity providers and are designed to provide better pricing for Retail Lane orders while protecting market makers from latency-sensitive API flow.
-
-RPI orders are visible in the UI but hidden from API access. They are only eligible to match with Retail Lane orders.
-
-This means:
-
-- Retail Lane orders can access RPI liquidity
-- Pro/API Lane orders cannot access RPI liquidity
-- RPI liquidity providers can quote more aggressively because their orders are protected from standard API flow
+- RPI orders are visible in the UI but hidden from the API
+- Only Retail Lane orders can match with RPI liquidity
+- Liquidity providers can quote more aggressively because their RPI orders are shielded from standard API flow
 
 ## Relationship to FastFills
 
-[FastFills](/trading/fastfills) is designed to incentivize Pro/API Lane traders to take passive Retail Lane liquidity.
+[FastFills](/trading/fastfills) is designed to incentivize Pro/API traders to take passive Retail Lane liquidity. When a Pro/API order matches a passive Retail Lane order, the Pro/API trader automatically receives a fee discount — improving fill speed for Retail users.
 
-When a Pro/API order matches with a passive Retail Lane order, the Pro/API trader automatically receives a FastFills fee discount. This improves fill speed for Retail Lane users while giving API traders a lower execution cost when interacting with Retail passive liquidity.
-
-FastFills does not require special configuration. Qualifying fills are identified with the `fastfill` flag in fill responses.
+No special configuration is required. Qualifying fills carry the `fastfill` flag in fill responses.
 
 ## Implementation Guide
 
 <Steps>
   <Step title="Choose the correct lane">
-    Use the **Retail Lane** if your orders are interactive, non-latency-sensitive, and intended to receive Retail protections.
+    **Retail Lane** — interactive, non-latency-sensitive orders that benefit from Retail protections.
 
-    Use the **Pro/API Lane** if your orders are latency-sensitive, programmatic, or require high throughput.
+    **Pro/API Lane** — latency-sensitive, programmatic, or high-throughput orders.
   </Step>
   <Step title="Request the correct JWT token">
-    For Retail Lane API orders, request an interactive JWT token:
+    For Retail Lane API orders:
 
     ```bash
     POST /v1/auth?token_usage=interactive
@@ -192,22 +111,6 @@ FastFills does not require special configuration. Qualifying fills are identifie
     For Pro/API Lane orders, use a standard JWT token. See the [Get JWT](/api/prod/auth/get-jwt) endpoint for details.
   </Step>
   <Step title="Submit authenticated orders">
-    Use the returned JWT token when submitting authenticated order requests.
-
-    Orders submitted with an interactive token are treated as **Retail Lane** orders.
-
-    Orders submitted without an interactive token are treated as **Pro/API Lane** orders by default.
+    Use the returned token for all authenticated requests. Interactive token → Retail Lane. Standard token → Pro/API Lane.
   </Step>
 </Steps>
-
-## Key Takeaways
-
-- Paradex uses **order lanes**, not permanent trader identities
-- The **Retail Lane** is the protected slow lane for UI and interactive API orders
-- The **Pro/API Lane** is the fast lane for standard API trading
-- Retail Lane orders have 300ms speed bumps on submission and cancellation
-- Retail Lane orders have lower rate limits than Pro/API Lane orders
-- Retail Lane orders qualify for Retail fees, RPI liquidity, and queue priority
-- Pro/API Lane orders have higher throughput and no Retail speed bumps
-- API orders default to the Pro/API Lane unless submitted with an interactive JWT token
-- Exceeding Retail rate limits automatically switches the account to the Pro/API Lane and removes RPI access

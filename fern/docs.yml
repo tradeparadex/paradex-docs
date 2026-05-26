@@ -16,6 +16,9 @@ tabs:
   getting-started:
     display-name: Overview
     slug: docs
+  dime:
+    display-name: DIME Utility
+    slug: dime
   trading:
     display-name: Trading
     slug: trading
@@ -157,6 +160,12 @@ navigation:
         slug: testnet-faqs
         path: ./pages/trading/testnet.mdx
 
+  - tab: dime
+    layout:
+      - page: DIME Utility
+        slug: dime-utility
+        path: ./pages/trading/dime-utility.mdx
+
   - tab: trading
     layout:
       - section: Getting Started
@@ -171,10 +180,10 @@ navigation:
       - page: Trading Fees
         slug: trading-fees
         path: ./pages/trading/trading-fees.mdx
-      - page: Trader Profiles
+      - page: Retail vs Pro Orders
         slug: trader-profiles
         path: ./pages/trading/trader-profiles.mdx
-      - page: Retail Price Improvement
+      - page: Retail Price Improvement (RPI)
         slug: rpi
         path: ./pages/trading/rpi.mdx
       - page: FastFills

@@ -168,9 +168,6 @@ navigation:
       - page: Privacy Perps
         slug: privacy
         path: ./pages/trading/privacy.mdx
-      - page: $DIME Utility
-        slug: dime-utility
-        path: ./pages/trading/dime-utility.mdx
       - page: Trading Fees
         slug: trading-fees
         path: ./pages/trading/trading-fees.mdx

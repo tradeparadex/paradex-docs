@@ -165,6 +165,9 @@ navigation:
           - page: Overview
             slug: overview
             path: ./pages/trading/overview.mdx
+          - page: DIME Utility
+            slug: dime-utility
+            path: ./pages/trading/dime-utility.mdx
       - page: Privacy Perps
         slug: privacy
         path: ./pages/trading/privacy.mdx

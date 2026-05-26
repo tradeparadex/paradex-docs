@@ -16,6 +16,9 @@ tabs:
   getting-started:
     display-name: Overview
     slug: docs
+  dime:
+    display-name: DIME Utility
+    slug: dime
   trading:
     display-name: Trading
     slug: trading
@@ -157,6 +160,12 @@ navigation:
         slug: testnet-faqs
         path: ./pages/trading/testnet.mdx
 
+  - tab: dime
+    layout:
+      - page: DIME Utility
+        slug: dime-utility
+        path: ./pages/trading/dime-utility.mdx
+
   - tab: trading
     layout:
       - section: Getting Started
@@ -165,9 +174,6 @@ navigation:
           - page: Overview
             slug: overview
             path: ./pages/trading/overview.mdx
-          - page: DIME Utility
-            slug: dime-utility
-            path: ./pages/trading/dime-utility.mdx
       - page: Privacy Perps
         slug: privacy
         path: ./pages/trading/privacy.mdx

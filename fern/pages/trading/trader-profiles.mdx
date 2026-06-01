@@ -1,54 +1,77 @@
 ---
-title: Trader Profiles
-subtitle: Users can choose between two trader profiles that best suits their strategy
+title: Retail and Pro Orders
 ---
 
-<CardGroup>
-  <Card title="Retail" icon="fa-thin fa-user">
-    UI traders enjoy lower fees <br /> when trading
-  </Card>
-  <Card title="Pro" icon="fa-thin fa-rectangle-pro">
-    API traders have access to <Badge intent="note" minimal>Pro</Badge> rates
-  </Card>
-</CardGroup>
+Paradex classifies each order as either a **Retail Order** or a **Pro Order**.
 
-## Attributes
+This classification is based on how the order is submitted, not on a permanent user profile. It determines speed bumps, rate limits, fee eligibility, queue priority, and access to [Retail Price Improvement](/trading/rpi) liquidity.
 
-|            | <Badge intent="success" outlined minimal>Retail</Badge> | <Badge intent="note" outlined minimal>Pro</Badge> |
-|------------|-|-|
-| Speed Bump | Order Submission: 300ms <br /> Order Cancellation: 300ms | None |
-| Rate Limit | 3 orders / sec <br /> 30 orders / min <br /> 300 orders / hr <br /> 1000 orders / 24 hrs | 800 orders / sec <br /> 17,250 orders / min |
+## Overview
 
-<sub>Retail orders exceeding rate limits automatically switch to Pro trader profile and lose access to RPI liquidity.</sub>
+|  | <Badge intent="success" outlined minimal>Retail Orders</Badge> | <Badge intent="note" outlined minimal>Pro Orders</Badge> |
+|---|---|---|
+| Description | Protected orders | Standard API orders |
+| Intended flow | UI and interactive API orders | Standard API orders |
+| Order submission speed bump | 300ms | None |
+| Order cancellation speed bump | 300ms | None |
+| Rate limit per second | 3 orders / sec | 800 orders / sec |
+| Rate limit per minute | 30 orders / min | 17,250 orders / min |
+| Rate limit per hour | 300 orders / hr | — |
+| Rate limit per 24 hours | 1,000 orders / 24 hrs | — |
+| Retail fee eligibility | ✅ | - |
+| RPI liquidity access | ✅ | - |
+| Queue priority | ✅ At each price level | - |
+| Default API behavior | - | ✅ |
 
-For detailed fee information, see [Trading Fees](/trading/trading-fees).
+## Retail Orders
 
-## Identifying as Retail via API
+Retail Orders are protected orders for UI traders and interactive API users. They are subject to speed bumps and lower rate limits. In return, they qualify for [Retail fees](/trading/trading-fees), queue priority, and access to [RPI](/trading/rpi) liquidity.
 
-By default, all orders submitted through the API are treated as <Badge intent="note" outlined minimal>Pro</Badge> orders. To have your API orders treated as <Badge intent="success" outlined minimal>Retail</Badge> orders, request a JWT token with the `token_usage=interactive` query parameter.
+### Submitting Retail Orders Through the API
 
-When using an interactive token:
+An order is classified as a Retail Order when it is submitted through the Paradex web interface or through the API using an interactive JWT token.
 
-- The order is subject to **Retail speed bumps** and **rate limits**
-- The order qualifies for **Retail trading fees** based on [Retail volume tiers](/trading/trading-fees#your-base-rate)
-- The order is eligible for **[Retail Price Improvement (RPI)](/trading/rpi)** liquidity
-- The order receives **queue priority** at each price level
+To submit a Retail Order through the API, request a JWT token using the `token_usage=interactive` query parameter:
+
+```bash
+POST /v1/auth?token_usage=interactive
+```
+
+Orders submitted with an interactive token are classified as Retail Orders. Orders submitted without an interactive token are classified as Pro Orders by default.
+
+See the [Get JWT](/api/prod/auth/get-jwt) endpoint for details.
+
+### Retail Rate Limits
+
+Retail Orders are subject to Retail rate limits.
 
 <Warning>
-Orders placed with an interactive token are subject to Retail rate limits. If rate limits are exceeded, the account automatically switches to the Pro trader profile and loses access to RPI liquidity.
+If an account exceeds Retail rate limits, the account automatically switches to Pro Order behavior and loses access to RPI liquidity.
 </Warning>
 
-<Steps>
-  <Step title="Get an interactive JWT token">
-    Add `token_usage=interactive` when requesting a JWT:
+### Relationship to Retail Price Improvement
 
-    ```bash
-    POST /v1/auth?token_usage=interactive
-    ```
+[Retail Price Improvement](/trading/rpi) is available only to Retail Orders. RPI orders are posted by liquidity providers and are only eligible to match with Retail Orders. They are not accessible to Pro Orders or standard API flow.
 
-    See the [Get JWT](/api/prod/auth/get-jwt) endpoint for details.
-  </Step>
-  <Step title="Authenticate requests with the token">
-    Use the returned token for all authenticated requests. Orders placed with this token are treated as <Badge intent="success" outlined minimal>Retail</Badge>.
-  </Step>
-</Steps>
+This allows liquidity providers to quote more competitively for Retail Orders because Retail Orders are speed bumped, rate limited, and separated from latency sensitive API flow.
+
+## Pro Orders
+
+Pro Orders are standard API orders designed for latency sensitive, programmatic, and high throughput trading. They use higher API rate limits and bypass the 300ms Retail speed bumps. In exchange, Pro Orders use the Pro fee schedule and do not receive Retail specific benefits, including Retail fees, queue priority, and RPI liquidity.
+
+By default, API orders are classified as Pro Orders.
+
+### FastFills Discount for Pro Orders
+
+[FastFills](/trading/fastfills) is designed to incentivize Pro Orders to take passive Retail Order liquidity. When a Pro Order matches with a passive Retail Order, the Pro trader receives a FastFills fee discount. This improves fill speed for Retail Orders while giving API traders a lower execution cost when interacting with passive Retail liquidity.
+
+Qualifying fills are identified with the `fastfill` flag in fill responses.
+
+## Examples
+
+| Example | Classification | Reason |
+|---|---|---|
+| Order submitted through the Paradex web interface | Retail Order | UI orders are treated as Retail Orders |
+| API order submitted with a standard JWT token | Pro Order | API orders default to Pro Orders |
+| API order submitted with an interactive JWT token | Retail Order | Interactive JWT orders are treated as Retail Orders |
+| Account exceeds Retail rate limits | Pro Order behavior | Account loses Retail Order treatment and RPI access |

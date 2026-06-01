@@ -9,20 +9,12 @@
  * and follows Fern's active theme via the `.light` class on <html>.
  */
 (function () {
-  var VERSION = '3.0.1';
-  var BASE = 'https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v' + VERSION + '/dist';
-
-  // Load library CSS + JS
-  var link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = BASE + '/cookieconsent.css';
-  document.head.append(link);
-
-  var script = document.createElement('script');
-  script.src = BASE + '/cookieconsent.umd.js';
-  script.async = true;
-  script.onload = init;
-  document.head.append(script);
+  // Library v3.0.1 ships via:
+  //   - vendor-cookieconsent.umd.js (loaded by Fern before this file via the
+  //     `js:` array in docs.yml — exposes window.CookieConsent)
+  //   - styles.css (vendor-cookieconsent.css concatenated into our css: file)
+  // Vendoring the bytes into the repo avoids the supply-chain exposure of a
+  // runtime jsDelivr fetch.
 
   // Inject the Paradex skin
   var style = document.createElement('style');
@@ -125,6 +117,15 @@
     attributes: true,
     attributeFilter: ['class'],
   });
+
+  // The vendor JS is registered before this file in docs.yml `js:` so the
+  // library global is available synchronously. If Fern delays our script
+  // for any reason and the global isn't ready yet, retry once on next tick.
+  if (window.CookieConsent) {
+    init();
+  } else {
+    setTimeout(init, 0);
+  }
 
   function pushConsentUpdate() {
     if (!window.CookieConsent) return;

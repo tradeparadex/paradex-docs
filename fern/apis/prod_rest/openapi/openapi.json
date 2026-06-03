@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.123.0"
+    "version": "1.124.0"
   },
   "paths": {
     "/account": {
@@ -11426,6 +11426,11 @@
       "responses.SystemConfigResponse": {
         "type": "object",
         "properties": {
+          "assets_limit_per_account": {
+            "description": "Maximum number of token or synthetic positions allowed per account",
+            "type": "integer",
+            "example": 550
+          },
           "block_explorer_url": {
             "description": "Block explorer URL for the current SN Instance",
             "type": "string",

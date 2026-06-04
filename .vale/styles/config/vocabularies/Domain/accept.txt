@@ -6,6 +6,9 @@ blockchain
 Braavos
 Bybit
 CEXs
+composability
+DEXs
+VTF's
 counterparties
 counterparty
 crypto
@@ -30,6 +33,7 @@ Linea
 Mainnet
 moneyness
 orderbook
+permissionless
 Orderbuilder
 Paraclear
 Paradex

@@ -25,6 +25,9 @@ tabs:
   risk:
     display-name: Risk & Liquidations
     slug: risk
+  vtfs:
+    display-name: VTFs
+    slug: vtfs
   chain:
     display-name: Paradex Chain
     slug: chain
@@ -123,33 +126,6 @@ navigation:
           - page: Transfers
             slug: transfers
             path: ./pages/accounts/transfers.mdx
-
-      - section: VTFs (Vault Traded Funds)
-        slug: vaults
-        contents:
-          - page: Introduction
-            slug: vaults-introduction
-            path: ./pages/vaults/introduction.mdx
-          - page: Key Features
-            slug: key-features
-            path: ./pages/vaults/key-features.mdx
-          - section: Tutorials
-            contents:
-              - page: Create a VTF
-                slug: create-a-vault
-                path: ./pages/vaults/tutorials/create-a-vault.mdx
-              - page: Close Your VTF
-                slug: close-your-vault
-                path: ./pages/vaults/tutorials/close-your-vault.mdx
-              - page: Deposit
-                slug: vault-deposit
-                path: ./pages/vaults/tutorials/deposit.mdx
-              - page: Withdrawal
-                slug: vault-withdrawal
-                path: ./pages/vaults/tutorials/withdrawal.mdx
-          - page: FAQs
-            slug: faq
-            path: ./pages/vaults/faqs.mdx
 
       - page: Mobile Access Guide
         slug: mobile-access-guide
@@ -560,6 +536,32 @@ navigation:
       - page: Trade flow and busts
         slug: trade-busts
         path: ./pages/risk-system/trade-busts.mdx
+
+  - tab: vtfs
+    layout:
+      - page: Introduction
+        slug: introduction
+        path: ./pages/vaults/introduction.mdx
+      - page: Key Features
+        slug: key-features
+        path: ./pages/vaults/key-features.mdx
+      - section: Tutorials
+        contents:
+          - page: Create a VTF
+            slug: create-a-vault
+            path: ./pages/vaults/tutorials/create-a-vault.mdx
+          - page: Close Your VTF
+            slug: close-your-vault
+            path: ./pages/vaults/tutorials/close-your-vault.mdx
+          - page: Deposit
+            slug: deposit
+            path: ./pages/vaults/tutorials/deposit.mdx
+          - page: Withdrawal
+            slug: withdrawal
+            path: ./pages/vaults/tutorials/withdrawal.mdx
+      - page: FAQs
+        slug: faq
+        path: ./pages/vaults/faqs.mdx
 
   - tab: chain
     layout:
@@ -1156,7 +1158,7 @@ redirects:
   - source: "/documentation/getting-started/architecture-overview/wallet-integration"
     destination: "/docs/accounts/wallet-integration"
   - source: "/documentation/vaults/:slug*"
-    destination: "/docs/vaults/:slug*"
+    destination: "/vtfs/:slug*"
   - source: "/documentation/instruments-guide/:slug*"
     destination: "/trading/instruments-guide/:slug*"
   - source: "/documentation/risk-system/:slug*"
@@ -1221,7 +1223,9 @@ redirects:
 
   # Redirects for pages moved from Trading to Overview
   - source: "/trading/vaults/:slug*"
-    destination: "/docs/vaults/:slug*"
+    destination: "/vtfs/:slug*"
+  - source: "/docs/vaults/:slug*"
+    destination: "/vtfs/:slug*"
   - source: "/trading/accounts/:slug*"
     destination: "/docs/accounts/:slug*"
   - source: "/trading/maintenance-mode"

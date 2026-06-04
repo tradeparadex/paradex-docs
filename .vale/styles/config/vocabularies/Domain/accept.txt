@@ -6,6 +6,9 @@ blockchain
 Braavos
 Bybit
 CEXs
+composability
+DEXs
+VTF's
 counterparties
 counterparty
 crypto

@@ -125,6 +125,7 @@ navigation:
             path: ./pages/accounts/transfers.mdx
 
       - section: VTFs (Vault Traded Funds)
+        slug: vaults
         contents:
           - page: Introduction
             slug: vaults-introduction

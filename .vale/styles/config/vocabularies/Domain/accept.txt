@@ -33,6 +33,7 @@ Linea
 Mainnet
 moneyness
 orderbook
+permissionless
 Orderbuilder
 Paraclear
 Paradex

@@ -124,7 +124,7 @@ navigation:
             slug: transfers
             path: ./pages/accounts/transfers.mdx
 
-      - section: Vaults
+      - section: VTFs (Vault Traded Funds)
         contents:
           - page: Introduction
             slug: vaults-introduction
@@ -134,10 +134,10 @@ navigation:
             path: ./pages/vaults/key-features.mdx
           - section: Tutorials
             contents:
-              - page: Create a Vault
+              - page: Create a VTF
                 slug: create-a-vault
                 path: ./pages/vaults/tutorials/create-a-vault.mdx
-              - page: Close Your Vault
+              - page: Close Your VTF
                 slug: close-your-vault
                 path: ./pages/vaults/tutorials/close-your-vault.mdx
               - page: Deposit

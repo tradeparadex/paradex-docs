@@ -1,0 +1,209 @@
+---
+title: Funding Mechanism (v2)
+subtitle: Multi-venue impact-based continuous funding mechanism
+---
+
+Paradex uses a continuous funding mechanism. The **Impact Premium** is a **weighted median of impact-based premiums** measured across multiple venues (Paradex, Binance, Bybit, OKX, Lighter, Hyperliquid). Sampling several venues and taking a weighted median makes the funding rate robust to any single venue being thin, stale, or dislocated.
+
+## Funding calculation flow
+
+1. **Per-venue impact premium**: calculate bid and ask impact premium on each venue's book.
+2. **Aggregation**: calculate a weighted median impact premium across venues and divide by spot to get the **Premium Rate**.
+3. **Raw Funding Rate**: apply the standard clamping formula to pull the Premium Rate toward the Baseline Interest Rate (0.01%). Scale by the Funding Multiplier (0.5x for TradFi, 1x for all other markets) and clamp by $\pm$ the Maximum Funding Rate.
+4. **Smoothed Funding Rate**: EWMA over the raw rate; this is the published rate.
+5. **Funding Premium**: convert the published rate into the per-period payment (USDC per unit of notional).
+6. **Funding Index**: time-weighted accrual of the Funding Premium since launch.
+7. **Accrued Funding**: per-position settlement from the change in the Funding Index.
+
+## 1. Per-venue impact premium
+
+For each venue $V$, a fixed **impact notional** is walked into the order book on both sides:
+
+$$
+\begin{aligned}
+& \text{Impact Notional}_V = \text{base\_impact\_notional} \times \text{notional\_multiplier}[V] \\[6pt]
+& \text{impact\_bid}_V = \text{VWAP of selling Impact Notional}_V \text{ into } V\text{'s bids} \\
+& \text{impact\_ask}_V = \text{VWAP of buying Impact Notional}_V \text{ into } V\text{'s asks}
+\end{aligned}
+$$
+
+`base_impact_notional` is **5,000** for BTC and ETH and **1,000** for all other assets. `notional_multiplier` scales it per venue:
+
+| Venue | `notional_multiplier` |
+|-------|----------------------|
+| Paradex | 1 |
+| Binance | 4 |
+| Bybit | 4 |
+| OKX | 4 |
+| Hyperliquid | 4 |
+| Lighter | 2 |
+
+The premium on each venue is calculated from the impact prices:
+
+$$
+\text{premium}[V] = \max(\text{impact\_bid}_V - \text{spot\_price}_V,\; 0) - \max(\text{spot\_price}_V - \text{impact\_ask}_V,\; 0)
+$$
+
+`spot_price_V` is the index price published by venue $V$; each venue's premium is evaluated against its own index.
+
+**Insufficient depth.** If a side's book cannot absorb the full impact notional, that side's term is set to 0 (e.g., if bid depth is short, $\max(\text{impact\_bid}_V - \text{spot\_price}_V,\; 0) = 0$, while the ask side is unaffected). A venue with no available market is excluded entirely.
+
+## 2. Aggregation
+
+The **Premium Rate** is the **weighted median** of $\text{premium}[V]$ over the venues with an available market, divided by spot:
+
+$$
+\begin{aligned}
+& \text{Impact Premium} = \text{weighted\_median}\big\{(\text{premium}[V],\; \text{weight}[V])\big\} \\
+& \text{Premium Rate} = \frac{\text{Impact Premium}}{\text{Spot Price}}
+\end{aligned}
+$$
+
+Each venue carries a global score, `funding_premium_score`, used in every market:
+
+| Venue | `funding_premium_score` |
+|-------|------------------------|
+| Paradex | 3.5 |
+| Binance | 1.2 |
+| Bybit | 1.2 |
+| OKX | 1.2 |
+| Hyperliquid | 1.2 |
+| Lighter | 1.2 |
+
+Scores are normalized to weights across the **available** venues (after exclusions) so they sum to 1:
+
+$$
+\text{weight}[V] = \frac{\text{funding\_premium\_score}[V]}{\sum \text{funding\_premium\_score}[\text{available venues}]}
+$$
+
+The aggregated Premium Rate is an input to the funding rate.
+
+## 3. Raw Funding Rate
+
+The Raw Funding Rate pulls the Premium Rate toward the Baseline Interest Rate (0.01%), applies a Funding Multiplier (0.5x for TradFi, 1x for all other markets), and clamps the result by $\pm$ the Maximum Funding Rate (2% for BTC/ETH/SOL, 0.5% for TradFi, 5% for all other perpetual markets):
+
+$$
+\begin{aligned}
+& \Delta = \text{clip}\big(\text{Baseline Rate} - \text{Premium Rate},\; \pm\text{Clamp Rate}\big) \\
+& \text{Raw Rate} = \text{clip}\big(\text{Funding Multiplier} \times (\text{Premium Rate} + \Delta),\; \pm\text{Max Rate}\big)
+\end{aligned}
+$$
+
+Defaults (individual markets may override):
+
+| Parameter | Default | Purpose |
+|-----------|---------|---------|
+| Baseline Rate (Interest Rate) | 0.01% per 8h | Rate the market converges toward when the Premium Rate is near 0. |
+| Clamp Rate | 0.05% per 8h | Maximum pull of the Baseline toward or away from the Premium Rate. |
+| Max Funding Rate | 2% (BTC/ETH/SOL), 0.5% (TradFi), 5% (other) per 8h | Cap on the raw rate. |
+| Funding Multiplier | 1 (0.5 for TradFi) | Per-market scalar in $[0, 1]$ applied before the cap. |
+| Funding Period | 8h | Reference window for the three rates above. |
+
+## 4. Smoothed Funding Rate
+
+The published Funding Rate is an EWMA over the Raw Rate:
+
+$$
+\text{Funding Rate}_t = (1 - \alpha) \cdot \text{Funding Rate}_{t-1} + \alpha \cdot \text{Raw Rate}_t
+$$
+
+Smoothing is specified by **half-life**: the time for a step change in the Raw Rate to be half-absorbed into the published rate. With a 1-second tick, $\alpha = 1 - 2^{-1/H}$, where $H$ is the half-life in seconds.
+
+| Market state | Half-life of published rate |
+|--------------|----------------------------|
+| Regular perpetual | 30 min |
+| Post-only period | 30 s |
+
+## 5. Funding Premium
+
+At time $t$, the **Funding Premium** is the amount paid by longs to shorts per funding period (8h by default), expressed in the settlement asset (USDC) per unit of notional:
+
+$$
+\text{Funding Premium} = \text{Funding Rate} \times \frac{\text{Spot Oracle Price}}{\text{USDC Oracle Price}}
+$$
+
+Although funding is continuous, the Funding Premium is quoted per period and represents the funding paid on 1 unit of long position over the 8h funding period assuming market data does not change.
+
+## 6. Funding Index
+
+A global **Funding Index** tracks accrued funding for one unit of the asset since launch as the time-weighted sum of the Funding Premium, updated each 1-second tick:
+
+$$
+\text{Index}_t = \text{Index}_{t-1} + \text{Premium}_{t-1} \times \frac{\Delta t}{\text{Funding Period Seconds}}
+$$
+
+If the gap since the previous tick exceeds 30 seconds (outage, oracle maintenance, market pause), $\Delta t$ is treated as zero so the index does not jump.
+
+<Note>
+
+Positions held through a pause accrue no funding during it; partial holding periods settle exactly by the index delta, with no "next funding" countdown.
+
+</Note>
+
+## 7. Accrued Funding
+
+The **Accrued (Unrealized) Funding** of an open position depends on the change in the Funding Index since its last cached value:
+
+$$
+\text{Accrued Funding PnL} = -\text{Position Size} \times (\text{Current Index} - \text{Cached Index}) \times \text{USDC Oracle Price}
+$$
+
+where Position Size is signed (positive long, negative short).
+
+**Sign conventions.** A positive Index delta is positive funding (rich perp); the leading minus sign makes the PnL negative for longs (they pay) and positive for shorts (they receive). Negative funding flips this: shorts pay, longs receive.
+
+Accrued funding realizes into PnL whenever the position is modified (trade, liquidation, transfer, or withdrawal):
+
+$$
+\text{Funding Realized PnL} = -\text{Previous Position Size} \times (\text{Current Index} - \text{Cached Index})
+$$
+
+## Funding updates
+
+- The funding rate is recomputed every **1 second**.
+- It is published on the [`funding_data` WebSocket channel](https://docs.paradex.trade/ws/web-socket-channels/funding-data-market-symbol) and embedded in every price tick.
+- History is available via the account funding-history REST endpoint.
+- Funding is paused when the oracle is in maintenance, the USDC price is invalid, or the market is halted.
+
+## Example
+
+Assume **BTC-USD-PERP** with the default 8h funding period, over a 1-minute holding window, with Spot Price, USDC Price, Premium Rate, and the smoothed Funding Rate held constant (steady state). In production all four update each second; this just keeps the arithmetic tractable.
+
+| Quantity | Value |
+|----------|-------|
+| Spot Price | 60,000 USD |
+| USDC Price | 1.00 |
+| Premium Rate (from the weighted median of impact premiums / spot) | 0.08% (8 bps) |
+| Position Size | +0.5 BTC (long) |
+| Holding window | 60 s |
+
+**Raw rate:**
+
+$$
+\begin{aligned}
+& \Delta = \text{clip}(0.0001 - 0.0008,\; \pm 0.0005) = -0.0005 \\
+& \text{Raw Rate} = \text{clip}(1 \times (0.0008 + (-0.0005)),\; \pm 0.02) = 0.0003
+\end{aligned}
+$$
+
+**Smoothed rate:** at steady state, $\text{Funding Rate} = \text{Raw Rate} = 0.0003$.
+
+**Premium** (per 8h, per unit of notional):
+
+$$
+\text{Premium} = 0.0003 \times \frac{60{,}000}{1.00} = 18\ \text{USDC per BTC per 8h}
+$$
+
+**Index advance** over 60 s (8h = 28,800 s):
+
+$$
+\Delta\text{Index} = 18 \times \frac{60}{28{,}800} = 0.0375\ \text{USDC per BTC}
+$$
+
+**Accrued PnL** on +0.5 BTC over the minute:
+
+$$
+\text{PnL} = -0.5 \times 0.0375 \times 1.00 = -0.01875\ \text{USDC}
+$$
+
+The long pays about 1.9 cents over the minute. Extrapolated to a full 8h, the long pays roughly $0.5 \times 18 = 9$ USDC, which is 0.03% of a 30,000 USD notional (a useful sanity check).

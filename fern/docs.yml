@@ -521,9 +521,12 @@ navigation:
       - page: Position Limit
         slug: position-limit
         path: ./pages/risk-system/position-limit.mdx
-      - page: Funding Mechanism
+      - page: Funding Mechanism (v1)
         slug: funding-mechanism
         path: ./pages/risk-system/funding-mechanism.mdx
+      - page: Funding Mechanism (v2)
+        slug: funding-mechanism-v2
+        path: ./pages/risk-system/funding-mechanism-v2.mdx
       - page: Deleveraging
         slug: deleveraging
         path: ./pages/risk-system/deleveraging.mdx

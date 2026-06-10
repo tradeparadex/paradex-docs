@@ -372,9 +372,6 @@ navigation:
                 - page: OP-USD-PERP
                   slug: op-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/op-usd-perp.mdx
-                - page: ORDI-USD-PERP
-                  slug: ordi-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/ordi-usd-perp.mdx
                 - page: PAXG-USD-PERP
                   slug: paxg-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/paxg-usd-perp.mdx
@@ -420,9 +417,6 @@ navigation:
                 - page: UNI-USD-PERP
                   slug: uni-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/uni-usd-perp.mdx
-                - page: VIRTUAL-USD-PERP
-                  slug: virtual-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/virtual-usd-perp.mdx
                 - page: WIF-USD-PERP
                   slug: wif-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/wif-usd-perp.mdx

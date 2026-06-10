@@ -1286,6 +1286,16 @@ colors:
     dark: "#16191C"
 css: ./assets/styles.css
 js:
+  # Google Consent Mode defaults — must run before Fern injects GTM.
+  - path: ./assets/consent-defaults.js
+    strategy: beforeInteractive
+  # Vendored vanilla-cookieconsent v3.0.1 (bytes from the npm tarball;
+  # see vendor-cookieconsent.umd.js). Loaded before our skin/init script.
+  - path: ./assets/vendor-cookieconsent.umd.js
+    strategy: afterInteractive
+  # Cookie consent banner — wires user choice into Google Consent Mode.
+  - path: ./assets/cookie-consent.js
+    strategy: afterInteractive
   - path: ./dist/add-pixel.js
     strategy: lazyOnload
   - path: ./assets/tvl-limit.js

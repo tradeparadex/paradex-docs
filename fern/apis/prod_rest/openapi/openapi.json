@@ -6177,11 +6177,11 @@
             "BearerToken": []
           }
         ],
-        "description": "Returns all vaults (any status) where the caller is the operator or owner.\nIt includes vaults not active yet, like initializing or pending initial deposit.",
+        "description": "Returns all vaults (any status) where the caller is the operator or owner,\nplus the vault the caller is a sub-operator (strategy) of, if any.\nIt includes vaults not active yet, like initializing or pending initial deposit.\nEach vault includes its strategies (sub-operators), so the UI can resolve\nvalid operator <-> sub-operator transfer counterparties.",
         "tags": [
           "Vaults"
         ],
-        "summary": "Get vaults owned or operated by the authenticated account",
+        "summary": "Get vaults owned, operated, or sub-operated by the authenticated account",
         "operationId": "vaults-get-mine",
         "responses": {
           "200": {

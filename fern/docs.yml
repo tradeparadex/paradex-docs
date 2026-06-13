@@ -158,8 +158,8 @@ navigation:
         slug: trading-fees
         path: ./pages/trading/trading-fees.mdx
       - page: Retail vs Pro Orders
-        slug: trader-profiles
-        path: ./pages/trading/trader-profiles.mdx
+        slug: retail-and-pro-orders
+        path: ./pages/trading/retail-and-pro-orders.mdx
       - page: Retail Price Improvement (RPI)
         slug: rpi
         path: ./pages/trading/rpi.mdx
@@ -1240,6 +1240,10 @@ redirects:
   # Redirect old fastfill slug to fastfills
   - source: "/trading/fastfill"
     destination: "/trading/fastfills"
+
+  # Redirect old trader-profiles slug to retail-and-pro-orders
+  - source: "/trading/trader-profiles"
+    destination: "/trading/retail-and-pro-orders"
 
   # Redirect old RWA page to TradFi Markets
   - source: "/trading/rwa"

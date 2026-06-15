@@ -483,6 +483,9 @@ navigation:
             - page: HYPE Options
               slug: hype-options
               path: ./pages/instruments-guide/dated-options/hype-usd.mdx
+            - page: ZEC Options
+              slug: zec-options
+              path: ./pages/instruments-guide/dated-options/zec-usd.mdx
   - tab: risk
     layout:
       - section: Getting Started

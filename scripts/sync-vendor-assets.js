@@ -5,12 +5,11 @@
  * from `fern/assets/` as raw static content — so we materialise the library
  * (JS + CSS) as a single bundled file before Fern picks it up.
  *
- * The output file is .gitignored. The package version is pinned in
- * package.json + yarn.lock; running `yarn install` triggers `postinstall`
- * which runs this script.
- *
- * To upgrade: bump the version in package.json, `yarn install`, commit the
- * lockfile changes. The output file is never committed.
+ * The output file is .gitignored — CI regenerates it on every run via the
+ * `yarn install` step in the relevant workflow before Fern reads it. Local
+ * dev also gets it for free via the `postinstall` hook in package.json. The
+ * pinned version in package.json + yarn.lock is the source of truth; upgrade
+ * by bumping the dep and committing the lockfile diff.
  */
 const fs = require('fs');
 const path = require('path');

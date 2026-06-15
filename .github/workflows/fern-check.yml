@@ -4,8 +4,11 @@ on:
   pull_request:
     paths:
       - fern/**
+      - package.json
+      - yarn.lock
+      - scripts/**
   push:
-    branches: 
+    branches:
       - main
 
 jobs:
@@ -14,6 +17,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Verify sync-vendor-assets output is up to date
+        run: |
+          yarn sync-vendor-assets
+          if ! git diff --quiet -- fern/assets/; then
+            echo "::error::Vendored assets in fern/assets/ are out of date. Run 'yarn sync-vendor-assets' and commit the result, or check that no stale vendor-*.{js,css} are tracked in git."
+            git diff -- fern/assets/
+            exit 1
+          fi
       - name: Install fern
         run: npm install -g fern-api
       - name: fern check

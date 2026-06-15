@@ -1,56 +1,49 @@
 ---
 title: Trading Fees
-subtitle: Trading fees vary based on your [order classification](/trading/trader-profiles), 14-day trading volume, \$DIME staking tier, and whether you pay fees in \$DIME.
+subtitle: Trading fees vary based on your [order classification](/trading/trader-profiles).
 ---
 
 export const Dot = ({color}) => <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: color, marginRight: '0.5em', verticalAlign: 'middle'}} />;
 
-<Note title="Transition period" icon="fa-solid fa-circle-info">
-During one week (April 22 - April 29, 1PM SGT), all users will enjoy VIP 6 and Special Pro tier fees along with Diamond tier staking discounts of 30% (taker fees of 0.7 bps for Retail and 1.96 bps for Pro; maker fees of 0% for everyone). Additional \$DIME fee discounts can be enabled immediately.
+<Note title="Announcement" icon="fa-solid fa-circle-info">
+As of June 15 Paradex Retail fees go back to 0% for Takers and Makers on all markets. Pro fees for Perps and Spot stay intact, while Options fees are following newly updated structure (see below).
 </Note>
 
-## How fees work
+- Retail Takers and Makers have 0% fees on all products: Perps, Spot and Options
+- Pro fees follow fee schedule outlined below
 
-Spot & Perps fees are based on your [order classification](/trading/trader-profiles) and 14D volume, less any applicable discounts.
+## Perps & Spot Fees
+
+### Retail
+
+| | Perps | Spot |
+|---|---|---|
+| Taker | 0% | 0% |
+| Maker | 0% | 0% |
+
+### Pro
+
+Spot & Perps fees are based on your 14D volume, less any applicable discounts.
 
 `Your fee = base rate × (1 − total discount)`
 
-- Maker fees are 0% for both profiles. 
+- Maker fees are 0%.
 - Pro fees cannot go below 1.75 bps (0.0175%), regardless of total discount.
 - Fees are charged on trade notional (Size × Trade Price).
 
-## Your base rate
+#### Base rate
 
 Your base rate is set by your order classification and combined 14D volume across your main account and subaccount(s).
 
-<Tabs>
-  <Tab title="Retail">
-    Connected wallets holding a [MoneyBadgers](https://opensea.io/collection/moneybadgers) or [ShizoPunks](https://opensea.io/collection/shizopunks) NFT qualify at lower volume thresholds.
+| Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
+|---|---|---|---|
+| Pro 0 | — | 0.045% | 0% |
+| Pro 1 | ≥ 1M | 0.042% | 0% |
+| Pro 2 | ≥ 5M | 0.039% | 0% |
+| Pro 3 | ≥ 10M | 0.037% | 0% |
+| Pro 4 | ≥ 25M | 0.035% | 0% |
 
-    | Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
-    |---|---|---|---|
-    | VIP 0 (Default) |   | 0.024% | 0% |
-    | VIP 1 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 100K</span><span>OR</span><span>NFT</span></span> | 0.02% | 0% |
-    | VIP 2 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 500K</span><span>OR</span><span>≥ 250K + NFT</span></span> | 0.018% | 0% |
-    | VIP 3 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 1M</span><span>OR</span><span>≥ 500K + NFT</span></span> | 0.016% | 0% |
-    | VIP 4 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 5M</span><span>OR</span><span>≥ 2.5M + NFT</span></span> | 0.014% | 0% |
-    | VIP 5 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 10M</span><span>OR</span><span>≥ 6M + NFT</span></span> | 0.012% | 0% |
-    | VIP 6 | <span style={{display: 'inline-grid', gridTemplateColumns: '4em 2em auto', columnGap: '0.5em'}}><span>≥ 50M</span><span>OR</span><span>≥ 35M + NFT</span></span> | 0.01% | 0% |
-  </Tab>
-  <Tab title="Pro">
-    Pro fees cannot go below 1.75 bps (0.0175%), regardless of total discount.
-
-    | Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
-    |---|---|---|---|
-    | Pro 0 | — | 0.045% | 0% |
-    | Pro 1 | ≥ 1M | 0.042% | 0% |
-    | Pro 2 | ≥ 5M | 0.039% | 0% |
-    | Pro 3 | ≥ 10M | 0.037% | 0% |
-    | Pro 4 | ≥ 25M | 0.035% | 0% |
-  </Tab>
-</Tabs>
-
-## Discounts
+#### Discounts
 
 Three discounts are additive and apply to your volume-based taker fee:
 
@@ -66,9 +59,9 @@ Three discounts are additive and apply to your volume-based taker fee:
   </Card>
 </CardGroup>
 
-### Stake \$DIME
+##### Stake \$DIME
 
-Stake $DIME for tiered Spot & Perps taker fee discounts, up to 30%.
+Stake \$DIME for tiered Spot & Perps taker fee discounts, up to 30%.
 
 | Staking Tier | \$DIME Staked | Fee Discount |
 |---|---|---|
@@ -82,7 +75,7 @@ Stake $DIME for tiered Spot & Perps taker fee discounts, up to 30%.
 
 To unstake, submit an unstaking request at any time. A 24-hour cooldown follows, after which you must confirm to receive your funds. For more on \$DIME, see [\$DIME Utility](/docs/getting-started/dime-utility).
 
-### Pay fees in \$DIME
+##### Pay fees in \$DIME
 
 Pay fees in \$DIME for a flat 40% discount. Fees are deducted from your spot \$DIME balance at the \$DIME ↔ USDC mark price at transaction time.
 
@@ -90,37 +83,40 @@ Pay fees in \$DIME for a flat 40% discount. Fees are deducted from your spot \$D
 A user who stakes 100K \$DIME (15% staking discount) and pays fees in \$DIME (40% \$DIME fee discount) gets a total discount of 55% (15% + 40%), applied to their volume-based taker fee.
 </Tip>
 
-### FastFills
+##### FastFills
 
-Pro taker fees get an additional 30% off when matching Retail orders, stackable with staking and $DIME discounts. The 1.75 bps (0.0175%) minimum fee still applies.
+Pro taker fees get an additional 30% off when matching Retail orders, stackable with staking and \$DIME discounts. The 1.75 bps (0.0175%) minimum fee still applies.
 
 See [FastFills](/trading/fastfills) for details.
 
-## Fee scenarios
+#### Fee scenarios
 
-How volume tiers, staking, \$DIME fee payment, and FastFills combine to determine a user's final taker fee.
+How volume tiers, staking, \$DIME fee payment, and FastFills combine to determine a Pro user's final taker fee.
 
 | Scenario | Volume Tier | Base Taker Fee | \$DIME Fee Discount | Staking Amount | Staking Discount | FastFills Discount | Total Discount | Final Fee |
 |---|---|---|---|---|---|---|---|---|
-| Retail A | VIP 5 | <span style={{color: '#3b82f6'}}>0.012%</span> | <span style={{color: '#f59e0b'}}>40%</span> | 1M \$DIME | <span style={{color: '#f59e0b'}}>25%</span> | — | <span style={{color: '#f59e0b'}}>65%</span> | <span style={{color: '#10b981'}}>0.0042%</span> |
-| Retail B | VIP 1 | <span style={{color: '#3b82f6'}}>0.02%</span> | <span style={{color: '#f59e0b'}}>40%</span> | 50K \$DIME | <span style={{color: '#f59e0b'}}>10%</span> | — | <span style={{color: '#f59e0b'}}>50%</span> | <span style={{color: '#10b981'}}>0.01%</span> |
 | Pro A | Pro 1 | <span style={{color: '#3b82f6'}}>0.042%</span> | <span style={{color: '#f59e0b'}}>40%</span> | 10K \$DIME | <span style={{color: '#f59e0b'}}>5%</span> | <span style={{color: '#f59e0b'}}>30%</span> | <span style={{color: '#f59e0b'}}>75%</span> | <span style={{color: '#10b981'}}>0.0175%</span>* |
 | Pro B | Pro 4 | <span style={{color: '#3b82f6'}}>0.035%</span> | <span style={{color: '#f59e0b'}}>40%</span> | 2M \$DIME | <span style={{color: '#f59e0b'}}>30%</span> | — | <span style={{color: '#f59e0b'}}>70%</span> | <span style={{color: '#10b981'}}>0.0175%</span>* |
 
 <sub>*Minimum Pro fee of 1.75 bps (0.0175%) applies.</sub>
 
-## Other fees
+## Options Fees
 
-### Options
+### Retail
+
+| Maker Fee | Taker Fee |
+|---|---|
+| 0% | 0% |
+
+### Pro
 
 Fees are capped at 12.5% of the option price (premium). The FastFills 30% discount applies to Pro taker fees matching Retail orders.
 
-| Profile | Maker Fee | Taker Fee |
-|---|---|---|
-| <Badge intent="success" outlined minimal>Retail</Badge> | 0.0075% | 0.0075% |
-| <Badge intent="note" outlined minimal>Pro</Badge> | 0.0075% | 0.0125% |
+| Maker Fee (RPI & API) | Taker Fee |
+|---|---|
+| 0.01% | 0.0175% |
 
-### Settlement
+## Settlement
 
 When a market is delisted, a settlement fee applies to any positions still open.
 
@@ -128,4 +124,3 @@ When a market is delisted, a settlement fee applies to any positions still open.
 |---|---|
 | Spot and Perpetual Futures | 0.015% |
 | Dated Options | 0.0075% |
-

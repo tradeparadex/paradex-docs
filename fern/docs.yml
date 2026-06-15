@@ -405,9 +405,6 @@ navigation:
                 - page: TIA-USD-PERP
                   slug: tia-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/tia-usd-perp.mdx
-                - page: TON-USD-PERP
-                  slug: ton-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/ton-usd-perp.mdx
                 - page: TRUMP-USD-PERP
                   slug: trump-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/trump-usd-perp.mdx

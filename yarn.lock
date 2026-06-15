@@ -318,6 +318,10 @@ __metadata:
   dependencies:
     fern-api: "npm:^4.45.0"
     swagger2openapi: "npm:^7.0.8"
+    vanilla-cookieconsent: "npm:3.0.1"
+  dependenciesMeta:
+    vanilla-cookieconsent@3.0.1:
+      unplugged: true
   languageName: unknown
   linkType: soft
 
@@ -438,6 +442,13 @@ __metadata:
   version: 0.0.3
   resolution: "tr46@npm:0.0.3"
   checksum: 10c0/047cb209a6b60c742f05c9d3ace8fa510bff609995c129a37ace03476a9b12db4dbf975e74600830ef0796e18882b2381fb5fb1f6b4f96b832c374de3ab91a11
+  languageName: node
+  linkType: hard
+
+"vanilla-cookieconsent@npm:3.0.1":
+  version: 3.0.1
+  resolution: "vanilla-cookieconsent@npm:3.0.1"
+  checksum: 10c0/dfb91004aaa14575561c6e6d8dd885b4cb9a867f99cce204802392e2ce725674b6b544b8af39e3eed2c25a9d30357c9ea45dbcef552a49c8445c6b4b0abd7db0
   languageName: node
   linkType: hard
 

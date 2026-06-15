@@ -4,11 +4,19 @@
   "repository": "https://github.com/tradeparadex/paradex-docs.git",
   "private": true,
   "scripts": {
-    "dev": "fern docs dev"
+    "dev": "fern docs dev",
+    "sync-vendor-assets": "node scripts/sync-vendor-assets.js",
+    "postinstall": "node scripts/sync-vendor-assets.js"
   },
   "devDependencies": {
     "fern-api": "^4.45.0",
-    "swagger2openapi": "^7.0.8"
+    "swagger2openapi": "^7.0.8",
+    "vanilla-cookieconsent": "3.0.1"
   },
-  "packageManager": "yarn@4.5.3"
+  "packageManager": "yarn@4.5.3",
+  "dependenciesMeta": {
+    "vanilla-cookieconsent@3.0.1": {
+      "unplugged": true
+    }
+  }
 }

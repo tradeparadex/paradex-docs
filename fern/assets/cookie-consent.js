@@ -9,12 +9,12 @@
  * and follows Fern's active theme via the `.light` class on <html>.
  */
 (function () {
-  // Library v3.0.1 ships via:
-  //   - vendor-cookieconsent.umd.js (loaded by Fern before this file via the
-  //     `js:` array in docs.yml — exposes window.CookieConsent)
-  //   - styles.css (vendor-cookieconsent.css concatenated into our css: file)
-  // Vendoring the bytes into the repo avoids the supply-chain exposure of a
-  // runtime jsDelivr fetch.
+  // vanilla-cookieconsent is loaded ahead of this file by Fern (see the
+  // `js:` array in docs.yml). The bundle file is generated from the pinned
+  // npm package by scripts/sync-vendor-assets.js at install time — it
+  // exposes window.CookieConsent and injects the library's base CSS.
+  // Loading via the package manager instead of a runtime CDN fetch removes
+  // the supply-chain exposure of jsDelivr / mutable GitHub tags.
 
   // Inject the Paradex skin
   var style = document.createElement('style');

@@ -1283,9 +1283,11 @@ js:
   # Google Consent Mode defaults — must run before Fern injects GTM.
   - path: ./assets/consent-defaults.js
     strategy: beforeInteractive
-  # Vendored vanilla-cookieconsent v3.0.1 (bytes from the npm tarball;
-  # see vendor-cookieconsent.umd.js). Loaded before our skin/init script.
-  - path: ./assets/vendor-cookieconsent.umd.js
+  # vanilla-cookieconsent — synced from npm into vendor-cookieconsent.bundle.js
+  # by scripts/sync-vendor-assets.js (postinstall). Version pinned in
+  # package.json + yarn.lock; the output file is .gitignored. Loaded before
+  # our skin/init script.
+  - path: ./assets/vendor-cookieconsent.bundle.js
     strategy: afterInteractive
   # Cookie consent banner — wires user choice into Google Consent Mode.
   - path: ./assets/cookie-consent.js

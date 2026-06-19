@@ -39,7 +39,7 @@ $$
 
 ### Liquidity weight
 
-A tick is *liquid* when both bid and ask are present and the relative spread is within the per-market Max Top-of-book Spread (default 1%). The weight $w$ ramps linearly toward 1 on liquid ticks and toward 0 on illiquid ticks, traversing the full 0-to-1 range over 30 minutes of sustained conditions.
+A tick is *liquid* when both bid and ask are present and the relative spread is within the per-market Max Top-of-book Spread (1%). The weight $w$ ramps linearly toward 1 on liquid ticks and toward 0 on illiquid ticks, traversing the full 0-to-1 range over 30 minutes of sustained conditions.
 
 Sustained thinness drives $w \to 0$ and Fair Basis follows external consensus; sustained tightness drives $w \to 1$ and on-venue signals regain equal weight.
 

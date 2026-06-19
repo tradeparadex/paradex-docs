@@ -43,16 +43,3 @@ A tick is *liquid* when both bid and ask are present and the relative spread is 
 
 Sustained thinness drives $w \to 0$ and Fair Basis follows external consensus; sustained tightness drives $w \to 1$ and on-venue signals regain equal weight.
 
-## Calculate the Mark Price
-
-The Mark Price is obtained by applying the Fair Basis to the Spot Price:
-
-<Frame caption="SOL-USD-PERP mark price compared to the underlying spot price">
-<img src="../../assets/risk/mark_price_vs_spot.png" alt=""/>
-</Frame>
-
-Note that the **Fair Basis** is different from the **Funding Rate**; the Funding Rate is derived from the Fair Basis using the formula [described here](funding-mechanism).
-
-<Frame caption="SOL-USD-PERP fair basis and funding rate">
-<img src="../../assets/risk/mark_price_fair_basis_vs_funding.png" alt=""/>
-</Frame>

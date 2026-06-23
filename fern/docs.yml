@@ -166,7 +166,7 @@ navigation:
       - page: FastFills
         slug: fastfills
         path: ./pages/trading/fastfills.mdx
-      - page: TradFi Markets
+      - page: TradFi Price Oracle
         slug: tradfi-markets
         path: ./pages/trading/real-world-assets.mdx
       - section: Spot Trading
@@ -1249,7 +1249,7 @@ redirects:
   - source: "/trading/fastfill"
     destination: "/trading/fastfills"
 
-  # Redirect old RWA page to TradFi Markets
+  # Redirect old RWA page to TradFi Price Oracle
   - source: "/trading/rwa"
     destination: "/trading/tradfi-markets"
 

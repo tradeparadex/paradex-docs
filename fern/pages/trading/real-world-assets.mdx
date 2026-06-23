@@ -1,19 +1,24 @@
 ---
-title: TradFi Markets
+title: TradFi Price Oracle
 subtitle: Oracle pricing methodology for TradFi markets on Paradex
 ---
 
 The Spot Oracle Price for TradFi markets is calculated as a weighted median of prices from different sources. The weight assigned to each source is proportional to its score relative to the total score of all available feeds.
 
 <Note title="Supported asset classes" icon="fa-regular fa-gem">
-Paradex currently supports commodities markets. More TradFi asset classes will be introduced soon.
+Paradex currently supports commodities and equities markets.
 </Note>
 
 ## Market hours
 
-<Info>
-Commodities markets are open 23/5, from Sunday 6:00 PM ET to Friday 5:00 PM ET, with a daily maintenance break from 5:00 PM to 6:00 PM ET.
-</Info>
+<Tabs>
+  <Tab title="Commodities">
+    Commodities markets are open 23/5, from Sunday 6:00 PM ET to Friday 5:00 PM ET, with a daily maintenance break from 5:00 PM to 6:00 PM ET.
+  </Tab>
+  <Tab title="Equities">
+    Equities markets are open 24/5, from Sunday 8:00 PM ET to Friday 8:00 PM ET. This includes pre-market, regular, post-market, and overnight sessions.
+  </Tab>
+</Tabs>
 
 ## Source scores
 
@@ -25,15 +30,19 @@ The price consumed from external exchanges (Binance, Bybit, Hyperliquid, OKX, Li
 
 | Source | Score | Availability |
 |--------|:-----:|:------------:|
-| Pyth | 3 | Open hours |
-| Stork | 2 | Open hours |
-| Binance | 1 | Open hours |
+| Pyth | 3 | Open hours (24/5) |
+| Stork | 2 | Open hours (24/5) |
+| Binance | 1 | Open hours (24/5) |
 | Bybit | 1 | 24/7 |
 | Hyperliquid | 1 | 24/7 |
 | OKX | 1 | 24/7 |
 | Lighter | 0.7 | 24/7 |
 | Closing Price | 0.5 | Closing hours |
 | Internal Price | 0.5 | Closing hours |
+
+<Info>
+Pyth, Stork, and Binance feeds are available during open hours only (24/5), while Bybit, Hyperliquid, OKX, and Lighter provide 24/7 coverage.
+</Info>
 
 <Accordion title="Closing Price and Internal Price definitions">
 - **Closing Price** is equal to the oracle price at the market closing time.

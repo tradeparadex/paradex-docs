@@ -8,7 +8,7 @@ Sidebar entries for options are under `- section: Options` inside the Instrument
 
 ## Per-asset parameter tables
 
-Several pages use `<Tabs>` with one tab per asset (BTC, ETH, HYPE, ZEC) when parameters differ per underlying:
+Several pages use `<Tabs>` with one tab per asset (BTC, ETH, HYPE, ZEC, CL) when parameters differ per underlying:
 
 | Page | Section |
 |---|---|
@@ -18,12 +18,19 @@ Several pages use `<Tabs>` with one tab per asset (BTC, ETH, HYPE, ZEC) when par
 
 When adding a new options underlying, update all four locations: instrument config page, sidebar, expiries/listing, margin requirements, and portfolio margin.
 
+## CL (Crude Oil) specifics
+
+- CL only has 2 weekly expiries (1w and 2w); no daily or monthly cycles.
+- If an expiry falls on a weekend or public holiday (per the Pyth CL calendar), it rolls to the next business day.
+- CL strike step sizes only have 2 time buckets (8h–7d and 7d–16d) instead of the 4 used by other assets.
+- CL margin parameters (cross margin and portfolio margin) match HYPE/ZEC identically.
+
 ## Gotchas
 
-- ETH SCAN scenarios and cross-margin parameters currently match BTC identically. HYPE and ZEC values differ (higher spot/vol shocks, different tail weights, higher ITM/OTM fractions).
-- ZEC margin parameters (cross margin and portfolio margin) match HYPE identically.
-- The Portfolio Margin `Parameters` section at the bottom of `portfolio-margin.mdx` contains constants that are mostly shared across assets; `MIN_VOL_SHOCK_UP` and `HEDGED_MARGIN_FACTOR` are the exceptions (HYPE/ZEC = 60% / 1.5% vs BTC/ETH = 40% / 1%).
+- ETH SCAN scenarios and cross-margin parameters currently match BTC identically. HYPE, ZEC, and CL values differ (higher spot/vol shocks, different tail weights, higher ITM/OTM fractions).
+- ZEC and CL margin parameters (cross margin and portfolio margin) match HYPE identically.
+- The Portfolio Margin `Parameters` section at the bottom of `portfolio-margin.mdx` contains constants that are mostly shared across assets; `MIN_VOL_SHOCK_UP` and `HEDGED_MARGIN_FACTOR` are the exceptions (HYPE/ZEC/CL = 60% / 1.5% vs BTC/ETH = 40% / 1%).
 
 ## Last updated
 
-2026-06-13
+2026-06-25

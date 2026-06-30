@@ -455,6 +455,18 @@ navigation:
                 - page: CL-USD-PERP
                   slug: cl-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/cl-usd-perp.mdx
+                - page: EUR-USD-PERP
+                  slug: eur-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/eur-usd-perp.mdx
+                - page: GOOGL-USD-PERP
+                  slug: googl-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/googl-usd-perp.mdx
+                - page: META-USD-PERP
+                  slug: meta-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/meta-usd-perp.mdx
+                - page: MSFT-USD-PERP
+                  slug: msft-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/msft-usd-perp.mdx
                 - page: MSTR-USD-PERP
                   slug: mstr-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/mstr-usd-perp.mdx

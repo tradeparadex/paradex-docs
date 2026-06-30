@@ -366,9 +366,6 @@ navigation:
                 - page: MORPHO-USD-PERP
                   slug: morpho-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/morpho-usd-perp.mdx
-                - page: MSTR-USD-PERP
-                  slug: mstr-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/mstr-usd-perp.mdx
                 - page: NEAR-USD-PERP
                   slug: near-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/near-usd-perp.mdx
@@ -399,9 +396,6 @@ navigation:
                 - page: SEI-USD-PERP
                   slug: sei-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/sei-usd-perp.mdx
-                - page: SPCX-USD-PERP
-                  slug: spcx-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/spcx-usd-perp.mdx
                 - page: STRK-USD-PERP
                   slug: strk-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/strk-usd-perp.mdx
@@ -461,9 +455,24 @@ navigation:
                 - page: CL-USD-PERP
                   slug: cl-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/cl-usd-perp.mdx
+                - page: GOOGL-USD-PERP
+                  slug: googl-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/googl-usd-perp.mdx
+                - page: META-USD-PERP
+                  slug: meta-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/meta-usd-perp.mdx
+                - page: MSFT-USD-PERP
+                  slug: msft-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/msft-usd-perp.mdx
+                - page: MSTR-USD-PERP
+                  slug: mstr-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/mstr-usd-perp.mdx
                 - page: NG-USD-PERP
                   slug: ng-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/ng-usd-perp.mdx
+                - page: SPCX-USD-PERP
+                  slug: spcx-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/spcx-usd-perp.mdx
                 - page: XAG-USD-PERP
                   slug: xag-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/xag-usd-perp.mdx

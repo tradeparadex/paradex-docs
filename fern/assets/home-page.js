@@ -28,7 +28,7 @@
 })();
 
 /**
- * Hero marquee: cycles through words (Futures, Options, Spot, Commodities)
+ * Hero marquee: cycles through words (Equities, FX, Commodities, Crypto)
  * with a vertical slide-and-fade transition, matching paradex.trade.
  */
 (function () {

@@ -455,6 +455,9 @@ navigation:
                 - page: CL-USD-PERP
                   slug: cl-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/cl-usd-perp.mdx
+                - page: CRCL-USD-PERP
+                  slug: crcl-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/crcl-usd-perp.mdx
                 - page: EUR-USD-PERP
                   slug: eur-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/eur-usd-perp.mdx

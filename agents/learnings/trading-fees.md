@@ -8,14 +8,12 @@
 
 ## Patterns
 
-- Frame the page around the mental model: `fee = base rate × (1 − total discount)`, with a Pro minimum of 1.75 bps (0.0175%).
+- Frame the page around the mental model: `taker fee = base rate × (1 − total discount)`, with a Pro minimum of 1.75 bps (0.0175%). Pro maker fees are a separate flat rate.
 - Information architecture:
-  1. `## How fees work`: short lead paragraph with the formula and floor.
-  2. `## Your base rate`: `<Tabs>` split into `<Tab title="Retail">` and `<Tab title="Pro">`, each with its own volume-tier table. NFT thresholds stay inline in the Retail table (they modify the base rate, not a post-hoc discount).
-  3. `## Discounts`: H3 subsections for each actionable lever (`### Stake $DIME`, `### Pay fees in $DIME`, `### FastFills (Pro only)`), preceded by a short bulleted preview of the three levers for scannability.
-  4. `## Worked examples`: the scenarios table combining volume tier + discounts.
-  5. `## Other fees`: H3 for Options and Settlement (secondary products).
-  6. `## FAQ`: `<AccordionGroup>`.
+  1. `## Perps & Spot Fees` → `### Retail` (simple 0% table) and `### Pro` which splits into `#### Maker fees` (flat rate) and `#### Taker fees` (volume-based with discounts).
+  2. Under `#### Taker fees`: `##### Base rate` (volume-tier table, taker only), `##### Discounts` with `###### Stake $DIME`, `###### Pay fees in $DIME`, `###### FastFills`, and `##### Fee scenarios`.
+  3. `## Options Fees`: Retail and Pro sub-sections.
+  4. `## Settlement`: delisting fees.
 - Use full words in the wide scenario table (e.g. `Fee Discount`, `Total Discount`) instead of abbreviations like `DC`.
 - Prefix each staking tier name in the Staking Tier table with a colored dot using the `<Dot color="#..." />` helper defined via `export const` at the top of `trading-fees.mdx`. The helper wraps the inline-block span with camelCase style keys (`borderRadius`, `backgroundColor`, `marginRight`, `verticalAlign`) that Vale flags as spelling errors when written inline in prose, so keep the span inside the `export const` block (which `.vale.ini`'s `BlockIgnores` skips). Tier colors: Base `#B9BBBD`, Wood `#A0764E`, Bronze `#C4693D`, Silver `#B9BBBD`, Gold `#FFB23D`, Platinum `#A97DBF`, Diamond `#69B8BF`. The Base row represents the default (0 \$DIME staked, 0% discount) state.
 
@@ -27,4 +25,4 @@
 - Don't split Retail and Pro into two stacked tables without a `Tabs` switcher. Readers have to scroll past a table that doesn't apply to them.
 
 ## Last updated
-2026-04-23
+2026-07-02

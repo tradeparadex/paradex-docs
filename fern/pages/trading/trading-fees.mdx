@@ -6,7 +6,9 @@ subtitle: Trading fees vary based on your [order classification](/trading/trader
 export const Dot = ({color}) => <span style={{display: 'inline-block', width: '0.6em', height: '0.6em', borderRadius: '50%', backgroundColor: color, marginRight: '0.5em', verticalAlign: 'middle'}} />;
 
 <Note title="Announcement" icon="fa-solid fa-circle-info">
-As of June 15 Paradex Retail fees go back to 0% for Takers and Makers on all markets. Pro fees for Perps and Spot stay intact, while Options fees are following newly updated structure (see below).
+An updated Pro maker fee rate for Perps & Spot API traders takes effect on July 3 at 12:00 SGT. See [below](#maker-fees).
+
+Retail trading stays at 0 fees across Perps, Spot, and Options.
 </Note>
 
 - Retail Takers and Makers have 0% fees on all products: Perps, Spot and Options
@@ -23,27 +25,32 @@ As of June 15 Paradex Retail fees go back to 0% for Takers and Makers on all mar
 
 ### Pro
 
-Spot & Perps fees are based on your 14D volume, less any applicable discounts.
+#### Maker fees
 
-`Your fee = base rate × (1 − total discount)`
+Flat 0.003% (0.3 bps) fee on all Perps and Spot maker orders, effective July 3 at 12:00 SGT. Fees are charged on trade notional (Size × Trade Price).
 
-- Maker fees are 0%.
-- Pro fees cannot go below 1.75 bps (0.0175%), regardless of total discount.
+#### Taker fees
+
+Spot & Perps taker fees are based on your 14D volume, less any applicable discounts.
+
+`Your taker fee = base rate × (1 − total discount)`
+
+- Pro taker fees cannot go below 1.75 bps (0.0175%), regardless of total discount.
 - Fees are charged on trade notional (Size × Trade Price).
 
-#### Base rate
+##### Base rate
 
 Your base rate is set by your order classification and combined 14D volume across your main account and subaccount(s).
 
-| Tier | 14D Volume (USD) | Taker Fee | Maker Fee |
-|---|---|---|---|
-| Pro 0 | — | 0.045% | 0% |
-| Pro 1 | ≥ 1M | 0.042% | 0% |
-| Pro 2 | ≥ 5M | 0.039% | 0% |
-| Pro 3 | ≥ 10M | 0.037% | 0% |
-| Pro 4 | ≥ 25M | 0.035% | 0% |
+| Tier | 14D Volume (USD) | Taker Fee |
+|---|---|---|
+| Pro 0 | — | 0.045% |
+| Pro 1 | ≥ 1M | 0.042% |
+| Pro 2 | ≥ 5M | 0.039% |
+| Pro 3 | ≥ 10M | 0.037% |
+| Pro 4 | ≥ 25M | 0.035% |
 
-#### Discounts
+##### Discounts
 
 Three discounts are additive and apply to your volume-based taker fee:
 
@@ -59,7 +66,7 @@ Three discounts are additive and apply to your volume-based taker fee:
   </Card>
 </CardGroup>
 
-##### Stake \$DIME
+###### Stake \$DIME
 
 Stake \$DIME for tiered Spot & Perps taker fee discounts, up to 30%.
 
@@ -75,7 +82,7 @@ Stake \$DIME for tiered Spot & Perps taker fee discounts, up to 30%.
 
 To unstake, submit an unstaking request at any time. A 24-hour cooldown follows, after which you must confirm to receive your funds. For more on \$DIME, see [\$DIME Utility](/docs/getting-started/dime-utility).
 
-##### Pay fees in \$DIME
+###### Pay fees in \$DIME
 
 Pay fees in \$DIME for a flat 40% discount. Fees are deducted from your spot \$DIME balance at the \$DIME ↔ USDC mark price at transaction time.
 
@@ -83,13 +90,13 @@ Pay fees in \$DIME for a flat 40% discount. Fees are deducted from your spot \$D
 A user who stakes 100K \$DIME (15% staking discount) and pays fees in \$DIME (40% \$DIME fee discount) gets a total discount of 55% (15% + 40%), applied to their volume-based taker fee.
 </Tip>
 
-##### FastFills
+###### FastFills
 
 Pro taker fees get an additional 30% off when matching Retail orders, stackable with staking and \$DIME discounts. The 1.75 bps (0.0175%) minimum fee still applies.
 
 See [FastFills](/trading/fastfills) for details.
 
-#### Fee scenarios
+##### Fee scenarios
 
 How volume tiers, staking, \$DIME fee payment, and FastFills combine to determine a Pro user's final taker fee.
 

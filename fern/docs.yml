@@ -878,13 +878,15 @@ navigation:
     layout:
       - page: Overview
         path: ./pages/release-notes/overview.mdx
+      - page: v1.152
+        path: ./pages/release-notes/v1.152.md
       - page: v1.150
         path: ./pages/release-notes/v1.150.md
-      - page: v1.149
-        path: ./pages/release-notes/v1.149.md
       - section: Archive
         path: ./pages/release-notes/archive.mdx
         contents:
+          - page: v1.149
+            path: ./pages/release-notes/v1.149.md
           - page: v1.148
             path: ./pages/release-notes/v1.148.md
           - page: v1.147

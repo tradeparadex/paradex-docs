@@ -327,9 +327,6 @@ navigation:
                 - page: INJ-USD-PERP
                   slug: inj-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/inj-usd-perp.mdx
-                - page: IP-USD-PERP
-                  slug: ip-usd-perp
-                  path: ./pages/instruments-guide/futures/tier-2/ip-usd-perp.mdx
                 - page: JTO-USD-PERP
                   slug: jto-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/jto-usd-perp.mdx

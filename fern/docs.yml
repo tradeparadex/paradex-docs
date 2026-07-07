@@ -948,6 +948,14 @@ redirects:
   - source: "/release-notes/:slug*"
     destination: "/releases/:slug*"
 
+  # Redirect deleted per-version release-note pages to the new changelog
+  - source: "/releases/archive/:slug*"
+    destination: "/releases"
+  - source: "/releases/v-1-152"
+    destination: "/releases"
+  - source: "/releases/v-1-150"
+    destination: "/releases"
+
   - source: "/accounts/:slug*"
     destination: "/docs/accounts/:slug*"
 

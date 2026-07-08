@@ -955,6 +955,8 @@ redirects:
     destination: "/releases"
   - source: "/releases/v-1-150"
     destination: "/releases"
+  - source: "/releases/overview"
+    destination: "/releases"
 
   - source: "/accounts/:slug*"
     destination: "/docs/accounts/:slug*"

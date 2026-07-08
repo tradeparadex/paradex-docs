@@ -6,9 +6,9 @@
  *   node scripts/new-release-note.js <version> --tags UI,API [--date MM-DD-YYYY]
  *
  * If an entry already exists for the resolved date (multiple releases can
- * land the same day), the new version is appended as another `##` card in
+ * land the same day), the new version is prepended as another `##` card in
  * that file rather than overwriting it - Fern renders each top-level `##`
- * heading in a dated file as its own timeline card.
+ * heading in a dated file as its own timeline card, newest first.
  */
 const fs = require('fs');
 const path = require('path');
@@ -59,8 +59,14 @@ function renderEntry(version, tags) {
   // Always a flat bullet list, even with multiple tags: Fern's timeline
   // excerpt renders blank when a `####` heading is the first thing after
   // <ChangelogTags/>, so entries must not be split into per-tag subsections.
-  for (const tag of tags) {
-    lines.push(`* <!-- ${tag}: fill in -->`);
+  // Multi-tag bullets get a bold inline prefix instead, so the individual
+  // permalink page still shows which tag each line belongs to.
+  if (tags.length > 1) {
+    for (const tag of tags) {
+      lines.push(`* **${tag}:** <!-- fill in -->`);
+    }
+  } else {
+    lines.push('* <!-- fill in -->');
   }
   lines.push('');
   return lines.join('\n').replace(/\n+$/, '\n') + '\n';
@@ -106,8 +112,8 @@ function main() {
 
   if (fs.existsSync(filePath)) {
     const existing = fs.readFileSync(filePath, 'utf8');
-    fs.writeFileSync(filePath, existing.replace(/\n+$/, '\n') + '\n' + entry);
-    console.log(`Appended ${version} to ${path.relative(process.cwd(), filePath)}`);
+    fs.writeFileSync(filePath, entry + existing.replace(/^\n+/, ''));
+    console.log(`Prepended ${version} to ${path.relative(process.cwd(), filePath)}`);
   } else {
     fs.writeFileSync(filePath, entry);
     console.log(`Created ${path.relative(process.cwd(), filePath)}`);

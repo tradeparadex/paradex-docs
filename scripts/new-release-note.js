@@ -58,13 +58,10 @@ function renderEntry(version, tags) {
   const lines = [`## ${version}`, '', `<ChangelogTags tags={[${tagList}]} />`, ''];
   // Changelog uses the "classic" layout (see overview.mdx frontmatter), which
   // renders full entries rather than truncated excerpts, so per-tag ####
-  // subheadings are safe here and read better than inline bullet prefixes.
-  if (tags.length > 1) {
-    for (const tag of tags) {
-      lines.push(`#### ${tag}`, '', `* <!-- ${tag}: fill in -->`, '');
-    }
-  } else {
-    lines.push(`* <!-- ${tags[0]}: fill in -->`, '');
+  // subheadings are safe here. Always emit one, even for a single tag, so
+  // the template is consistent regardless of tag count.
+  for (const tag of tags) {
+    lines.push(`#### ${tag}`, '', `* <!-- ${tag}: fill in -->`, '');
   }
   return lines.join('\n').replace(/\n+$/, '\n') + '\n';
 }

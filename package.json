@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "fern docs dev",
+    "new-release-note": "node scripts/new-release-note.js",
     "sync-vendor-assets": "node scripts/sync-vendor-assets.js",
     "postinstall": "node scripts/sync-vendor-assets.js"
   },

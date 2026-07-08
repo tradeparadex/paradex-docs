@@ -56,19 +56,16 @@ function formatDate(d) {
 function renderEntry(version, tags) {
   const tagList = tags.map((t) => `"${t}"`).join(', ');
   const lines = [`## ${version}`, '', `<ChangelogTags tags={[${tagList}]} />`, ''];
-  // Always a flat bullet list, even with multiple tags: the timeline
-  // layout's condensed excerpt renders blank when a `####` heading is the
-  // first thing after <ChangelogTags/>. Multi-tag bullets get a bold inline
-  // prefix instead, so the individual permalink page still shows which tag
-  // each line belongs to.
+  // Changelog uses the "classic" layout (see overview.mdx frontmatter), which
+  // renders full entries rather than truncated excerpts, so per-tag ####
+  // subheadings are safe here and read better than inline bullet prefixes.
   if (tags.length > 1) {
     for (const tag of tags) {
-      lines.push(`* **${tag}:** <!-- fill in -->`);
+      lines.push(`#### ${tag}`, '', '* <!-- fill in -->', '');
     }
   } else {
-    lines.push('* <!-- fill in -->');
+    lines.push('* <!-- fill in -->', '');
   }
-  lines.push('');
   return lines.join('\n').replace(/\n+$/, '\n') + '\n';
 }
 

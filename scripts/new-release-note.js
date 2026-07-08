@@ -61,10 +61,10 @@ function renderEntry(version, tags) {
   // subheadings are safe here and read better than inline bullet prefixes.
   if (tags.length > 1) {
     for (const tag of tags) {
-      lines.push(`#### ${tag}`, '', '* <!-- fill in -->', '');
+      lines.push(`#### ${tag}`, '', `* <!-- ${tag}: fill in -->`, '');
     }
   } else {
-    lines.push('* <!-- fill in -->', '');
+    lines.push(`* <!-- ${tags[0]}: fill in -->`, '');
   }
   return lines.join('\n').replace(/\n+$/, '\n') + '\n';
 }

@@ -2,12 +2,7 @@
 
 <ChangelogTags tags={["UI", "API"]} />
 
-#### UI
-
-* `TPSL` Modal can now be dragged and repositioned on screen for better visibility.
-
-#### API
-
-* Fixed issue where all `TWAP` orders were canceled if any sub-order was canceled due to `exceeded slippage`.
-* Disabled maximum slippage check for `LIMIT` orders.
-* Fixed race condition when modifying `TP/SL` orders that could cause the account to become stuck and prevent new order creation.
+* **UI:** `TPSL` Modal can now be dragged and repositioned on screen for better visibility.
+* **API:** Fixed issue where all `TWAP` orders were canceled if any sub-order was canceled due to `exceeded slippage`.
+* **API:** Disabled maximum slippage check for `LIMIT` orders.
+* **API:** Fixed race condition when modifying `TP/SL` orders that could cause the account to become stuck and prevent new order creation.

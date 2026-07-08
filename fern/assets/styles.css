@@ -948,3 +948,11 @@ body:has(#home-page-marker) .fern-layout-footer-toolbar {
   }
 }
 
+/* The changelog tag filter (pills + dropdown) doesn't narrow results -
+   reported to Fern. Hide it and keep only the working search box until
+   it's fixed. */
+.fern-filter-badge,
+.fern-filter-dropdown-button {
+  display: none;
+}
+

@@ -11,7 +11,7 @@ F = S \times e^{\,f \,T}
 $$
 
    where $S$ is the Paradex spot oracle price, $f$ is the **annualized forward rate** for the option's expiry (calibrated externally from Deribit), and $T$ is the time to expiry in years.
-2. **Mark Implied Volatility (Mark IV)** — derived from the Mark Variance (see below).
+2. **Mark Implied Volatility (Mark IV)** — the external IV fit from a reference exchange (see below).
 3. **Risk-free rate (r)** — used only for discounting the option payoff from expiry back to present value. Currently set to **0%**.
 
 <Note>
@@ -20,25 +20,13 @@ Under Black-76, the synthetic forward $F$ is the level the option is priced agai
 
 ## Mark Implied Volatility
 
-Mark IV is derived from the Mark Variance, which blends internal market data with external reference data from Deribit:
+Mark IV is calculated directly by fitting the implied volatility surface from a reference exchange:
 
-$$
-\text{Mark IV} = \sqrt{\text{Mark Variance}}
-$$
-
-where:
-
-$$
-\begin{align*}
-\small\text{Mark Variance} = \text{Median}\big(
-& \text{Median}(\text{Ask Variance EWMA},~\text{Bid Variance EWMA}, \\
-& \quad\text{Last Trade Variance EWMA}), \\
-& \text{Mid Variance EWMA}, \\
-& \text{External Variance EWMA}\big)
-\end{align*}
-$$
-
-Internal variance values are derived from bid, ask, last trade, and mid prices and are expressed as Black-76 implied variances consistent with the calibrated forward. External variance inputs are calibrated to reference data from Deribit.
+| Underlying | Reference exchange |
+| ---------- | ------------------ |
+| BTC        | Deribit            |
+| ETH        | Deribit            |
+| HYPE       | Derive             |
 
 ## Forward rate calibration
 

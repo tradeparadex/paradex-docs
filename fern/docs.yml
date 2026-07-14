@@ -494,6 +494,12 @@ navigation:
                 - page: SPCX-USD-PERP
                   slug: spcx-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/spcx-usd-perp.mdx
+                - page: US100-USD-PERP
+                  slug: us100-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/us100-usd-perp.mdx
+                - page: US500-USD-PERP
+                  slug: us500-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/us500-usd-perp.mdx
                 - page: XAG-USD-PERP
                   slug: xag-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/xag-usd-perp.mdx

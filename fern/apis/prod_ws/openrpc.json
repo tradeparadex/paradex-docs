@@ -105,6 +105,18 @@
             "example": "trades.BTC-USD-PERP",
             "type": "string"
           }
+        },
+        {
+          "name": "markets",
+          "description": "For markets_summary only: the initial set of markets to scope the subscription to (may be empty). Present selects scoped mutable-filter mode whose set is changed via modify_subscription; omit for the all-markets firehose.",
+          "required": false,
+          "schema": {
+            "example": "BTC-USD-PERP,ETH-USD-PERP",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
         }
       ],
       "result": {
@@ -181,6 +193,112 @@
             "channel": {
               "description": "Channel name that was unsubscribed",
               "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "errors": [
+        {
+          "code": -32700,
+          "message": "Parse error"
+        },
+        {
+          "code": -32600,
+          "message": "Invalid request"
+        },
+        {
+          "code": -32601,
+          "message": "Method not found"
+        },
+        {
+          "code": -32602,
+          "message": "Invalid method parameters"
+        },
+        {
+          "code": -32603,
+          "message": "Internal error"
+        },
+        {
+          "code": 40110,
+          "message": "Malformed bearer token"
+        },
+        {
+          "code": 40111,
+          "message": "Invalid bearer token"
+        },
+        {
+          "code": 40112,
+          "message": "Geo IP blocked"
+        }
+      ]
+    },
+    {
+      "name": "modify_subscription",
+      "summary": "Modify a scoped subscription's market filter in place",
+      "description": "Adds and/or removes markets on a live scoped markets_summary subscription without unsubscribing and resubscribing, so markets that remain in the filter stream uninterrupted. Requires a subscription opened in scoped mode (subscribe with a markets array).",
+      "tags": [
+        {
+          "name": "Session"
+        }
+      ],
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "channel",
+          "description": "Channel of the live scoped subscription to modify (e.g. markets_summary)",
+          "required": true,
+          "schema": {
+            "example": "markets_summary",
+            "type": "string"
+          }
+        },
+        {
+          "name": "add",
+          "description": "Markets to add to the subscription's filter in place",
+          "required": false,
+          "schema": {
+            "example": "SOL-USD-PERP",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        {
+          "name": "remove",
+          "description": "Markets to remove from the subscription's filter in place",
+          "required": false,
+          "schema": {
+            "example": "BTC-USD-PERP",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "properties": {
+            "add": {
+              "description": "Markets that were added",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "channel": {
+              "description": "Channel whose subscription filter was modified",
+              "type": "string"
+            },
+            "remove": {
+              "description": "Markets that were removed",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
             }
           },
           "type": "object"

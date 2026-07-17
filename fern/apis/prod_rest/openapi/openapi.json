@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.124.2"
+    "version": "1.126.3"
   },
   "paths": {
     "/account": {
@@ -3795,6 +3795,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "EVM vault operator index (eip191 only; requires EnableEvmVaultOperators)",
+            "name": "vault_operator_index",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -6040,6 +6048,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "VAULT_DATA_PRIVATE when the owner has hidden the vault's or the requested strategy's balances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
           }
         }
       }
@@ -6277,6 +6295,16 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "VAULT_DATA_PRIVATE when the owner has hidden the vault's or the requested strategy's positions",
             "content": {
               "application/json": {
                 "schema": {
@@ -7332,6 +7360,21 @@
             "type": "string",
             "example": "MyVault"
           },
+          "operator_eth_address": {
+            "description": "EVM address of the vault operator (empty for legacy Starknet operator)",
+            "type": "string",
+            "example": "0x1234567890abcdef1234567890abcdef12345678"
+          },
+          "operator_index": {
+            "description": "Index of the operator sub-account (0 for legacy Starknet operator)",
+            "type": "integer",
+            "example": 1
+          },
+          "operator_signer_type": {
+            "description": "Signer type for the operator: \"starknet\" (default when empty) or \"eip191\"",
+            "type": "string",
+            "example": "eip191"
+          },
           "profit_share": {
             "description": "Vault owner profit share (percentage)",
             "type": "integer",
@@ -7341,6 +7384,16 @@
             "description": "Public key of vault operator",
             "type": "string",
             "example": "0x1234567890abcdef"
+          },
+          "show_balances": {
+            "description": "Whether the vault's balances are publicly visible. Defaults to true when omitted.",
+            "type": "boolean",
+            "example": true
+          },
+          "show_positions": {
+            "description": "Whether the vault's positions are publicly visible. Defaults to true when omitted.",
+            "type": "boolean",
+            "example": true
           },
           "strategy_description": {
             "description": "Strategy description for the vault (optional)",
@@ -9139,6 +9192,7 @@
           "VAULT_NOT_FOUND",
           "VAULT_STRATEGY_NOT_FOUND",
           "VAULT_LIMIT_REACHED",
+          "VAULT_DATA_PRIVATE",
           "BATCH_SIZE_OUT_OF_RANGE",
           "ISOLATED_MARKET_ACCOUNT_MISMATCH",
           "NO_ACCESS_TO_MARKET",
@@ -9165,6 +9219,7 @@
           "INSUFFICIENT_EVM_BALANCE",
           "PORTFOLIO_MARGIN_ONBOARDING_DISABLED",
           "PORTFOLIO_MARGIN_INVALID_ACCOUNT_KIND",
+          "EVM_VAULT_OPERATORS_DISABLED",
           "INVALID_EVM_SIGNATURE",
           "EVM_SIGNATURE_VERIFICATION_FAILED",
           "INVALID_SUBKEY",
@@ -9187,6 +9242,7 @@
           "BLOCK_TRADE_ACCOUNT_MISMATCH",
           "BLOCK_TRADE_INVALID_SIGNATURE",
           "BLOCK_TRADE_SIGNER_KEY_UNAUTHORIZED",
+          "BLOCK_TRADE_REPLAYED_SIGNATURE",
           "OFFER_ALREADY_CANCELLED",
           "OFFER_INVALID_STATUS",
           "OFFER_UNAUTHORIZED",
@@ -9250,6 +9306,7 @@
           "ErrorCodeString_VaultNotFound",
           "ErrorCodeString_VaultStrategyNotFound",
           "ErrorCodeString_VaultLimitReached",
+          "ErrorCodeString_VaultDataPrivate",
           "ErrorCodeString_BatchSizeOutOfRange",
           "ErrorCodeString_IsolatedMarketAccountMismatch",
           "ErrorCodeString_NoAccessToMarket",
@@ -9276,6 +9333,7 @@
           "ErrorCodeString_InsufficientEvmBalance",
           "ErrorCodeString_PortfolioMarginOnboardingDisabled",
           "ErrorCodeString_PortfolioMarginInvalidAccountKind",
+          "ErrorCodeString_EvmVaultOperatorsDisabled",
           "ErrorCodeString_BadEvmSignature",
           "ErrorCodeString_EvmSigVerificationFailed",
           "ErrorCodeString_InvalidSubkey",
@@ -9298,6 +9356,7 @@
           "ErrorCodeString_BlockTradeAccountMismatch",
           "ErrorCodeString_BlockTradeInvalidSignature",
           "ErrorCodeString_BlockTradeSignerKeyUnauthorized",
+          "ErrorCodeString_BlockTradeReplayedSignature",
           "ErrorCodeString_OfferAlreadyCancelled",
           "ErrorCodeString_OfferInvalidStatus",
           "ErrorCodeString_OfferUnauthorized",
@@ -9562,6 +9621,10 @@
           },
           "funding_rate_8h": {
             "description": "Normalized 8-hour funding rate as a decimal string",
+            "type": "string"
+          },
+          "impact_premium_rate": {
+            "description": "Raw cross-venue impact premium rate (weighted-median impact premium / spot,\npre-clamp) as a decimal string. Omitted when impact aggregation did not\nproduce the rate.",
             "type": "string"
           },
           "market": {
@@ -11373,6 +11436,14 @@
             "description": "Strategy name",
             "type": "string",
             "example": "Alpha Strategy"
+          },
+          "visibility": {
+            "description": "Owner-controlled visibility settings for the strategy",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.Visibility"
+              }
+            ]
           }
         }
       },
@@ -12199,6 +12270,14 @@
           "token_address": {
             "description": "LP token address",
             "type": "string"
+          },
+          "visibility": {
+            "description": "Owner-controlled visibility settings for the vault",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.Visibility"
+              }
+            ]
           }
         }
       },
@@ -12391,6 +12470,21 @@
             "description": "Address of the vault factory contract",
             "type": "string",
             "example": "0x1234567890abcdef"
+          }
+        }
+      },
+      "responses.Visibility": {
+        "type": "object",
+        "properties": {
+          "balances": {
+            "description": "Whether the vault's balances are publicly visible",
+            "type": "boolean",
+            "example": true
+          },
+          "positions": {
+            "description": "Whether the vault's positions are publicly visible",
+            "type": "boolean",
+            "example": true
           }
         }
       },

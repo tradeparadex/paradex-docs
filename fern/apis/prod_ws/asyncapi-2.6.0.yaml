@@ -145,8 +145,62 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesMarketSummaryResp'
                 summary: Public websocket channel for updates of available markets
-                description: Subscribe to market summary messages for specific markets or all markets. Supports both markets_summary (all markets) and markets_summary.{market_symbol} (specific market) subscription patterns.
+                description: 'Subscribe to market summary messages for specific markets or all markets. Supports markets_summary (all markets) and markets_summary.{market_symbol} (specific market) dot-encoded patterns, plus a scoped mutable-filter mode: subscribe with a `markets` array (present, even empty) to filter to a specific set and change that set in place via modify_subscription without re-subscribing.'
         x-fern-display-name: markets_summary[.{market_symbol}]
+    /modify_subscription:
+        publish:
+            summary: Modify a scoped subscription's market filter in place
+            description: Adds and/or removes markets on a live scoped markets_summary subscription without unsubscribing and resubscribing, so markets that remain in the filter stream uninterrupted. Requires a subscription opened in scoped mode (subscribe with a markets array).
+            tags:
+                - name: Session
+            message:
+                name: modify_subscriptionrequest
+                title: Modify_subscriptionRequest
+                payload:
+                    properties:
+                        add:
+                            description: Markets to add to the subscription's filter in place
+                            example: SOL-USD-PERP
+                            items:
+                                type: string
+                            type: array
+                        channel:
+                            description: Channel of the live scoped subscription to modify (e.g. markets_summary)
+                            example: markets_summary
+                            type: string
+                        remove:
+                            description: Markets to remove from the subscription's filter in place
+                            example: BTC-USD-PERP
+                            items:
+                                type: string
+                            type: array
+                    required:
+                        - channel
+                    type: object
+        subscribe:
+            summary: modify_subscription response
+            tags:
+                - name: Session
+            message:
+                name: modify_subscriptionresponse
+                title: Modify_subscriptionResponse
+                payload:
+                    properties:
+                        add:
+                            description: Markets that were added
+                            items:
+                                type: string
+                            type: array
+                        channel:
+                            description: Channel whose subscription filter was modified
+                            type: string
+                        remove:
+                            description: Markets that were removed
+                            items:
+                                type: string
+                            type: array
+                    type: object
+        x-fern-display-name: modify_subscription
     /order.cancel:
         publish:
             summary: Cancel a single order
@@ -975,6 +1029,20 @@ channels:
                 summary: Private websocket channel to receive updates when position is changed
                 description: Subscribe to position messages
         x-fern-display-name: positions
+    /rfq:
+        parameters:
+            rfq_id:
+                $ref: '#/components/parameters/rfq_id'
+        subscribe:
+            summary: Private websocket channel to receive events on your RFQs
+            message:
+                name: rfqeventresp
+                title: RfqEventResp
+                payload:
+                    $ref: '#/components/schemas/ResponsesRfqEventResp'
+                summary: Private websocket channel to receive events on your RFQs
+                description: Subscribe to RFQ lifecycle, quote, and trade events for your RFQs. Subscribe to "rfq" for all your RFQs, or "rfq.{rfq_id}" for a single RFQ.
+        x-fern-display-name: rfq
     /subscribe:
         publish:
             summary: Subscribe to a WebSocket channel
@@ -990,6 +1058,12 @@ channels:
                             description: Channel name to subscribe to (e.g. trades.BTC-USD-PERP)
                             example: trades.BTC-USD-PERP
                             type: string
+                        markets:
+                            description: 'For markets_summary only: the initial set of markets to scope the subscription to (may be empty). Present selects scoped mutable-filter mode whose set is changed via modify_subscription; omit for the all-markets firehose.'
+                            example: BTC-USD-PERP,ETH-USD-PERP
+                            items:
+                                type: string
+                            type: array
                     required:
                         - channel
                     type: object
@@ -1132,6 +1206,10 @@ components:
                 enum:
                     - 50ms
                     - 100ms
+                type: string
+        rfq_id:
+            description: Paradigm-issued RFQ id; scopes the subscription to a single RFQ
+            schema:
                 type: string
     schemas:
         ResponsesAccountSummaryResponse:
@@ -1446,6 +1524,8 @@ components:
                     type: string
                 funding_rate_8h:
                     description: Normalized 8-hour funding rate as a decimal string
+                    type: string
+                impact_premium_rate:
                     type: string
                 market:
                     description: Market represents the market identifier
@@ -2215,6 +2295,113 @@ components:
                 - updates
                 - deletes
             type: object
+        ResponsesRfqEventResp:
+            additionalProperties: false
+            properties:
+                account:
+                    type: string
+                created_at:
+                    type: integer
+                quote:
+                    additionalProperties: false
+                    properties:
+                        close_reason:
+                            description: Venue close reason on CLOSED (e.g. NO_MATCH, EXPIRED); empty otherwise
+                            type: string
+                        counterparty:
+                            type: string
+                        label:
+                            description: User label on the order; echoes your own label on TAKER orders
+                            type: string
+                        order_id:
+                            type: string
+                        price:
+                            type: string
+                        quantity:
+                            type: string
+                        role:
+                            description: TAKER for your own order, MAKER for a counterparty quote
+                            type: string
+                        side:
+                            type: string
+                        state:
+                            type: string
+                    required:
+                        - order_id
+                        - state
+                    type: object
+                result:
+                    additionalProperties: false
+                    properties:
+                        http_status:
+                            description: Venue HTTP status, 0 when no response was received
+                            type: integer
+                        label:
+                            description: User label echoed from the request
+                            type: string
+                        message:
+                            description: Human-readable error, empty on OK
+                            type: string
+                        operation:
+                            type: string
+                        order_id:
+                            description: Venue-issued order id, RFQ_EXECUTE OK only
+                            type: string
+                        status:
+                            type: string
+                    required:
+                        - status
+                        - operation
+                    type: object
+                rfq:
+                    additionalProperties: false
+                    properties:
+                        close_reason:
+                            type: string
+                        expires_at:
+                            type: integer
+                        quantity:
+                            type: string
+                        state:
+                            type: string
+                    required:
+                        - state
+                    type: object
+                rfq_id:
+                    type: string
+                seq:
+                    type: integer
+                trade:
+                    additionalProperties: false
+                    properties:
+                        counterparty:
+                            type: string
+                        price:
+                            type: string
+                        quantity:
+                            type: string
+                        reason:
+                            description: Taker-facing rejection reason on REJECTED (e.g. risk check, invalid credentials); empty otherwise
+                            type: string
+                        side:
+                            type: string
+                        state:
+                            type: string
+                        trade_id:
+                            type: string
+                    required:
+                        - trade_id
+                        - state
+                    type: object
+                type:
+                    type: string
+            required:
+                - type
+                - account
+                - rfq_id
+                - seq
+                - created_at
+            type: object
         ResponsesTradeResult:
             additionalProperties: false
             properties:
@@ -2497,7 +2684,7 @@ components:
             name: marketsummaryresp
             title: MarketSummaryResp
             summary: Public websocket channel for updates of available markets
-            description: Subscribe to market summary messages for specific markets or all markets. Supports both markets_summary (all markets) and markets_summary.{market_symbol} (specific market) subscription patterns.
+            description: 'Subscribe to market summary messages for specific markets or all markets. Supports markets_summary (all markets) and markets_summary.{market_symbol} (specific market) dot-encoded patterns, plus a scoped mutable-filter mode: subscribe with a `markets` array (present, even empty) to filter to a specific set and change that set in place via modify_subscription without re-subscribing.'
             tags:
                 - name: market
         ResponsesOrderResp:
@@ -2521,6 +2708,13 @@ components:
             description: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
             tags:
                 - name: market
+        ResponsesRfqEventResp:
+            name: rfqeventresp
+            title: RfqEventResp
+            summary: Private websocket channel to receive events on your RFQs
+            description: Subscribe to RFQ lifecycle, quote, and trade events for your RFQs. Subscribe to "rfq" for all your RFQs, or "rfq.{rfq_id}" for a single RFQ.
+            tags:
+                - name: trading
         ResponsesTradeResult:
             name: traderesult
             title: TradeResult

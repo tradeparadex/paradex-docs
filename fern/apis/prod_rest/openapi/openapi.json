@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.126.3"
+    "version": "1.127.1"
   },
   "paths": {
     "/account": {
@@ -372,6 +372,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "IP restrictions not enabled for this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
           }
         }
       }
@@ -709,7 +719,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "IP restrictions not enabled for this account",
             "content": {
               "application/json": {
                 "schema": {
@@ -1677,6 +1687,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "IP restrictions not enabled for this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
           }
         }
       }
@@ -1798,7 +1818,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "IP restrictions not enabled for this account",
             "content": {
               "application/json": {
                 "schema": {
@@ -3066,6 +3086,20 @@
         ],
         "summary": "List fills",
         "parameters": [
+          {
+            "description": "Asset kind of the fill's market",
+            "name": "asset_kind",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PERP",
+                "PERP_OPTION",
+                "OPTION",
+                "SPOT"
+              ]
+            }
+          },
           {
             "description": "Returns the ‘next’ paginated page.",
             "name": "cursor",
@@ -7245,6 +7279,17 @@
           "public_key"
         ],
         "properties": {
+          "allowed_cidrs": {
+            "description": "Optional IP CIDR allowlist applied atomically at creation, so the subkey\nis never live unrestricted. Empty/omitted = unrestricted. Max 50 entries;\nsame format as PUT .../allowed-cidrs (e.g. \"203.0.113.0/24\"). Not covered\nby the registration signature: the list is mutable post-creation via the\nJWT-only allowed-cidrs endpoint, so signing it would add no protection.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "[\"203.0.113.0/24\"",
+              "\"198.51.100.42/32\"]"
+            ]
+          },
           "encrypted_key": {
             "description": "Encrypted private key (required if state=pending).",
             "type": "string",
@@ -7311,6 +7356,17 @@
           "token_type"
         ],
         "properties": {
+          "allowed_cidrs": {
+            "description": "Optional IP CIDR allowlist applied atomically at creation, so the token\nis never live unrestricted. Empty/omitted = unrestricted. Max 50 entries;\nsame format as PUT /account/tokens/:lookup_id/allowed-cidrs.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "[\"203.0.113.0/24\"",
+              "\"198.51.100.42/32\"]"
+            ]
+          },
           "expiry_duration": {
             "description": "Duration in seconds from now until expiration (1 min to 1 year).",
             "type": "integer",

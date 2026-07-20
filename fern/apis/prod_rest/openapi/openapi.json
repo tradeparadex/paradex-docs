@@ -5186,7 +5186,7 @@
     },
     "/system/time": {
       "get": {
-        "description": "Get the current time in the Paradex\n",
+        "description": "Get the current time in the Paradex system, in unix milliseconds.\n\n(sync-docs token validation test — revert before merging)\n",
         "tags": [
           "System"
         ],

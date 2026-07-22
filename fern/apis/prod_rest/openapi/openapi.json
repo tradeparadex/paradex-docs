@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.127.1"
+    "version": "1.128.0"
   },
   "paths": {
     "/account": {
@@ -9546,7 +9546,7 @@
             "example": "USDC"
           },
           "fill_type": {
-            "description": "Fill type, can be FILL, LIQUIDATION or TRANSFER",
+            "description": "Fill type, can be FILL, LIQUIDATION or UNWIND_TRANSFER",
             "allOf": [
               {
                 "$ref": "#/components/schemas/responses.FillType"
@@ -9637,7 +9637,7 @@
         "type": "string",
         "enum": [
           "LIQUIDATION",
-          "TRANSFER",
+          "UNWIND_TRANSFER",
           "FILL",
           "SETTLE_MARKET",
           "RPI",
@@ -9645,7 +9645,7 @@
         ],
         "x-enum-varnames": [
           "FillTypeLiquidation",
-          "FillTypeTransfer",
+          "FillTypeUnwindTransfer",
           "FillTypeFill",
           "FillTypeSettleMarket",
           "FillTypeRPI",

@@ -1416,10 +1416,10 @@ components:
                     example: USDC
                     type: string
                 fill_type:
-                    description: Fill type, can be FILL, LIQUIDATION or TRANSFER
+                    description: Fill type, can be FILL, LIQUIDATION or UNWIND_TRANSFER
                     enum:
                         - LIQUIDATION
-                        - TRANSFER
+                        - UNWIND_TRANSFER
                         - FILL
                         - SETTLE_MARKET
                         - RPI
@@ -2435,7 +2435,7 @@ components:
                     description: Trade type, can be FILL, LIQUIDATION, or RPI
                     enum:
                         - LIQUIDATION
-                        - TRANSFER
+                        - UNWIND_TRANSFER
                         - FILL
                         - SETTLE_MARKET
                         - RPI

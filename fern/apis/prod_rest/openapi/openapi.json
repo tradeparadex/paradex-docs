@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.128.0"
+    "version": "1.128.1"
   },
   "paths": {
     "/account": {
@@ -9985,56 +9985,6 @@
           }
         }
       },
-      "responses.MarketChainDetails": {
-        "type": "object",
-        "properties": {
-          "collateral_address": {
-            "description": "Collateral address",
-            "type": "string",
-            "example": "0x1234567890"
-          },
-          "contract_address": {
-            "description": "Contract address",
-            "type": "string",
-            "example": "0x1234567890"
-          },
-          "fee_account_address": {
-            "description": "Fee account address",
-            "type": "string",
-            "example": "0x1234567890"
-          },
-          "fee_maker": {
-            "description": "Maker fee",
-            "type": "string",
-            "example": "0.01"
-          },
-          "fee_taker": {
-            "description": "Taker fee",
-            "type": "string",
-            "example": "0.01"
-          },
-          "insurance_fund_address": {
-            "description": "Insurance fund address",
-            "type": "string",
-            "example": "0x1234567890"
-          },
-          "liquidation_fee": {
-            "description": "Liquidation fee",
-            "type": "string",
-            "example": "0.01"
-          },
-          "oracle_address": {
-            "description": "Oracle address",
-            "type": "string",
-            "example": "0x1234567890"
-          },
-          "symbol": {
-            "description": "Market symbol",
-            "type": "string",
-            "example": "ETH-USD-PERP"
-          }
-        }
-      },
       "responses.MarketEvent": {
         "type": "object",
         "properties": {
@@ -10275,14 +10225,6 @@
             "description": "Base currency of the market",
             "type": "string",
             "example": "ETH"
-          },
-          "chain_details": {
-            "description": "Chain details",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/responses.MarketChainDetails"
-              }
-            ]
           },
           "clamp_rate": {
             "description": "Clamp rate",

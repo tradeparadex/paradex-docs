@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.128.1"
+    "version": "1.128.2"
   },
   "paths": {
     "/account": {
@@ -7466,8 +7466,9 @@
         ],
         "properties": {
           "amount": {
-            "description": "Amount of XP to transfer (must be >= 1)",
+            "description": "Amount of XP to transfer (must be >= 1 and <= 1e12)",
             "type": "integer",
+            "maximum": 1000000000000,
             "minimum": 1,
             "example": 100
           },

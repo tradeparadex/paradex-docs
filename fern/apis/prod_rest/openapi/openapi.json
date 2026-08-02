@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.128.2"
+    "version": "1.129.0"
   },
   "paths": {
     "/account": {
@@ -12021,6 +12021,21 @@
           }
         }
       },
+      "responses.VaultAccountStrategyAccrual": {
+        "type": "object",
+        "properties": {
+          "estimated_accrued_fee": {
+            "description": "Estimated profit-share fee accrued by this depositor for this strategy, in USDC",
+            "type": "string",
+            "example": "0.45"
+          },
+          "strategy": {
+            "description": "Contract address of the sub-operator (strategy)",
+            "type": "string",
+            "example": "0x29464b79b02543ed8746bba6e71c8a15401dd27b7279a5fa2f2fe8e8cdfabb"
+          }
+        }
+      },
       "responses.VaultAccountSummaryResp": {
         "type": "object",
         "properties": {
@@ -12038,6 +12053,23 @@
             "description": "Amount deposited on the vault by the user in USDC",
             "type": "string",
             "example": "123.45"
+          },
+          "estimated_accrued_fee": {
+            "description": "Estimated profit-share fee accrued by this depositor but not yet settled, in USDC. Covers the vault-level fee only, so it is a lower bound on the total.",
+            "type": "string",
+            "example": "1.23"
+          },
+          "estimated_fee_breakdown": {
+            "description": "Per-strategy split of the depositor's estimated accrued fee. Not yet reported; currently always empty.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.VaultAccountStrategyAccrual"
+            }
+          },
+          "hwm_price": {
+            "description": "High-water mark vault token price for this depositor. Profit share is charged only on gains above this price.",
+            "type": "string",
+            "example": "1.0512"
           },
           "total_pnl": {
             "description": "Total P&L realized by the user in USD.",
@@ -12333,6 +12365,12 @@
             "type": "string",
             "example": "1000000"
           },
+          "next_fee_settlement_at": {
+            "description": "Estimated time of the vault's next profit-share fee settlement, as a Unix timestamp in milliseconds. Null when the next settlement time is not yet known.",
+            "type": "integer",
+            "example": 1719191919000,
+            "nullable": true
+          },
           "num_depositors": {
             "description": "Number of depositors on the vault",
             "type": "integer",
@@ -12372,6 +12410,13 @@
             "description": "Return of the vault in the last 7 days in percentage, i.e. 0.1 means 10%",
             "type": "string",
             "example": "0.123"
+          },
+          "strategies": {
+            "description": "Profit-share terms and performance index for each of the vault's strategies",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.VaultSummaryStrategy"
+            }
           },
           "total_pnl": {
             "description": "Total P&L of the vault in USD",
@@ -12420,6 +12465,31 @@
           }
         }
       },
+      "responses.VaultSummaryStrategy": {
+        "type": "object",
+        "properties": {
+          "fee_recipient": {
+            "description": "Address that receives this strategy's profit-share fees. Set per strategy and need not match the strategy address. Empty if the vault operator has not set terms for this strategy yet.",
+            "type": "string",
+            "example": "0x7f2c5a1e9b48d3f06a1c8e5b2d94f7a3c60e18b5d4a29f7c3e8b1a6d05f24c9"
+          },
+          "pnl_index": {
+            "description": "Latest performance index recorded for this strategy",
+            "type": "string",
+            "example": "1.0512"
+          },
+          "profit_share_percentage": {
+            "description": "Profit share percentage agreed for this strategy, i.e. 10 means 10%. Empty if the vault operator has not set terms for this strategy yet.",
+            "type": "string",
+            "example": "10"
+          },
+          "strategy": {
+            "description": "Contract address of the sub-operator (strategy)",
+            "type": "string",
+            "example": "0x29464b79b02543ed8746bba6e71c8a15401dd27b7279a5fa2f2fe8e8cdfabb"
+          }
+        }
+      },
       "responses.VaultTopHolder": {
         "type": "object",
         "properties": {
@@ -12464,6 +12534,11 @@
             "description": "Minimum share percentage (0-100) the vault owner must maintain on the vault",
             "type": "string",
             "example": "5"
+          },
+          "profit_share_period": {
+            "description": "How often vault profit-share fees are settled, in seconds. Applies to all vaults; 0 means not configured",
+            "type": "string",
+            "example": "2592000"
           },
           "vault_factory_address": {
             "description": "Address of the vault factory contract",

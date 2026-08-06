@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.129.0"
+    "version": "1.130.0"
   },
   "paths": {
     "/account": {
@@ -1554,6 +1554,52 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/terminal-token": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Mints a short-lived identity attestation for DIME Terminal:\nan ES256 JWT (typ \"terminal+JWT\", aud \"dime-terminal\", sub =\nthe account address) signed with a dedicated key published in\nthe JWKS. It proves account identity to the terminal and\ngrants nothing on Paradex itself — no Paradex endpoint\naccepts it. Requires an interactive session authenticated\nwith the account's own key: readonly/API tokens, RPC tokens\nand subkey-scoped tokens are rejected. Sub-accounts and vault\noperators mint attestations for their own address.",
+        "tags": [
+          "Token"
+        ],
+        "summary": "Mint a terminal identity token",
+        "responses": {
+          "200": {
+            "description": "Terminal token minted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.AuthResp"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not an interactive session with the account's own key",
             "content": {
               "application/json": {
                 "schema": {

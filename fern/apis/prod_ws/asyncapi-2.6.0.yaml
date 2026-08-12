@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.2.2
+    version: 1.2.3
     description: Channels for real-time updates.
 servers:
     production:
@@ -18,7 +18,9 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesAccountSummaryResponse'
                 summary: Private websocket channel for receiving updates of account status
-                description: Subscribe to account messages
+                description: |-
+                    Subscribe to account messages
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: account
     /auth:
         publish:
@@ -61,7 +63,9 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesBalanceEventResponse'
                 summary: Private websocket channel to receive PnL calculation data
-                description: Subscribe to balance event messages
+                description: |-
+                    Subscribe to balance event messages
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: balance_events
     /bbo.{market_symbol}:
         parameters:
@@ -89,7 +93,9 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesFillResult'
                 summary: Private websocket channel to receive details of fills for specific account
-                description: Subscribe to fill messages for a market
+                description: |-
+                    Subscribe to fill messages for a market
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: fills.{market_symbol}
     /funding_data.{market_symbol}:
         parameters:
@@ -117,7 +123,9 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesFundingPayment'
                 summary: Private websocket channel to receive funding payments of an account
-                description: Subscribe to funding payment messages for a market
+                description: |-
+                    Subscribe to funding payment messages for a market
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: funding_payments.{market_symbol}
     /markets[.{market_symbol}]:
         parameters:
@@ -1016,7 +1024,9 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesOrderResp'
                 summary: Private websocket channel to receive order updates
-                description: Subscribe to order messages for a market
+                description: |-
+                    Subscribe to order messages for a market
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: orders.{market_symbol}
     /positions:
         subscribe:
@@ -1027,9 +1037,11 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesPositionResp'
                 summary: Private websocket channel to receive updates when position is changed
-                description: Subscribe to position messages
+                description: |-
+                    Subscribe to position messages
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: positions
-    /rfq:
+    /rfq[.{rfq_id}]:
         parameters:
             rfq_id:
                 $ref: '#/components/parameters/rfq_id'
@@ -1041,8 +1053,11 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesRfqEventResp'
                 summary: Private websocket channel to receive events on your RFQs
-                description: Subscribe to RFQ lifecycle, quote, and trade events for your RFQs. Subscribe to "rfq" for all your RFQs, or "rfq.{rfq_id}" for a single RFQ.
-        x-fern-display-name: rfq
+                description: |-
+                    Subscribe to `rfq` for all RFQs belonging to the authenticated account, or `rfq.{rfq_id}` for one venue-issued RFQ id.
+                    Events have type RFQ, QUOTE, TRADE, or RESULT. RESULT acknowledges asynchronous REST create, execute, and cancel commands; match it to the REST 202 response by `result.request_id`.
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
+        x-fern-display-name: rfq[.{rfq_id}]
     /subscribe:
         publish:
             summary: Subscribe to a WebSocket channel
@@ -1090,7 +1105,9 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesTradebustResult'
                 summary: Private websocket channel to receive fills that are busted by a blockchain
-                description: Private websocket channel to receive fills that are busted by a blockchain
+                description: |-
+                    Private websocket channel to receive fills that are busted by a blockchain
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: tradebusts
     /trades.{market_symbol}:
         parameters:
@@ -1115,7 +1132,9 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesTransactionResponse'
                 summary: Private websocket channel for receiving transaction details of fills
-                description: Subscribe to transaction messages
+                description: |-
+                    Subscribe to transaction messages
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: transaction
     /transfers:
         subscribe:
@@ -1134,6 +1153,7 @@ channels:
                     <li><code>COMPLETED</code>: Transfer has completed (final state): For Withdrawals funds have been collected and have moved to the requested Ethereum account; refers to L1 bridge withdraw txn status <code>SUCCESS</code>. For Deposits funds have become available in Paradex; refers to the L2 txn status being <code>ACCEPTED_ON_L2</code>.</li>
                     <li><code>FAILED</code>: L2 txn calling Paraclear contract failed with <code>REJECTED</code> status. Deposits can be retried when they fail by repeating the L2 txn.</li>
                     </ul>
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: transfers
     /unsubscribe:
         publish:
@@ -2101,6 +2121,9 @@ components:
                     type: integer
                 side:
                     description: 'Position Side : Long or Short'
+                    enum:
+                        - SHORT
+                        - LONG
                     type: string
                 size:
                     description: Size of the position with sign (positive if long or negative if short)
@@ -2108,6 +2131,9 @@ components:
                     type: string
                 status:
                     description: 'Status of Position : Open or Closed'
+                    enum:
+                        - OPEN
+                        - CLOSED
                     type: string
                 unrealized_funding_pnl:
                     description: Unrealized running funding P&L for the position
@@ -2299,11 +2325,14 @@ components:
             additionalProperties: false
             properties:
                 account:
+                    description: Paradex account that owns the RFQ
                     type: string
                 created_at:
+                    description: Event time in Unix milliseconds
                     type: integer
                 quote:
                     additionalProperties: false
+                    description: Maker or taker quote payload when type is QUOTE
                     properties:
                         close_reason:
                             description: Venue close reason on CLOSED (e.g. NO_MATCH, EXPIRED); empty otherwise
@@ -2321,10 +2350,20 @@ components:
                             type: string
                         role:
                             description: TAKER for your own order, MAKER for a counterparty quote
+                            enum:
+                                - TAKER
+                                - MAKER
                             type: string
                         side:
+                            enum:
+                                - BUY
+                                - SELL
                             type: string
                         state:
+                            enum:
+                                - PENDING
+                                - OPENED
+                                - CLOSED
                             type: string
                     required:
                         - order_id
@@ -2332,6 +2371,7 @@ components:
                     type: object
                 result:
                     additionalProperties: false
+                    description: Asynchronous REST command outcome when type is RESULT
                     properties:
                         http_status:
                             description: Venue HTTP status, 0 when no response was received
@@ -2343,14 +2383,23 @@ components:
                             description: Human-readable error, empty on OK
                             type: string
                         operation:
+                            description: REST command answered by this result
+                            enum:
+                                - RFQ_CREATE
+                                - RFQ_DELETE
+                                - RFQ_EXECUTE
                             type: string
                         order_id:
-                            description: Venue-issued order id, RFQ_EXECUTE OK only
+                            description: Venue-issued order id, present only for successful RFQ executions
                             type: string
                         request_id:
                             description: Paradex-issued id returned by the REST 202 and echoed here for correlation
                             type: string
                         status:
+                            description: Whether the RFQ venue accepted the command
+                            enum:
+                                - OK
+                                - FAILED
                             type: string
                     required:
                         - status
@@ -2358,24 +2407,35 @@ components:
                     type: object
                 rfq:
                     additionalProperties: false
+                    description: RFQ lifecycle payload when type is RFQ
                     properties:
                         close_reason:
+                            enum:
+                                - FILLED
+                                - EXPIRED
+                                - CANCELLED
                             type: string
                         expires_at:
                             type: integer
                         quantity:
                             type: string
                         state:
+                            enum:
+                                - OPENED
+                                - CLOSED
                             type: string
                     required:
                         - state
                     type: object
                 rfq_id:
+                    description: Venue-issued RFQ id; empty on a failed create result
                     type: string
                 seq:
+                    description: Monotonic delivery sequence for this account partition
                     type: integer
                 trade:
                     additionalProperties: false
+                    description: Block-trade payload when type is TRADE
                     properties:
                         counterparty:
                             type: string
@@ -2387,8 +2447,16 @@ components:
                             description: Taker-facing rejection reason on REJECTED (e.g. risk check, invalid credentials); empty otherwise
                             type: string
                         side:
+                            enum:
+                                - BUY
+                                - SELL
                             type: string
                         state:
+                            enum:
+                                - STARTED
+                                - EXECUTED
+                                - REJECTED
+                                - PROGRESS
                             type: string
                         trade_id:
                             type: string
@@ -2397,6 +2465,12 @@ components:
                         - state
                     type: object
                 type:
+                    description: Event variant; exactly one matching payload field is populated
+                    enum:
+                        - RFQ
+                        - QUOTE
+                        - TRADE
+                        - RESULT
                     type: string
             required:
                 - type
@@ -2493,9 +2567,20 @@ components:
                     type: string
                 state:
                     description: Status of the transaction on Starknet
+                    enum:
+                        - ACCEPTED_ON_L1
+                        - ACCEPTED_ON_L2
+                        - NOT_RECEIVED
+                        - RECEIVED
+                        - REJECTED
+                        - REVERTED
                     type: string
                 type:
                     description: Event that triggered the transaction
+                    enum:
+                        - TRANSACTION_FILL
+                        - TRANSACTION_LIQUIDATE
+                        - TRANSACTION_SETTLE_MARKET
                     type: string
             required:
                 - id
@@ -2715,7 +2800,9 @@ components:
             name: rfqeventresp
             title: RfqEventResp
             summary: Private websocket channel to receive events on your RFQs
-            description: Subscribe to RFQ lifecycle, quote, and trade events for your RFQs. Subscribe to "rfq" for all your RFQs, or "rfq.{rfq_id}" for a single RFQ.
+            description: |-
+                Subscribe to `rfq` for all RFQs belonging to the authenticated account, or `rfq.{rfq_id}` for one venue-issued RFQ id.
+                Events have type RFQ, QUOTE, TRADE, or RESULT. RESULT acknowledges asynchronous REST create, execute, and cancel commands; match it to the REST 202 response by `result.request_id`.
             tags:
                 - name: trading
         ResponsesTradeResult:

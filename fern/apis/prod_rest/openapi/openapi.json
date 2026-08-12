@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.130.0"
+    "version": "1.131.0"
   },
   "paths": {
     "/account": {
@@ -847,6 +847,63 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/paradigm/enable": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Enables RFQ access for the authenticated account.\n\nCall this operation once before using the RFQ API. It has no request body and\nonly initializes the account associated with the Bearer token. The operation\nis idempotent, so calling it again safely returns the current enabled state.\n\nA successful response has status `ENABLED` and identifies the account and\ndelegated RFQ trading public key.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "Enable RFQ access",
+        "operationId": "rfq-enable",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ParadigmEnableResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -4926,6 +4983,578 @@
         }
       }
     },
+    "/rfqs": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Lists the authenticated account's RFQs, most recent first.\n\nThis is a synchronous read from the RFQ venue. It returns one unpaginated page\nof up to 100 RFQs. Each result includes the venue-issued RFQ identifier,\nlifecycle state, quantity, legs, counterparties, timestamps, and optional\nclose reason. Venue state and close-reason strings are passed through.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "List RFQs",
+        "operationId": "rfq-list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/responses.APIResults"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/responses.RfqResult"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Creates an RFQ for the authenticated account.\n\nRFQ creation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A successful HTTP response is `202 Accepted`\nand contains a Paradex `request_id`; it confirms only that the command was\nqueued. The later WebSocket `RESULT` event with the same `request_id` reports\nwhether the venue accepted the command. On success, the event's top-level\n`rfq_id` is the venue-issued identifier used by the read, execute, cancel, and\nfiltered-subscription APIs.\n\nThe request accepts up to 25 legs. It must contain at least one strategy leg,\nrepresented by omitting `price`. At least one strategy leg must have\n`side=BUY`, and at least one must have `ratio=1`. A fixed-price hedge leg\nincludes a strictly positive `price`. All quantities and ratios are positive\ndecimal strings. Every leg market must exist on Paradex and be available for\nRFQ. Each fixed hedge price must be an exact multiple of that market's minimum\nprice increment. The strategy quantity must be at least the largest minimum\nblock size among its strategy legs.\n\nThe platform selects eligible counterparties; a client-supplied\n`counterparties` value is ignored. The optional `strategy` field is a draft\nlabel and is not sent to the venue.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "Create RFQ",
+        "operationId": "rfq-create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.RfqCreateRequest"
+              }
+            }
+          },
+          "description": "RFQ create request",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.RfqAcceptedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/drafts": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Lists the authenticated account's stored RFQ drafts, most recent first.\n\nThe response is unpaginated because each account may store at most 20 drafts.\nDrafts are private to the account and have no effect on venue RFQs until their\ncontents are submitted through `POST /v1/rfqs`.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "List RFQ drafts",
+        "operationId": "rfq-draft-list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/responses.APIResults"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/responses.RfqDraftResult"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Stores an RFQ-builder draft for the authenticated account.\n\nA draft is inert: it is not sent to the RFQ venue and does not reserve margin.\nEach account may store at most 20 drafts. The request shares the RFQ-create\nschema, but only `quantity`, `strategy`, and `legs` are persisted;\n`is_anonymous`, `counterparties`, and `label` are ignored.\n\nDraft validation permits work in progress. A draft accepts up to 25 legs.\nQuantity and ratios must be positive decimal strings, every market must exist\non Paradex, `side` must be `BUY` or `SELL`, and a supplied hedge-leg price must\nbe positive. `strategy` is limited to 64 bytes and defaults to `custom` when\nomitted. The cross-leg strategy rules enforced by RFQ creation do not apply\nuntil the draft is submitted through `POST /v1/rfqs`.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "Create RFQ draft",
+        "operationId": "rfq-draft-create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.RfqCreateRequest"
+              }
+            }
+          },
+          "description": "RFQ draft create request (single common input with POST /rfqs; is_anonymous, counterparties and label are ignored for drafts)",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.RfqDraftResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/drafts/{draft_id}": {
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Deletes one stored RFQ draft owned by the authenticated account.\n\nDeleting a draft has no effect on any RFQ previously created from its\ncontents. An unknown draft identifier, including an identifier owned by a\ndifferent account, returns `404 Not Found`.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "Delete RFQ draft",
+        "operationId": "rfq-draft-delete",
+        "parameters": [
+          {
+            "description": "Draft id",
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/{rfq_id}": {
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Queues cancellation of an RFQ.\n\nCancellation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A `202 Accepted` response contains a Paradex\n`request_id` and confirms only that the command was queued. The later\nWebSocket `RESULT` event with the same `request_id` reports whether the venue\naccepted the cancellation. RFQ lifecycle events report the eventual closed\nstate.\n\nThe `rfq_id` is the venue-issued identifier returned by a successful create\nresult or by the RFQ list endpoint.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "Delete RFQ",
+        "operationId": "rfq-delete",
+        "parameters": [
+          {
+            "description": "Paradigm-issued RFQ id",
+            "name": "rfq_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.RfqAcceptedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/{rfq_id}/bbo": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Returns live strategy-level and per-leg market data for one RFQ.\n\nThe response contains the best bid and ask, available quantities, mark price,\nacceptable price band, and per-leg market data. Decimal values are encoded as\nstrings. Implied-volatility fields are populated for option legs when supplied\nby the venue.\n\nThe RFQ must be visible to the authenticated account and currently available\nfrom the venue. Unknown, closed, or inaccessible RFQs return `404 Not Found`.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "Get RFQ market data",
+        "operationId": "rfq-bbo",
+        "parameters": [
+          {
+            "description": "Paradigm-issued RFQ id",
+            "name": "rfq_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.RfqBboResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/{rfq_id}/execute": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Queues a taker limit Fill-or-Kill order against an RFQ.\n\nExecution is asynchronous. Subscribe to the private WebSocket channel `rfq`\nbefore sending the request. A `202 Accepted` response contains a Paradex\n`request_id` and confirms only that the command was queued. The later\nWebSocket `RESULT` event with the same `request_id` reports success or failure;\non success, `result.order_id` is the venue-issued order identifier.\n\n`quantity` must be a positive decimal string. `side` is `BUY` or `SELL`.\n`price` is the signed net strategy price, so zero and negative values are valid\nfor multi-leg credit strategies.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "Execute RFQ",
+        "operationId": "rfq-execute",
+        "parameters": [
+          {
+            "description": "Paradigm-issued RFQ id",
+            "name": "rfq_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.RfqExecuteRequest"
+              }
+            }
+          },
+          "description": "Order details",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.RfqAcceptedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/staking/config": {
       "get": {
         "description": "Returns staking tiers with minimum stake amounts, fee rates, and XP multipliers",
@@ -7756,6 +8385,118 @@
           },
           "action_version": {
             "type": "string"
+          }
+        }
+      },
+      "requests.RfqCreateRequest": {
+        "type": "object",
+        "required": [
+          "legs",
+          "quantity"
+        ],
+        "properties": {
+          "counterparties": {
+            "description": "Reserved for future use; currently ignored for RFQ creation and drafts",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "is_anonymous": {
+            "description": "Whether to hide the taker desk name from RFQ counterparties; ignored for drafts",
+            "type": "boolean",
+            "example": true
+          },
+          "label": {
+            "description": "User-defined RFQ label; ignored for drafts",
+            "type": "string",
+            "example": "my-rfq"
+          },
+          "legs": {
+            "description": "Strategy and optional fixed-price hedge legs; maximum 25",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/requests.RfqLeg"
+            }
+          },
+          "quantity": {
+            "description": "Positive total strategy size",
+            "type": "string",
+            "example": "100"
+          },
+          "strategy": {
+            "description": "Draft strategy label; maximum 64 bytes and defaults to custom for drafts; ignored on RFQ create",
+            "type": "string",
+            "example": "straddle"
+          }
+        }
+      },
+      "requests.RfqExecuteRequest": {
+        "type": "object",
+        "required": [
+          "price",
+          "quantity",
+          "side"
+        ],
+        "properties": {
+          "label": {
+            "description": "User-defined order label",
+            "type": "string",
+            "example": "my-order"
+          },
+          "price": {
+            "description": "Signed decimal strategy price; zero and negative values are valid",
+            "type": "string",
+            "example": "0.1"
+          },
+          "quantity": {
+            "description": "Positive decimal strategy quantity",
+            "type": "string",
+            "example": "0.1"
+          },
+          "side": {
+            "description": "Taker order side",
+            "type": "string",
+            "enum": [
+              "BUY",
+              "SELL"
+            ],
+            "example": "BUY"
+          }
+        }
+      },
+      "requests.RfqLeg": {
+        "type": "object",
+        "required": [
+          "market",
+          "ratio",
+          "side"
+        ],
+        "properties": {
+          "market": {
+            "description": "Paradex market symbol",
+            "type": "string",
+            "example": "BTC-USD-PERP"
+          },
+          "price": {
+            "description": "Positive fixed price in the instrument's quote currency; set only for hedge legs",
+            "type": "string",
+            "example": "30000.00"
+          },
+          "ratio": {
+            "description": "Positive decimal multiplier for the leg",
+            "type": "string",
+            "example": "1"
+          },
+          "side": {
+            "description": "Leg direction",
+            "type": "string",
+            "enum": [
+              "BUY",
+              "SELL"
+            ],
+            "example": "BUY"
           }
         }
       },
@@ -10970,6 +11711,26 @@
           }
         }
       },
+      "responses.ParadigmEnableResponse": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "description": "Paradex account enabled for RFQ access",
+            "type": "string"
+          },
+          "status": {
+            "description": "Current RFQ enablement status",
+            "type": "string",
+            "enum": [
+              "ENABLED"
+            ]
+          },
+          "subkey_public_key": {
+            "description": "Public key used for delegated RFQ trading, when available",
+            "type": "string"
+          }
+        }
+      },
       "responses.PortfolioMarginParamsResp": {
         "type": "object",
         "properties": {
@@ -11272,6 +12033,230 @@
             "description": "The lookup ID of the revoked token",
             "type": "string",
             "example": "uuid-123"
+          }
+        }
+      },
+      "responses.RfqAcceptedResponse": {
+        "type": "object",
+        "properties": {
+          "accepted_at": {
+            "description": "Unix milliseconds when the request was queued",
+            "type": "integer",
+            "example": 1640995200000
+          },
+          "request_id": {
+            "description": "request_id identifies this request. It is echoed on the RESULT event\ndelivered later on the WebSocket rfq channel, so a client with several\nrequests in flight can match each outcome to the request that caused\nit. On Create it is the only identifier available until the venue issues\nthe rfq_id.",
+            "type": "string",
+            "example": "1739923200000000000"
+          }
+        }
+      },
+      "responses.RfqBboLegResult": {
+        "type": "object",
+        "properties": {
+          "best_ask_iv": {
+            "description": "Options legs only",
+            "type": "string",
+            "example": "0.56"
+          },
+          "best_ask_price": {
+            "type": "string",
+            "example": "50001"
+          },
+          "best_ask_quantity": {
+            "type": "string",
+            "example": "5"
+          },
+          "best_bid_iv": {
+            "description": "Options legs only",
+            "type": "string",
+            "example": "0.55"
+          },
+          "best_bid_price": {
+            "type": "string",
+            "example": "49999"
+          },
+          "best_bid_quantity": {
+            "type": "string",
+            "example": "10"
+          },
+          "mark_price": {
+            "type": "string",
+            "example": "50000"
+          },
+          "mark_price_iv": {
+            "description": "Options legs only",
+            "type": "string",
+            "example": "0.55"
+          },
+          "market": {
+            "description": "Paradex market symbol",
+            "type": "string",
+            "example": "BTC-USD-PERP"
+          }
+        }
+      },
+      "responses.RfqBboResult": {
+        "type": "object",
+        "properties": {
+          "best_ask_price": {
+            "type": "string",
+            "example": "50001"
+          },
+          "best_ask_quantity": {
+            "type": "string",
+            "example": "5"
+          },
+          "best_bid_price": {
+            "type": "string",
+            "example": "49999"
+          },
+          "best_bid_quantity": {
+            "type": "string",
+            "example": "10"
+          },
+          "created_at": {
+            "description": "Unix milliseconds",
+            "type": "integer",
+            "example": 1640995200000
+          },
+          "legs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.RfqBboLegResult"
+            }
+          },
+          "mark_price": {
+            "type": "string",
+            "example": "50000"
+          },
+          "max_price": {
+            "description": "Upper bound of the acceptable price band",
+            "type": "string",
+            "example": "52000"
+          },
+          "min_price": {
+            "description": "Lower bound of the acceptable price band",
+            "type": "string",
+            "example": "48000"
+          },
+          "rfq_id": {
+            "type": "string",
+            "example": "r_2abCdEfGhIjKlMnOpQrStUvWxYz"
+          }
+        }
+      },
+      "responses.RfqDraftResult": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "description": "Unix milliseconds",
+            "type": "integer",
+            "example": 1640995200000
+          },
+          "id": {
+            "description": "Opaque application-generated RFQ draft identifier",
+            "type": "string",
+            "example": "1784275070090201698744820000"
+          },
+          "legs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.RfqLegResult"
+            }
+          },
+          "quantity": {
+            "type": "string",
+            "example": "10"
+          },
+          "strategy": {
+            "description": "User-facing strategy label",
+            "type": "string",
+            "example": "straddle"
+          },
+          "updated_at": {
+            "description": "Unix milliseconds",
+            "type": "integer",
+            "example": 1640995200000
+          }
+        }
+      },
+      "responses.RfqLegResult": {
+        "type": "object",
+        "properties": {
+          "market": {
+            "description": "Paradex market symbol",
+            "type": "string",
+            "example": "BTC-USD-PERP"
+          },
+          "price": {
+            "description": "Hedge legs only",
+            "type": "string",
+            "example": "50000"
+          },
+          "ratio": {
+            "type": "string",
+            "example": "1"
+          },
+          "side": {
+            "type": "string",
+            "enum": [
+              "BUY",
+              "SELL"
+            ]
+          }
+        }
+      },
+      "responses.RfqResult": {
+        "type": "object",
+        "properties": {
+          "closed_reason": {
+            "description": "Empty while open",
+            "type": "string",
+            "example": "EXPIRED"
+          },
+          "counterparties": {
+            "description": "Maker desk tickers the RFQ was sent to",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "created_at": {
+            "description": "Unix milliseconds",
+            "type": "integer",
+            "example": 1640995200000
+          },
+          "expires_at": {
+            "type": "integer",
+            "example": 1640995500000
+          },
+          "id": {
+            "description": "Venue-issued RFQ id",
+            "type": "string",
+            "example": "r_2abCdEfGhIjKlMnOpQrStUvWxYz"
+          },
+          "label": {
+            "description": "User label",
+            "type": "string"
+          },
+          "legs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.RfqLegResult"
+            }
+          },
+          "quantity": {
+            "description": "Total strategy size",
+            "type": "string",
+            "example": "10"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "CLOSED"
+            ]
           }
         }
       },

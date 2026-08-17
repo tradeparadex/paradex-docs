@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.131.0"
+    "version": "1.131.2"
   },
   "paths": {
     "/account": {
@@ -4990,7 +4990,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Lists the authenticated account's RFQs, most recent first.\n\nThis is a synchronous read from the RFQ venue. It returns one unpaginated page\nof up to 100 RFQs. Each result includes the venue-issued RFQ identifier,\nlifecycle state, quantity, legs, counterparties, timestamps, and optional\nclose reason. Venue state and close-reason strings are passed through.\n",
+        "description": "Lists the authenticated account's RFQs, most recent first.\n\nThis is a synchronous read from the RFQ venue. It returns one unpaginated page,\nbuilt from the 100 most recent RFQs the venue holds for the account and every\naccount sharing its RFQ registration, of which only the authenticated account's\nare returned. A busy set of related accounts can therefore fill that page and\nleave fewer than 100 here. Each result includes the venue-issued RFQ identifier,\nlifecycle state, quantity, legs, counterparties, timestamps, and optional\nclose reason. Venue state and close-reason strings are passed through.\n",
         "tags": [
           "Rfqs"
         ],
@@ -5060,7 +5060,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Creates an RFQ for the authenticated account.\n\nRFQ creation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A successful HTTP response is `202 Accepted`\nand contains a Paradex `request_id`; it confirms only that the command was\nqueued. The later WebSocket `RESULT` event with the same `request_id` reports\nwhether the venue accepted the command. On success, the event's top-level\n`rfq_id` is the venue-issued identifier used by the read, execute, cancel, and\nfiltered-subscription APIs.\n\nThe request accepts up to 25 legs. It must contain at least one strategy leg,\nrepresented by omitting `price`. At least one strategy leg must have\n`side=BUY`, and at least one must have `ratio=1`. A fixed-price hedge leg\nincludes a strictly positive `price`. All quantities and ratios are positive\ndecimal strings. Every leg market must exist on Paradex and be available for\nRFQ. Each fixed hedge price must be an exact multiple of that market's minimum\nprice increment. The strategy quantity must be at least the largest minimum\nblock size among its strategy legs.\n\nThe platform selects eligible counterparties; a client-supplied\n`counterparties` value is ignored. The optional `strategy` field is a draft\nlabel and is not sent to the venue.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n",
+        "description": "Creates an RFQ for the authenticated account.\n\nRFQ creation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A successful HTTP response is `202 Accepted`\nand contains a Paradex `request_id`; it confirms only that the command was\nqueued. The later WebSocket `RESULT` event with the same `request_id` reports\nwhether the venue accepted the command. On success, the event's top-level\n`rfq_id` is the venue-issued identifier used by the read, execute, cancel, and\nfiltered-subscription APIs.\n\nThe request accepts up to 25 legs. It must contain at least one strategy leg,\nrepresented by omitting `price`. At least one strategy leg must have\n`side=BUY`, and at least one must have `ratio=1`. A fixed-price hedge leg\nincludes a strictly positive `price`. All quantities and ratios are positive\ndecimal strings. Every leg market must exist on Paradex and be available for\nRFQ. Each fixed hedge price must be an exact multiple of that market's minimum\nprice increment. The strategy quantity must be at least the largest minimum\nblock size among its strategy legs.\n\nThe platform selects eligible counterparties; a client-supplied\n`counterparties` value is ignored. The optional `strategy` field is a draft\nlabel and is not sent to the venue.\n\nThe optional `max_slippage` bounds how far this RFQ may execute from mark, as a\nfraction of the underlying's spot price, for this RFQ only. It replaces the\nconfigured bound, must be greater than zero and at most 1, and applies to every\nunderlying the strategy touches. It sets both the collateral held against the\nRFQ and the limit the venue enforces on quotes, so a wider value holds more\ncollateral and accepts a worse execution. The market's own price band still\napplies, so a value beyond it changes neither.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n",
         "tags": [
           "Rfqs"
         ],
@@ -8420,6 +8420,11 @@
               "$ref": "#/components/schemas/requests.RfqLeg"
             }
           },
+          "max_slippage": {
+            "description": "MaxSlippage bounds how far this RFQ may execute from mark, as a fraction of\nunderlying spot, replacing the configured bound for this RFQ only. Empty\nleaves the configured one in place. Ignored for drafts.",
+            "type": "string",
+            "example": "0.002"
+          },
           "quantity": {
             "description": "Positive total strategy size",
             "type": "string",
@@ -9540,7 +9545,7 @@
             "example": 1640995200000
           },
           "failure_reason": {
-            "description": "Reason for failure (if status is FAILED)",
+            "description": "Reason for failure (if status is FAILED). Names a participant by role, never by address: <maker>, <taker>, <initiator>, <participant> (a party whose side is ambiguous), or <redacted> (an identifier belonging to no participant)",
             "type": "string"
           },
           "initiator": {
@@ -9604,7 +9609,7 @@
             "example": 1640995500000
           },
           "failure_reason": {
-            "description": "Reason for failure (if failed)",
+            "description": "Reason for failure (if failed). Names a participant by role, never by address: <maker>, <taker>, <initiator>, <participant> (a party whose side is ambiguous), or <redacted> (an identifier belonging to no participant)",
             "type": "string"
           },
           "maker_account": {

@@ -291,6 +291,9 @@ navigation:
                 - page: ETHFI-USD-PERP
                   slug: ethfi-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/ethfi-usd-perp.mdx
+                - page: GRAM-USD-PERP
+                  slug: gram-usd-perp
+                  path: ./pages/instruments-guide/futures/tier-2/gram-usd-perp.mdx
                 - page: HYPE-USD-PERP
                   slug: hype-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/hype-usd-perp.mdx

@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.131.2"
+    "version": "1.132.1"
   },
   "paths": {
     "/account": {
@@ -4990,34 +4990,49 @@
             "BearerToken": []
           }
         ],
-        "description": "Lists the authenticated account's RFQs, most recent first.\n\nThis is a synchronous read from the RFQ venue. It returns one unpaginated page,\nbuilt from the 100 most recent RFQs the venue holds for the account and every\naccount sharing its RFQ registration, of which only the authenticated account's\nare returned. A busy set of related accounts can therefore fill that page and\nleave fewer than 100 here. Each result includes the venue-issued RFQ identifier,\nlifecycle state, quantity, legs, counterparties, timestamps, and optional\nclose reason. Venue state and close-reason strings are passed through.\n",
+        "description": "Lists the authenticated account's RFQs, most recent first.\n\nThis is a synchronous read from the RFQ venue. It returns one page of RFQs\n(up to 100 by default, sized via `page_size`), optionally filtered by `state`.\nThe page is built from the RFQs the venue holds for the account and every\naccount sharing its RFQ registration, of which only the authenticated\naccount's are returned — a busy set of related accounts can therefore leave a\npage short. The response's `next` field carries the venue's cursor to the\nfollowing page; pass it back as `cursor` to continue, and stop only when it\nis null — an empty `results` with a non-null `next` is normal, since the\ncursor tracks the venue's page, not this account's records. Each\nresult includes the venue-issued RFQ identifier, lifecycle state, quantity,\nlegs, counterparties, timestamps, and optional close reason. Venue state and\nclose-reason strings are passed through.\n",
         "tags": [
           "Rfqs"
         ],
         "summary": "List RFQs",
         "operationId": "rfq-list",
+        "parameters": [
+          {
+            "description": "RFQ state to filter by; omit for all states",
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "CLOSED"
+              ]
+            }
+          },
+          {
+            "description": "Cursor from a prior response's next field; omit for the first (most recent) page",
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Records per page, between 1 and 1000; omit for the default of 100",
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/responses.APIResults"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "results": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/responses.RfqResult"
-                          }
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/responses.RfqResults"
                 }
               }
             }
@@ -5060,7 +5075,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Creates an RFQ for the authenticated account.\n\nRFQ creation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A successful HTTP response is `202 Accepted`\nand contains a Paradex `request_id`; it confirms only that the command was\nqueued. The later WebSocket `RESULT` event with the same `request_id` reports\nwhether the venue accepted the command. On success, the event's top-level\n`rfq_id` is the venue-issued identifier used by the read, execute, cancel, and\nfiltered-subscription APIs.\n\nThe request accepts up to 25 legs. It must contain at least one strategy leg,\nrepresented by omitting `price`. At least one strategy leg must have\n`side=BUY`, and at least one must have `ratio=1`. A fixed-price hedge leg\nincludes a strictly positive `price`. All quantities and ratios are positive\ndecimal strings. Every leg market must exist on Paradex and be available for\nRFQ. Each fixed hedge price must be an exact multiple of that market's minimum\nprice increment. The strategy quantity must be at least the largest minimum\nblock size among its strategy legs.\n\nThe platform selects eligible counterparties; a client-supplied\n`counterparties` value is ignored. The optional `strategy` field is a draft\nlabel and is not sent to the venue.\n\nThe optional `max_slippage` bounds how far this RFQ may execute from mark, as a\nfraction of the underlying's spot price, for this RFQ only. It replaces the\nconfigured bound, must be greater than zero and at most 1, and applies to every\nunderlying the strategy touches. It sets both the collateral held against the\nRFQ and the limit the venue enforces on quotes, so a wider value holds more\ncollateral and accepts a worse execution. The market's own price band still\napplies, so a value beyond it changes neither.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n",
+        "description": "Creates an RFQ for the authenticated account.\n\nRFQ creation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A successful HTTP response is `202 Accepted`\nand contains a Paradex `request_id`; it confirms only that the command was\nqueued. The later WebSocket `RESULT` event with the same `request_id` reports\nwhether the venue accepted the command. On success, the event's top-level\n`rfq_id` is the venue-issued identifier used by the read, execute, cancel, and\nfiltered-subscription APIs.\n\nThe request accepts up to 25 legs. It must contain at least one strategy leg,\nrepresented by omitting `price`. At least one strategy leg must have\n`side=BUY`, and at least one must have `ratio=1`. A fixed-price hedge leg\nincludes a strictly positive `price`. All quantities and ratios are positive\ndecimal strings. Every leg market must exist on Paradex and be available for\nRFQ. Each fixed hedge price must be an exact multiple of that market's minimum\nprice increment. The strategy quantity must be at least the largest minimum\nblock size among its strategy legs.\n\nAn account may hold only one RFQ open at a time, and an RFQ stays open until the\nvenue closes it. Cancelling is what closes it, but the cancellation is\nasynchronous: an account is normally free to create its next RFQ once the\nWebSocket `RESULT` event for the cancel reports success, not when the cancel\nrequest is sent. A create issued before that, or immediately after it, may be\nrejected by a `RESULT` event saying the account already has an RFQ open, and can\nbe retried.\n\nThe platform selects eligible counterparties; a client-supplied\n`counterparties` value is ignored. The optional `strategy` field is a draft\nlabel and is not sent to the venue.\n\nThe optional `max_slippage` bounds how far this RFQ may execute from mark, as a\nfraction of the underlying's spot price, for this RFQ only. It replaces the\nconfigured bound, must be greater than zero and at most 1, and applies to every\nunderlying the strategy touches. It sets both the collateral held against the\nRFQ and the limit the venue enforces on quotes, so a wider value holds more\ncollateral and accepts a worse execution. The market's own price band still\napplies, so a value beyond it changes neither.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n",
         "tags": [
           "Rfqs"
         ],
@@ -5337,7 +5352,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Queues cancellation of an RFQ.\n\nCancellation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A `202 Accepted` response contains a Paradex\n`request_id` and confirms only that the command was queued. The later\nWebSocket `RESULT` event with the same `request_id` reports whether the venue\naccepted the cancellation. RFQ lifecycle events report the eventual closed\nstate.\n\nThe `rfq_id` is the venue-issued identifier returned by a successful create\nresult or by the RFQ list endpoint.\n",
+        "description": "Queues cancellation of an RFQ.\n\nCancellation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A `202 Accepted` response contains a Paradex\n`request_id` and confirms only that the command was queued. The later\nWebSocket `RESULT` event with the same `request_id` reports whether the venue\naccepted the cancellation. RFQ lifecycle events report the eventual closed\nstate.\n\nThe `rfq_id` is the venue-issued identifier returned by a successful create\nresult or by the RFQ list endpoint.\n\nAn account holds only one RFQ open at a time, so this is also the request that\nfrees it to create the next one. The `RESULT` event reporting the cancellation\naccepted is the point at which it is normally free; a create sent immediately\nafter may still be rejected for the RFQ being open, and can be retried.\n",
         "tags": [
           "Rfqs"
         ],
@@ -5544,6 +5559,117 @@
           },
           "403": {
             "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/staking/balance/history": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Returns the authenticated account's staked DIME balance timeseries",
+        "tags": [
+          "Staking"
+        ],
+        "summary": "Get account staked-balance history",
+        "operationId": "get-staking-balance-history",
+        "parameters": [
+          {
+            "description": "Sampling resolution",
+            "name": "resolution",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "alltime",
+                "1h",
+                "8h"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.AccountHistoricalDataResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/staking/balance/history/global": {
+      "get": {
+        "description": "Returns the protocol-wide total staked DIME timeseries",
+        "tags": [
+          "Staking"
+        ],
+        "summary": "Get global staked-balance history",
+        "operationId": "get-global-staking-balance-history",
+        "parameters": [
+          {
+            "description": "Sampling resolution",
+            "name": "resolution",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "alltime",
+                "1h",
+                "8h"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.AccountHistoricalDataResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -12265,6 +12391,22 @@
           }
         }
       },
+      "responses.RfqResults": {
+        "type": "object",
+        "properties": {
+          "next": {
+            "description": "Venue cursor to fetch the next page; null on the venue's last page.\nAn empty `results` with a non-null `next` is normal — the venue\npaginates over the whole RFQ registration, of which only this\naccount's records are returned — so continue until `next` is null\nrather than stopping on an empty page.",
+            "type": "string",
+            "example": "cD0yMDIyLTAxLTAxKzAwJTNBMDA="
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.RfqResult"
+            }
+          }
+        }
+      },
       "responses.RollingDetailsResp": {
         "type": "object",
         "properties": {
@@ -13066,7 +13208,7 @@
             "example": "0.45"
           },
           "strategy": {
-            "description": "Contract address of the sub-operator (strategy)",
+            "description": "Strategy address",
             "type": "string",
             "example": "0x29464b79b02543ed8746bba6e71c8a15401dd27b7279a5fa2f2fe8e8cdfabb"
           }
@@ -13106,6 +13248,11 @@
             "description": "High-water mark vault token price for this depositor. Profit share is charged only on gains above this price.",
             "type": "string",
             "example": "1.0512"
+          },
+          "is_vault_owner": {
+            "description": "Whether this account owns the vault. The vault-level profit share is paid to the owner, so the owner is never charged it.",
+            "type": "boolean",
+            "example": false
           },
           "total_pnl": {
             "description": "Total P&L realized by the user in USD.",
@@ -13520,7 +13667,7 @@
             "example": "10"
           },
           "strategy": {
-            "description": "Contract address of the sub-operator (strategy)",
+            "description": "Strategy address",
             "type": "string",
             "example": "0x29464b79b02543ed8746bba6e71c8a15401dd27b7279a5fa2f2fe8e8cdfabb"
           }

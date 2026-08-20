@@ -13519,27 +13519,27 @@
             "example": "0x1234567890abcdef"
           },
           "last_month_return": {
-            "description": "APR return of the vault in the last trailing month in percentage, i.e. 0.1 means 10%",
+            "description": "Annualized return of the vault over the last 30 days, in percentage, i.e. 0.1 means 10%",
             "type": "string",
             "example": "0.023"
           },
           "max_drawdown": {
-            "description": "Max all time drawdown realized by the vault in percentage, i.e. 0.1 means 10%",
+            "description": "Max all time drawdown realized by the vault, as a positive magnitude in percentage, i.e. 0.1 means a 10% fall",
             "type": "string",
             "example": "0.1916"
           },
           "max_drawdown_24h": {
-            "description": "Max drawdown realized by the vault in the last 24 hours in percentage, i.e. 0.1 means 10%",
+            "description": "Max drawdown realized by the vault in the last 24 hours, as a positive magnitude in percentage, i.e. 0.1 means a 10% fall",
             "type": "string",
             "example": "0.0138"
           },
           "max_drawdown_30d": {
-            "description": "Max drawdown realized by the vault in the last 30 days in percentage, i.e. 0.1 means 10%",
+            "description": "Max drawdown realized by the vault in the last 30 days, as a positive magnitude in percentage, i.e. 0.1 means a 10% fall",
             "type": "string",
             "example": "0.1821"
           },
           "max_drawdown_7d": {
-            "description": "Max drawdown realized by the vault in the last 7 days in percentage, i.e. 0.1 means 10%",
+            "description": "Max drawdown realized by the vault in the last 7 days, as a positive magnitude in percentage, i.e. 0.1 means a 10% fall",
             "type": "string",
             "example": "0.1124"
           },
@@ -13565,17 +13565,17 @@
             "example": "0.145"
           },
           "pnl_24h": {
-            "description": "P&L of the vault in the last 24 hours in USD",
+            "description": "P&L of the vault in the last 24 hours in USDC",
             "type": "string",
             "example": "13.41"
           },
           "pnl_30d": {
-            "description": "P&L of the vault in the last 30 days in USD",
+            "description": "P&L of the vault in the last 30 days in USDC",
             "type": "string",
             "example": "114.19"
           },
           "pnl_7d": {
-            "description": "P&L of the vault in the last 7 days in USD",
+            "description": "P&L of the vault in the last 7 days in USDC",
             "type": "string",
             "example": "91.31"
           },
@@ -13602,7 +13602,7 @@
             }
           },
           "total_pnl": {
-            "description": "Total P&L of the vault in USD",
+            "description": "Total P&L of the vault in USDC",
             "type": "string",
             "example": "149.12"
           },

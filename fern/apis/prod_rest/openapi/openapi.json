@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.132.1"
+    "version": "1.133.0"
   },
   "paths": {
     "/account": {
@@ -5334,6 +5334,73 @@
           },
           "404": {
             "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rfqs/markets": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Returns the market symbols currently available for RFQ.\n\nNot every listed Paradex market can be quoted as an RFQ: the venue quotes only\nthe instruments it lists for the Paradex venue, and a create naming any other\nmarket is rejected with a validation error. This endpoint is that set, so a\nclient can stop offering markets a create would reject on their name instead of\ndiscovering the difference after the user has already sized a structure.\n\nMembership is necessary but not sufficient. A create additionally checks that a\nhedge leg's price sits on the instrument's tick and that the strategy quantity\nmeets its minimum block size, so a market listed here can still be rejected on\nthose grounds.\n\nThe set is served from a periodically refreshed snapshot, so a market listed by\nthe venue moments ago may take up to one refresh interval to appear here.\n\nThe response is never an empty list: a caller cannot tell \"the venue quotes\nnothing\" from \"this read is unavailable\", so a degraded or empty snapshot is\nreported as `503` instead. Treat any failure as \"unknown\" and fall back to\noffering every market — the create remains authoritative.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "List markets available for RFQ",
+        "operationId": "rfq-markets",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.RfqMarketsResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -12334,6 +12401,22 @@
             "enum": [
               "BUY",
               "SELL"
+            ]
+          }
+        }
+      },
+      "responses.RfqMarketsResult": {
+        "type": "object",
+        "properties": {
+          "markets": {
+            "description": "Paradex market symbols, sorted",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "BTC-USD-PERP",
+              "ETH-USD-PERP"
             ]
           }
         }

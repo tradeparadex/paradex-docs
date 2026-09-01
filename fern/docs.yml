@@ -471,6 +471,9 @@ navigation:
             - page: HYPE Options
               slug: hype-options
               path: ./pages/instruments-guide/dated-options/hype-usd.mdx
+            - page: SOL Options
+              slug: sol-options
+              path: ./pages/instruments-guide/dated-options/sol-usd.mdx
             - page: CL Options
               slug: cl-options
               path: ./pages/instruments-guide/dated-options/cl-usd.mdx

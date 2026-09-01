@@ -1,0 +1,26 @@
+---
+title: SOL options configuration
+---
+
+The reference configuration for the SOL Dated Options contract:
+
+| Parameter | Value |
+|-----------|-------|
+| Product type | Dated European Option |
+| Symbol format | SOL-USD-{Expiry}-{Strike}-{Type} |
+| Base currency | SOL |
+| Quote currency | USD |
+| Settlement currency | USDC |
+| Price tick size | 0.001 USD |
+| Order size increment | 1 SOL |
+| Minimum order value | 20 USD |
+| Maximum order size | 10,000 SOL |
+| Maximum open orders | 150 |
+| Position limit | 100,000 SOL |
+| Spot band factor | 50% |
+| IV band factor | 50% |
+
+## Margin Configuration
+
+- [Cross Margin Requirements](/trading/dated-options/margin-requirements) — cross-margin IMR/MMR parameters for trading options
+- [Portfolio Margin](/risk/portfolio-margin) — portfolio-level risk evaluation for reduced margin on hedged portfolios

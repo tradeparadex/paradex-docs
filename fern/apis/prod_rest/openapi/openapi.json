@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.133.1"
+    "version": "1.133.3"
   },
   "paths": {
     "/account": {
@@ -5075,7 +5075,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Creates an RFQ for the authenticated account.\n\nRFQ creation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A successful HTTP response is `202 Accepted`\nand contains a Paradex `request_id`; it confirms only that the command was\nqueued. The later WebSocket `RESULT` event with the same `request_id` reports\nwhether the venue accepted the command. On success, the event's top-level\n`rfq_id` is the venue-issued identifier used by the read, execute, cancel, and\nfiltered-subscription APIs.\n\nThe request accepts up to 25 legs. It must contain at least one strategy leg,\nrepresented by omitting `price`. At least one strategy leg must have\n`side=BUY`, and at least one must have `ratio=1`. A fixed-price hedge leg\nincludes a strictly positive `price`. All quantities and ratios are positive\ndecimal strings. Every leg market must exist on Paradex and be available for\nRFQ. Each fixed hedge price must be an exact multiple of that market's minimum\nprice increment. The strategy quantity must be at least the largest minimum\nblock size among its strategy legs.\n\nThe optional `side` commits the RFQ to one direction of the strategy, `BUY`\nor `SELL`, read the same way as a leg's `side`. Omitting it leaves the RFQ\ntwo-way, which is what every RFQ was before this field. Makers always quote\nboth directions either way; what the commitment changes is the taker's own\nside. A committed RFQ may only be executed in that direction, an execute on\nthe other one is rejected, and the collateral held against it covers that\ndirection alone instead of the more expensive of the two. So committing is\ncheaper for a taker who already knows which way they are going.\n\nAn account may hold only one two-way RFQ open at a time, and any number of\ncommitted ones up to a total limit. An RFQ stays open until the venue closes\nit. Cancelling is what closes it, but the cancellation is asynchronous: an\naccount is normally free to create its next two-way RFQ once the WebSocket\n`RESULT` event for the cancel reports success, not when the cancel request is\nsent. A create issued before that, or immediately after it, may be rejected by\na `RESULT` event saying the account already has an RFQ open, and can be\nretried.\n\nThe platform selects eligible counterparties; a client-supplied\n`counterparties` value is ignored. The optional `strategy` field is a draft\nlabel and is not sent to the venue.\n\nThe optional `max_slippage` bounds how far this RFQ may execute from mark, as a\nfraction of the underlying's spot price, for this RFQ only. It replaces the\nconfigured bound, must be greater than zero and at most 1, and applies to every\nunderlying the strategy touches. It sets both the collateral held against the\nRFQ and the limit the venue enforces on quotes, so a wider value holds more\ncollateral and accepts a worse execution. The market's own price band still\napplies, so a value beyond it changes neither.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event. Its `result.allowed_side` is the direction the RFQ\nwas accepted for: the committed `side` when the request carried one, `TWO_WAY`\nwhen it did not, and `BUY` or `SELL` when a two-way request was accepted for one\ndirection only because the account cannot sustain the other.\n",
+        "description": "Creates an RFQ for the authenticated account.\n\nRFQ creation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A successful HTTP response is `202 Accepted`\nand contains a Paradex `request_id`; it confirms only that the command was\nqueued. The later WebSocket `RESULT` event with the same `request_id` reports\nwhether the venue accepted the command. On success, the event's top-level\n`rfq_id` is the venue-issued identifier used by the read, execute, cancel, and\nfiltered-subscription APIs.\n\nThe request accepts up to 25 legs. It must contain at least one strategy leg,\nrepresented by omitting `price`. At least one strategy leg must have\n`side=BUY`, and at least one must have `ratio=1`. A fixed-price hedge leg\nincludes a strictly positive `price`. All quantities and ratios are positive\ndecimal strings. Every leg market must exist on Paradex and be available for\nRFQ. Each fixed hedge price must be an exact multiple of that market's minimum\nprice increment. The strategy quantity must be at least the largest minimum\nblock size among its strategy legs.\n\nThe optional `side` commits the RFQ to one direction of the strategy, `BUY`\nor `SELL`, read the same way as a leg's `side`. Omitting it leaves the RFQ\ntwo-way. Makers always quote both directions either way; what the commitment\nchanges is the taker's own side. A committed RFQ may only be executed in that\ndirection, an execute on the other one is rejected, and the collateral held\nagainst it covers that direction alone instead of the more expensive of the\ntwo. So committing is cheaper for a taker who already knows which way they are\ngoing.\n\nAn account may hold only one two-way RFQ open at a time, and any number of\ncommitted ones up to a total limit. An RFQ stays open until the venue closes\nit. Cancelling is what closes it, but the cancellation is asynchronous: an\naccount is normally free to create its next two-way RFQ once the WebSocket\n`RESULT` event for the cancel reports success, not when the cancel request is\nsent. A create issued before that, or immediately after it, may be rejected by\na `RESULT` event saying the account already has an RFQ open, and can be\nretried.\n\nThe platform selects eligible counterparties; a client-supplied\n`counterparties` value is ignored. The optional `strategy` field is a draft\nlabel and is not sent to the venue.\n\nThe optional `max_slippage` bounds how far this RFQ may execute from mark, as a\nfraction of the underlying's spot price, for this RFQ only. It replaces the\nconfigured bound, must be greater than zero and at most 1, and applies to every\nunderlying the strategy touches. It sets both the collateral held against the\nRFQ and the limit the venue enforces on quotes, so a wider value holds more\ncollateral and accepts a worse execution. The market's own price band still\napplies, so a value beyond it changes neither.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event. Its `result.allowed_side` is the direction the RFQ\nwas accepted for: the committed `side` when the request carried one, `TWO_WAY`\nwhen it did not, and `BUY` or `SELL` when a two-way request was accepted for one\ndirection only because the account cannot sustain the other.\n\n`result.allowed_side` is what the commitment and the reserve above are stated\nin, so it, and not the `side` that was sent, is the answer to read. Where\nParadex does not risk-check the create it is empty, and a `side` sent with that\nrequest commits nothing: the RFQ is two-way, and either direction may be\nexecuted.\n",
         "tags": [
           "Rfqs"
         ],
@@ -5352,7 +5352,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Returns the market symbols currently available for RFQ.\n\nNot every listed Paradex market can be quoted as an RFQ: the venue quotes only\nthe instruments it lists for the Paradex venue, and a create naming any other\nmarket is rejected with a validation error. This endpoint is that set, so a\nclient can stop offering markets a create would reject on their name instead of\ndiscovering the difference after the user has already sized a structure.\n\nMembership is necessary but not sufficient. A create additionally checks that a\nhedge leg's price sits on the instrument's tick and that the strategy quantity\nmeets its minimum block size, so a market listed here can still be rejected on\nthose grounds.\n\nThe set is served from a periodically refreshed snapshot, so a market listed by\nthe venue moments ago may take up to one refresh interval to appear here.\n\nThe response is never an empty list: a caller cannot tell \"the venue quotes\nnothing\" from \"this read is unavailable\", so a degraded or empty snapshot is\nreported as `503` instead. Treat any failure as \"unknown\" and fall back to\noffering every market — the create remains authoritative.\n",
+        "description": "Returns the market symbols currently available for RFQ.\n\nNot every listed Paradex market can be quoted as an RFQ: the venue quotes only\nthe instruments it lists for the Paradex venue, and a create naming any other\nmarket is rejected with a validation error. This endpoint is that set, so a\nclient can stop offering markets a create would reject on their name instead of\ndiscovering the difference after the user has already sized a structure.\n\nMembership is necessary but not sufficient. A create additionally checks that a\nhedge leg's price sits on the instrument's tick and that the strategy quantity\nmeets its minimum block size, so a market listed here can still be rejected on\nthose grounds.\n\n`markets_info` carries one record per market: its `symbol` and the venue's\nown `venue_size_increment`, the step the RFQ quantity must be a multiple of,\nso a client can size on the right grid as the user types. These are the venue\ninstrument's grids, not the Paradex market's own increments: the two differ,\nand quantities are validated against the venue's.\nA quantity has to satisfy both grids, so combine them with their least\ncommon multiple rather than by taking the larger: the two coincide only when\none divides the other, which holds for the powers of ten Paradex lists today\nbut is not guaranteed of venue data. Neither grid is reliably the coarser\none. Where they are coprime the combined step can exceed both (0.001 and\n0.0025 give 0.005), which is correct: a quantity off either grid is\nrejected by one side or the other.\n\nThe combined step and the minimum block size constrain different things and\nboth always apply, so neither overrides the other. The step says which\nquantities are legal, the block size sets a floor, and the smallest quotable\nsize is simply the first step at or above that floor. There is always one, so\nthe two can never be mutually unsatisfiable.\n\n`venue_size_increment` is empty when the venue reports no usable grid for\nthat market, or while an older service is still deployed. Read an empty one\nas \"unknown\" and do not fall back to the market's own increment alone, since\na size legal on the order book can still be rejected by the venue.\n`POST /rfqs` validates the quantity against the venue grid and rejects an\noff-grid size before the RFQ is created, so that check remains the authority\nwhatever a client sizes on.\n\n`markets` repeats the same symbols in the same order and is **deprecated**:\nit stays only until every client reads `markets_info`, and new integrations\nshould ignore it.\n\nThe set is served from a periodically refreshed snapshot, so a market listed by\nthe venue moments ago may take up to one refresh interval to appear here.\n\n`markets` is never an empty list: a caller cannot tell \"the venue quotes\nnothing\" from \"this read is unavailable\", so a degraded or empty snapshot is\nreported as `503` instead. (`venue_size_increments` may legitimately be\n`{}` — an older service reports no grids at all.) Treat any failure as\n\"unknown\" and fall back to offering every market — the create remains\nauthoritative.\n",
         "tags": [
           "Rfqs"
         ],
@@ -5565,7 +5565,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Queues a taker limit Fill-or-Kill order against an RFQ.\n\nExecution is asynchronous. Subscribe to the private WebSocket channel `rfq`\nbefore sending the request. A `202 Accepted` response contains a Paradex\n`request_id` and confirms only that the command was queued. The later\nWebSocket `RESULT` event with the same `request_id` reports success or failure;\non success, `result.order_id` is the venue-issued order identifier.\n\n`quantity` must be a positive decimal string. `side` is `BUY` or `SELL`.\n`price` is the signed net strategy price, so zero and negative values are valid\nfor multi-leg credit strategies.\n\n`side` must be a direction the RFQ was accepted for, which its create result\nreports as `result.allowed_side`: the direction an RFQ created with a `side` was\ncommitted to, or either direction for a `TWO_WAY` one. An execute on any other\nside is rejected by the `RESULT` event, because the collateral held against the\nRFQ never covered it.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n",
+        "description": "Queues a taker limit Fill-or-Kill order against an RFQ.\n\nExecution is asynchronous. Subscribe to the private WebSocket channel `rfq`\nbefore sending the request. A `202 Accepted` response contains a Paradex\n`request_id` and confirms only that the command was queued. The later\nWebSocket `RESULT` event with the same `request_id` reports success or failure;\non success, `result.order_id` is the venue-issued order identifier.\n\n`quantity` must be a positive decimal string. `side` is `BUY` or `SELL`.\n`price` is the signed net strategy price, so zero and negative values are valid\nfor multi-leg credit strategies.\n\n`side` must be a direction the RFQ was accepted for, which its create result\nreports as `result.allowed_side`: the direction an RFQ created with a `side` was\ncommitted to, or either direction for a `TWO_WAY` one. An execute on any other\nside is rejected by the `RESULT` event, because the collateral held against the\nRFQ never covered it. An empty `result.allowed_side` is an RFQ Paradex did not\nrisk-check, which holds no such collateral and accepts either direction.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n",
         "tags": [
           "Rfqs"
         ],
@@ -12414,11 +12414,25 @@
           }
         }
       },
+      "responses.RfqMarketInfo": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "example": "BTC-USD-PERP"
+          },
+          "venue_size_increment": {
+            "description": "The venue's own size grid, as a decimal string. RFQ quantities are\nvalidated against THIS, not the Paradex market's own increment, so a\nclient sizing off the order-book grid alone can produce a quantity the\nvenue rejects. Empty when the venue reports no usable grid for the\nmarket, which the client reads as \"unknown\" and falls back on; the\nvenue itself remains the authority on whether a quantity is on-grid.",
+            "type": "string",
+            "example": "0.0001"
+          }
+        }
+      },
       "responses.RfqMarketsResult": {
         "type": "object",
         "properties": {
           "markets": {
-            "description": "Paradex market symbols, sorted",
+            "description": "Deprecated: use MarketsInfo, which carries the same symbols plus the\nvenue parameters. Kept until every client reads the structured list.",
             "type": "array",
             "items": {
               "type": "string"
@@ -12427,6 +12441,13 @@
               "BTC-USD-PERP",
               "ETH-USD-PERP"
             ]
+          },
+          "markets_info": {
+            "description": "One record per market, same markets as Markets and in the same order.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.RfqMarketInfo"
+            }
           }
         }
       },
@@ -13744,7 +13765,7 @@
         "type": "object",
         "properties": {
           "fee_recipient": {
-            "description": "Address that receives this strategy's profit-share fees. Set per strategy and need not match the strategy address. Empty if the vault operator has not set terms for this strategy yet.",
+            "description": "Address that receives this strategy's profit-share fees. Set per strategy and need not match the strategy address. Empty when no recipient is set.",
             "type": "string",
             "example": "0x7f2c5a1e9b48d3f06a1c8e5b2d94f7a3c60e18b5d4a29f7c3e8b1a6d05f24c9"
           },
@@ -13754,7 +13775,7 @@
             "example": "1.0512"
           },
           "profit_share_percentage": {
-            "description": "Profit share percentage agreed for this strategy, i.e. 10 means 10%. Empty if the vault operator has not set terms for this strategy yet.",
+            "description": "Profit share percentage agreed for this strategy, i.e. 10 means 10%. 0 for a strategy that predates per-strategy profit share, which charges nothing. Empty when terms exist but the rate has not been seen, in which case the charged rate is unknown.",
             "type": "string",
             "example": "10"
           },

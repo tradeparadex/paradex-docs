@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.133.3"
+    "version": "1.133.4"
   },
   "paths": {
     "/account": {
@@ -13692,6 +13692,11 @@
             "type": "string",
             "example": "91.31"
           },
+          "profit_share_period": {
+            "description": "How often THIS vault settles profit-share fees, in seconds. Falls back to the exchange-wide default when the vault carries none of its own; 0 means not configured",
+            "type": "string",
+            "example": "86400"
+          },
           "roi_24h": {
             "description": "Return of the vault in the last 24 hours in percentage, i.e. 0.1 means 10%",
             "type": "string",
@@ -13832,7 +13837,7 @@
             "example": "5"
           },
           "profit_share_period": {
-            "description": "How often vault profit-share fees are settled, in seconds. Applies to all vaults; 0 means not configured",
+            "description": "Default interval between vault profit-share fee settlements, in seconds. A vault can carry its own; read profit_share_period on the vault to show its actual schedule. 0 means not configured",
             "type": "string",
             "example": "2592000"
           },

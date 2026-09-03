@@ -1,0 +1,79 @@
+---
+title: Binary Encoding (SBE)
+---
+
+Channel payloads can be delivered as binary [Simple Binary Encoding](https://github.com/real-logic/simple-binary-encoding) frames instead of JSON. SBE is a FIX Trading Community standard designed for low-latency market data, and typically reduces message size substantially compared with the equivalent JSON.
+
+SBE is optional. Connections that do not request it continue to receive JSON, and both encodings carry identical field content.
+
+## Enabling SBE
+
+Append the schema parameters to the WebSocket URL:
+
+```text
+wss://ws.api.prod.paradex.trade/v1?sbeSchemaId=1&sbeSchemaVersion=1
+```
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| sbeSchemaId | 1 | Schema identifier. Changes only on a breaking change. |
+| sbeSchemaVersion | 0 or 1 | Schema version. Use 1. |
+
+An unsupported schema or version is rejected with HTTP 400 at connect. There is no silent fallback to JSON, so a rejected negotiation fails immediately rather than producing unexpected message formats.
+
+## What stays JSON
+
+Only channel payloads are encoded as SBE. The JSON-RPC control plane is unchanged:
+
+- `subscribe`, `unsubscribe` and `auth` requests
+- Their responses, including subscription acknowledgements
+- Error responses
+
+Client messages must always be sent as JSON-RPC text frames. Binary frames received from the server are channel data.
+
+## Message types
+
+Each SBE frame begins with a header carrying the block length, template ID, schema ID and schema version. The template ID identifies the message type:
+
+| Template ID | Message | Channel |
+|-------------|---------|---------|
+| 1 | TradeEvent | `trades` |
+| 2 | BboEvent | `bbo` |
+| 3 | BookEvent | `order_book` |
+| 4 | MarketSummaryEvent | `markets_summary` |
+| 5 | FundingDataEvent | `funding_data` |
+| 6 | FundingRateComparisonEvent | `funding_rate_comparison` |
+| 20 | OrderEvent | `orders` |
+| 21 | FillEvent | `fills` |
+| 22 | PositionEvent | `positions` |
+| 23 | AccountEvent | `account` |
+| 40 | HeartbeatEvent | n/a |
+| 41 | SubscribedEvent | n/a |
+
+Channels not listed here are delivered as JSON regardless of the negotiated encoding.
+
+## Generating a decoder
+
+Decoders are generated from the Paradex SBE schema, `paradex_1_0.xml`, using the [Real Logic SBE tool](https://github.com/real-logic/simple-binary-encoding), the reference implementation of the standard, which supports Java, C++, C#, Go and Rust. Contact Paradex support for a copy of the schema:
+
+```bash
+java -Dsbe.target.language=Rust \
+     -Dsbe.output.dir=./generated \
+     -jar sbe-all-1.37.1.jar paradex_1_0.xml
+```
+
+Substitute `Java`, `Cpp`, `CSharp` or `Golang` for other targets. The generated code handles frame layout, version gating and field offsets.
+
+For Python, the [paradex-py](https://github.com/tradeparadex/paradex-py) SDK ships a maintained decoder and handles negotiation automatically.
+
+## Schema versioning
+
+The schema carries an id and a version. The id changes only on a breaking change; the version increments when optional fields are appended to existing messages.
+
+Two points matter when writing a client:
+
+**A decoder reads the version it was generated from.** Version 1 of `MarketSummaryEvent` has a 240-byte root block; version 0 has 216. Requesting a version your decoder was not generated for produces misaligned reads rather than a clean error, so request the version you generated against.
+
+**Read the block length from the frame header.** Do not hardcode field offsets. The header states the layout of each frame, and generated decoders use it to skip fields that did not exist in the negotiated version. This is what allows a version 0 client to keep working unchanged after new fields are appended.
+
+New versions are announced before an environment begins serving them, and existing versions continue to be served. Upgrading a decoder is therefore never forced by a version increase alone.

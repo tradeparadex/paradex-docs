@@ -54,7 +54,7 @@ Channels not listed here are delivered as JSON regardless of the negotiated enco
 
 ## Generating a decoder
 
-Decoders are generated from the Paradex SBE schema, `paradex_1_0.xml`, using the [Real Logic SBE tool](https://github.com/real-logic/simple-binary-encoding), the reference implementation of the standard, which supports Java, C++, C#, Go and Rust. Contact Paradex support for a copy of the schema:
+Decoders are generated from the Paradex SBE schema, [`paradex_1_0.xml`](https://github.com/tradeparadex/paradex-py/blob/main/paradex_py/api/sbe/paradex_1_0.xml), using the [Real Logic SBE tool](https://github.com/real-logic/simple-binary-encoding), the reference implementation of the standard, which supports Java, C++, C#, Go and Rust:
 
 ```bash
 java -Dsbe.target.language=Rust \
@@ -64,7 +64,26 @@ java -Dsbe.target.language=Rust \
 
 Substitute `Java`, `Cpp`, `CSharp` or `Golang` for other targets. The generated code handles frame layout, version gating and field offsets.
 
-For Python, the [paradex-py](https://github.com/tradeparadex/paradex-py) SDK ships a maintained decoder and handles negotiation automatically.
+## Python
+
+The [paradex-py](https://github.com/tradeparadex/paradex-py) SDK ships a maintained decoder and negotiates the schema for you. SBE support for schema 1:1 is available from v0.7.0:
+
+```bash
+pip install "paradex-py>=0.7.0"
+```
+
+Enable it on the WebSocket client:
+
+```python
+from paradex_py.api.ws_client import ParadexWebsocketClient
+from paradex_py.environment import PROD
+
+ws_client = ParadexWebsocketClient(env=PROD, sbe_enabled=True)
+```
+
+Frames are decoded before your callback runs, so channel payloads arrive in the same shape as JSON.
+
+The SDK also vendors the schema at `paradex_py/api/sbe/paradex_1_0.xml`, so an installed package is enough to generate a decoder for another language.
 
 ## Schema versioning
 

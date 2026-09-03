@@ -695,6 +695,8 @@ navigation:
             path: ./pages/websockets/connection-authentication.mdx
           - page: Subscription Channels
             path: ./pages/websockets/subscription-channels.mdx
+          - page: Binary Encoding (SBE)
+            path: ./pages/websockets/binary-encoding-sbe.mdx
           - page: Error Handling
             path: ./pages/websockets/error-handling.mdx
           - page: Code Examples

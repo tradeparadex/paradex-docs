@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.3.1
+    version: 1.4.0
     description: Channels for real-time updates.
 servers:
     production:
@@ -1003,14 +1003,14 @@ channels:
             refresh_rate:
                 $ref: '#/components/parameters/refresh_rate'
         subscribe:
-            summary: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
+            summary: Public websocket channel for orderbook updates, as periodic snapshots of depth 15 or as full-depth incremental deltas
             message:
                 name: pricebookupdate
                 title: PriceBookUpdate
                 payload:
                     $ref: '#/components/schemas/ResponsesPriceBookUpdate'
-                summary: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
-                description: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
+                summary: Public websocket channel for orderbook updates, as periodic snapshots of depth 15 or as full-depth incremental deltas
+                description: 'Public websocket channel for orderbook updates. The snapshot and interactive feeds send snapshots of depth 15 at most every 50ms or 100ms, optionally grouped by price tick. The deltas and interactive_deltas feeds take no parameters: each sends one full-depth snapshot on subscribe and then incremental updates, and neither applies price tick grouping. The interactive and interactive_deltas feeds include RPI orders; snapshot and deltas exclude them.'
         x-fern-display-name: order_book.{market_symbol}.{feed_type}@15@{refresh_rate}[@{price_tick}]
     /orders.{market_symbol}:
         parameters:
@@ -1195,6 +1195,7 @@ components:
                     - snapshot
                     - deltas
                     - interactive
+                    - interactive_deltas
                 type: string
         market_symbol:
             description: Symbol of the market (e.g., BTC-PERP)
@@ -2284,7 +2285,7 @@ components:
                 market:
                     type: string
                 relative_spread:
-                    description: 'Relative spread: (ask-bid)/midpoint. Only included for interactive feed.'
+                    description: 'Relative spread: (ask-bid)/midpoint. Only included for the periodic interactive feed.'
                     type: string
                 seq_no:
                     type: integer
@@ -2799,8 +2800,8 @@ components:
         ResponsesPriceBookUpdate:
             name: pricebookupdate
             title: PriceBookUpdate
-            summary: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
-            description: Public websocket channel for orderbook snapshot updates of depth 15 at most every 50ms or 100ms, optionally grouped by price tick
+            summary: Public websocket channel for orderbook updates, as periodic snapshots of depth 15 or as full-depth incremental deltas
+            description: 'Public websocket channel for orderbook updates. The snapshot and interactive feeds send snapshots of depth 15 at most every 50ms or 100ms, optionally grouped by price tick. The deltas and interactive_deltas feeds take no parameters: each sends one full-depth snapshot on subscribe and then incremental updates, and neither applies price tick grouping. The interactive and interactive_deltas feeds include RPI orders; snapshot and deltas exclude them.'
             tags:
                 - name: market
         ResponsesRfqEventResp:

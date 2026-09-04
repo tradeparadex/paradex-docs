@@ -2,7 +2,7 @@
   "openrpc": "1.3.2",
   "info": {
     "title": "Paradex WebSocket RPC API",
-    "version": "1.3.1",
+    "version": "1.4.0",
     "description": "JSON-RPC 2.0 methods for the Paradex WebSocket API. All requests follow the envelope: {\"jsonrpc\":\"2.0\",\"method\":\"\u003cname\u003e\",\"params\":{...},\"id\":\u003cint\u003e}. Responses include usIn/usOut/usDiff nanosecond timing fields."
   },
   "servers": [
@@ -163,6 +163,10 @@
         {
           "code": 40112,
           "message": "Geo IP blocked"
+        },
+        {
+          "code": 40301,
+          "message": "SBE binary encoding required for this channel"
         }
       ]
     },
@@ -336,6 +340,10 @@
         {
           "code": 40112,
           "message": "Geo IP blocked"
+        },
+        {
+          "code": 40301,
+          "message": "SBE binary encoding required for this channel"
         }
       ]
     },

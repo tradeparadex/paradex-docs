@@ -49,40 +49,32 @@ Upon successful authentication, you will receive a response similar to:
 
 ## Example: Authenticating a WebSocket Connection
 
-Here's a complete example of how to authenticate a WebSocket connection using Python:
+The auth request and its response are JSON-RPC text frames in both encodings. The SDK sends them for you and negotiates SBE for any public channels the same connection subscribes to:
 
 ```python
-import websocket
-import json
+import asyncio
 
-websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
+from paradex_py import Paradex
+from paradex_py.api.ws_client import ParadexWebsocketClient
+from paradex_py.environment import TESTNET
 
-# Define the message to send
-message = {
-  "jsonrpc": "2.0",
-  "method": "auth",
-  "params": {
-    "bearer": "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
-  },
-  "id": 0
-}
 
-# Define a callback to check connection success
-def on_open(ws):
-    # Send the message
-    ws.send(json.dumps(message))
+async def main():
+    paradex = Paradex(
+        env=TESTNET,
+        l1_address="0xYOUR_L1_ADDRESS",
+        l2_private_key="0xYOUR_L2_PRIVATE_KEY",
+    )
+    ws_client = ParadexWebsocketClient(env=TESTNET, sbe_enabled=True)
+    ws_client.init_account(paradex.account)
+    await ws_client.connect()
+    print("Authenticated")
 
-# Define a callback to handle the response
-def on_message(ws, message):
-    response = json.loads(message)
-    print(response)
 
-# Connect to the WebSocket server
-ws = websocket.WebSocketApp(websocket_url, on_open=on_open, on_message=on_message)
-
-# Wait for a response
-ws.run_forever()
+asyncio.run(main())
 ```
+
+If you implement the handshake yourself, send the `auth` request shown above as a text frame, and remember to append the SBE parameters to the connection URL so public channels are not silently delivered as JSON.
 
 ## Authentication Errors
 

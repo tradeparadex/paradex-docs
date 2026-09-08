@@ -26,20 +26,20 @@ To establish a WebSocket connection, you can use various programming languages a
 ### Example in Python
 
 ```python
-import websocket
-import json
+import asyncio
 
-websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
+from paradex_py.api.ws_client import ParadexWebsocketClient
+from paradex_py.environment import TESTNET
 
-# Define a callback to check connection success
-def on_open(ws):
-    print('Connected')
 
-# Connect to the WebSocket server
-ws = websocket.WebSocketApp(websocket_url, on_open=on_open)
+async def main():
+    # sbe_enabled selects binary encoding for public channel payloads.
+    ws_client = ParadexWebsocketClient(env=TESTNET, sbe_enabled=True)
+    await ws_client.connect()
+    print("Connected")
 
-# Wait for a response
-ws.run_forever()
+
+asyncio.run(main())
 ```
 
 Upon successful connection, you should see:

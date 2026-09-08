@@ -104,96 +104,39 @@ Upon successful unsubscription, you will receive a response similar to:
 
 ## Example: Subscribing to a Channel
 
-Here's a complete example of how to subscribe to the `trades.ETH-USD-PERP` channel using Python:
+Public channel payloads are SBE binary frames, so a subscriber needs a decoder as well as a socket. The Paradex Python SDK handles both:
 
 ```python
-import websocket
-import json
+import asyncio
 
-websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
+from paradex_py.api.ws_client import ParadexWebsocketChannel, ParadexWebsocketClient
+from paradex_py.environment import TESTNET
 
-# Define the message to send
-auth = {
-  "jsonrpc": "2.0",
-  "method": "auth",
-  "params": {
-    "bearer": "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
-  },
-  "id": 0
-}
-message = {
-  "jsonrpc": "2.0",
-  "method": "subscribe",
-  "params": {
-    "channel": "trades.ETH-USD-PERP"
-  },
-  "id": 1
-}
 
-# Define a callback to check connection success
-def on_open(ws):
-    # Auth first
-    ws.send(json.dumps(auth))
-    # Send the message
-    ws.send(json.dumps(message))
+async def on_message(channel, message):
+    print(channel, message["params"]["data"])
 
-# Define a callback to handle the response
-def on_message(ws, message):
-    response = json.loads(message)
-    print(response)
 
-# Connect to the WebSocket server
-ws = websocket.WebSocketApp(websocket_url, on_open=on_open, on_message=on_message)
+async def main():
+    ws_client = ParadexWebsocketClient(env=TESTNET, sbe_enabled=True)
+    await ws_client.connect()
+    await ws_client.subscribe(
+        ParadexWebsocketChannel.TRADES,
+        callback=on_message,
+        params={"market": "ETH-USD-PERP"},
+    )
+    await asyncio.sleep(30)
 
-# Wait for a response
-ws.run_forever()
+
+asyncio.run(main())
 ```
+
+The subscribe request and its acknowledgement above are JSON-RPC text frames; the trade updates that follow are binary. See [Code Examples](/ws/general-information/code-examples) for authentication and unsubscribing, and [Binary Encoding (SBE)](/ws/general-information/binary-encoding-sbe) to generate a decoder in another language.
 
 ## Example: Unsubscribing from a Channel
 
-Here's a complete example of how to unsubscribe from the `trades.ETH-USD-PERP` channel using Python:
-
 ```python
-import websocket
-import json
-
-websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
-
-# Define the message to send
-auth = {
-  "jsonrpc": "2.0",
-  "method": "auth",
-  "params": {
-    "bearer": "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
-  },
-  "id": 0
-}
-message = {
-  "jsonrpc": "2.0",
-  "method": "unsubscribe",
-  "params": {
-    "channel": "trades.ETH-USD-PERP"
-  },
-  "id": 2
-}
-
-# Define a callback to check connection success
-def on_open(ws):
-    # Auth first
-    ws.send(json.dumps(auth))
-    # Send the message
-    ws.send(json.dumps(message))
-
-# Define a callback to handle the response
-def on_message(ws, message):
-    response = json.loads(message)
-    print(response)
-
-# Connect to the WebSocket server
-ws = websocket.WebSocketApp(websocket_url, on_open=on_open, on_message=on_message)
-
-# Wait for a response
-ws.run_forever()
+await ws_client.unsubscribe_by_name("trades.ETH-USD-PERP")
 ```
 
 Refer to the WebSocket Channels documentation for a list of supported channels.  

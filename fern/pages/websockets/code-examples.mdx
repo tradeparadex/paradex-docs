@@ -4,249 +4,110 @@ title: Code Examples
 
 This page provides complete code examples for common WebSocket operations using the Paradex API.
 
+Public market data channels are delivered as SBE binary frames. The examples below use the Paradex Python SDK, which negotiates the encoding and decodes frames for you. See [Binary Encoding (SBE)](/ws/general-information/binary-encoding-sbe) for the wire format, and for generating a decoder in another language.
+
 ## Prerequisites
 
-For Python examples, you'll need to install the required dependencies:
-
 ```bash
-pip install websocket-client
+pip install "paradex-py>=0.7.0"
 ```
 
 ## Establishing a Connection
 
-This example demonstrates how to establish a basic WebSocket connection:
-
 ```python
-import websocket
-import json
+import asyncio
 
-websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
+from paradex_py.api.ws_client import ParadexWebsocketClient
+from paradex_py.environment import TESTNET
 
-# Define a callback to check connection success
-def on_open(ws):
-    print('Connected')
 
-# Connect to the WebSocket server
-ws = websocket.WebSocketApp(websocket_url, on_open=on_open)
+async def main():
+    ws_client = ParadexWebsocketClient(env=TESTNET, sbe_enabled=True)
+    await ws_client.connect()
+    print("Connected")
 
-# Wait for a response
-ws.run_forever()
+
+asyncio.run(main())
 ```
 
-## Authenticating a Connection
-
-This example demonstrates how to authenticate a WebSocket connection:
-
-```python
-import websocket
-import json
-
-websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
-
-# Define the message to send
-message = {
-  "jsonrpc": "2.0",
-  "method": "auth",
-  "params": {
-    "bearer": "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
-  },
-  "id": 0
-}
-
-# Define a callback to check connection success
-def on_open(ws):
-    # Send the message
-    ws.send(json.dumps(message))
-
-# Define a callback to handle the response
-def on_message(ws, message):
-    response = json.loads(message)
-    print(response)
-
-# Connect to the WebSocket server
-ws = websocket.WebSocketApp(websocket_url, on_open=on_open, on_message=on_message)
-
-# Wait for a response
-ws.run_forever()
-```
+Passing `sbe_enabled=True` appends the schema parameters to the connection URL. Omitting it falls back to JSON, which is deprecated for public channels.
 
 ## Subscribing to a Channel
 
-This example demonstrates how to subscribe to the `trades.ETH-USD-PERP` channel:
+```python
+import asyncio
+
+from paradex_py.api.ws_client import ParadexWebsocketChannel, ParadexWebsocketClient
+from paradex_py.environment import TESTNET
+
+
+async def on_message(channel, message):
+    print(channel, message["params"]["data"])
+
+
+async def main():
+    ws_client = ParadexWebsocketClient(env=TESTNET, sbe_enabled=True)
+    await ws_client.connect()
+    await ws_client.subscribe(
+        ParadexWebsocketChannel.TRADES,
+        callback=on_message,
+        params={"market": "ETH-USD-PERP"},
+    )
+    await asyncio.sleep(30)
+
+
+asyncio.run(main())
+```
+
+Frames are decoded before your callback runs, so the payload arrives as a plain dictionary. Subscribe requests and their acknowledgements remain JSON-RPC text frames; only the channel payload is binary.
+
+## Authenticating a Connection
+
+Private channels require authentication. Build the client with SBE enabled, then attach the account:
 
 ```python
-import websocket
-import json
+import asyncio
 
-websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
+from paradex_py import Paradex
+from paradex_py.api.ws_client import ParadexWebsocketChannel, ParadexWebsocketClient
+from paradex_py.environment import TESTNET
 
-# Define the message to send
-auth = {
-  "jsonrpc": "2.0",
-  "method": "auth",
-  "params": {
-    "bearer": "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
-  },
-  "id": 0
-}
-message = {
-  "jsonrpc": "2.0",
-  "method": "subscribe",
-  "params": {
-    "channel": "trades.ETH-USD-PERP"
-  },
-  "id": 1
-}
 
-# Define a callback to check connection success
-def on_open(ws):
-    # Auth first
-    ws.send(json.dumps(auth))
-    # Send the message
-    ws.send(json.dumps(message))
+async def on_message(channel, message):
+    print(channel, message["params"]["data"])
 
-# Define a callback to handle the response
-def on_message(ws, message):
-    response = json.loads(message)
-    print(response)
 
-# Connect to the WebSocket server
-ws = websocket.WebSocketApp(websocket_url, on_open=on_open, on_message=on_message)
+async def main():
+    paradex = Paradex(
+        env=TESTNET,
+        l1_address="0xYOUR_L1_ADDRESS",
+        l2_private_key="0xYOUR_L2_PRIVATE_KEY",
+    )
+    ws_client = ParadexWebsocketClient(env=TESTNET, sbe_enabled=True)
+    ws_client.init_account(paradex.account)
+    await ws_client.connect()
+    await ws_client.subscribe(
+        ParadexWebsocketChannel.FILLS,
+        callback=on_message,
+        params={"market": "ETH-USD-PERP"},
+    )
+    await asyncio.sleep(30)
 
-# Wait for a response
-ws.run_forever()
+
+asyncio.run(main())
 ```
+
+Private channels have no SBE encoder, so their payloads are JSON either way. `sbe_enabled=True` matters here only for the public channels the same connection subscribes to.
 
 ## Unsubscribing from a Channel
 
-This example demonstrates how to unsubscribe from the `trades.ETH-USD-PERP` channel:
-
 ```python
-import websocket
-import json
-
-websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
-
-# Define the message to send
-auth = {
-  "jsonrpc": "2.0",
-  "method": "auth",
-  "params": {
-    "bearer": "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
-  },
-  "id": 0
-}
-message = {
-  "jsonrpc": "2.0",
-  "method": "unsubscribe",
-  "params": {
-    "channel": "trades.ETH-USD-PERP"
-  },
-  "id": 2
-}
-
-# Define a callback to check connection success
-def on_open(ws):
-    # Auth first
-    ws.send(json.dumps(auth))
-    # Send the message
-    ws.send(json.dumps(message))
-
-# Define a callback to handle the response
-def on_message(ws, message):
-    response = json.loads(message)
-    print(response)
-
-# Connect to the WebSocket server
-ws = websocket.WebSocketApp(websocket_url, on_open=on_open, on_message=on_message)
-
-# Wait for a response
-ws.run_forever()
-```
-
-## Complete Example: Authentication, Subscription, and Message Handling
-
-This example demonstrates a complete workflow including authentication, subscription, and message handling:
-
-```python
-import websocket
-import json
-import time
-
-# WebSocket URL
-websocket_url = "wss://ws.api.testnet.paradex.trade/v1"
-
-# Your JWT token
-jwt_token = "JWcgwMbK0bx1uFFef0Lri35ZDwypmCG0isuBv"
-
-# Message ID counter
-message_id = 0
-
-# Get next message ID
-def get_next_id():
-    global message_id
-    message_id += 1
-    return message_id
-
-# Connection opened callback
-def on_open(ws):
-    print("Connection established")
-    
-    # Authenticate
-    auth_message = {
-        "jsonrpc": "2.0",
-        "method": "auth",
-        "params": {
-            "bearer": jwt_token
-        },
-        "id": get_next_id()
-    }
-    ws.send(json.dumps(auth_message))
-
-# Message received callback
-def on_message(ws, message):
-    data = json.loads(message)
-    print(f"Received: {data}")
-    
-    # Check if this is an authentication response
-    if "result" in data and data.get("id") == 1:
-        print("Authentication successful, subscribing to channel")
-        
-        # Subscribe to trades channel
-        subscribe_message = {
-            "jsonrpc": "2.0",
-            "method": "subscribe",
-            "params": {
-                "channel": "trades.ETH-USD-PERP"
-            },
-            "id": get_next_id()
-        }
-        ws.send(json.dumps(subscribe_message))
-
-# Error callback
-def on_error(ws, error):
-    print(f"Error: {error}")
-
-# Close callback
-def on_close(ws, close_status_code, close_msg):
-    print(f"Connection closed: {close_status_code} - {close_msg}")
-
-# Create WebSocket connection
-ws = websocket.WebSocketApp(
-    websocket_url,
-    on_open=on_open,
-    on_message=on_message,
-    on_error=on_error,
-    on_close=on_close
-)
-
-# Start WebSocket connection
-ws.run_forever()
+await ws_client.unsubscribe_by_name("trades.ETH-USD-PERP")
 ```
 
 ## Implementation Notes
 
-- **Error Handling**: The examples include basic error handling. In a production environment, implement more robust error handling and reconnection logic.
-- **Authentication**: Replace the placeholder JWT token with your actual token.
-- **Ping/Pong**: Most WebSocket libraries automatically handle ping/pong messages. If you're using a library that doesn't, you'll need to implement this functionality manually.
-- **Reconnection**: Implement proper reconnection logic with exponential backoff for production use. 
+- **Encoding**: Public channels are SBE binary. Use `sbe_enabled=True`, or generate a decoder from the schema if you are not using the Python SDK.
+- **Error Handling**: These examples include no error handling. In production, handle decode errors and connection loss explicitly.
+- **Authentication**: Never commit private keys. Load them from the environment or a secret store.
+- **Reconnection**: The SDK reconnects automatically. If you implement your own client, use exponential backoff and re-subscribe after reconnecting.

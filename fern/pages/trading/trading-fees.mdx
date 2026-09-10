@@ -123,6 +123,51 @@ Fees are capped at 12.5% of the option price (premium). The FastFills 30% discou
 |---|---|
 | 0.01% | 0.01% |
 
+## Multileg Fee Discount
+
+Multileg block trades with offsetting risk receive a discount on trading fees. The discount applies to the fees otherwise due on each leg (after fee caps and other fee rules), and is calculated automatically for each side of the trade and separately for each underlying.
+
+Within an underlying, legs are grouped into five risk groups. Strike and expiry do not create separate groups.
+
+| Risk group | Includes |
+|---|---|
+| Long calls | Calls bought |
+| Long puts | Puts bought |
+| Short calls | Calls sold |
+| Short puts | Puts sold |
+| Perpetuals | Perpetuals and dated futures, in either direction |
+
+Fees are summed within each risk group. Groups with a non zero fee are then ranked from cheapest to most expensive and discounted by rank:
+
+| Risk group rank | Fee Discount |
+|---|---|
+| Cheapest | 100% |
+| 2nd cheapest | 50% |
+| 3rd cheapest | 50% |
+| 4th and beyond | 0% |
+
+The most expensive group is always charged in full, so the total package fee is never lower than the fee of its most expensive risk group.
+
+<Tip title="Example" icon="fa-solid fa-lightbulb">
+A BTC package with three legs:
+
+| Leg | Risk group | Fee before discount | Fee after discount |
+|---|---|---|---|
+| Buy BTC call | Long calls | \$10 | \$0 |
+| Sell BTC put | Short puts | \$20 | \$10 |
+| Sell BTC perp | Perpetuals | \$30 | \$30 |
+| **Total** | | **\$60** | **\$40** |
+
+The package saves \$20 (33%) compared with charging each leg independently.
+</Tip>
+
+- BTC and ETH legs do not offset each other; each underlying is discounted separately.
+- Each side of the block trade is discounted separately, so counterparties can receive different discounts.
+- Single leg block trades and legs within the same risk group receive no discount.
+- Spot legs are excluded from the grouping.
+- Accounts with a negotiated block trade fee rate are not eligible.
+- No opt in is required.
+
 ## Settlement
 
 When a market is delisted, a settlement fee applies to any positions still open.

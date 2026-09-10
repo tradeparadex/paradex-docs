@@ -1,13 +1,31 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.4.0
-    description: Channels for real-time updates.
+    version: 1.5.0
+    description: |
+        Channels for real-time updates.
+
+        Public market data channels are delivered as SBE binary frames. Negotiate
+        the encoding with the sbeSchemaId and sbeSchemaVersion query parameters:
+
+            wss://ws.api.prod.paradex.trade/v1?sbeSchemaId=1&sbeSchemaVersion=1
+
+        An unsupported schema or version is rejected with HTTP 400 at connect.
+
+        Requests and control responses (subscribe, unsubscribe, auth, and their
+        acknowledgements and errors) are always JSON-RPC text frames. Only channel
+        payloads are binary, and they carry the same fields documented below.
+
+        Generate a decoder from the schema at
+        https://github.com/tradeparadex/paradex-py/blob/main/paradex_py/api/sbe/paradex_1_0.xml
+        See https://docs.paradex.trade/ws/general-information/binary-encoding-sbe
 servers:
     production:
-        url: wss://ws.api.prod.paradex.trade/v1?
+        url: wss://ws.api.prod.paradex.trade/v1?sbeSchemaId=1&sbeSchemaVersion=1
         protocol: wss
-        description: Production WebSocket server
+        description: |
+            Production WebSocket server. The SBE parameters select binary encoding
+            for public channel payloads; omitting them is deprecated.
 channels:
     /account:
         subscribe:

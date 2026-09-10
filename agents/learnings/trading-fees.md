@@ -13,7 +13,7 @@
   1. `## Perps & Spot Fees` → `### Retail` (simple 0% table) and `### Pro` which splits into `#### Maker fees` (flat rate) and `#### Taker fees` (volume-based with discounts).
   2. Under `#### Taker fees`: `##### Base rate` (volume-tier table, taker only), `##### Discounts` with `###### Stake $DIME`, `###### Pay fees in $DIME`, `###### FastFills`, and `##### Fee scenarios`.
   3. `## Options Fees`: Retail and Pro sub-sections.
-  4. `## Multi-leg Fee Discount`: package level discount for multi-leg block trades (risk groups, rank based discount table, one worked example in a `Tip`, closing eligibility paragraph). Kept as its own top level section rather than under Options because packages can mix options, perps, and dated futures.
+  4. `## Multi-leg Fee Discount`: package level discount for multi-leg block trades (risk groups, rank based discount table, two worked examples in `Tip` callouts, closing eligibility sentence). Kept as its own top level section rather than under Options because packages can mix options, perps, and dated futures.
   5. `## Settlement`: delisting fees.
 - The team explicitly wants "Multi-leg" hyphenated on this page (a deliberate exception to the no hyphens writing rule).
 - Use full words in the wide scenario table (e.g. `Fee Discount`, `Total Discount`) instead of abbreviations like `DC`.

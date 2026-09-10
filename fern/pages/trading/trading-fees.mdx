@@ -142,20 +142,24 @@ Fees are summed within each risk group. Groups that pay a fee are then ranked fr
 
 The most expensive risk group is always charged in full, so a package can never pay less than its most expensive group. A package with only one risk group receives no discount.
 
-<Tip title="Example" icon="fa-solid fa-lightbulb">
-Consider a BTC package with three legs:
+<Tip title="Example 1" icon="fa-solid fa-lightbulb">
+Consider a BTC structure with three legs:
 
 | Leg | Risk group | Fee before discount | Fee after discount |
-|---|---|---:|---:|
+|---|---|---|---|
 | Buy BTC call | Long calls | \$10 | \$0 |
 | Sell BTC put | Short puts | \$20 | \$10 |
 | Sell BTC perp | Perpetuals | \$30 | \$30 |
 | **Total** | | **\$60** | **\$40** |
 
-The package pays \$40 instead of \$60, a **33% fee saving**.
+The structure pays \$40 instead of \$60, a 33% fee saving.
 </Tip>
 
-A BTC/ETH spread receives no discount, since the two underlyings are grouped separately. Spot legs are not grouped, and accounts on a negotiated block trade fee rate are not eligible.
+<Tip title="Example 2" icon="fa-solid fa-lightbulb">
+A BTC/ETH spread does not receive a discount because risk groups are calculated separately for each underlying.
+</Tip>
+
+Spot legs are not grouped, and accounts on a negotiated block trade fee rate are not eligible.
 
 ## Settlement
 

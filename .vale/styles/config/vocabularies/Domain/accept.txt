@@ -31,8 +31,6 @@ Karnot
 Layerswap
 Linea
 Mainnet
-Multileg
-multileg
 moneyness
 orderbook
 permissionless

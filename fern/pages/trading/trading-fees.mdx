@@ -123,9 +123,9 @@ Fees are capped at 12.5% of the option price (premium). The FastFills 30% discou
 |---|---|
 | 0.01% | 0.01% |
 
-## Multileg Fee Discount
+## Multi-leg Fee Discount
 
-Multileg block trades spanning different risk groups can receive a discount on trading fees. The discount is applied automatically to the fees otherwise due on each leg, after fee caps and other applicable fee rules.
+Multi-leg block trades spanning different risk groups can receive a discount on trading fees. The discount is applied automatically to the fees otherwise due on each leg, after fee caps and other applicable fee rules.
 
 Discounts are calculated separately for each underlying. Within each underlying, legs are grouped into five risk groups: **Long calls**, **Long puts**, **Short calls**, **Short puts**, and **Perpetuals**. Strike and expiry do not create separate groups. For example, two BTC calls bought at different strikes are both part of the Long calls group.
 

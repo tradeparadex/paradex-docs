@@ -125,45 +125,37 @@ Fees are capped at 12.5% of the option price (premium). The FastFills 30% discou
 
 ## Multi-leg Fee Discount
 
-Multi-leg block trades spanning different risk groups can receive a discount on trading fees.
+Multi-leg block trades spanning different risk groups can receive a discount on trading fees. The discount is applied automatically to the fees otherwise due on each leg, after fee caps and other applicable fee rules.
 
-The discount is applied automatically to the fees otherwise due on each leg, after fee caps and other applicable fee rules.
+Within each underlying, legs are grouped into five risk groups: **Long calls**, **Long puts**, **Short calls**, **Short puts**, and **Perpetuals**. Each underlying and each side of the trade is discounted separately.
 
-Discounts are calculated separately for each underlying.
-
-Within each underlying, legs are grouped into five risk groups: **Long calls**, **Long puts**, **Short calls**, **Short puts**, and **Perpetuals**.
-
-Strike and expiry do not create separate groups. For example, two BTC calls bought at different strikes are both part of the Long calls group.
+Strike and expiry do not create separate groups: two BTC calls bought at different strikes are both **Long calls**. Perpetuals and dated futures share one group, in either direction.
 
 Fees are summed within each risk group. Groups that pay a fee are then ranked from cheapest to most expensive and discounted as follows:
 
-| Risk group rank | Fee Discount |
-|---|---|
+| Risk group rank | Fee discount |
+|---|---:|
 | Cheapest | 100% |
 | 2nd cheapest | 50% |
 | 3rd cheapest | 50% |
 | 4th and beyond | 0% |
 
-The most expensive risk group is always charged in full. A structure with only one risk group therefore receives no discount.
+The most expensive risk group is always charged in full, so a package can never pay less than its most expensive group. A package with only one risk group receives no discount.
 
-The total fee for a structure can never be lower than the fee of its most expensive risk group.
-
-<Tip title="Example 1" icon="fa-solid fa-lightbulb">
-Consider a BTC structure with three legs:
+<Tip title="Example" icon="fa-solid fa-lightbulb">
+Consider a BTC package with three legs:
 
 | Leg | Risk group | Fee before discount | Fee after discount |
-|---|---|---|---|
+|---|---|---:|---:|
 | Buy BTC call | Long calls | \$10 | \$0 |
 | Sell BTC put | Short puts | \$20 | \$10 |
 | Sell BTC perp | Perpetuals | \$30 | \$30 |
 | **Total** | | **\$60** | **\$40** |
 
-The structure pays \$40 instead of \$60, a 33% fee saving.
+The package pays \$40 instead of \$60, a **33% fee saving**.
 </Tip>
 
-<Tip title="Example 2" icon="fa-solid fa-lightbulb">
-A BTC/ETH spread does not receive a discount because risk groups are calculated separately for each underlying.
-</Tip>
+A BTC/ETH spread receives no discount, since the two underlyings are grouped separately. Spot legs are not grouped, and accounts on a negotiated block trade fee rate are not eligible.
 
 ## Settlement
 

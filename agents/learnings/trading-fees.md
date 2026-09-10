@@ -13,7 +13,9 @@
   1. `## Perps & Spot Fees` → `### Retail` (simple 0% table) and `### Pro` which splits into `#### Maker fees` (flat rate) and `#### Taker fees` (volume-based with discounts).
   2. Under `#### Taker fees`: `##### Base rate` (volume-tier table, taker only), `##### Discounts` with `###### Stake $DIME`, `###### Pay fees in $DIME`, `###### FastFills`, and `##### Fee scenarios`.
   3. `## Options Fees`: Retail and Pro sub-sections.
-  4. `## Settlement`: delisting fees.
+  4. `## Multi-leg Fee Discount`: package level discount for multi-leg block trades (risk groups, rank based discount table, two worked examples in `Tip` callouts, closing eligibility sentence). Kept as its own top level section rather than under Options because packages can mix options, perps, and dated futures.
+  5. `## Settlement`: delisting fees.
+- The team explicitly wants "Multi-leg" hyphenated on this page (a deliberate exception to the no hyphens writing rule).
 - Use full words in the wide scenario table (e.g. `Fee Discount`, `Total Discount`) instead of abbreviations like `DC`.
 - Prefix each staking tier name in the Staking Tier table with a colored dot using the `<Dot color="#..." />` helper defined via `export const` at the top of `trading-fees.mdx`. The helper wraps the inline-block span with camelCase style keys (`borderRadius`, `backgroundColor`, `marginRight`, `verticalAlign`) that Vale flags as spelling errors when written inline in prose, so keep the span inside the `export const` block (which `.vale.ini`'s `BlockIgnores` skips). Tier colors: Base `#B9BBBD`, Wood `#A0764E`, Bronze `#C4693D`, Silver `#B9BBBD`, Gold `#FFB23D`, Platinum `#A97DBF`, Diamond `#69B8BF`. The Base row represents the default (0 \$DIME staked, 0% discount) state.
 
@@ -25,4 +27,4 @@
 - Don't split Retail and Pro into two stacked tables without a `Tabs` switcher. Readers have to scroll past a table that doesn't apply to them.
 
 ## Last updated
-2026-07-02
+2026-09-10

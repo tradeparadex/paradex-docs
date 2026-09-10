@@ -127,15 +127,7 @@ Fees are capped at 12.5% of the option price (premium). The FastFills 30% discou
 
 Multileg block trades with offsetting risk receive a discount on trading fees. The discount applies to the fees otherwise due on each leg (after fee caps and other fee rules), and is calculated automatically for each side of the trade and separately for each underlying.
 
-Within an underlying, legs are grouped into five risk groups. Strike and expiry do not create separate groups.
-
-| Risk group | Includes |
-|---|---|
-| Long calls | Calls bought |
-| Long puts | Puts bought |
-| Short calls | Calls sold |
-| Short puts | Puts sold |
-| Perpetuals | Perpetuals and dated futures, in either direction |
+Within an underlying, legs are grouped into five risk groups: **Long calls**, **Long puts**, **Short calls**, **Short puts**, and **Perpetuals** (perpetuals and dated futures, in either direction). Strike and expiry do not create separate groups.
 
 Fees are summed within each risk group. Groups with a non zero fee are then ranked from cheapest to most expensive and discounted by rank:
 

@@ -14,7 +14,7 @@
   2. Under `#### Taker fees`: `##### Base rate` (volume-tier table, taker only), `##### Discounts` with `###### Stake $DIME`, `###### Pay fees in $DIME`, `###### FastFills`, and `##### Fee scenarios`.
   3. `## Options Fees`: Retail and Pro sub-sections.
   4. `## Multi-leg Fee Discount`: package level discount for multi-leg block trades (risk groups, rank based discount table, two worked examples in `Tip` callouts). Kept as its own top level section rather than under Options because packages can mix options, perps, and dated futures.
-  5. `## Box Spread Fees`: separate fee schedule for box spreads (four leg structure table, box notional and maker fee formulas in inline code, worked example in a `Tip` callout). Box spreads do not receive the Multi-leg Fee Discount, so this section sits directly after it.
+  5. `## Box Spread Fees`: special fee treatment for box spreads (four leg structure table, box notional and maker fee formulas in inline code, worked example in a `Tip` callout). Box spreads do not receive the Multi-leg Fee Discount, so this section sits directly after it.
   6. `## Settlement`: delisting fees.
 - The team explicitly wants "Multi-leg" hyphenated on this page (a deliberate exception to the no hyphens writing rule).
 - Use full words in the wide scenario table (e.g. `Fee Discount`, `Total Discount`) instead of abbreviations like `DC`.

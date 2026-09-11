@@ -159,6 +159,43 @@ The structure pays \$40 instead of \$60, a 33% fee saving.
 A BTC/ETH spread does not receive a discount because risk groups are calculated separately for each underlying.
 </Tip>
 
+## Box Spread Fees
+
+Box spreads have a special fee treatment and do not receive the Multi-leg Fee Discount.
+
+A box spread has four option legs on the same underlying, with the same expiry and size, across two strikes:
+
+| | Lower strike | Higher strike |
+|---|---|---|
+| Call | Buy | Sell |
+| Put | Sell | Buy |
+
+The reverse structure also qualifies.
+
+The box notional is:
+
+`Box notional = |Strike 1 − Strike 2| × Size`
+
+The maker fee is:
+
+`Maker fee = Box notional × 0.5% × Years to expiry`
+
+The maker fee is capped at the base maker option fees for the four legs.
+
+<Tip title="Example" icon="fa-solid fa-lightbulb">
+Consider a 1 BTC box with strikes at **\$80,000 and \$81,000**, expiring in **30 days**.
+
+The box notional is **\$1,000**:
+
+`$81,000 − $80,000 = $1,000`
+
+The maker fee is:
+
+`$1,000 × 0.5% × 30 / 365 = $0.41`
+
+The maker pays **\$0.41**.
+</Tip>
+
 ## Settlement
 
 When a market is delisted, a settlement fee applies to any positions still open.

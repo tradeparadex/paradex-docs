@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.133.4"
+    "version": "1.133.5"
   },
   "paths": {
     "/account": {
@@ -11329,6 +11329,14 @@
               }
             ]
           },
+          "option_spread_margin_params": {
+            "description": "Same-expiry option spread offset scales",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.OptionSpreadMarginParams"
+              }
+            ]
+          },
           "option_type": {
             "description": "Type of option",
             "type": "string",
@@ -11670,6 +11678,21 @@
             "description": "Cap for margin fraction for short put options",
             "type": "string",
             "example": "0.5"
+          }
+        }
+      },
+      "responses.OptionSpreadMarginParams": {
+        "type": "object",
+        "properties": {
+          "unpaired_scale_im": {
+            "description": "Initial-margin scale on the unpaired short call reserve",
+            "type": "string",
+            "example": "1.0"
+          },
+          "unpaired_scale_mm": {
+            "description": "Maintenance-margin scale on the unpaired short call reserve",
+            "type": "string",
+            "example": "1.0"
           }
         }
       },

@@ -72,3 +72,5 @@ zkSync
 MMBtu
 Annualize
 Dedupe
+margined
+Margined

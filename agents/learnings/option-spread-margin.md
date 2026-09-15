@@ -7,7 +7,7 @@ Page: `fern/pages/dated-options/margin-requirements.mdx`
 - Option spread margin is a subsection (`###`) of `## Cross margin`, placed after Cross margin parameters. Its subsections use `####`.
 - Formula: `Group Margin = min(Sum of Isolated Margins, Max Settlement Loss + Unpaired Short Call Reserve)`; grouping can only lower a requirement.
 - Grouping applies only to dated options on the same underlying and expiry with at least one short leg. Open orders count at IMR only.
-- The `Unpaired Scale` parameter table uses the same `<Tabs>` per asset layout as Cross margin parameters. Only BTC and ETH tabs exist so far and the values are `TBC` pending confirmation from the risk team.
+- `Unpaired Scale` is independent of underlying (IMR 1.2, MMR 1.0), so its table is a single table with no per-asset `<Tabs>`.
 
 ## Last updated
 

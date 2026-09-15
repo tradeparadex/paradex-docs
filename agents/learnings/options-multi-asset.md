@@ -27,8 +27,8 @@ When adding a new options underlying, update all four locations: instrument conf
 
 ## Gotchas
 
-- ETH SCAN scenarios and cross-margin parameters currently match BTC identically. HYPE and CL values differ (higher spot/vol shocks, different tail weights, higher ITM/OTM fractions).
-- SOL uses the same strike step sizes and SCAN spot/vol shocks as HYPE, but its own tail weights (scenarios 17-24: 26%, 44%, 35%, 17%, 8.9%, 6.2%, 4.4%, 3.6%) and its own cross-margin fractions (Long ITM 25%, Short ITM 18%, Short OTM 12%).
+- Portfolio Margin SCAN scenarios (spot shocks, vol shocks, tail weights) are sourced from the live endpoint `https://api.prod.paradex.trade/v1/system/portfolio-margin-config`. Each asset has its own spot-shock ladder and tail weights (e.g. BTC ±14/10.5/7/3.5%, ETH ±16/12/8/4%, SOL ±24/18/12/6%, HYPE ±28/21/14/7%); do not assume BTC/ETH or HYPE/SOL match. Regenerate all four tabs from the JSON when updating. Note the endpoint only returns BTC/ETH/SOL/HYPE — CL is not present, so the CL tab cannot be verified against it.
+- SOL uses the same strike step sizes and SCAN vol shocks as HYPE, but its own spot shocks, tail weights, and cross-margin fractions (Long ITM 25%, Short ITM 18%, Short OTM 12%).
 - The Mark Price reference-exchange table (`fern/pages/dated-options/mark-price.mdx`) only lists BTC, ETH, and HYPE; SOL and CL are not listed there.
 - The Portfolio Margin `Parameters` section at the bottom of `portfolio-margin.mdx` contains constants that are mostly shared across assets; `MIN_VOL_SHOCK_UP` and `HEDGED_MARGIN_FACTOR` are the exceptions (HYPE/CL = 60% / 1.5% vs BTC/ETH = 40% / 1%).
 - ZEC options were delisted and removed from the docs. The instrument config page, sidebar entry, and per-asset tabs (expiries/listing, margin requirements, portfolio margin SCAN + min-delta) were deleted, and a redirect was added from `/trading/instruments-guide/options/zec-options` to `/trading/dated-options`. Note ZEC still exists as a perpetual future (`zec-usd-perp.mdx`) — only options were removed.

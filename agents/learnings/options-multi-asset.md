@@ -35,4 +35,4 @@ When adding a new options underlying, update all four locations: instrument conf
 
 ## Last updated
 
-2026-09-01
+2026-09-15

@@ -87,3 +87,99 @@ Paradex supports two margin modes for Dated Options: **Cross Margin** for all us
 
   </Tab>
 </Tabs>
+
+### Option spread margin
+
+Dated options on the same underlying with the same expiry can only settle at one
+price. Charging each leg for its own worst case therefore charges for outcomes
+that cannot happen together.
+
+Paradex groups those options and charges the group the lesser of what its legs
+cost separately and what the group can actually lose at settlement:
+
+$$
+\text{Group Margin} = \min\big(\text{Sum of Isolated Margins},
+~\text{Max Settlement Loss} + \text{Unpaired Short Call Reserve}\big)
+$$
+
+Because the charge is a minimum, grouping can only lower a requirement, never
+raise it.
+
+- **Max Settlement Loss** — the worst the group can be worth at settlement,
+  measured from its current mark value. The payoff only bends at a strike, so
+  this is found by evaluating the group at zero and at each strike in it.
+- **Unpaired Short Call Reserve** — a charge on calls left unpaired after
+  longs and shorts net out:
+
+$$
+\text{Unpaired Short Call Reserve} = \text{Unpaired Scale}
+\times \text{Net Short Calls} \times \text{Spot Price}
+$$
+
+A group that is net short calls loses without limit above its highest strike,
+so there is no settlement price at which its loss stops growing. The reserve
+covers a further `Unpaired Scale × Spot Price` of price movement per unpaired
+contract. Groups that are not net short calls carry no reserve.
+
+#### When the offset applies
+
+- Both legs are **dated options on the same underlying, expiring on the same
+  day**. Perpetual options are not grouped.
+- The group holds **at least one short position**. A group of only long options
+  cannot lose more than the premium paid for it, so grouping it would remove the
+  buffer a long option is margined with.
+- **Open orders count at initial margin.** A resting order is a position you can
+  reach without another margin check, so it is priced into the group as though
+  it had filled. Maintenance margin charges positions only.
+
+#### Example
+
+Spot BTC is 100,000. You buy one 100,000 call and sell one 110,000 call, both
+expiring on the same day.
+
+| Leg | Mark | Isolated margin |
+|-----|:---:|-----|
+| Long 1 × 100,000 call | 4,000 | `min(4,000, 20% × 100,000)` = **4,000** |
+| Short 1 × 110,000 call | 1,500 | `max(15% × 100,000 − 10,000, 10% × 100,000)` = **10,000** |
+| | | Sum: **14,000** |
+
+Margined separately the spread costs 14,000. But the two legs are one position:
+you paid 4,000 and received 1,500, so you hold 2,500 of value, and the worst
+that can happen is that both calls expire worthless and you lose it.
+
+- **Max Settlement Loss** = 2,500
+- **Net Short Calls** = 1 short − 1 long = 0, so the reserve is 0
+
+$$
+\text{Group Margin} = \min(14{,}000,~2{,}500 + 0) = 2{,}500
+$$
+
+The spread is charged 2,500 instead of 14,000 — an 82% reduction, and exactly
+what the position can lose.
+
+<Note>
+The cap is the group's mark to market loss, so it falls as the spread loses
+value. A capped spread's margin requirement and its unrealised loss move
+together, which means the group does not consume free collateral as it moves
+against you. It also means a fully capped spread carries the same initial and
+maintenance requirement.
+</Note>
+
+#### Option spread margin parameters
+
+<Tabs>
+  <Tab title="BTC">
+
+| Parameter | IMR | MMR |
+|-----------|:---:|:---:|
+| Unpaired Scale | TBC | TBC |
+
+  </Tab>
+  <Tab title="ETH">
+
+| Parameter | IMR | MMR |
+|-----------|:---:|:---:|
+| Unpaired Scale | TBC | TBC |
+
+  </Tab>
+</Tabs>

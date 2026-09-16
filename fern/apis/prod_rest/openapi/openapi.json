@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.133.4"
+    "version": "1.133.6"
   },
   "paths": {
     "/account": {
@@ -4990,7 +4990,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Lists the authenticated account's RFQs, most recent first.\n\nThis is a synchronous read from the RFQ venue. It returns one page of RFQs\n(up to 100 by default, sized via `page_size`), optionally filtered by `state`.\nThe page is built from the RFQs the venue holds for the account and every\naccount sharing its RFQ registration, of which only the authenticated\naccount's are returned — a busy set of related accounts can therefore leave a\npage short. The response's `next` field carries the venue's cursor to the\nfollowing page; pass it back as `cursor` to continue, and stop only when it\nis null — an empty `results` with a non-null `next` is normal, since the\ncursor tracks the venue's page, not this account's records. Each\nresult includes the venue-issued RFQ identifier, lifecycle state, quantity,\nlegs, counterparties, timestamps, and optional close reason. Venue state and\nclose-reason strings are passed through.\n",
+        "description": "Lists the authenticated account's RFQs, most recent first.\n\nThis is a synchronous read from the RFQ venue. It returns one page of RFQs\n(up to 100 by default, sized via `page_size`), optionally filtered by `state`.\nThe page is built from the RFQs the venue holds for the account and every\naccount sharing its RFQ registration, of which only the authenticated\naccount's are returned — a busy set of related accounts can therefore leave a\npage short. The response's `next` field carries the venue's cursor to the\nfollowing page; pass it back as `cursor` to continue, and stop only when it\nis null — an empty `results` with a non-null `next` is normal, since the\ncursor tracks the venue's page, not this account's records. Each\nresult includes the venue-issued RFQ identifier, lifecycle state, quantity,\nlegs, counterparties, timestamps, and optional close reason. Venue state and\nclose-reason strings are passed through. `mark_price`, when present, is the\nvenue's structure mark at the moment the RFQ was created — the reference the\ntaker was quoted against — recorded by Paradex at create. It is omitted when\nunknown: an RFQ created before that recording began, a structure the venue\nhad not priced at create, or a mark past its retention.\n",
         "tags": [
           "Rfqs"
         ],
@@ -10294,6 +10294,7 @@
           "BLOCK_TRADE_INVALID_SIGNATURE",
           "BLOCK_TRADE_SIGNER_KEY_UNAUTHORIZED",
           "BLOCK_TRADE_REPLAYED_SIGNATURE",
+          "BLOCK_TRADE_SELF_TRADE",
           "OFFER_ALREADY_CANCELLED",
           "OFFER_INVALID_STATUS",
           "OFFER_UNAUTHORIZED",
@@ -10408,6 +10409,7 @@
           "ErrorCodeString_BlockTradeInvalidSignature",
           "ErrorCodeString_BlockTradeSignerKeyUnauthorized",
           "ErrorCodeString_BlockTradeReplayedSignature",
+          "ErrorCodeString_BlockTradeSelfTrade",
           "ErrorCodeString_OfferAlreadyCancelled",
           "ErrorCodeString_OfferInvalidStatus",
           "ErrorCodeString_OfferUnauthorized",
@@ -11329,6 +11331,14 @@
               }
             ]
           },
+          "option_spread_margin_params": {
+            "description": "Same-expiry option spread offset scales",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.OptionSpreadMarginParams"
+              }
+            ]
+          },
           "option_type": {
             "description": "Type of option",
             "type": "string",
@@ -11670,6 +11680,21 @@
             "description": "Cap for margin fraction for short put options",
             "type": "string",
             "example": "0.5"
+          }
+        }
+      },
+      "responses.OptionSpreadMarginParams": {
+        "type": "object",
+        "properties": {
+          "unpaired_scale_im": {
+            "description": "Initial-margin scale on the unpaired short call reserve",
+            "type": "string",
+            "example": "1.0"
+          },
+          "unpaired_scale_mm": {
+            "description": "Maintenance-margin scale on the unpaired short call reserve",
+            "type": "string",
+            "example": "1.0"
           }
         }
       },
@@ -12489,6 +12514,11 @@
             "items": {
               "$ref": "#/components/schemas/responses.RfqLegResult"
             }
+          },
+          "mark_price": {
+            "description": "The venue's structure mark when the RFQ was created — per unit, signed\nas listed — the reference the taker was quoted against. Omitted when\nunknown: an RFQ created before marks were recorded, a structure the\nvenue had not priced at create, or a mark past its retention.",
+            "type": "string",
+            "example": "49.98"
           },
           "quantity": {
             "description": "Total strategy size",

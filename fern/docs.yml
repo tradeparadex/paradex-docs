@@ -480,6 +480,9 @@ navigation:
             - page: CL Options
               slug: cl-options
               path: ./pages/instruments-guide/dated-options/cl-usd.mdx
+            - page: ZEC Options
+              slug: zec-options
+              path: ./pages/instruments-guide/dated-options/zec-usd.mdx
   - tab: risk
     layout:
       - section: Getting Started
@@ -924,9 +927,6 @@ redirects:
   - source: "/releases/archive/:slug*"
     destination: "/releases"
 
-  # Redirect delisted ZEC options instrument page
-  - source: "/trading/instruments-guide/options/zec-options"
-    destination: "/trading/dated-options"
   - source: "/releases/v-1-152"
     destination: "/releases"
   - source: "/releases/v-1-150"

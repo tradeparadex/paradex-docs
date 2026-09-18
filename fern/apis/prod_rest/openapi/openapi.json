@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.133.7"
+    "version": "1.133.8"
   },
   "paths": {
     "/account": {
@@ -12916,6 +12916,18 @@
             "description": "Minimum granularity of partial liquidation share. The share is rounded up to the nearest multiple of this value",
             "type": "string",
             "example": "0.05"
+          },
+          "rfq_default_max_slippage": {
+            "description": "What the margin held against an unpriced RFQ is computed from, as a\nfraction of the underlying spot notional. It does not bound the\nexecution: a quote wider than it is executable, and is charged what it\nactually costs. The price bands are what bound the trade.",
+            "type": "string",
+            "example": "0.005"
+          },
+          "rfq_max_slippage_overrides": {
+            "description": "Per-base-asset overrides of the above. Only assets that deviate have one,\nso an empty object is the normal state.",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           },
           "starknet_chain_id": {
             "description": "Chain ID for the Starknet Instance",

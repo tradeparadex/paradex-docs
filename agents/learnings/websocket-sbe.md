@@ -6,7 +6,7 @@
 - JSON-RPC control messages (subscribe, unsubscribe, auth, responses) and private channel payloads remain JSON.
 
 ## Patterns
-- The enforcement notice is a `<Warning>` callout at the top of `websockets/introduction.mdx` and `websockets/binary-encoding-sbe.mdx`. Do not describe SBE as optional anywhere in the WebSocket docs.
+- The enforcement notice is a `<Warning>` callout at the top of `websockets/landing.mdx`, `websockets/introduction.mdx` and `websockets/binary-encoding-sbe.mdx`. Do not describe SBE as optional anywhere in the WebSocket docs.
 
 ## Last updated
 2026-09-21

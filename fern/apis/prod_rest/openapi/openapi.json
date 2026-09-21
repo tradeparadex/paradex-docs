@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.133.8"
+    "version": "1.135.0"
   },
   "paths": {
     "/account": {
@@ -5974,14 +5974,14 @@
         }
       }
     },
-    "/system/portfolio-margin-config": {
+    "/system/margin-config": {
       "get": {
-        "description": "Returns portfolio margin risk parameters per base asset",
+        "description": "Returns margin configuration per base asset: the portfolio\nmargin risk parameters where the asset has them, and the bound\nan unpriced RFQ on it is held at.",
         "tags": [
           "System"
         ],
-        "summary": "Get portfolio margin configuration",
-        "operationId": "get-portfolio-margin-config",
+        "summary": "Get margin configuration",
+        "operationId": "get-margin-config",
         "parameters": [
           {
             "description": "Base asset filter (e.g. BTC, ETH). Omit to return all.",
@@ -6008,7 +6008,65 @@
                         "results": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/responses.PortfolioMarginParamsResp"
+                            "$ref": "#/components/schemas/responses.MarginParamsResp"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/portfolio-margin-config": {
+      "get": {
+        "description": "Deprecated. Serves only the portfolio-margin-eligible assets,\nthe rows this path has always returned. Use\n`/system/margin-config` for every listed asset and its RFQ\nbound.",
+        "tags": [
+          "System"
+        ],
+        "summary": "Get portfolio margin configuration (deprecated)",
+        "operationId": "get-portfolio-margin-config",
+        "deprecated": true,
+        "parameters": [
+          {
+            "description": "Base asset filter (e.g. BTC, ETH). Omit to return all.",
+            "name": "base_asset",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/responses.APIResults"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/responses.MarginParamsResp"
                           }
                         }
                       }
@@ -10300,7 +10358,7 @@
           "OFFER_UNAUTHORIZED",
           "OFFER_PARENT_MISMATCH",
           "OFFER_PARENT_NOT_ACCEPTING",
-          "PORTFOLIO_MARGIN_CONFIG_NOT_FOUND"
+          "MARGIN_CONFIG_NOT_FOUND"
         ],
         "x-enum-comments": {
           "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -10415,7 +10473,7 @@
           "ErrorCodeString_OfferUnauthorized",
           "ErrorCodeString_OfferParentMismatch",
           "ErrorCodeString_OfferParentNotAccepting",
-          "ErrorCodeString_PortfolioMarginConfigNotFound"
+          "ErrorCodeString_MarginConfigNotFound"
         ]
       },
       "responses.ErrorResponse": {
@@ -10979,6 +11037,45 @@
                 "$ref": "#/components/schemas/responses.FeeWithCap"
               }
             ]
+          }
+        }
+      },
+      "responses.MarginParamsResp": {
+        "type": "object",
+        "properties": {
+          "base_asset": {
+            "type": "string",
+            "example": "BTC"
+          },
+          "funding_provision_hour": {
+            "type": "number",
+            "example": 8
+          },
+          "hedged_margin_factor": {
+            "type": "number",
+            "example": 0.01
+          },
+          "mmf_factor": {
+            "type": "number",
+            "example": 0.5
+          },
+          "rfq_max_slippage": {
+            "description": "What the margin held against an unpriced RFQ on this asset is computed\nfrom, as a fraction of underlying spot notional, already resolved\nagainst the exchange default. It does not bound the execution.",
+            "type": "string",
+            "example": "0.0005"
+          },
+          "scenarios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.PortfolioMarginScenarioResp"
+            }
+          },
+          "unhedged_margin_factor": {
+            "type": "number",
+            "example": 0.02
+          },
+          "vol_shock_params": {
+            "$ref": "#/components/schemas/responses.VolShockParamsResp"
           }
         }
       },
@@ -11963,40 +12060,6 @@
           }
         }
       },
-      "responses.PortfolioMarginParamsResp": {
-        "type": "object",
-        "properties": {
-          "base_asset": {
-            "type": "string",
-            "example": "BTC"
-          },
-          "funding_provision_hour": {
-            "type": "number",
-            "example": 8
-          },
-          "hedged_margin_factor": {
-            "type": "number",
-            "example": 0.01
-          },
-          "mmf_factor": {
-            "type": "number",
-            "example": 0.5
-          },
-          "scenarios": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/responses.PortfolioMarginScenarioResp"
-            }
-          },
-          "unhedged_margin_factor": {
-            "type": "number",
-            "example": 0.02
-          },
-          "vol_shock_params": {
-            "$ref": "#/components/schemas/responses.VolShockParamsResp"
-          }
-        }
-      },
       "responses.PortfolioMarginScenarioResp": {
         "type": "object",
         "properties": {
@@ -12918,16 +12981,9 @@
             "example": "0.05"
           },
           "rfq_default_max_slippage": {
-            "description": "What the margin held against an unpriced RFQ is computed from, as a\nfraction of the underlying spot notional. It does not bound the\nexecution: a quote wider than it is executable, and is charged what it\nactually costs. The price bands are what bound the trade.",
+            "description": "The exchange-wide fallback bound an unpriced RFQ's margin is computed\nfrom, as a fraction of the underlying spot notional, for an asset that\ncarries no bound of its own. Per-asset bounds are on\n/system/margin-config, already resolved. It does not bound the\nexecution: a quote wider than it is executable, and is charged what it\nactually costs. The price bands are what bound the trade.",
             "type": "string",
-            "example": "0.005"
-          },
-          "rfq_max_slippage_overrides": {
-            "description": "Per-base-asset overrides of the above. Only assets that deviate have one,\nso an empty object is the normal state.",
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
+            "example": "0.0005"
           },
           "starknet_chain_id": {
             "description": "Chain ID for the Starknet Instance",

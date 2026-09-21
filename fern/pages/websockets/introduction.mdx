@@ -5,7 +5,7 @@ title: WebSocket API
 The Paradex WebSocket API provides real-time market data and account updates. WebSockets allow for a persistent connection between the client and server, enabling efficient two-way communication.
 
 <Warning title="SBE required for public channels as of 21 September 2026">
-As of 21 September 2026, Paradex requires [Simple Binary Encoding (SBE)](/ws/general-information/binary-encoding-sbe) for public channel payloads. JSON is no longer served for public channels. Append `?sbeSchemaId=1&sbeSchemaVersion=1` to the WebSocket URL and decode incoming binary frames, or use the Python SDK (`paradex-py` v0.7.0 or later) with `sbe_enabled=True`. JSON-RPC control messages (`subscribe`, `unsubscribe`, `auth` and their responses) and private channel payloads are unchanged.
+As of 21 September 2026, Paradex requires Simple Binary Encoding (SBE) for public channel payloads. See [Binary Encoding (SBE)](/ws/general-information/binary-encoding-sbe) for details on how to enable it.
 </Warning>
 
 ## Server URLs

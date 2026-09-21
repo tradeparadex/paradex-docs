@@ -3,7 +3,7 @@ title: Binary Encoding (SBE)
 ---
 
 <Warning title="SBE required for public channels as of 21 September 2026">
-As of 21 September 2026, Paradex requires SBE for public channel payloads. JSON is no longer served for public channels. Connections must include the schema parameters described below, or use the Python SDK with `sbe_enabled=True`.
+As of 21 September 2026, Paradex requires SBE for public channel payloads. See [Enabling SBE](#enabling-sbe) below for how to enable it.
 </Warning>
 
 Public channel payloads are delivered as binary [Simple Binary Encoding](https://github.com/real-logic/simple-binary-encoding) frames instead of JSON. SBE is a FIX Trading Community standard designed for low latency market data, and typically reduces message size substantially compared with the equivalent JSON.

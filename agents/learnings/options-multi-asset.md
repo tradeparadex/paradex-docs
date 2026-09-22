@@ -2,13 +2,13 @@
 
 ## Pattern
 
-Options instrument config pages live in `fern/pages/instruments-guide/dated-options/` with one `.mdx` file per asset (e.g. `btc-usd.mdx`, `eth-usd.mdx`, `hype-usd.mdx`, `sol-usd.mdx`, `cl-usd.mdx`). Each page follows the same table layout — product type, symbol format, base/quote/settlement currencies, tick sizes, order limits, band factors.
+Options instrument config pages live in `fern/pages/instruments-guide/dated-options/` with one `.mdx` file per asset (e.g. `btc-usd.mdx`, `eth-usd.mdx`, `hype-usd.mdx`, `sol-usd.mdx`, `zec-usd.mdx`, `us500-usd.mdx`). Each page follows the same table layout — product type, symbol format, base/quote/settlement currencies, tick sizes, order limits, band factors.
 
 Sidebar entries for options are under `- section: Options` inside the Instruments Guide in `fern/docs.yml`.
 
 ## Per-asset parameter tables
 
-Several pages use `<Tabs>` with one tab per asset (BTC, ETH, HYPE, SOL, CL) when parameters differ per underlying. Crypto underlyings come first, CL (TradFi) last:
+Several pages use `<Tabs>` with one tab per asset (BTC, ETH, HYPE, SOL, ZEC, US500) when parameters differ per underlying. Crypto underlyings come first, TradFi (US500) last:
 
 | Page | Section |
 |---|---|
@@ -18,21 +18,21 @@ Several pages use `<Tabs>` with one tab per asset (BTC, ETH, HYPE, SOL, CL) when
 
 When adding a new options underlying, update all four locations: instrument config page, sidebar, expiries/listing, margin requirements, and portfolio margin.
 
-## CL (Crude Oil) specifics
+## US500 specifics
 
-- CL only has 2 weekly expiries (1w and 2w); no daily or monthly cycles.
-- If an expiry falls on a weekend or public holiday (per the Pyth CL calendar), it rolls to the next business day.
-- CL strike step sizes only have 2 time buckets (8h–7d and 7d–16d) instead of the 4 used by other assets.
-- CL margin parameters (cross margin and portfolio margin) match HYPE identically.
+- US500 (S&P 500 index) options replaced CL (Crude Oil) options. CL options were delisted and removed from the docs; a redirect was added from `/trading/instruments-guide/options/cl-options` to `/trading/dated-options`. CL still exists as a perpetual future (`cl-usd-perp.mdx`).
+- US500 margin parameters (cross margin and portfolio margin: SCAN scenarios, min-delta coefficients, `MIN_VOL_SHOCK_UP`) match BTC identically.
+- US500 strike step sizes use the standard 4 time buckets: $25/$25/$50, $50/$50/$100, $50/$100/$250, $100/$250/$500 (ATM/Outer/Wings).
+- US500 contract spec: 0.01 US500 order size increment, 100 US500 max order size, 200 US500 position limit, 40% spot and IV band factors.
 
 ## Gotchas
 
-- Portfolio Margin SCAN scenarios (spot shocks, vol shocks, tail weights) are sourced from the live endpoint `https://api.prod.paradex.trade/v1/system/portfolio-margin-config`. Each asset has its own spot-shock ladder and tail weights (e.g. BTC ±14/10.5/7/3.5%, ETH ±16/12/8/4%, SOL ±24/18/12/6%, HYPE ±28/21/14/7%); do not assume BTC/ETH or HYPE/SOL match. Regenerate all four tabs from the JSON when updating. Note the endpoint only returns BTC/ETH/SOL/HYPE — CL is not present, so the CL tab cannot be verified against it.
+- Portfolio Margin SCAN scenarios (spot shocks, vol shocks, tail weights) are sourced from the live endpoint `https://api.prod.paradex.trade/v1/system/portfolio-margin-config`. Each asset has its own spot-shock ladder and tail weights (e.g. BTC ±14/10.5/7/3.5%, ETH ±16/12/8/4%, SOL ±24/18/12/6%, HYPE ±28/21/14/7%); do not assume BTC/ETH or HYPE/SOL match. Regenerate all four tabs from the JSON when updating. Note the endpoint only returned BTC/ETH/SOL/HYPE when last checked, so the US500 tab (copied from BTC per product guidance) may not be verifiable against it.
 - SOL uses the same strike step sizes and SCAN vol shocks as HYPE, but its own spot shocks, tail weights, and cross-margin fractions (Long ITM 25%, Short ITM 18%, Short OTM 12%).
-- The Mark Price reference-exchange table (`fern/pages/dated-options/mark-price.mdx`) only lists BTC, ETH, and HYPE; SOL and CL are not listed there.
-- The Portfolio Margin `Parameters` section at the bottom of `portfolio-margin.mdx` contains constants that are mostly shared across assets; `MIN_VOL_SHOCK_UP` and `HEDGED_MARGIN_FACTOR` are the exceptions (HYPE/CL = 60% / 1.5% vs BTC/ETH = 40% / 1%).
-- ZEC options were delisted and removed from the docs. The instrument config page, sidebar entry, and per-asset tabs (expiries/listing, margin requirements, portfolio margin SCAN + min-delta) were deleted, and a redirect was added from `/trading/instruments-guide/options/zec-options` to `/trading/dated-options`. Note ZEC still exists as a perpetual future (`zec-usd-perp.mdx`) — only options were removed.
+- The Mark Price reference-exchange table (`fern/pages/dated-options/mark-price.mdx`) only lists BTC, ETH, and HYPE; SOL and US500 are not listed there.
+- The Portfolio Margin `Parameters` section at the bottom of `portfolio-margin.mdx` contains constants that are mostly shared across assets; `MIN_VOL_SHOCK_UP` and `HEDGED_MARGIN_FACTOR` are the exceptions (HYPE/SOL = 60% / 1.5% vs BTC/ETH/US500 = 40% / 1%).
+- ZEC options are present on `main` as of 2026-09-22 (instrument page, sidebar entry, margin requirements tab, portfolio margin SCAN tab and min-delta row) even though an earlier note recorded their removal. Check the live files rather than trusting this file for ZEC status.
 
 ## Last updated
 
-2026-09-15
+2026-09-22

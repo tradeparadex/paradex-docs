@@ -477,12 +477,12 @@ navigation:
             - page: SOL Options
               slug: sol-options
               path: ./pages/instruments-guide/dated-options/sol-usd.mdx
-            - page: CL Options
-              slug: cl-options
-              path: ./pages/instruments-guide/dated-options/cl-usd.mdx
             - page: ZEC Options
               slug: zec-options
               path: ./pages/instruments-guide/dated-options/zec-usd.mdx
+            - page: US500 Options
+              slug: us500-options
+              path: ./pages/instruments-guide/dated-options/us500-usd.mdx
   - tab: risk
     layout:
       - section: Getting Started
@@ -1038,6 +1038,10 @@ redirects:
   # Redirect old v2 URL to Trading Fees
   - source: "/trading/trading-fees-v2"
     destination: "/trading/trading-fees"
+
+  # CL options delisted
+  - source: "/trading/instruments-guide/options/cl-options"
+    destination: "/trading/dated-options"
 
 layout:
   header-height: 72px

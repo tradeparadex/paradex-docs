@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.5.0
+    version: 1.6.0
     description: |
         Channels for real-time updates.
 
@@ -1073,7 +1073,8 @@ channels:
                 summary: Private websocket channel to receive events on your RFQs
                 description: |-
                     Subscribe to `rfq` for all RFQs belonging to the authenticated account, or `rfq.{rfq_id}` for one venue-issued RFQ id.
-                    Events have type RFQ, QUOTE, TRADE, or RESULT. RESULT acknowledges asynchronous REST create, execute, and cancel commands; match it to the REST 202 response by `result.request_id`.
+                    Events have type RFQ, QUOTE, TRADE, RESULT, or DERIBIT_COST. RESULT acknowledges asynchronous REST create, execute, and cancel commands; match it to the REST 202 response by `result.request_id`.
+                    DERIBIT_COST is a reference figure, not an event: it repeats on a timer while the RFQ is open, carries what the same structure would cost crossing Deribit's public book, and is not executable. Read `deribit_cost.last_updated_at` to tell a live figure from a frozen feed, bearing in mind it is absent whenever no venue tick backs the figure, and the per-direction `status` for why a direction has none: NO_SIZE and INSUFFICIENT_SIZE are answers about Deribit's book, NOT_LISTED says it does not list the instrument, and NO_DATA says no price for it has reached us yet, so do not render that one as an empty book.
                     Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: rfq[.{rfq_id}]
     /subscribe:
@@ -2349,6 +2350,44 @@ components:
                 created_at:
                     description: Event time in Unix milliseconds
                     type: integer
+                deribit_cost:
+                    additionalProperties: false
+                    description: 'What the same structure would cost crossing Deribit''s public book, when type is DERIBIT_COST. A reference only: nothing here is executable, and it repeats on a timer while the RFQ is open'
+                    properties:
+                        buy_available:
+                            description: 'Structure units resting at Deribit''s top of book: the smallest, across premium legs, of that leg''s available amount over its ratio. Travels with INSUFFICIENT_SIZE so a client can name the gap rather than only assert one'
+                            type: string
+                        buy_cost:
+                            description: 'Signed USD total for the whole quantity, oriented like a structure price: positive is a debit, negative a net credit. Absent unless this direction''s status is PRICED. A zero is a real price, for a structure whose legs offset, and is not the same as an absent figure'
+                            type: string
+                        buy_status:
+                            description: 'Why this direction has no cost. NO_SIZE, INSUFFICIENT_SIZE and PRICED are one scale: nothing resting, some but not enough, enough. NOT_LISTED means Deribit does not list the instrument. NO_DATA means it does and no price has reached us, which is not an empty book and must not be drawn as one'
+                            enum:
+                                - PRICED
+                                - NOT_LISTED
+                                - NO_SIZE
+                                - INSUFFICIENT_SIZE
+                                - NO_DATA
+                            type: string
+                        last_updated_at:
+                            description: Unix ms of the OLDEST leg tick behind the figure, since a structure is as stale as its worst leg. Absent whenever no tick backs it, which is every NOT_LISTED and NO_DATA. Use it to tell a live figure from a frozen feed, not to tell whether the reference is still arriving
+                            type: integer
+                        sell_available:
+                            description: As buy_available, for selling the structure instead of buying it
+                            type: string
+                        sell_cost:
+                            description: As buy_cost, for selling the structure instead of buying it
+                            type: string
+                        sell_status:
+                            description: As buy_status, for selling the structure instead of buying it
+                            enum:
+                                - PRICED
+                                - NOT_LISTED
+                                - NO_SIZE
+                                - INSUFFICIENT_SIZE
+                                - NO_DATA
+                            type: string
+                    type: object
                 quote:
                     additionalProperties: false
                     description: Maker or taker quote payload when type is QUOTE
@@ -2497,6 +2536,7 @@ components:
                         - QUOTE
                         - TRADE
                         - RESULT
+                        - DERIBIT_COST
                     type: string
             required:
                 - type
@@ -2828,7 +2868,8 @@ components:
             summary: Private websocket channel to receive events on your RFQs
             description: |-
                 Subscribe to `rfq` for all RFQs belonging to the authenticated account, or `rfq.{rfq_id}` for one venue-issued RFQ id.
-                Events have type RFQ, QUOTE, TRADE, or RESULT. RESULT acknowledges asynchronous REST create, execute, and cancel commands; match it to the REST 202 response by `result.request_id`.
+                Events have type RFQ, QUOTE, TRADE, RESULT, or DERIBIT_COST. RESULT acknowledges asynchronous REST create, execute, and cancel commands; match it to the REST 202 response by `result.request_id`.
+                DERIBIT_COST is a reference figure, not an event: it repeats on a timer while the RFQ is open, carries what the same structure would cost crossing Deribit's public book, and is not executable. Read `deribit_cost.last_updated_at` to tell a live figure from a frozen feed, bearing in mind it is absent whenever no venue tick backs the figure, and the per-direction `status` for why a direction has none: NO_SIZE and INSUFFICIENT_SIZE are answers about Deribit's book, NOT_LISTED says it does not list the instrument, and NO_DATA says no price for it has reached us yet, so do not render that one as an empty book.
             tags:
                 - name: trading
         ResponsesTradeResult:

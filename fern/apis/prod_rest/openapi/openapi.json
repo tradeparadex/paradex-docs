@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.135.0"
+    "version": "1.135.3"
   },
   "paths": {
     "/account": {
@@ -10358,7 +10358,11 @@
           "OFFER_UNAUTHORIZED",
           "OFFER_PARENT_MISMATCH",
           "OFFER_PARENT_NOT_ACCEPTING",
-          "MARGIN_CONFIG_NOT_FOUND"
+          "PORTFOLIO_MARGIN_CONFIG_NOT_FOUND",
+          "MARGIN_CONFIG_NOT_FOUND",
+          "MMP_CONFIG_INVALID",
+          "MMP_NOT_ENABLED",
+          "MMP_NOT_CONFIGURED"
         ],
         "x-enum-comments": {
           "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -10473,7 +10477,11 @@
           "ErrorCodeString_OfferUnauthorized",
           "ErrorCodeString_OfferParentMismatch",
           "ErrorCodeString_OfferParentNotAccepting",
-          "ErrorCodeString_MarginConfigNotFound"
+          "ErrorCodeString_PortfolioMarginConfigNotFound",
+          "ErrorCodeString_MarginConfigNotFound",
+          "ErrorCodeString_MmpConfigInvalid",
+          "ErrorCodeString_MmpNotEnabled",
+          "ErrorCodeString_MmpNotConfigured"
         ]
       },
       "responses.ErrorResponse": {
@@ -11802,14 +11810,16 @@
           "STOP_CONDITION_BELOW_TRIGGER",
           "STOP_CONDITION_ABOVE_TRIGGER",
           "INTERACTIVE",
-          "TARGET_STRATEGY_VWAP"
+          "TARGET_STRATEGY_VWAP",
+          "MMP"
         ],
         "x-enum-varnames": [
           "FlagsReduceOnly",
           "FlagsStopConditionBelowTrigger",
           "FlagsStopConditionAboveTrigger",
           "FlagsInteractive",
-          "FlagsTargetStrategyVWAP"
+          "FlagsTargetStrategyVWAP",
+          "FlagsMMP"
         ]
       },
       "responses.OrderInstruction": {

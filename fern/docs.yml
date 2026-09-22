@@ -483,6 +483,9 @@ navigation:
             - page: ZEC Options
               slug: zec-options
               path: ./pages/instruments-guide/dated-options/zec-usd.mdx
+            - page: US500 Options
+              slug: us500-options
+              path: ./pages/instruments-guide/dated-options/us500-usd.mdx
   - tab: risk
     layout:
       - section: Getting Started

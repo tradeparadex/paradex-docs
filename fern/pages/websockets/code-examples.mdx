@@ -30,7 +30,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Passing `sbe_enabled=True` appends the schema parameters to the connection URL. Omitting it falls back to JSON, which is deprecated for public channels.
+Passing `sbe_enabled=True` appends the schema parameters to the connection URL. Omitting it is not supported for public channels; as of 21 September 2026 SBE is required.
 
 ## Subscribing to a Channel
 

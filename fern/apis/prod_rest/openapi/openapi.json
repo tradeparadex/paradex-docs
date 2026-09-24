@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.135.3"
+    "version": "1.137.0"
   },
   "paths": {
     "/account": {
@@ -10362,6 +10362,7 @@
           "MARGIN_CONFIG_NOT_FOUND",
           "MMP_CONFIG_INVALID",
           "MMP_NOT_ENABLED",
+          "MMP_MIN_FREEZE_NOT_ELAPSED",
           "MMP_NOT_CONFIGURED"
         ],
         "x-enum-comments": {
@@ -10481,6 +10482,7 @@
           "ErrorCodeString_MarginConfigNotFound",
           "ErrorCodeString_MmpConfigInvalid",
           "ErrorCodeString_MmpNotEnabled",
+          "ErrorCodeString_MmpMinFreezeNotElapsed",
           "ErrorCodeString_MmpNotConfigured"
         ]
       },

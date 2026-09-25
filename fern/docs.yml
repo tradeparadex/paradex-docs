@@ -166,6 +166,9 @@ navigation:
       - page: FastFills
         slug: fastfills
         path: ./pages/trading/fastfills.mdx
+      - page: Market Maker Protections (MMP)
+        slug: market-maker-protections
+        path: ./pages/trading/market-maker-protections.mdx
       - page: TradFi Price Oracle
         slug: tradfi-markets
         path: ./pages/trading/real-world-assets.mdx

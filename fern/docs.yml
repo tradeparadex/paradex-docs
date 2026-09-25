@@ -483,6 +483,12 @@ navigation:
             - page: US500 Options
               slug: us500-options
               path: ./pages/instruments-guide/dated-options/us500-usd.mdx
+            - page: US100 Options
+              slug: us100-options
+              path: ./pages/instruments-guide/dated-options/us100-usd.mdx
+            - page: XAU Options
+              slug: xau-options
+              path: ./pages/instruments-guide/dated-options/xau-usd.mdx
   - tab: risk
     layout:
       - section: Getting Started

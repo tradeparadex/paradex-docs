@@ -19,7 +19,11 @@ Only order book orders explicitly flagged for MMP are protected. Orders without 
 
 MMP tracks protected fills over a single sliding time window. Size, delta and vega are measured over the same window and compared independently against their configured limits.
 
-Only **MMP flagged fills** count toward the window, including fills where the MMP order was the aggressor.
+Only **MMP flagged fills** count toward the window, and on the order book only the fill where your order was the resting maker. A flagged order that crosses the book is not counted. [RFQ and block trade](#rfq-and-block-trades) legs follow their own rules.
+
+<Note>
+Because flagged orders that cross the book are not counted, they do not offset your maker fills in the window. Delta and vega limits trip on your gross maker exposure, so hedging with flagged aggressive orders does not keep the window's net delta or vega down.
+</Note>
 
 | Feature | Behavior |
 | --- | --- |
@@ -44,13 +48,13 @@ RFQ and block trade fills are protected only for accounts that opt in. Set `prot
 | Rule | Behavior |
 | --- | --- |
 | **Scope** | Set per account and per base asset, not per quote or per block. |
-| **Maker legs only** | Only legs where your account provided liquidity are protected. Legs where your account took liquidity are not counted, and `MARKET` legs are never protected. |
+| **Which legs** | On a block you create directly, only your maker legs are protected. On an offer you submit, your own legs are protected whichever side they end up on, because answering a request for quotes is quoting. `MARKET` legs are never protected. A protected leg counts toward the window whether it is the maker or the taker side. |
 | **Requester** | On a block built from offers, such as an RFQ, the account that requested the quotes is never protected. |
 | **Shared window** | Protected block trade legs count toward the same window and limits as your MMP order book fills on that base asset. |
 | **Set at creation** | Protection is decided when the block is created and is not changed afterward. Turning the option off applies only to blocks created afterward; existing blocks keep the protection their legs were created with. Turning it off can take a short time to take effect. |
 | **Visibility** | A leg's flags are returned only to the account that owns the leg. A counterparty reading the same block cannot see whether your leg is protected, and you cannot see whether theirs is. |
 
-You cannot set the MMP flag on a block trade leg yourself. Paradex applies it to your maker legs based on your `protect_block_trades` setting.
+You cannot set the MMP flag on a block trade leg yourself. Paradex applies it based on your `protect_block_trades` setting, to the legs described in **Which legs** above.
 
 Before accepting a block trade request, Paradex checks the MMP settings of the accounts involved. If those settings cannot be read, the request is refused with HTTP 503 rather than proceeding without protection. This can happen even for accounts that have no MMP configuration. Retry the request later. The accounts checked depend on the request:
 
@@ -253,7 +257,7 @@ Canceled quotes are not restored automatically. The maker must place new quotes.
 
 Add `"MMP"` to `flags` on a `LIMIT` order on a perp or dated option market.
 
-The flag is supported on REST, batch and WebSocket order entry. The MMP flag is fixed when the order is placed and is kept when the order is modified. To remove it, cancel and replace the order. You cannot set the flag on block trade legs. Paradex sets it on your maker legs when `protect_block_trades` is on. See [RFQ and block trades](#rfq-and-block-trades).
+The flag is supported on REST, batch and WebSocket order entry. The MMP flag is fixed when the order is placed and is kept when the order is modified. To remove it, cancel and replace the order. You cannot set the flag on block trade legs. Paradex sets it on eligible legs when `protect_block_trades` is on. See [RFQ and block trades](#rfq-and-block-trades).
 
 ```json
 POST /v1/orders

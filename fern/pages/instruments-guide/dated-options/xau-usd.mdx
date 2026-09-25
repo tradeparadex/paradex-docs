@@ -20,6 +20,54 @@ The reference configuration for the XAU Dated Options contract:
 | Spot band factor | 30% |
 | IV band factor | 30% |
 
+## Index and settlement price
+
+XAU options are priced and settled against the **Paradex XAU Spot Oracle Price**, the same index used by the [XAU-USD-PERP](/trading/instruments-guide/futures/trad-fi/xau-usd-perp) perpetual. It is computed as a weighted median of the sources below. Each source has a score; its weight is that score divided by the total score of the sources available at the time, so weights differ between market open and closing hours.
+
+| Source | Description | Score | Availability |
+|--------|-------------|:-----:|:------------:|
+| Pyth | [Pyth 24/7 GOLD index](https://app.pyth.com/explore/Metal.Index.GOLD%2FUSD) | 1 | 24/7 |
+| Stork | [Stork XAU oracle price](https://data.stork.network/assets/XAUUSD) | 2 | Open hours |
+| Hyperliquid | [Hyperliquid GOLD index price](https://app.hyperliquid.xyz/trade/xyz:GOLD) | 1 | 24/7 |
+| Lighter | [Lighter XAU index price](https://app.lighter.xyz/trade/XAU) | 0.7 | 24/7 |
+| OKX | [OKX XAU index price](https://www.okx.com/trade-swap/xau-usdt-swap) | 1 | 24/7 |
+| Bybit | [Bybit XAU index price](https://www.bybit.com/en/trade/usdt/XAUUSDT) | 1 | 24/7 |
+| Binance | [Binance XAU index price](https://www.binance.com/en/futures/XAUUSDT) | 1 | Open hours |
+| Closing Price | Paradex XAU spot price at the market closing timestamp | 0.5 | Closing hours |
+| Internal Price | EMA of the Paradex XAU-USD-PERP mark price with a 1-hour half-life, initialised at the Closing Price | 0.5 | Closing hours |
+
+<Tabs>
+  <Tab title="Open hours">
+    | Source | Score | Weight |
+    |--------|:-----:|:------:|
+    | Pyth | 1 | 12.99% |
+    | Stork | 2 | 25.97% |
+    | Hyperliquid | 1 | 12.99% |
+    | Lighter | 0.7 | 9.09% |
+    | OKX | 1 | 12.99% |
+    | Bybit | 1 | 12.99% |
+    | Binance | 1 | 12.99% |
+    | **Total** | **7.7** | **100%** |
+  </Tab>
+  <Tab title="Closing hours">
+    | Source | Score | Weight |
+    |--------|:-----:|:------:|
+    | Pyth | 1 | 17.54% |
+    | Hyperliquid | 1 | 17.54% |
+    | Lighter | 0.7 | 12.28% |
+    | OKX | 1 | 17.54% |
+    | Bybit | 1 | 17.54% |
+    | Closing Price | 0.5 | 8.77% |
+    | Internal Price | 0.5 | 8.77% |
+    | **Total** | **5.7** | **100%** |
+  </Tab>
+</Tabs>
+
+- **Mark price**: the Spot Oracle Price is the spot input $S$ to the synthetic forward used by the [Black-76 mark price](/trading/dated-options/mark-price).
+- **Settlement price**: options settle at 08:00 UTC on the expiry date using a [30-minute TWAP](/trading/dated-options#settlement) of the Spot Oracle Price ending at expiry.
+
+See [TradFi Price Oracle](/trading/tradfi-markets) for market hours and the general methodology.
+
 ## Margin Configuration
 
 - [Cross Margin Requirements](/trading/dated-options/margin-requirements) — cross-margin IMR/MMR parameters for trading options

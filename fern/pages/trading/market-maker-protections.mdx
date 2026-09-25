@@ -97,7 +97,7 @@ All endpoints are private. `GET /v1/account/mmp` also accepts a [read only token
 
 Sizes are in base units such as BTC or ETH. Times are in milliseconds.
 
-Configuration changes and resets can return HTTP 503 while the matching engine is unavailable. Retry the request later.
+Configuration changes can return HTTP 503 when market data is temporarily unavailable, and resets can return HTTP 503 while the matching engine is unavailable. Retry the request later.
 
 ### Configuration
 
@@ -219,9 +219,10 @@ A successful reset returns the underlying assets that were reset:
 | --- | --- |
 | Reset within 1 second of a trigger | Rejected with `MMP_MIN_FREEZE_NOT_ELAPSED` (HTTP 400). |
 | `base_asset` has no configuration | Rejected with `MMP_NOT_CONFIGURED` (HTTP 400). |
+| Reset sent with a read only token | Rejected with `INVALID_TOKEN_SCOPE` (HTTP 403). |
 | More than 5 resets per second, or more than 60 resets per minute, per account | Rejected with HTTP 429. |
 
-A reset of all underlying assets is applied underlying by underlying. If some underlying assets cannot be reset (for example, one is still inside its 1 second lockout), the call returns HTTP 400 even though others may already have been reset. The error `data` lists which underlying assets were reset (`data.reset`) and which were refused (`data.refused`).
+A reset of all underlying assets is applied underlying by underlying, and underlying assets without a configuration are skipped. If any underlying is still inside its 1 second lockout, the call returns HTTP 400 even though others may already have been reset. The error `data` lists which underlying assets were reset (`data.reset`) and which were refused (`data.refused`).
 
 Canceled quotes are not restored automatically. The maker must place new quotes.
 
@@ -299,9 +300,10 @@ Every event includes:
 | Code | HTTP | Meaning |
 | --- | --- | --- |
 | `MMP_NOT_ENABLED` | 403 | Account is not enabled for MMP. |
+| `INVALID_TOKEN_SCOPE` | 403 | Reset sent with a read only token. |
 | `MMP_CONFIG_INVALID` | 400 | Configuration or base asset is invalid. |
 | `MMP_NOT_CONFIGURED` | 400 | Reset requested for an underlying with no configuration. |
 | `MMP_MIN_FREEZE_NOT_ELAPSED` | 400 | Reset requested within 1 second of a trigger. |
 | `INVALID_PARAMETER` | 400 | MMP flag used on an unsupported order type, market or block trade leg, or another request parameter is invalid. |
 
-Reset rate limit violations return HTTP 429. Configuration changes and resets return HTTP 503 while the matching engine is unavailable.
+Reset rate limit violations return HTTP 429. Configuration changes return HTTP 503 when market data is temporarily unavailable, and resets return HTTP 503 while the matching engine is unavailable.

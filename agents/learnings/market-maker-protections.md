@@ -12,7 +12,8 @@ Page: `fern/pages/trading/market-maker-protections.mdx`, served at `/trading/mar
   - Supported markets are perps and dated options. Perpetual options and block trade legs are rejected.
   - Five cancel reasons, including `MMP_GREEKS_UNAVAILABLE` (cancels all MMP orders on the underlying, perps included).
   - RFQ quotes have no MMP flag and RFQ/block trade fills do not count toward the window. Do not document a per quote RFQ flag.
-  - `GET /v1/account/mmp` accepts read only tokens; writes need a trading JWT. Reset limits: 5/second and 60/minute per account. Writes and resets can return 503.
+  - `GET /v1/account/mmp` accepts read only tokens; writes need a trading JWT. Reset limits: 5/second and 60/minute per account. `POST`/`DELETE` return 503 when market data is temporarily unavailable; only reset returns 503 because the matching engine is unavailable. Reset with a read only token returns `INVALID_TOKEN_SCOPE` (403).
+  - Reset all returns 400 only for the 1 second lockout; underlying assets without a configuration are skipped and the call still returns 200.
   - WebSocket `window_*`, `trip_reason` (`SIZE`, `DELTA`, `VEGA`, `INVALID_FILL`) and `trigger_market` are only on `TRIGGERED`; `config` (with `removed`) is on `CONFIG_UPDATED`; `frozen_until` is `0` on non `TRIGGERED` events.
 - Do not expose internal component names (for example "execution gate" or "matching path") or source file references. Describe behavior in user terms and refer to "the matching engine".
 - Lowercase "vega" needed `[Vv]ega` in `.vale/styles/config/vocabularies/Domain/accept.txt` (CI Vale 3.17 flagged it).

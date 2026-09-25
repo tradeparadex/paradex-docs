@@ -1,0 +1,26 @@
+---
+title: SPCX options configuration
+---
+
+The reference configuration for the SPCX Dated Options contract:
+
+| Parameter | Value |
+|-----------|-------|
+| Product type | Dated European Option |
+| Symbol format | SPCX-USD-{Expiry}-{Strike}-{Type} |
+| Base currency | SPCX |
+| Quote currency | USD |
+| Settlement currency | USDC |
+| Price tick size | 0.001 USD |
+| Order size increment | 1 SPCX |
+| Minimum order value | 20 USD |
+| Maximum order size | 2,500 SPCX |
+| Maximum open orders | 150 |
+| Position limit | 25,000 SPCX |
+| Spot band factor | 50% |
+| IV band factor | 50% |
+
+## Margin Configuration
+
+- [Cross Margin Requirements](/trading/dated-options/margin-requirements) — cross-margin IMR/MMR parameters for trading options
+- [Portfolio Margin](/risk/portfolio-margin) — portfolio-level risk evaluation for reduced margin on hedged portfolios

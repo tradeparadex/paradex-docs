@@ -1,0 +1,26 @@
+---
+title: SNDK options configuration
+---
+
+The reference configuration for the SNDK Dated Options contract:
+
+| Parameter | Value |
+|-----------|-------|
+| Product type | Dated European Option |
+| Symbol format | SNDK-USD-{Expiry}-{Strike}-{Type} |
+| Base currency | SNDK |
+| Quote currency | USD |
+| Settlement currency | USDC |
+| Price tick size | 0.01 USD |
+| Order size increment | 0.1 SNDK |
+| Minimum order value | 20 USD |
+| Maximum order size | 250 SNDK |
+| Maximum open orders | 150 |
+| Position limit | 2,500 SNDK |
+| Spot band factor | 50% |
+| IV band factor | 50% |
+
+## Margin Configuration
+
+- [Cross Margin Requirements](/trading/dated-options/margin-requirements) — cross-margin IMR/MMR parameters for trading options
+- [Portfolio Margin](/risk/portfolio-margin) — portfolio-level risk evaluation for reduced margin on hedged portfolios

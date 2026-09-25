@@ -11,7 +11,7 @@ Market Maker Protections (MMP) is currently available for a set of whitelisted u
 
 MMP protects market makers from excessive fills during fast markets by automatically freezing protected orders once configured limits are exceeded.
 
-MMP is available for **perps and dated options** and is configured **per account (L2 address) and underlying (base asset)**. For example, one BTC configuration applies across all BTC perps and dated options for that account. Perpetual options are not supported.
+MMP is available for **perps and dated options** and is configured **per account (L2 address) and underlying (base asset)**. For example, one BTC configuration applies across all BTC perps and dated options for that account.
 
 Only order book orders explicitly flagged for MMP are protected. Orders without the MMP flag are unaffected. RFQ and block trade fills count toward MMP limits only if the account opts in. See [RFQ and block trades](#rfq-and-block-trades).
 
@@ -38,7 +38,7 @@ Because flagged orders that cross the book are not counted, they do not offset y
 MMP is enforced by the matching engine, so concurrent fills across markets share the same state. **At most one fill can take exposure beyond a configured limit before protection activates.**
 
 <Warning>
-MMP relies on up to date Greeks. If Greeks become stale or unavailable for any market on an underlying, all MMP orders on that underlying are canceled with reason `MMP_GREEKS_UNAVAILABLE`, including orders on perps.
+MMP relies on up to date Greeks. If Greeks become stale or unavailable for any market on an underlying, all MMP orders on that underlying are canceled with reason `MMP_GREEKS_UNAVAILABLE`, including orders on perps. This check applies to MMP orders that can rest, so an MMP `IOC` order is not canceled for stale Greeks.
 </Warning>
 
 ## RFQ and block trades
@@ -195,7 +195,7 @@ Example `GET /v1/account/mmp` response once the configuration is live:
 }
 ```
 
-`account` is the account the configurations belong to, and `enabled` indicates whether the account is enabled for MMP.
+`account` is the account the configurations belong to, and `enabled` indicates whether the account is enabled for MMP. A configuration listed while `enabled` is `false` is still enforced until it is deleted.
 
 `window_size`, `window_delta` and `window_vega` are the current values accumulated over the same `interval_ms` window.
 
@@ -207,7 +207,7 @@ Example `GET /v1/account/mmp` response once the configuration is live:
 
 Use `is_frozen` to distinguish the last two cases.
 
-Changing the configuration clears the trading window for that underlying.
+Changing the configuration clears the trading window for that underlying. Posting an identical configuration again does not.
 
 <Warning>
 A freeze **survives disabling MMP**. Deleting and adding the configuration again does not clear an active freeze.
@@ -247,7 +247,7 @@ A successful reset returns the underlying assets that were reset:
 | Reset within 1 second of a trigger | Rejected with `MMP_MIN_FREEZE_NOT_ELAPSED` (HTTP 400). |
 | `base_asset` has no configuration | Rejected with `MMP_NOT_CONFIGURED` (HTTP 400). |
 | Reset sent with a read only token | Rejected with `INVALID_TOKEN_SCOPE` (HTTP 403). |
-| More than 5 resets per second, or more than 60 resets per minute, per account | Rejected with HTTP 429. |
+| More than 60 resets per minute per account, or a short burst of resets over the burst limit | Rejected with HTTP 429. |
 
 A reset of all underlying assets is applied underlying by underlying, and underlying assets without a configuration are skipped. If any underlying is still inside its 1 second lockout, the call returns HTTP 400 even though others may already have been reset. The error `data` lists which underlying assets were reset (`data.reset`) and which were refused (`data.refused`).
 
@@ -278,7 +278,7 @@ POST /v1/orders
 | Account is not enabled for MMP | Rejected with `MMP_NOT_ENABLED` (HTTP 403). |
 | MMP flag set but no configuration exists for the underlying | Order is accepted and then canceled with reason `MMP_NOT_CONFIGURED`. |
 | MMP flag set while the underlying is frozen | Order is accepted and then canceled with reason `MMP_FROZEN`. |
-| MMP flag set on an order type other than `LIMIT`, an unsupported market (such as a perpetual option) or a block trade leg | Rejected with `INVALID_PARAMETER` and an explanatory message. |
+| MMP flag set on an order type other than `LIMIT`, an unsupported market or a block trade leg | Rejected with `INVALID_PARAMETER` and an explanatory message. |
 
 MMP related cancellation reasons:
 
@@ -286,7 +286,7 @@ MMP related cancellation reasons:
 | --- | --- |
 | `MMP_TRIGGERED` | Resting MMP orders are canceled because a limit was breached. |
 | `MMP_FROZEN` | An MMP order is canceled because the underlying is frozen. |
-| `MMP_DISABLED` | Resting MMP orders are canceled because MMP was disabled. |
+| `MMP_DISABLED` | Resting MMP orders are canceled because MMP was disabled for the underlying, or because MMP is temporarily unavailable, for example during a restart. |
 | `MMP_NOT_CONFIGURED` | An MMP order is canceled because no configuration exists for its underlying. |
 | `MMP_GREEKS_UNAVAILABLE` | MMP orders on an underlying are canceled because Greeks are stale or unavailable for one of its markets. |
 
@@ -308,7 +308,7 @@ Every event includes:
 
 | Field | Meaning |
 | --- | --- |
-| `trip_reason` | Trigger reason: `SIZE`, `DELTA`, `VEGA` or `INVALID_FILL`. |
+| `trip_reason` | Trigger reason: `SIZE`, `DELTA` or `VEGA` when that limit was exceeded, or `INVALID_FILL` when a fill could not be counted and the underlying was frozen as a precaution. |
 | `window_size` | Gross protected size in the window at the time of the trigger. |
 | `window_delta` | Net delta of protected fills in the window at the time of the trigger. |
 | `window_vega` | Net vega of protected fills in the window at the time of the trigger. |
@@ -333,4 +333,10 @@ Every event includes:
 | `MMP_MIN_FREEZE_NOT_ELAPSED` | 400 | Reset requested within 1 second of a trigger. |
 | `INVALID_PARAMETER` | 400 | MMP flag used on an unsupported order type, market or block trade leg, or another request parameter is invalid. |
 
-Reset rate limit violations return HTTP 429. Configuration changes return HTTP 503 when market data is temporarily unavailable, and resets return HTTP 503 while the matching engine is unavailable.
+Configuration changes return HTTP 503 when market data is temporarily unavailable, and resets return HTTP 503 while the matching engine is unavailable.
+
+Resets are limited to 60 per minute per account, with an additional short burst limit. Exceeding a limit returns HTTP 429.
+
+### SDK support
+
+[`paradex-py`](https://github.com/tradeparadex/paradex-py) 0.7.1 is the first version that supports the `MMP` order flag. Earlier versions cannot parse MMP flagged orders or protected block trade legs, including your own. Upgrade to 0.7.1 or later before placing MMP orders or opting in to block trade protection.

@@ -6,6 +6,7 @@ Page: `fern/pages/trading/market-maker-protections.mdx`, served at `/trading/mar
 
 - MMP endpoints (`/v1/account/mmp...`) and the private `mmp` WebSocket channel are not yet in the synced OpenAPI/AsyncAPI specs, so the page documents them inline instead of linking to generated API reference pages. Once the specs include them, consider linking out.
 - The synced OpenAPI spec already contains an `MMP_CONFIG_INVALID` error code that the product spec did not list. Confirm with the team before documenting it.
+- Lowercase "vega" needed `[Vv]ega` in `.vale/styles/config/vocabularies/Domain/accept.txt` (CI Vale 3.17 flagged it).
 - Escape dollar amounts as `\$` in the Portfolio Margin example.
 
 ## Patterns

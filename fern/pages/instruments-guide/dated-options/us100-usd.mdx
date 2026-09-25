@@ -1,0 +1,26 @@
+---
+title: US100 options configuration
+---
+
+The reference configuration for the US100 Dated Options contract:
+
+| Parameter | Value |
+|-----------|-------|
+| Product type | Dated European Option |
+| Symbol format | US100-USD-{Expiry}-{Strike}-{Type} |
+| Base currency | US100 |
+| Quote currency | USD |
+| Settlement currency | USDC |
+| Price tick size | 0.001 USD |
+| Order size increment | 0.01 US100 |
+| Minimum order value | 20 USD |
+| Maximum order size | 10 US100 |
+| Maximum open orders | 150 |
+| Position limit | 100 US100 |
+| Spot band factor | 40% |
+| IV band factor | 40% |
+
+## Margin Configuration
+
+- [Cross Margin Requirements](/trading/dated-options/margin-requirements) — cross-margin IMR/MMR parameters for trading options
+- [Portfolio Margin](/risk/portfolio-margin) — portfolio-level risk evaluation for reduced margin on hedged portfolios

@@ -72,6 +72,39 @@ The price consumed from external exchanges (Binance, Bybit, Hyperliquid, OKX, Li
   </Tab>
 </Tabs>
 
+## Equity Indices Pricing
+
+Equity index markets (US500 and US100) use a reduced source set: the only external sources are Pyth, Hyperliquid and Lighter, all available 24/7. Closing Price and Internal Price are added during closing hours. The same index is used for the perpetual and for [US500 options](/trading/instruments-guide/options/us500-options).
+
+| Source | US500 | US100 | Score | Availability |
+|--------|-------|-------|:-----:|:------------:|
+| Pyth | [US500 index](https://app.pyth.com/explore/Equity.Index.US500%2FUSD) | [US100 index](https://app.pyth.com/explore/Equity.Index.US100%2FUSD) | 1 | 24/7 |
+| Hyperliquid | [SP500 index price](https://app.hyperliquid.xyz/trade/xyz:SP500) | [XYZ100 index price](https://app.hyperliquid.xyz/trade/xyz:XYZ100) | 1 | 24/7 |
+| Lighter | [US500 index price](https://app.lighter.xyz/trade/US500) | [US100 index price](https://app.lighter.xyz/trade/US100) | 0.7 | 24/7 |
+| Closing Price | Paradex index price at the market closing timestamp | Same | 0.5 | Closing hours |
+| Internal Price | EMA of the Paradex perpetual mark price with a 1-hour half-life, initialised at the Closing Price | Same | 0.5 | Closing hours |
+
+<Tabs>
+  <Tab title="Open hours">
+    | Source | Score | Weight |
+    |--------|:-----:|:------:|
+    | Pyth | 1 | 37.04% |
+    | Hyperliquid | 1 | 37.04% |
+    | Lighter | 0.7 | 25.93% |
+    | **Total** | **2.7** | **100%** |
+  </Tab>
+  <Tab title="Closing hours">
+    | Source | Score | Weight |
+    |--------|:-----:|:------:|
+    | Pyth | 1 | 27.03% |
+    | Hyperliquid | 1 | 27.03% |
+    | Lighter | 0.7 | 18.92% |
+    | Closing Price | 0.5 | 13.51% |
+    | Internal Price | 0.5 | 13.51% |
+    | **Total** | **3.7** | **100%** |
+  </Tab>
+</Tabs>
+
 ## Industrial Metals & Energy Commodities Pricing
 
 The spot price for Industrial Metals & Energy Commodities tracks the price of the active front future. The active contract at the start of each month is defined by the following schedule:

@@ -20,6 +20,44 @@ The reference configuration for the US500 Dated Options contract:
 | Spot band factor | 40% |
 | IV band factor | 40% |
 
+## Index and settlement price
+
+US500 options are priced and settled against the **Paradex US500 Spot Oracle Price**, the same index used by the [US500-USD-PERP](/trading/instruments-guide/futures/trad-fi/us500-usd-perp) perpetual. It tracks the S&P 500 equity index and is computed as a weighted median of the sources below. Each source has a score; its weight is that score divided by the total score of the sources available at the time, so weights differ between market open and closing hours.
+
+| Source | Description | Score | Availability |
+|--------|-------------|:-----:|:------------:|
+| Pyth | [Pyth 24/7 US500 index](https://app.pyth.com/explore/Equity.Index.US500%2FUSD) | 1 | 24/7 |
+| Hyperliquid | [Hyperliquid SP500 index price](https://app.hyperliquid.xyz/trade/xyz:SP500) | 1 | 24/7 |
+| Lighter | [Lighter US500 index price](https://app.lighter.xyz/trade/US500) | 0.7 | 24/7 |
+| Closing Price | Paradex US500 index price at the market closing timestamp | 0.5 | Closing hours |
+| Internal Price | EMA of the Paradex US500-USD-PERP mark price with a 1-hour half-life, initialised at the Closing Price | 0.5 | Closing hours |
+
+<Tabs>
+  <Tab title="Open hours">
+    | Source | Score | Weight |
+    |--------|:-----:|:------:|
+    | Pyth | 1 | 37.04% |
+    | Hyperliquid | 1 | 37.04% |
+    | Lighter | 0.7 | 25.93% |
+    | **Total** | **2.7** | **100%** |
+  </Tab>
+  <Tab title="Closing hours">
+    | Source | Score | Weight |
+    |--------|:-----:|:------:|
+    | Pyth | 1 | 27.03% |
+    | Hyperliquid | 1 | 27.03% |
+    | Lighter | 0.7 | 18.92% |
+    | Closing Price | 0.5 | 13.51% |
+    | Internal Price | 0.5 | 13.51% |
+    | **Total** | **3.7** | **100%** |
+  </Tab>
+</Tabs>
+
+- **Mark price**: the Spot Oracle Price is the spot input $S$ to the synthetic forward used by the [Black-76 mark price](/trading/dated-options/mark-price).
+- **Settlement price**: options settle at 08:00 UTC on the expiry date using a [30-minute TWAP](/trading/dated-options#settlement) of the Spot Oracle Price ending at expiry.
+
+See [TradFi Price Oracle](/trading/tradfi-markets) for market hours and the general methodology.
+
 ## Margin Configuration
 
 - [Cross Margin Requirements](/trading/dated-options/margin-requirements) — cross-margin IMR/MMR parameters for trading options

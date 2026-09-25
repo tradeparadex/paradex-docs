@@ -13,7 +13,7 @@ MMP protects market makers from excessive fills during fast markets by automatic
 
 MMP is available for **perps and dated options** and is configured **per account (L2 address) and underlying (base asset)**. For example, one BTC configuration applies across all BTC perps and dated options for that account. Perpetual options are not supported.
 
-Only order book orders explicitly flagged for MMP are protected. Orders without the MMP flag are unaffected. RFQ and block trade fills do not count toward MMP limits.
+Only order book orders explicitly flagged for MMP are protected. Orders without the MMP flag are unaffected. RFQ and block trade fills count toward MMP limits only if the account opts in. See [RFQ and block trades](#rfq-and-block-trades).
 
 ## How MMP works
 
@@ -36,6 +36,26 @@ MMP is enforced by the matching engine, so concurrent fills across markets share
 <Warning>
 MMP relies on up to date Greeks. If Greeks become stale or unavailable for any market on an underlying, all MMP orders on that underlying are canceled with reason `MMP_GREEKS_UNAVAILABLE`, including orders on perps.
 </Warning>
+
+## RFQ and block trades
+
+RFQ and block trade fills are protected only for accounts that opt in. Set `protect_block_trades` to `true` in the [configuration](#configuration) for a base asset to protect your maker legs on that base asset. RFQ executions are included, because an RFQ settles as a block trade. The option is off by default.
+
+| Rule | Behavior |
+| --- | --- |
+| **Scope** | Set per account and per base asset, not per quote or per block. |
+| **Maker legs only** | Only legs where your account provided liquidity are protected. Legs where your account took liquidity are not counted, and `MARKET` legs are never protected. |
+| **Requester** | On a block built from offers, such as an RFQ, the account that requested the quotes is never protected. |
+| **Shared window** | Protected block trade legs count toward the same window and limits as your MMP order book fills on that base asset. |
+| **Set at creation** | Protection is decided when the block is created and is not changed afterward. Turning the option off applies only to blocks created afterward; existing blocks keep the protection their legs were created with. Turning it off can take a short time to take effect. |
+| **Visibility** | A leg's flags are returned only to the account that owns the leg. A counterparty reading the same block cannot see whether your leg is protected, and you cannot see whether theirs is. |
+
+You cannot set the MMP flag on a block trade leg yourself. Paradex applies it to your maker legs based on your `protect_block_trades` setting.
+
+Before accepting a block trade request, Paradex checks the MMP settings of the accounts involved. If those settings cannot be read, the request is refused with HTTP 503 rather than proceeding without protection. This can happen even for accounts that have no MMP configuration. Retry the request later. The accounts checked depend on the request:
+
+- **Creating a block:** every account with a maker leg, except the account that requested the quotes on a block built from offers.
+- **Creating an offer:** the offering account.
 
 ## Portfolio Margin
 
@@ -115,7 +135,7 @@ POST   /v1/account/mmp/reset
 | `DELETE /v1/account/mmp/{base_asset}` | Disable MMP for one underlying. This is the only way to remove a configuration. Returns no body. |
 | `POST /v1/account/mmp/reset` | Clear the freeze and trading window for one underlying, or for all underlying assets. See [Reset](#reset). |
 
-`POST /v1/account/mmp/{base_asset}` is a full create or replace: it overwrites any existing configuration. Omitted limits are set to `0`. Each limit is optional, but at least one of `size_limit`, `delta_limit` or `vega_limit` must be non zero.
+`POST /v1/account/mmp/{base_asset}` is a full create or replace: it overwrites any existing configuration. Omitted limits are set to `0`. The exception is `protect_block_trades`: if you omit it, the stored value is kept. Only sending `false` turns block trade protection off. Each limit is optional, but at least one of `size_limit`, `delta_limit` or `vega_limit` must be non zero.
 
 | Field | Type | Meaning |
 | --- | --- | --- |
@@ -124,6 +144,7 @@ POST   /v1/account/mmp/reset
 | `size_limit` | decimal string | Trips when gross traded size in the window exceeds this value. `0` disables the check. Used for margin relief. Maximum 4 decimal places. |
 | `delta_limit` | decimal string | Trips when absolute net delta in the window exceeds this value. `0` disables the check. Maximum 4 decimal places. |
 | `vega_limit` | decimal string (USD) | Trips when absolute net vega in the window exceeds this value. `0` disables the check. Maximum 4 decimal places. Cannot be the only limit for an underlying with no dated option markets, because perps carry no vega. |
+| `protect_block_trades` | Boolean | Protects your maker legs on RFQ and block trades for this base asset. Defaults to `false`. If omitted, the stored value is kept. See [RFQ and block trades](#rfq-and-block-trades). |
 
 Invalid configurations, including values outside the allowed ranges and unsupported base assets, are rejected with `MMP_CONFIG_INVALID` (HTTP 400).
 
@@ -137,7 +158,8 @@ POST /v1/account/mmp/BTC
   "frozen_time_ms": 5000,
   "size_limit": "2",
   "delta_limit": "1.5",
-  "vega_limit": "0"
+  "vega_limit": "0",
+  "protect_block_trades": true
 }
 ```
 
@@ -157,6 +179,7 @@ Example `GET /v1/account/mmp` response once the configuration is live:
       "size_limit": "2",
       "delta_limit": "1.5",
       "vega_limit": "0",
+      "protect_block_trades": true,
       "is_frozen": false,
       "frozen_until": 0,
       "window_size": "0.5",
@@ -230,7 +253,7 @@ Canceled quotes are not restored automatically. The maker must place new quotes.
 
 Add `"MMP"` to `flags` on a `LIMIT` order on a perp or dated option market.
 
-The flag is supported on REST, batch and WebSocket order entry. The MMP flag is fixed when the order is placed and is kept when the order is modified. To remove it, cancel and replace the order. The flag is not supported on block trade legs.
+The flag is supported on REST, batch and WebSocket order entry. The MMP flag is fixed when the order is placed and is kept when the order is modified. To remove it, cancel and replace the order. You cannot set the flag on block trade legs. Paradex sets it on your maker legs when `protect_block_trades` is on. See [RFQ and block trades](#rfq-and-block-trades).
 
 ```json
 POST /v1/orders
@@ -291,7 +314,7 @@ Every event includes:
 
 | Field | Meaning |
 | --- | --- |
-| `config` | The updated configuration for the underlying. Its `removed` flag is set when the configuration was deleted. |
+| `config` | The updated configuration for the underlying, including `protect_block_trades`. Its `removed` flag is set when the configuration was deleted. |
 
 `frozen_until` on non `TRIGGERED` events does not indicate whether an underlying is frozen. Track the frozen state from `TRIGGERED`, `UNFROZEN` and `RESET` events, or read `is_frozen` from `GET /v1/account/mmp`.
 

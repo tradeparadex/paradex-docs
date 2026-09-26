@@ -24,6 +24,9 @@ When adding a new options underlying, update all four locations: instrument conf
 - US500 margin parameters (cross margin and portfolio margin: SCAN scenarios, min-delta coefficients, `MIN_VOL_SHOCK_UP`) match BTC identically.
 - US500 strike step sizes use the standard 4 time buckets: $25/$25/$50, $50/$50/$100, $50/$100/$250, $100/$250/$500 (ATM/Outer/Wings).
 - US500 contract spec: 0.01 US500 order size increment, 100 US500 max order size, 200 US500 position limit, 40% spot and IV band factors.
+- TradFi options (US500, US100, XAU) are priced and settled against the Paradex Spot Oracle Price of the same underlying as the perp. Each instrument page has an "Index and settlement price" section listing sources, scores and open/closing hour weights (source: team spreadsheet "Paradex TradFi spot index price"). Equity indices (US500, US100) use only Pyth, Hyperliquid and Lighter as external sources (scores 1/1/0.7, all 24/7) plus Closing Price and Internal Price (0.5 each) in closing hours; XAU uses the full set (Pyth, Stork, Hyperliquid, Lighter, OKX, Bybit, Binance). The equity index case is also in the "Equity Indices Pricing" section of `fern/pages/trading/real-world-assets.mdx` (slug `/trading/tradfi-markets`).
+- TradFi option pages state market hours per asset: US500/US100 follow the CME equity index futures session and XAU the CME commodity session (both Sunday 6 PM to Friday 5 PM ET, daily 5-6 PM ET break), matching `CalendarFor` in mono `pkg/market_asset/market/calendars.go`. Single stocks use the 24/5 equities session instead. Each page also carries a worked weighted-median example for open and closing hours.
+- The live URL for the US500 perp page is `/trading/instruments-guide/futures/trad-fi/us500-usd-perp` (`fern/docs.yml` pins `slug: trad-fi` on the TradFi section so the dead-link check, which slugifies `TradFi` as `tradfi`, agrees with Fern).
 
 ## Gotchas
 
@@ -35,4 +38,4 @@ When adding a new options underlying, update all four locations: instrument conf
 
 ## Last updated
 
-2026-09-22
+2026-09-25

@@ -53,10 +53,49 @@ US100 options are priced and settled against the **Paradex US100 Spot Oracle Pri
   </Tab>
 </Tabs>
 
+### Market hours
+
+US100 options follow the CME equity index futures session: open 23/5 from Sunday 6:00 PM ET to Friday 5:00 PM ET, with a daily break from 5:00 PM to 6:00 PM ET and CME holiday closures. The daily break, weekends and holidays are closing hours.
+
+### Example
+
+To find the Spot Oracle Price, sort the source prices from lowest to highest and add up their scores in that order. The Spot Oracle Price is the first price at which the running total goes above half of the total score. If the running total lands exactly on half, the price is the average of that source's price and the next one. A source with no fresh price is left out, and the total is recomputed from the sources that remain.
+
+The prices below are illustrative.
+
+<Tabs>
+  <Tab title="Open hours">
+    Total score is 2.7, so half is 1.35.
+
+    | Source | Price | Score | Cumulative score |
+    |--------|------:|:-----:|:----------------:|
+    | Hyperliquid | 23,402.00 | 1 | 1 |
+    | **Pyth** | 23,410.00 | 1 | 2 ← first above half |
+    | Lighter | 23,415.00 | 0.7 | 2.7 |
+
+    The US100 Spot Oracle Price is **23,410.00** (Pyth).
+  </Tab>
+  <Tab title="Closing hours">
+    Total score is 3.7, so half is 1.85.
+
+    | Source | Price | Score | Cumulative score |
+    |--------|------:|:-----:|:----------------:|
+    | Closing Price | 23,380.00 | 0.5 | 0.5 |
+    | Internal Price | 23,392.00 | 0.5 | 1 |
+    | **Hyperliquid** | 23,395.00 | 1 | 2 ← first above half |
+    | Pyth | 23,400.00 | 1 | 3 |
+    | Lighter | 23,405.00 | 0.7 | 3.7 |
+
+    The US100 Spot Oracle Price is **23,395.00** (Hyperliquid).
+  </Tab>
+</Tabs>
+
+### Mark and settlement price
+
 - **Mark price**: the Spot Oracle Price is the spot input $S$ to the synthetic forward used by the [Black-76 mark price](/trading/dated-options/mark-price).
 - **Settlement price**: options settle at 08:00 UTC on the expiry date using a [30-minute TWAP](/trading/dated-options#settlement) of the Spot Oracle Price ending at expiry.
 
-See [TradFi Price Oracle](/trading/tradfi-markets) for market hours and the general methodology.
+See [TradFi Price Oracle](/trading/tradfi-markets) for the methodology across all TradFi markets.
 
 ## Margin Configuration
 

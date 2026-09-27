@@ -22,7 +22,7 @@ The reference configuration for the US100 Dated Options contract:
 
 ## Index and settlement price
 
-US100 options are priced and settled against the **Paradex US100 Spot Oracle Price**, the same index used by the [US100-USD-PERP](/trading/instruments-guide/futures/trad-fi/us100-usd-perp) perpetual. It tracks the Nasdaq 100 equity index and is computed as a weighted median of the sources below. Each source has a score; its weight is that score divided by the total score of the sources available at the time, so weights differ between market open and closing hours.
+US100 options are priced off the **Paradex US100 Spot Oracle Price**, the same index used by the [US100-USD-PERP](/trading/instruments-guide/futures/trad-fi/us100-usd-perp) perpetual, and settle at the **30-minute TWAP** of that price ending at expiry. The Spot Oracle Price tracks the Nasdaq 100 equity index and is computed as a weighted median of the sources below. Each source has a score; its weight is that score divided by the total score of the sources available at the time, so weights differ between market open and closing hours.
 
 | Source | Description | Score | Availability |
 |--------|-------------|:-----:|:------------:|

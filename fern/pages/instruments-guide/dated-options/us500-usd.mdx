@@ -22,7 +22,7 @@ The reference configuration for the US500 Dated Options contract:
 
 ## Index and settlement price
 
-US500 options are priced and settled against the **Paradex US500 Spot Oracle Price**, the same index used by the [US500-USD-PERP](/trading/instruments-guide/futures/trad-fi/us500-usd-perp) perpetual. It tracks the S&P 500 equity index and is computed as a weighted median of the sources below. Each source has a score; its weight is that score divided by the total score of the sources available at the time, so weights differ between market open and closing hours.
+US500 options are priced off the **Paradex US500 Spot Oracle Price**, the same index used by the [US500-USD-PERP](/trading/instruments-guide/futures/trad-fi/us500-usd-perp) perpetual, and settle at the **30-minute TWAP** of that price ending at expiry. The Spot Oracle Price tracks the S&P 500 equity index and is computed as a weighted median of the sources below. Each source has a score; its weight is that score divided by the total score of the sources available at the time, so weights differ between market open and closing hours.
 
 | Source | Description | Score | Availability |
 |--------|-------------|:-----:|:------------:|

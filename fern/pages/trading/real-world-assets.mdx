@@ -75,7 +75,7 @@ The price consumed from external exchanges (Binance, Bybit, Hyperliquid, OKX, Li
 
 ## Equity Indices Pricing
 
-Equity index markets (US500 and US100) use a reduced source set: the only external sources are Pyth, Hyperliquid and Lighter, all available 24/7. Closing Price and Internal Price are added during closing hours. The same index is used for the perpetual and for [US500 options](/trading/instruments-guide/options/us500-options).
+Equity index markets (US500 and US100) use a reduced source set: the only external sources are Pyth, Hyperliquid and Lighter, all available 24/7. Closing Price and Internal Price are added during closing hours. The same index prices the perpetuals and the [US500](/trading/instruments-guide/options/us500-options) and [US100](/trading/instruments-guide/options/us100-options) options, which settle at its 30-minute TWAP ending at expiry.
 
 | Source | US500 | US100 | Score | Availability |
 |--------|-------|-------|:-----:|:------------:|

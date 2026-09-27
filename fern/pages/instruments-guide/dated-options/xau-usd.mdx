@@ -22,7 +22,7 @@ The reference configuration for the XAU Dated Options contract:
 
 ## Index and settlement price
 
-XAU options are priced and settled against the **Paradex XAU Spot Oracle Price**, the same index used by the [XAU-USD-PERP](/trading/instruments-guide/futures/trad-fi/xau-usd-perp) perpetual. It is computed as a weighted median of the sources below. Each source has a score; its weight is that score divided by the total score of the sources available at the time, so weights differ between market open and closing hours.
+XAU options are priced off the **Paradex XAU Spot Oracle Price**, the same index used by the [XAU-USD-PERP](/trading/instruments-guide/futures/trad-fi/xau-usd-perp) perpetual, and settle at the **30-minute TWAP** of that price ending at expiry. The Spot Oracle Price is computed as a weighted median of the sources below. Each source has a score; its weight is that score divided by the total score of the sources available at the time, so weights differ between market open and closing hours.
 
 | Source | Description | Score | Availability |
 |--------|-------------|:-----:|:------------:|

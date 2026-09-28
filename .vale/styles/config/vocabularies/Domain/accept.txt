@@ -38,6 +38,7 @@ Orderbuilder
 Paraclear
 Paradex
 Pepe
+[Vv]ega
 Perp
 Perps
 PnL
@@ -74,5 +75,4 @@ Annualize
 Dedupe
 margined
 Margined
-[Vv]ega
 Nasdaq

@@ -74,3 +74,4 @@ Annualize
 Dedupe
 margined
 Margined
+Nasdaq

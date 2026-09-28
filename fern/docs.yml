@@ -388,6 +388,7 @@ navigation:
                   slug: zec-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/zec-usd-perp.mdx
             - section: TradFi
+              slug: trad-fi
               contents:
                 - page: BZ-USD-PERP
                   slug: bz-usd-perp

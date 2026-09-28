@@ -75,3 +75,4 @@ Dedupe
 margined
 Margined
 [Vv]ega
+Nasdaq

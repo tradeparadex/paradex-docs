@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.6.0
+    version: 1.6.1
     description: |
         Channels for real-time updates.
 
@@ -2548,6 +2548,10 @@ components:
         ResponsesTradeResult:
             additionalProperties: false
             properties:
+                block_id:
+                    description: Groups the legs settled together in one block execution, one id per accepted offer for offer-based blocks. Empty for non-block trades. Delivered on the JSON encoding only, not the SBE binary encoding.
+                    example: "1681497002041000000"
+                    type: string
                 created_at:
                     description: Unix Millisecond timestamp at which trade was done
                     example: "1681497002041"

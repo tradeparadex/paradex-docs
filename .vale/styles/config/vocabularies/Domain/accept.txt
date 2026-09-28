@@ -38,6 +38,7 @@ Orderbuilder
 Paraclear
 Paradex
 Pepe
+[Vv]ega
 Perp
 Perps
 PnL

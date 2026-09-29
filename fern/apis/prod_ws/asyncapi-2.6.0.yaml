@@ -1140,7 +1140,7 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesTradeResult'
                 summary: Public websocket channel to receive updates on trades in particular market
-                description: 'Subscribe to trade messages. Use `trades.{market_symbol}` for a single market, `trades.ALL` for every market, or pass `{"channel": "trades", "base_asset": "{base_asset}"}` to receive updates for every active options market (OPTION and PERP_OPTION) for the given base asset.'
+                description: 'Subscribe to trade messages. Use `trades.{market_symbol}` for a single market, `trades.ALL` for every market, or pass `{"channel": "trades", "base_asset": "{base_asset}"}` to receive updates for every active options market (OPTION and PERP_OPTION) for the given base asset. A block trade is published as one message per leg; `block_id` is the id they share, which is what lets a client reassemble the package, and it is sent on block-trade messages only. (On a deployment still on the legacy fan-out rather than kafka-ingress, a block trade''s message carries its first leg alone; fetch `GET /trades?trade_type=BLOCK_TRADE` for the package.) Note that `block_id` is carried by the JSON encoding only; the SBE binary encoding of this channel does not carry it.'
         x-fern-display-name: trades.{market_symbol}
     /transaction:
         subscribe:
@@ -1874,6 +1874,10 @@ components:
                             example: "1717545600000"
                             type: integer
                     type: object
+                settlement_twap_estimate:
+                    description: Running average of the underlying over the settlement window, on the live summary only while inside that window
+                    example: "76423.56"
+                    type: string
                 symbol:
                     description: Market symbol
                     example: BTC-USD-PERP
@@ -2579,7 +2583,7 @@ components:
                     example: "0.01"
                     type: string
                 trade_type:
-                    description: Trade type, can be FILL, LIQUIDATION, or RPI
+                    description: 'Trade type: FILL, LIQUIDATION, RPI, UNWIND_TRANSFER, SETTLE_MARKET or BLOCK_TRADE'
                     enum:
                         - LIQUIDATION
                         - UNWIND_TRANSFER
@@ -2880,7 +2884,7 @@ components:
             name: traderesult
             title: TradeResult
             summary: Public websocket channel to receive updates on trades in particular market
-            description: 'Subscribe to trade messages. Use `trades.{market_symbol}` for a single market, `trades.ALL` for every market, or pass `{"channel": "trades", "base_asset": "{base_asset}"}` to receive updates for every active options market (OPTION and PERP_OPTION) for the given base asset.'
+            description: 'Subscribe to trade messages. Use `trades.{market_symbol}` for a single market, `trades.ALL` for every market, or pass `{"channel": "trades", "base_asset": "{base_asset}"}` to receive updates for every active options market (OPTION and PERP_OPTION) for the given base asset. A block trade is published as one message per leg; `block_id` is the id they share, which is what lets a client reassemble the package, and it is sent on block-trade messages only. (On a deployment still on the legacy fan-out rather than kafka-ingress, a block trade''s message carries its first leg alone; fetch `GET /trades?trade_type=BLOCK_TRADE` for the package.) Note that `block_id` is carried by the JSON encoding only; the SBE binary encoding of this channel does not carry it.'
             tags:
                 - name: market
         ResponsesTradebustResult:

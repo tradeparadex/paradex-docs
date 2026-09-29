@@ -17,16 +17,16 @@ const ALLOWED_TAGS = ['UI', 'API', 'Bug Fix', 'Docs'];
 const PROD_DIR = path.resolve(__dirname, '..', 'fern', 'pages', 'release-notes', 'prod');
 
 function usage() {
-  console.log(`Usage: node scripts/new-release-note.js <version> --tags UI,API [--date MM-DD-YYYY]
+  console.log(`Usage: node scripts/new-release-note.js <version> [--tags UI,API] [--date MM-DD-YYYY]
 
   <version>   Release version, e.g. 1.153.0 or v1.153.0
-  --tags      Comma-separated tags (canonical: ${ALLOWED_TAGS.join(', ')})
+  --tags      Comma-separated tags (canonical: ${ALLOWED_TAGS.join(', ')}; default: UI)
   --date      Override the entry date (default: today), format MM-DD-YYYY
 `);
 }
 
 function parseArgs(argv) {
-  const args = { tags: [], date: null, version: null };
+  const args = { tags: null, date: null, version: null };
   const positional = [];
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -79,6 +79,9 @@ function main() {
   if (!args.version) {
     usage();
     process.exit(1);
+  }
+  if (args.tags === null) {
+    args.tags = ['UI'];
   }
   if (args.tags.length === 0) {
     console.error('Error: --tags is required, e.g. --tags UI,API');

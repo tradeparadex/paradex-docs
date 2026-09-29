@@ -76,3 +76,4 @@ Dedupe
 margined
 Margined
 Nasdaq
+SNARKs

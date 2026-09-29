@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.137.2"
+    "version": "1.138.1"
   },
   "paths": {
     "/account": {
@@ -6259,7 +6259,7 @@
     },
     "/trades": {
       "get": {
-        "description": "Returns a paginated list of trades that have occurred on the exchange.\nDefault page size is 100, maximum is 1000.\n\nThe `side` field in the response indicates the taker side of the trade.\n\n### Example\n\n```http\nGET /trades?market=BTC-USD-PERP&page_size=100\n```\n\nThis endpoint supports cursor-based pagination for efficiently traversing large\nresult sets.\n",
+        "description": "Returns a paginated list of trades that have occurred on the exchange.\nDefault page size is 100, maximum is 1000.\n\nThe `side` field in the response indicates the taker side of the trade.\n\n`block_id` appears on **block-trade prints only**. A block trade is\npublished as one print per leg, and the block id every leg shares is what\nlets a client reassemble the package. No other kind of print carries the\nfield.\n\nNote that the legs of one block trade are ordered by fill id like any other\nprint, so a package can straddle a page boundary. `base_asset` also resolves\nto that underlying's OPTION markets only, so a package's perp delta hedge is\nnot among the results — request the perp's own market to see it.\n\nPass `trade_type=BLOCK_TRADE` to return only block-trade prints (the legs of\nRFQ and block executions). It is the only value accepted; omit the parameter\nfor every trade type. It is also the one case where `market` and\n`base_asset` may both be omitted: the page then covers every market on the\nexchange, perps included, so a package arrives with its delta hedge. A later\npage of any of these needs only its `cursor`: the scope a page was opened\nwith travels inside it.\n\n### Example\n\n```http\nGET /trades?market=BTC-USD-PERP&page_size=100\n```\n\n```http\nGET /trades?base_asset=BTC&trade_type=BLOCK_TRADE&page_size=100\n```\n\n```http\nGET /trades?trade_type=BLOCK_TRADE&page_size=100\n```\n\nThis endpoint supports cursor-based pagination for efficiently traversing large\nresult sets.\n",
         "tags": [
           "Trades"
         ],
@@ -6268,8 +6268,8 @@
         "parameters": [
           {
             "example": "BTC",
-            "description": "Base asset symbol; returns trades across all active options (OPTION and PERP_OPTION) for this base asset. Mutually exclusive with market.",
-            "name": "baseAsset",
+            "description": "Base asset symbol; returns trades across all active options (OPTION and PERP_OPTION) for this base asset. Mutually exclusive with market. One of the two is required unless trade_type=BLOCK_TRADE.",
+            "name": "base_asset",
             "in": "query",
             "schema": {
               "type": "string"
@@ -6293,7 +6293,7 @@
           },
           {
             "example": "BTC-USD-PERP",
-            "description": "Market name. Mutually exclusive with base_asset.",
+            "description": "Market name. Mutually exclusive with base_asset. One of the two is required unless trade_type=BLOCK_TRADE.",
             "name": "market",
             "in": "query",
             "schema": {
@@ -6317,6 +6317,18 @@
             "in": "query",
             "schema": {
               "type": "integer"
+            }
+          },
+          {
+            "example": "BLOCK_TRADE",
+            "description": "Narrows the page to one trade type. Only BLOCK_TRADE is supported; omit for every type. With BLOCK_TRADE, market and base_asset may both be omitted for an exchange-wide page.",
+            "name": "trade_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BLOCK_TRADE"
+              ]
             }
           }
         ],
@@ -9992,7 +10004,7 @@
             "example": "0xabc123..."
           },
           "signature_timestamp": {
-            "description": "When order was signed",
+            "description": "Ignored on requests. In responses, the signature_timestamp the leg's account sent with its block signature (client-reported, not signed); omitted when 0",
             "type": "integer",
             "example": 1640995200000
           },
@@ -11668,6 +11680,11 @@
               }
             ]
           },
+          "settlement_twap_estimate": {
+            "description": "Running average of the underlying over the settlement window, on the live summary only while inside that window",
+            "type": "string",
+            "example": "76423.56"
+          },
           "symbol": {
             "description": "Market symbol",
             "type": "string",
@@ -13104,7 +13121,7 @@
             "example": "0.01"
           },
           "trade_type": {
-            "description": "Trade type, can be FILL, LIQUIDATION, or RPI",
+            "description": "Trade type: FILL, LIQUIDATION, RPI, UNWIND_TRANSFER, SETTLE_MARKET or BLOCK_TRADE",
             "allOf": [
               {
                 "$ref": "#/components/schemas/responses.FillType"

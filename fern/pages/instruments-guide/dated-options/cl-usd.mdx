@@ -1,0 +1,43 @@
+---
+title: CL options configuration
+---
+
+The reference configuration for the CL Dated Options contract:
+
+| Parameter | Value |
+|-----------|-------|
+| Product type | Dated European Option |
+| Symbol format | CL-USD-{Expiry}-{Strike}-{Type} |
+| Base currency | CL |
+| Quote currency | USD |
+| Settlement currency | USDC |
+| Price tick size | 0.001 USD |
+| Order size increment | 1 CL |
+| Minimum order value | 20 USD |
+| Maximum order size | 5,000 CL |
+| Maximum open orders | 150 |
+| Position limit | 50,000 CL |
+| Spot band factor | 50% |
+| IV band factor | 50% |
+
+## Index and settlement price
+
+CL options are priced off the **Paradex CL Spot Oracle Price**, the same index used by the [CL-USD-PERP](/trading/instruments-guide/futures/trad-fi/cl-usd-perp) perpetual, and settle at the **30-minute TWAP** of that price ending at expiry. Unlike the weighted-median oracle used for other TradFi markets, the CL Spot Oracle Price tracks the price of the active front-month WTI Light Sweet Crude Oil future, rolling to the next contract between the 5th and 10th business day of each month.
+
+See [Industrial Metals & Energy Commodities Pricing](/trading/tradfi-markets#industrial-metals-energy-commodities-pricing) for the full roll schedule and methodology.
+
+### Market hours
+
+CL options follow the CME commodity futures session: open 23/5 from Sunday 6:00 PM ET to Friday 5:00 PM ET, with a daily break from 5:00 PM to 6:00 PM ET and CME holiday closures. The daily break, weekends and holidays are closing hours.
+
+### Mark and settlement price
+
+- **Mark price**: the Spot Oracle Price is the spot input $S$ to the synthetic forward used by the [Black-76 mark price](/trading/dated-options/mark-price).
+- **Settlement price**: options settle at 08:00 UTC on the expiry date using a [30-minute TWAP](/trading/dated-options#settlement) of the Spot Oracle Price ending at expiry.
+
+See [TradFi Price Oracle](/trading/tradfi-markets) for the methodology across all TradFi markets.
+
+## Margin Configuration
+
+- [Cross Margin Requirements](/trading/dated-options/margin-requirements) — cross-margin IMR/MMR parameters for trading options
+- [Portfolio Margin](/risk/portfolio-margin) — portfolio-level risk evaluation for reduced margin on hedged portfolios

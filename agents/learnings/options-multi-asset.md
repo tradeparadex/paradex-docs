@@ -20,7 +20,7 @@ When adding a new options underlying, update all four locations: instrument conf
 
 ## US500 specifics
 
-- US500 (S&P 500 index) options replaced CL (Crude Oil) options. CL options were delisted and removed from the docs; a redirect was added from `/trading/instruments-guide/options/cl-options` to `/trading/dated-options`. CL still exists as a perpetual future (`cl-usd-perp.mdx`).
+- CL (Crude Oil) options were delisted when US500 options launched (with a redirect from `/trading/instruments-guide/options/cl-options` to `/trading/dated-options`), then relisted in PR #1423 (`cl-usd.mdx`). The stale redirect was removed when the CL index/settlement section was added; a redirect for a live page shadows it. CL uses the same weighted-median oracle as XAU minus Stork (Pyth, Hyperliquid, Lighter, OKX, Bybit 24/7; Binance open hours; Closing/Internal Price closing hours; total 5.7 in both states), with sources tracking the front-month WTI future.
 - US500 margin parameters (cross margin and portfolio margin: SCAN scenarios, min-delta coefficients, `MIN_VOL_SHOCK_UP`) match BTC identically.
 - US500 strike step sizes use the standard 4 time buckets: $25/$25/$50, $50/$50/$100, $50/$100/$250, $100/$250/$500 (ATM/Outer/Wings).
 - US500 contract spec: 0.01 US500 order size increment, 100 US500 max order size, 200 US500 position limit, 40% spot and IV band factors.

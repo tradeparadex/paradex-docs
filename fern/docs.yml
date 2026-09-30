@@ -1052,10 +1052,6 @@ redirects:
   - source: "/trading/trading-fees-v2"
     destination: "/trading/trading-fees"
 
-  # CL options delisted
-  - source: "/trading/instruments-guide/options/cl-options"
-    destination: "/trading/dated-options"
-
 layout:
   header-height: 72px
   searchbar-placement: header

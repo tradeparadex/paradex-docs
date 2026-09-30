@@ -22,13 +22,90 @@ The reference configuration for the CL Dated Options contract:
 
 ## Index and settlement price
 
-CL options are priced off the **Paradex CL Spot Oracle Price**, the same index used by the [CL-USD-PERP](/trading/instruments-guide/futures/trad-fi/cl-usd-perp) perpetual, and settle at the **30-minute TWAP** of that price ending at expiry. Unlike the weighted-median oracle used for other TradFi markets, the CL Spot Oracle Price tracks the price of the active front-month WTI Light Sweet Crude Oil future, rolling to the next contract between the 5th and 10th business day of each month.
+CL options are priced off the **Paradex CL Spot Oracle Price**, the same index used by the [CL-USD-PERP](/trading/instruments-guide/futures/trad-fi/cl-usd-perp) perpetual, and settle at the **30-minute TWAP** of that price ending at expiry. The Spot Oracle Price tracks the active front WTI Light Sweet Crude Oil future and is computed as a weighted median of the sources below. Each source has a score; its weight is that score divided by the total score of the sources available at the time, so weights differ between market open and closing hours.
 
-See [Industrial Metals & Energy Commodities Pricing](/trading/tradfi-markets#industrial-metals-energy-commodities-pricing) for the full roll schedule and methodology.
+| Source | Description | Score | Availability |
+|--------|-------------|:-----:|:------------:|
+| Pyth | [Pyth 24/7 PYTHOIL index](https://app.pyth.com/explore/Commodities.Index.PYTHOIL%2FUSD) | 1 | 24/7 |
+| Hyperliquid | [Hyperliquid WTIOIL index price](https://app.hyperliquid.xyz/trade/xyz:WTIOIL) | 1 | 24/7 |
+| Lighter | [Lighter WTI index price](https://app.lighter.xyz/trade/WTI) | 0.7 | 24/7 |
+| OKX | [OKX CL index price](https://www.okx.com/trade-swap/cl-usdt-swap) | 1 | 24/7 |
+| Bybit | [Bybit CL index price](https://www.bybit.com/en/trade/usdt/CLUSDT) | 1 | 24/7 |
+| Binance | [Binance CL index price](https://www.binance.com/en/futures/CLUSDT) | 1 | Open hours |
+| Closing Price | Paradex CL spot price at the market closing timestamp | 0.5 | Closing hours |
+| Internal Price | EMA of the Paradex CL-USD-PERP mark price with a 1-hour half-life, initialised at the Closing Price | 0.5 | Closing hours |
+
+<Tabs>
+  <Tab title="Open hours">
+    | Source | Score | Weight |
+    |--------|:-----:|:------:|
+    | Pyth | 1 | 17.54% |
+    | Hyperliquid | 1 | 17.54% |
+    | Lighter | 0.7 | 12.28% |
+    | OKX | 1 | 17.54% |
+    | Bybit | 1 | 17.54% |
+    | Binance | 1 | 17.54% |
+    | **Total** | **5.7** | **100%** |
+  </Tab>
+  <Tab title="Closing hours">
+    | Source | Score | Weight |
+    |--------|:-----:|:------:|
+    | Pyth | 1 | 17.54% |
+    | Hyperliquid | 1 | 17.54% |
+    | Lighter | 0.7 | 12.28% |
+    | OKX | 1 | 17.54% |
+    | Bybit | 1 | 17.54% |
+    | Closing Price | 0.5 | 8.77% |
+    | Internal Price | 0.5 | 8.77% |
+    | **Total** | **5.7** | **100%** |
+  </Tab>
+</Tabs>
+
+### Front future roll
+
+The sources above track the active front-month WTI future. The active contract rolls to the next month between the 5th and 10th business day of each month; see [Industrial Metals & Energy Commodities Pricing](/trading/tradfi-markets#industrial-metals-energy-commodities-pricing) for the full contract schedule.
 
 ### Market hours
 
 CL options follow the CME commodity futures session: open 23/5 from Sunday 6:00 PM ET to Friday 5:00 PM ET, with a daily break from 5:00 PM to 6:00 PM ET and CME holiday closures. The daily break, weekends and holidays are closing hours.
+
+### Example
+
+To find the Spot Oracle Price, sort the source prices from lowest to highest and add up their scores in that order. The Spot Oracle Price is the first price at which the running total goes above half of the total score. If the running total lands exactly on half, the price is the average of that source's price and the next one. A source with no fresh price is left out, and the total is recomputed from the sources that remain.
+
+The prices below are illustrative.
+
+<Tabs>
+  <Tab title="Open hours">
+    Total score is 5.7, so half is 2.85.
+
+    | Source | Price | Score | Cumulative score |
+    |--------|------:|:-----:|:----------------:|
+    | Lighter | 64.80 | 0.7 | 0.7 |
+    | Bybit | 64.85 | 1 | 1.7 |
+    | OKX | 64.88 | 1 | 2.7 |
+    | **Pyth** | 64.90 | 1 | 3.7 ← first above half |
+    | Hyperliquid | 64.93 | 1 | 4.7 |
+    | Binance | 64.95 | 1 | 5.7 |
+
+    The CL Spot Oracle Price is **64.90** (Pyth).
+  </Tab>
+  <Tab title="Closing hours">
+    Total score is 5.7, so half is 2.85.
+
+    | Source | Price | Score | Cumulative score |
+    |--------|------:|:-----:|:----------------:|
+    | Closing Price | 64.60 | 0.5 | 0.5 |
+    | Internal Price | 64.65 | 0.5 | 1 |
+    | Lighter | 64.70 | 0.7 | 1.7 |
+    | Bybit | 64.74 | 1 | 2.7 |
+    | **OKX** | 64.78 | 1 | 3.7 ← first above half |
+    | Pyth | 64.80 | 1 | 4.7 |
+    | Hyperliquid | 64.82 | 1 | 5.7 |
+
+    The CL Spot Oracle Price is **64.78** (OKX).
+  </Tab>
+</Tabs>
 
 ### Mark and settlement price
 

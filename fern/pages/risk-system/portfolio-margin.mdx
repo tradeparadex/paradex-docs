@@ -41,7 +41,7 @@ $$
 where:
 - **DTE Floor** = 1
 - **Vega Power** = 0.30 (30%) if DTE < 30, or 0.13 (13%) if DTE ≥ 30
-- **Min Vol Shock Up** — floor applied to the upside vol shock: 40% for BTC/ETH/US500/US100/XAU, 60% for HYPE/SOL, 90% for ZEC
+- **Min Vol Shock Up** — floor applied to the upside vol shock: 40% for BTC/ETH/US500/US100/XAU, 60% for HYPE/SOL, 90% for ZEC/CL
 
 DTE Floor and Vega Power are common across all assets; Min Vol Shock Up differs per asset as shown above.
 
@@ -290,6 +290,36 @@ Spot shocks, vol shocks, and tail weights differ per asset. The 24-scenario stru
 | 24 | +500% | +40% | 0.28% |
 
   </Tab>
+  <Tab title="CL">
+
+| Scenario | Spot shock | Vol shock | Weight |
+|:--------:|:----------:|:---------:|:------:|
+| 1 | +47% | +96% | 100% |
+| 2 | +35.25% | +96% | 100% |
+| 3 | +35.25% | -52.8% | 100% |
+| 4 | +23.5% | +96% | 100% |
+| 5 | +23.5% | -52.8% | 100% |
+| 6 | +11.75% | +96% | 100% |
+| 7 | +11.75% | -52.8% | 100% |
+| 8 | 0% | +96% | 100% |
+| 9 | 0% | -52.8% | 100% |
+| 10 | -11.75% | +96% | 100% |
+| 11 | -11.75% | -52.8% | 100% |
+| 12 | -23.5% | +96% | 100% |
+| 13 | -23.5% | -52.8% | 100% |
+| 14 | -35.25% | +96% | 100% |
+| 15 | -35.25% | -52.8% | 100% |
+| 16 | -47% | +96% | 100% |
+| 17 | -66% | +96% | 35.61% |
+| 18 | -33% | +96% | 71.21% |
+| 19 | +50% | +96% | 47% |
+| 20 | +100% | +96% | 23.5% |
+| 21 | +200% | +96% | 5.87% |
+| 22 | +300% | +96% | 2.61% |
+| 23 | +400% | +96% | 1.47% |
+| 24 | +500% | +96% | 0.94% |
+
+  </Tab>
 </Tabs>
 
 ## Minimum delta requirement
@@ -318,6 +348,7 @@ $$
 | US500 | 2%                     | 1%                   |
 | US100 | 2%                     | 1%                   |
 | XAU   | 2%                     | 1%                   |
+| CL    | 5%                     | 2.5%                 |
 
 <Accordion title="Example calculation">
 

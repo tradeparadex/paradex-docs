@@ -487,6 +487,9 @@ navigation:
             - page: CL Options
               slug: cl-options
               path: ./pages/instruments-guide/dated-options/cl-usd.mdx
+            - page: META Options
+              slug: meta-options
+              path: ./pages/instruments-guide/dated-options/meta-usd.mdx
             - page: US500 Options
               slug: us500-options
               path: ./pages/instruments-guide/dated-options/us500-usd.mdx

@@ -34,8 +34,9 @@ When adding a new options underlying, update all four locations: instrument conf
 - SOL uses the same strike step sizes and SCAN vol shocks as HYPE, but its own spot shocks, tail weights, and cross-margin fractions (Long ITM 25%, Short ITM 18%, Short OTM 12%).
 - The Mark Price reference-exchange table (`fern/pages/dated-options/mark-price.mdx`) only lists BTC, ETH, and HYPE; SOL and US500 are not listed there.
 - The Portfolio Margin `Parameters` section at the bottom of `portfolio-margin.mdx` contains constants that are mostly shared across assets; `MIN_VOL_SHOCK_UP` and `HEDGED_MARGIN_FACTOR` are the exceptions (HYPE/SOL = 60% / 1.5% vs BTC/ETH/US500 = 40% / 1%).
+- Min-delta coefficients (Unhedged / Hedged Margin Factor) as of 2026-10-01: BTC, ETH, US500, US100, XAU 0.2% / 0.1%; HYPE, SOL 0.3% / 0.15%; ZEC, CL 0.5% / 0.25%. When changing them, also recompute the BTC example calculation below the table.
 - ZEC options are present on `main` as of 2026-09-22 (instrument page, sidebar entry, margin requirements tab, portfolio margin SCAN tab and min-delta row) even though an earlier note recorded their removal. Check the live files rather than trusting this file for ZEC status.
 
 ## Last updated
 
-2026-09-25
+2026-10-01

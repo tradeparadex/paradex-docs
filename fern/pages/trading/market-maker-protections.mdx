@@ -247,7 +247,7 @@ A successful reset returns the underlying assets that were reset:
 | Reset within 1 second of a trigger | Rejected with `MMP_MIN_FREEZE_NOT_ELAPSED` (HTTP 400). |
 | `base_asset` has no configuration | Rejected with `MMP_NOT_CONFIGURED` (HTTP 400). |
 | Reset sent with a read only token | Rejected with `INVALID_TOKEN_SCOPE` (HTTP 403). |
-| More than 60 resets per minute per account, or a short burst of resets over the burst limit | Rejected with HTTP 429. |
+| Reset over the account's reset rate limit (see [Rate limits](#rate-limits)) | Rejected with HTTP 429. |
 
 A reset of all underlying assets is applied underlying by underlying, and underlying assets without a configuration are skipped. If any underlying is still inside its 1 second lockout, the call returns HTTP 400 even though others may already have been reset. The error `data` lists which underlying assets were reset (`data.reset`) and which were refused (`data.refused`).
 
@@ -335,7 +335,9 @@ Every event includes:
 
 Configuration changes return HTTP 503 when market data is temporarily unavailable, and resets return HTTP 503 while the matching engine is unavailable.
 
-Resets are limited to 60 per minute per account, with an additional short burst limit. Exceeding a limit returns HTTP 429.
+### Rate limits
+
+Resets are rate limited per account. The limit is an allowance of 60 resets that refills continuously at 60 per minute, rather than a count reset every minute. A full allowance accepts up to 60 resets at once and keeps accepting them as it refills, so more than 60 resets can be accepted within one minute when the account starts with its full allowance. A shorter burst limit also applies. A reset over either limit returns HTTP 429.
 
 ### SDK support
 

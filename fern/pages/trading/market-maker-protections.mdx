@@ -337,7 +337,7 @@ Configuration changes return HTTP 503 when market data is temporarily unavailabl
 
 ### Rate limits
 
-Resets are rate limited per account. The limit is an allowance of 60 resets that refills continuously at 60 per minute, rather than a count reset every minute. A full allowance accepts up to 60 resets at once and keeps accepting them as it refills, so more than 60 resets can be accepted within one minute when the account starts with its full allowance. A shorter burst limit also applies. A reset over either limit returns HTTP 429.
+Resets are rate limited per account. An account starts with an allowance of 60 resets that refills continuously at 60 per minute, rather than a count reset every minute, so an account starting with its full allowance can have more than 60 resets accepted within one minute. A shorter burst limit also caps how fast resets can be sent. A reset over either limit returns HTTP 429.
 
 ### SDK support
 

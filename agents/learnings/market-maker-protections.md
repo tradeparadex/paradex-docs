@@ -19,7 +19,7 @@ Page: `fern/pages/trading/market-maker-protections.mdx`, served at `/trading/mar
   - Protection is fixed at block creation. Leg flags are visible only to the leg owner. Block and offer creation can return 503 if MMP settings cannot be read, even for accounts without MMP. Do not document a per quote RFQ flag.
   - Order book counting is maker only: only the resting maker's MMP flagged fill counts; a flagged order that crosses the book is not counted, so delta and vega limits trip on gross maker exposure. This applies to the order book only, not to block trade legs; avoid wording like "taker fills do not count" that would read across both.
   - The arriving order's own flag still gates entry: `MMP_FROZEN` and `MMP_NOT_CONFIGURED` still apply to incoming MMP orders. The stale Greeks check at arrival only applies to orders that can rest (an MMP `LIMIT` `IOC` is not canceled for stale Greeks); stated in the Greeks warning.
-  - `GET /v1/account/mmp` accepts read only tokens; writes need a trading JWT. Reset limit is 60/minute per account plus a short burst limit; the burst limit is not per account, so do not publish a per second number. `POST`/`DELETE` return 503 when market data is temporarily unavailable; only reset returns 503 because the matching engine is unavailable. Reset with a read only token returns `INVALID_TOKEN_SCOPE` (403).
+  - `GET /v1/account/mmp` accepts read only tokens; writes need a trading JWT. The reset limit is a token bucket: an allowance of 60 per account that refills continuously at 60 per minute, so more than 60 resets can land in one minute. A burst limit also applies, so never promise 60 resets at once, and never publish a per second number (it is enforced per API pod as well as per account). `POST`/`DELETE` return 503 when market data is temporarily unavailable; only reset returns 503 because the matching engine is unavailable. Reset with a read only token returns `INVALID_TOKEN_SCOPE` (403).
   - Reset all returns 400 only for the 1 second lockout; underlying assets without a configuration are skipped and the call still returns 200.
   - `MMP_DISABLED` also fires when MMP is temporarily unavailable (for example a restart), not only on `DELETE`.
   - A configuration listed while `enabled` is `false` is still enforced until deleted. Posting an identical configuration again does not clear the window.
@@ -38,4 +38,4 @@ Page: `fern/pages/trading/market-maker-protections.mdx`, served at `/trading/mar
 
 ## Last updated
 
-2026-09-25
+2026-10-01

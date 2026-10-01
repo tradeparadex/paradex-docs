@@ -34,7 +34,7 @@ When adding a new options underlying, update all four locations: instrument conf
 - META uses the **generic** "Source scores"/"Source weights by market state" table already at the top of `fern/pages/trading/real-world-assets.mdx` verbatim: Pyth (3, open hours only — stocks/FX score differs from the commodities/equity-index score of 1), Stork (2, open hours), Binance (1, open hours), Bybit/Hyperliquid/OKX (1 each, 24/7), Lighter (0.7, 24/7), Closing Price/Internal Price (0.5 each, closing hours). Total 9.7 open / 4.7 closing — matches the generic table exactly, so that table doubles as the single-stock default; don't assume it's commodity/index-specific.
 - META market hours use the **equities (single stock)** session — 24/5, Sunday 8 PM ET to Friday 8 PM ET including pre/post-market and overnight — not the CME 23/5 session used by XAU/CL/US500/US100.
 - Confirmed Pyth, Stork, Binance, Bybit, Hyperliquid, OKX and Lighter all actually list META price feeds/perpetuals via web search before writing source links — don't assume a crypto venue covers a given stock just because it covers others; verify per-symbol, since not every venue lists every "Magnificent 7" name.
-- META margin params are its own (not copied from BTC/US500): cross-margin Long/Short ITM/OTM 50/35/25% (IMR), min-delta Unhedged/Hedged 3%/1.5%, `MIN_VOL_SHOCK_UP` 60% (same bucket as HYPE/SOL), strike steps $2.5/$2.5/$5 → $10/$25/$50 across the 4 time buckets.
+- META margin params are its own (not copied from BTC/US500): cross-margin Long/Short ITM/OTM 50/35/25% (IMR), min-delta Unhedged/Hedged 0.3%/0.15% (same bucket as HYPE/SOL, post-PR-#1425 scale — see the min-delta coefficients gotcha below), `MIN_VOL_SHOCK_UP` 60% (same bucket as HYPE/SOL), strike steps $2.5/$2.5/$5 → $10/$25/$50 across the 4 time buckets.
 
 ## Gotchas
 
@@ -42,6 +42,7 @@ When adding a new options underlying, update all four locations: instrument conf
 - SOL uses the same strike step sizes and SCAN vol shocks as HYPE, but its own spot shocks, tail weights, and cross-margin fractions (Long ITM 25%, Short ITM 18%, Short OTM 12%).
 - The Mark Price reference-exchange table (`fern/pages/dated-options/mark-price.mdx`) only lists BTC, ETH, and HYPE; SOL and US500 are not listed there.
 - The Portfolio Margin `Parameters` section at the bottom of `portfolio-margin.mdx` contains constants that are mostly shared across assets; `MIN_VOL_SHOCK_UP` and `HEDGED_MARGIN_FACTOR` are the exceptions (HYPE/SOL = 60% / 1.5% vs BTC/ETH/US500 = 40% / 1%).
+- Min-delta coefficients (Unhedged / Hedged Margin Factor) as of 2026-10-01: BTC, ETH, US500, US100, XAU 0.2% / 0.1%; HYPE, SOL 0.3% / 0.15%; ZEC, CL 0.5% / 0.25%. When changing them, also recompute the BTC example calculation below the table.
 - ZEC options are present on `main` as of 2026-09-22 (instrument page, sidebar entry, margin requirements tab, portfolio margin SCAN tab and min-delta row) even though an earlier note recorded their removal. Check the live files rather than trusting this file for ZEC status.
 
 ## Last updated

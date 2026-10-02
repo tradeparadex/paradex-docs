@@ -5,6 +5,7 @@
 
 import React, {useEffect, useRef, useState, type ReactNode} from 'react';
 import clsx from 'clsx';
+import {useLocation} from '@docusaurus/router';
 import {ThemeClassNames} from '@docusaurus/theme-common';
 import TOCItems from '@theme/TOCItems';
 import type {TOCItem} from '@docusaurus/mdx-loader';
@@ -13,6 +14,9 @@ const ACTIVE = 'table-of-contents__link--active';
 // A section becomes current once its heading is this close to the header,
 // as on Fern (Docusaurus switches as soon as it reaches mid-screen).
 const ACTIVE_OFFSET = 32;
+// After a jump to an anchor, Fern shows only the target for this long and
+// ignores the scroll the jump itself causes.
+const PIN_MS = 500;
 
 const ArrowUp = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -20,21 +24,44 @@ const ArrowUp = () => (
   </svg>
 );
 
+/** Marks entry `current` and draws the rail over entries `first`..`last`. */
+function paint(list: HTMLElement, links: HTMLAnchorElement[], first: number, last: number, current: number) {
+  links.forEach((link, i) => link.classList.toggle(ACTIVE, i === current));
+  const a = links[first].closest('li')!;
+  const b = links[last].closest('li')!;
+  const listTop = list.getBoundingClientRect().top;
+  const from = a.getBoundingClientRect().top - listTop;
+  const to = b.getBoundingClientRect().top - listTop + links[last].getBoundingClientRect().height;
+  list.style.setProperty('--toc-range-top', `${from}px`);
+  list.style.setProperty('--toc-range-height', `${to - from}px`);
+}
+
+function tocParts(container: HTMLElement) {
+  const list = container.querySelector<HTMLElement>('.table-of-contents');
+  const links = Array.from(container.querySelectorAll<HTMLAnchorElement>('.table-of-contents__link'));
+  return list && links.length ? {list, links} : null;
+}
+
 /**
  * Positions the rail highlight over the TOC entries whose sections are
  * visible, and marks the current section: the last one whose heading has
- * reached the header.
+ * reached the header. Right after a jump to an anchor, only the target is
+ * marked until the reader scrolls on, as on Fern.
  */
 function useVisibleRange(root: React.RefObject<HTMLDivElement | null>) {
+  const pinUntil = useRef(0);
+  const {hash, key} = useLocation();
+
   useEffect(() => {
     const container = root.current;
     if (!container) return undefined;
     let frame = 0;
     const update = () => {
       frame = 0;
-      const list = container.querySelector<HTMLElement>('.table-of-contents');
-      const links = Array.from(container.querySelectorAll<HTMLAnchorElement>('.table-of-contents__link'));
-      if (!list || !links.length) return;
+      if (performance.now() < pinUntil.current) return;
+      const parts = tocParts(container);
+      if (!parts) return;
+      const {list, links} = parts;
       const headings = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
       const top = document.querySelector('.navbar')?.getBoundingClientRect().bottom ?? 0;
       const bottom = window.innerHeight;
@@ -57,14 +84,7 @@ function useVisibleRange(root: React.RefObject<HTMLDivElement | null>) {
         first = 0;
         last = 0;
       }
-      links.forEach((link, i) => link.classList.toggle(ACTIVE, i === current));
-      const a = links[first].closest('li')!;
-      const b = links[last].closest('li')!;
-      const listTop = list.getBoundingClientRect().top;
-      const from = a.getBoundingClientRect().top - listTop;
-      const to = b.getBoundingClientRect().top - listTop + links[last].getBoundingClientRect().height;
-      list.style.setProperty('--toc-range-top', `${from}px`);
-      list.style.setProperty('--toc-range-height', `${to - from}px`);
+      paint(list, links, first, last, current);
     };
     const schedule = () => {
       if (!frame) frame = window.requestAnimationFrame(update);
@@ -83,6 +103,19 @@ function useVisibleRange(root: React.RefObject<HTMLDivElement | null>) {
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, [root]);
+
+  // Docusaurus moves to an anchor with history.push (no hashchange event), so
+  // follow the router location: a page load with a hash and TOC clicks alike.
+  useEffect(() => {
+    const container = root.current;
+    const parts = container && hash ? tocParts(container) : null;
+    if (!parts) return;
+    const target = decodeURIComponent(hash.slice(1));
+    const index = parts.links.findIndex((link) => decodeURIComponent(link.hash.slice(1)) === target);
+    if (index < 0) return;
+    paint(parts.list, parts.links, index, index, index);
+    pinUntil.current = performance.now() + PIN_MS;
+  }, [root, hash, key]);
 }
 
 type Props = {

@@ -28,7 +28,7 @@
     "clsx": "^2.1.1",
     "httpsnippet-lite": "3.0.5",
     "js-yaml": "^4.1.0",
-    "katex": "0.16.47",
+    "katex": "0.16.43",
     "lodash": "^4.18.1",
     "mdast-util-to-string": "^4",
     "micromark": "^4",
@@ -55,5 +55,8 @@
     "@types/react": "^19.3.0",
     "swagger2openapi": "^7.0.8",
     "typescript": "~5.9"
+  },
+  "resolutions": {
+    "katex": "0.16.43"
   }
 }

@@ -8,7 +8,6 @@ import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
 import {useWindowSize} from '@docusaurus/theme-common';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
-import DocItemPaginator from '@theme/DocItem/Paginator';
 import DocItemFooter from '@theme/DocItem/Footer';
 import DocItemTOCMobile from '@theme/DocItem/TOC/Mobile';
 import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
@@ -57,7 +56,6 @@ export default function DocItemLayout({children}: Props): ReactNode {
             <DocItemContent>{children}</DocItemContent>
             {layout !== 'custom' && <DocItemFooter />}
           </article>
-          {layout !== 'custom' && <DocItemPaginator />}
         </div>
       </div>
       {desktopToc && (

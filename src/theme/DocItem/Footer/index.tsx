@@ -1,9 +1,10 @@
-// Page footer as on Fern: "Was this page helpful?" and "Edit this page".
-// Feedback is sent to PostHog and the GTM data layer when they are loaded.
+// Page footer as on Fern: "Was this page helpful?", "Edit this page" and
+// the previous/next bar. Feedback is sent to PostHog and the GTM data layer
+// when they are loaded.
 
 import React, {useState, type ReactNode} from 'react';
+import Link from '@docusaurus/Link';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
-import EditThisPage from '@theme/EditThisPage';
 
 declare global {
   interface Window {
@@ -44,16 +45,69 @@ function Feedback({permalink}: {permalink: string}) {
   );
 }
 
+const Chevron = ({left}: {left?: boolean}) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d={left ? 'm15 18-6-6 6-6' : 'm9 18 6-6-6-6'} />
+  </svg>
+);
+const Pencil = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M21.17 6.81a1 1 0 0 0-3.98-3.98L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5zM15 5l4 4" />
+  </svg>
+);
+
+type NavLink = {title: string; permalink: string} | undefined;
+
+/** Fern's bar: a compact "Previous" next to a card for the next page. */
+function Pagination({previous, next}: {previous: NavLink; next: NavLink}) {
+  if (!previous && !next) return null;
+  return (
+    <nav className="fern-footer-nav" aria-label="Docs pages">
+      {previous && next && (
+        <Link className="fern-footer-prev" to={previous.permalink} aria-label={`Previous: ${previous.title}`}>
+          <Chevron left />
+          <span className="fern-footer-nav__label">Previous</span>
+        </Link>
+      )}
+      {next ? (
+        <Link className="fern-footer-next" to={next.permalink} aria-label={`Next: ${next.title}`}>
+          <span className="fern-footer-nav__title">{next.title}</span>
+          <span className="fern-footer-nav__divider" aria-hidden="true" />
+          <span className="fern-footer-nav__direction">
+            <span className="fern-footer-nav__label">Next</span>
+            <Chevron />
+          </span>
+        </Link>
+      ) : (
+        previous && (
+          <Link className="fern-footer-next fern-footer-next--previous" to={previous.permalink} aria-label={`Previous: ${previous.title}`}>
+            <span className="fern-footer-nav__direction">
+              <Chevron left />
+              <span className="fern-footer-nav__label">Previous</span>
+            </span>
+            <span className="fern-footer-nav__divider" aria-hidden="true" />
+            <span className="fern-footer-nav__title">{previous.title}</span>
+          </Link>
+        )
+      )}
+    </nav>
+  );
+}
+
 export default function DocItemFooter(): ReactNode {
   const {metadata} = useDoc();
   return (
     <footer className="theme-doc-footer">
-      <Feedback permalink={metadata.permalink} />
-      {metadata.editUrl && (
-        <div className="theme-doc-footer-edit-meta-row">
-          <EditThisPage editUrl={metadata.editUrl} />
-        </div>
-      )}
+      <div className="fern-footer-row">
+        <Feedback permalink={metadata.permalink} />
+        {metadata.editUrl && (
+          <a className="fern-footer-edit" href={metadata.editUrl} target="_blank" rel="noreferrer noopener">
+            <Pencil />
+            Edit this page
+          </a>
+        )}
+      </div>
+      <Pagination previous={metadata.previous} next={metadata.next} />
     </footer>
   );
 }

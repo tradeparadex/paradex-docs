@@ -1,6 +1,7 @@
 // Components available in every MDX page without an import. These mirror
 // Fern's built-in components so the content written for Fern renders as-is.
 
+import React from 'react';
 import MDXComponents from '@theme-original/MDXComponents';
 import Icon from '@site/src/components/fern/Icon';
 import {Card, CardGroup} from '@site/src/components/fern/Card';
@@ -10,8 +11,18 @@ import {Accordion, AccordionGroup, Badge, Button, ChangelogTags, Frame, Step, St
 import {CodeBlock, CodeBlocks} from '@site/src/components/fern/CodeBlocks';
 import ApiEndpoint, {EndpointRequestSnippet, EndpointResponseSnippet} from '@site/src/components/api/ApiEndpoint';
 
+/** Markdown tables sit in a bordered card that scrolls sideways, as on Fern. */
+function Table(props: React.ComponentProps<'table'>) {
+  return (
+    <div className="fern-table">
+      <table {...props} />
+    </div>
+  );
+}
+
 export default {
   ...MDXComponents,
+  table: Table,
   Icon,
   Card,
   CardGroup,

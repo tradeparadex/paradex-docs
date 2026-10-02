@@ -49,6 +49,16 @@
 .lp-container {
   min-height: 100vh;
   position: relative;
+  /* Fern's body text is 16px/24px; Infima's .theme-doc-markdown uses 1.75. */
+  line-height: 1.5;
+  text-rendering: auto;
+}
+
+/* Landing h3s are 20px/25px with normal tracking on Fern; set them here so
+   the docs prose h3 rules (line-height, letter-spacing) don't apply. */
+.lp-container h3 {
+  line-height: 1.25;
+  letter-spacing: normal;
 }
 
 .lp-main {
@@ -110,7 +120,9 @@
 }
 
 
-.lp-value-desc {
+/* Classed <p>/<li> colours are scoped to .lp-container so they beat
+   `.theme-doc-markdown p, .theme-doc-markdown li` in custom.css. */
+.lp-container .lp-value-desc {
   color: var(--grayscale-10);
   margin: 0;
 }
@@ -177,7 +189,7 @@
   }
 }
 
-.lp-hero-desc {
+.lp-container .lp-hero-desc {
   color: var(--grayscale-10);
   max-width: 40rem;
   margin: 0 auto 2rem;
@@ -193,6 +205,46 @@
 .lp-hero-actions .lp-btn {
   height: 40px;
   padding: 0 16px;
+}
+
+/* Landing buttons use Fern's button metrics: 14px/20px text, no border
+   (outlined buttons draw a 1px inset ring instead). */
+.lp-container .fern-button {
+  border: 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.lp-container .fern-button.filled.primary {
+  font-weight: 500;
+}
+
+/* Fern keeps the bright accent on hover. */
+.lp-container .fern-button.filled.primary:hover {
+  background: var(--paradex-accent-bright);
+}
+
+.lp-container .fern-button.outlined {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.133);
+}
+
+/* Minimal buttons (the "→" links under the lanes); components.css sets
+   their colour with !important. Like Fern's, they are 40px tall on narrow
+   screens and 32px from 640px up. */
+.lp-container .fern-button.minimal {
+  height: 40px;
+  padding: 4px 12px;
+  color: rgba(255, 255, 255, 0.686) !important;
+}
+
+@media (min-width: 40rem) {
+  .lp-container .fern-button.minimal {
+    height: 32px;
+  }
+}
+
+.lp-container .fern-button.minimal:hover {
+  color: #ffffff !important;
 }
 
 /* ── 2. Value prop grid ── */
@@ -307,7 +359,7 @@
   margin: 0;
 }
 
-.lp-profile-label {
+.lp-container .lp-profile-label {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -324,10 +376,12 @@
   gap: 0.375rem;
 }
 
-.lp-profile-list li {
+.lp-container .lp-profile-list li {
   color: var(--grayscale-10);
   padding-left: 1.25rem;
   position: relative;
+  /* The list's gap spaces items; drop Infima's `li + li` margin. */
+  margin: 0;
 }
 
 .lp-profile-list li::before {
@@ -337,7 +391,7 @@
   color: var(--paradex-accent);
 }
 
-.lp-profile-shared {
+.lp-container .lp-profile-shared {
   color: var(--grayscale-10);
   text-align: center;
   margin: 1.5rem 0 0;
@@ -358,6 +412,7 @@
 
 .lp-profile-shared strong {
   color: var(--grayscale-12);
+  font-weight: 600;
 }
 
 .lp-profile-links {
@@ -481,10 +536,10 @@
   color: var(--paradex-accent);
 }
 
-.lp-explore-name {
+/* Regular weight, as on Fern (its `bold` lost to `.lp-container p`). */
+.lp-container .lp-explore-name {
   color: var(--grayscale-12);
   margin: 0;
-  font-weight: bold;
 }
 
 /* ── 6. Release notes ── */
@@ -603,7 +658,20 @@
 }
 
 
-/* Full-width page without title, breadcrumbs or page actions. */
+/* Full-width page without title, breadcrumbs or page actions. Like Fern,
+   the landing spans the whole viewport right under the header: drop the
+   no-sidebar main's `max-width: calc(100% - 30px)` and the container's
+   padding (the padding-*--md/lg utilities are !important). The 80px
+   bottom padding matches the space Fern leaves below the page for its
+   footer badge. */
+main:has(> .container > .doc-layout--custom) {
+  max-width: 100%;
+}
+
+.container:has(> .doc-layout--custom) {
+  padding: 0 0 80px !important;
+}
+
 .doc-layout--custom .doc-item-container {
   max-width: none;
   padding-top: 0;
@@ -626,8 +694,13 @@
 }
 
 
-/* MDX wraps text that sits on its own line inside <a> in a <p>. */
+/* MDX wraps text that sits on its own line inside <a> in a <p>; it takes
+   the link's colour (e.g. dark text on the filled button). */
 .lp-container a > p,
 .fern-button > p {
   margin: 0;
+}
+
+.lp-container a > p {
+  color: inherit;
 }

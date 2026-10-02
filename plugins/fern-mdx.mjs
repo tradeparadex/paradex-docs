@@ -17,6 +17,7 @@ import path from 'node:path';
 import {parseExpressionAt} from 'acorn';
 import {getFileLoaderUtils} from '@docusaurus/utils';
 import {visit} from 'unist-util-visit';
+import {visitParents} from 'unist-util-visit-parents';
 import {toString} from 'mdast-util-to-string';
 
 const MARKDOWN_INCLUDE = /<Markdown\s+src=(?:"([^"]+)"|'([^']+)'|\{\s*["']([^"']+)["']\s*\})\s*\/>/g;
@@ -145,5 +146,37 @@ export function remarkTrimHeadingIds() {
       const properties = data.hProperties ?? (data.hProperties = {});
       if (!properties.id) properties.id = raw.trim().toLowerCase();
     });
+  };
+}
+
+/**
+ * Fern leaves headings inside components (the step titles in <Steps>, the
+ * headings in a <Tab>) out of "On this page". Runs after Docusaurus has
+ * assigned heading ids and written the `toc` export, and drops those entries
+ * from it.
+ */
+export function remarkTocSkipNested() {
+  return (root) => {
+    const nested = new Set();
+    visitParents(root, 'heading', (node, ancestors) => {
+      if (!ancestors.some((ancestor) => ancestor.type === 'mdxJsxFlowElement')) return;
+      const id = node.data?.id ?? node.data?.hProperties?.id;
+      if (id) nested.add(id);
+    });
+    if (!nested.size) return;
+    for (const child of root.children) {
+      if (child.type !== 'mdxjsEsm') continue;
+      for (const statement of child.data?.estree?.body ?? []) {
+        if (statement.type !== 'ExportNamedDeclaration') continue;
+        for (const declaration of statement.declaration?.declarations ?? []) {
+          if (declaration.id?.name !== 'toc' || declaration.init?.type !== 'ArrayExpression') continue;
+          declaration.init.elements = declaration.init.elements.filter((element) => {
+            if (element?.type !== 'ObjectExpression') return true;
+            const idProperty = element.properties.find((p) => (p.key?.name ?? p.key?.value) === 'id');
+            return !nested.has(idProperty?.value?.value);
+          });
+        }
+      }
+    }
   };
 }

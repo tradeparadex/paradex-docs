@@ -325,7 +325,8 @@ a.navbar-cta {
 
 /* Mobile: hamburger + logo, tabs move into the drawer. */
 @media (max-width: 996px) {
-  :root {
+  :root,
+  html[data-theme='dark'] {
     --ifm-navbar-height: 64px;
     --header-row-height: 64px;
     --ifm-navbar-padding-horizontal: 1rem;
@@ -343,7 +344,22 @@ a.navbar-cta {
   }
 
   .navbar__toggle {
-    margin: 0 0 0 0.25rem;
+    display: inline-flex;
+  }
+
+  .navbar__inner {
+    gap: 16px;
+    padding: 0 16px;
+  }
+
+  /* Docs pages keep a 16px gutter on small screens. */
+  html [class*='docMainContainer'] > .container {
+    padding: 0 16px !important;
+  }
+
+  /* Fern keeps the "/" hint on mobile too. */
+  .navbar-search-center [class*='searchHintContainer'] {
+    display: flex !important;
   }
 }
 
@@ -365,14 +381,149 @@ a.navbar-cta {
   }
 }
 
-.navbar-sidebar,
-.navbar-sidebar__brand,
-.navbar-sidebar__items {
-  background-color: var(--paradex-bg);
+/* Mobile menu (src/theme/Navbar/MobileSidebar), as on Fern: a panel from
+   the right under the header, leaving a strip of the page visible. */
+.navbar__toggle {
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  border-radius: 8px;
+  color: var(--grayscale-a11);
 }
 
-.navbar-sidebar .menu__link--active {
-  color: var(--paradex-accent);
+.navbar__toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.navbar__toggle--open,
+.navbar__toggle--open:hover {
+  background: #15b5c2;
+  color: var(--accent-contrast);
+}
+
+.navbar-sidebar.fern-mobile-nav {
+  top: var(--ifm-navbar-height);
+  right: 0;
+  bottom: 0;
+  left: auto;
+  width: calc(100vw - 49px);
+  height: auto;
+  max-width: none;
+  background: var(--paradex-bg);
+  border-left: 1px solid var(--grayscale-a3);
+  box-shadow: none;
+  transform: translate3d(100%, 0, 0);
+}
+
+.navbar-sidebar--show .navbar-sidebar.fern-mobile-nav {
+  transform: translate3d(0, 0, 0);
+}
+
+.navbar-sidebar__backdrop {
+  top: var(--ifm-navbar-height);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.fern-mobile-nav__scroll {
+  height: 100%;
+  overflow-y: auto;
+  padding: 16px 0 32px !important;
+}
+
+.fern-mobile-nav .menu__list {
+  margin: 0;
+  padding: 0;
+}
+
+.fern-mobile-nav .menu__list-item:not(:first-child) {
+  margin-top: 0;
+}
+
+.fern-mobile-nav__tabs .menu__link {
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: 0;
+  background: none !important;
+  color: var(--grayscale-a11);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.fern-mobile-nav__tabs .menu__link--active {
+  color: var(--accent-a11);
+}
+
+.fern-mobile-nav__sidebar {
+  margin-top: 20px;
+}
+
+.fern-mobile-nav .theme-doc-sidebar-menu {
+  padding: 0;
+  font-size: 16px;
+}
+
+.fern-mobile-nav__sidebar .menu__link {
+  padding: 6px 16px;
+  border-radius: 0;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.fern-mobile-nav__sidebar .menu__link--active:not(.menu__link--sublist) {
+  color: var(--accent-a11);
+}
+
+.fern-mobile-nav .sidebar-section-heading > .menu__list-item-collapsible > .menu__link,
+.fern-mobile-nav .sidebar-section-heading > .menu__link {
+  height: auto;
+  margin: 0 0 4px;
+  padding: 4px 16px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.fern-mobile-nav .menu__list-item.sidebar-section-heading:not(:first-child) {
+  margin-top: 20px;
+}
+
+.fern-mobile-nav__links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 24px 16px 0 !important;
+  padding-top: 24px !important;
+  border-top: 1px solid var(--grayscale-a5);
+}
+
+.fern-mobile-nav__links .menu__link {
+  justify-content: center;
+  height: 40px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.fern-mobile-nav__links .navbar-link-minimal {
+  color: var(--grayscale-a11);
+}
+
+.fern-mobile-nav__links .navbar-cta {
+  width: 100%;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--paradex-accent-bright);
+  color: var(--accent-contrast) !important;
+  font-weight: 500;
+}
+
+.fern-mobile-nav__links svg {
+  display: none;
 }
 
 /* ---------- Sidebar ---------- */
@@ -722,11 +873,18 @@ a.navbar-cta {
   border-radius: 8px;
 }
 
-/* Blockquotes */
+/* Blockquotes: teal bar, italic, muted (Fern's prose style). */
 blockquote {
-  border-left: 3px solid var(--border-color-strong);
-  color: var(--text-muted);
-  padding: 0 1rem;
+  margin: 1.6em 0;
+  padding: 0 0 0 16px;
+  border-left: 4px solid rgba(0, 233, 253, 0.34);
+  color: var(--grayscale-a11);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.theme-doc-markdown blockquote p {
+  color: inherit;
 }
 
 hr {
@@ -815,6 +973,10 @@ hr {
   font-size: 16px;
   line-height: 28px;
   color: #ffffff;
+}
+
+.fern-page-header__subtitle a {
+  font-weight: 600;
 }
 
 .page-actions {
@@ -1357,11 +1519,97 @@ hr {
   scrollbar-color: var(--paradex-sidebar-active) transparent;
 }
 
-/* KaTeX: keep wide formulas scrollable */
+/* Mermaid diagrams (pre-rendered, see plugins/mermaid.mjs) and the dialog
+   that shows one enlarged, as on Fern. */
+.mermaid-container {
+  margin: 16px 0 24px;
+  cursor: zoom-in;
+}
+
+.mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-container:focus-visible {
+  outline: 2px solid var(--accent-a11);
+  outline-offset: 4px;
+}
+
+html.mermaid-zoom-open {
+  overflow: hidden;
+}
+
+.mermaid-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--ifm-z-index-fixed) + 10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  animation: mermaid-zoom-in 0.15s ease-out;
+}
+
+@keyframes mermaid-zoom-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.mermaid-zoom__panel {
+  position: relative;
+  display: flex;
+  width: 80vw;
+  height: 80vh;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 12px;
+  background: var(--paradex-card-bg);
+  overflow: auto;
+}
+
+.mermaid-zoom__body {
+  margin: auto;
+  padding: 48px;
+}
+
+.mermaid-zoom__body svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-zoom__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  padding: 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--grayscale-a12);
+  cursor: pointer;
+}
+
+.mermaid-zoom__close:hover {
+  background: var(--grayscale-a3);
+}
+
+.mermaid-zoom__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* KaTeX: wide display formulas run past the column, as on Fern. */
 .katex-display {
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: visible;
   padding: 0.25rem 0;
+}
+
+/* Fern has no floating back-to-top button ("Scroll to top" is in the TOC). */
+.theme-back-to-top-button {
+  display: none;
 }
 
 /* ---------- Changelog (release notes) ---------- */

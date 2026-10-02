@@ -10,6 +10,7 @@ import Heading from '@theme/Heading';
 import MDXContent from '@theme/MDXContent';
 import type {Props} from '@theme/DocItem/Content';
 import PageActions from '@site/src/components/PageActions';
+import InlineMarkdown from '@site/src/components/InlineMarkdown';
 import {AnchorIdProvider} from '@site/src/components/fern/anchors';
 
 export default function DocItemContent({children}: Props): ReactNode {
@@ -25,7 +26,11 @@ export default function DocItemContent({children}: Props): ReactNode {
             <Heading as="h1">{metadata.title}</Heading>
             <PageActions permalink={metadata.permalink} />
           </div>
-          {fm.subtitle && <p className="fern-page-header__subtitle">{fm.subtitle}</p>}
+          {fm.subtitle && (
+            <p className="fern-page-header__subtitle">
+              <InlineMarkdown>{fm.subtitle}</InlineMarkdown>
+            </p>
+          )}
         </header>
       )}
       <AnchorIdProvider seed={toc.map((item) => item.id)}>

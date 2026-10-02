@@ -23,6 +23,13 @@ export type Response = {status: string; label: string; description?: string; sha
 
 export type WsOperation = {direction: 'publish' | 'subscribe'; summary?: string; descriptionHtml?: string; shape: Shape; example?: unknown};
 
+export type RequestExample = {
+  path: Record<string, string>;
+  query: Record<string, string>;
+  headers: Record<string, string>;
+  body?: unknown;
+};
+
 export type Endpoint = {
   api: string;
   kind?: 'websocket';
@@ -42,6 +49,7 @@ export type Endpoint = {
   responses?: Response[];
   errors?: Array<{status: string; name: string; description?: string; shape?: Shape}>;
   samples?: Sample[];
+  example?: RequestExample;
   handshakeUrl?: string;
   messages?: Array<{direction: string; example: unknown}>;
   send?: WsOperation;

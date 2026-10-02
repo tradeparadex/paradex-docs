@@ -8,6 +8,7 @@
 // Groups and endpoints are ordered by first appearance in the spec.
 
 import fs from 'node:fs';
+import {HTTPSnippet} from 'httpsnippet-lite';
 import yaml from 'js-yaml';
 
 import {slugify} from '../navigation.mjs';
@@ -28,6 +29,31 @@ const LANGUAGE_LABELS = {
   go: 'Go', java: 'Java', ruby: 'Ruby', csharp: 'C#', php: 'PHP', swift: 'Swift', rust: 'Rust',
 };
 const PRISM_LANGUAGE = {curl: 'bash', csharp: 'csharp', javascript: 'javascript', typescript: 'typescript'};
+
+// Fern offers these languages on every endpoint. Authored samples
+// (x-fern-examples) win; the rest are generated with httpsnippet, plus the
+// import lines Fern adds.
+const SNIPPET_TARGETS = [
+  {language: 'csharp', target: 'csharp', client: 'restsharp', format: (code) => `using RestSharp;\n\n${code}`},
+  {language: 'go', target: 'go', client: 'native'},
+  {
+    language: 'java',
+    target: 'java',
+    client: 'unirest',
+    format: (code) =>
+      `import com.mashape.unirest.http.HttpResponse;\nimport com.mashape.unirest.http.Unirest;\n\n${code}`,
+  },
+  {language: 'javascript', target: 'javascript', client: 'fetch'},
+  {
+    language: 'php',
+    target: 'php',
+    client: 'guzzle',
+    format: (code) => code.replace(/^<\?php\n\n/, "<?php\nrequire_once('vendor/autoload.php');\n\n"),
+  },
+  {language: 'python', target: 'python', client: 'requests'},
+  {language: 'ruby', target: 'ruby', client: 'native'},
+  {language: 'swift', target: 'swift', client: 'nsurlsession'},
+];
 
 /** Deep merge, as Fern applies overrides.yml: objects merge, arrays replace. */
 export function deepMerge(base, override) {
@@ -95,11 +121,30 @@ function generateCurl({method, url, query, headers, secured, authHeader, body}) 
   return lines.map((line, i) => (i === 0 ? line : `     ${line}`)).join(' \\\n');
 }
 
+/** The same request as a HAR entry, for httpsnippet. */
+function toHar({method, url, query, headers, secured, authHeader, body}) {
+  return {
+    method: method.toUpperCase(),
+    url,
+    httpVersion: 'HTTP/1.1',
+    cookies: [],
+    headersSize: -1,
+    bodySize: -1,
+    queryString: query.map(({name, value}) => ({name, value: String(value)})),
+    headers: [
+      ...(secured ? [{name: authHeader, value: '<apiKey>'}] : []),
+      ...headers.map(({name, value}) => ({name, value: String(value)})),
+      ...(body !== undefined ? [{name: 'Content-Type', value: 'application/json'}] : []),
+    ],
+    ...(body !== undefined ? {postData: {mimeType: 'application/json', text: JSON.stringify(body, null, 2)}} : {}),
+  };
+}
+
 /**
  * Build every endpoint of a spec.
  * @returns {Array<{groupSlug: string, groupTitle: string, methodSlug: string, data: object}>}
  */
-export function buildEndpoints(spec, {apiName}) {
+export async function buildEndpoints(spec, {apiName}) {
   const {deref} = createResolver(spec);
   const server = spec.servers?.[0]?.url ?? '';
   const serverPath = server.replace(/^[a-z]+:\/\/[^/]+/i, '');
@@ -131,9 +176,9 @@ export function buildEndpoints(spec, {apiName}) {
       const queryParams = params.filter((p) => p.in === 'query').map(toParam);
       const headerParams = params.filter((p) => p.in === 'header').map(toParam);
 
-      // The Authentication section lists the operation's own security; the
-      // generated cURL also honours security inherited from the spec root
-      // (as Fern's did).
+      // The Authentication section and the generated non-cURL samples use the
+      // operation's own security; the generated cURL also honours security
+      // inherited from the spec root (as Fern's did).
       const security = op.security ?? [];
       const secured = security.some((req) => Object.keys(req).length > 0);
       const curlSecured = (op.security ?? spec.security ?? []).some((req) => Object.keys(req).length > 0);
@@ -207,36 +252,48 @@ export function buildEndpoints(spec, {apiName}) {
           });
         }
       }
+      const exampleValue = (p) => {
+        const value = exampleFor(p.schema ?? {type: 'string'}, deref);
+        return p.example ?? (value === 'string' ? p.name : value);
+      };
+      const urlPath = pathKey.replace(/\{([^}]+)\}/g, (_, name) => {
+        const p = params.find((x) => x.in === 'path' && x.name === name);
+        return encodeURIComponent(String(p ? exampleValue(p) : name));
+      });
+      const request = {
+        method,
+        url: server + urlPath,
+        query: params
+          .filter((p) => p.in === 'query' && p.required)
+          .map((p) => ({name: p.name, value: exampleFor(p.schema ?? {}, deref) ?? 'string'})),
+        headers: params
+          .filter((p) => p.in === 'header' && p.required)
+          .map((p) => ({name: p.name, value: exampleFor(p.schema ?? {}, deref) ?? 'string'})),
+        secured: curlSecured,
+        authHeader,
+        body: body ? (body.example ?? exampleFor(body.schema, deref, {requiredOnly: true})) : undefined,
+      };
       if (!samples.some((s) => s.language === 'curl')) {
-        const exampleValue = (p) => {
-          const value = exampleFor(p.schema ?? {type: 'string'}, deref);
-          return p.example ?? (value === 'string' ? p.name : value);
-        };
-        const urlPath = pathKey.replace(/\{([^}]+)\}/g, (_, name) => {
-          const p = params.find((x) => x.in === 'path' && x.name === name);
-          return encodeURIComponent(String(p ? exampleValue(p) : name));
-        });
-        samples.unshift({
-          language: 'curl',
-          label: 'cURL',
-          prism: 'bash',
-          code: generateCurl({
-            method,
-            url: server + urlPath,
-            query: params
-              .filter((p) => p.in === 'query' && p.required)
-              .map((p) => ({name: p.name, value: exampleFor(p.schema ?? {}, deref) ?? 'string'})),
-            headers: params
-              .filter((p) => p.in === 'header' && p.required)
-              .map((p) => ({name: p.name, value: exampleFor(p.schema ?? {}, deref) ?? 'string'})),
-            secured: curlSecured,
-            authHeader,
-            body: body ? (body.example ?? exampleFor(body.schema, deref, {requiredOnly: true})) : undefined,
-          }),
+        samples.push({language: 'curl', label: 'cURL', prism: 'bash', code: generateCurl(request)});
+      }
+      // Fern's other languages only honour the operation's own security.
+      const snippet = new HTTPSnippet(toHar({...request, secured}));
+      for (const {language, target, client, format = (code) => code} of SNIPPET_TARGETS) {
+        if (samples.some((s) => s.language === language)) continue;
+        const code = await snippet.convert(target, client);
+        samples.push({
+          language,
+          label: LANGUAGE_LABELS[language],
+          prism: PRISM_LANGUAGE[language] ?? language,
+          code: format(String(code)).replace(/\s+$/, ''),
         });
       }
-      // cURL first, then authored samples in their original order.
-      samples.sort((a, b) => Number(b.language === 'curl') - Number(a.language === 'curl'));
+      // cURL first, then alphabetical by label, as in Fern's dropdown.
+      samples.sort(
+        (a, b) =>
+          Number(b.language === 'curl') - Number(a.language === 'curl') ||
+          (a.label < b.label ? -1 : a.label > b.label ? 1 : 0),
+      );
 
       endpoints.push({
         groupSlug,
@@ -262,6 +319,15 @@ export function buildEndpoints(spec, {apiName}) {
           responses,
           errors,
           samples,
+          // Initial values of the API explorer ("Try it").
+          example: {
+            path: Object.fromEntries(
+              params.filter((p) => p.in === 'path').map((p) => [p.name, String(exampleValue(p))]),
+            ),
+            query: Object.fromEntries(request.query.map(({name, value}) => [name, String(value)])),
+            headers: Object.fromEntries(request.headers.map(({name, value}) => [name, String(value)])),
+            ...(request.body !== undefined ? {body: request.body} : {}),
+          },
         },
       });
     }

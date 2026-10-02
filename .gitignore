@@ -5,6 +5,7 @@ node_modules
 
 # Docusaurus build output and caches
 build/
+build-next/
 .docusaurus/
 .cache-loader/
 

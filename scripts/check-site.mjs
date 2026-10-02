@@ -13,12 +13,12 @@ import {fileURLToPath} from 'node:url';
 import yaml from 'js-yaml';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const build = path.join(root, 'build');
+const build = path.resolve(root, process.env.BUILD_DIR ?? 'build');
 const failures = [];
 const fail = (message) => failures.push(message);
 
 if (!fs.existsSync(build)) {
-  console.error('No build/ directory. Run `yarn build` first.');
+  console.error(`No ${path.relative(root, build)}/ directory. Run \`yarn build\` first.`);
   process.exit(1);
 }
 

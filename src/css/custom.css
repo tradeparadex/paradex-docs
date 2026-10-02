@@ -35,7 +35,10 @@
   font-display: swap;
 }
 
-:root {
+/* Infima's dark-mode tokens are scoped to html[data-theme='dark']; match that
+   selector so these win (the site is dark only). */
+:root,
+html[data-theme='dark'] {
   --paradex-accent: #1bc1cf;
   --paradex-accent-bright: #07d1e2;
   --paradex-dark: #070808;
@@ -54,9 +57,11 @@
   --grayscale-7: #484848;
   --grayscale-8: #606060;
   --grayscale-9: #6e6e6e;
-  --grayscale-10: #9b9b9b;
+  --grayscale-10: #7b7b7b;
   --grayscale-11: #b4b4b4;
   --grayscale-12: #eeeeee;
+  /* Fern's accent alpha scale step 11, used inline by some pages. */
+  --accent-a11: rgba(62, 239, 255, 0.867);
   --grayscale-a2: rgba(255, 255, 255, 0.035);
   --grayscale-a3: rgba(255, 255, 255, 0.07);
   --grayscale-a5: rgba(255, 255, 255, 0.12);

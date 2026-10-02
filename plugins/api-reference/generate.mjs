@@ -13,28 +13,33 @@ import {buildChannels, loadAsyncApi} from './asyncapi.mjs';
 
 const yamlString = (value) => JSON.stringify(String(value ?? ''));
 
-export function generateApiReference({contentDir, pagesDir, generatedDir}) {
+export async function generateApiReference({contentDir, pagesDir, generatedDir}) {
   const apisDir = path.join(contentDir, 'apis');
-  const specs = new Map();
   const pages = [];
   /** `${apiName} ${METHOD} ${path}` -> page */
   const byOperation = new Map();
 
-  function loadSpec(apiName) {
-    if (specs.has(apiName)) return specs.get(apiName);
+  // Every spec is loaded up front: building the code samples is async, while
+  // navigation resolves API sections synchronously.
+  const specs = new Map();
+  for (const apiName of fs.readdirSync(apisDir).sort()) {
     const dir = path.join(apisDir, apiName);
+    if (!fs.statSync(dir).isDirectory()) continue;
     const openapi = path.join(dir, 'openapi', 'openapi.json');
-    let entry;
     if (fs.existsSync(openapi)) {
       const document = loadOpenApi(openapi, path.join(dir, 'openapi', 'overrides.yml'));
-      entry = {type: 'openapi', document, items: buildEndpoints(document, {apiName})};
+      specs.set(apiName, {type: 'openapi', document, items: await buildEndpoints(document, {apiName})});
     } else {
       const asyncFile = fs.readdirSync(dir).find((f) => /^asyncapi.*\.ya?ml$/.test(f));
       if (!asyncFile) throw new Error(`No OpenAPI or AsyncAPI spec in ${dir}`);
       const document = loadAsyncApi(path.join(dir, asyncFile));
-      entry = {type: 'asyncapi', document, items: buildChannels(document, {apiName})};
+      specs.set(apiName, {type: 'asyncapi', document, items: buildChannels(document, {apiName})});
     }
-    specs.set(apiName, entry);
+  }
+
+  function loadSpec(apiName) {
+    const entry = specs.get(apiName);
+    if (!entry) throw new Error(`navigation.yml: no API named "${apiName}" in ${apisDir}`);
     return entry;
   }
 

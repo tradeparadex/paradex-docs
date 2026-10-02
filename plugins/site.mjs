@@ -31,7 +31,7 @@ export function changelogEntryUrl(changelogUrl, {year, month, day}) {
   return `${changelogUrl}/${year}/${month}/${day}`;
 }
 
-export function loadSite({siteDir}) {
+export async function loadSite({siteDir}) {
   const contentDir = path.join(siteDir, 'docs');
   const pagesDir = path.join(contentDir, 'pages');
   const generatedDir = path.join(pagesDir, 'generated');
@@ -39,7 +39,7 @@ export function loadSite({siteDir}) {
   fs.rmSync(generatedDir, {recursive: true, force: true});
   fs.mkdirSync(generatedDir, {recursive: true});
 
-  const api = generateApiReference({contentDir, pagesDir, generatedDir});
+  const api = await generateApiReference({contentDir, pagesDir, generatedDir});
   const nav = loadNavigation({
     siteDir,
     contentDir,

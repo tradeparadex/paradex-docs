@@ -3,8 +3,12 @@
 // schemas on the left, code samples and response examples on the right.
 
 import React, {useEffect, useState} from 'react';
+import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import CodeBlock from '@theme/CodeBlock';
+import {useHistory, useLocation} from '@docusaurus/router';
+import ApiExplorer from './ApiExplorer';
+import MethodBadge from './MethodBadge';
 import type {Endpoint, Property, Response, Sample, Shape} from './types';
 
 const ENUM_INLINE_LIMIT = 5;
@@ -16,10 +20,7 @@ function Html({html, className}: {html?: string; className?: string}) {
   return <div className={clsx('api-markdown', className)} dangerouslySetInnerHTML={{__html: html}} />;
 }
 
-export function MethodBadge({method, className}: {method: string; className?: string}) {
-  const label = method === 'DELETE' ? 'DEL' : method;
-  return <span className={clsx('api-method-badge', `api-method-badge--${method.toLowerCase()}`, className)}>{label}</span>;
-}
+export {MethodBadge};
 
 function nestedProperties(shape: Shape): Property[] | undefined {
   if (shape.kind === 'object') return shape.properties;
@@ -189,7 +190,13 @@ function useLanguage(samples: Sample[]) {
   return [samples.find((s) => s.language === language) ?? samples[0], choose] as const;
 }
 
-export function CodeSamplePanel({endpoint}: {endpoint: Endpoint}) {
+const PlayIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" />
+  </svg>
+);
+
+export function CodeSamplePanel({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt?: () => void}) {
   const samples = endpoint.samples ?? [];
   const [sample, choose] = useLanguage(samples);
   if (!sample) return null;
@@ -216,8 +223,27 @@ export function CodeSamplePanel({endpoint}: {endpoint: Endpoint}) {
       <CodeBlock language={sample.prism} className="api-panel__code">
         {sample.code}
       </CodeBlock>
+      {onTryIt && (
+        <div className="api-panel__footer">
+          <button type="button" className="api-try-it" onClick={onTryIt}>
+            <PlayIcon />
+            Try it
+          </button>
+        </div>
+      )}
     </div>
   );
+}
+
+/** Opens the API explorer while the URL has `?explorer=true` (as on Fern). */
+function useExplorer(): [boolean, () => void] {
+  const location = useLocation();
+  const history = useHistory();
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    setOpen(new URLSearchParams(location.search).get('explorer') === 'true');
+  }, [location.search]);
+  return [open, () => history.push(`${location.pathname}?explorer=true`)];
 }
 
 export function ResponsePanel({responses}: {responses: Response[]}) {
@@ -317,6 +343,7 @@ function WebSocketPanels({endpoint}: {endpoint: Endpoint}) {
 
 export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX.Element {
   const isWs = endpoint.kind === 'websocket';
+  const [exploring, openExplorer] = useExplorer();
   const params: Array<[string, Property[] | undefined]> = [
     ['Path parameters', endpoint.pathParams],
     ['Query parameters', endpoint.queryParams],
@@ -432,13 +459,14 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
               <WebSocketPanels endpoint={endpoint} />
             ) : (
               <>
-                <CodeSamplePanel endpoint={endpoint} />
+                <CodeSamplePanel endpoint={endpoint} onTryIt={openExplorer} />
                 <ResponsePanel responses={endpoint.responses ?? []} />
               </>
             )}
           </div>
         </aside>
       </div>
+      {exploring && !isWs && createPortal(<ApiExplorer endpoint={endpoint} />, document.body)}
     </div>
   );
 }

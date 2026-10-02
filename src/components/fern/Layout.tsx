@@ -7,17 +7,29 @@ export function Accordion({title, defaultOpen, children}: {title: ReactNode; def
   const id = useAnchorId(title);
   const [open, setOpen] = useState(Boolean(defaultOpen));
   useHashTarget(id, () => setOpen(true));
+  // Like Fern, opening an accordion puts its id in the URL (so the address bar
+  // holds a deep link to it) and closing it takes the id out again.
+  const onSummaryClick = (event: React.MouseEvent<HTMLElement>) => {
+    const details = event.currentTarget.parentElement as HTMLDetailsElement | null;
+    if (!id || !details) return;
+    const {pathname, search, hash} = window.location;
+    if (!details.open) {
+      window.history.replaceState(window.history.state, '', `${pathname}${search}#${id}`);
+    } else if (decodeURIComponent(hash.slice(1)) === id) {
+      window.history.replaceState(window.history.state, '', `${pathname}${search}`);
+    }
+  };
   return (
     <details
       className="fern-accordion"
       open={open}
       id={id}
       onToggle={(event) => setOpen((event.currentTarget as HTMLDetailsElement).open)}>
-      <summary className="fern-accordion__summary">
+      <summary className="fern-accordion__summary" onClick={onSummaryClick}>
         <svg className="fern-accordion__chevron" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="m9 18 6-6-6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <span>{title}</span>
+        <span className="fern-accordion__title">{title}</span>
       </summary>
       <div className="fern-accordion__body">{children}</div>
     </details>
@@ -57,11 +69,11 @@ export function Frame({caption, children, className}: {caption?: ReactNode; chil
 }
 
 type BadgeProps = {intent?: string; outlined?: boolean; minimal?: boolean; rounded?: boolean; children?: ReactNode};
+/** Fern's MDX badge; `outlined` + `minimal` is its "outlined-subtle" variant. */
 export function Badge({intent = 'note', outlined, minimal, rounded, children}: BadgeProps): React.JSX.Element {
+  const variant = outlined && minimal ? 'outlined-subtle' : outlined ? 'outlined' : minimal ? 'subtle' : 'solid';
   return (
-    <span
-      className={clsx('fern-docs-badge', `fern-docs-badge--${intent}`, outlined && 'outlined', minimal && 'minimal', rounded && 'rounded', !outlined && 'subtle')}
-      data-intent={intent}>
+    <span className={clsx('fern-docs-badge', `fern-docs-badge--${intent}`, variant, rounded && 'rounded')} data-intent={intent}>
       {children}
     </span>
   );

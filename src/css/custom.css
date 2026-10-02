@@ -154,6 +154,12 @@ html[data-theme='dark'] {
   color-scheme: dark;
 }
 
+/* Fern renders with text-rendering: auto (Infima sets optimizeLegibility,
+   which spaces HarmonyOS more widely). */
+html {
+  text-rendering: auto;
+}
+
 body {
   background-color: var(--paradex-bg);
   -webkit-font-smoothing: antialiased;
@@ -662,43 +668,46 @@ a.navbar-cta {
   color: var(--paradex-accent);
 }
 
-/* API method badges in the sidebar. */
+/* API method badges in the sidebar (Fern's "small subtle" badges; solid
+   on the current page). */
 .api-method > .menu__link {
   display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 12px;
 }
 
 .api-method > .menu__link::before {
   flex: 0 0 auto;
-  margin-top: 0.15rem;
-  min-width: 2.3rem;
-  text-align: center;
-  font-family: var(--ifm-font-family-monospace);
-  font-size: 0.625rem;
-  font-weight: 600;
-  line-height: 1;
-  padding: 0.3rem 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 20px;
+  padding: 0 6px;
   border-radius: 4px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
 }
 
 .api-method--get > .menu__link::before {
   content: 'GET';
-  color: #3dd68c;
-  background: rgba(61, 214, 140, 0.12);
+  color: rgb(27, 193, 207);
+  background: rgba(27, 193, 207, 0.12);
 }
 
 .api-method--post > .menu__link::before {
   content: 'POST';
-  color: #70b8ff;
-  background: rgba(112, 184, 255, 0.14);
+  color: rgb(112, 184, 255);
+  background: rgba(0, 119, 255, 0.227);
 }
 
 .api-method--put > .menu__link::before,
 .api-method--patch > .menu__link::before {
   content: 'PUT';
-  color: #ffc53d;
-  background: rgba(255, 197, 61, 0.12);
+  color: rgb(255, 202, 22);
+  background: rgba(250, 130, 0, 0.133);
 }
 
 .api-method--patch > .menu__link::before {
@@ -707,14 +716,51 @@ a.navbar-cta {
 
 .api-method--delete > .menu__link::before {
   content: 'DEL';
-  color: #ff9592;
-  background: rgba(255, 149, 146, 0.12);
+  color: rgb(255, 149, 146);
+  background: rgba(255, 23, 63, 0.176);
 }
 
 .api-method--wss > .menu__link::before {
   content: 'WSS';
-  color: #b4a7ff;
-  background: rgba(180, 167, 255, 0.14);
+  color: rgb(27, 193, 207);
+  background: rgba(27, 193, 207, 0.12);
+}
+
+.api-method--get > .menu__link--active::before,
+.api-method--wss > .menu__link--active::before {
+  color: var(--accent-contrast);
+  background: rgb(27, 193, 207);
+}
+
+.api-method--post > .menu__link--active::before {
+  color: #ffffff;
+  background: rgb(0, 144, 255);
+}
+
+.api-method--put > .menu__link--active::before,
+.api-method--patch > .menu__link--active::before {
+  color: var(--accent-contrast);
+  background: rgb(255, 197, 61);
+}
+
+.api-method--delete > .menu__link--active::before {
+  color: #ffffff;
+  background: rgb(229, 72, 77);
+}
+
+/* The current page is marked on its group's guide line. */
+.menu__list .menu__list .menu__link {
+  position: relative;
+}
+
+.menu__list .menu__list .menu__link--active:not(.menu__link--sublist)::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: -5px;
+  width: 1px;
+  background: var(--accent-a11);
 }
 
 /* ---------- Docs page ---------- */
@@ -774,6 +820,11 @@ a.navbar-cta {
   margin: 20px 0;
 }
 
+/* Fern's prose: no top margin right after a heading. */
+.theme-doc-markdown :is(h2, h3, h4, h5, h6) + * {
+  margin-top: 0;
+}
+
 .theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item),
 .blog-post-content a {
   text-decoration: underline;
@@ -797,13 +848,18 @@ a.navbar-cta {
   display: none !important;
 }
 
-/* Inline code: accent text on a tinted chip, as on Fern. */
+/* Inline code: bold accent text on a card-coloured chip with a thin ring,
+   as on Fern. */
 .theme-doc-markdown :not(pre) > code:not([class]),
 .blog-post-content :not(pre) > code:not([class]),
-.api-markdown :not(pre) > code:not([class]) {
-  color: var(--paradex-accent);
-  background: rgba(27, 193, 207, 0.08);
-  border: 1px solid rgba(27, 193, 207, 0.25);
+.api-markdown :not(pre) > code:not([class]),
+.changelog-main .markdown :not(pre) > code:not([class]) {
+  color: var(--accent-a11);
+  background: var(--paradex-card-bg);
+  border: 0;
+  box-shadow: inset 0 0 0 1px var(--grayscale-a5);
+  padding: 2px 4px;
+  border-radius: 4px;
   font-weight: 600;
   word-break: break-word;
 }
@@ -1614,20 +1670,22 @@ html.mermaid-zoom-open {
 
 /* ---------- Changelog (release notes) ---------- */
 
+/* Same columns as docs pages: 288px sidebar, centred 640px column, 288px
+   "On this page". */
 .changelog-layout {
   display: grid;
-  grid-template-columns: var(--doc-sidebar-width) minmax(0, 1fr) 272px;
+  grid-template-columns: var(--doc-sidebar-width) minmax(0, 1fr) 288px;
   min-height: calc(100vh - var(--ifm-navbar-height));
 }
 
 .changelog-sidebar {
-  border-right: 1px solid var(--border-color);
+  border-right: 1px solid var(--grayscale-a3);
 }
 
-.changelog-sidebar nav {
-  padding: 1.5rem 1.25rem 2rem 1.5rem !important;
+.changelog-sidebar nav.menu {
   position: sticky;
   top: var(--ifm-navbar-height);
+  padding: 24px 21px 32px 24px !important;
 }
 
 .changelog-sidebar .menu__link {
@@ -1635,22 +1693,23 @@ html.mermaid-zoom-open {
   align-items: center;
 }
 
+.changelog-sidebar .sidebar-item-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 0;
+}
+
 .changelog-main {
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  padding: 2.25rem 1.5rem 4rem;
+  padding: 32px 0 32px;
 }
 
-.changelog-toc {
-  padding-top: 2.25rem;
-}
-
-.changelog-toc .table-of-contents {
-  position: sticky;
-  top: calc(var(--ifm-navbar-height) + 2rem);
-  max-height: calc(100vh - var(--ifm-navbar-height) - 4rem);
-  overflow-y: auto;
+/* Entries and the intro use the prose rhythm (16px/28px). */
+.changelog-main .markdown,
+.changelog-description {
+  line-height: 1.75;
 }
 
 .changelog-header {
@@ -1662,18 +1721,20 @@ html.mermaid-zoom-open {
 
 .changelog-header h1 {
   margin: 0;
-  font-size: 2.25rem;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 45px;
 }
 
 .changelog-rss {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  border: 1px solid var(--border-color-strong);
+  border: 1px solid var(--grayscale-a5);
   border-radius: 999px;
   padding: 0.2rem 0.75rem;
-  font-size: 0.875rem;
-  color: var(--text-default);
+  font-size: 14px;
+  color: var(--grayscale-a12);
 }
 
 .changelog-rss:hover {
@@ -1689,13 +1750,13 @@ html.mermaid-zoom-open {
 
 .changelog-description {
   margin: 2rem 0 3rem;
-  color: var(--text-default);
+  color: #ffffff;
 }
 
 .blog-list-page article {
   padding-bottom: 3rem;
   margin-bottom: 4rem !important;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--grayscale-a5);
 }
 
 .blog-list-page article:last-of-type {
@@ -1703,17 +1764,17 @@ html.mermaid-zoom-open {
 }
 
 .changelog-entry__header {
-  margin-bottom: 1.25rem;
+  margin-bottom: 16px;
 }
 
 .changelog-date {
   display: inline-block;
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 600;
-  line-height: 1.4;
-  padding: 0.15rem 0.5rem;
+  line-height: 20px;
+  padding: 1px 8px;
   border-radius: 6px;
-  color: var(--text-muted) !important;
+  color: var(--grayscale-a11) !important;
   background: var(--grayscale-a3);
   text-decoration: none !important;
   scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
@@ -1721,13 +1782,14 @@ html.mermaid-zoom-open {
 
 .blog-post-page .changelog-date {
   background: transparent;
-  border: 1px solid var(--border-color-strong);
-  color: var(--text-default) !important;
+  border: 1px solid var(--grayscale-a5);
 }
 
 .changelog-back {
   margin: 0 0 3.5rem;
-  font-size: 2.25rem;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 45px;
 }
 
 .changelog-back a {
@@ -1741,38 +1803,31 @@ html.mermaid-zoom-open {
 .changelog-back svg {
   width: 1.25rem;
   height: 1.25rem;
-  color: var(--text-muted);
+  color: var(--grayscale-a11);
 }
 
 .blog-wrapper .markdown h2 {
-  font-size: 1.5rem;
-  margin: 1rem 0 0.75rem;
-}
-
-.blog-wrapper .markdown > h2:first-child {
-  margin-top: 0;
-}
-
-.blog-wrapper .markdown ul {
-  padding-left: 1.5rem;
-}
-
-.blog-wrapper .markdown li::marker {
-  color: var(--text-faded);
+  font-size: 24px;
+  margin: 0 0 12px;
 }
 
 .blog-wrapper .markdown h4 {
-  font-size: 1.125rem;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
   margin: 1.5rem 0 0.5rem;
 }
 
 .blog-wrapper .markdown li {
-  color: var(--text-default);
+  color: #ffffff;
 }
 
-.pagination-nav,
-.blog-wrapper nav.pagination-nav {
-  margin-top: 2rem;
+.changelog-footer {
+  margin-top: 150px;
+}
+
+.blog-wrapper .fern-footer-nav {
+  margin-bottom: 32px;
 }
 
 @media (max-width: 996px) {
@@ -1792,17 +1847,8 @@ html.mermaid-zoom-open {
   margin: 0 !important;
 }
 
-.doc-item-container article > .markdown:first-child > .fern-page-header {
-  margin-top: 1.25rem;
-}
-
 .markdown li::marker {
   color: var(--text-faded);
-}
-
-.fern-card__body li,
-.fern-card__body p {
-  color: var(--text-muted) !important;
 }
 
 /* Buttons inside markup copied from Fern (API quick start). */

@@ -38,7 +38,8 @@ export default function BlogLayout(props: Props): ReactNode {
           </nav>
         </aside>
         <main className="changelog-main">{children}</main>
-        {toc ? <div className="changelog-toc">{toc}</div> : <div className="changelog-toc" />}
+        {/* Fern shows "On this page" on the index only, not on an entry's page. */}
+        <div className="changelog-toc">{onIndex && toc}</div>
       </div>
     </Layout>
   );

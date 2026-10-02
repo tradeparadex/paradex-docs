@@ -9,10 +9,11 @@ import BlogLayout from '@theme/BlogLayout';
 import BlogListPaginator from '@theme/BlogListPaginator';
 import SearchMetadata from '@theme/SearchMetadata';
 import BlogPostItems from '@theme/BlogPostItems';
-import TOC from '@theme/TOC';
+import OnThisPage from '@site/src/components/page/OnThisPage';
 import Heading from '@theme/Heading';
 import type {Props} from '@theme/BlogListPage';
 import {changelogDateId} from '@site/src/components/changelog';
+import InlineMarkdown from '@site/src/components/InlineMarkdown';
 
 const RssIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -35,14 +36,16 @@ export default function BlogListPage(props: Props): ReactNode {
     <HtmlClassNameProvider className={clsx(ThemeClassNames.wrapper.blogPages, ThemeClassNames.page.blogListPage)}>
       <PageMetadata title={metadata.blogTitle} description={metadata.blogDescription} />
       <SearchMetadata tag="blog_posts_list" />
-      <BlogLayout toc={<TOC toc={toc} minHeadingLevel={2} maxHeadingLevel={3} className="theme-doc-toc-desktop" />}>
+      <BlogLayout toc={<OnThisPage toc={toc} minHeadingLevel={2} maxHeadingLevel={3} />}>
         <header className="changelog-header">
           <Heading as="h1">{metadata.blogTitle}</Heading>
           <a className="changelog-rss" href={`${metadata.permalink.replace(/\/page\/\d+$/, '')}/rss.xml`}>
             Subscribe via RSS <RssIcon />
           </a>
         </header>
-        <p className="changelog-description">{metadata.blogDescription}</p>
+        <p className="changelog-description">
+          <InlineMarkdown>{metadata.blogDescription}</InlineMarkdown>
+        </p>
         <BlogPostItems items={items} />
         <BlogListPaginator metadata={metadata} />
       </BlogLayout>

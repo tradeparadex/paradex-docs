@@ -14,14 +14,20 @@ export type IconProps = {
   style?: CSSProperties;
 };
 
-/** Font Awesome icon by Fern-style name, e.g. "fa-solid fa-rocket" or "rocket". */
+/**
+ * Font Awesome icon by Fern-style name, e.g. "fa-solid fa-rocket" or "rocket".
+ * Without a `className` it renders like Fern's MDX `<Icon>` (`fern-mdx-icon`:
+ * 16px, muted gray unless `color` is set); cards and callouts pass their own
+ * class and size it with CSS.
+ */
 export default function Icon({icon, color, size, className, style}: IconProps): React.JSX.Element | null {
   const data = ICONS[icon?.trim?.()];
   if (!data) return null;
+  // Fern sizes icons in 4px steps (size={4} is 16px).
   const dimension = typeof size === 'number' ? `${size / 4}rem` : size;
   return (
     <svg
-      className={clsx('fern-icon', className)}
+      className={clsx('fern-icon', className ?? 'fern-mdx-icon')}
       viewBox={`0 0 ${data.width} ${data.height}`}
       aria-hidden="true"
       focusable="false"

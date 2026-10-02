@@ -1,4 +1,4 @@
-import React, {type ReactNode} from 'react';
+import React, {Children, type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Icon from './Icon';
@@ -14,7 +14,7 @@ type CardProps = {
 export function Card({title, icon, href, className, children}: CardProps): React.JSX.Element {
   const iconNode =
     typeof icon === 'string' ? (
-      /^(https?:|\/|\.)/.test(icon) ? <img src={icon} alt="" /> : <Icon icon={icon} />
+      /^(https?:|\/|\.)/.test(icon) ? <img src={icon} alt="" /> : <Icon icon={icon} className="fern-card__svg" />
     ) : (
       icon
     );
@@ -35,9 +35,12 @@ export function Card({title, icon, href, className, children}: CardProps): React
   );
 }
 
-export function CardGroup({cols = 2, children}: {cols?: number; children?: ReactNode}): React.JSX.Element {
+/** Like Fern: `cols` defaults to the number of cards, at most 2; one column on phones. */
+export function CardGroup({cols, children}: {cols?: number; children?: ReactNode}): React.JSX.Element {
+  const count = cols ?? Math.min(Children.toArray(children).length, 2);
+  const columns = Math.max(1, Math.min(count, 6));
   return (
-    <div className="fern-card-group" style={{['--fern-cols' as string]: cols}}>
+    <div className={clsx('fern-card-group', `fern-card-group--cols-${columns}`)} style={{['--fern-cols' as string]: columns}}>
       {children}
     </div>
   );

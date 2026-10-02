@@ -4,36 +4,67 @@ import Icon from './Icon';
 
 export type Intent = 'info' | 'note' | 'tip' | 'warning' | 'error' | 'success' | 'check' | 'launch';
 
-const DEFAULT_ICONS: Record<Intent, ReactNode> = {
-  info: <CircleIcon d="M12 8h.01M11 12h1v4h1" />,
-  note: <CircleIcon d="M12 8h.01M11 12h1v4h1" />,
-  tip: <BulbIcon />,
-  warning: <WarnIcon />,
-  error: <CircleIcon d="M15 9l-6 6M9 9l6 6" />,
-  success: <CircleIcon d="M8.5 12.5l2.5 2.5 5-5.5" />,
-  check: <CircleIcon d="M8.5 12.5l2.5 2.5 5-5.5" />,
-  launch: <CircleIcon d="M10 8l6 4-6 4z" />,
+// Fern's default callout icons (Lucide): info, bell, circle-check-big,
+// triangle-alert, pin, rocket, star and check.
+const ICON_PATHS: Record<Intent, ReactNode> = {
+  info: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 16v-4" />
+      <path d="M12 8h.01" />
+    </>
+  ),
+  warning: (
+    <>
+      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+      <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+    </>
+  ),
+  success: (
+    <>
+      <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+      <path d="m9 11 3 3L22 4" />
+    </>
+  ),
+  error: (
+    <>
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </>
+  ),
+  note: (
+    <>
+      <path d="M12 17v5" />
+      <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+    </>
+  ),
+  launch: (
+    <>
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+    </>
+  ),
+  tip: (
+    <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+  ),
+  check: <path d="M20 6 9 17l-5-5" />,
 };
 
-function CircleIcon({d}: {d: string}) {
+function DefaultIcon({intent}: {intent: Intent}) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <path d={d} />
-    </svg>
-  );
-}
-function BulbIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z" />
-    </svg>
-  );
-}
-function WarnIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="callout-icon">
+      {ICON_PATHS[intent] ?? ICON_PATHS.info}
     </svg>
   );
 }
@@ -46,7 +77,8 @@ type CalloutProps = {
 };
 
 export function Callout({intent = 'info', title, icon, children}: CalloutProps): React.JSX.Element {
-  const iconNode = typeof icon === 'string' ? <Icon icon={icon} /> : (icon ?? DEFAULT_ICONS[intent]);
+  const iconNode =
+    typeof icon === 'string' ? <Icon icon={icon} className="callout-icon" /> : (icon ?? <DefaultIcon intent={intent} />);
   return (
     <div className={clsx('fern-callout', `fern-callout--${intent}`)} data-intent={intent} role="note">
       <div className="fern-callout__icon">{iconNode}</div>

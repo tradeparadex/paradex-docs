@@ -363,10 +363,6 @@ a.navbar-cta {
     padding: 0 16px !important;
   }
 
-  /* Fern keeps the "/" hint on mobile too. */
-  .navbar-search-center [class*='searchHintContainer'] {
-    display: flex !important;
-  }
 }
 
 @media (max-width: 768px) {
@@ -458,8 +454,13 @@ a.navbar-cta {
   line-height: 24px;
 }
 
+.fern-mobile-nav__tabs .menu__link {
+  font-weight: 500;
+}
+
 .fern-mobile-nav__tabs .menu__link--active {
   color: var(--accent-a11);
+  font-weight: 600;
 }
 
 .fern-mobile-nav__sidebar {
@@ -950,17 +951,7 @@ hr {
   margin: 2rem 0;
 }
 
-/* Code blocks */
-.theme-code-block {
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  box-shadow: none;
-}
-
-.theme-code-block pre {
-  background-color: #111416 !important;
-}
-
+/* Code blocks: see code.css. */
 [class*='codeBlockTitle'] {
   background: var(--paradex-card-bg) !important;
   border-bottom: 1px solid var(--border-color) !important;
@@ -1501,56 +1492,50 @@ hr {
   display: none;
 }
 
-/* Search (docusaurus-search-local), styled as Fern's search button. */
-.navbar-search-center .navbar__search {
-  margin-left: 0;
+/* Search, as on Fern: a button in the header (src/components/SearchDialog)
+   that opens a dialog hosting docusaurus-search-local. */
+.search-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 100%;
-}
-
-/* Autocomplete wraps the input in an inline-block span on first focus. */
-.navbar-search-center .navbar__search > span {
-  display: block !important;
-  width: 100%;
-}
-
-.navbar__search-input,
-[class*='searchBar'] input {
-  width: 100% !important;
   height: 36px;
-  padding: 8px 8px 8px 32px;
-  background: transparent
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.686)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E")
-    no-repeat 8px center / 16px 16px !important;
-  border: 0 !important;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
   box-shadow: inset 0 0 0 1px var(--grayscale-a5);
-  border-radius: 8px !important;
-  color: var(--grayscale-a12) !important;
+  color: var(--grayscale-a11);
   font: inherit;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
+  text-align: left;
+  cursor: pointer;
 }
 
-.navbar__search-input:hover {
+.search-trigger:hover {
   box-shadow: inset 0 0 0 1px var(--grayscale-a6);
+  color: var(--grayscale-a12);
 }
 
-.navbar__search-input:focus {
+.search-trigger:focus-visible {
   outline: 0;
   box-shadow: inset 0 0 0 1px var(--accent-a11);
 }
 
-[class*='searchBar'] input::placeholder {
-  color: var(--grayscale-a11);
+.search-trigger svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
 }
 
-/* The plugin's magnifier is replaced by Fern's thin icon (background above). */
-.navbar-search-center [class*='searchIcon'] {
-  display: none;
+.search-trigger__label {
+  flex: 1;
 }
 
-[class*='searchBar'] [class*='searchHintContainer'] kbd,
-.navbar-search-center kbd {
+.search-trigger kbd,
+.search-dialog kbd {
   height: 22px;
   padding: 2px 6px;
   border: 1px solid var(--grayscale-a6);
@@ -1564,10 +1549,94 @@ hr {
   line-height: 16px;
 }
 
-.aa-Panel,
-[class*='dropdownMenu'] {
-  background: var(--paradex-card-bg) !important;
-  border: 1px solid var(--grayscale-a5) !important;
+html.search-dialog-open {
+  overflow: hidden;
+}
+
+.search-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--ifm-z-index-fixed) + 20);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12vh 16px 16px;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.search-dialog__panel {
+  width: 100%;
+  max-width: 640px;
+  max-height: 76vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 12px;
+  background: var(--paradex-bg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* The plugin's search bar, laid out as the dialog's input and result list. */
+.search-dialog__panel > div,
+.search-dialog .navbar__search {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.search-dialog .navbar__search > span {
+  display: flex !important;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+.search-dialog .navbar__search-input {
+  width: 100% !important;
+  height: 52px;
+  padding: 0 16px 0 44px;
+  border: 0 !important;
+  border-bottom: 1px solid var(--grayscale-a5) !important;
+  border-radius: 0 !important;
+  background: transparent
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.686)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E")
+    no-repeat 16px center / 18px 18px !important;
+  color: #ffffff !important;
+  font: inherit;
+  font-size: 16px;
+  outline: 0;
+}
+
+.search-dialog .navbar__search-input::placeholder {
+  color: var(--grayscale-a11);
+}
+
+.search-dialog [class*='searchIcon'],
+.search-dialog [class*='searchHintContainer'],
+.search-dialog [class*='searchBarLoadingRing'] {
+  display: none !important;
+}
+
+.search-dialog [class*='dropdownMenu'] {
+  position: static !important;
+  width: 100% !important;
+  max-height: calc(76vh - 54px);
+  overflow-y: auto;
+  margin: 0 !important;
+  padding: 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.search-dialog [class*='suggestion'][class*='cursor'] {
+  background: rgba(0, 233, 252, 0.153) !important;
 }
 
 /* Scrollbars */
@@ -1862,17 +1931,6 @@ html.mermaid-zoom-open {
   cursor: default;
 }
 
-/* Keep search in the header grid on mobile (Docusaurus positions it absolutely). */
-.navbar-search-center > * {
-  position: static !important;
-  width: 100%;
-}
-
-@media (max-width: 576px) {
-  .navbar-search-center .navbar__search-input:not(:focus) {
-    width: 100% !important;
-  }
-}
 
 .visually-hidden {
   position: absolute !important;

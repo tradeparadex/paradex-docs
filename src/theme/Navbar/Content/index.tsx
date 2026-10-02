@@ -7,10 +7,9 @@ import React, {type ReactNode} from 'react';
 import {useThemeConfig, ErrorCauseBoundary} from '@docusaurus/theme-common';
 import {useNavbarMobileSidebar} from '@docusaurus/theme-common/internal';
 import NavbarItem, {type Props as NavbarItemConfig} from '@theme/NavbarItem';
-import SearchBar from '@theme/SearchBar';
 import NavbarMobileSidebarToggle from '@theme/Navbar/MobileSidebar/Toggle';
 import NavbarLogo from '@theme/Navbar/Logo';
-import NavbarSearch from '@theme/Navbar/Search';
+import SearchDialog from '@site/src/components/SearchDialog';
 
 function NavbarItems({items}: {items: NavbarItemConfig[]}): ReactNode {
   return (
@@ -43,9 +42,7 @@ export default function NavbarContent(): ReactNode {
           <NavbarLogo />
         </div>
         <div className="navbar-search-center">
-          <NavbarSearch>
-            <SearchBar />
-          </NavbarSearch>
+          <SearchDialog />
         </div>
         <div className="navbar__items navbar__items--right">
           <NavbarItems items={rightItems} />

@@ -6393,13 +6393,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^15.0.0":
-  version: 15.0.0
-  resolution: "commander@npm:15.0.0"
-  checksum: 10c0/539229c171914ea1ccd45ee5f10d924289a12a684ea3a7a44147abe54003c35ed6de9ae4ad198d88c29fdf403dca0428451a388234e6dc01b6faa978fb207206
-  languageName: node
-  linkType: hard
-
 "commander@npm:^2.20.0":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
@@ -9623,7 +9616,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"katex@npm:^0.16.0, katex@npm:^0.16.47":
+"katex@npm:0.16.47, katex@npm:^0.16.0, katex@npm:^0.16.47":
   version: 0.16.47
   resolution: "katex@npm:0.16.47"
   dependencies:
@@ -9631,17 +9624,6 @@ __metadata:
   bin:
     katex: cli.js
   checksum: 10c0/b10f4d0651c60771a48444879e4227255e26e2b2ec061b1ee4b08934863ad2324ba8dbb772455f7768aeb14dfcc13bcd309174a0ddd5ef954a607f644a197710
-  languageName: node
-  linkType: hard
-
-"katex@npm:^0.19.0":
-  version: 0.19.0
-  resolution: "katex@npm:0.19.0"
-  dependencies:
-    commander: "npm:^15.0.0"
-  bin:
-    katex: cli.js
-  checksum: 10c0/c418ae625c0d30ca2d96b3fa619d1ea8eca53729989804aa4ad1c75e19112249ee5fe887ba7bef10e472ff5601b9cca43357a525fd52c243128dd601f2b75e2a
   languageName: node
   linkType: hard
 
@@ -11583,7 +11565,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     httpsnippet-lite: "npm:3.0.5"
     js-yaml: "npm:^4.1.0"
-    katex: "npm:^0.19.0"
+    katex: "npm:0.16.47"
     lodash: "npm:^4.18.1"
     mdast-util-to-string: "npm:^4"
     micromark: "npm:^4"

@@ -1,12 +1,12 @@
 import path from 'node:path';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import {themes as prismThemes} from 'prism-react-renderer';
 import remarkMath from 'remark-math';
 import remarkSmartypants from 'remark-smartypants';
 import rehypeKatex from 'rehype-katex';
 
 import {loadSite} from './plugins/site.mjs';
+import prismFern from './src/theme/prismFern';
 import {remarkFernJsx, remarkTocSkipNested, remarkTrimHeadingIds} from './plugins/fern-mdx.mjs';
 import {remarkMermaidStatic} from './plugins/mermaid.mjs';
 
@@ -116,6 +116,7 @@ export default async function createConfig(): Promise<Config> {
               './src/css/explorer.css',
               './src/css/landing.css',
               './src/css/content-utilities.css',
+              './src/css/code.css',
             ],
           },
           sitemap: {
@@ -203,8 +204,9 @@ export default async function createConfig(): Promise<Config> {
       // Fern listed every heading level in "On this page".
       tableOfContents: {minHeadingLevel: 2, maxHeadingLevel: 6},
       prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.vsDark,
+        // Fern's Shiki colors (material-theme-darker); the site is dark only.
+        theme: prismFern,
+        darkTheme: prismFern,
         additionalLanguages: [
           'bash',
           'json',

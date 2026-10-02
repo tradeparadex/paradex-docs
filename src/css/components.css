@@ -874,66 +874,6 @@ a.cyan-cards:hover {
   background: var(--fern-accent-a3);
 }
 
-/* ---------- Code block groups ---------- */
-
-.fern-code-block {
-  margin: 1rem 0;
-}
-
-.fern-code-block__title {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  margin-bottom: 0.35rem;
-}
-
-.fern-code-blocks {
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-  margin: 1rem 0 1.5rem;
-  background: #111416;
-}
-
-.fern-code-blocks__tabs {
-  display: flex;
-  gap: 1rem;
-  padding: 0 1rem;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--paradex-card-bg);
-}
-
-.fern-code-blocks__tab {
-  position: relative;
-  background: none;
-  border: 0;
-  padding: 0.55rem 0;
-  font: inherit;
-  font-size: 0.8125rem;
-  color: var(--text-muted);
-  cursor: pointer;
-}
-
-.fern-code-blocks__tab--active {
-  color: var(--paradex-accent);
-}
-
-.fern-code-blocks__tab--active::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  background: var(--paradex-accent);
-}
-
-.fern-code-blocks .theme-code-block {
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-}
-
 /* ---------- Changelog tags ---------- */
 
 .fern-changelog-tags {

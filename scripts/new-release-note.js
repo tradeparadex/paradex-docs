@@ -1,20 +1,21 @@
 #!/usr/bin/env node
 /**
- * Scaffolds a new Fern changelog entry under fern/pages/release-notes/prod/.
+ * Scaffolds a new changelog entry under docs/release-notes/prod/.
  *
  * Usage:
  *   node scripts/new-release-note.js <version> --tags UI,API [--date MM-DD-YYYY]
  *
  * If an entry already exists for the resolved date (multiple releases can
  * land the same day), the new version is prepended as another `##` card in
- * that file rather than overwriting it - Fern renders each top-level `##`
- * heading in a dated file as its own timeline card, newest first.
+ * that file rather than overwriting it. Each dated file is one changelog
+ * entry (/releases/changelog/YYYY/M/D); its `##` headings are the versions,
+ * newest first.
  */
 const fs = require('fs');
 const path = require('path');
 
 const ALLOWED_TAGS = ['UI', 'API', 'Bug Fix', 'Docs'];
-const PROD_DIR = path.resolve(__dirname, '..', 'fern', 'pages', 'release-notes', 'prod');
+const PROD_DIR = path.resolve(__dirname, '..', 'docs', 'release-notes', 'prod');
 
 function usage() {
   console.log(`Usage: node scripts/new-release-note.js <version> [--tags UI,API] [--date MM-DD-YYYY]
@@ -56,10 +57,9 @@ function formatDate(d) {
 function renderEntry(version, tags) {
   const tagList = tags.map((t) => `"${t}"`).join(', ');
   const lines = [`## ${version}`, '', `<ChangelogTags tags={[${tagList}]} />`, ''];
-  // Changelog uses the "classic" layout (see overview.mdx frontmatter), which
-  // renders full entries rather than truncated excerpts, so per-tag ####
-  // subheadings are safe here. Always emit one, even for a single tag, so
-  // the template is consistent regardless of tag count.
+  // The changelog renders full entries rather than truncated excerpts, so
+  // per-tag #### subheadings are safe here. Always emit one, even for a
+  // single tag, so the template is consistent regardless of tag count.
   for (const tag of tags) {
     lines.push(`#### ${tag}`, '', `* <!-- ${tag}: fill in -->`, '');
   }

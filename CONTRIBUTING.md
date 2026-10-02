@@ -7,8 +7,8 @@ We welcome contributions from the community! Follow the steps below to get start
 ### Prerequisites
 
 Make sure you have the following installed:
-- [Node.js](https://nodejs.org/)
-- [Yarn](https://yarnpkg.com/)
+- [Node.js](https://nodejs.org/) 20 or later
+- [Yarn](https://yarnpkg.com/) (run `corepack enable` once; the repo pins Yarn 4)
 
 ### Install Dependencies
 
@@ -27,7 +27,7 @@ yarn install
 
 ### Preview Docs
 
-To start the Fern server and preview the documentation locally, run:
+The site is built with [Docusaurus](https://docusaurus.io). To start a local preview with live reload, run:
 
 ```shell
 yarn dev
@@ -36,10 +36,27 @@ yarn dev
 > If everything goes right, you should see a message like:
 >
 > ```plain
-> Running server on http://localhost:3000
+> [SUCCESS] Docusaurus website is running at: http://localhost:3000/
 > ```
 
 Visit the URL in your browser to see the documentation.
+
+To check a production build (this is what CI runs; it fails on broken links), run:
+
+```shell
+yarn build
+yarn serve
+```
+
+Search only works on a production build (`yarn serve`).
+
+### Where things live
+
+- Pages: `docs/pages/` (MDX). Add new pages to `docs/navigation.yml`, which defines the tabs, sidebars and URLs.
+- Release notes: `docs/release-notes/prod/`. Scaffold a new entry with `yarn new-release-note <version> --tags UI,API`.
+- Redirects for moved pages: `docs/redirects.yml`.
+- API reference: generated from `docs/apis/` (OpenAPI and AsyncAPI specs). Hand-written code samples go in `docs/apis/*/openapi/overrides.yml`.
+- Images and PDFs: `docs/assets/`.
 
 ### Making Changes
 
@@ -68,4 +85,4 @@ Visit the URL in your browser to see the documentation.
 ## Additional Resources
 - [Paradex Documentation](https://docs.paradex.trade)
 - [Paradex Code Samples](https://github.com/tradeparadex/code-samples)
-- [Fern Documentation](https://buildwithfern.com/docs)
+- [Docusaurus Documentation](https://docusaurus.io/docs)

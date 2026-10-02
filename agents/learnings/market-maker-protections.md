@@ -1,6 +1,6 @@
 # Market Maker Protections (MMP) page
 
-Page: `fern/pages/trading/market-maker-protections.mdx`, served at `/trading/market-maker-protections` (Trading tab, listed after FastFills in `docs.yml`).
+Page: `docs/pages/trading/market-maker-protections.mdx`, served at `/trading/market-maker-protections` (Trading tab, listed after FastFills in `navigation.yml`).
 
 ## Gotchas
 

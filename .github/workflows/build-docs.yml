@@ -1,0 +1,48 @@
+name: Build Docs
+
+# Builds the site on every pull request. The build fails on broken internal
+# links, MDX errors or a bad navigation.yml, so this is the main docs check.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: build-docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Build
+        run: yarn build
+
+      - name: Check site structure
+        run: yarn check
+
+      - name: Upload site preview
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-preview
+          path: build
+          retention-days: 7

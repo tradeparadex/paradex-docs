@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Scan fern/pages/release-notes/ for versioned markdown files and update the
+Scan docs/release-notes/ for versioned markdown files and update the
 "What's new" section in what-is-paradex.mdx with the two latest versions.
 
 Run from the repo root:
@@ -11,8 +11,8 @@ import os
 import re
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RELEASE_DIR = os.path.join(REPO_ROOT, "fern", "pages", "release-notes")
-LANDING_PAGE = os.path.join(REPO_ROOT, "fern", "pages", "what-is-paradex.mdx")
+RELEASE_DIR = os.path.join(REPO_ROOT, "docs", "release-notes")
+LANDING_PAGE = os.path.join(REPO_ROOT, "docs", "pages", "what-is-paradex.mdx")
 
 # Match files like v1.135.md
 VERSION_RE = re.compile(r"^v1\.(\d+)\.md$")

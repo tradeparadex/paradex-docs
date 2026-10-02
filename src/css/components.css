@@ -1,0 +1,615 @@
+/* Styles for the Fern-compatible MDX components in src/components/fern. */
+
+.fern-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  overflow: visible;
+}
+
+/* ---------- Cards ---------- */
+
+.fern-card-group {
+  display: grid;
+  grid-template-columns: repeat(var(--fern-cols, 2), minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .fern-card-group {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.fern-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--paradex-card-bg);
+  color: var(--text-default);
+  margin-bottom: 1rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  text-decoration: none !important;
+}
+
+.fern-card-group > .fern-card {
+  margin-bottom: 0;
+}
+
+.fern-card--link:hover {
+  border-color: var(--paradex-accent);
+  color: var(--text-default);
+}
+
+.fern-card__icon {
+  color: var(--paradex-accent);
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.fern-card__icon img {
+  width: 1.5rem;
+  height: auto;
+  margin: 0;
+  border-radius: 0;
+}
+
+.card-icon-w64 .fern-card__icon img,
+.card-icon-w64 .card-icon img {
+  width: 64px !important;
+}
+
+.fern-card__title {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.fern-card__body {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.fern-card__body > :last-child {
+  margin-bottom: 0;
+}
+
+.fern-card__body p {
+  margin-bottom: 0.5rem;
+  color: var(--text-muted) !important;
+}
+
+.white-cards .fern-card__body,
+.white-cards .fern-card__body p {
+  color: #ffffff !important;
+}
+
+.cyan-cards .fern-card__body,
+.cyan-cards .fern-card__body p {
+  color: var(--paradex-accent) !important;
+}
+
+/* ---------- Callouts ---------- */
+
+.fern-callout {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  border: 1px solid;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  --callout-color: #70b8ff;
+  --callout-bg: rgba(112, 184, 255, 0.08);
+  border-color: color-mix(in srgb, var(--callout-color) 35%, transparent);
+  background: var(--callout-bg);
+}
+
+.fern-callout--info {
+  --callout-color: #a1a7ac;
+  --callout-bg: rgba(255, 255, 255, 0.04);
+}
+
+.fern-callout--note {
+  --callout-color: #70b8ff;
+  --callout-bg: rgba(112, 184, 255, 0.08);
+}
+
+/* Tips use the Paradex accent. */
+.fern-callout--tip {
+  --callout-color: var(--paradex-accent);
+  --callout-bg: rgba(27, 193, 207, 0.1);
+  border-color: var(--paradex-accent);
+}
+
+.fern-callout--tip,
+.fern-callout--tip * {
+  color: var(--paradex-accent);
+}
+
+.fern-callout--warning {
+  --callout-color: #ffc53d;
+  --callout-bg: rgba(255, 197, 61, 0.08);
+}
+
+.fern-callout--error {
+  --callout-color: #ff9592;
+  --callout-bg: rgba(255, 149, 146, 0.08);
+}
+
+.fern-callout--success,
+.fern-callout--check {
+  --callout-color: #3dd68c;
+  --callout-bg: rgba(61, 214, 140, 0.08);
+}
+
+.fern-callout--launch {
+  --callout-color: #b4a7ff;
+  --callout-bg: rgba(180, 167, 255, 0.08);
+}
+
+.fern-callout__icon {
+  flex: 0 0 auto;
+  color: var(--callout-color);
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.2rem;
+}
+
+.fern-callout__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.fern-callout__content {
+  min-width: 0;
+  flex: 1;
+}
+
+.fern-callout__title {
+  font-weight: 600;
+  color: var(--callout-color);
+  margin-bottom: 0.25rem;
+}
+
+.fern-callout__body > :last-child {
+  margin-bottom: 0;
+}
+
+.fern-callout__body p,
+.fern-callout__body li {
+  color: inherit;
+}
+
+/* ---------- Tabs ---------- */
+
+.fern-tabs {
+  margin: 1.25rem 0;
+}
+
+.fern-tabs__list {
+  display: flex;
+  gap: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.fern-tabs__tab {
+  position: relative;
+  background: none;
+  border: 0;
+  padding: 0.5rem 0;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.fern-tabs__tab:hover {
+  color: #ffffff;
+}
+
+.fern-tabs__tab--active {
+  color: var(--paradex-accent);
+  font-weight: 500;
+}
+
+.fern-tabs__tab--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--paradex-accent);
+}
+
+/* ---------- Accordion ---------- */
+
+.fern-accordion-group {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 1.25rem 0;
+}
+
+.fern-accordion {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin: 0.75rem 0;
+  background: transparent;
+}
+
+.fern-accordion-group > .fern-accordion {
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+}
+
+.fern-accordion-group > .fern-accordion + .fern-accordion {
+  border-top: 1px solid var(--border-color);
+}
+
+.fern-accordion__summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  list-style: none;
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.fern-accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.fern-accordion__summary:hover {
+  background: var(--grayscale-a2);
+}
+
+.fern-accordion__chevron {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  transition: transform 0.15s ease;
+}
+
+.fern-accordion[open] > .fern-accordion__summary .fern-accordion__chevron {
+  transform: rotate(90deg);
+}
+
+.fern-accordion__body {
+  padding: 0.25rem 1rem 1rem 2.6rem;
+}
+
+.fern-accordion__body > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Steps ---------- */
+
+.fern-steps {
+  counter-reset: fern-step;
+  margin: 1.5rem 0;
+}
+
+.fern-step,
+.fern-steps > h3 {
+  position: relative;
+  padding-left: 2.75rem;
+}
+
+.fern-step {
+  padding-bottom: 1.25rem;
+}
+
+.fern-step::before,
+.fern-steps > h3::before {
+  counter-increment: fern-step;
+  content: counter(fern-step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  background: var(--paradex-card-bg);
+  border: 1px solid var(--border-color-strong);
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fern-step::after {
+  content: '';
+  position: absolute;
+  left: calc(0.875rem - 0.5px);
+  top: 2.1rem;
+  bottom: 0.4rem;
+  width: 1px;
+  background: var(--border-color);
+}
+
+.fern-step:last-child::after {
+  display: none;
+}
+
+.fern-step__title,
+.fern-steps > h3 {
+  font-size: 1.0625rem;
+  margin: 0 0 0.5rem;
+  line-height: 1.75rem;
+}
+
+.fern-steps > h3 {
+  margin-top: 1.5rem;
+}
+
+.fern-steps > h3:first-child {
+  margin-top: 0;
+}
+
+.fern-steps > :not(h3):not(.fern-step) {
+  padding-left: 2.75rem;
+}
+
+.fern-step__body > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Frame ---------- */
+
+.fern-frame {
+  margin: 1.5rem 0;
+}
+
+.fern-frame__content {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.5rem;
+  background: var(--paradex-card-bg);
+  overflow: hidden;
+}
+
+.fern-frame__content img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  max-width: 100%;
+  height: auto;
+}
+
+.fern-frame__content > p {
+  margin: 0;
+}
+
+.fern-frame__caption {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ---------- Badges, tags, buttons ---------- */
+
+.fern-docs-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  vertical-align: middle;
+  --badge-color: #a1a7ac;
+  color: var(--badge-color);
+  background: color-mix(in srgb, var(--badge-color) 12%, transparent);
+}
+
+.fern-docs-badge.outlined {
+  background: transparent;
+  border-color: var(--badge-color);
+}
+
+.fern-docs-badge.rounded {
+  border-radius: 999px;
+}
+
+.fern-docs-badge--note {
+  --badge-color: #70b8ff;
+}
+
+.fern-docs-badge--success,
+.fern-docs-badge--green {
+  --badge-color: var(--paradex-accent);
+}
+
+.fern-docs-badge--warning {
+  --badge-color: #ffc53d;
+}
+
+.fern-docs-badge--error,
+.fern-docs-badge--danger {
+  --badge-color: #ff9592;
+}
+
+.fern-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+}
+
+.fern-tag.green-subtle {
+  color: #3dd68c;
+  background: rgba(61, 214, 140, 0.12);
+}
+
+.fern-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  text-decoration: none !important;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.fern-button.large {
+  height: 40px;
+  padding: 0 16px;
+}
+
+.fern-button.small {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 0.8125rem;
+}
+
+.fern-button.rounded {
+  border-radius: 999px;
+}
+
+.fern-button.filled {
+  background: var(--paradex-accent-bright);
+  color: var(--paradex-dark) !important;
+}
+
+.fern-button.filled:hover {
+  background: var(--paradex-accent);
+}
+
+.fern-button.filled .fern-button-text {
+  color: var(--paradex-dark);
+}
+
+.fern-button.outlined {
+  background: transparent;
+  border-color: var(--border-color-strong);
+  color: #ffffff !important;
+}
+
+.fern-button.outlined.primary {
+  border-color: var(--paradex-accent);
+  color: var(--paradex-accent) !important;
+}
+
+.fern-button.outlined:hover {
+  background: var(--grayscale-a3);
+}
+
+.fern-button.minimal {
+  background: transparent;
+  color: var(--text-default) !important;
+}
+
+.fern-button.minimal:hover {
+  background: var(--grayscale-a3);
+}
+
+/* ---------- Code block groups ---------- */
+
+.fern-code-block {
+  margin: 1rem 0;
+}
+
+.fern-code-block__title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.fern-code-blocks {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1rem 0 1.5rem;
+  background: #111416;
+}
+
+.fern-code-blocks__tabs {
+  display: flex;
+  gap: 1rem;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--paradex-card-bg);
+}
+
+.fern-code-blocks__tab {
+  position: relative;
+  background: none;
+  border: 0;
+  padding: 0.55rem 0;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.fern-code-blocks__tab--active {
+  color: var(--paradex-accent);
+}
+
+.fern-code-blocks__tab--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--paradex-accent);
+}
+
+.fern-code-blocks .theme-code-block {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+/* ---------- Changelog tags ---------- */
+
+.fern-changelog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.fern-changelog-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: var(--text-default);
+  background: var(--grayscale-a5);
+}

@@ -72,7 +72,9 @@ export function buildChannels(spec, {apiName}) {
         summary: op.summary,
         descriptionHtml: markdownToHtml(op.description),
         shape: payload ? toShape(payload, deref) : {kind: 'object', label: 'object', properties: []},
-        example: payload ? (exampleFor(payload, deref, {requiredOnly: true}) ?? {}) : {},
+        // Fern built message examples from the schema alone (property-name
+        // placeholders), not from the spec's `example` values.
+        example: payload ? (exampleFor(payload, deref, {requiredOnly: true, placeholders: true}) ?? {}) : {},
       };
     };
     const send = operation('publish');

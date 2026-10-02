@@ -18,20 +18,22 @@ export function Card({title, icon, href, className, children}: CardProps): React
     ) : (
       icon
     );
-  const content = (
-    <>
-      {iconNode && <div className="fern-card__icon card-icon">{iconNode}</div>}
-      {title && <div className="fern-card__title">{title}</div>}
-      {children && <div className="fern-card__body text-body">{children}</div>}
-    </>
-  );
-  const classes = clsx('fern-card', href && 'fern-card--link', className);
-  return href ? (
-    <Link className={classes} to={href}>
-      {content}
+  // A card with `href` is a block with a "stretched" title link covering the
+  // card, so links inside the card body stay valid (no <a> inside <a>).
+  const titleNode = href ? (
+    <Link className="fern-card__link" to={href} aria-label={typeof title === 'string' ? undefined : 'Open'}>
+      {title}
     </Link>
   ) : (
-    <div className={classes}>{content}</div>
+    title
+  );
+  const classes = clsx('fern-card', href && 'fern-card--link', className);
+  return (
+    <div className={classes}>
+      {iconNode && <div className="fern-card__icon card-icon">{iconNode}</div>}
+      {(title || href) && <div className="fern-card__title">{titleNode}</div>}
+      {children && <div className="fern-card__body text-body">{children}</div>}
+    </div>
   );
 }
 

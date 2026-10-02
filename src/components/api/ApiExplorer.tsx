@@ -16,7 +16,7 @@ import type {Endpoint, Property, Shape} from './types';
 const AUTH_KEY = 'paradex-docs-api-auth';
 const NUMBER_LABELS = new Set(['integer', 'long', 'double']);
 
-type Values = Record<string, unknown>;
+export type Values = Record<string, unknown>;
 type FormState = {path: Values; query: Values; headers: Values; body: unknown};
 type Result =
   | {state: 'idle'}
@@ -31,7 +31,7 @@ const Svg = ({children, className}: {children: React.ReactNode; className?: stri
     {children}
   </svg>
 );
-const SearchIcon = () => (
+export const SearchIcon = () => (
   <Svg>
     <circle cx="11" cy="11" r="7" />
     <path d="m20 20-3.5-3.5" />
@@ -39,22 +39,22 @@ const SearchIcon = () => (
 );
 const SendIcon = () => (
   <Svg>
-    <path d="M22 2 11 13" />
-    <path d="M22 2 15 22l-4-9-9-4 20-7z" />
+    <path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z" />
+    <path d="M6 12h16" />
   </Svg>
 );
-const CloseIcon = () => (
+export const CloseIcon = () => (
   <Svg>
     <path d="M18 6 6 18M6 6l12 12" />
   </Svg>
 );
-const CopyIcon = () => (
+export const CopyIcon = () => (
   <Svg>
     <rect x="9" y="9" width="12" height="12" rx="2" />
     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
   </Svg>
 );
-const CheckIcon = () => (
+export const CheckIcon = () => (
   <Svg>
     <path d="M20 6 9 17l-5-5" />
   </Svg>
@@ -105,7 +105,7 @@ const ChevronIcon = () => (
 const plainText = (html?: string) => (html ?? '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 
 /** The value a field starts with when it is added to the form. */
-function emptyValue(shape: Shape): unknown {
+export function emptyValue(shape: Shape): unknown {
   switch (shape.kind) {
     case 'enum':
       return shape.values?.[0] ?? '';
@@ -288,10 +288,17 @@ function JsonInput({value, onChange}: {value: unknown; onChange: (v: unknown) =>
 /** Input for a scalar (or a JSON editor for shapes a form can't express). */
 function ValueInput({shape, value, onChange}: {shape: Shape; value: unknown; onChange: (v: unknown) => void}) {
   if (shape.kind === 'enum') {
+    const current = String(value ?? '');
     return (
-      <div className="api-explorer__select">
-        <select value={String(value ?? '')} onChange={(e) => onChange(e.target.value)}>
-          {!shape.values?.includes(String(value ?? '')) && <option value={String(value ?? '')}>{String(value ?? '')}</option>}
+      <div className={clsx('api-explorer__select', current === '' && 'api-explorer__select--empty')}>
+        <select value={current} onChange={(e) => onChange(e.target.value)}>
+          {current === '' ? (
+            <option value="" disabled>
+              Select an enum...
+            </option>
+          ) : (
+            !shape.values?.includes(current) && <option value={current}>{current}</option>
+          )}
           {shape.values?.map((v) => (
             <option key={v} value={v}>
               {v}
@@ -340,7 +347,7 @@ function ArrayInput({shape, value, onChange}: {shape: Shape; value: unknown; onC
   );
 }
 
-function FieldValue({shape, value, onChange}: {shape: Shape; value: unknown; onChange: (v: unknown) => void}) {
+export function FieldValue({shape, value, onChange}: {shape: Shape; value: unknown; onChange: (v: unknown) => void}) {
   if (shape.kind === 'object' && shape.properties?.length) {
     return (
       <ObjectFields
@@ -413,7 +420,7 @@ function OptionalProperties({properties, onAdd}: {properties: Property[]; onAdd:
   );
 }
 
-function ObjectFields({
+export function ObjectFields({
   properties,
   value,
   onChange,
@@ -452,7 +459,7 @@ function ObjectFields({
   );
 }
 
-function FormSection({title, children}: {title: string; children: React.ReactNode}) {
+export function FormSection({title, children}: {title: string; children: React.ReactNode}) {
   return (
     <section className="api-explorer__section">
       <h4 className="api-explorer__section-title">{title}</h4>
@@ -497,7 +504,7 @@ function AuthCard({name, value, onChange}: {name: string; value: string; onChang
 
 /* ---------- Panels ---------- */
 
-function useCopy(): [boolean, (text: string) => void] {
+export function useCopy(): [boolean, (text: string) => void] {
   const [copied, setCopied] = useState(false);
   return [
     copied,
@@ -589,7 +596,7 @@ function ResponsePanel({result, onSend}: {result: Result; onSend: () => void}) {
 
 /* ---------- Endpoint list ---------- */
 
-type NavGroup = {title: string; items: Array<{label: string; href: string; method: string}>};
+type NavGroup = {title: string; section: string; group: string; items: Array<{label: string; href: string; method: string}>};
 
 function linksOf(items: PropSidebarItem[]): Array<{label: string; href: string; method: string}> {
   return items.flatMap((item) => {
@@ -611,12 +618,14 @@ function useEndpointGroups(pathname: string): NavGroup[] {
       .filter((item) => item.type === 'category')
       .map((group) => ({
         title: `${section.label} ⁄ ${group.label}`,
+        section: section.label,
+        group: group.label,
         items: group.type === 'category' ? linksOf(group.items) : [],
       }));
   }, [sidebar, pathname]);
 }
 
-function EndpointList({pathname}: {pathname: string}) {
+export function EndpointList({pathname}: {pathname: string}) {
   const groups = useEndpointGroups(pathname);
   const [query, setQuery] = useState('');
   const listRef = useRef<HTMLDivElement>(null);
@@ -631,12 +640,27 @@ function EndpointList({pathname}: {pathname: string}) {
     <aside className="api-explorer__nav">
       <div className="api-explorer__search">
         <SearchIcon />
-        <input type="search" placeholder="Search for endpoints..." value={query} onChange={(e) => setQuery(e.target.value)} />
+        <input
+          type="search"
+          placeholder="Search for endpoints..."
+          aria-label="Search for endpoints"
+          value={query}
+          // Fern focused the endpoint search when the explorer opened.
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus
+          onChange={(e) => setQuery(e.target.value)}
+        />
       </div>
       <div className="api-explorer__list" ref={listRef}>
         {filtered.map((group) => (
           <div key={group.title} className="api-explorer__group">
-            <div className="api-explorer__group-title">{group.title}</div>
+            <div className="api-explorer__group-title" title={group.title}>
+              <span>{group.section}</span>
+              <span className="api-explorer__group-sep" aria-hidden="true">
+                ⁄
+              </span>
+              <span>{group.group}</span>
+            </div>
             {group.items.map((item) => (
               <Link
                 key={item.href}
@@ -697,8 +721,27 @@ function UrlBar({endpoint, state, req, onSend, onClose}: {endpoint: Endpoint; st
   );
 }
 
-export default function ApiExplorer({endpoint}: {endpoint: Endpoint}): React.JSX.Element {
+/** Closing the explorer (button or Escape) drops `?explorer=true`. */
+export function useExplorerClose(): () => void {
   const history = useHistory();
+  const {pathname} = useLocation();
+  const close = () => history.push(pathname);
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.add('api-explorer-open');
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)) close();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      root.classList.remove('api-explorer-open');
+      window.removeEventListener('keydown', onKey);
+    };
+  });
+  return close;
+}
+
+export default function ApiExplorer({endpoint}: {endpoint: Endpoint}): React.JSX.Element {
   const {pathname} = useLocation();
   const [state, setState] = useState<FormState>(() => initialState(endpoint));
   const [formKey, setFormKey] = useState(0);
@@ -725,19 +768,7 @@ export default function ApiExplorer({endpoint}: {endpoint: Endpoint}): React.JSX
     }
   };
 
-  const close = () => history.push(pathname);
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.add('api-explorer-open');
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)) close();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => {
-      root.classList.remove('api-explorer-open');
-      window.removeEventListener('keydown', onKey);
-    };
-  });
+  const close = useExplorerClose();
 
   const send = async () => {
     setResult({state: 'loading'});

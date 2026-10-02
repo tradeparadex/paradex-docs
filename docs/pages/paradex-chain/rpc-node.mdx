@@ -112,23 +112,23 @@ All authenticated requests must be signed using the following EIP-712 typed data
 
 <AccordionGroup>
   <Accordion title="Domain Fields">
-    <p>
+    <div>
       | Field | Description |
       |-------|-------------|
       | **name** | Service identifier ("Paradex") |
       | **version** | Protocol version ("1") |
       | **chainId** | Starknet chain ID |
-    </p>
+    </div>
   </Accordion>
   <Accordion title="Message Fields">
-    <p>
+    <div>
       | Field | Description |
       |-------|-------------|
       | **account** | Your Starknet account address used for signature verification |
       | **payload** | The Poseidon hash of your JSON-encoded RPC request payload |
       | **timestamp** | Unix timestamp in seconds when the signature was created |
       | **version** | Signature version (currently only "1.0.0" is supported) |
-    </p>
+    </div>
   </Accordion>
 </AccordionGroup>
 

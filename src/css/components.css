@@ -172,6 +172,31 @@ html[data-theme='dark'] {
   margin-bottom: 0;
 }
 
+/* The title link covers the whole card; links in the body sit above it. */
+.fern-card__link,
+.fern-card__link:hover {
+  color: inherit !important;
+  font-weight: inherit !important;
+  text-decoration: none !important;
+}
+
+.fern-card__link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.fern-card__link::after {
+  display: none !important;
+}
+
+.fern-card--link .fern-card__body a {
+  position: relative;
+  z-index: 1;
+}
+
 .fern-card--link:hover {
   border-color: var(--fern-accent-a9);
   box-shadow: 0 1px 2px var(--grayscale-a3), 0 3px 6px var(--grayscale-a3);

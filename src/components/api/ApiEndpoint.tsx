@@ -2,236 +2,120 @@
 // plugins/api-reference. Layout follows Fern's API reference: description and
 // schemas on the left, code samples and response examples on the right.
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import CodeBlock from '@theme/CodeBlock';
 import {useHistory, useLocation} from '@docusaurus/router';
 import ApiExplorer from './ApiExplorer';
+import WebSocketExplorer from './WebSocketExplorer';
 import MethodBadge from './MethodBadge';
-import type {Endpoint, Property, Response, Sample, Shape} from './types';
+import {ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, CloseIcon, PlayIcon, WifiIcon} from './icons';
+import {CodePanel, CopyButton, LanguageMenu, StatusBadge, StatusSelect, useLanguage, type StatusOption} from './panels';
+import {BodySchema, Html, PropertyRow, Properties, Section} from './schema';
+import type {Endpoint, Property} from './types';
 
-const ENUM_INLINE_LIMIT = 5;
-const LANGUAGE_KEY = 'paradex-docs-api-language';
-const LANGUAGE_EVENT = 'paradex-docs-api-language';
+export {MethodBadge, PropertyRow, Properties};
 
-function Html({html, className}: {html?: string; className?: string}) {
-  if (!html) return null;
-  return <div className={clsx('api-markdown', className)} dangerouslySetInnerHTML={{__html: html}} />;
-}
+const pretty = (value: unknown) => JSON.stringify(value ?? {}, null, 2);
 
-export {MethodBadge};
-
-function nestedProperties(shape: Shape): Property[] | undefined {
-  if (shape.kind === 'object') return shape.properties;
-  if (shape.kind === 'array' && shape.items?.kind === 'object') return shape.items.properties;
-  if (shape.kind === 'map' && shape.mapValues?.kind === 'object') return shape.mapValues.properties;
-  return undefined;
-}
-
-function EnumValues({values}: {values: string[]}) {
-  const chips = (
-    <div className="api-enum__values">
-      {values.map((v) => (
-        <code key={v} className="api-enum__value">
-          {v}
-        </code>
-      ))}
-    </div>
-  );
-  if (values.length <= ENUM_INLINE_LIMIT) {
-    return (
-      <div className="api-enum api-enum--inline">
-        <span className="api-enum__label">Allowed values:</span>
-        {chips}
-      </div>
-    );
-  }
+/** Fern's URL line: server in grey, path dimmer, path parameters highlighted. */
+function Address({endpoint, server = endpoint.server}: {endpoint: Endpoint; server?: string}) {
   return (
-    <details className="api-disclosure">
-      <summary>Show {values.length} enum values</summary>
-      {chips}
-    </details>
-  );
-}
-
-function ShapeDetails({shape}: {shape: Shape}) {
-  const enumValues = shape.kind === 'enum' ? shape.values : shape.kind === 'array' && shape.items?.kind === 'enum' ? shape.items.values : undefined;
-  const nested = nestedProperties(shape);
-  return (
-    <>
-      {enumValues && enumValues.length > 0 && <EnumValues values={enumValues} />}
-      {nested && nested.length > 0 && (
-        <details className="api-disclosure">
-          <summary>
-            Show {nested.length} {nested.length === 1 ? 'property' : 'properties'}
-          </summary>
-          <div className="api-disclosure__body">
-            <Properties properties={nested} />
-          </div>
-        </details>
-      )}
-      {shape.kind === 'union' && shape.variants && (
-        <details className="api-disclosure">
-          <summary>Show {shape.variants.length} variants</summary>
-          <div className="api-disclosure__body">
-            {shape.variants.map((variant, i) => (
-              <div key={i} className="api-variant">
-                <div className="api-prop__header">
-                  <span className="api-prop__type">{variant.name ?? variant.label}</span>
-                </div>
-                <Html html={variant.description} className="api-prop__description" />
-                <ShapeDetails shape={variant} />
-              </div>
-            ))}
-          </div>
-        </details>
-      )}
-    </>
-  );
-}
-
-export function PropertyRow({name, required, shape, requiredLabel = true}: Property & {requiredLabel?: boolean}) {
-  return (
-    <div className="api-prop" id={name ? `prop-${name}` : undefined}>
-      <div className="api-prop__header">
-        {name && <code className="api-prop__name">{name}</code>}
-        <span className="api-prop__type">{shape.label}</span>
-        {requiredLabel &&
-          (required ? (
-            <span className="api-prop__required">Required</span>
+    <span className="api-address">
+      <span className="api-address__server">{server}</span>
+      <span className="api-address__path">
+        {endpoint.displayPath.split(/(:[A-Za-z_][\w-]*)/g).map((part, i) =>
+          i % 2 ? (
+            <span key={i} className="api-address__param">
+              {part}
+            </span>
           ) : (
-            <span className="api-prop__optional">Optional</span>
-          ))}
-        {shape.deprecated && <span className="api-prop__deprecated">Deprecated</span>}
-        {shape.constraints?.map((c) => (
-          <span key={c} className="api-prop__constraint">
-            {c}
-          </span>
-        ))}
-        {shape.default !== undefined && (
-          <span className="api-prop__default">
-            Defaults to <code>{String(shape.default)}</code>
-          </span>
+            part
+          ),
         )}
-      </div>
-      <Html html={shape.description} className="api-prop__description" />
-      <ShapeDetails shape={shape} />
-    </div>
+      </span>
+    </span>
   );
 }
 
-export function Properties({properties}: {properties: Property[]}) {
+function TryItButton({onClick}: {onClick: () => void}) {
   return (
-    <div className="api-props">
-      {properties.map((p) => (
-        <PropertyRow key={p.name} {...p} />
-      ))}
-    </div>
+    <button type="button" className="api-try-it" aria-description="Opens the API Explorer" onClick={onClick}>
+      <PlayIcon />
+      Try it
+    </button>
   );
 }
 
-function Section({title, icon, children}: {title: string; icon?: React.ReactNode; children: React.ReactNode}) {
-  return (
-    <section className="api-section">
-      <h3 className="api-section__title">
-        {title}
-        {icon}
-      </h3>
-      {children}
-    </section>
-  );
-}
-
-function BodySchema({shape, description}: {shape?: Shape; description?: string}) {
-  const nested = shape ? nestedProperties(shape) : undefined;
-  return (
-    <>
-      <Html html={description} className="api-section__description" />
-      {shape && !nested?.length && shape.kind !== 'unknown' && (
-        <div className="api-props">
-          <PropertyRow name="" required shape={shape} requiredLabel={false} />
-        </div>
-      )}
-      {shape && shape.kind === 'array' && nested?.length ? (
-        <p className="api-section__type">{shape.label}</p>
-      ) : null}
-      {nested && nested.length > 0 && <Properties properties={nested} />}
-    </>
-  );
-}
-
-/* ---------- Right-hand panels ---------- */
-
-function useLanguage(samples: Sample[]) {
-  const [language, setLanguage] = useState(samples[0]?.language);
-  useEffect(() => {
-    const sync = () => {
-      try {
-        const saved = window.localStorage.getItem(LANGUAGE_KEY);
-        if (saved && samples.some((s) => s.language === saved)) setLanguage(saved);
-      } catch {
-        /* storage unavailable */
-      }
-    };
-    sync();
-    window.addEventListener(LANGUAGE_EVENT, sync);
-    return () => window.removeEventListener(LANGUAGE_EVENT, sync);
-  }, [samples]);
-  const choose = (value: string) => {
-    setLanguage(value);
-    try {
-      window.localStorage.setItem(LANGUAGE_KEY, value);
-    } catch {
-      /* storage unavailable */
-    }
-    window.dispatchEvent(new Event(LANGUAGE_EVENT));
-  };
-  return [samples.find((s) => s.language === language) ?? samples[0], choose] as const;
-}
-
-const PlayIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" />
-  </svg>
-);
+/* ---------- REST panels ---------- */
 
 export function CodeSamplePanel({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt?: () => void}) {
   const samples = endpoint.samples ?? [];
   const [sample, choose] = useLanguage(samples);
   if (!sample) return null;
   return (
-    <div className="api-panel">
-      <div className="api-panel__header">
-        <MethodBadge method={endpoint.method} />
-        <span className="api-panel__path">
-          <span className="api-panel__base">{endpoint.serverPath}</span>
-          {endpoint.displayPath}
-        </span>
-        {samples.length > 1 ? (
-          <select className="api-panel__select" aria-label="Language" value={sample.language} onChange={(e) => choose(e.target.value)}>
-            {samples.map((s) => (
-              <option key={s.language} value={s.language}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <span className="api-panel__label">{sample.label}</span>
-        )}
-      </div>
-      <CodeBlock language={sample.prism} className="api-panel__code">
-        {sample.code}
-      </CodeBlock>
-      {onTryIt && (
-        <div className="api-panel__footer">
-          <button type="button" className="api-try-it" onClick={onTryIt}>
-            <PlayIcon />
-            Try it
-          </button>
+    <CodePanel
+      className="api-panel--request"
+      header={
+        <>
+          <MethodBadge method={endpoint.method} />
+          <span className="api-panel__path">
+            <Address endpoint={endpoint} server={endpoint.serverPath ?? ''} />
+          </span>
+        </>
+      }
+      controls={<LanguageMenu samples={samples} value={sample} onChange={choose} />}
+      code={sample.code}
+      language={sample.prism}
+      // Fern numbered every sample but cURL (which gets a `$` prompt).
+      lineNumbers={sample.language !== 'curl'}
+      footer={onTryIt ? <TryItButton onClick={onTryIt} /> : undefined}
+    />
+  );
+}
+
+type Example = StatusOption & {example?: unknown};
+
+function responseOptions(endpoint: Endpoint): Example[] {
+  return [
+    ...(endpoint.responses ?? []).map((r) => ({status: r.status, label: r.label, example: r.example})),
+    ...(endpoint.errors ?? []).map((e) => ({status: e.status, label: e.name, example: e.example, error: true})),
+  ];
+}
+
+export function ResponsePanel({
+  endpoint,
+  selected,
+  onSelect,
+}: {
+  endpoint: Endpoint;
+  selected?: number;
+  onSelect?: (index: number) => void;
+}) {
+  const [own, setOwn] = useState(0);
+  const options = responseOptions(endpoint);
+  const index = selected ?? own;
+  const select = onSelect ?? setOwn;
+  const current = options[index] ?? options[0];
+  if (!current) return null;
+  const header = <StatusSelect options={options} value={index} onChange={select} />;
+  if (current.example === undefined) {
+    return (
+      <div className={clsx('api-panel api-panel--response', current.error && 'api-panel--error')}>
+        <div className="api-panel__header">
+          <div className="api-panel__heading">{header}</div>
         </div>
-      )}
-    </div>
+      </div>
+    );
+  }
+  return (
+    <CodePanel
+      className={clsx('api-panel--response', current.error && 'api-panel--error')}
+      header={header}
+      code={pretty(current.example)}
+      language="json"
+    />
   );
 }
 
@@ -246,89 +130,120 @@ function useExplorer(): [boolean, () => void] {
   return [open, () => history.push(`${location.pathname}?explorer=true`)];
 }
 
-export function ResponsePanel({responses}: {responses: Response[]}) {
-  const withExamples = responses;
-  const [index, setIndex] = useState(0);
-  const response = withExamples[index];
-  if (!response) return null;
+/* ---------- Errors ---------- */
+
+function ErrorCard({
+  error,
+  open,
+  onToggle,
+  last,
+  first,
+}: {
+  error: NonNullable<Endpoint['errors']>[number];
+  open: boolean;
+  onToggle: (open: boolean) => void;
+  first: boolean;
+  last: boolean;
+}) {
   return (
-    <div className="api-panel">
-      <div className="api-panel__header">
-        <span className="api-status-badge api-status-badge--success">{response.status}</span>
-        {withExamples.length > 1 ? (
-          <select className="api-panel__select api-panel__select--left" aria-label="Response" value={index} onChange={(e) => setIndex(Number(e.target.value))}>
-            {withExamples.map((r, i) => (
-              <option key={r.status} value={i}>
-                {r.status} {r.label}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <span className="api-panel__status-label">{response.label}</span>
+    <div
+      className={clsx('api-error', open && 'api-error--open', first && 'api-error--first', last && 'api-error--last')}
+      onClick={open ? undefined : () => onToggle(true)}>
+      <div className="api-error__header">
+        <button type="button" className="api-error__toggle" aria-expanded={open} onClick={(e) => {
+          e.stopPropagation();
+          onToggle(!open);
+        }}>
+          <StatusBadge status={error.status} error small />
+          <span className="api-error__name">{error.name}</span>
+        </button>
+        {open && (
+          <button
+            type="button"
+            className="api-error__close"
+            aria-label="Collapse error"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggle(false);
+            }}>
+            <CloseIcon />
+          </button>
         )}
       </div>
-      {response.example !== undefined && (
-        <CodeBlock language="json" showLineNumbers className="api-panel__code api-panel__code--scroll">
-          {JSON.stringify(response.example, null, 2)}
-        </CodeBlock>
+      {open && (
+        <div className="api-error__body">
+          <BodySchema shape={error.shape} description={error.description} />
+        </div>
       )}
     </div>
   );
 }
 
-const ArrowIcon = ({up}: {up: boolean}) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    {up ? <path d="M12 19V5M5 12l7-7 7 7" /> : <path d="M12 5v14M19 12l-7 7-7-7" />}
-  </svg>
-);
+/* ---------- WebSocket panels ---------- */
 
 function MessageRow({direction, example}: {direction: string; example: unknown}) {
   const [open, setOpen] = useState(false);
   const up = direction === 'publish';
-  const compact = JSON.stringify(example ?? {});
+  const json = pretty(example);
   return (
     <div className={clsx('api-message', `api-message--${direction}`, open && 'api-message--open')}>
-      <button type="button" className="api-message__row" aria-expanded={open} onClick={() => setOpen(!open)}>
-        <span className="api-message__icon">
-          <ArrowIcon up={up} />
-        </span>
-        <code className="api-message__preview">{compact}</code>
-        <span className="api-message__direction">{direction}</span>
-        <svg className="api-message__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-          <path d="M6 9l6 6 6-6" />
-        </svg>
-      </button>
+      <div className="api-message__header">
+        <button type="button" className="api-message__row" aria-expanded={open} onClick={() => setOpen(!open)}>
+          <span className="api-message__icon">{up ? <ArrowUpIcon /> : <ArrowDownIcon />}</span>
+          <span className="api-message__preview">{json}</span>
+          <span className="api-message__type">
+            <span className="api-message__direction">{direction}</span>
+          </span>
+          <ChevronDownIcon className="api-message__chevron" />
+        </button>
+        <CopyButton text={json} className="api-message__copy" />
+      </div>
       {open && (
-        <CodeBlock language="json" className="api-message__code">
-          {JSON.stringify(example ?? {}, null, 2)}
-        </CodeBlock>
+        <div className="api-message__body">
+          <CodeBlock language="text" showLineNumbers className="api-message__code">
+            {json}
+          </CodeBlock>
+        </div>
       )}
     </div>
   );
 }
 
-function WebSocketPanels({endpoint}: {endpoint: Endpoint}) {
+function WebSocketPanels({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt: () => void}) {
   return (
     <>
-      <div className="api-panel">
+      <div className="api-panel api-panel--handshake">
         <div className="api-panel__header">
           <span className="api-panel__title">Handshake</span>
         </div>
-        <pre className="api-handshake">
-          <span className="api-handshake__key">URL</span>
-          <span className="api-handshake__value">{endpoint.handshakeUrl}</span>
-          <span className="api-handshake__key">Method</span>
-          <span className="api-handshake__value">GET</span>
-          <span className="api-handshake__key">Status</span>
-          <span className="api-handshake__value">101 Switching Protocols</span>
-        </pre>
+        <div className="api-panel__body api-panel__body--table">
+          <table className="api-handshake">
+            <tbody>
+              <tr>
+                <td>URL</td>
+                <td>{endpoint.handshakeUrl}</td>
+              </tr>
+              <tr>
+                <td>Method</td>
+                <td>GET</td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>101 Switching Protocols</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="api-panel__footer">
+          <TryItButton onClick={onTryIt} />
+        </div>
       </div>
       {endpoint.messages && endpoint.messages.length > 0 && (
-        <div className="api-panel">
+        <div className="api-panel api-panel--messages">
           <div className="api-panel__header">
             <span className="api-panel__title">Messages</span>
           </div>
-          <div className="api-messages">
+          <div className="api-panel__body api-messages">
             {endpoint.messages.map((message, i) => (
               <MessageRow key={i} direction={message.direction} example={message.example} />
             ))}
@@ -339,11 +254,60 @@ function WebSocketPanels({endpoint}: {endpoint: Endpoint}) {
   );
 }
 
+function HandshakeCard({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt: () => void}) {
+  const url = endpoint.server + endpoint.displayPath;
+  const params = endpoint.pathParams ?? [];
+  return (
+    <section className="api-handshake-card" id="handshake">
+      <div className="api-handshake-card__head">
+        <h2 className="api-handshake-card__title">
+          <span className="api-handshake-card__label">
+            Handshake
+            <span className="api-handshake-card__icon">
+              <WifiIcon />
+            </span>
+          </span>
+          <span className="api-handshake-card__try">
+            <TryItButton onClick={onTryIt} />
+          </span>
+        </h2>
+        <div className="api-url-pill">
+          <div className="api-url-pill__scroll">
+            <MethodBadge method="WSS" />
+            <Address endpoint={endpoint} />
+          </div>
+          <CopyButton text={url} className="api-url-pill__copy" />
+        </div>
+      </div>
+      <div className="api-handshake-card__body">
+        {params.length > 0 && (
+          <Section title="Path parameters">
+            <Properties properties={params} />
+          </Section>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function DirectionIcon({direction}: {direction: 'publish' | 'subscribe'}) {
+  return (
+    <span className={clsx('api-direction', `api-direction--${direction}`)}>
+      {direction === 'publish' ? <ArrowUpIcon /> : <ArrowDownIcon />}
+    </span>
+  );
+}
+
 /* ---------- Page ---------- */
 
 export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX.Element {
   const isWs = endpoint.kind === 'websocket';
   const [exploring, openExplorer] = useExplorer();
+  // Response shown on the right: index into success responses then errors.
+  const [selected, setSelected] = useState(0);
+  const successCount = endpoint.responses?.length ?? 0;
+  const openError = selected >= successCount ? selected - successCount : -1;
+  const toggleError = useCallback((i: number, open: boolean) => setSelected(open ? successCount + i : 0), [successCount]);
   const params: Array<[string, Property[] | undefined]> = [
     ['Path parameters', endpoint.pathParams],
     ['Query parameters', endpoint.queryParams],
@@ -354,8 +318,7 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
       <div className="api-endpoint__url">
         <MethodBadge method={endpoint.method} />
         <span className="api-endpoint__address">
-          <span className="api-endpoint__server">{endpoint.server}</span>
-          <span className="api-endpoint__path">{endpoint.displayPath}</span>
+          <Address endpoint={endpoint} />
         </span>
       </div>
       <div className="api-endpoint__grid">
@@ -363,39 +326,26 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
           <Html html={endpoint.descriptionHtml} className="api-endpoint__description" />
           {isWs ? (
             <>
-              <section className="api-section api-handshake-card">
-                <h3 className="api-section__title">Handshake</h3>
-                <div className="api-endpoint__url api-endpoint__url--inline">
-                  <MethodBadge method="WSS" />
-                  <span className="api-endpoint__address">
-                    <span className="api-endpoint__server">{endpoint.server}</span>
-                    <span className="api-endpoint__path">{endpoint.displayPath}</span>
-                  </span>
-                </div>
-                {endpoint.pathParams && endpoint.pathParams.length > 0 && (
-                  <>
-                    <h4 className="api-section__subtitle">Path parameters</h4>
-                    <Properties properties={endpoint.pathParams} />
-                  </>
-                )}
-              </section>
+              <HandshakeCard endpoint={endpoint} onTryIt={openExplorer} />
               {endpoint.send && (
-                <Section title="Send" icon={<span className="api-direction api-direction--publish"><ArrowIcon up /></span>}>
+                <Section title="Send" id="send" icon={<DirectionIcon direction="publish" />}>
                   <div className="api-props">
                     <PropertyRow
                       name="publish"
                       required
+                      idPrefix="send"
                       shape={{...endpoint.send.shape, label: 'object', description: endpoint.send.descriptionHtml || undefined}}
                     />
                   </div>
                 </Section>
               )}
               {endpoint.receive && (
-                <Section title="Receive" icon={<span className="api-direction api-direction--subscribe"><ArrowIcon up={false} /></span>}>
+                <Section title="Receive" id="receive" icon={<DirectionIcon direction="subscribe" />}>
                   <div className="api-props">
                     <PropertyRow
                       name="subscribe"
                       required
+                      idPrefix="receive"
                       shape={{...endpoint.receive.shape, label: 'object', description: endpoint.receive.descriptionHtml || undefined}}
                     />
                   </div>
@@ -405,13 +355,13 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
           ) : (
             <>
               {endpoint.auth && (
-                <Section title="Authentication">
+                <Section title="Authentication" className="api-section--auth">
                   <div className="api-props">
                     <PropertyRow
                       name={endpoint.auth.name}
                       required
                       requiredLabel={false}
-                      shape={{kind: 'primitive', label: endpoint.auth.label, description: `<p>${endpoint.auth.description}</p>`}}
+                      shape={{kind: 'primitive', label: endpoint.auth.label, description: endpoint.auth.descriptionHtml}}
                     />
                   </div>
                 </Section>
@@ -428,24 +378,25 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
                   <BodySchema shape={endpoint.requestBody.shape} description={endpoint.requestBody.description} />
                 </Section>
               )}
-              {endpoint.responses?.filter((r) => r.shape || r.description).map((response) => (
-                <Section key={response.status} title="Response">
-                  <BodySchema shape={response.shape} description={response.description} />
-                </Section>
-              ))}
+              {endpoint.responses
+                ?.filter((r) => r.shape || r.description)
+                .map((response) => (
+                  <Section key={response.status} title="Response">
+                    <BodySchema shape={response.shape} description={response.description} />
+                  </Section>
+                ))}
               {endpoint.errors && endpoint.errors.length > 0 && (
-                <Section title="Errors">
+                <Section title="Errors" className="api-section--errors">
                   <div className="api-errors">
-                    {endpoint.errors.map((error) => (
-                      <details key={error.status} className="api-error">
-                        <summary>
-                          <span className="api-status-badge api-status-badge--error">{error.status}</span>
-                          <span className="api-error__name">{error.name}</span>
-                        </summary>
-                        <div className="api-error__body">
-                          <BodySchema shape={error.shape} description={error.description} />
-                        </div>
-                      </details>
+                    {endpoint.errors.map((error, i) => (
+                      <ErrorCard
+                        key={error.status}
+                        error={error}
+                        open={openError === i}
+                        first={i === 0}
+                        last={i === endpoint.errors!.length - 1}
+                        onToggle={(open) => toggleError(i, open)}
+                      />
                     ))}
                   </div>
                 </Section>
@@ -456,17 +407,18 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
         <aside className="api-endpoint__aside">
           <div className="api-endpoint__sticky">
             {isWs ? (
-              <WebSocketPanels endpoint={endpoint} />
+              <WebSocketPanels endpoint={endpoint} onTryIt={openExplorer} />
             ) : (
               <>
                 <CodeSamplePanel endpoint={endpoint} onTryIt={openExplorer} />
-                <ResponsePanel responses={endpoint.responses ?? []} />
+                <ResponsePanel endpoint={endpoint} selected={selected} onSelect={setSelected} />
               </>
             )}
           </div>
         </aside>
       </div>
-      {exploring && !isWs && createPortal(<ApiExplorer endpoint={endpoint} />, document.body)}
+      {exploring &&
+        createPortal(isWs ? <WebSocketExplorer endpoint={endpoint} /> : <ApiExplorer endpoint={endpoint} />, document.body)}
     </div>
   );
 }
@@ -486,7 +438,7 @@ export function EndpointResponseSnippet({endpoint}: {endpoint: Endpoint | string
   if (!endpoint || typeof endpoint === 'string') return null;
   return (
     <div className="api-snippet">
-      <ResponsePanel responses={endpoint.responses ?? []} />
+      <ResponsePanel endpoint={endpoint} />
     </div>
   );
 }

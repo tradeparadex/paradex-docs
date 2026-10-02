@@ -1,38 +1,7 @@
 /* API explorer ("Try it"), src/components/api/ApiExplorer.tsx. Matches
    Fern's: a drawer under the header with the endpoint list on the left,
    the request form in the middle and the request/response panels on the
-   right. */
-
-.api-panel__footer {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0.5rem 0.5rem;
-  border-top: 1px solid var(--border-color);
-  background: var(--paradex-card-bg);
-}
-
-.api-try-it {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  border: 0;
-  border-radius: 6px;
-  padding: 0.2rem 0.55rem;
-  background: var(--paradex-accent);
-  color: var(--accent-contrast);
-  font-family: var(--ifm-font-family-monospace);
-  font-size: 0.8125rem;
-  cursor: pointer;
-}
-
-.api-try-it:hover {
-  background: var(--paradex-accent-bright);
-}
-
-.api-try-it svg {
-  width: 0.8rem;
-  height: 0.8rem;
-}
+   right. The WebSocket playground (WebSocketExplorer.tsx) shares it. */
 
 html.api-explorer-open {
   overflow: hidden;
@@ -132,10 +101,32 @@ html.api-explorer-open {
   margin-top: 1rem;
 }
 
+/* "Section ⁄ Group", each part cut short on one line (Fern). */
 .api-explorer__group-title {
-  padding: 0.5rem 0.75rem 0.35rem;
-  color: var(--paradex-accent);
-  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 30px;
+  padding: 4px 12px;
+  overflow: hidden;
+  color: var(--accent-a11, rgba(62, 239, 255, 0.867));
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.api-explorer__group-title > span:not(.api-explorer__group-sep) {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.api-explorer__group-sep {
+  flex: 0 0 auto;
+  padding: 0 2px;
+  color: var(--grayscale-a9, rgba(255, 255, 255, 0.392));
+  font-size: 14px;
 }
 
 .api-explorer__endpoint {
@@ -156,9 +147,11 @@ html.api-explorer-open {
 }
 
 .api-explorer__endpoint .api-method-badge {
-  font-size: 0.625rem;
-  padding: 0.25rem 0.35rem;
+  height: 20px;
   min-width: 36px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 10px;
 }
 
 .api-explorer__endpoint:hover {
@@ -282,6 +275,11 @@ html.api-explorer-open {
   background: rgba(255, 255, 255, 0.06);
 }
 
+.api-explorer .api-explorer__close svg {
+  width: 20px;
+  height: 20px;
+}
+
 .api-explorer__icon-button {
   display: inline-flex;
   align-items: center;
@@ -306,9 +304,9 @@ html.api-explorer-open {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 541fr) minmax(0, 529fr);
   gap: 1.25rem;
-  padding-top: 1.5rem;
+  padding: 1.5rem 0.75rem 0;
 }
 
 .api-explorer__form {
@@ -341,7 +339,7 @@ html.api-explorer-open {
 .api-explorer__fields {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .api-explorer__fields--nested {
@@ -1028,6 +1026,170 @@ html.api-explorer-open {
   color: var(--text-muted);
   font-size: 0.8125rem;
   line-height: 1.5;
+}
+
+/* ---------- WebSocket playground (WebSocketExplorer.tsx) ---------- */
+
+.api-explorer__select--empty select {
+  color: var(--grayscale-a11, rgba(255, 255, 255, 0.686));
+}
+
+.api-explorer__address--ws {
+  font-size: 0.75rem;
+}
+
+.api-explorer__address--ws > span:not(.api-explorer__server) {
+  color: #ffffff;
+}
+
+.api-explorer__url .api-copy-button {
+  opacity: 0;
+}
+
+.api-explorer__url:hover .api-copy-button,
+.api-explorer__url .api-copy-button:focus-visible {
+  opacity: 1;
+}
+
+.api-ws-send__title {
+  margin: 0 0 1rem;
+  padding: 0 1rem;
+  color: var(--grayscale-a11, rgba(255, 255, 255, 0.686));
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.api-explorer__card.api-ws-send__card {
+  padding: 0;
+}
+
+.api-ws-send__fields {
+  padding: 1rem;
+}
+
+.api-ws-send__fields > .api-explorer__fields {
+  padding-left: 1rem;
+  border-left: 1px solid var(--grayscale-a4, rgba(255, 255, 255, 0.106));
+}
+
+.api-ws-send__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.api-ws-send__button {
+  height: 32px;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--paradex-accent);
+  color: var(--accent-contrast);
+  font-size: 0.875rem !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.api-ws-send__button:hover {
+  background: var(--paradex-accent-bright);
+}
+
+.api-ws-send__empty {
+  margin: 0;
+  padding: 0 1rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.api-explorer__section + .api-ws-send__empty {
+  margin-top: 1.5rem;
+}
+
+.api-ws-log {
+  flex: 1 1 auto;
+}
+
+.api-ws-log .api-explorer__panel-title {
+  color: var(--grayscale-a11, rgba(255, 255, 255, 0.686));
+  font-size: 0.75rem;
+}
+
+.api-ws-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: -0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 8px;
+  background: rgba(255, 23, 63, 0.176);
+  color: #ff9592;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.api-ws-status__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 92, 102, 0.5);
+}
+
+.api-ws-status--connecting {
+  background: rgba(250, 130, 0, 0.133);
+  color: #ffca16;
+}
+
+.api-ws-status--connecting .api-ws-status__dot {
+  background: #ffca16;
+  animation: api-ws-pulse 1s ease-in-out infinite;
+}
+
+.api-ws-status--open {
+  background: rgba(34, 255, 153, 0.118);
+  color: rgba(70, 254, 165, 0.83);
+}
+
+.api-ws-status--open .api-ws-status__dot {
+  background: rgba(70, 254, 165, 0.83);
+}
+
+@keyframes api-ws-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.api-ws-log__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.api-ws-log__empty {
+  margin: auto;
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.api-ws-log__body .api-messages {
+  width: 100%;
+}
+
+.api-ws-log__info {
+  padding: 0.5rem 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+}
+
+.api-ws-log__body .api-message + .api-ws-log__info,
+.api-ws-log__body .api-ws-log__info + .api-message,
+.api-ws-log__body .api-ws-log__info + .api-ws-log__info {
+  border-top: 1px solid var(--border-color);
 }
 
 /* ---------- Small screens ---------- */

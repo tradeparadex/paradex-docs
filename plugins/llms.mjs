@@ -35,7 +35,15 @@ function shapeToMarkdown(properties = [], depth = 0) {
   const indent = '  '.repeat(depth);
   return properties
     .map(({name, required, shape}) => {
-      const description = (shape.description || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+      const description = (shape.description || '')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&amp;/g, '&')
+        .replace(/\s+/g, ' ')
+        .trim();
       const enumValues = shape.kind === 'enum' ? ` Allowed values: ${shape.values.map((v) => `\`${v}\``).join(', ')}.` : '';
       let line = `${indent}- \`${name}\` (${shape.label}, ${required ? 'required' : 'optional'})${description ? `: ${description}` : ''}${enumValues}`;
       const nested = shape.kind === 'object' ? shape.properties : shape.kind === 'array' && shape.items?.kind === 'object' ? shape.items.properties : undefined;

@@ -185,15 +185,17 @@ export async function buildEndpoints(spec, {apiName}) {
       const schemeName = secured ? Object.keys(security.find((r) => Object.keys(r).length))[0] : undefined;
       const scheme = schemeName ? schemes[schemeName] : undefined;
       const authHeader = scheme?.type === 'apiKey' && scheme.in === 'header' ? scheme.name : 'Authorization';
+      const authDescription =
+        scheme?.description ??
+        (scheme?.type === 'http' && scheme.scheme === 'bearer'
+          ? 'Bearer authentication of the form `Bearer <token>`, where token is your auth token.'
+          : 'API Key authentication via header');
       const auth = secured
         ? {
             name: authHeader,
             label: 'string',
-            description:
-              scheme?.description ??
-              (scheme?.type === 'http' && scheme.scheme === 'bearer'
-                ? 'Bearer authentication of the form `Bearer <token>`, where token is your auth token.'
-                : 'API Key authentication via header'),
+            description: authDescription,
+            descriptionHtml: markdownToHtml(authDescription),
           }
         : undefined;
 
@@ -229,6 +231,8 @@ export async function buildEndpoints(spec, {apiName}) {
             name: `${REASONS[code] ?? 'Error'} Error`.replace('Error Error', 'Error'),
             description: markdownToHtml(response.description),
             shape: content?.schema ? toShape(content.schema, deref) : undefined,
+            // Shown in the response panel when the error is selected, as on Fern.
+            example: content?.example ?? (content?.schema ? exampleFor(content.schema, deref) : undefined),
           });
         }
       }

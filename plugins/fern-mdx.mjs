@@ -139,6 +139,23 @@ export function remarkFernJsx() {
 export function remarkTrimHeadingIds() {
   return (tree) => {
     visit(tree, 'heading', (heading) => {
+      // Legacy empty anchors (`### Title <a id="x"></a>`): the heading takes
+      // the id; left in place, the anchor would also end up nested inside
+      // the "On this page" link.
+      const anchorIndex = heading.children.findIndex(
+        (child) => child.type === 'mdxJsxTextElement' && child.name === 'a' && child.children.length === 0,
+      );
+      if (anchorIndex >= 0) {
+        const [anchor] = heading.children.splice(anchorIndex, 1);
+        const last = heading.children[heading.children.length - 1];
+        if (last?.type === 'text') last.value = last.value.replace(/\s+$/, '');
+        const id = anchor.attributes?.find((attribute) => attribute.name === 'id')?.value;
+        if (typeof id === 'string') {
+          const data = heading.data ?? (heading.data = {});
+          (data.hProperties ?? (data.hProperties = {})).id = id;
+          return;
+        }
+      }
       const textNodes = heading.children.filter((child) => !['html', 'jsx', 'mdxJsxTextElement'].includes(child.type));
       const raw = toString(textNodes.length ? textNodes : heading);
       if (raw === raw.trim() || /\{#[^}]+\}\s*$/.test(raw)) return;

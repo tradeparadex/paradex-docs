@@ -41,13 +41,13 @@ export type Endpoint = {
   title: string;
   url: string;
   descriptionHtml?: string;
-  auth?: {name: string; label: string; description: string};
+  auth?: {name: string; label: string; description: string; descriptionHtml?: string};
   pathParams?: Property[];
   queryParams?: Property[];
   headerParams?: Property[];
   requestBody?: {description?: string; contentType: string; required: boolean; shape: Shape};
   responses?: Response[];
-  errors?: Array<{status: string; name: string; description?: string; shape?: Shape}>;
+  errors?: Array<{status: string; name: string; description?: string; shape?: Shape; example?: unknown}>;
   samples?: Sample[];
   example?: RequestExample;
   handshakeUrl?: string;

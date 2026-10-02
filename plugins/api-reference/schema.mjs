@@ -5,13 +5,83 @@
 import {micromark} from 'micromark';
 import {gfm, gfmHtml} from 'micromark-extension-gfm';
 
+// Elements a description may write as raw HTML. Anything else that looks
+// like a tag (`<maker>`, `<apiKey>`) is text, so it is escaped instead of
+// leaving an unclosed element in the page.
+const HTML_TAGS = new Set(
+  ('a abbr b blockquote br caption code dd del details div dl dt em h1 h2 h3 h4 h5 h6 hr i img ins kbd li mark ' +
+    'ol p pre q s small span strong sub summary sup table tbody td tfoot th thead tr u ul').split(' '),
+);
+
+function escapeUnknownTags(markdown) {
+  // Leave code spans alone: `<T>` there is already literal text.
+  return markdown
+    .split(/(`+[^`]*`+)/g)
+    .map((part, i) =>
+      i % 2 ? part : part.replace(/<(\/?)([a-zA-Z][\w-]*)([^<>]*)>/g, (tag, slash, name, rest) =>
+        HTML_TAGS.has(name.toLowerCase()) ? tag : `&lt;${slash}${name}${rest}&gt;`,
+      ),
+    )
+    .join('');
+}
+
+const NO_TYPOGRAPHY = new Set(['code', 'pre', 'kbd', 'samp', 'script', 'style']);
+const OPENS_QUOTE = /[\s([{—–/-]/;
+
+/**
+ * Curly quotes in the text of an HTML fragment (outside code), as Fern
+ * typeset descriptions: "a" -> “a”, it's -> it’s.
+ */
+export function smartQuotes(html) {
+  let prev = '';
+  let skip = 0;
+  return html.replace(/(<\/?([a-zA-Z][\w-]*)[^>]*>)|([^<]+)/g, (match, tag, name, text) => {
+    if (tag) {
+      if (NO_TYPOGRAPHY.has(name.toLowerCase())) {
+        if (tag.startsWith('</')) skip = Math.max(0, skip - 1);
+        else skip += 1;
+        prev = 'x';
+      }
+      return tag;
+    }
+    if (skip) {
+      prev = text.slice(-1);
+      return text;
+    }
+    const decoded = text.replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'");
+    let out = '';
+    for (const ch of decoded) {
+      const opening = prev === '' || OPENS_QUOTE.test(prev);
+      if (ch === '"') out += opening ? '“' : '”';
+      else if (ch === "'") out += opening ? '‘' : '’';
+      else out += ch;
+      prev = ch;
+    }
+    return out;
+  });
+}
+
+const escapeHtml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/**
+ * Fern printed a one-line description with no Markdown-looking characters as
+ * plain text (no paragraph, quotes left as typed) and ran everything else
+ * through Markdown with typographic quotes.
+ */
+function isPlainText(text) {
+  return !/[\n`*_[\]()#<>|~=;"\\]|(^|\s)'[^']*'/.test(text);
+}
+
 export function markdownToHtml(markdown) {
   if (!markdown) return '';
-  return micromark(String(markdown), {
+  const source = String(markdown).trim();
+  if (isPlainText(source)) return escapeHtml(source);
+  const html = micromark(escapeUnknownTags(source), {
     allowDangerousHtml: true,
     extensions: [gfm()],
     htmlExtensions: [gfmHtml()],
   }).trim();
+  return smartQuotes(html);
 }
 
 /** Plain-text first paragraph, for meta descriptions. */
@@ -172,25 +242,35 @@ export function toShape(input, deref, stack = []) {
   return {...base, kind: 'primitive', label: primitiveLabel(schema)};
 }
 
-/** Example value for a schema, preferring authored examples. */
-export function exampleFor(input, deref, {requiredOnly = false} = {}, stack = []) {
+/**
+ * Example value for a schema, preferring authored examples.
+ *
+ * `placeholders` reproduces the examples Fern generated for AsyncAPI
+ * messages instead: authored examples are ignored, strings are the property
+ * name, integers 1, enums their first value and arrays hold two items.
+ */
+export function exampleFor(input, deref, options = {}, stack = [], key = undefined) {
+  const {requiredOnly = false, placeholders = false} = options;
   if (input === undefined || input === null) return undefined;
   const ref = input.$ref;
   if (ref && stack.includes(ref)) return {};
   const nextStack = ref ? [...stack, ref] : stack;
   const schema = mergeAllOf(deref(input), deref);
-  if (schema.example !== undefined) return schema.example;
-  if (schema.examples !== undefined) {
-    return Array.isArray(schema.examples) ? schema.examples[0] : Object.values(schema.examples)[0]?.value;
+  if (!placeholders) {
+    if (schema.example !== undefined) return schema.example;
+    if (schema.examples !== undefined) {
+      return Array.isArray(schema.examples) ? schema.examples[0] : Object.values(schema.examples)[0]?.value;
+    }
+    if (schema.default !== undefined && schema.enum === undefined) return schema.default;
   }
-  if (schema.default !== undefined && schema.enum === undefined) return schema.default;
   if (schema.enum) return schema.enum.find((v) => v !== null) ?? null;
   const variants = schema.oneOf ?? schema.anyOf;
-  if (variants?.length) return exampleFor(variants[0], deref, {requiredOnly}, nextStack);
+  if (variants?.length) return exampleFor(variants[0], deref, options, nextStack, key);
   const type = Array.isArray(schema.type) ? schema.type.find((t) => t !== 'null') : schema.type;
   if (type === 'array' || schema.items) {
-    const item = exampleFor(schema.items ?? {}, deref, {requiredOnly}, nextStack);
-    return item === undefined ? [] : [item];
+    const item = exampleFor(schema.items ?? {}, deref, options, nextStack, key);
+    if (item === undefined) return [];
+    return placeholders ? [item, item] : [item];
   }
   if (type === 'object' || schema.properties || schema.additionalProperties) {
     const props = schema.properties ?? {};
@@ -200,7 +280,7 @@ export function exampleFor(input, deref, {requiredOnly = false} = {}, stack = []
     const out = {};
     for (const [name, prop] of Object.entries(props)) {
       if (requiredOnly && !required.has(name)) continue;
-      const value = exampleFor(prop, deref, {requiredOnly}, nextStack);
+      const value = exampleFor(prop, deref, options, nextStack, name);
       if (value !== undefined) out[name] = value;
     }
     return out;
@@ -216,7 +296,7 @@ export function exampleFor(input, deref, {requiredOnly = false} = {}, stack = []
       if (schema.format === 'date-time') return '2024-01-15T09:30:00Z';
       if (schema.format === 'date') return '2023-01-15';
       if (schema.format === 'uuid') return 'd5e9c84f-c2b2-4bf4-b4b0-7ffd7a9ffc32';
-      return 'string';
+      return placeholders && key ? key : 'string';
     default:
       return undefined;
   }

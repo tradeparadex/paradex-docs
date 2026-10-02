@@ -613,12 +613,6 @@
   font-size: 12px;
 }
 
-/* Request sample: Fern capped the request card at 55% of the viewport below
-   the header (code area = that minus the panel header and footer). */
-.api-panel .api-panel__code:not(.api-panel__code--scroll) .fern-code__viewport {
-  max-height: min(479px, calc((100vh - var(--ifm-navbar-height)) * 0.55 - 84px));
-}
-
 .api-panel .fern-code__flag {
   display: none;
 }

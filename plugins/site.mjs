@@ -115,6 +115,16 @@ export async function loadSite({siteDir}) {
     'generated/**/*.mdx',
   ];
 
+  /** The first line Docusaurus could take as the page's description. */
+  function firstContentLine(content) {
+    return (
+      content
+        .split('\n')
+        .map((line) => line.trim())
+        .find((line) => line && !/^(import|export)\s/.test(line) && !line.startsWith('#')) ?? ''
+    );
+  }
+
   async function parseFrontMatter(params) {
     const result = await params.defaultParseFrontMatter(params);
     const fm = result.frontMatter;
@@ -131,6 +141,12 @@ export async function loadSite({siteDir}) {
         fm.hide_table_of_contents = true;
       }
       if (fm.description === undefined && fm.subtitle) fm.description = fm.subtitle;
+      // Docusaurus otherwise uses the first line of text as the description.
+      // Fern left it out when the page opens with a table, a component or a
+      // comment, which would otherwise end up as e.g. "<Card" or "{/ ... /}".
+      if (fm.description === undefined && /^(\||<|\{\/\*)/.test(firstContentLine(result.content))) {
+        fm.description = '';
+      }
       if (page.noSidebar) fm.fern_no_sidebar = true;
       if (page.isSectionLanding) fm.fern_section_landing = true;
       return result;

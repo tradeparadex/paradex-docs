@@ -7,7 +7,7 @@ import rehypeKatex from 'rehype-katex';
 
 import {loadSite} from './plugins/site.mjs';
 import prismFern from './src/theme/prismFern';
-import {remarkFernJsx, remarkTocSkipNested, remarkTrimHeadingIds} from './plugins/fern-mdx.mjs';
+import {remarkDropLeadingTitle, remarkFernJsx, remarkTocSkipNested, remarkTrimHeadingIds} from './plugins/fern-mdx.mjs';
 import {remarkMermaidStatic} from './plugins/mermaid.mjs';
 
 const SITE_URL = 'https://docs.paradex.trade';
@@ -15,7 +15,7 @@ const REPO_URL = 'https://github.com/tradeparadex/paradex-docs';
 
 // Fern typeset prose with smart quotes (’ “ ”); heading ids are unaffected.
 const beforeDefaultRemarkPlugins = [remarkTrimHeadingIds, remarkSmartypants, remarkMermaidStatic];
-const remarkPlugins = [remarkFernJsx, remarkMath, remarkTocSkipNested];
+const remarkPlugins = [remarkFernJsx, remarkMath, remarkTocSkipNested, remarkDropLeadingTitle];
 const rehypePlugins = [rehypeKatex];
 
 export default async function createConfig(): Promise<Config> {

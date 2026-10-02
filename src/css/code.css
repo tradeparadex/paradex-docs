@@ -637,10 +637,3 @@
   max-height: none;
 }
 
-/* Steps (components.css) indent their children with padding; indent code
-   cards with margin instead so the card itself moves, as on Fern. */
-.fern-steps > .theme-code-block.fern-code,
-.fern-steps > .fern-code-group {
-  margin-left: 2.75rem;
-  padding-left: 0;
-}

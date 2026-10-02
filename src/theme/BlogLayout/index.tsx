@@ -31,7 +31,7 @@ export default function BlogLayout(props: Props): ReactNode {
               <li className="menu__list-item">
                 <Link className={clsx('menu__link', onIndex && 'menu__link--active')} to={changelogUrl}>
                   <HistoryIcon />
-                  <span>Changelog</span>
+                  <span className="sidebar-item-label">Changelog</span>
                 </Link>
               </li>
             </ul>

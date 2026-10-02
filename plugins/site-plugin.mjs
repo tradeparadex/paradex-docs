@@ -34,6 +34,26 @@ function posthogSnippet({apiKey, apiHost}) {
   return `!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);posthog.init(${JSON.stringify(apiKey)},{api_host:${JSON.stringify(apiHost)},capture_pageview:'history_change'});`;
 }
 
+const FRONT_MATTER = /^---\r?\n([\s\S]*?)\r?\n---/;
+
+/** Front matter `subtitle` as plain text (the next-page card shows it on one line). */
+function plainSubtitle(file) {
+  const match = FRONT_MATTER.exec(fs.readFileSync(file, 'utf8'));
+  if (!match) return undefined;
+  let subtitle;
+  try {
+    subtitle = yaml.load(match[1])?.subtitle;
+  } catch {
+    return undefined;
+  }
+  if (typeof subtitle !== 'string' || !subtitle.trim()) return undefined;
+  return subtitle
+    .replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1')
+    .replace(/\*\*([^*]+)\*\*|\*([^*]+)\*|`([^`]+)`/g, (_, a, b, c) => a ?? b ?? c)
+    .replace(/\\([\\`*_{}[\]()#+\-.!$|])/g, '$1')
+    .trim();
+}
+
 function lazyOnload(code) {
   return `window.addEventListener('load',function(){(window.requestIdleCallback||function(f){setTimeout(f,1)})(function(){${code}})});`;
 }
@@ -61,7 +81,14 @@ export default function sitePlugin(context, {site}) {
           props: {to},
         });
       }
+      // Page subtitles by URL, for the "next page" card in each page footer.
+      const subtitles = {};
+      for (const [file, page] of site.pages) {
+        const subtitle = fs.existsSync(file) ? plainSubtitle(file) : undefined;
+        if (subtitle) subtitles[page.url] = subtitle;
+      }
       actions.setGlobalData({
+        subtitles,
         redirectRules: site.redirectRules,
         implicitRedirects: Object.fromEntries(site.implicitRedirects),
         tabs: site.tabs,

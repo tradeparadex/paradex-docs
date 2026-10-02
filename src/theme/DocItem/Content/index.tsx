@@ -13,6 +13,11 @@ import PageActions from '@site/src/components/PageActions';
 import InlineMarkdown from '@site/src/components/InlineMarkdown';
 import {AnchorIdProvider} from '@site/src/components/fern/anchors';
 
+// Fern rendered a subtitle as plain text unless it held characters Markdown
+// might act on (links, dashes, slashes, `$`, typographic punctuation...);
+// those it rendered as a Markdown paragraph, which its theme colours grey.
+const MARKDOWN_SUBTITLE = /[-$/~[\]*_`<>]|[^\x00-\x7f]/;
+
 export default function DocItemContent({children}: Props): ReactNode {
   const {metadata, frontMatter, toc} = useDoc();
   const fm = frontMatter as {layout?: string; subtitle?: string; hide_title?: boolean};
@@ -27,7 +32,7 @@ export default function DocItemContent({children}: Props): ReactNode {
             <PageActions permalink={metadata.permalink} />
           </div>
           {fm.subtitle && (
-            <p className="fern-page-header__subtitle">
+            <p className={clsx('fern-page-header__subtitle', MARKDOWN_SUBTITLE.test(fm.subtitle) && 'fern-page-header__subtitle--prose')}>
               <InlineMarkdown>{fm.subtitle}</InlineMarkdown>
             </p>
           )}

@@ -102,8 +102,10 @@ html[data-theme='dark'] {
   text-decoration-thickness: 2px;
 }
 
-/* Cards are outside Fern's prose, where links are semibold. */
-.theme-doc-markdown .fern-card a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a) {
+/* Cards and the page subtitle are outside Fern's prose, where links are
+   semibold. */
+.theme-doc-markdown .fern-card a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a),
+.theme-doc-markdown .fern-page-header__subtitle a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a) {
   font-weight: 600;
 }
 
@@ -112,7 +114,7 @@ html[data-theme='dark'] {
 }
 
 /* Fern's external-link glyph: 14px, slightly faded. */
-.theme-doc-markdown a[href^='http']:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hide-external)::after {
+.theme-doc-markdown a[href^='http']:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hide-external):not(.page-actions__item)::after {
   width: 14px;
   height: 14px;
   margin-left: 2px;
@@ -904,16 +906,17 @@ a.cyan-cards:hover {
 .fern-changelog-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0.5rem 0 1rem;
+  gap: 6px;
+  margin: 8px 0 16px;
 }
 
 .fern-changelog-tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.1rem 0.5rem;
+  padding: 2px 8px;
   border-radius: 6px;
   font-size: 0.875rem;
-  color: var(--text-default);
-  background: var(--grayscale-a5);
+  line-height: 20px;
+  color: var(--grayscale-a11);
+  background: var(--grayscale-a3);
 }

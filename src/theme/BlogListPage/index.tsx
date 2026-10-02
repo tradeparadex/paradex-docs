@@ -36,7 +36,7 @@ export default function BlogListPage(props: Props): ReactNode {
     <HtmlClassNameProvider className={clsx(ThemeClassNames.wrapper.blogPages, ThemeClassNames.page.blogListPage)}>
       <PageMetadata title={metadata.blogTitle} description={metadata.blogDescription} />
       <SearchMetadata tag="blog_posts_list" />
-      <BlogLayout toc={<OnThisPage toc={toc} minHeadingLevel={2} maxHeadingLevel={3} />}>
+      <BlogLayout toc={<OnThisPage toc={toc} minHeadingLevel={2} maxHeadingLevel={3} backToTop={false} />}>
         <header className="changelog-header">
           <Heading as="h1">{metadata.blogTitle}</Heading>
           <a className="changelog-rss" href={`${metadata.permalink.replace(/\/page\/\d+$/, '')}/rss.xml`}>

@@ -1,11 +1,18 @@
 // "On this page" as on Fern: a title, a rail whose highlighted segment spans
-// the sections currently on screen, and "Scroll to top" once scrolled. Used
-// by docs pages and the changelog.
+// the sections currently on screen, the current section in bold, and
+// "Scroll to top" once scrolled a screen down. Used by docs pages and the
+// changelog.
 
 import React, {useEffect, useRef, useState, type ReactNode} from 'react';
+import clsx from 'clsx';
 import {ThemeClassNames} from '@docusaurus/theme-common';
-import TOC from '@theme/TOC';
+import TOCItems from '@theme/TOCItems';
 import type {TOCItem} from '@docusaurus/mdx-loader';
+
+const ACTIVE = 'table-of-contents__link--active';
+// A section becomes current once its heading is this close to the header,
+// as on Fern (Docusaurus switches as soon as it reaches mid-screen).
+const ACTIVE_OFFSET = 32;
 
 const ArrowUp = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -13,7 +20,11 @@ const ArrowUp = () => (
   </svg>
 );
 
-/** Positions the rail highlight over the TOC entries whose sections are visible. */
+/**
+ * Positions the rail highlight over the TOC entries whose sections are
+ * visible, and marks the current section: the last one whose heading has
+ * reached the header.
+ */
 function useVisibleRange(root: React.RefObject<HTMLDivElement | null>) {
   useEffect(() => {
     const container = root.current;
@@ -30,9 +41,11 @@ function useVisibleRange(root: React.RefObject<HTMLDivElement | null>) {
       const end = document.querySelector('.theme-doc-markdown, .changelog-main')?.getBoundingClientRect().bottom ?? Infinity;
       let first = -1;
       let last = -1;
+      let current = 0;
       headings.forEach((heading, i) => {
         if (!heading) return;
         const start = heading.getBoundingClientRect().top;
+        if (start <= top + ACTIVE_OFFSET) current = i;
         const next = headings.slice(i + 1).find(Boolean);
         const stop = next ? next.getBoundingClientRect().top : end;
         if (stop > top && start < bottom) {
@@ -44,6 +57,7 @@ function useVisibleRange(root: React.RefObject<HTMLDivElement | null>) {
         first = 0;
         last = 0;
       }
+      links.forEach((link, i) => link.classList.toggle(ACTIVE, i === current));
       const a = links[first].closest('li')!;
       const b = links[last].closest('li')!;
       const listTop = list.getBoundingClientRect().top;
@@ -58,41 +72,53 @@ function useVisibleRange(root: React.RefObject<HTMLDivElement | null>) {
     update();
     window.addEventListener('scroll', schedule, {passive: true});
     window.addEventListener('resize', schedule);
+    // Sections also move without scrolling (an accordion opens, a tab switches).
+    const content = document.querySelector('.theme-doc-markdown, .changelog-main');
+    const resize = content && typeof ResizeObserver !== 'undefined' ? new ResizeObserver(schedule) : null;
+    if (content) resize?.observe(content);
     return () => {
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
+      resize?.disconnect();
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, [root]);
 }
 
-type Props = {toc: readonly TOCItem[]; minHeadingLevel?: number; maxHeadingLevel?: number};
+type Props = {
+  toc: readonly TOCItem[];
+  minHeadingLevel?: number;
+  maxHeadingLevel?: number;
+  /** Fern's changelog has no "Scroll to top". */
+  backToTop?: boolean;
+};
 
-export default function OnThisPage({toc, minHeadingLevel, maxHeadingLevel}: Props): ReactNode {
+export default function OnThisPage({toc, minHeadingLevel, maxHeadingLevel, backToTop = true}: Props): ReactNode {
   const ref = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
   useVisibleRange(ref);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 0);
+    if (!backToTop) return undefined;
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight);
     onScroll();
     window.addEventListener('scroll', onScroll, {passive: true});
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [backToTop]);
   return (
     <div ref={ref} className="toc-desktop">
       <div className="toc-desktop__title">On this page</div>
-      <TOC
-        toc={toc}
-        minHeadingLevel={minHeadingLevel}
-        maxHeadingLevel={maxHeadingLevel}
-        className={ThemeClassNames.docs.docTocDesktop}
-      />
-      <div className="toc-desktop__back-to-top" data-visible={scrolled} aria-hidden={!scrolled}>
-        <button type="button" tabIndex={scrolled ? 0 : -1} onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-          Scroll to top
-          <ArrowUp />
-        </button>
+      <div className={clsx('thin-scrollbar', ThemeClassNames.docs.docTocDesktop)}>
+        {/* No linkActiveClassName: the current section is set by useVisibleRange. */}
+        <TOCItems toc={toc} minHeadingLevel={minHeadingLevel} maxHeadingLevel={maxHeadingLevel} linkClassName="table-of-contents__link" />
       </div>
+      {backToTop && (
+        <div className="toc-desktop__back-to-top" data-visible={scrolled} aria-hidden={!scrolled}>
+          <button type="button" tabIndex={scrolled ? 0 : -1} onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+            Scroll to top
+            <ArrowUp />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

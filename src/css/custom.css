@@ -316,6 +316,8 @@ a.navbar-cta {
 .navbar-tabs .navbar__link--active,
 .navbar-tabs .navbar__link--active:hover {
   color: var(--accent-a11);
+  /* Fern's faux-bold: a hairline stroke in the text colour. */
+  -webkit-text-stroke: 0.5px currentColor;
 }
 
 .navbar-tabs .navbar__link--active::after {
@@ -367,6 +369,10 @@ a.navbar-cta {
 
 @media (max-width: 768px) {
   /* Swap the full wordmark for the compact "P DOCS" mark. */
+  .navbar__logo {
+    margin-right: 0;
+  }
+
   .navbar__logo img {
     display: none !important;
   }
@@ -426,7 +432,21 @@ a.navbar-cta {
 
 .navbar-sidebar__backdrop {
   top: var(--ifm-navbar-height);
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: transparent;
+}
+
+/* As on Fern, the page slides out to the left with the menu, dimmed, and
+   its right edge stays in view beside it. */
+@media (max-width: 996px) {
+  .main-wrapper,
+  .footer {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  html:has(.navbar-sidebar--show) :is(.main-wrapper, .footer) {
+    transform: translateX(calc(49px - 100vw));
+    opacity: 0.3;
+  }
 }
 
 .fern-mobile-nav__scroll {
@@ -458,13 +478,13 @@ a.navbar-cta {
   font-weight: 500;
 }
 
-.fern-mobile-nav__tabs .menu__link--active {
+.fern-mobile-nav__tabs .menu__link.menu__link--active {
   color: var(--accent-a11);
   font-weight: 600;
 }
 
 .fern-mobile-nav__sidebar {
-  margin-top: 20px;
+  margin-top: 17px;
 }
 
 .fern-mobile-nav .theme-doc-sidebar-menu {
@@ -579,6 +599,10 @@ a.navbar-cta {
   font-weight: 400;
 }
 
+.menu__link--active:not(.menu__link--sublist) .sidebar-item-label {
+  -webkit-text-stroke: 0.5px currentColor;
+}
+
 .menu__link--sublist-caret::after,
 .menu__caret::before {
   background: var(--ifm-menu-link-sublist-icon) 50% / 16px 16px;
@@ -654,7 +678,7 @@ a.navbar-cta {
 }
 
 .menu__list .menu__list {
-  margin-top: 1px;
+  margin-top: 0;
 }
 
 .sidebar-item-icon {
@@ -749,12 +773,13 @@ a.navbar-cta {
   background: rgb(229, 72, 77);
 }
 
-/* The current page is marked on its group's guide line. */
-.menu__list .menu__list .menu__link {
+/* The current page is marked on its group's guide line (nested groups only;
+   pages directly under a section heading have no guide line). */
+:is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link {
   position: relative;
 }
 
-.menu__list .menu__list .menu__link--active:not(.menu__link--sublist)::after {
+:is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link--active:not(.menu__link--sublist)::after {
   content: '';
   position: absolute;
   top: 6px;
@@ -768,6 +793,10 @@ a.navbar-cta {
 
 .main-wrapper {
   min-height: calc(100vh - var(--ifm-navbar-height));
+  /* Fern's fixed background layer puts its page in a separate compositing
+     layer, so Chrome draws the text with grayscale antialiasing rather than
+     subpixel (coloured fringes, hinted spacing). Do the same. */
+  will-change: opacity;
 }
 
 /* Docs pages lay out their own columns (see .doc-layout); drop Infima's
@@ -812,6 +841,22 @@ a.navbar-cta {
   --ifm-h4-font-size: 1.125rem;
 }
 
+.markdown h5,
+.markdown h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.markdown h5 {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.markdown h6 {
+  font-size: 14px;
+  line-height: 20px;
+}
+
 .theme-doc-markdown p,
 .theme-doc-markdown li {
   color: var(--ifm-font-color-base);
@@ -833,7 +878,7 @@ a.navbar-cta {
   text-decoration-thickness: 1px;
 }
 
-.theme-doc-markdown a[href^='http']:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hide-external)::after {
+.theme-doc-markdown a[href^='http']:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hide-external):not(.page-actions__item)::after {
   content: '';
   display: inline-block;
   width: 0.7em;
@@ -865,7 +910,10 @@ a.navbar-cta {
   word-break: break-word;
 }
 
-.theme-doc-markdown a code {
+.theme-doc-markdown a code:not([class]),
+.theme-doc-markdown thead th code:not([class]),
+.theme-doc-markdown blockquote code:not([class]),
+.theme-doc-markdown h4 code:not([class]) {
   color: inherit;
 }
 
@@ -1022,8 +1070,9 @@ hr {
   color: #ffffff;
 }
 
-.fern-page-header__subtitle a {
-  font-weight: 600;
+/* Subtitles Fern rendered as Markdown (see DocItem/Content) are grey. */
+.theme-doc-markdown .fern-page-header__subtitle--prose {
+  color: var(--grayscale-a11);
 }
 
 .page-actions {
@@ -1067,6 +1116,10 @@ hr {
 .page-actions__button svg {
   width: 16px;
   height: 16px;
+}
+
+.page-actions__button[aria-expanded='true'] svg {
+  transform: rotate(180deg);
 }
 
 .page-actions__menu {
@@ -1138,8 +1191,9 @@ hr {
 .page-actions__external {
   width: 16px;
   height: 16px;
+  margin-top: 2px;
   margin-left: auto;
-  align-self: center;
+  align-self: flex-start;
   flex-shrink: 0;
 }
 
@@ -1324,7 +1378,15 @@ hr {
 /* Footer area: feedback, edit link, previous/next bar (Fern). */
 .theme-doc-footer {
   margin-top: 148px;
-  margin-bottom: 32px;
+  margin-bottom: 112px;
+}
+
+/* Reference pages keep the footer in a centred 640px column, further down. */
+@media (min-width: 997px) {
+  .doc-layout--reference .theme-doc-footer {
+    max-width: 640px;
+    margin: 280px auto 112px;
+  }
 }
 
 .fern-footer-row {
@@ -1451,20 +1513,37 @@ hr {
   color: var(--grayscale-a12);
 }
 
-.fern-footer-nav__title {
+.fern-footer-nav__text {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   padding-left: 16px;
+  text-align: right;
+}
+
+.fern-footer-next--previous .fern-footer-nav__text {
+  padding: 0 16px 0 0;
+  text-align: left;
+}
+
+.fern-footer-nav__title,
+.fern-footer-nav__subtitle {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.fern-footer-nav__title {
   color: var(--grayscale-a12);
   font-size: 16px;
   font-weight: 700;
   line-height: 24px;
 }
 
-.fern-footer-next--previous .fern-footer-nav__title {
-  padding: 0 16px 0 0;
+.fern-footer-nav__subtitle {
+  color: var(--grayscale-a11);
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .fern-footer-nav__divider {
@@ -1652,8 +1731,10 @@ html.search-dialog-open {
 }
 
 .mermaid-container svg {
+  display: block;
   max-width: 100%;
   height: auto;
+  margin-inline: auto;
 }
 
 .mermaid-container:focus-visible {
@@ -1665,14 +1746,15 @@ html.mermaid-zoom-open {
   overflow: hidden;
 }
 
+/* Fern dims the page below the header and leaves the header as it is. */
 .mermaid-zoom {
   position: fixed;
-  inset: 0;
+  inset: var(--ifm-navbar-height) 0 0;
   z-index: calc(var(--ifm-z-index-fixed) + 10);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(42, 43, 43, 0.5);
   animation: mermaid-zoom-in 0.15s ease-out;
 }
 
@@ -1686,8 +1768,7 @@ html.mermaid-zoom-open {
   position: relative;
   display: flex;
   width: 80vw;
-  height: 80vh;
-  border: 1px solid var(--grayscale-a5);
+  height: min(80vh, 100% - 32px);
   border-radius: 12px;
   background: var(--paradex-card-bg);
   overflow: auto;
@@ -1729,7 +1810,6 @@ html.mermaid-zoom-open {
 /* KaTeX: wide display formulas run past the column, as on Fern. */
 .katex-display {
   overflow: visible;
-  padding: 0.25rem 0;
 }
 
 /* Fern has no floating back-to-top button ("Scroll to top" is in the TOC). */
@@ -1754,7 +1834,7 @@ html.mermaid-zoom-open {
 .changelog-sidebar nav.menu {
   position: sticky;
   top: var(--ifm-navbar-height);
-  padding: 24px 21px 32px 24px !important;
+  padding: 24px 10px 32px 24px !important;
 }
 
 .changelog-sidebar .menu__link {
@@ -1823,8 +1903,8 @@ html.mermaid-zoom-open {
 }
 
 .blog-list-page article {
-  padding-bottom: 3rem;
-  margin-bottom: 4rem !important;
+  padding-bottom: 20px;
+  margin-bottom: 80px !important;
   border-bottom: 1px solid var(--grayscale-a5);
 }
 
@@ -1855,7 +1935,7 @@ html.mermaid-zoom-open {
 }
 
 .changelog-back {
-  margin: 0 0 3.5rem;
+  margin: 4px 0 70px;
   font-size: 36px;
   font-weight: 800;
   line-height: 45px;
@@ -1878,6 +1958,11 @@ html.mermaid-zoom-open {
 .blog-wrapper .markdown h2 {
   font-size: 24px;
   margin: 0 0 12px;
+}
+
+/* A second version under the same date starts a new section. */
+.blog-wrapper .markdown h2:not(:first-child) {
+  margin-top: 36px;
 }
 
 .blog-wrapper .markdown h4 {

@@ -37,13 +37,15 @@ export default function DocItemLayout({children}: Props): ReactNode {
   const layout = useFernLayout();
   const windowSize = useWindowSize();
   const showToc = layout === 'guide' && !fm.hide_table_of_contents && toc.length > 0;
-  const desktopToc = showToc && (windowSize === 'desktop' || windowSize === 'ssr');
+  // Fern keeps the guide layout's TOC column even when the page has no
+  // headings, so the text column sits in the same place on every guide page.
+  const tocColumn = layout === 'guide' && (windowSize === 'desktop' || windowSize === 'ssr');
 
   return (
     <div
       className={clsx(
         'doc-layout',
-        desktopToc && 'doc-layout--with-toc',
+        tocColumn && 'doc-layout--with-toc',
         `doc-layout--${layout}`,
         fm.fern_no_sidebar && 'doc-layout--no-sidebar',
       )}>
@@ -58,11 +60,7 @@ export default function DocItemLayout({children}: Props): ReactNode {
           </article>
         </div>
       </div>
-      {desktopToc && (
-        <div className="doc-layout__toc">
-          <DocItemTOCDesktop />
-        </div>
-      )}
+      {tocColumn && <div className="doc-layout__toc">{showToc && <DocItemTOCDesktop />}</div>}
     </div>
   );
 }

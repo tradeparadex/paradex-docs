@@ -197,3 +197,18 @@ export function remarkTocSkipNested() {
     }
   };
 }
+
+/**
+ * Fern drops a `# Title` that opens a page: the page header already shows the
+ * title. Runs after Docusaurus has read it as the content title (and wrapped
+ * it in a `<header>`). Later `#` headings stay, as on Fern.
+ */
+export function remarkDropLeadingTitle() {
+  const isTitle = (node) => node?.type === 'heading' && node.depth === 1;
+  return (root) => {
+    const index = root.children.findIndex((child) => !['yaml', 'toml', 'mdxjsEsm'].includes(child.type));
+    const first = root.children[index];
+    const wrapped = first?.type === 'mdxJsxFlowElement' && first.name === 'header' && first.children.length === 1 && isTitle(first.children[0]);
+    if (isTitle(first) || wrapped) root.children.splice(index, 1);
+  };
+}

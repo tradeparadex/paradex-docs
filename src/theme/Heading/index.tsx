@@ -5,8 +5,18 @@
 import React, {type ReactNode} from 'react';
 import Heading from '@theme-original/Heading';
 import type {Props} from '@theme/Heading';
+import {StepAnchor, useInSteps} from '@site/src/components/fern/Layout';
 
 export default function HeadingWrapper(props: Props): ReactNode {
+  const inSteps = useInSteps();
+  if (inSteps && props.as === 'h3') {
+    return (
+      <Heading {...props}>
+        <StepAnchor id={props.id} />
+        {props.children}
+      </Heading>
+    );
+  }
   if (props.as === 'h1' && props.id) {
     const {as: As, id, className, children, ...rest} = props;
     return (

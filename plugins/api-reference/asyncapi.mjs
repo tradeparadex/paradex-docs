@@ -8,6 +8,7 @@
 import fs from 'node:fs';
 import yaml from 'js-yaml';
 
+import {truncateDescription} from '../markdown-text.mjs';
 import {slugify} from '../navigation.mjs';
 import {createResolver, exampleFor, markdownToHtml, plainSummary, toShape} from './schema.mjs';
 
@@ -93,11 +94,20 @@ export function buildChannels(spec, {apiName}) {
         displayPath: path.replace(/\{([^}]+)\}/g, ':$1').replace(/[[\]]/g, ''),
         server: serverBase,
         // Fern showed the server URL (with its query string) + the address.
-        handshakeUrl: serverUrl + path.replace(/[{}[\]]/g, ''),
+        // Fern filled each parameter with its first allowed value (else its
+        // name) and kept the optional `[...]` parts.
+        handshakeUrl:
+          serverUrl +
+          path.replace(/\{([^}]+)\}/g, (_, name) => {
+            const param = deref(channel.parameters?.[name] ?? {});
+            const value = exampleFor(param.schema ?? {type: 'string'}, deref);
+            return value === undefined || value === 'string' ? name : String(value);
+          }),
         summary:
           plainSummary(send?.summary ?? receive?.summary ?? channel.description) ?? displayName,
         descriptionHtml: markdownToHtml(channel.description),
         descriptionMarkdown: channel.description ?? '',
+        metaDescription: truncateDescription(channel.description),
         pathParams,
         messages: [send, receive].filter(Boolean).map(({direction, example}) => ({direction, example})),
         send,

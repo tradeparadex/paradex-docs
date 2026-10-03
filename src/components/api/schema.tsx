@@ -1,11 +1,20 @@
 // Schema tables of the API reference: property rows, allowed values and the
 // nested "Show N properties" groups, laid out as on Fern.
 
-import React, {useState} from 'react';
+import React, {createContext, useContext, useState} from 'react';
 import clsx from 'clsx';
 import {MinusIcon, PlusIcon, SearchIcon, CloseIcon} from './icons';
 import {useCopy} from './panels';
 import type {Property, Shape} from './types';
+
+// Anchor ids as on Fern: the path of parts down to a section or property,
+// joined with dots ("request.body.market", "response.error").
+const AnchorParts = createContext<string[]>([]);
+
+export function AnchorPart({part, children}: {part: string; children: React.ReactNode}) {
+  const parts = useContext(AnchorParts);
+  return <AnchorParts.Provider value={[...parts, part.replaceAll(' ', '-')]}>{children}</AnchorParts.Provider>;
+}
 
 /** Up to this many values are listed inline; more go behind a toggle. */
 const ENUM_INLINE_LIMIT = 5;
@@ -160,32 +169,35 @@ export function PropertyRow({
   required,
   shape,
   requiredLabel = true,
-  idPrefix = 'prop',
-}: Property & {requiredLabel?: boolean; idPrefix?: string}) {
+}: Property & {requiredLabel?: boolean}) {
+  const parent = useContext(AnchorParts);
+  const parts = name ? [...parent, name.replaceAll(' ', '-')] : parent;
   return (
-    <div className="api-prop" id={name ? `${idPrefix}-${name}` : undefined}>
-      <div className="api-prop__header">
-        {name && <span className="api-prop__name">{name}</span>}
-        <span className="api-prop__meta">
-          <span className="api-prop__type">{shape.label}</span>
-          {requiredLabel &&
-            (required ? <span className="api-prop__required">Required</span> : <span className="api-prop__optional">Optional</span>)}
-          {shape.deprecated && <span className="api-prop__deprecated">Deprecated</span>}
-          {shape.constraints?.map((c) => (
-            <code key={c} className="api-prop__constraint">
-              {c}
-            </code>
-          ))}
-          {shape.default !== undefined && (
-            <span className="api-prop__default">
-              Defaults to <code>{String(shape.default)}</code>
-            </span>
-          )}
-        </span>
+    <AnchorParts.Provider value={parts}>
+      <div className="api-prop" id={name ? parts.join('.') : undefined}>
+        <div className="api-prop__header">
+          {name && <span className="api-prop__name">{name}</span>}
+          <span className="api-prop__meta">
+            <span className="api-prop__type">{shape.label}</span>
+            {requiredLabel &&
+              (required ? <span className="api-prop__required">Required</span> : <span className="api-prop__optional">Optional</span>)}
+            {shape.deprecated && <span className="api-prop__deprecated">Deprecated</span>}
+            {shape.constraints?.map((c) => (
+              <code key={c} className="api-prop__constraint">
+                {c}
+              </code>
+            ))}
+            {shape.default !== undefined && (
+              <span className="api-prop__default">
+                Defaults to <code>{String(shape.default)}</code>
+              </span>
+            )}
+          </span>
+        </div>
+        <Html html={shape.description} className="api-prop__description" />
+        <ShapeDetails shape={shape} />
       </div>
-      <Html html={shape.description} className="api-prop__description" />
-      <ShapeDetails shape={shape} />
-    </div>
+    </AnchorParts.Provider>
   );
 }
 
@@ -212,8 +224,9 @@ export function Section({
   className?: string;
   id?: string;
 }) {
+  const parts = useContext(AnchorParts);
   return (
-    <section className={clsx('api-section', className)} id={id}>
+    <section className={clsx('api-section', className)} id={id ?? (parts.length ? parts.join('.') : undefined)}>
       <h3 className="api-section__title">
         {title}
         {icon}
@@ -223,14 +236,17 @@ export function Section({
   );
 }
 
-/** Body of a request, response or error: description, then its properties. */
-export function BodySchema({shape, description}: {shape?: Shape; description?: string}) {
+/**
+ * Body of a request, response or error: description, then its properties.
+ * As on Fern, a response that is not an object (a string, a map) shows its
+ * description only.
+ */
+export function BodySchema({shape, description, response = false}: {shape?: Shape; description?: string; response?: boolean}) {
   const nested = shape ? nestedProperties(shape) : undefined;
   return (
     <>
       <Html html={description} className="api-section__description" />
-      {shape && shape.kind === 'array' && nested?.length ? <p className="api-section__type">{shape.label}</p> : null}
-      {shape && !nested?.length && shape.kind !== 'unknown' && (
+      {shape && !nested?.length && shape.kind !== 'unknown' && !response && (
         <div className="api-props">
           <PropertyRow name="" required shape={shape} requiredLabel={false} />
         </div>

@@ -7,7 +7,14 @@ import rehypeKatex from 'rehype-katex';
 
 import {loadSite} from './plugins/site.mjs';
 import prismFern from './src/theme/prismFern';
-import {remarkDropLeadingTitle, remarkFernJsx, remarkTocSkipNested, remarkTrimHeadingIds} from './plugins/fern-mdx.mjs';
+import {
+  remarkChangelogHeadingIds,
+  remarkDropLeadingTitle,
+  remarkFernJsx,
+  remarkTocIncludeH1,
+  remarkTocSkipNested,
+  remarkTrimHeadingIds,
+} from './plugins/fern-mdx.mjs';
 import {remarkMermaidStatic} from './plugins/mermaid.mjs';
 
 const SITE_URL = 'https://docs.paradex.trade';
@@ -15,7 +22,7 @@ const REPO_URL = 'https://github.com/tradeparadex/paradex-docs';
 
 // Fern typeset prose with smart quotes (’ “ ”); heading ids are unaffected.
 const beforeDefaultRemarkPlugins = [remarkTrimHeadingIds, remarkSmartypants, remarkMermaidStatic];
-const remarkPlugins = [remarkFernJsx, remarkMath, remarkTocSkipNested, remarkDropLeadingTitle];
+const remarkPlugins = [remarkFernJsx, remarkMath, remarkTocSkipNested, remarkDropLeadingTitle, remarkTocIncludeH1];
 const rehypePlugins = [rehypeKatex];
 
 export default async function createConfig(): Promise<Config> {
@@ -85,6 +92,8 @@ export default async function createConfig(): Promise<Config> {
             blogDescription: site.changelog.description,
             postsPerPage: 10,
             blogSidebarCount: 0,
+            // Fern had no archive page.
+            archiveBasePath: null,
             showReadingTime: false,
             onInlineAuthors: 'ignore',
             onUntruncatedBlogPosts: 'ignore',
@@ -99,7 +108,7 @@ export default async function createConfig(): Promise<Config> {
             },
             editUrl: ({blogPath}) =>
               `${REPO_URL}/edit/main/docs/release-notes/prod/${blogPath}`,
-            beforeDefaultRemarkPlugins,
+            beforeDefaultRemarkPlugins: [...beforeDefaultRemarkPlugins, remarkChangelogHeadingIds],
             remarkPlugins,
             rehypePlugins,
           },
@@ -163,8 +172,14 @@ export default async function createConfig(): Promise<Config> {
     ],
 
     themeConfig: {
-      image: 'assets/logo.png',
-      metadata: [{name: 'theme-color', content: '#090a0a'}],
+      // As on Fern: no default og:image, a large-image Twitter card, and the
+      // site name as application-name. twitter:title/description are added
+      // per page after the build (plugins/site-plugin.mjs).
+      metadata: [
+        {name: 'theme-color', content: '#090a0a'},
+        {name: 'twitter:card', content: 'summary_large_image'},
+        {name: 'application-name', content: 'Paradex | Documentation'},
+      ],
       // The site is dark only, as it was on Fern.
       colorMode: {
         defaultMode: 'dark',

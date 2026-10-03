@@ -5,6 +5,14 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
 
+// Fern rendered text made only of letters, digits, spaces and `.,'"!?` as
+// plain text; anything else it rendered as Markdown, with typographic quotes.
+const PLAIN_TEXT = /^[a-zA-Z0-9\s.,'"!?]*$/;
+
+export function isMarkdownSubtitle(text: string): boolean {
+  return !PLAIN_TEXT.test(text);
+}
+
 const TOKEN = /\\([\\`*_{}[\]()#+\-.!$|])|\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*|\*([^*]+)\*|`([^`]+)`/g;
 
 /** Straight quotes to typographic ones, as remark-smartypants does. */
@@ -14,6 +22,17 @@ export function smartQuotes(text: string): string {
     .replace(/"/g, '”')
     .replace(/(^|[\s([{])'/g, '$1‘')
     .replace(/'/g, '’');
+}
+
+/** A subtitle as one line of text, as Fern's next-page card shows it. */
+export function subtitleText(text: string): string {
+  if (!isMarkdownSubtitle(text)) return text;
+  return smartQuotes(
+    text
+      .replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1')
+      .replace(/\*\*([^*]+)\*\*|\*([^*]+)\*|`([^`]+)`/g, (_, a, b, c) => a ?? b ?? c)
+      .replace(/\\([\\`*_{}[\]()#+\-.!$|])/g, '$1'),
+  );
 }
 
 export default function InlineMarkdown({children}: {children: string}): React.JSX.Element {

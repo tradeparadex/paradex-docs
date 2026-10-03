@@ -10,13 +10,8 @@ import Heading from '@theme/Heading';
 import MDXContent from '@theme/MDXContent';
 import type {Props} from '@theme/DocItem/Content';
 import PageActions from '@site/src/components/PageActions';
-import InlineMarkdown from '@site/src/components/InlineMarkdown';
+import InlineMarkdown, {isMarkdownSubtitle} from '@site/src/components/InlineMarkdown';
 import {AnchorIdProvider} from '@site/src/components/fern/anchors';
-
-// Fern rendered a subtitle as plain text unless it held characters Markdown
-// might act on (links, dashes, slashes, `$`, typographic punctuation...);
-// those it rendered as a Markdown paragraph, which its theme colours grey.
-const MARKDOWN_SUBTITLE = /[-$/~[\]*_`<>]|[^\x00-\x7f]/;
 
 export default function DocItemContent({children}: Props): ReactNode {
   const {metadata, frontMatter, toc} = useDoc();
@@ -32,8 +27,9 @@ export default function DocItemContent({children}: Props): ReactNode {
             <PageActions permalink={metadata.permalink} />
           </div>
           {fm.subtitle && (
-            <p className={clsx('fern-page-header__subtitle', MARKDOWN_SUBTITLE.test(fm.subtitle) && 'fern-page-header__subtitle--prose')}>
-              <InlineMarkdown>{fm.subtitle}</InlineMarkdown>
+            // A Markdown subtitle is a paragraph, which Fern's theme colours grey.
+            <p className={clsx('fern-page-header__subtitle', isMarkdownSubtitle(fm.subtitle) && 'fern-page-header__subtitle--prose')}>
+              {isMarkdownSubtitle(fm.subtitle) ? <InlineMarkdown>{fm.subtitle}</InlineMarkdown> : fm.subtitle}
             </p>
           )}
         </header>

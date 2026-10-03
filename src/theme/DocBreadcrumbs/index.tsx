@@ -1,9 +1,10 @@
 // Breadcrumbs as on Fern: the page's parent sections only (no home icon, no
-// current page), in the accent color.
+// current page), in the accent color. Each links to its section's own page,
+// or else to the section's first page.
 
 import React, {type ReactNode} from 'react';
 import Link from '@docusaurus/Link';
-import {useSidebarBreadcrumbs} from '@docusaurus/plugin-content-docs/client';
+import {findFirstSidebarItemLink, useSidebarBreadcrumbs} from '@docusaurus/plugin-content-docs/client';
 
 export default function DocBreadcrumbs(): ReactNode {
   const breadcrumbs = useSidebarBreadcrumbs();
@@ -13,7 +14,8 @@ export default function DocBreadcrumbs(): ReactNode {
     <nav className="theme-doc-breadcrumbs" aria-label="Breadcrumbs">
       <ul className="breadcrumbs">
         {ancestors.map((item, index) => {
-          const href = item.type === 'category' && item.linkUnlisted ? undefined : item.href;
+          const href =
+            item.type === 'category' && item.linkUnlisted ? undefined : (item.href ?? findFirstSidebarItemLink(item));
           return (
             <li key={index} className="breadcrumbs__item">
               {href ? (

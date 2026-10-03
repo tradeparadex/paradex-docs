@@ -1,4 +1,4 @@
-import React, {useState, type ReactNode} from 'react';
+import React, {createContext, useContext, useState, type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import {useAnchorId, useHashTarget} from './anchors';
@@ -40,9 +40,25 @@ export function AccordionGroup({children}: {children?: ReactNode}): React.JSX.El
   return <div className="fern-accordion-group">{children}</div>;
 }
 
+const InSteps = createContext(false);
+
+/** True for headings directly inside <Steps>, which carry the step number. */
+export function useInSteps(): boolean {
+  return useContext(InSteps);
+}
+
+/** The step number badge; as on Fern it links to the step. */
+export function StepAnchor({id}: {id?: string}): React.JSX.Element {
+  return <a className="fern-step__anchor" href={id ? `#${id}` : undefined} aria-label="Link to this step" />;
+}
+
 /** Steps accept <Step title> children or plain `###` headings, as in Fern. */
 export function Steps({children}: {children?: ReactNode}): React.JSX.Element {
-  return <div className="fern-steps">{children}</div>;
+  return (
+    <div className="fern-steps">
+      <InSteps.Provider value>{children}</InSteps.Provider>
+    </div>
+  );
 }
 
 export function Step({title, children}: {title?: ReactNode; children?: ReactNode}): React.JSX.Element {
@@ -51,10 +67,13 @@ export function Step({title, children}: {title?: ReactNode; children?: ReactNode
     <div className="fern-step">
       {title && (
         <h3 className="fern-step__title" id={id}>
+          <StepAnchor id={id} />
           {title}
         </h3>
       )}
-      <div className="fern-step__body">{children}</div>
+      <div className="fern-step__body">
+        <InSteps.Provider value={false}>{children}</InSteps.Provider>
+      </div>
     </div>
   );
 }

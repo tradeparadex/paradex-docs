@@ -65,7 +65,7 @@ export async function generateApiReference({contentDir, pagesDir, generatedDir})
         [
           '---',
           `title: ${yamlString(data.title)}`,
-          `description: ${yamlString(data.summary)}`,
+          `description: ${yamlString(data.metaDescription ?? '')}`,
           `slug: ${yamlString(url)}`,
           'hide_table_of_contents: true',
           'custom_edit_url: null',
@@ -80,7 +80,19 @@ export async function generateApiReference({contentDir, pagesDir, generatedDir})
         ].join('\n'),
       );
 
-      const page = {file: mdxFile, jsonFile, url, label: data.title, title: data.title, docId, api: apiName, data};
+      const page = {
+        file: mdxFile,
+        jsonFile,
+        url,
+        label: data.title,
+        title: data.title,
+        docId,
+        api: apiName,
+        group: endpoint.groupTitle,
+        // The URL below the API section, e.g. "account/get".
+        relativeUrl: [endpoint.groupSlug, endpoint.methodSlug].join('/'),
+        data,
+      };
       pages.push(page);
       if (data.kind !== 'websocket') byOperation.set(`${apiName} ${data.method} ${data.path}`, page);
 

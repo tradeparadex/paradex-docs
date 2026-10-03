@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import {HTTPSnippet} from 'httpsnippet-lite';
 import yaml from 'js-yaml';
 
+import {truncateDescription} from '../markdown-text.mjs';
 import {slugify} from '../navigation.mjs';
 import {createResolver, exampleFor, markdownToHtml, plainSummary, toShape} from './schema.mjs';
 
@@ -93,6 +94,16 @@ function methodName(op, tag) {
   return op.summary;
 }
 
+function startCase(name) {
+  if (!name) return undefined;
+  return String(name)
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .split(/[-_\s.]+/)
+    .filter(Boolean)
+    .map((word) => word[0].toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 function successLabel(method, status) {
   if (status === '201') return 'Created';
   if (status === '202') return 'Accepted';
@@ -113,8 +124,9 @@ function generateCurl({method, url, query, headers, secured, authHeader, body}) 
   if (method === 'get' && hasQuery) lines.push(`curl -G ${url}`);
   else if (method === 'get') lines.push(`curl ${url}`);
   else lines.push(`curl -X ${method.toUpperCase()} ${url}`);
-  if (secured) lines.push(`-H "${authHeader}: <apiKey>"`);
+  // The endpoint's own headers come before the auth header.
   for (const {name, value} of headers) lines.push(`-H "${name}: ${value}"`);
+  if (secured) lines.push(`-H "${authHeader}: <apiKey>"`);
   if (body !== undefined) lines.push('-H "Content-Type: application/json"');
   for (const {name, value} of query) lines.push(`-d ${name}=${encodeURIComponent(String(value))}`);
   if (body !== undefined) lines.push(`-d '${JSON.stringify(body, null, 2)}'`);
@@ -132,8 +144,8 @@ function toHar({method, url, query, headers, secured, authHeader, body}) {
     bodySize: -1,
     queryString: query.map(({name, value}) => ({name, value: String(value)})),
     headers: [
-      ...(secured ? [{name: authHeader, value: '<apiKey>'}] : []),
       ...headers.map(({name, value}) => ({name, value: String(value)})),
+      ...(secured ? [{name: authHeader, value: '<apiKey>'}] : []),
       ...(body !== undefined ? [{name: 'Content-Type', value: 'application/json'}] : []),
     ],
     ...(body !== undefined ? {postData: {mimeType: 'application/json', text: JSON.stringify(body, null, 2)}} : {}),
@@ -161,7 +173,9 @@ export async function buildEndpoints(spec, {apiName}) {
       const groupName = groupNames[groupNames.length - 1];
       const groupSlug = groupNames.map(slugify).join('/');
       const methodSlug = slugify(methodName(op, tag));
-      const title = op.summary ?? op.operationId ?? `${method.toUpperCase()} ${pathKey}`;
+      // Without a summary Fern titled the endpoint after its SDK method name
+      // ("get-config" -> "Get Config").
+      const title = op.summary ?? startCase(op['x-fern-sdk-method-name'] ?? op.operationId) ?? `${method.toUpperCase()} ${pathKey}`;
 
       const params = [...(pathItem.parameters ?? []), ...(op.parameters ?? [])].map(deref);
       const toParam = (p) => ({
@@ -212,12 +226,23 @@ export async function buildEndpoints(spec, {apiName}) {
 
       const responses = [];
       const errors = [];
+      // An x-fern-examples response body is the success example.
+      const fernResponseBody = (op['x-fern-examples'] ?? []).find((e) => e?.response?.body !== undefined)?.response.body;
       for (const [status, responseRaw] of Object.entries(op.responses ?? {})) {
         const response = deref(responseRaw);
         const content = jsonBody(response);
         const code = Number(status);
+        // Fern showed no Response section for a 204 (only the bare status
+        // panel below) and left out errors whose body is not JSON.
+        if (code === 204) continue;
+        if (code >= 400 && content && !content.contentType.includes('json')) continue;
         if (code >= 200 && code < 300) {
-          const example = content?.example ?? (content?.schema ? exampleFor(content.schema, deref) : undefined);
+          // Fern built examples for JSON bodies only; anything else (no body,
+          // an image) showed as `{}`.
+          const isJson = Boolean(content?.contentType.includes('json'));
+          const example =
+            (!responses.length ? fernResponseBody : undefined) ??
+            (isJson ? (content.example ?? (content.schema ? exampleFor(content.schema, deref) : undefined) ?? {}) : {});
           responses.push({
             status,
             label: successLabel(method, status),
@@ -267,12 +292,13 @@ export async function buildEndpoints(spec, {apiName}) {
       const request = {
         method,
         url: server + urlPath,
+        // Required parameters, plus optional ones the spec gives an example.
         query: params
-          .filter((p) => p.in === 'query' && p.required)
-          .map((p) => ({name: p.name, value: exampleFor(p.schema ?? {}, deref) ?? 'string'})),
+          .filter((p) => p.in === 'query' && (p.required || p.example !== undefined))
+          .map((p) => ({name: p.name, value: exampleValue(p)})),
         headers: params
-          .filter((p) => p.in === 'header' && p.required)
-          .map((p) => ({name: p.name, value: exampleFor(p.schema ?? {}, deref) ?? 'string'})),
+          .filter((p) => p.in === 'header' && (p.required || p.example !== undefined))
+          .map((p) => ({name: p.name, value: exampleValue(p)})),
         secured: curlSecured,
         authHeader,
         body: body ? (body.example ?? exampleFor(body.schema, deref, {requiredOnly: true})) : undefined,
@@ -312,6 +338,7 @@ export async function buildEndpoints(spec, {apiName}) {
           serverPath,
           title,
           summary: plainSummary(op.description) ?? title,
+          metaDescription: truncateDescription(op.description),
           descriptionHtml: markdownToHtml(op.description),
           descriptionMarkdown: op.description ?? '',
           deprecated: Boolean(op.deprecated),

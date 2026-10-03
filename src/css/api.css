@@ -248,13 +248,6 @@
   margin-top: 12px;
 }
 
-.api-section__type {
-  margin: 0 0 12px;
-  color: var(--api-a11);
-  font-size: 14px;
-  line-height: 20px;
-}
-
 /* Property rows: a rule above the list and between rows, 12px around each. */
 .api-props {
   display: flex;

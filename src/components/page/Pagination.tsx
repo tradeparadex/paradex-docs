@@ -1,11 +1,10 @@
-// Fern's previous/next bar: a compact "Previous" next to a card for the next
-// page (or a single card when there is only a previous page). The card shows
-// the page's title and subtitle.
+// Fern's previous/next bar: a compact "Previous" link and a card for the next
+// page showing its title and subtitle.
 
 import React from 'react';
 import Link from '@docusaurus/Link';
 import {usePluginData} from '@docusaurus/useGlobalData';
-import {smartQuotes} from '@site/src/components/InlineMarkdown';
+import {subtitleText} from '@site/src/components/InlineMarkdown';
 
 const Chevron = ({left}: {left?: boolean}) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -21,7 +20,7 @@ function CardText({page}: {page: {title: string; permalink: string}}) {
   return (
     <span className="fern-footer-nav__text">
       <span className="fern-footer-nav__title">{page.title}</span>
-      {subtitle && <span className="fern-footer-nav__subtitle">{smartQuotes(subtitle)}</span>}
+      {subtitle && <span className="fern-footer-nav__subtitle">{subtitleText(subtitle)}</span>}
     </span>
   );
 }
@@ -30,13 +29,13 @@ export default function Pagination({previous, next}: {previous: NavLink; next: N
   if (!previous && !next) return null;
   return (
     <nav className="fern-footer-nav" aria-label="Up next">
-      {previous && next && (
+      {previous && (
         <Link className="fern-footer-prev" to={previous.permalink} aria-label={`Previous: ${previous.title}`}>
           <Chevron left />
           <span className="fern-footer-nav__label">Previous</span>
         </Link>
       )}
-      {next ? (
+      {next && (
         <Link className="fern-footer-next" to={next.permalink} aria-label={`Next: ${next.title}`}>
           <CardText page={next} />
           <span className="fern-footer-nav__divider" aria-hidden="true" />
@@ -45,17 +44,6 @@ export default function Pagination({previous, next}: {previous: NavLink; next: N
             <Chevron />
           </span>
         </Link>
-      ) : (
-        previous && (
-          <Link className="fern-footer-next fern-footer-next--previous" to={previous.permalink} aria-label={`Previous: ${previous.title}`}>
-            <span className="fern-footer-nav__direction">
-              <Chevron left />
-              <span className="fern-footer-nav__label">Previous</span>
-            </span>
-            <span className="fern-footer-nav__divider" aria-hidden="true" />
-            <CardText page={previous} />
-          </Link>
-        )
       )}
     </nav>
   );

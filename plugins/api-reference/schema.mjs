@@ -48,7 +48,8 @@ export function smartQuotes(html) {
       prev = text.slice(-1);
       return text;
     }
-    const decoded = text.replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'");
+    // remark-smartypants also turns "..." into an ellipsis.
+    const decoded = text.replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/\.\.\./g, '…');
     let out = '';
     for (const ch of decoded) {
       const opening = prev === '' || OPENS_QUOTE.test(prev);
@@ -64,12 +65,12 @@ export function smartQuotes(html) {
 const escapeHtml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 /**
- * Fern printed a one-line description with no Markdown-looking characters as
- * plain text (no paragraph, quotes left as typed) and ran everything else
- * through Markdown with typographic quotes.
+ * Fern printed a description made only of letters, digits, spaces and
+ * `.,'"!?` as plain text (no paragraph, quotes left as typed) and ran
+ * everything else through Markdown with typographic quotes.
  */
 function isPlainText(text) {
-  return !/[\n`*_[\]()#<>|~=;"\\]|(^|\s)'[^']*'/.test(text);
+  return /^[a-zA-Z0-9\s.,'"!?]*$/.test(text);
 }
 
 export function markdownToHtml(markdown) {
@@ -81,7 +82,23 @@ export function markdownToHtml(markdown) {
     extensions: [gfm()],
     htmlExtensions: [gfmHtml()],
   }).trim();
-  return smartQuotes(html);
+  return smartQuotes(withHeadingIds(html));
+}
+
+/** Give headings the slug ids Fern gave them ("### TWAP" -> id="twap"). */
+function withHeadingIds(html) {
+  const used = new Map();
+  return html.replace(/<h([1-6])>([\s\S]*?)<\/h\1>/g, (match, level, inner) => {
+    const base = inner
+      .replace(/<[^>]+>/g, '')
+      .toLowerCase()
+      .trim()
+      .replace(/[^\p{L}\p{N}\s_-]/gu, '')
+      .replace(/\s/g, '-');
+    const count = used.get(base) ?? 0;
+    used.set(base, count + 1);
+    return `<h${level} id="${count ? `${base}-${count}` : base}">${inner}</h${level}>`;
+  });
 }
 
 /** Plain-text first paragraph, for meta descriptions. */
@@ -148,7 +165,8 @@ function mergeAllOf(schema, deref) {
 
 function constraintsOf(schema) {
   const out = [];
-  const {minLength, maxLength, minimum, maximum, exclusiveMinimum, exclusiveMaximum, minItems, maxItems, pattern} = schema;
+  // Fern showed no array-length (minItems/maxItems) constraints.
+  const {minLength, maxLength, minimum, maximum, exclusiveMinimum, exclusiveMaximum, pattern} = schema;
   if (minLength !== undefined && maxLength !== undefined) out.push(`${minLength}-${maxLength} characters`);
   else if (minLength !== undefined) out.push(`>=${minLength} character${minLength === 1 ? '' : 's'}`);
   else if (maxLength !== undefined) out.push(`<=${maxLength} characters`);
@@ -157,8 +175,6 @@ function constraintsOf(schema) {
   else if (maximum !== undefined) out.push(`<=${maximum}`);
   if (typeof exclusiveMinimum === 'number') out.push(`>${exclusiveMinimum}`);
   if (typeof exclusiveMaximum === 'number') out.push(`<${exclusiveMaximum}`);
-  if (minItems !== undefined) out.push(`>=${minItems} item${minItems === 1 ? '' : 's'}`);
-  if (maxItems !== undefined) out.push(`<=${maxItems} items`);
   if (pattern) out.push(`format: "${pattern}"`);
   return out;
 }
@@ -180,7 +196,9 @@ function primitiveLabel(schema) {
 
 const plural = (label) => {
   if (label === 'any') return 'any';
-  if (label.startsWith('list of') || label.startsWith('map from')) return label;
+  // "list of lists of strings", as on Fern.
+  if (label.startsWith('list of ')) return `lists of ${label.slice('list of '.length)}`;
+  if (label.startsWith('map from ')) return `maps from ${label.slice('map from '.length)}`;
   if (label === 'UUID') return 'UUIDs';
   return label.endsWith('s') ? label : `${label}s`;
 };
@@ -243,6 +261,18 @@ export function toShape(input, deref, stack = []) {
 }
 
 /**
+ * Fern replaced example values that are not among an enum's values with the
+ * enum's first value (e.g. a malformed `flags` example).
+ */
+function conformToEnum(schema, value, deref) {
+  const first = (values) => values.find((v) => v !== null) ?? null;
+  const items = schema.items ? mergeAllOf(deref(schema.items), deref) : undefined;
+  if (Array.isArray(value) && items?.enum) return value.map((v) => (items.enum.includes(v) ? v : first(items.enum)));
+  if (schema.enum && !schema.enum.includes(value)) return first(schema.enum);
+  return value;
+}
+
+/**
  * Example value for a schema, preferring authored examples.
  *
  * `placeholders` reproduces the examples Fern generated for AsyncAPI
@@ -257,7 +287,7 @@ export function exampleFor(input, deref, options = {}, stack = [], key = undefin
   const nextStack = ref ? [...stack, ref] : stack;
   const schema = mergeAllOf(deref(input), deref);
   if (!placeholders) {
-    if (schema.example !== undefined) return schema.example;
+    if (schema.example !== undefined) return conformToEnum(schema, schema.example, deref);
     if (schema.examples !== undefined) {
       return Array.isArray(schema.examples) ? schema.examples[0] : Object.values(schema.examples)[0]?.value;
     }

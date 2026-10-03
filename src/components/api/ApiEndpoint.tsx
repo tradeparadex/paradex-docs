@@ -12,7 +12,7 @@ import WebSocketExplorer from './WebSocketExplorer';
 import MethodBadge from './MethodBadge';
 import {ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, CloseIcon, PlayIcon, WifiIcon} from './icons';
 import {CodePanel, CopyButton, LanguageMenu, StatusBadge, StatusSelect, useLanguage, type StatusOption} from './panels';
-import {BodySchema, Html, PropertyRow, Properties, Section} from './schema';
+import {AnchorPart, BodySchema, Html, PropertyRow, Properties, Section} from './schema';
 import type {Endpoint, Property} from './types';
 
 export {MethodBadge, PropertyRow, Properties};
@@ -281,9 +281,13 @@ function HandshakeCard({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt: () => 
       </div>
       <div className="api-handshake-card__body">
         {params.length > 0 && (
-          <Section title="Path parameters">
-            <Properties properties={params} />
-          </Section>
+          <AnchorPart part="request">
+            <AnchorPart part="path">
+              <Section title="Path parameters">
+                <Properties properties={params} />
+              </Section>
+            </AnchorPart>
+          </AnchorPart>
         )}
       </div>
     </section>
@@ -308,10 +312,11 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
   const successCount = endpoint.responses?.length ?? 0;
   const openError = selected >= successCount ? selected - successCount : -1;
   const toggleError = useCallback((i: number, open: boolean) => setSelected(open ? successCount + i : 0), [successCount]);
-  const params: Array<[string, Property[] | undefined]> = [
-    ['Path parameters', endpoint.pathParams],
-    ['Query parameters', endpoint.queryParams],
-    ['Headers', endpoint.headerParams],
+  // Title, Fern's anchor part, properties.
+  const params: Array<[string, string, Property[] | undefined]> = [
+    ['Path parameters', 'path', endpoint.pathParams],
+    ['Query parameters', 'query', endpoint.queryParams],
+    ['Headers', 'header', endpoint.headerParams],
   ];
   return (
     <div className={clsx('api-endpoint', isWs && 'api-endpoint--ws')}>
@@ -328,79 +333,95 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
             <>
               <HandshakeCard endpoint={endpoint} onTryIt={openExplorer} />
               {endpoint.send && (
-                <Section title="Send" id="send" icon={<DirectionIcon direction="publish" />}>
-                  <div className="api-props">
-                    <PropertyRow
-                      name="publish"
-                      required
-                      idPrefix="send"
-                      shape={{...endpoint.send.shape, label: 'object', description: endpoint.send.descriptionHtml || undefined}}
-                    />
-                  </div>
-                </Section>
+                <AnchorPart part="send">
+                  <Section title="Send" icon={<DirectionIcon direction="publish" />}>
+                    <div className="api-props">
+                      <PropertyRow
+                        name="publish"
+                        required
+                        shape={{...endpoint.send.shape, label: 'object', description: endpoint.send.descriptionHtml || undefined}}
+                      />
+                    </div>
+                  </Section>
+                </AnchorPart>
               )}
               {endpoint.receive && (
-                <Section title="Receive" id="receive" icon={<DirectionIcon direction="subscribe" />}>
-                  <div className="api-props">
-                    <PropertyRow
-                      name="subscribe"
-                      required
-                      idPrefix="receive"
-                      shape={{...endpoint.receive.shape, label: 'object', description: endpoint.receive.descriptionHtml || undefined}}
-                    />
-                  </div>
-                </Section>
+                <AnchorPart part="receive">
+                  <Section title="Receive" icon={<DirectionIcon direction="subscribe" />}>
+                    <div className="api-props">
+                      <PropertyRow
+                        name="subscribe"
+                        required
+                        shape={{...endpoint.receive.shape, label: 'object', description: endpoint.receive.descriptionHtml || undefined}}
+                      />
+                    </div>
+                  </Section>
+                </AnchorPart>
               )}
             </>
           ) : (
             <>
-              {endpoint.auth && (
-                <Section title="Authentication" className="api-section--auth">
-                  <div className="api-props">
-                    <PropertyRow
-                      name={endpoint.auth.name}
-                      required
-                      requiredLabel={false}
-                      shape={{kind: 'primitive', label: endpoint.auth.label, description: endpoint.auth.descriptionHtml}}
-                    />
-                  </div>
-                </Section>
-              )}
-              {params.map(([title, list]) =>
-                list && list.length > 0 ? (
-                  <Section key={title} title={title}>
-                    <Properties properties={list} />
+              <AnchorPart part="request">
+                {endpoint.auth && (
+                  <AnchorPart part="auth">
+                    <Section title="Authentication" className="api-section--auth">
+                      <div className="api-props">
+                        <PropertyRow
+                          name={endpoint.auth.name}
+                          required
+                          requiredLabel={false}
+                          shape={{kind: 'primitive', label: endpoint.auth.label, description: endpoint.auth.descriptionHtml}}
+                        />
+                      </div>
+                    </Section>
+                  </AnchorPart>
+                )}
+                {params.map(([title, part, list]) =>
+                  list && list.length > 0 ? (
+                    <AnchorPart key={title} part={part}>
+                      <Section title={title}>
+                        <Properties properties={list} />
+                      </Section>
+                    </AnchorPart>
+                  ) : null,
+                )}
+                {endpoint.requestBody && (
+                  <Section title="Request">
+                    <AnchorPart part="body">
+                      <BodySchema shape={endpoint.requestBody.shape} description={endpoint.requestBody.description} />
+                    </AnchorPart>
                   </Section>
-                ) : null,
-              )}
-              {endpoint.requestBody && (
-                <Section title="Request">
-                  <BodySchema shape={endpoint.requestBody.shape} description={endpoint.requestBody.description} />
-                </Section>
-              )}
-              {endpoint.responses
-                ?.filter((r) => r.shape || r.description)
-                .map((response) => (
-                  <Section key={response.status} title="Response">
-                    <BodySchema shape={response.shape} description={response.description} />
-                  </Section>
-                ))}
-              {endpoint.errors && endpoint.errors.length > 0 && (
-                <Section title="Errors" className="api-section--errors">
-                  <div className="api-errors">
-                    {endpoint.errors.map((error, i) => (
-                      <ErrorCard
-                        key={error.status}
-                        error={error}
-                        open={openError === i}
-                        first={i === 0}
-                        last={i === endpoint.errors!.length - 1}
-                        onToggle={(open) => toggleError(i, open)}
-                      />
-                    ))}
-                  </div>
-                </Section>
-              )}
+                )}
+              </AnchorPart>
+              <AnchorPart part="response">
+                {endpoint.responses
+                  ?.filter((r) => r.shape || r.description)
+                  .map((response) => (
+                    <Section key={response.status} title="Response">
+                      <AnchorPart part="body">
+                        <BodySchema shape={response.shape} description={response.description} response />
+                      </AnchorPart>
+                    </Section>
+                  ))}
+                {endpoint.errors && endpoint.errors.length > 0 && (
+                  <AnchorPart part="error">
+                    <Section title="Errors" className="api-section--errors">
+                      <div className="api-errors">
+                        {endpoint.errors.map((error, i) => (
+                          <ErrorCard
+                            key={error.status}
+                            error={error}
+                            open={openError === i}
+                            first={i === 0}
+                            last={i === endpoint.errors!.length - 1}
+                            onToggle={(open) => toggleError(i, open)}
+                          />
+                        ))}
+                      </div>
+                    </Section>
+                  </AnchorPart>
+                )}
+              </AnchorPart>
             </>
           )}
         </div>

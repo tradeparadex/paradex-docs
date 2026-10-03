@@ -110,21 +110,33 @@ function write(file, content) {
 export async function writeLlmsFiles({site, outDir, siteUrl}) {
   const docs = [];
   const apiDocs = [];
+  const allApiDocs = [];
   const full = [];
 
+  // Fern listed an endpoint once even when several API sections (prod,
+  // testnet) document it: later sections add only endpoints of their own.
+  const listedEndpoints = new Set();
+  // Endpoints are listed group by group, in the order the groups first appear.
+  const groupOrder = new Map();
   for (const [file, page] of site.pages) {
     let markdown;
     let entry;
     if (page.data) {
       markdown = endpointToMarkdown({...page.data});
-      const group = page.data.kind === 'websocket' ? 'WS Endpoints' : 'REST Endpoints';
-      const section = page.docId.split('/').slice(-2, -1)[0];
-      entry = {url: page.url, line: `${group} > ${section} [${page.title}](${siteUrl}${page.url}.md)`};
-      apiDocs.push(entry);
+      const kind = page.data.kind === 'websocket' ? 'WS Endpoints' : 'REST Endpoints';
+      const groupKey = `${page.api} ${page.group}`;
+      if (!groupOrder.has(groupKey)) groupOrder.set(groupKey, groupOrder.size);
+      entry = {url: page.url, line: `${kind} > ${page.group} [${page.title}](${siteUrl}${page.url}.md)`, group: groupOrder.get(groupKey)};
+      allApiDocs.push(entry);
+      const key = `${kind} ${page.relativeUrl}`;
+      if (!listedEndpoints.has(key)) {
+        listedEndpoints.add(key);
+        apiDocs.push(entry);
+      }
     } else {
       const source = fs.readFileSync(file, 'utf8');
       const fm = page.frontMatter ?? {};
-      const title = fm.title ?? fm.Title ?? page.label;
+      const title = fm.title ?? page.title ?? page.label;
       const description = fm.description ?? fm.subtitle;
       markdown = `# ${title}\n\n${description ? `${description}\n\n` : ''}${mdxToMarkdown(source, file)}\n`;
       entry = {url: page.url, line: `[${title}](${siteUrl}${page.url}.md)${description ? `: ${String(description).trim()}` : ''}`};
@@ -154,6 +166,10 @@ export async function writeLlmsFiles({site, outDir, siteUrl}) {
   docs.push({url: site.changelog.url, line: `[Changelog](${siteUrl}${site.changelog.url}.md)`});
   docs.push({url: site.changelog.url, line: `[Changelog (all entries)](${siteUrl}${site.changelog.url}/llms.txt)`});
 
+  const byGroup = (a, b) => a.group - b.group;
+  apiDocs.sort(byGroup);
+  allApiDocs.sort(byGroup);
+
   const header = [
     '# Paradex | Documentation',
     '',
@@ -169,6 +185,7 @@ export async function writeLlmsFiles({site, outDir, siteUrl}) {
     'The raw OpenAPI specification for this API is available at:',
     `- [OpenAPI JSON](${siteUrl}/openapi.json)`,
     `- [OpenAPI YAML](${siteUrl}/openapi.yaml)`,
+    '',
     '',
     '## AsyncAPI Specification',
     '',
@@ -188,13 +205,13 @@ export async function writeLlmsFiles({site, outDir, siteUrl}) {
 
   // Section indexes: every URL prefix that has pages below it.
   const prefixes = new Set();
-  for (const {url} of [...docs, ...apiDocs]) {
+  for (const {url} of [...docs, ...allApiDocs]) {
     const parts = url.split('/').filter(Boolean);
     for (let i = 1; i < parts.length; i++) prefixes.add('/' + parts.slice(0, i).join('/'));
   }
   for (const prefix of prefixes) {
     if (prefix === site.changelog.url) continue;
     const under = (e) => e.url === prefix || e.url.startsWith(prefix + '/');
-    write(path.join(outDir, prefix.slice(1), 'llms.txt'), [...header, index(docs.filter(under), apiDocs.filter(under))].join('\n'));
+    write(path.join(outDir, prefix.slice(1), 'llms.txt'), [...header, index(docs.filter(under), allApiDocs.filter(under))].join('\n'));
   }
 }

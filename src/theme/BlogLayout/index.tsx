@@ -29,7 +29,7 @@ export default function BlogLayout(props: Props): ReactNode {
           <nav className="theme-doc-sidebar-menu menu" aria-label="Changelog">
             <ul className="menu__list">
               <li className="menu__list-item">
-                <Link className={clsx('menu__link', onIndex && 'menu__link--active')} to={changelogUrl}>
+                <Link className={clsx('menu__link', onIndex && 'menu__link--active')} to={changelogUrl} aria-current={onIndex ? 'page' : undefined}>
                   <HistoryIcon />
                   <span className="sidebar-item-label">Changelog</span>
                 </Link>

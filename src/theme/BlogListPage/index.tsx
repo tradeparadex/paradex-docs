@@ -2,7 +2,8 @@
 // the intro from docs/release-notes/prod/overview.mdx, ten entries per page,
 // and an "On this page" list of dates and versions.
 
-import React, {type ReactNode} from 'react';
+import React, {useEffect, type ReactNode} from 'react';
+import {useHistory, useLocation} from '@docusaurus/router';
 import clsx from 'clsx';
 import {PageMetadata, HtmlClassNameProvider, ThemeClassNames} from '@docusaurus/theme-common';
 import BlogLayout from '@theme/BlogLayout';
@@ -22,13 +23,25 @@ const RssIcon = () => (
   </svg>
 );
 
+/** Fern paged the changelog with `#page-N`; those links open /page/N. */
+function useFernPageHash(basePath: string): void {
+  const {hash} = useLocation();
+  const history = useHistory();
+  useEffect(() => {
+    const page = /^#page-(\d+)$/.exec(hash)?.[1];
+    if (!page) return;
+    history.replace(Number(page) > 1 ? `${basePath}/page/${page}` : basePath);
+  }, [hash, basePath, history]);
+}
+
 export default function BlogListPage(props: Props): ReactNode {
   const {metadata, items} = props;
+  useFernPageHash(metadata.permalink.replace(/\/page\/\d+$/, ''));
   const toc = items.flatMap(({content}) => {
-    const date = content.metadata.title;
+    const {title, date} = content.metadata;
     const entries = (content as unknown as {toc?: Array<{value: string; id: string; level: number}>}).toc ?? [];
     return [
-      {value: date, id: changelogDateId(date), level: 2},
+      {value: title, id: changelogDateId(date), level: 2},
       ...entries.filter((t) => t.level === 2).map((t) => ({...t, level: 3})),
     ];
   });

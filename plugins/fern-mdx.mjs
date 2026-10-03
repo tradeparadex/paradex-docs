@@ -15,7 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {parseExpressionAt} from 'acorn';
-import {getFileLoaderUtils} from '@docusaurus/utils';
+import {createSlugger, getFileLoaderUtils} from '@docusaurus/utils';
 import {visit} from 'unist-util-visit';
 import {visitParents} from 'unist-util-visit-parents';
 import {toString} from 'mdast-util-to-string';
@@ -167,6 +167,27 @@ export function remarkTrimHeadingIds() {
 }
 
 /**
+ * Changelog headings carry their entry's date, as on Fern: "## v1.116.9" in
+ * 10-16-2025.mdx gets the id "2025-10-16-v11169", so the same version
+ * heading keeps one anchor on the index and on the entry's own page.
+ */
+export function remarkChangelogHeadingIds() {
+  return (tree, file) => {
+    const match = /(\d{2})-(\d{2})-(\d{4})\.mdx?$/.exec(file.path ?? '');
+    if (!match) return;
+    const [, month, day, year] = match;
+    const slugger = createSlugger();
+    visit(tree, 'heading', (heading) => {
+      const data = heading.data ?? (heading.data = {});
+      const properties = data.hProperties ?? (data.hProperties = {});
+      const textNodes = heading.children.filter((child) => !['html', 'jsx', 'mdxJsxTextElement'].includes(child.type));
+      const base = properties.id ?? slugger.slug(toString(textNodes.length ? textNodes : heading).trim());
+      properties.id = `${year}-${month}-${day}-${base}`;
+    });
+  };
+}
+
+/**
  * Fern leaves headings inside components (the step titles in <Steps>, the
  * headings in a <Tab>) out of "On this page". Runs after Docusaurus has
  * assigned heading ids and written the `toc` export, and drops those entries
@@ -192,6 +213,64 @@ export function remarkTocSkipNested() {
             const idProperty = element.properties.find((p) => (p.key?.name ?? p.key?.value) === 'id');
             return !nested.has(idProperty?.value?.value);
           });
+        }
+      }
+    }
+  };
+}
+
+/**
+ * Fern's "On this page" also lists `#` headings in the content (Docusaurus
+ * leaves level 1 out). Runs after Docusaurus has written the `toc` export and
+ * adds them, in document order.
+ */
+export function remarkTocIncludeH1() {
+  const literal = (value) => ({type: 'Literal', value});
+  const property = (name, value) => ({
+    type: 'Property',
+    key: {type: 'Identifier', name},
+    value: literal(value),
+    kind: 'init',
+    method: false,
+    shorthand: false,
+    computed: false,
+  });
+  const escape = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return (root) => {
+    const order = new Map();
+    const titles = [];
+    visitParents(root, 'heading', (node, ancestors) => {
+      const id = node.data?.id ?? node.data?.hProperties?.id;
+      if (!id) return;
+      order.set(id, order.size);
+      // Docusaurus wraps the first `#` heading in a <header> (its content
+      // title); that one counts too.
+      const inComponent = ancestors.some((ancestor) => ancestor.type === 'mdxJsxFlowElement' && ancestor.name !== 'header');
+      if (node.depth === 1 && !inComponent) {
+        titles.push({id, value: escape(toString(node)), index: order.get(id)});
+      }
+    });
+    if (!titles.length) return;
+    for (const child of root.children) {
+      if (child.type !== 'mdxjsEsm') continue;
+      for (const statement of child.data?.estree?.body ?? []) {
+        if (statement.type !== 'ExportNamedDeclaration') continue;
+        for (const declaration of statement.declaration?.declarations ?? []) {
+          if (declaration.id?.name !== 'toc' || declaration.init?.type !== 'ArrayExpression') continue;
+          const elements = declaration.init.elements;
+          const position = (element) => {
+            const idProperty = element?.properties?.find((p) => (p.key?.name ?? p.key?.value) === 'id');
+            return order.get(idProperty?.value?.value);
+          };
+          for (const title of titles) {
+            const at = elements.findIndex((element) => (position(element) ?? -1) > title.index);
+            const entry = {
+              type: 'ObjectExpression',
+              properties: [property('value', title.value), property('id', title.id), property('level', 1)],
+            };
+            if (at < 0) elements.push(entry);
+            else elements.splice(at, 0, entry);
+          }
         }
       }
     }

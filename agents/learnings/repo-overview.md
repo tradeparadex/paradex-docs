@@ -56,6 +56,9 @@ The site is built with [Docusaurus](https://docusaurus.io) (open source) and dep
 - `{Identifier}` text that the page does not define renders literally (e.g. `ZEC-USD-{Expiry}`), as Fern did.
 - Front matter: `title`, `subtitle` (shown under the title), `description`, `hide-toc: true`, `layout: reference` (wide, no TOC) or `layout: custom` (full width, no chrome; home page).
 - Tab, Accordion and Step titles get anchor ids (`#closing-hours`, then `#closing-hours-1`), matching Fern. Linking to `#<slug>` opens the tab/accordion.
+- Meta description follows Fern's rule (`plugins/markdown-text.mjs`): `description`, else `subtitle`, else the first prose paragraph (snippets inlined), cut to 160 characters. API pages use the operation's `description` the same way.
+- API reference anchors are Fern's: `#request.body.<field>`, `#request.query.<name>`, `#request.path.<name>`, `#request.header.<name>`, `#response.body.<field>` (nested fields add `.<name>`), `#response.error`, and `#send.publish` / `#receive.subscribe` on WebSocket pages. Changelog headings get the entry date in front (`#2025-10-16-v11169`); dates on the index are `#2026-10-02T00:00:00.000Z`.
+- `Title:` (capital T) in front matter is ignored, as Fern ignored it; the navigation title is used.
 
 ## Gotchas
 
@@ -67,4 +70,4 @@ The site is built with [Docusaurus](https://docusaurus.io) (open source) and dep
 
 ## Last updated
 
-2026-10-02
+2026-10-03

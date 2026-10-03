@@ -606,9 +606,13 @@ a.cyan-cards:hover {
   scroll-margin-top: var(--fern-anchor-offset);
 }
 
-.fern-step__title::before,
-.fern-steps > h3::before {
-  content: counter(fern-step);
+/* Only a step's own title shows the badge (not headings nested deeper). */
+.fern-step__anchor {
+  display: none;
+}
+
+.fern-step__title > .fern-step__anchor,
+.fern-steps > h3 > .fern-step__anchor {
   position: absolute;
   left: -40px;
   top: 4px;
@@ -626,6 +630,16 @@ a.cyan-cards:hover {
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0;
+  text-decoration: none;
+}
+
+.fern-step__anchor::before {
+  content: counter(fern-step);
+}
+
+.fern-step__anchor:hover {
+  color: var(--grayscale-a12);
+  text-decoration: none;
 }
 
 /* Fern's prose drops the top margin of whatever follows a heading. */

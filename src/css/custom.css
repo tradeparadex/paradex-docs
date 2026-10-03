@@ -1519,10 +1519,6 @@ hr {
   border: 1px solid var(--grayscale-a5);
 }
 
-.fern-footer-next--previous {
-  justify-content: flex-start;
-}
-
 .fern-footer-prev svg,
 .fern-footer-next svg {
   width: 16px;
@@ -1548,11 +1544,6 @@ hr {
   min-width: 0;
   padding-left: 16px;
   text-align: right;
-}
-
-.fern-footer-next--previous .fern-footer-nav__text {
-  padding: 0 16px 0 0;
-  text-align: left;
 }
 
 .fern-footer-nav__title,

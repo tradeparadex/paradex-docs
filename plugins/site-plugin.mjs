@@ -36,8 +36,8 @@ function posthogSnippet({apiKey, apiHost}) {
 
 const FRONT_MATTER = /^---\r?\n([\s\S]*?)\r?\n---/;
 
-/** Front matter `subtitle` as plain text (the next-page card shows it on one line). */
-function plainSubtitle(file) {
+/** Front matter `subtitle`, for the next-page card (rendered as on the page). */
+function rawSubtitle(file) {
   const match = FRONT_MATTER.exec(fs.readFileSync(file, 'utf8'));
   if (!match) return undefined;
   let subtitle;
@@ -47,11 +47,28 @@ function plainSubtitle(file) {
     return undefined;
   }
   if (typeof subtitle !== 'string' || !subtitle.trim()) return undefined;
-  return subtitle
-    .replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1')
-    .replace(/\*\*([^*]+)\*\*|\*([^*]+)\*|`([^`]+)`/g, (_, a, b, c) => a ?? b ?? c)
-    .replace(/\\([\\`*_{}[\]()#+\-.!$|])/g, '$1')
-    .trim();
+  return subtitle.trim();
+}
+
+/**
+ * Fern sent twitter:title and twitter:description alongside the Open Graph
+ * tags. Copy each page's og:title/og:description into them.
+ */
+function addTwitterTags(outDir) {
+  const OG = /<meta\b[^>]*\bproperty=(["']?)og:(title|description)\1[^>]*>/g;
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, {withFileTypes: true})) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(file);
+      else if (entry.name.endsWith('.html')) {
+        const html = fs.readFileSync(file, 'utf8');
+        if (html.includes('twitter:title')) continue;
+        const out = html.replace(OG, (tag) => `${tag}${tag.replace(/\bproperty=(["']?)og:/, 'name=$1twitter:')}`);
+        if (out !== html) fs.writeFileSync(file, out);
+      }
+    }
+  };
+  walk(outDir);
 }
 
 function lazyOnload(code) {
@@ -84,7 +101,7 @@ export default function sitePlugin(context, {site}) {
       // Page subtitles by URL, for the "next page" card in each page footer.
       const subtitles = {};
       for (const [file, page] of site.pages) {
-        const subtitle = fs.existsSync(file) ? plainSubtitle(file) : undefined;
+        const subtitle = fs.existsSync(file) ? rawSubtitle(file) : undefined;
         if (subtitle) subtitles[page.url] = subtitle;
       }
       actions.setGlobalData({
@@ -112,17 +129,26 @@ export default function sitePlugin(context, {site}) {
     },
 
     async postBuild({outDir}) {
+      addTwitterTags(outDir);
       fs.writeFileSync(
         path.join(outDir, '_redirects'),
-        toNetlifyRedirects(site.redirectRules, site.implicitRedirects),
+        toNetlifyRedirects(site.redirectRules, site.implicitRedirects) +
+          // Fern's changelog feed lived at <changelog>.rss.
+          `${site.changelog.url}.rss ${site.changelog.url}/rss.xml 200\n`,
       );
 
       // Raw specs, as Fern served them.
+      const writeSpec = (file, document) => {
+        fs.mkdirSync(path.dirname(path.join(outDir, file)), {recursive: true});
+        fs.writeFileSync(path.join(outDir, `${file}.json`), JSON.stringify(document, null, 2));
+        fs.writeFileSync(path.join(outDir, `${file}.yaml`), yaml.dump(document, {noRefs: true, lineWidth: -1}));
+      };
       const rest = site.api.specs.get('prod_rest');
-      if (rest) {
-        fs.writeFileSync(path.join(outDir, 'openapi.json'), JSON.stringify(rest.document, null, 2));
-        fs.writeFileSync(path.join(outDir, 'openapi.yaml'), yaml.dump(rest.document, {noRefs: true, lineWidth: -1}));
-      }
+      if (rest) writeSpec('openapi', rest.document);
+      // Fern also exported each REST API under its navigation title.
+      if (rest) writeSpec('openapi/rest-endpoints', rest.document);
+      const testnet = site.api.specs.get('testnet_rest');
+      if (testnet) writeSpec('openapi/rest-endpoints-2', testnet.document);
       const ws = site.api.specs.get('prod_ws');
       if (ws) {
         fs.writeFileSync(path.join(outDir, 'asyncapi.json'), JSON.stringify(ws.document, null, 2));

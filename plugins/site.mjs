@@ -13,6 +13,7 @@ import {loadRedirectRules, expandRedirects} from './redirects.mjs';
 import {generateApiReference} from './api-reference/generate.mjs';
 import {inlineSnippets} from './fern-mdx.mjs';
 import {writeIconData} from './icons.mjs';
+import {descriptionFromMarkdown, markdownToPlainText} from './markdown-text.mjs';
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -115,16 +116,6 @@ export async function loadSite({siteDir}) {
     'generated/**/*.mdx',
   ];
 
-  /** The first line Docusaurus could take as the page's description. */
-  function firstContentLine(content) {
-    return (
-      content
-        .split('\n')
-        .map((line) => line.trim())
-        .find((line) => line && !/^(import|export)\s/.test(line) && !line.startsWith('#')) ?? ''
-    );
-  }
-
   async function parseFrontMatter(params) {
     const result = await params.defaultParseFrontMatter(params);
     const fm = result.frontMatter;
@@ -133,20 +124,22 @@ export async function loadSite({siteDir}) {
     const page = pageByFile.get(file);
     if (page) {
       fm.slug = page.url;
-      // Two pages capitalised the key; Fern ignored case.
-      if (fm.title === undefined && fm.Title !== undefined) fm.title = fm.Title;
+      // Two pages capitalise the key (`Title:`); Fern ignored it and used
+      // the navigation title.
       delete fm.Title;
       if (fm.title === undefined) fm.title = page.title ?? page.label;
       if (fm['hide-toc'] || ['reference', 'custom'].includes(fm.layout)) {
         fm.hide_table_of_contents = true;
       }
-      if (fm.description === undefined && fm.subtitle) fm.description = fm.subtitle;
-      // Docusaurus otherwise uses the first line of text as the description.
-      // Fern left it out when the page opens with a table, a component or a
-      // comment, which would otherwise end up as e.g. "<Card" or "{/ ... /}".
-      if (fm.description === undefined && /^(\||<|\{\/\*)/.test(firstContentLine(result.content))) {
-        fm.description = '';
-      }
+      // Fern's meta description: the description, subtitle or excerpt, else
+      // the first prose paragraph; pages with neither have none.
+      const ownDescription = fm.description || fm.subtitle || fm.excerpt;
+      fm.description = ownDescription
+        ? markdownToPlainText(ownDescription)
+        : (descriptionFromMarkdown(inlineSnippets(params.fileContent, params.filePath)) ?? '');
+      // Fern's previous/next cards show the page's title; the sidebar shows
+      // the navigation label, which can differ.
+      if (fm.pagination_label === undefined) fm.pagination_label = fm.title;
       if (page.noSidebar) fm.fern_no_sidebar = true;
       if (page.isSectionLanding) fm.fern_section_landing = true;
       return result;
@@ -159,6 +152,9 @@ export async function loadSite({siteDir}) {
         fm.slug = `/${year}/${month}/${day}`;
         fm.date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         fm.title ??= `${MONTHS[month - 1]} ${day}, ${year}`;
+        // Fern's rule, as for pages (most entries open with a heading and so
+        // have none).
+        fm.description ??= descriptionFromMarkdown(inlineSnippets(params.fileContent, params.filePath)) ?? '';
         // Fern showed no "On this page" column on a single entry.
         fm.hide_table_of_contents = true;
       }

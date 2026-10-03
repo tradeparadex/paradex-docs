@@ -7,7 +7,8 @@ export default function DocItemTOCDesktop(): ReactNode {
   return (
     <OnThisPage
       toc={toc}
-      minHeadingLevel={frontMatter.toc_min_heading_level}
+      // Level 1 too: Fern listed `#` headings in the content.
+      minHeadingLevel={frontMatter.toc_min_heading_level ?? 1}
       maxHeadingLevel={frontMatter.toc_max_heading_level}
     />
   );

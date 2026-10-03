@@ -491,6 +491,9 @@ navigation:
             - page: META Options
               slug: meta-options
               path: ./pages/instruments-guide/dated-options/meta-usd.mdx
+            - page: SPCX Options
+              slug: spcx-options
+              path: ./pages/instruments-guide/dated-options/spcx-usd.mdx
             - page: US500 Options
               slug: us500-options
               path: ./pages/instruments-guide/dated-options/us500-usd.mdx

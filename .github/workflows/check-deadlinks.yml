@@ -20,6 +20,7 @@ jobs:
             --exclude '^https://api\.prod\.paradex\.trade'
             --exclude '^https://api\.testnet\.paradex\.trade'
             --exclude '^https://eu\.i\.posthog\.com'
+            --exclude '^https://github\.com/tradeparadex/paradex-docs/(blob|tree|raw)/main/'
             --accept 429
             --timeout 30
             --max-retries 3
@@ -80,6 +81,35 @@ jobs:
               sys.exit(1)
           else:
               print(f'All links valid. ({len(skipped)} transient error(s) skipped)')
+          PYEOF
+
+      # Links to files of this repository on main are checked against the
+      # checkout instead of GitHub: a pull request that adds or moves a file
+      # links to where it will be after the merge, which GitHub does not
+      # serve yet.
+      - name: Check links into this repository
+        run: |
+          python3 << 'PYEOF'
+          import pathlib, re, sys, urllib.parse
+
+          LINK = re.compile(r'https://github\.com/tradeparadex/paradex-docs/(?:blob|tree|raw)/main/([^\s)"\'<>#?]+)')
+          missing = []
+          checked = 0
+          for root in ('docs/pages', 'docs/snippets', 'docs/release-notes'):
+              for source in sorted(pathlib.Path(root).rglob('*')):
+                  if source.suffix not in ('.md', '.mdx'):
+                      continue
+                  for match in LINK.finditer(source.read_text(encoding='utf-8')):
+                      checked += 1
+                      target = urllib.parse.unquote(match.group(1)).rstrip('/')
+                      if not pathlib.Path(target).exists():
+                          missing.append((source, match.group(0)))
+
+          for source, url in missing:
+              print(f'  {source}: {url} (no such file in this branch)')
+          if missing:
+              sys.exit(1)
+          print(f'All {checked} link(s) into this repository resolve.')
           PYEOF
 
       # Internal links are checked by the site build (see build-docs.yml):

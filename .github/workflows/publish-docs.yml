@@ -38,6 +38,10 @@ jobs:
 
       - name: Build
         run: yarn build
+        env:
+          # GitHub Pages runs no code, so there is no docs MCP server at
+          # /_mcp/server: leave it out of llms.txt and the .md preambles.
+          DOCS_MCP_SERVER: 'off'
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,4 +1,5 @@
-User-agent: *
+User-Agent: *
 Allow: /
+Disallow: /api/fern-docs/
 
 Sitemap: https://docs.paradex.trade/sitemap.xml

@@ -1,6 +1,9 @@
 // "Copy page" menu next to each page title, as on Fern: copies the page's
 // Markdown (served at <page>.md by plugins/llms.mjs), opens it, or hands it
 // to Claude or ChatGPT.
+//
+// The .md file starts with the agent preamble ("> For clean Markdown of any
+// page, ..."); Fern's copied text had none, so it is removed before copying.
 
 import React, {useEffect, useRef, useState} from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -60,6 +63,18 @@ const OpenAIIcon = () => (
 
 type Item = {icon: React.ReactNode; title: string; subtitle: string} & ({onSelect: () => void} | {href: string});
 
+const PREAMBLE_START = '> For clean Markdown of any page, append .md to the page URL.';
+
+/** The page's Markdown without the leading agent preamble blockquote. */
+function stripAgentPreamble(markdown: string): string {
+  if (!markdown.startsWith(PREAMBLE_START)) return markdown;
+  const lines = markdown.split('\n');
+  let i = 0;
+  while (i < lines.length && lines[i].startsWith('>')) i++;
+  while (i < lines.length && lines[i].trim() === '') i++;
+  return lines.slice(i).join('\n');
+}
+
 export default function PageActions({permalink}: {permalink: string}): React.JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   const [open, setOpen] = useState(false);
@@ -105,7 +120,10 @@ export default function PageActions({permalink}: {permalink: string}): React.JSX
   const copy = async () => {
     try {
       const response = await fetch(markdownPath);
-      const text = response.ok ? await response.text() : document.querySelector('article')?.innerText ?? '';
+      // Only real Markdown: behind the edge layer a missing .md answers 200
+      // text/plain with the agent "Page Not Found" text.
+      const isMarkdown = response.ok && (response.headers.get('content-type') ?? '').includes('text/markdown');
+      const text = isMarkdown ? stripAgentPreamble(await response.text()) : document.querySelector('article')?.innerText ?? '';
       await navigator.clipboard.writeText(text);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);

@@ -30,11 +30,18 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Typecheck
-        run: yarn typecheck
+      # Needs no build output, so it runs before (and independently of) the build.
+      - name: Test edge layer (MCP server, Markdown routes)
+        run: yarn test:edge
 
       - name: Build
         run: yarn build
+
+      # After the build: src/generated/icons.json, which src/ imports, is
+      # written by the build (plugins/site.mjs), so tsc cannot run on a clean
+      # checkout before it.
+      - name: Typecheck
+        run: yarn typecheck
 
       - name: Check site structure
         run: yarn check

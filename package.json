@@ -11,6 +11,7 @@
     "clear": "docusaurus clear",
     "typecheck": "tsc --noEmit",
     "check": "node scripts/check-site.mjs",
+    "test:edge": "node --test edge/*.test.mjs",
     "new-release-note": "node scripts/new-release-note.js",
     "sync-openapi": "node scripts/sync-openapi.mjs"
   },
@@ -57,6 +58,7 @@
     "typescript": "~5.9"
   },
   "resolutions": {
-    "katex": "0.16.43"
+    "katex": "0.16.43",
+    "mdast-util-to-markdown": "2.1.2"
   }
 }

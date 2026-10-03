@@ -3,8 +3,10 @@
 //   - analytics: Google Consent Mode defaults, Google Tag Manager, PostHog
 //     and the Meta pixel, injected in the same order Fern loaded them;
 //   - redirect rules for the 404 page's client-side fallback;
-//   - post-build artifacts: `_redirects`, the raw OpenAPI/AsyncAPI specs,
-//     llms.txt / llms-full.txt and a Markdown copy of every page.
+//   - post-build artifacts: `_redirects` (with `.md` twins of the exact
+//     rules), the raw OpenAPI/AsyncAPI specs, and the agent outputs written
+//     by plugins/llms.mjs: a Markdown copy of every page, llms.txt indexes,
+//     llms-full.txt, /_mcp/search-index.json and /.well-known/api-catalog.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -132,9 +134,10 @@ export default function sitePlugin(context, {site}) {
       addTwitterTags(outDir);
       fs.writeFileSync(
         path.join(outDir, '_redirects'),
-        toNetlifyRedirects(site.redirectRules, site.implicitRedirects) +
+        toNetlifyRedirects(site.redirectRules, site.implicitRedirects, [
           // Fern's changelog feed lived at <changelog>.rss.
-          `${site.changelog.url}.rss ${site.changelog.url}/rss.xml 200\n`,
+          `${site.changelog.url}.rss ${site.changelog.url}/rss.xml 200`,
+        ]),
       );
 
       // Raw specs, as Fern served them.
@@ -155,6 +158,9 @@ export default function sitePlugin(context, {site}) {
         fs.writeFileSync(path.join(outDir, 'asyncapi.yaml'), yaml.dump(ws.document, {noRefs: true, lineWidth: -1}));
       }
 
+      // Runs last: it reads the built HTML (search index anchors) and the
+      // specs written above (api-catalog). DOCS_MCP_SERVER=off drops the
+      // MCP lines (see plugins/llms.mjs).
       await writeLlmsFiles({site, outDir, siteUrl: context.siteConfig.url});
     },
   };

@@ -15,7 +15,7 @@ The site is built with [Docusaurus](https://docusaurus.io) (open source) and dep
 | `docs/assets/` | Images and PDFs referenced from content |
 | `docs/apis/prod_rest/`, `docs/apis/testnet_rest/` | REST specs: `openapi/openapi.json` (synced from the API) + `openapi/overrides.yml` (code samples, group/method names) |
 | `docs/apis/prod_ws/` | WebSocket spec (AsyncAPI 2.6.0 YAML) |
-| `plugins/` | Build-time code: navigation/URL rules, API reference generator, redirects, llms.txt, MDX compatibility |
+| `plugins/` | Build-time code: navigation/URL rules, API reference generator, redirects, agent outputs (llms*.mjs), MDX compatibility |
 | `src/components/fern/` | MDX components (Card, Tabs, Accordion, Steps, Note, ...) with Fern's names and props |
 | `src/components/api/` | REST endpoint / WebSocket channel page component |
 | `src/theme/` | Docusaurus theme overrides (two-row header, page header, breadcrumbs, changelog, 404 redirects) |
@@ -34,8 +34,22 @@ The site is built with [Docusaurus](https://docusaurus.io) (open source) and dep
 - REST endpoint URLs are `<section>/<group>/<method>`: group from `x-fern-sdk-group-name` in `overrides.yml` or the first tag; method from `x-fern-sdk-method-name`, else the operationId minus a leading tag prefix, else the summary. WebSocket channel URLs are the channel address in kebab case, twice. Do not change these rules: they reproduce Fern's public URLs.
 - Release notes use the Docusaurus blog plugin at `/releases/changelog`; entry URLs are `/releases/changelog/YYYY/M/D` (no zero padding). RSS/Atom/JSON feeds: `/releases/changelog/rss.xml`, `atom.xml`, `feed.json`.
 - Redirects: `plugins/site-plugin.mjs` adds a real route (a small redirect page that keeps the `#hash`) for every old URL it can enumerate; the 404 page applies the wildcard rules in the browser for anything else; `build/_redirects` carries the rules for hosts with server-side redirects.
-- Every page also has a Markdown copy at `<url>.md`, plus `/llms.txt`, `/llms-full.txt`, per-section `llms.txt` and `/openapi.json|yaml`, `/asyncapi.json|yaml` (generated after the build).
+- Every page also has a Markdown copy at `<url>.md`, plus `/llms.txt`, `/llms-full.txt`, per-section `llms.txt` and `/openapi.json|yaml`, `/asyncapi.json|yaml` (generated after the build). See "Agent outputs" below.
 - Search is `@easyops-cn/docusaurus-search-local` (offline index, works on static hosting). It only works in `yarn build && yarn serve`, not in `yarn dev`.
+
+## Agent outputs (llms.txt, .md, MCP)
+
+These reproduce what Fern served to AI agents. `plugins/llms.mjs` writes them in `postBuild` (after the HTML, which the search index reads):
+
+- `<url>.md` for every page, in Fern's "llm" format: an agent preamble blockquote ("For clean Markdown of any page...", the llms.txt link and, when enabled, the MCP line), `# title` (front-matter title, else the navigation title), the front-matter `description` as a `>` blockquote, then the body. The body is the MDX run through a port of Fern's `filterMarkdownForLlm` on a real syntax tree (`plugins/llms-markdown.mjs`): callouts become `> **Note**` blockquotes, titled components (Card, Tab, Step, Accordion, ...) become `#### title`, other components are unwrapped or dropped (`<ChangelogTags/>`, `<Icon/>`), lowercase HTML becomes Markdown, `<llms-only>` is kept and `<llms-ignore>` dropped, `export const` values are substituted and snippets inlined. Relative images point at the built assets. A page that fails to parse falls back to a simple conversion with a build warning.
+- REST endpoint and WebSocket pages use Fern's API layout (`plugins/llms-api.mjs`): `METHOD url`, `Reference:`, schema sections (`## Authentication`, `## Request`, `## Response`, `## Errors`, `## Types`), `## Examples` with `**SDK Code**` fences (authored `x-fern-examples` samples first, verbatim, then the generated ones in Fern's order: python, javascript, go, ruby, java, php, csharp, swift; no curl); WebSocket pages carry an AsyncAPI YAML block whose payloads are named like Fern's (`<Channel>Subscribe`, nested `Channels<Channel>Subscribe<Prop>`). Checked byte for byte against 46 pages captured from `fern docs dev`. The comment at the top of that file lists the markers the edge layer uses for `?lang=` and `?excludeSpec=true`.
+- Tab, section and API group URLs get a copy of the `.md` of the page they redirect to (`/docs.md`, `/api/prod.md`). `/.md` is served as `/home.md` (edge rewrite, plus a `/.md /home.md 308` line in `_redirects`). Exact legacy redirects get `.md` twins (`/old.md /new.md 308`).
+- `/llms.txt` (root index with "Instructions for AI Agents"), and `<url>/llms.txt` for every tab, section, API group and page in Fern's non-root format (preamble, `# title` or the page's own Markdown, `## Docs`, `## API Docs`, spec links). The changelog's lists its entries (`## Entries`); `/releases/changelog.md` holds the 20 newest entries. `plugins/llms-nav.mjs` rebuilds Fern's navigation tree for this.
+- `/llms-full.txt`: every docs and API page's Markdown concatenated, without preambles (Fern now redirects this URL to `/llms.txt`; we keep the full file on purpose).
+- `/_mcp/search-index.json` (`plugins/llms-search.mjs`): pages and their H2/H3 sections with the real anchors, searched by the MCP server.
+- `/.well-known/api-catalog` (RFC 9727 linkset pointing at `/openapi/rest-endpoints*.yaml`) and `robots.txt` (Fern's default text, in `static/`).
+- The docs MCP server (`/_mcp/server`, Fern's `fern-docs-mcp-server` with `searchDocs` and `fetchPage`), content negotiation (`Accept: text/markdown` -> `.md`), the `.md`/llms.txt headers and the agent not-found answers live in the edge layer in `edge/` (Cloudflare Pages Function or a Worker in front of GitHub Pages), not in the static build.
+- `DOCS_MCP_SERVER=off` at build time removes the MCP bullet from `/llms.txt` and the MCP line from every preamble. `publish-docs.yml` sets it, because GitHub Pages has no edge layer; local builds default to on.
 
 ## How to run and test
 
@@ -44,6 +58,9 @@ The site is built with [Docusaurus](https://docusaurus.io) (open source) and dep
 - `yarn build`: production build into `build/`. Fails on broken internal links, MDX errors and a bad `navigation.yml`. Takes a few minutes (about 750 pages).
 - `yarn serve`: serve the build (search works here).
 - `yarn check`: after a build, checks that every URL the Fern site served (`scripts/legacy-urls.txt`) still resolves to a page or redirect, plus the generated extras.
+- `DOCS_MCP_SERVER=off yarn build`: build as the GitHub Pages deploy does (no MCP lines in llms.txt or the `.md` preambles).
+- `yarn test:edge`: unit tests of the edge layer (MCP server, `.md`/llms.txt routes, search ranking). `node --test edge/` does not work on Node 22 (it runs the directory as a module); use the script.
+- `npx wrangler@4 pages dev build` (after `yarn build`): runs the build plus `functions/_middleware.js` in the real Workers runtime on http://localhost:8788. See `edge/README.md`.
 - `yarn typecheck`: TypeScript check of `src/`.
 - `vale docs/pages docs/snippets docs/release-notes`: prose lint (CI runs it on every PR).
 
@@ -67,6 +84,11 @@ The site is built with [Docusaurus](https://docusaurus.io) (open source) and dep
 - Do not edit `docs/apis/*/openapi/openapi.json` by hand; the sync workflow overwrites it. Put docs-only changes in `overrides.yml`.
 - The site is dark only (Fern rendered it dark only).
 - Shell commands such as `pkill -f "<pattern>"` can kill the calling shell when the pattern appears in the command line itself; prefer killing by PID.
+- The `.md` serializer is mdast-util-to-markdown with Fern's options, so lists use `*` bullets, tables are re-padded and `$`, `{`, `<` in text are escaped (`\$DIME`). That is what Fern produced; do not "fix" it by hand.
+- MDX parses `<li>...</li>` written one per line inside `<ul>` as inline elements in a paragraph; the `.md` conversion first runs Fern's "unravel" step (a paragraph made only of inline JSX and whitespace becomes flow elements), so they come out as list items, as on Fern.
+- `mdast-util-to-markdown` is pinned to 2.1.2 (`resolutions` in `package.json`): 2.1.3 stopped escaping intraword `_` and encodes a newline after a hard break as `&#xA;`, which Fern's serializer did not.
+- `build/_redirects` must list exact rules before splat (`/*`) rules: Cloudflare Pages counts every line below the first splat as dynamic and ignores everything after the 100th. `toNetlifyRedirects()` does this; keep it that way when adding rules or extra lines.
+- `static/_routes.json` keeps `/assets/*` off the Cloudflare Pages Function (cost); the Function still sees every HTML page, since Accept negotiation applies to them.
 
 ## Last updated
 

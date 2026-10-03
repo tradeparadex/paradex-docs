@@ -93,8 +93,24 @@ for (const file of [
   'releases/changelog/llms.txt',
   'home.md',
   'api/prod/orders/new.md',
+  '_routes.json',
+  '_mcp/search-index.json',
+  '.well-known/api-catalog',
 ]) {
   if (!fs.existsSync(path.join(build, file))) fail(`missing ${file}`);
+}
+
+// Cloudflare Pages counts every _redirects line below the first splat rule
+// as dynamic and ignores everything after the 100th.
+if (fs.existsSync(path.join(build, '_redirects'))) {
+  const rules = fs
+    .readFileSync(path.join(build, '_redirects'), 'utf8')
+    .split('\n')
+    .filter((line) => line.trim() !== '' && !line.startsWith('#'));
+  const firstSplat = rules.findIndex((line) => line.split(/\s+/)[0].includes('*'));
+  if (firstSplat >= 0 && rules.length - firstSplat > 100) {
+    fail(`_redirects has ${rules.length - firstSplat} lines from the first splat rule on (Cloudflare Pages reads 100)`);
+  }
 }
 if (!fs.readdirSync(build).some((f) => /^search-index.*\.json$/.test(f))) fail('missing search index');
 

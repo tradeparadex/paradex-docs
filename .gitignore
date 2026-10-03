@@ -12,3 +12,6 @@ build-next/
 # Generated at build time by plugins/site.mjs
 docs/pages/generated/
 src/generated/
+
+# Cloudflare wrangler local state (wrangler pages dev)
+.wrangler/

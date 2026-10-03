@@ -1,0 +1,16 @@
+# Cloudflare Pages project for docs.paradex.trade: the static Docusaurus build
+# plus the edge layer in functions/_middleware.js (MCP server at /_mcp/server,
+# Markdown negotiation, .md / llms.txt headers). See edge/README.md.
+#
+#   yarn build && npx wrangler@4 pages dev build        # local, http://localhost:8788
+#   npx wrangler@4 pages deploy build                   # deploy
+name = "paradex-docs"
+pages_build_output_dir = "build"
+compatibility_date = "2026-09-01"
+
+[vars]
+SITE_URL = "https://docs.paradex.trade"
+# Set to "off" to turn the MCP server off (it then answers 404 like Fern's
+# per-site switch). Build with DOCS_MCP_SERVER=off too, so llms.txt and the
+# .md preamble stop advertising it.
+# DOCS_MCP_SERVER = "off"

@@ -1,0 +1,26 @@
+# Standalone Worker running the edge layer in front of another origin, for
+# example GitHub Pages (which cannot run code). Deploy from the repo root:
+#
+#   npx wrangler@4 deploy --config edge/wrangler.worker.toml
+#
+# Routing: put docs.paradex.trade on Cloudflare (proxied DNS record pointing at
+# the origin, e.g. CNAME docs -> tradeparadex.github.io) and uncomment `routes`
+# below. With the Worker on a route of the site's own zone, leave ORIGIN unset:
+# fetch() to the same hostname then reaches the origin server, not the Worker.
+# Set ORIGIN only when the build is served from another hostname that does not
+# redirect back to docs.paradex.trade (GitHub Pages redirects its github.io URL
+# to the custom domain once one is configured).
+name = "paradex-docs-edge"
+main = "worker.mjs"
+compatibility_date = "2026-09-01"
+
+# routes = [
+#   { pattern = "docs.paradex.trade/*", zone_name = "paradex.trade" },
+# ]
+
+[vars]
+SITE_URL = "https://docs.paradex.trade"
+# ORIGIN = "https://paradex-docs.pages.dev"
+# DOCS_MCP_SERVER = "off"
+# Seconds a loaded search index is reused before it is fetched again.
+SEARCH_INDEX_TTL = "600"

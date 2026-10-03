@@ -1,14 +1,6 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, test } from 'node:test';
-import {
-  createEdge,
-  isNegotiablePath,
-  markdownAssetPath,
-  markdownRedirectTarget,
-  matchRedirectRule,
-  needsEdge,
-  parseRedirects,
-} from './core.mjs';
+import { createEdge, isNegotiablePath, markdownAssetPath, needsEdge } from './core.mjs';
 import {
   API_SECTION_LLMS,
   CREATE_ORDER_LLMS,
@@ -197,19 +189,7 @@ describe('.md and .mdx', () => {
 });
 
 describe('.md of redirected URLs', () => {
-  const REDIRECTS = [
-    '# Generated',
-    '/ /home 301',
-    '/staking /trading/trading-fees#stake-dime 301',
-    '/staking.md /trading/trading-fees.md#stake-dime 308',
-    '/docs/security /chain/security 301',
-    '/old-guide /docs/getting-started/what-is-paradex/ 302',
-    '/releases/changelog.rss /releases/changelog/rss.xml 200',
-    '/overview/* /docs/:splat 301',
-    '/away https://example.com/x 301',
-  ].join('\n');
-
-  test('a redirect answered by the host (Cloudflare Pages _redirects) reaches the client as Fern\'s 308/307', async () => {
+  test('a redirect Cloudflare answers from _redirects reaches the client as Fern\'s 308/307', async () => {
     const cases = [
       [301, '/chain/security.md', 308],
       [308, '/chain/security.md', 308],
@@ -226,50 +206,11 @@ describe('.md of redirected URLs', () => {
     }
   });
 
-  test('a host without server-side redirects gets the build\'s _redirects rules applied', async () => {
-    site = createSite({ '/_redirects': REDIRECTS });
-    const expect = async (path, status, location) => {
-      const res = await get(path);
-      assert.equal(res.status, status, path);
-      assert.equal(res.headers.get('location'), location, path);
-      assert.equal(res.headers.get('x-robots-tag'), 'noindex', path);
-    };
-    // The .md twin of an exact rule, keeping its #hash.
-    await expect('/staking.md', 308, `${SITE}/trading/trading-fees.md#stake-dime`);
-    // An exact rule without a twin: its destination plus .md (.mdx keeps .mdx).
-    await expect('/docs/security.md', 308, `${SITE}/chain/security.md`);
-    await expect('/docs/security.mdx', 308, `${SITE}/chain/security.mdx`);
-    await expect('/old-guide.md', 307, `${SITE}/docs/getting-started/what-is-paradex.md`);
-    // A splat rule carries the .md suffix through :splat.
-    await expect('/overview/getting-started/what-is-paradex.md', 308, `${SITE}/docs/getting-started/what-is-paradex.md`);
-    // The query is kept.
-    await expect('/docs/security.md?excludeSpec=true', 308, `${SITE}/chain/security.md?excludeSpec=true`);
-  });
-
-  test('rewrites, rules to other sites and unmatched paths fall back to the not-found', async () => {
-    site = createSite({ '/_redirects': REDIRECTS });
-    for (const path of ['/releases/changelog.rss.md', '/away.md', '/nothing-here.md']) {
-      const res = await get(path);
-      assert.equal(res.status, 200, path);
-      assert.ok((await res.text()).startsWith('# Page Not Found'), path);
-    }
-  });
-
-  test('existing pages never read _redirects', async () => {
-    site = createSite({ '/_redirects': REDIRECTS });
-    await get('/docs/getting-started/what-is-paradex.md');
-    assert.deepEqual(site.calls, ['/docs/getting-started/what-is-paradex.md']);
-  });
-
-  test('parseRedirects and matchRedirectRule follow the _redirects syntax', () => {
-    const rules = parseRedirects(REDIRECTS);
-    assert.deepEqual(rules[0], { from: '/', to: '/home', status: 301 });
-    assert.ok(!rules.some((r) => r.status === 200));
-    assert.deepEqual(matchRedirectRule(rules, '/overview/a/b.md'), { to: '/docs/a/b.md', status: 301 });
-    assert.equal(matchRedirectRule(rules, '/overview'), null);
-    assert.deepEqual(markdownRedirectTarget(rules, '/staking.md'), { to: '/trading/trading-fees.md#stake-dime', status: 308 });
-    assert.deepEqual(markdownRedirectTarget(rules, '/docs/security.md'), { to: '/chain/security.md', status: 301 });
-    assert.equal(markdownRedirectTarget(rules, '/away.md'), null);
+  test('a redirect keeps its #hash and an explicit query', async () => {
+    site = createSite({}, { redirects: { '/staking.md': [308, '/trading/trading-fees.md?x=1#stake-dime'] } });
+    const res = await get('/staking.md?lang=python');
+    assert.equal(res.status, 308);
+    assert.equal(res.headers.get('location'), `${SITE}/trading/trading-fees.md?x=1#stake-dime`);
   });
 });
 

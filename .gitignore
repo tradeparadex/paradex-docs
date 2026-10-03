@@ -13,5 +13,5 @@ build-next/
 docs/pages/generated/
 src/generated/
 
-# Cloudflare wrangler local state (wrangler pages dev)
+# Cloudflare wrangler local state (wrangler dev)
 .wrangler/

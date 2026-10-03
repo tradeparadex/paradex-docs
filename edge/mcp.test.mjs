@@ -600,7 +600,15 @@ describe('tools/call', () => {
   });
 
   test('fetchPage follows a legacy URL\'s Markdown redirect, like fetch() did on Fern', async () => {
-    site = createSite({ '/_redirects': '/overview/* /docs/:splat 301\n/staking.md /docs/getting-started/what-is-paradex.md#x 308\n' });
+    site = createSite(
+      {},
+      {
+        redirects: {
+          '/overview/getting-started/what-is-paradex.md': [301, '/docs/getting-started/what-is-paradex.md'],
+          '/staking.md': [308, '/docs/getting-started/what-is-paradex.md#x'],
+        },
+      },
+    );
     for (const path of ['/overview/getting-started/what-is-paradex', '/staking']) {
       const result = await call('fetchPage', { path });
       assert.deepEqual(result, { content: [{ type: 'text', text: WHAT_IS_MD }], structuredContent: { url: `${SITE}${path}` } }, path);

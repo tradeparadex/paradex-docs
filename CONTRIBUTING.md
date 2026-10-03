@@ -82,6 +82,8 @@ Search only works on a production build (`yarn serve`).
 
 5. **Open a pull request on GitHub.**
 
+    CI builds the site and comments a Cloudflare preview URL on the pull request. Merging to `main` publishes the site to https://docs.paradex.trade.
+
 ## Additional Resources
 - [Paradex Documentation](https://docs.paradex.trade)
 - [Paradex Code Samples](https://github.com/tradeparadex/code-samples)

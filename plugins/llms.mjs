@@ -30,8 +30,8 @@
 //   /.well-known/api-catalog  RFC 9727 linkset of the REST API references.
 //
 // The MCP lines (root instructions bullet and the third preamble line) are
-// written unless the build runs with DOCS_MCP_SERVER=off, as the GitHub
-// Pages deploy (no edge layer, so no /_mcp/server) does.
+// written unless the build runs with DOCS_MCP_SERVER=off, for a deploy
+// without the edge layer (edge/worker.mjs), which serves /_mcp/server.
 
 import fs from 'node:fs';
 import path from 'node:path';

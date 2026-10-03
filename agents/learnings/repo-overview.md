@@ -1,6 +1,6 @@
 # Repository overview
 
-The site is built with [Docusaurus](https://docusaurus.io) (open source) and deployed to GitHub Pages. It replaced Fern in October 2026; URLs, navigation, anchors, redirects and page layouts were kept identical to the Fern site.
+The site is built with [Docusaurus](https://docusaurus.io) (open source) and hosted on Cloudflare: a Worker (`wrangler.toml`) that serves the build as static assets, with the edge layer in `edge/` in front. It replaced Fern in October 2026; URLs, navigation, anchors, redirects and page layouts were kept identical to the Fern site.
 
 ## Main folders and what they contain
 
@@ -24,7 +24,8 @@ The site is built with [Docusaurus](https://docusaurus.io) (open source) and dep
 | `src/head/` | Inline head scripts: Google Consent Mode defaults, Meta pixel |
 | `static/assets/` | Logos and favicon |
 | `scripts/` | Release-note scaffolding, OpenAPI sync, Swagger conversion, site check |
-| `.github/workflows/` | Build (PRs), publish to GitHub Pages (main), Vale, dead links, OpenAPI sync |
+| `.github/workflows/` | Build and Cloudflare preview (PRs), publish to Cloudflare (main), Vale, dead links, OpenAPI sync |
+| `edge/` | The Cloudflare Worker: MCP server, Markdown negotiation, `.md`/llms.txt headers. `edge/README.md` covers hosting, deploys, cutover and rollback |
 
 ## How the site is assembled
 
@@ -48,8 +49,9 @@ These reproduce what Fern served to AI agents. `plugins/llms.mjs` writes them in
 - `/llms-full.txt`: every docs and API page's Markdown concatenated, without preambles (Fern now redirects this URL to `/llms.txt`; we keep the full file on purpose).
 - `/_mcp/search-index.json` (`plugins/llms-search.mjs`): pages and their H2/H3 sections with the real anchors, searched by the MCP server.
 - `/.well-known/api-catalog` (RFC 9727 linkset pointing at `/openapi/rest-endpoints*.yaml`) and `robots.txt` (Fern's default text, in `static/`).
-- The docs MCP server (`/_mcp/server`, Fern's `fern-docs-mcp-server` with `searchDocs` and `fetchPage`), content negotiation (`Accept: text/markdown` -> `.md`), the `.md`/llms.txt headers and the agent not-found answers live in the edge layer in `edge/` (Cloudflare Pages Function or a Worker in front of GitHub Pages), not in the static build.
-- `DOCS_MCP_SERVER=off` at build time removes the MCP bullet from `/llms.txt` and the MCP line from every preamble. `publish-docs.yml` sets it, because GitHub Pages has no edge layer; local builds default to on.
+- The docs MCP server (`/_mcp/server`, Fern's `fern-docs-mcp-server` with `searchDocs` and `fetchPage`), content negotiation (`Accept: text/markdown` -> `.md`), the `.md`/llms.txt headers and the agent not-found answers live in the edge layer in `edge/` (the Cloudflare Worker), not in the static build.
+- `DOCS_MCP_SERVER=off` at build time removes the MCP bullet from `/llms.txt` and the MCP line from every preamble; builds default to on. Only use it together with `DOCS_MCP_SERVER = "off"` in `wrangler.toml`, which turns the server itself off.
+- Cloudflare applies `build/_redirects` (real 301/308s) and `build/_headers` (from `static/_headers`: HSTS, immutable caching of hashed `/assets/*` subfolders) and serves `404.html` for unknown paths. The client-side redirect pages and the 404 page's redirect fallback remain, but the server rules answer first.
 
 ## How to run and test
 
@@ -58,9 +60,8 @@ These reproduce what Fern served to AI agents. `plugins/llms.mjs` writes them in
 - `yarn build`: production build into `build/`. Fails on broken internal links, MDX errors and a bad `navigation.yml`. Takes a few minutes (about 750 pages).
 - `yarn serve`: serve the build (search works here).
 - `yarn check`: after a build, checks that every URL the Fern site served (`scripts/legacy-urls.txt`) still resolves to a page or redirect, plus the generated extras.
-- `DOCS_MCP_SERVER=off yarn build`: build as the GitHub Pages deploy does (no MCP lines in llms.txt or the `.md` preambles).
 - `yarn test:edge`: unit tests of the edge layer (MCP server, `.md`/llms.txt routes, search ranking). `node --test edge/` does not work on Node 22 (it runs the directory as a module); use the script.
-- `npx wrangler@4 pages dev build` (after `yarn build`): runs the build plus `functions/_middleware.js` in the real Workers runtime on http://localhost:8788. See `edge/README.md`.
+- `npx wrangler@4 dev` (after `yarn build`): runs the Worker and the build's static assets in the real Workers runtime on http://localhost:8787, with Cloudflare's `_redirects`, `_headers`, trailing-slash and 404 handling. See `edge/README.md`.
 - `yarn typecheck`: TypeScript check of `src/`.
 - `vale docs/pages docs/snippets docs/release-notes`: prose lint (CI runs it on every PR).
 
@@ -87,8 +88,9 @@ These reproduce what Fern served to AI agents. `plugins/llms.mjs` writes them in
 - The `.md` serializer is mdast-util-to-markdown with Fern's options, so lists use `*` bullets, tables are re-padded and `$`, `{`, `<` in text are escaped (`\$DIME`). That is what Fern produced; do not "fix" it by hand.
 - MDX parses `<li>...</li>` written one per line inside `<ul>` as inline elements in a paragraph; the `.md` conversion first runs Fern's "unravel" step (a paragraph made only of inline JSX and whitespace becomes flow elements), so they come out as list items, as on Fern.
 - `mdast-util-to-markdown` is pinned to 2.1.2 (`resolutions` in `package.json`): 2.1.3 stopped escaping intraword `_` and encodes a newline after a hard break as `&#xA;`, which Fern's serializer did not.
-- `build/_redirects` must list exact rules before splat (`/*`) rules: Cloudflare Pages counts every line below the first splat as dynamic and ignores everything after the 100th. `toNetlifyRedirects()` does this; keep it that way when adding rules or extra lines.
-- `static/_routes.json` keeps `/assets/*` off the Cloudflare Pages Function (cost); the Function still sees every HTML page, since Accept negotiation applies to them.
+- `build/_redirects` must list exact rules before splat (`/*`) rules: Cloudflare counts every line below the first splat as dynamic and ignores everything after the 100th (and static rules after the 2,000th). `toNetlifyRedirects()` does this and `yarn check` enforces it; keep it that way when adding rules or extra lines.
+- `run_worker_first` in `wrangler.toml` keeps `/assets/*` off the Worker (cost); the Worker still sees every page URL, since Accept negotiation applies to them.
+- Merging to `main` deploys to production (`publish-docs.yml`). CI's Wrangler replaces an existing DNS record for docs.paradex.trade without asking, so the first deploy was the cutover from Fern.
 
 ## Last updated
 

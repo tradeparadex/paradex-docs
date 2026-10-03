@@ -201,16 +201,22 @@ const TYPES = {
 };
 
 /**
- * A static host over `files`: fetchAsset(path) returns the file or a 404 HTML
- * page, like Cloudflare Pages with a 404.html. `calls` records requested paths.
+ * A static host over `files`, like Cloudflare's static assets with a
+ * 404.html: fetchAsset(path) answers a `redirects` entry ({path: [status,
+ * location]}, as a `_redirects` rule would) with that redirect, else the
+ * file, else a 404 HTML page. `calls` records requested paths.
  */
-export function createSite(overrides = {}) {
+export function createSite(overrides = {}, { redirects = {} } = {}) {
   const files = siteFiles(overrides);
   const calls = [];
   const fetchAsset = async (input) => {
     const path = typeof input === 'string' ? input : new URL(input.url ?? input).pathname;
     const pathname = path.split('?')[0];
     calls.push(pathname);
+    if (Object.hasOwn(redirects, pathname)) {
+      const [status, location] = redirects[pathname];
+      return new Response(null, { status, headers: { Location: location } });
+    }
     const body = files[pathname];
     if (body === undefined || body === null) {
       return new Response('<!doctype html><title>404</title>', {

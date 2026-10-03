@@ -13,8 +13,8 @@
 // - /.well-known/api-catalog with RFC 9727 headers.
 // Everything else goes to next() untouched.
 //
-// Entry points: functions/_middleware.js (Cloudflare Pages) and
-// edge/worker.mjs (a Worker in front of another origin such as GitHub Pages).
+// Entry point: edge/worker.mjs, a Cloudflare Worker whose static assets are
+// the build.
 
 import { handleMcp, MCP_PATH } from './mcp.mjs';
 import { agentFilterOptions, filterAgentMarkdown, hasAgentFilter, notFoundBody, suggestRoutes } from './markdown.mjs';
@@ -36,7 +36,6 @@ export const DEFAULT_API_REFERENCES = [
   { path: '/api/testnet', spec: '/openapi/rest-endpoints-2.yaml' },
 ];
 
-const REDIRECTS_PATH = '/_redirects';
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 const MAX_FETCH_REDIRECTS = 5;
 
@@ -131,62 +130,6 @@ export function markdownAssetPath(pathname) {
 }
 
 /**
- * Parses a Netlify / Cloudflare Pages `_redirects` file into
- * [{from, to, status}] (redirects only; 200 rewrites are left out). `from`
- * is an exact path or a prefix rule ending in `/*` whose match replaces
- * `:splat` in `to`.
- */
-export function parseRedirects(text) {
-  const rules = [];
-  for (const raw of String(text).split('\n')) {
-    const line = raw.trim();
-    if (line === '' || line.startsWith('#')) continue;
-    const [from, to, code] = line.split(/\s+/);
-    if (!from?.startsWith('/') || !to) continue;
-    const status = code === undefined ? 301 : Number.parseInt(code, 10);
-    if (!REDIRECT_STATUSES.has(status)) continue;
-    rules.push({ from, to, status });
-  }
-  return rules;
-}
-
-/** The first rule matching `pathname`: {to, status} with `:splat` filled in, or null. */
-export function matchRedirectRule(rules, pathname) {
-  for (const rule of rules) {
-    if (rule.from.endsWith('/*')) {
-      const prefix = rule.from.slice(0, -2);
-      if (pathname.startsWith(`${prefix}/`)) {
-        return { to: rule.to.replace(':splat', pathname.slice(prefix.length + 1)), status: rule.status };
-      }
-    } else if (rule.from === pathname) {
-      return { to: rule.to, status: rule.status };
-    }
-  }
-  return null;
-}
-
-/**
- * Where a redirect rule sends the Markdown of `pathname` (a .md/.mdx URL):
- * a rule for the .md path itself (the build writes `/old.md /new.md 308`
- * twins), else an exact rule for the page path with `.md` added to its
- * destination, as Fern's .md route did.
- */
-export function markdownRedirectTarget(rules, pathname) {
-  const direct = matchRedirectRule(rules, pathname);
-  if (direct) return direct;
-  const page = trimTrailingSlashes(pathname.replace(MARKDOWN_SUFFIX, '')) || '/';
-  const rule = rules.find((r) => r.from === page);
-  if (!rule) return null;
-  const hashAt = rule.to.indexOf('#');
-  const target = hashAt < 0 ? rule.to : rule.to.slice(0, hashAt);
-  const hash = hashAt < 0 ? '' : rule.to.slice(hashAt);
-  if (/^[a-z][a-z0-9+.-]*:/i.test(target)) return null; // another site
-  const suffix = /\.mdx$/.test(pathname) ? '.mdx' : '.md';
-  const path = trimTrailingSlashes(target);
-  return { to: `${path.startsWith('/') ? path : `/${path}`}${suffix}${hash}`, status: rule.status };
-}
-
-/**
  * Fern's .md redirect: 308 for a permanent redirect, 307 otherwise, with
  * the request's query kept and X-Robots-Tag: noindex.
  */
@@ -205,29 +148,27 @@ function markdownRedirect(location, status, url) {
  * `handle` uses one shared instance, so the index is loaded once per isolate.
  */
 export function createEdge() {
-  const state = { data: null, index: null, loadedAt: 0, redirects: null, redirectsLoadedAt: 0 };
+  const state = { data: null, index: null };
   const stats = { indexBuilds: 0 };
 
+  // The index never changes under a running isolate: a deploy is a new
+  // Worker version with its own assets and isolates.
   async function loadIndexData(ctx) {
-    const fresh = state.data !== null && Date.now() - state.loadedAt < ctx.indexTtlMs;
-    if (fresh) return state.data;
-    const started = Date.now();
+    if (state.data !== null) return state.data;
     const res = await ctx.fetchAsset(SEARCH_INDEX_PATH);
     if (!res.ok || isMissing(res, SEARCH_INDEX_PATH)) {
       res.body?.cancel?.().catch(() => {});
-      if (state.data !== null) return state.data; // keep serving the last good copy
       throw new Error(`Search index is unavailable (status ${res.status})`);
     }
     const data = await res.json();
     if (!data || !Array.isArray(data.pages) || !Array.isArray(data.sections)) throw new Error('Search index is malformed');
     // Requests that started loading together (a cold isolate) each fetch the
     // file, but the first copy stored wins, so the index is built once.
-    if (state.data !== null && state.loadedAt >= started) return state.data;
+    if (state.data !== null) return state.data;
     // Cache the parsed value only (never a promise), so concurrent requests
     // in one isolate do not share request-bound I/O.
     state.data = data;
     state.index = null;
-    state.loadedAt = Date.now();
     return data;
   }
 
@@ -238,25 +179,6 @@ export function createEdge() {
       stats.indexBuilds++;
     }
     return state.index.built;
-  }
-
-  /**
-   * Redirect rules of the build's `_redirects`, for hosts that do not apply
-   * it themselves (GitHub Pages behind the Worker). [] when there is none.
-   */
-  async function loadRedirects(ctx) {
-    if (state.redirects !== null && Date.now() - state.redirectsLoadedAt < ctx.indexTtlMs) return state.redirects;
-    let rules = [];
-    try {
-      const res = await ctx.fetchAsset(REDIRECTS_PATH);
-      if (res.ok && !isMissing(res, REDIRECTS_PATH)) rules = parseRedirects(await res.text());
-      else res.body?.cancel?.().catch(() => {});
-    } catch {
-      rules = [];
-    }
-    state.redirects = rules;
-    state.redirectsLoadedAt = Date.now();
-    return rules;
   }
 
   async function suggestionsFor(slug, ctx) {
@@ -283,16 +205,13 @@ export function createEdge() {
   async function markdownResponse(url, ctx) {
     const { assetPath, slug } = markdownAssetPath(url.pathname);
     const asset = await ctx.fetchAsset(assetPath);
-    // The host applied a `_redirects` rule (Cloudflare Pages).
+    // Cloudflare applied a `_redirects` rule.
     if (REDIRECT_STATUSES.has(asset.status) && asset.headers.has('location')) {
       asset.body?.cancel?.().catch(() => {});
       return markdownRedirect(asset.headers.get('location'), asset.status, url);
     }
     if (isMissing(asset, assetPath)) {
       asset.body?.cancel?.().catch(() => {});
-      // A host without server-side redirects: apply the build's rules here.
-      const redirect = markdownRedirectTarget(await loadRedirects(ctx), url.pathname);
-      if (redirect) return markdownRedirect(redirect.to, redirect.status, url);
       return agentNotFound(ctx, await suggestionsFor(slug, ctx));
     }
     if (!asset.ok) return asset;
@@ -400,7 +319,6 @@ export function createEdge() {
    *   options.fetchAsset    (path) => Response for a file of the static build
    *   options.next          () => Response for pass-through (default: fetchAsset(request))
    *   options.mcpServer     "off" disables the MCP server (Fern's kill switch)
-   *   options.indexTtlMs    how long a loaded search index is reused (default: forever)
    *   options.apiReferences fallback api-catalog entries [{path, spec}]
    */
   async function handle(request, options = {}) {
@@ -409,7 +327,6 @@ export function createEdge() {
       siteUrl: normalizeSiteUrl(options.siteUrl),
       fetchAsset: options.fetchAsset,
       mcpEnabled: isEnabled(options.mcpServer),
-      indexTtlMs: options.indexTtlMs ?? Number.POSITIVE_INFINITY,
       apiReferences: options.apiReferences ?? DEFAULT_API_REFERENCES,
     };
     const next = () => (typeof options.next === 'function' ? options.next() : options.fetchAsset(request));
@@ -434,9 +351,6 @@ export function createEdge() {
   function resetCache() {
     state.data = null;
     state.index = null;
-    state.loadedAt = 0;
-    state.redirects = null;
-    state.redirectsLoadedAt = 0;
   }
 
   return { handle, resetCache, stats };

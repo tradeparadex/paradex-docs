@@ -11,8 +11,9 @@
 //      redirect page at each `from` path.
 //   2. The rules ship to the browser, and the 404 page applies them to any
 //      path that was not expanded (see src/theme/NotFound/Content).
-//   3. toNetlifyRedirects() writes a `_redirects` file for hosts that support
-//      server-side rules (Cloudflare Pages, Netlify). Each exact rule also
+//   3. toNetlifyRedirects() writes a `_redirects` file. Cloudflare applies
+//      it on the server before serving any file, so in production these
+//      rules answer first (real 301/308s). Each exact rule also
 //      gets a `.md` twin (`/old.md /new.md 308`) so agents fetching the
 //      Markdown of an old URL land on the new page's Markdown; wildcard
 //      rules carry the `.md` suffix through `:splat` already.
@@ -115,9 +116,9 @@ function markdownRedirect(source, destination) {
 }
 
 /**
- * Rules in Netlify / Cloudflare Pages `_redirects` syntax.
+ * Rules in Cloudflare / Netlify `_redirects` syntax.
  *
- * Cloudflare Pages treats every line below the first splat (`/*`) rule as a
+ * Cloudflare treats every line below the first splat (`/*`) rule as a
  * dynamic rule and ignores everything after the 100th, so the exact rules
  * (including `extra` lines) are written first and the splat rules last. An
  * exact rule that an earlier splat rule already matches could never apply

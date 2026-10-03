@@ -1,0 +1,17 @@
+# Response headers for Cloudflare's static assets (wrangler.toml [assets]).
+
+# Vercel, which served the Fern site, sent HSTS on every response.
+/*
+  Strict-Transport-Security: max-age=63072000
+
+# Content-hashed build output: a file's name changes whenever its content does.
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/images/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/md/*
+  Cache-Control: public, max-age=31536000, immutable

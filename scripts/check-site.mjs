@@ -6,6 +6,7 @@
 //   2. Every redirect rule in docs/redirects.yml lands on a real page.
 //   3. Every release note has its /releases/changelog/YYYY/M/D page.
 //   4. Generated extras exist: llms.txt, specs, feeds, search index, 404.
+//   5. The build fits Cloudflare's limits (redirect rules, files, file size).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -93,24 +94,44 @@ for (const file of [
   'releases/changelog/llms.txt',
   'home.md',
   'api/prod/orders/new.md',
-  '_routes.json',
+  '_headers',
   '_mcp/search-index.json',
   '.well-known/api-catalog',
 ]) {
   if (!fs.existsSync(path.join(build, file))) fail(`missing ${file}`);
 }
 
-// Cloudflare Pages counts every _redirects line below the first splat rule
-// as dynamic and ignores everything after the 100th.
+// Cloudflare's static assets take up to 2,000 static _redirects rules and
+// 100 dynamic ones. Every line below the first splat rule counts as dynamic;
+// rules past either limit are ignored without an error.
 if (fs.existsSync(path.join(build, '_redirects'))) {
   const rules = fs
     .readFileSync(path.join(build, '_redirects'), 'utf8')
     .split('\n')
     .filter((line) => line.trim() !== '' && !line.startsWith('#'));
   const firstSplat = rules.findIndex((line) => line.split(/\s+/)[0].includes('*'));
-  if (firstSplat >= 0 && rules.length - firstSplat > 100) {
-    fail(`_redirects has ${rules.length - firstSplat} lines from the first splat rule on (Cloudflare Pages reads 100)`);
-  }
+  const dynamic = firstSplat < 0 ? 0 : rules.length - firstSplat;
+  if (dynamic > 100) fail(`_redirects has ${dynamic} lines from the first splat rule on (Cloudflare reads 100)`);
+  if (rules.length - dynamic > 2000) fail(`_redirects has ${rules.length - dynamic} static rules (Cloudflare reads 2,000)`);
+}
+
+// Cloudflare refuses to deploy more than 20,000 asset files (Workers Free;
+// Paid allows 100,000) or any file over 25 MiB.
+{
+  let files = 0;
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, {withFileTypes: true})) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else {
+        files++;
+        const size = fs.statSync(full).size;
+        if (size > 25 * 1024 * 1024) fail(`${path.relative(build, full)} is ${(size / 1024 / 1024).toFixed(1)} MiB (Cloudflare's limit is 25 MiB)`);
+      }
+    }
+  };
+  walk(build);
+  if (files > 20000) fail(`build has ${files} files (Cloudflare's Workers Free limit is 20,000)`);
 }
 if (!fs.readdirSync(build).some((f) => /^search-index.*\.json$/.test(f))) fail('missing search index');
 

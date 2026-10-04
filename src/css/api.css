@@ -38,6 +38,16 @@
   margin-bottom: 8px;
 }
 
+/* Fern kept 32px free on each side of the 896px column. Below 1248px that
+   gutter is what holds the deep-link buttons and the Handshake card's
+   bleed, between the sidebar and the window's edge. */
+@media (min-width: 997px) {
+  .doc-layout--api .doc-item-container {
+    max-width: 960px;
+    padding-inline: 32px;
+  }
+}
+
 /* ---------- URL line under the title ---------- */
 
 .api-endpoint__url {
@@ -714,9 +724,9 @@
   }
 }
 
-/* Up to 1255px the column's gutter is mostly under 36px, too narrow for the
-   button; nested rows still have room on their left. */
-@media (min-width: 768px) and (max-width: 1255px) {
+/* Below 997px the column has no gutter; nested rows still have room on
+   their left. */
+@media (min-width: 768px) and (max-width: 996px) {
   .api-section__title > .api-anchor,
   .api-props:not(.api-props--nested) > .api-prop > .api-prop__header > .api-anchor {
     right: auto;

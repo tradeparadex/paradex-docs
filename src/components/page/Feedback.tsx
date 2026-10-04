@@ -121,7 +121,9 @@ function FollowUp({anchor, vote, onClose, onSubmit}: {
       const above = button.top - 8;
       const bottom = height <= below || (height > above && below >= above);
       const left = Math.min(Math.max(button.left + button.width / 2 - width / 2, 0), document.documentElement.clientWidth - width);
-      const top = bottom ? button.bottom + 8 : button.top - 8 - height;
+      // Never above the top of the page, where no scrolling could reach it
+      // (a short page whose footer is near the top of the screen).
+      const top = Math.max(bottom ? button.bottom + 8 : button.top - 8 - height, -window.scrollY);
       // Whole device pixels keep the text sharp.
       const round = (value: number) => Math.round(value * window.devicePixelRatio) / window.devicePixelRatio;
       el.style.left = `${round(left + window.scrollX)}px`;

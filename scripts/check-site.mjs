@@ -8,8 +8,8 @@
 //      page of the index in releases/changelog/anchors.json.
 //   4. Generated extras exist: llms.txt, specs, feeds, search index, 404.
 //   5. The build fits Cloudflare's limits (redirect rules, files, file size).
-//   6. Every splat rule in _redirects sends a deep path where the rules in
-//      docs/redirects.yml do.
+//   6. Every splat rule in _redirects sends a deep path (and its .md and
+//      llms files) where the rules in docs/redirects.yml do.
 //   7. Every HTML page has one viewport meta, with minimum-scale=1.
 
 import fs from 'node:fs';
@@ -17,7 +17,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import yaml from 'js-yaml';
 
-import {markdownUrl, matchRedirect} from '../plugins/redirects.mjs';
+import {llmsUrl, markdownUrl, matchRedirect} from '../plugins/redirects.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const build = path.resolve(root, process.env.BUILD_DIR ?? 'build');
@@ -138,11 +138,24 @@ if (fs.existsSync(path.join(build, '_redirects'))) {
       if (m) return to.replaceAll(':splat', m.groups?.splat ?? '');
     }
   };
+  // Each splat line's prefix and a deep path below it are sampled as a page,
+  // its .md and its llms files, which follow the page's destination.
+  const formats = [
+    ['', (to) => to],
+    ['.md', markdownUrl],
+    ['/llms.txt', (to) => llmsUrl(to)],
+    ['/llms-full.txt', (to) => llmsUrl(to, 'llms-full.txt')],
+  ];
+  const pages = new Set();
   for (const [from] of lines.filter(([from]) => from.includes('*'))) {
-    const sample = from.replace('*', 'x/y');
-    for (const url of sample.endsWith('.md') ? [sample] : [sample, `${sample}.md`]) {
-      const page = matchRedirect(redirects, url.replace(/\.md$/, ''));
-      const expected = page && url.endsWith('.md') ? markdownUrl(page) : page;
+    pages.add(from.split('/*')[0]);
+    pages.add(from.replace('*', 'x/y').replace(/(\.md|\/llms(-full)?\.txt)$/, ''));
+  }
+  for (const page of pages) {
+    const to = matchRedirect(redirects, page);
+    for (const [suffix, format] of formats) {
+      const url = page + suffix;
+      const expected = to && format(to);
       const actual = answer(url);
       if (actual !== expected) fail(`_redirects sends ${url} to ${actual}; docs/redirects.yml sends it to ${expected}`);
     }

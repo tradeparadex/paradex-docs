@@ -27,7 +27,7 @@ ES modules, no Node APIs, no dependencies).
 | `<page>.md?lang=python`, `?excludeSpec=true` | API pages filtered like Fern: `lang` keeps one language's code samples, `excludeSpec=true` drops the schema sections |
 | The `.md` of a redirected URL | `308` (permanent rule) or `307` to the destination's `.md`, query kept, `X-Robots-Tag: noindex`. Cloudflare matches the build's `_redirects`, which has a `.md` twin of every exact rule and of every wildcard rule whose destination has no `:slug*` |
 | A missing `.md` | `200 text/plain` "# Page Not Found" with up to three similar pages (Fern's agent not-found) |
-| `<path>/llms.txt` | `Content-Type` is `text/markdown` when `Accept` asks for it, otherwise `text/plain`; `Vary: Accept`. A missing one gets the agent not-found |
+| `<path>/llms.txt` | `Content-Type` is `text/markdown` when `Accept` asks for it, otherwise `text/plain`; `Vary: Accept`. A missing one gets the agent not-found. Under a wildcard redirect, the `_redirects` 301 to the destination's `llms.txt` is passed on |
 | `/llms-full.txt` | Our full concatenation (kept on purpose). A missing `<section>/llms-full.txt` gets a `301` to `<section>/llms.txt`, as on Fern |
 | `/.well-known/api-catalog` | RFC 9727 linkset with `Content-Type: application/linkset+json; profile=...` and `Link: <...>; rel="api-catalog"`. Uses the build's file if there is one, otherwise lists `/api/prod` and `/api/testnet` with their OpenAPI files |
 | Anything else | Passed to the static assets untouched |

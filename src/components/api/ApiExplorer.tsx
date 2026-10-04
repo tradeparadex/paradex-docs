@@ -71,6 +71,20 @@ const LockIcon = () => (
     <path d="M8 11V7a4 4 0 0 1 8 0v4" />
   </Svg>
 );
+const EyeIcon = () => (
+  <Svg>
+    <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+    <circle cx="12" cy="12" r="3" />
+  </Svg>
+);
+const EyeOffIcon = () => (
+  <Svg>
+    <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
+    <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
+    <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
+    <path d="m2 2 20 20" />
+  </Svg>
+);
 const HelpIcon = () => (
   <Svg>
     <circle cx="12" cy="12" r="9" />
@@ -170,6 +184,14 @@ function buildRequest(endpoint: Endpoint, state: FormState, auth: string): Built
   if (hasBody) headers.push(['Content-Type', 'application/json']);
   return {method: endpoint.method, url: endpoint.server + path, query, headers, ...(hasBody ? {body: state.body} : {})};
 }
+
+/** How Fern showed a credential in the snippets; Copy and Send use it as typed. */
+const maskSecret = (value: string) =>
+  value.trimEnd() === ''
+    ? value
+    : value.length < 28
+      ? `${value.slice(0, 1)}${'*'.repeat(25)}${value.slice(-2)}`
+      : `${value.slice(0, 12)}....${value.slice(-12)}`;
 
 const fullUrl = (req: BuiltRequest) => (req.query.length ? `${req.url}?${new URLSearchParams(req.query).toString()}` : req.url);
 const indent = (text: string, by: string) => text.replace(/\n/g, `\n${by}`);
@@ -470,11 +492,12 @@ export function FormSection({title, children}: {title: string; children: React.R
 
 function AuthCard({name, value, onChange}: {name: string; value: string; onChange: (v: string) => void}) {
   const [open, setOpen] = useState(value === '');
+  const [revealed, setRevealed] = useState(false);
   return (
     <>
       <div className={clsx('api-explorer__auth-banner', value ? 'api-explorer__auth-banner--ok' : 'api-explorer__auth-banner--missing')}>
         <KeyIcon />
-        <span>{value ? `Authenticated with ${name}` : `Enter your credentials (${name})`}</span>
+        <span>Enter your credentials ({name})</span>
         <button type="button" onClick={() => setOpen(!open)}>
           Edit
         </button>
@@ -486,7 +509,21 @@ function AuthCard({name, value, onChange}: {name: string; value: string; onChang
           </label>
           <div className="api-explorer__input api-explorer__input--secret">
             <LockIcon />
-            <input id="api-explorer-auth" type="password" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value)} />
+            <input
+              id="api-explorer-auth"
+              type={revealed ? 'text' : 'password'}
+              autoComplete="off"
+              spellCheck={false}
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+            />
+            <button
+              type="button"
+              className="api-explorer__reveal"
+              aria-label={revealed ? 'Hide password' : 'Show password'}
+              onClick={() => setRevealed(!revealed)}>
+              {revealed ? <EyeOffIcon /> : <EyeIcon />}
+            </button>
           </div>
           <div className="api-explorer__auth-actions">
             <button type="button" className="api-explorer__button" onClick={() => setOpen(false)}>
@@ -517,11 +554,25 @@ export function useCopy(): [boolean, (text: string) => void] {
   ];
 }
 
-function RequestPanel({req, comment, expanded, onExpand}: {req: BuiltRequest; comment: string; expanded: boolean; onExpand: () => void}) {
+function RequestPanel({
+  req,
+  shown,
+  comment,
+  expanded,
+  onExpand,
+}: {
+  req: BuiltRequest;
+  /** The request as displayed, with the credential masked. */
+  shown: BuiltRequest;
+  comment: string;
+  expanded: boolean;
+  onExpand: () => void;
+}) {
   const [language, setLanguage] = useState<(typeof SNIPPETS)[number]['id']>('curl');
   const [copied, copy] = useCopy();
-  const code =
-    language === 'curl' ? curlSnippet(req) : language === 'javascript' ? javascriptSnippet(req, comment) : pythonSnippet(req, comment);
+  const snippet = (r: BuiltRequest) =>
+    language === 'curl' ? curlSnippet(r) : language === 'javascript' ? javascriptSnippet(r, comment) : pythonSnippet(r, comment);
+  const code = snippet(shown);
   const prism = SNIPPETS.find((s) => s.id === language)!.prism;
   return (
     <div className={clsx('api-explorer__panel', expanded && 'api-explorer__panel--expanded')}>
@@ -543,7 +594,7 @@ function RequestPanel({req, comment, expanded, onExpand}: {req: BuiltRequest; co
         <button type="button" className="api-explorer__icon-button" aria-label={expanded ? 'Collapse' : 'Expand'} onClick={onExpand}>
           <ExpandIcon />
         </button>
-        <button type="button" className="api-explorer__icon-button" aria-label="Copy request" onClick={() => copy(code)}>
+        <button type="button" className="api-explorer__icon-button" aria-label="Copy request" onClick={() => copy(snippet(req))}>
           {copied ? <CheckIcon /> : <CopyIcon />}
         </button>
       </div>
@@ -750,10 +801,14 @@ export default function ApiExplorer({endpoint}: {endpoint: Endpoint}): React.JSX
   const [result, setResult] = useState<Result>({state: 'idle'});
   const [expanded, setExpanded] = useState(false);
   const req = buildRequest(endpoint, state, auth);
+  const shownReq = auth ? buildRequest(endpoint, state, maskSecret(auth)) : req;
 
+  // Like Fern, the credential lasts as long as the tab (sessionStorage), not
+  // across browser restarts; drop the copy earlier builds kept for good.
   useEffect(() => {
     try {
-      setAuth(window.localStorage.getItem(AUTH_KEY) ?? '');
+      window.localStorage.removeItem(AUTH_KEY);
+      setAuth(window.sessionStorage.getItem(AUTH_KEY) ?? '');
     } catch {
       /* storage unavailable */
     }
@@ -762,7 +817,7 @@ export default function ApiExplorer({endpoint}: {endpoint: Endpoint}): React.JSX
   const saveAuth = (value: string) => {
     setAuth(value);
     try {
-      window.localStorage.setItem(AUTH_KEY, value);
+      window.sessionStorage.setItem(AUTH_KEY, value);
     } catch {
       /* storage unavailable */
     }
@@ -855,6 +910,7 @@ export default function ApiExplorer({endpoint}: {endpoint: Endpoint}): React.JSX
           <div className="api-explorer__panels">
             <RequestPanel
               req={req}
+              shown={shownReq}
               comment={`${endpoint.title} (${endpoint.method} ${endpoint.displayPath})`}
               expanded={expanded}
               onExpand={() => setExpanded(!expanded)}

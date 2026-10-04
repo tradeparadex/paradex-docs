@@ -452,6 +452,27 @@ html.api-explorer-open {
   padding-left: 0.5rem;
 }
 
+/* Fern's show/hide toggle at the right end of the credential field. */
+.api-explorer__reveal {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.api-explorer__reveal:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .api-explorer__clear {
   display: inline-flex;
   margin-right: 0.4rem;

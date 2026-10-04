@@ -1597,6 +1597,14 @@ html.api-code-modal-open {
   }
 }
 
+/* Fern kept 16px free after the title on phones, so the bleed does not
+   carry Try it out to the card's edge. */
+@media (max-width: 996px) {
+  .api-endpoint .api-handshake-card__title {
+    padding-right: 16px;
+  }
+}
+
 .api-handshake-card__body {
   padding: 16px;
 }

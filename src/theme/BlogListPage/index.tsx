@@ -31,7 +31,10 @@ let anchorPages: Promise<Record<string, unknown>> | undefined;
 
 function loadAnchorPages(basePath: string): Promise<Record<string, unknown>> {
   anchorPages ??= fetch(`${basePath}/anchors.json`)
-    .then((response) => (response.ok ? response.json() : {}))
+    .then((response) => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    })
     .catch(() => {
       anchorPages = undefined; // retry on the next link
       return {};
@@ -44,12 +47,12 @@ function loadAnchorPages(basePath: string): Promise<Record<string, unknown>> {
  * heading or date (`#<id>`) on the page that holds it. Both open /page/N.
  */
 function useFernPageHash(basePath: string): void {
-  const {hash, pathname} = useLocation();
+  const {hash, pathname, search} = useLocation();
   const history = useHistory();
   useEffect(() => {
     const page = /^#page-(\d+)$/.exec(hash)?.[1];
     if (page) {
-      history.replace(pageUrl(basePath, Number(page)));
+      history.replace(`${pageUrl(basePath, Number(page))}${search}`);
       return undefined;
     }
     let id = '';
@@ -64,12 +67,12 @@ function useFernPageHash(basePath: string): void {
       const target = pages[id];
       if (!active || typeof target !== 'number' || pageUrl(basePath, target) === pathname) return;
       // Docusaurus scrolls to the hash once the new page has rendered.
-      history.replace(`${pageUrl(basePath, target)}${hash}`);
+      history.replace(`${pageUrl(basePath, target)}${search}${hash}`);
     });
     return () => {
       active = false;
     };
-  }, [hash, pathname, basePath, history]);
+  }, [hash, pathname, search, basePath, history]);
 }
 
 export default function BlogListPage(props: Props): ReactNode {

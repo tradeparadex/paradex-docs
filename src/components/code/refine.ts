@@ -630,12 +630,28 @@ function refineGeneric(lines: Token[][], language: string): Token[][] {
   });
 }
 
+const HTTP_METHOD = /^(?:CONNECT|DELETE|GET|HEAD|OPTIONS|PATCH|POST|PUT|TRACE)(?=\s)/i;
+
+/**
+ * HTTP: Shiki colors a request line's method (keyword.control) and leaves the
+ * target plain. Prism has no http grammar loaded, so each line is one plain token.
+ */
+function refineHttp(lines: Token[][]): Token[][] {
+  return lines.map((line) => {
+    const [first, ...rest] = line;
+    const method = first && isPlain(first) ? HTTP_METHOD.exec(first.content)?.[0] : undefined;
+    if (!method) return line;
+    return [{types: ['keyword-control'], content: method}, {...first, content: first.content.slice(method.length)}, ...rest];
+  });
+}
+
 export function refineTokens(lines: Token[][], language: string, code?: string): Token[][] {
   if (isShell(language)) {
     const source = code ?? lines.map((l) => l.map((t) => (t.empty ? '' : t.content)).join('')).join('\n');
     return tokenizeBash(source);
   }
   if (language === 'json') return refineJson(lines);
+  if (language === 'http') return refineHttp(lines);
   if (language === 'python') return refinePython(lines);
   if (isPlainText(language)) return lines;
   return refineGeneric(lines, language);

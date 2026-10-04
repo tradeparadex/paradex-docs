@@ -1429,11 +1429,21 @@ hr {
   margin: 0 auto;
 }
 
-/* Fern shows a REST endpoint in the guide's 640px column until it has room
-   for two columns (WebSocket channels keep the wide one). */
-@media (max-width: 799px) {
+/* Up to 768px Fern sizes a REST endpoint's column to its content: a page
+   whose longest unwrapped line (description, parameters, code samples)
+   fits in 640px keeps the guide's centred 640px column, a longer one widens
+   it up to the full width. WebSocket channels always take the full width. */
+@media (max-width: 768px) {
   .doc-layout--api:not(:has(.api-endpoint--ws)) .doc-item-container {
-    max-width: 640px;
+    width: fit-content;
+    min-width: min(640px, 100%);
+    max-width: 100%;
+  }
+
+  /* The URL line under the title is cut short with an ellipsis (Fern hides
+     it here), so it never widens the column. */
+  .doc-layout--api .api-endpoint__url {
+    contain: inline-size;
   }
 }
 

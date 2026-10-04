@@ -172,6 +172,21 @@ body {
 
 /* ---------- Header: logo / search / links, then tabs ---------- */
 
+/* As on Fern, the header is fixed rather than sticky, so it stays in place
+   when a page wider than a phone is panned sideways. The page starts at the
+   header's height, under its 1px bottom border. */
+.navbar--fixed-top {
+  position: fixed;
+  right: 0;
+  left: 0;
+}
+
+@media screen {
+  #__docusaurus {
+    padding-top: var(--ifm-navbar-height);
+  }
+}
+
 /* Whatever is scrolled into view, by an anchor jump or by moving the
    keyboard focus, stops 16px below the header (Fern's scroll padding). */
 html {
@@ -181,9 +196,7 @@ html {
 .navbar {
   flex-direction: column;
   align-items: stretch;
-  /* The 1px bottom border overlaps the page, as Fern's fixed header did. */
   height: calc(var(--ifm-navbar-height) + 1px);
-  margin-bottom: -1px;
   padding: 0;
   border-bottom: 1px solid var(--grayscale-a3);
   /* Translucent glass, as on Fern. */

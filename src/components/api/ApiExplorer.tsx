@@ -536,10 +536,28 @@ export function ObjectFields({
     delete next[name];
     onChange(next);
   };
+  const fields = useRef<HTMLDivElement>(null);
+  // Adding the last optional properties removes the menu's button, so focus
+  // moves to the first field added instead of falling back to the page.
+  const focusField = useRef<string | null>(null);
+  useEffect(() => {
+    const name = focusField.current;
+    focusField.current = null;
+    if (!name) return;
+    const field = fields.current?.querySelector(`:scope > [data-field="${CSS.escape(name)}"]`);
+    field?.querySelector<HTMLElement>('.api-explorer__control :is(input, textarea, select, button)')?.focus();
+  });
+  const add = (props: Property[]) => {
+    if (props.length === hidden.length) focusField.current = props[0].name;
+    onChange({...value, ...Object.fromEntries(props.map((p) => [p.name, emptyValue(p.shape)]))});
+  };
   return (
-    <div className={clsx('api-explorer__fields', nested && 'api-explorer__fields--nested')}>
+    <div className={clsx('api-explorer__fields', nested && 'api-explorer__fields--nested')} ref={fields}>
       {shown.map((prop) => (
-        <div key={prop.name} className={clsx('api-explorer__field', isBlock(prop.shape) && 'api-explorer__field--block')}>
+        <div
+          key={prop.name}
+          className={clsx('api-explorer__field', isBlock(prop.shape) && 'api-explorer__field--block')}
+          data-field={prop.name}>
           <FieldLabel prop={prop} />
           <div className="api-explorer__control">
             <FieldValue shape={prop.shape} value={value[prop.name]} onChange={(v) => set(prop.name, v)} />
@@ -551,13 +569,7 @@ export function ObjectFields({
           </div>
         </div>
       ))}
-      {hidden.length > 0 && (
-        <OptionalProperties
-          properties={hidden}
-          onAdd={(p) => set(p.name, emptyValue(p.shape))}
-          onAddAll={() => onChange({...value, ...Object.fromEntries(hidden.map((p) => [p.name, emptyValue(p.shape)]))})}
-        />
-      )}
+      {hidden.length > 0 && <OptionalProperties properties={hidden} onAdd={(p) => add([p])} onAddAll={() => add(hidden)} />}
     </div>
   );
 }

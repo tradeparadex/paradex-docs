@@ -440,6 +440,7 @@ a.cyan-cards:hover {
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
+  scroll-margin-top: var(--fern-anchor-offset);
 }
 
 .fern-tabs__list::-webkit-scrollbar {
@@ -460,7 +461,6 @@ a.cyan-cards:hover {
   color: var(--grayscale-a11);
   cursor: pointer;
   white-space: nowrap;
-  scroll-margin-top: var(--fern-anchor-offset);
 }
 
 .fern-tabs__tab:hover {

@@ -23,9 +23,10 @@ export default function SearchDialog(): React.JSX.Element {
   const [open, setOpen] = useState(false);
   const panel = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
-  const {pathname} = useLocation();
+  const {pathname, key} = useLocation();
 
-  useEffect(() => setOpen(false), [pathname]);
+  // Close on every navigation, also to a hit on the current page (same path).
+  useEffect(() => setOpen(false), [pathname, key]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

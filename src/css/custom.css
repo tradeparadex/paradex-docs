@@ -363,8 +363,10 @@ a.navbar-cta {
   background: var(--paradex-accent);
 }
 
-/* Mobile: hamburger + logo, tabs move into the drawer. */
-@media (max-width: 996px) {
+/* Mobile: hamburger + logo, tabs move into the drawer. As on Fern, up to
+   1023px (Docusaurus switches at 996px; see src/components/windowSize.ts).
+   The search box stops growing at 640px, the menu button stays right. */
+@media (max-width: 1023px) {
   :root,
   html[data-theme='dark'] {
     --ifm-navbar-height: 64px;
@@ -373,7 +375,7 @@ a.navbar-cta {
   }
 
   .navbar__inner {
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 640px) minmax(max-content, 1fr);
     gap: 0.75rem;
   }
 
@@ -393,7 +395,7 @@ a.navbar-cta {
 }
 
 /* Tablets: Fern's header is 72px tall with 24px gutters from 768px. */
-@media (min-width: 768px) and (max-width: 996px) {
+@media (min-width: 768px) and (max-width: 1023px) {
   :root,
   html[data-theme='dark'] {
     --ifm-navbar-height: 72px;
@@ -479,7 +481,7 @@ a.navbar-cta {
 
 /* As on Fern, the page slides out to the left with the menu, dimmed, and
    its right edge stays in view beside it. */
-@media (max-width: 996px) {
+@media (max-width: 1023px) {
   .main-wrapper,
   .footer {
     transition: transform 0.2s ease, opacity 0.2s ease;
@@ -1442,13 +1444,26 @@ main:has(> .container > .doc-layout--no-sidebar) {
   max-width: 100%;
 }
 
+/* Fern shows the sidebar from 1024px, Docusaurus from 997px: until then the
+   page keeps the whole window and the sidebar is in the menu's drawer (see
+   src/theme/DocSidebar/Desktop). */
+@media (max-width: 1023px) {
+  aside.theme-doc-sidebar-container {
+    display: none;
+  }
+
+  main[class*='docMainContainer'] {
+    max-width: 100%;
+  }
+}
+
 @media (min-width: 768px) {
   .doc-layout {
     --page-padding: 24px;
   }
 }
 
-@media (min-width: 997px) {
+@media (min-width: 1024px) {
   .doc-layout {
     --page-padding: 32px;
   }
@@ -1627,7 +1642,7 @@ main:has(> .container > .doc-layout--no-sidebar) {
   }
 }
 
-@media (min-width: 997px) {
+@media (min-width: 1024px) {
   .doc-layout--reference .theme-doc-footer {
     margin-top: 280px;
   }
@@ -2591,7 +2606,7 @@ html.mermaid-zoom-open {
   margin-bottom: 32px;
 }
 
-@media (max-width: 996px) {
+@media (max-width: 1023px) {
   .changelog-layout {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -2604,7 +2619,7 @@ html.mermaid-zoom-open {
 /* As on Fern: 64px gutters beside the sidebar, and "On this page" from
    1280px. Until both fit, the column and the TOC shrink together, in
    proportion to their widths (640:288). */
-@media (min-width: 997px) {
+@media (min-width: 1024px) {
   .changelog-main {
     max-width: calc(640px + 2 * 64px);
     padding-inline: 64px;

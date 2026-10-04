@@ -72,8 +72,12 @@ export function AnchorTargets({children}: {children: React.ReactNode}) {
   return <AnchorTarget.Provider value={target}>{children}</AnchorTarget.Provider>;
 }
 
-/** Fern's link button beside a heading or property name: links to it and copies the URL. */
-function AnchorLink({id}: {id: string}) {
+/**
+ * Fern's link button beside a heading or property name: links to it and
+ * copies the URL. A property row's button also scrolls the row under the
+ * header; a heading's leaves the page where it is, as on Fern.
+ */
+export function AnchorLink({id, heading = false}: {id: string; heading?: boolean}) {
   const history = useHistory();
   const [copied, copy] = useCopy();
   return (
@@ -87,8 +91,14 @@ function AnchorLink({id}: {id: string}) {
         if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         e.preventDefault();
         copy(`${window.location.origin}${window.location.pathname}#${id}`);
-        // Fern replaced the history entry rather than adding one.
-        history.replace({pathname: history.location.pathname, search: history.location.search, hash: `#${id}`});
+        // Fern replaced the history entry rather than adding one. A router
+        // navigation would scroll to the hash, so a heading's goes around it.
+        if (heading) {
+          const {pathname, search} = window.location;
+          window.history.replaceState(window.history.state, '', `${pathname}${search}#${id}`);
+        } else {
+          history.replace({pathname: history.location.pathname, search: history.location.search, hash: `#${id}`});
+        }
       }}>
       {copied ? <CheckIcon /> : <LinkIcon />}
     </a>
@@ -375,7 +385,7 @@ export function Section({
       <h3 className="api-section__title">
         {title}
         {icon}
-        {anchor && <AnchorLink id={anchor} />}
+        {anchor && <AnchorLink id={anchor} heading />}
       </h3>
       {children}
     </section>

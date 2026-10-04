@@ -13,7 +13,7 @@ import WebSocketExplorer from './WebSocketExplorer';
 import MethodBadge from './MethodBadge';
 import {ArrowDownIcon, ArrowUpIcon, ArrowUpRightIcon, ChevronDownIcon, CloseIcon, PlayIcon, WifiIcon} from './icons';
 import {CodePanel, CopyButton, LanguageMenu, StatusBadge, StatusSelect, useLanguage, type StatusOption} from './panels';
-import {AnchorPart, AnchorTargets, BodySchema, Html, PropertyRow, Properties, Section} from './schema';
+import {AnchorLink, AnchorPart, AnchorTargets, BodySchema, Html, PropertyRow, Properties, Section} from './schema';
 import type {Endpoint, Property} from './types';
 
 export {MethodBadge, PropertyRow, Properties};
@@ -294,6 +294,7 @@ function HandshakeCard({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt: () => 
             <span className="api-handshake-card__icon">
               <WifiIcon />
             </span>
+            <AnchorLink id="handshake" heading />
           </span>
           <span className="api-handshake-card__try">
             <TryItButton onClick={onTryIt} />

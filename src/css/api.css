@@ -700,13 +700,24 @@
   transform: none;
 }
 
+/* The Handshake card's title: hovering anywhere on its row shows the
+   button, beside the label. */
+.api-handshake-card__label {
+  position: relative;
+}
+
+.api-handshake-card__label > .api-anchor {
+  --api-anchor-gap: 12px;
+  top: 50%;
+}
+
 .api-anchor svg {
   width: 16px;
   height: 16px;
   color: var(--api-a11);
 }
 
-/* After a click it stays a moment, with a tick, at the row it scrolled to. */
+/* After a click it stays a moment, with a tick. */
 .api-anchor--copied {
   display: flex;
   border-color: var(--api-accent-a5);
@@ -719,7 +730,8 @@
 
 @media (hover: hover) {
   .api-prop__header:hover > .api-anchor,
-  .api-section__title:hover > .api-anchor {
+  .api-section__title:hover > .api-anchor,
+  .api-handshake-card__title:hover .api-anchor {
     display: flex;
   }
 }
@@ -729,6 +741,14 @@
 @media (min-width: 768px) and (max-width: 996px) {
   .api-section__title > .api-anchor,
   .api-props:not(.api-props--nested) > .api-prop > .api-prop__header > .api-anchor {
+    right: auto;
+    left: calc(100% + var(--api-anchor-gap));
+  }
+}
+
+/* Nor is there room left of the Handshake card's title. */
+@media (max-width: 996px) {
+  .api-handshake-card__label > .api-anchor {
     right: auto;
     left: calc(100% + var(--api-anchor-gap));
   }

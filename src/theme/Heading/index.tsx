@@ -32,10 +32,15 @@ export default function Heading({as: As, id, className, children, ...props}: Pro
     );
   }
   brokenLinks.collectAnchor(id);
+  // Server-rendered only, and hidden: the site search's indexer takes each
+  // section's hash from the heading's a.hash-link (without one, a heading
+  // hit opens the top of the page). Hydration swaps it for the button.
+  const searchHash = !isBrowser && <a href={`#${id}`} className="hash-link" hidden aria-hidden="true" tabIndex={-1} />;
   // A step title links through its number badge instead.
   if (stepTitle) {
     return (
       <As {...props} id={id} className={clsx('anchor', anchorTargetClassName, className)}>
+        {searchHash}
         {children}
       </As>
     );
@@ -57,6 +62,7 @@ export default function Heading({as: As, id, className, children, ...props}: Pro
       {/* Out of the tab order and the accessibility tree, as Fern's (a
           tooltip). Rendered once hydrated: it needs JS, and the changelog
           feed, made from the built HTML, stays free of icons. */}
+      {searchHash}
       {isBrowser && (
         <a
           href={`#${id}`}

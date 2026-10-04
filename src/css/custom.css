@@ -197,9 +197,11 @@ body {
   height: var(--header-row-height);
   padding: 0 var(--ifm-navbar-padding-horizontal);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 640px) minmax(0, 1fr);
+  /* As on Fern, the logo and the links keep their width and the search box
+     shrinks when the row is short of room. */
+  grid-template-columns: minmax(max-content, 1fr) minmax(0, 640px) minmax(max-content, 1fr);
   align-items: center;
-  gap: 1.5rem;
+  gap: 16px;
 }
 
 .navbar__brand {

@@ -662,9 +662,9 @@
   }
 }
 
-/* Without the sidebar the column has no gutter; nested rows still have
-   room on their left. */
-@media (min-width: 768px) and (max-width: 996px) {
+/* Up to 1255px the column has no gutter, or under 36px beside the sidebar;
+   nested rows still have room on their left. */
+@media (min-width: 768px) and (max-width: 1255px) {
   .api-section__title > .api-anchor,
   .api-props:not(.api-props--nested) > .api-prop > .api-prop__header > .api-anchor {
     right: auto;
@@ -691,9 +691,9 @@
 }
 
 /* The row a link leads to is tinted for two seconds, then fades. Fern's tint
-   ran from 8px outside the row's content to 4px above its bottom: the box
-   below spans the row's padding box that way, and its own padding (the
-   row's) is left unpainted. */
+   ran from 8px outside the row's content to 4px above its bottom, with 4px
+   corners: the box below spans the row's padding box that way, and only its
+   content box (inside the row's padding) is painted. */
 .api-prop--flash {
   position: relative;
   isolation: isolate;
@@ -708,8 +708,14 @@
   padding: inherit;
   background: var(--api-accent-a2);
   background-clip: content-box;
+  clip-path: inset(0 round 4px) content-box;
   pointer-events: none;
   animation: api-prop-flash 2.7s ease-out forwards;
+}
+
+/* After a click or an in-page link it fades in first. */
+.api-prop--flash-in::before {
+  animation-name: api-prop-flash-in;
 }
 
 /* Nested rows keep 12px free on the right. */
@@ -717,8 +723,30 @@
   margin-right: 4px;
 }
 
+/* Here the column runs from the sidebar to the right edge of the window. */
+@media (min-width: 997px) and (max-width: 1199px) {
+  .api-props:not(.api-props--nested) > .api-prop--flash::before {
+    margin-inline: 0;
+  }
+}
+
 @keyframes api-prop-flash {
   0%,
+  74% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes api-prop-flash-in {
+  0% {
+    opacity: 0;
+  }
+
+  26%,
   74% {
     opacity: 1;
   }

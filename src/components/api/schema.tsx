@@ -1,7 +1,7 @@
 // Schema tables of the API reference: property rows, allowed values and the
 // nested "Show N properties" groups, laid out as on Fern.
 
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import React, {createContext, useContext, useEffect, useRef, useState} from 'react';
 import clsx from 'clsx';
 import {useHistory, useLocation} from '@docusaurus/router';
 import {CheckIcon, LinkIcon, MinusIcon, PlusIcon, SearchIcon, CloseIcon} from './icons';
@@ -18,7 +18,8 @@ export function AnchorPart({part, children}: {part: string; children: React.Reac
 }
 
 // The id the URL hash points at; a new object on every navigation to it.
-type Target = {id: string};
+// Fern faded the tint in, except for the hash the page was loaded with.
+type Target = {id: string; fadeIn: boolean};
 const AnchorTarget = createContext<Target | null>(null);
 
 /** True when the target is the row at `parts` or anything inside it. */
@@ -45,17 +46,26 @@ function decodeHash(hash: string): string {
 export function AnchorTargets({children}: {children: React.ReactNode}) {
   const {hash, key} = useLocation();
   const [target, setTarget] = useState<Target | null>(null);
+  const loaded = useRef(false);
   useEffect(() => {
-    setTarget(hash.length > 1 ? {id: decodeHash(hash)} : null);
+    setTarget(hash.length > 1 ? {id: decodeHash(hash), fadeIn: loaded.current} : null);
+    loaded.current = true;
   }, [hash, key]);
   useEffect(() => {
     const el = target && document.getElementById(target.id);
     if (!el?.closest('.api-endpoint')) return;
     el.scrollIntoView({block: 'start'});
     if (el.classList.contains('api-prop')) {
-      el.classList.remove('api-prop--flash');
+      el.classList.remove('api-prop--flash', 'api-prop--flash-in');
       void el.offsetWidth; // restart the animation
       el.classList.add('api-prop--flash');
+      if (target.fadeIn) el.classList.add('api-prop--flash-in');
+      // Leave nothing behind once it has faded.
+      el.addEventListener('animationend', function done(e) {
+        if (e.target !== el) return;
+        el.classList.remove('api-prop--flash', 'api-prop--flash-in');
+        el.removeEventListener('animationend', done);
+      });
     }
   }, [target]);
   return <AnchorTarget.Provider value={target}>{children}</AnchorTarget.Provider>;

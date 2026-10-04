@@ -2,7 +2,8 @@
  * Keep the active sidebar entry in view after navigation, as Fern did:
  * deep pages (e.g. an instrument under Instruments Guide) would otherwise
  * open with the sidebar scrolled to the top. Only the sidebar's own scroll
- * container moves; the page itself stays at the top.
+ * container moves; the page itself stays at the top. The phone menu stays
+ * where the reader left it, as on Fern.
  */
 import type {ClientModule} from '@docusaurus/types';
 
@@ -17,7 +18,9 @@ function scrollParent(el: HTMLElement): HTMLElement | null {
 const clientModule: ClientModule = {
   onRouteDidUpdate() {
     window.requestAnimationFrame(() => {
-      const active = document.querySelector<HTMLElement>('.theme-doc-sidebar-menu a.menu__link[aria-current="page"]');
+      const active = document.querySelector<HTMLElement>(
+        '.theme-doc-sidebar-menu a.menu__link[aria-current="page"]:not(.navbar-sidebar *)',
+      );
       const container = active && scrollParent(active);
       if (!active || !container) return;
       const box = active.getBoundingClientRect();

@@ -301,16 +301,30 @@ export function Tabs({children}: {children?: ReactNode}): React.JSX.Element {
   }, [reveal]);
 
   // Bring the selected tab into an overflowing row, to its nearest edge as
-  // Fern does. Only the row scrolls, never the page.
+  // Fern does when a tab is picked; also on a link to it, where Fern leaves
+  // the tab hidden past the edge. Only the row scrolls, never the page. Align
+  // again as the row settles (after a #tab load the "Show all tabs" button
+  // mounts and narrows it by 24px; the web font changes the tabs' widths),
+  // unless the reader has scrolled the row since.
   useEffect(() => {
     const row = list.current;
     const tab = row?.children[active];
-    if (!row || !tab) return;
-    const outer = row.getBoundingClientRect();
-    const inner = tab.getBoundingClientRect();
-    if (inner.left < outer.left) row.scrollLeft -= outer.left - inner.left;
-    else if (inner.right > outer.right) row.scrollLeft += inner.right - outer.right;
-  }, [active]);
+    if (!row || !tab) return undefined;
+    let x: number | undefined;
+    const align = () => {
+      if (x !== undefined && row.scrollLeft !== x) return;
+      const outer = row.getBoundingClientRect();
+      const inner = tab.getBoundingClientRect();
+      if (inner.left < outer.left) row.scrollLeft -= outer.left - inner.left;
+      else if (inner.right > outer.right) row.scrollLeft += inner.right - outer.right;
+      x = row.scrollLeft;
+    };
+    align();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(align);
+    [row, ...Array.from(row.children)].forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [active, reveal]);
 
   return (
     <div className="fern-tabs" ref={root}>

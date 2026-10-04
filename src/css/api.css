@@ -1536,17 +1536,12 @@ html.api-code-modal-open {
 
 /* ---------- WebSocket ---------- */
 
+/* On Fern the card bleeds 16px past the text column: on phones it runs
+   from edge to edge. */
 .api-handshake-card {
-  margin: 0 0 48px;
+  margin: 0 -16px 48px;
   border: 1px solid var(--api-a5);
   border-radius: 12px;
-}
-
-/* On Fern the card bleeds 16px past the text column. */
-@media (min-width: 997px) {
-  .api-handshake-card {
-    margin: 0 -16px 48px;
-  }
 }
 
 .api-handshake-card__head {
@@ -1641,6 +1636,13 @@ html.api-code-modal-open {
 
 .api-url-pill__copy {
   margin-right: -4px;
+}
+
+/* On phones the pill shows the channel alone, without the server. */
+@media (max-width: 639px) {
+  .api-url-pill .api-address__server {
+    display: none;
+  }
 }
 
 .api-direction {

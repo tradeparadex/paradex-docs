@@ -139,9 +139,17 @@ hostname's existing DNS record, the CNAME to Fern (`cname.vercel-dns.com`),
 without asking, so the merge is the cutover. Without the secrets the deploy
 fails and docs.paradex.trade keeps serving the last Fern publish.
 
-To go back to Fern, point the `docs` record at `cname.vercel-dns.com` again
-(and remove the custom domain from the Worker). Fern keeps serving its last
-publish until the domain is removed there.
+To go back to Fern, in this order:
+
+1. Stop CI from re-attaching the domain: remove `routes` from
+   `wrangler.toml` on `main` (or disable `publish-docs.yml`). Otherwise the
+   next push to `main` takes the hostname back.
+2. Remove the custom domain from the Worker (Worker > Settings > Domains &
+   Routes). The custom domain owns the `docs` DNS record, so the record
+   can't be changed while it is attached.
+3. Recreate the `docs` CNAME to `cname.vercel-dns.com`.
+
+Fern keeps serving its last publish until the domain is removed there.
 
 ### Rollback
 

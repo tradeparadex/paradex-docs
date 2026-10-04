@@ -6,7 +6,7 @@
 
 import React, {useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type FormEvent, type KeyboardEvent} from 'react';
 import {createPortal} from 'react-dom';
-import clsx from 'clsx';
+import {createRoot} from 'react-dom/client';
 
 declare global {
   interface Window {
@@ -139,10 +139,16 @@ function FollowUp({anchor, vote, onClose, onSubmit}: {
     observer.observe(el);
     window.addEventListener('scroll', follow, {passive: true});
     window.addEventListener('resize', follow);
+    // As with Radix, a touch outside closes on the click that follows it, so
+    // a finger scrolling the page (no click) leaves the form open.
+    const closeOnClick = () => onClose(false);
     const onPointerDown = (event: PointerEvent) => {
+      document.removeEventListener('click', closeOnClick);
       const target = event.target as Node;
       // A click on the button itself toggles the popover instead.
-      if (!el.contains(target) && !anchor.contains(target)) onClose(false);
+      if (el.contains(target) || anchor.contains(target)) return;
+      if (event.pointerType === 'touch') document.addEventListener('click', closeOnClick, {once: true});
+      else onClose(false);
     };
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'Escape') onClose(true);
@@ -154,6 +160,7 @@ function FollowUp({anchor, vote, onClose, onSubmit}: {
       window.removeEventListener('scroll', follow);
       window.removeEventListener('resize', follow);
       document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('click', closeOnClick);
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [anchor, onClose]);
@@ -244,6 +251,30 @@ function FollowUp({anchor, vote, onClose, onSubmit}: {
   );
 }
 
+// Fern's toaster is global, so the toast stays up when the reader moves on to
+// another page; a newer one replaces it.
+let hideToast = () => {};
+
+function showToast() {
+  hideToast();
+  const container = document.body.appendChild(document.createElement('div'));
+  const root = createRoot(container);
+  root.render(
+    <div className="doc-feedback-toast" role="status">
+      <CircleCheck />
+      {THANKS}
+    </div>,
+  );
+  // Four seconds on screen, plus the slide in and out (see custom.css).
+  const timer = window.setTimeout(() => hideToast(), 4400);
+  hideToast = () => {
+    window.clearTimeout(timer);
+    root.unmount();
+    container.remove();
+    hideToast = () => {};
+  };
+}
+
 const VOTES = [
   {vote: 'yes', label: 'Yes', Icon: ThumbUp},
   {vote: 'no', label: 'No', Icon: ThumbDown},
@@ -253,7 +284,6 @@ export default function Feedback({permalink}: {permalink: string}) {
   const [vote, setVote] = useState<Vote>();
   const [open, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
-  const [toast, setToast] = useState(false);
   const buttons = useRef<Partial<Record<Vote, HTMLButtonElement>>>({});
   const thanks = useRef<HTMLSpanElement>(null);
 
@@ -263,13 +293,6 @@ export default function Feedback({permalink}: {permalink: string}) {
     setOpen(false);
     setSent(false);
   }, [permalink]);
-
-  useEffect(() => {
-    if (!toast) return undefined;
-    // Four seconds on screen, plus the slide in and out (see custom.css).
-    const timer = window.setTimeout(() => setToast(false), 4400);
-    return () => window.clearTimeout(timer);
-  }, [toast]);
 
   // Keep keyboard focus in the footer once the form is gone.
   useEffect(() => {
@@ -302,7 +325,7 @@ export default function Feedback({permalink}: {permalink: string}) {
     });
     setOpen(false);
     setSent(true);
-    setToast(true);
+    showToast();
   };
 
   if (sent) {
@@ -311,14 +334,6 @@ export default function Feedback({permalink}: {permalink: string}) {
         <span ref={thanks} tabIndex={-1}>
           {THANKS}
         </span>
-        {toast &&
-          createPortal(
-            <div className="doc-feedback-toast" role="status">
-              <CircleCheck />
-              {THANKS}
-            </div>,
-            document.body,
-          )}
       </div>
     );
   }
@@ -332,7 +347,7 @@ export default function Feedback({permalink}: {permalink: string}) {
             buttons.current[option] = el;
           }}
           type="button"
-          className={clsx(vote === option && `doc-feedback__vote--${option}`)}
+          className={vote === option ? `doc-feedback__vote--${option}` : undefined}
           aria-haspopup="dialog"
           aria-expanded={vote === option && open}
           onClick={() => choose(option)}>

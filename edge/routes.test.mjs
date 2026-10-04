@@ -446,12 +446,15 @@ describe('/_similar-pages (the 404 page\'s suggestions)', () => {
     ]);
   });
 
-  test('cards use the sidebar title; no subtitle without breadcrumbs', async () => {
+  test('cards use the sidebar title and the breadcrumbs with the API\'s title; no subtitle without breadcrumbs', async () => {
     const index = JSON.parse(site.files['/_mcp/search-index.json']);
     index.pages.find((p) => p.url === '/home').navTitle = 'Home';
+    index.pages.find((p) => p.url === '/api/prod/orders/new').navBreadcrumbs = ['API', 'REST Endpoints', 'Orders'];
     site = createSite({ '/_mcp/search-index.json': JSON.stringify(index) });
     const [first] = await (await get('/_similar-pages?path=/homee')).json();
     assert.deepEqual(first, { title: 'Home', href: '/home' });
+    const [order] = await (await get('/_similar-pages?path=/api/prod/orders/neww')).json();
+    assert.deepEqual(order, { title: 'Create order', href: '/api/prod/orders/new', subtitle: 'API › REST Endpoints › Orders' });
   });
 
   test('nothing for the root, no path or a missing index', async () => {

@@ -334,8 +334,9 @@ export function createEdge() {
     } catch {
       // No index, no suggestions: the 404 page shows none.
     }
-    const breadcrumbs = new Map(pages.map((page) => [page.url, page.breadcrumbs]));
-    // Fern titled the cards as the sidebar does.
+    // Fern titled the cards as the sidebar does, and its breadcrumbs kept the
+    // API's title, which the search index's leave out (navBreadcrumbs).
+    const breadcrumbs = new Map(pages.map((page) => [page.url, page.navBreadcrumbs ?? page.breadcrumbs]));
     const candidates = pages.map((page) => ({ url: page.url, title: page.navTitle ?? page.title }));
     const suggestions = suggestRoutes(safeDecode(url.searchParams.get('path') ?? ''), candidates).map(({ title, href }) => {
       const crumbs = breadcrumbs.get(href);

@@ -4,7 +4,8 @@
 //
 //   {"version": 1, "site": "https://docs.paradex.trade",
 //    "pages": [{"url", "title", "kind": "page"|"api"|"changelog", "breadcrumbs": [...],
-//               "navTitle"?: <the navigation's title, when it differs>}],
+//               "navTitle"?: <the navigation's title, when it differs>,
+//               "navBreadcrumbs"?: <with the API's title, on API pages>}],
 //    "sections": [{"page": <index into pages>, "anchor": "<id>"|null,
 //                  "heading": "<text>"|null, "text": "<plain text, <= 4000 chars>"}]}
 //
@@ -119,9 +120,8 @@ export function buildSearchIndex({tree, outDir, siteUrl, titleOf, apiSections, i
     seen.add(node.url);
 
     const kind = isApiLeaf(node) ? 'api' : node.type === 'changelog' || node.type === 'changelogEntry' ? 'changelog' : 'page';
-    const breadcrumbs = ancestorsOf(node)
-      .filter((a) => a.type !== 'root' && a.type !== 'apiReference')
-      .map((a) => a.title);
+    const ancestors = ancestorsOf(node).filter((a) => a.type !== 'root');
+    const breadcrumbs = ancestors.filter((a) => a.type !== 'apiReference').map((a) => a.title);
     const index = pages.length;
     let pageSections;
     try {
@@ -145,8 +145,17 @@ export function buildSearchIndex({tree, outDir, siteUrl, titleOf, apiSections, i
       continue;
     }
     const title = titleOf(node);
-    // The 404 page's suggestions show the sidebar title, as Fern's did.
-    pages.push({url: node.url, title, kind, breadcrumbs, ...(node.title && node.title !== title ? {navTitle: node.title} : {})});
+    // The 404 page's suggestions show the sidebar title and every ancestor,
+    // the API's own one included ("REST Endpoints"), as Fern's did.
+    const navBreadcrumbs = ancestors.map((a) => a.title);
+    pages.push({
+      url: node.url,
+      title,
+      kind,
+      breadcrumbs,
+      ...(node.title && node.title !== title ? {navTitle: node.title} : {}),
+      ...(navBreadcrumbs.length !== breadcrumbs.length ? {navBreadcrumbs} : {}),
+    });
     for (const s of pageSections) sections.push({page: index, anchor: s.anchor ?? null, heading: s.heading ?? null, text: cleanText(s.text ?? '')});
   }
   if (failures) console.warn(`[paradex] search index: ${failures} page(s) skipped`);

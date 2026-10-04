@@ -327,8 +327,18 @@
   pointer-events: none;
 }
 
-/* Tooltip above the button, as Fern's Radix tooltip. */
-.fern-code__action[data-tooltip]::after {
+/* Tooltip above the button, as Fern's Radix tooltip: centred on it and kept
+   6px inside the viewport (CodeActions.tsx measures the room on either side).
+   It only exists while shown, so a hidden label never widens the page. */
+.fern-code__action[data-tooltip]:hover::after,
+.fern-code__action[data-tooltip]:focus-visible::after,
+.fern-code__action--done[data-tooltip]::after {
+  --fern-tooltip-shift: clamp(
+    6px + 50% - var(--fern-tooltip-left, 100vw),
+    0px,
+    var(--fern-tooltip-right, 100vw) - 6px - 50%
+  );
+
   content: attr(data-tooltip);
   position: absolute;
   bottom: calc(100% + 6px);
@@ -345,24 +355,21 @@
   font-weight: 400;
   line-height: 1.5;
   white-space: nowrap;
-  opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, 2px);
-  transition: opacity 0.12s, transform 0.12s;
+  transform: translateX(calc(-50% + var(--fern-tooltip-shift)));
+  animation: fern-code-tooltip 0.12s 0.3s backwards;
 }
 
-.fern-code__action[data-tooltip]:hover::after,
-.fern-code__action[data-tooltip]:focus-visible::after {
-  opacity: 1;
-  transform: translate(-50%, 0);
-  transition-delay: 0.3s;
+/* "Copied!" shows at once, also when the tap that copied started the hover. */
+.fern-code__action.fern-code__action--done[data-tooltip]::after {
+  animation-delay: 0s;
 }
 
-.fern-code__action--done[data-tooltip]::after,
-.fern-code__action--done[data-tooltip]:hover::after {
-  opacity: 1;
-  transform: translate(-50%, 0);
-  transition-delay: 0s;
+@keyframes fern-code-tooltip {
+  from {
+    opacity: 0;
+    translate: 0 2px;
+  }
 }
 
 /* ---------- "Report incorrect code" popover ---------- */

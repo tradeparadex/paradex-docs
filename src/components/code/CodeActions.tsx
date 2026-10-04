@@ -3,11 +3,22 @@
 // a report is sent to the analytics the page feedback already uses (PostHog
 // and the GTM data layer) and offers a prefilled GitHub issue.
 
-import React, {useCallback, useEffect, useRef, useState, type FormEvent} from 'react';
+import React, {useCallback, useEffect, useRef, useState, type FormEvent, type SyntheticEvent} from 'react';
 import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 type CodeSource = {getCode: () => string; getLanguage?: () => string};
+
+// Fern's Radix tooltip is centred above the button and kept 6px inside the
+// viewport. The CSS (code.css) shifts ours by what the room between the
+// button's centre and each edge of the viewport allows.
+function measureTooltipRoom(event: SyntheticEvent<HTMLButtonElement>): void {
+  const button = event.currentTarget;
+  const {left, width} = button.getBoundingClientRect();
+  const centre = left + width / 2;
+  button.style.setProperty('--fern-tooltip-left', `${centre}px`);
+  button.style.setProperty('--fern-tooltip-right', `${document.documentElement.clientWidth - centre}px`);
+}
 
 const FlagIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -55,6 +66,8 @@ export function CopyButton({getCode}: CodeSource): React.JSX.Element {
       className={clsx('fern-code__action', 'fern-code__copy', copied && 'fern-code__action--done')}
       aria-label={copied ? 'Copied!' : 'Copy to clipboard'}
       data-tooltip={copied ? 'Copied!' : 'Copy to clipboard'}
+      onPointerEnter={measureTooltipRoom}
+      onFocus={measureTooltipRoom}
       onClick={onClick}>
       {copied ? <CheckIcon /> : <CopyIcon />}
     </button>
@@ -139,6 +152,8 @@ export function FlagButton({getCode, getLanguage}: CodeSource): React.JSX.Elemen
         aria-haspopup="dialog"
         aria-expanded={open}
         data-tooltip={open ? undefined : 'Report incorrect code'}
+        onPointerEnter={measureTooltipRoom}
+        onFocus={measureTooltipRoom}
         onClick={toggle}>
         <FlagIcon />
       </button>

@@ -77,14 +77,6 @@ const EyeIcon = () => (
     <circle cx="12" cy="12" r="3" />
   </Svg>
 );
-const EyeOffIcon = () => (
-  <Svg>
-    <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
-    <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
-    <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
-    <path d="m2 2 20 20" />
-  </Svg>
-);
 const HelpIcon = () => (
   <Svg>
     <circle cx="12" cy="12" r="9" />
@@ -517,13 +509,16 @@ function AuthCard({name, value, onChange}: {name: string; value: string; onChang
               value={value}
               onChange={(e) => onChange(e.target.value)}
             />
-            <button
-              type="button"
-              className="api-explorer__reveal"
-              aria-label={revealed ? 'Hide password' : 'Show password'}
-              onClick={() => setRevealed(!revealed)}>
-              {revealed ? <EyeOffIcon /> : <EyeIcon />}
-            </button>
+            {/* As on Fern: only once something is typed, and the same eye in both states. */}
+            {value !== '' && (
+              <button
+                type="button"
+                className="api-explorer__reveal"
+                aria-label={revealed ? 'Hide password' : 'Show password'}
+                onClick={() => setRevealed(!revealed)}>
+                <EyeIcon />
+              </button>
+            )}
           </div>
           <div className="api-explorer__auth-actions">
             <button type="button" className="api-explorer__button" onClick={() => setOpen(false)}>

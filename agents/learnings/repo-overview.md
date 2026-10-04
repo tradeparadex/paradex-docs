@@ -59,7 +59,7 @@ These reproduce what Fern served to AI agents. `plugins/llms.mjs` writes them in
 - `yarn dev`: local dev server on http://localhost:3000.
 - `yarn build`: production build into `build/`. Fails on broken internal links, MDX errors and a bad `navigation.yml`. Takes a few minutes (about 750 pages).
 - `yarn serve`: serve the build (search works here).
-- `yarn check`: after a build, checks that every URL the Fern site served (`scripts/legacy-urls.txt`) still resolves to a page or redirect, plus the generated extras.
+- `yarn check`: after a build, checks that every URL the Fern site served (`scripts/legacy-urls.txt`) still resolves to a page or redirect, plus the generated extras and Fern's viewport meta (`minimum-scale=1`, once per page; without it the mobile menu opens off-screen on pages that overflow).
 - `yarn test:edge`: unit tests of the edge layer (MCP server, `.md`/llms.txt routes, search ranking). `node --test edge/` does not work on Node 22 (it runs the directory as a module); use the script.
 - `npx wrangler@4 dev` (after `yarn build`): runs the Worker and the build's static assets in the real Workers runtime on http://localhost:8787, with Cloudflare's `_redirects`, `_headers`, trailing-slash and 404 handling. See `edge/README.md`.
 - `yarn typecheck`: TypeScript check of `src/`.

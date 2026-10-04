@@ -8,6 +8,7 @@
 //      page of the index in releases/changelog/anchors.json.
 //   4. Generated extras exist: llms.txt, specs, feeds, search index, 404.
 //   5. The build fits Cloudflare's limits (redirect rules, files, file size).
+//   6. Every HTML page has one viewport meta, with minimum-scale=1.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -141,6 +142,20 @@ if (fs.existsSync(path.join(build, '_redirects'))) {
   if (files > 20000) fail(`build has ${files} files (Cloudflare's Workers Free limit is 20,000)`);
 }
 if (!fs.readdirSync(build).some((f) => /^search-index.*\.json$/.test(f))) fail('missing search index');
+
+// 6. Viewport meta. Without minimum-scale=1, content wider than a phone
+// widens the layout viewport and the mobile drawer and search dialog open
+// off-screen. docusaurus.config.ts replaces Docusaurus's default tag.
+{
+  const bad = [];
+  for (const file of fs.readdirSync(build, {recursive: true})) {
+    if (!file.endsWith('.html')) continue;
+    const metas = fs.readFileSync(path.join(build, file), 'utf8').match(/<meta[^>]*\sname=["']?viewport\b[^>]*>/g) ?? [];
+    if (metas.length !== 1) bad.push(`${file} (${metas.length} viewport metas)`);
+    else if (!/minimum-scale=1(?![.\d])/.test(metas[0])) bad.push(`${file} (no minimum-scale=1)`);
+  }
+  if (bad.length) fail(`${bad.length} HTML pages need exactly one viewport meta with minimum-scale=1: ${bad.slice(0, 5).join(', ')}`);
+}
 
 if (failures.length) {
   console.error(`✗ ${failures.length} problem(s):`);

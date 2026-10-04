@@ -176,6 +176,15 @@ export default async function createConfig(): Promise<Config> {
       // site name as application-name. twitter:title/description are added
       // per page after the build (plugins/site-plugin.mjs).
       metadata: [
+        // Fern's viewport, which replaces Docusaurus's default one (the later
+        // tag with the same name wins). minimum-scale=1 keeps the layout
+        // viewport at the phone's width when content overflows, so the fixed
+        // navigation drawer and search dialog open on-screen.
+        {
+          name: 'viewport',
+          content:
+            'width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes',
+        },
         {name: 'theme-color', content: '#090a0a'},
         {name: 'twitter:card', content: 'summary_large_image'},
         {name: 'application-name', content: 'Paradex | Documentation'},

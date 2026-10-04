@@ -10561,6 +10561,7 @@ __metadata:
     prism-react-renderer: "npm:^2.4.1"
     react: "npm:^19"
     react-dom: "npm:^19"
+    react-medium-image-zoom: "npm:^5.4.9"
     rehype-katex: "npm:^7"
     remark-math: "npm:^6"
     remark-smartypants: "npm:^3"
@@ -11888,6 +11889,16 @@ __metadata:
   peerDependencies:
     react: "*"
   checksum: 10c0/6b145d1a8d2e7342ceef58dd154aa990322f72a6cb98955ab8ce8e3f0dc7f0c5d00f9c2e4efa8d356c5effed72a130b5588857332b11faba0398f5429b484b04
+  languageName: node
+  linkType: hard
+
+"react-medium-image-zoom@npm:^5.4.9":
+  version: 5.4.9
+  resolution: "react-medium-image-zoom@npm:5.4.9"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/3b4015d30b73318f6c774a7f67cc471a574e046b5e74b0347e22fe315a5ba8e3702e75a67714e44b7e3c0a2ab183fb4e2106b49f4573056f62eda7ed753c615e
   languageName: node
   linkType: hard
 

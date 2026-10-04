@@ -42,8 +42,7 @@
    gutter is what holds the deep-link buttons and the Handshake card's
    bleed, between the sidebar and the window's edge. */
 @media (min-width: 997px) {
-  .doc-layout--api .doc-item-container {
-    max-width: 960px;
+  .doc-layout--api .doc-layout__main {
     padding-inline: 32px;
   }
 }

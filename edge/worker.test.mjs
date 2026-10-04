@@ -76,7 +76,7 @@ describe('Cloudflare Worker (static assets)', () => {
     const res = await worker.fetch(new Request(`${SITE}/docs/security.md`), env);
     assert.deepEqual(seen, ['manual']);
     assert.equal(res.status, 308);
-    assert.equal(res.headers.get('location'), `${SITE}/chain/security.md`);
+    assert.equal(res.headers.get('location'), '/chain/security.md');
   });
 
   test('raw "//host" request paths and fetchPage dot segments only ever read the build (SSRF)', async () => {

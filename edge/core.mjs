@@ -36,6 +36,45 @@ export const DEFAULT_API_REFERENCES = [
   { path: '/api/testnet', spec: '/openapi/rest-endpoints-2.yaml' },
 ];
 
+/**
+ * The security headers Fern's app sent on every response (its Next.js
+ * headers config and middleware), on every response the edge layer builds.
+ * static/_headers sets the same values on the static assets; a test keeps
+ * the two in step. The CSP is Fern's without its CDN origin, and framing is
+ * limited to the site itself (Fern also allowed its own dashboard,
+ * https://*.buildwithfern.com).
+ */
+export const SECURITY_HEADERS = {
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(self), microphone=(self), geolocation=()',
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http: blob:",
+    "style-src 'self' 'unsafe-inline' https: http:",
+    "img-src 'self' https: http: data: blob:",
+    "font-src 'self' https: http: data:",
+    "connect-src 'self' https: http: wss: ws: data: blob:",
+    "media-src 'self' https: http: data: blob:",
+    "object-src 'self' https: http: data: blob:",
+    "frame-src 'self' https: http: data: blob:",
+    "base-uri 'self'",
+    "form-action 'self' https: http:",
+    "frame-ancestors 'self'",
+  ].join('; '),
+};
+
+/** The response with every security header it does not already have. */
+function withSecurityHeaders(response) {
+  const missing = Object.entries(SECURITY_HEADERS).filter(([name]) => !response.headers.has(name));
+  if (missing.length === 0) return response;
+  // A copy: responses from fetch() have immutable headers.
+  const out = new Response(response.body, response);
+  for (const [name, value] of missing) out.headers.set(name, value);
+  return out;
+}
+
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 const MAX_FETCH_REDIRECTS = 5;
 
@@ -131,15 +170,17 @@ export function markdownAssetPath(pathname) {
 
 /**
  * Fern's .md redirect: 308 for a permanent redirect, 307 otherwise, with
- * the request's query kept and X-Robots-Tag: noindex.
+ * the request's query kept and X-Robots-Tag: noindex. Like Fern's, the
+ * Location is a path on this site.
  */
 function markdownRedirect(location, status, url) {
   const target = new URL(location, url);
   if (target.search === '' && url.search !== '') target.search = url.search;
   const permanent = status === 301 || status === 308;
+  const href = target.origin === url.origin ? `${target.pathname}${target.search}${target.hash}` : target.href;
   return new Response(null, {
     status: permanent ? 308 : 307,
-    headers: { Location: target.href, 'X-Robots-Tag': 'noindex' },
+    headers: { Location: href, 'X-Robots-Tag': 'noindex' },
   });
 }
 
@@ -340,6 +381,14 @@ export function createEdge() {
       apiReferences: options.apiReferences ?? DEFAULT_API_REFERENCES,
     };
     const next = () => (typeof options.next === 'function' ? options.next() : options.fetchAsset(request));
+    const response = await route(request, ctx);
+    // Pass-through responses come from the static assets, which get the
+    // security headers from static/_headers.
+    return response === undefined ? next() : withSecurityHeaders(response);
+  }
+
+  /** The edge layer's response, or undefined to pass the request through. */
+  async function route(request, ctx) {
     const url = new URL(request.url);
     const { pathname } = url;
     const method = request.method;
@@ -355,7 +404,7 @@ export function createEdge() {
     if (pathname.endsWith('/llms-full.txt')) return serveLlmsTxt(request, url, ctx, true);
     if (pathname.endsWith('/llms.txt')) return serveLlmsTxt(request, url, ctx, false);
     if (MARKDOWN_SUFFIX.test(pathname)) return serveMarkdown(request, url, ctx);
-    return next();
+    return undefined;
   }
 
   function resetCache() {

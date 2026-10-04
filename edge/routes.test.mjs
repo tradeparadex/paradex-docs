@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { beforeEach, describe, test } from 'node:test';
-import { createEdge, isNegotiablePath, markdownAssetPath, needsEdge } from './core.mjs';
+import { SECURITY_HEADERS, createEdge, isNegotiablePath, markdownAssetPath, needsEdge } from './core.mjs';
 import {
   API_SECTION_LLMS,
   CREATE_ORDER_LLMS,
@@ -200,7 +201,7 @@ describe('.md of redirected URLs', () => {
       const fetchAsset = async () => new Response(null, { status: hostStatus, headers: { location } });
       const res = await edge.handle(new Request(`${SITE}/docs/security.md?lang=python`), { fetchAsset });
       assert.equal(res.status, status, String(hostStatus));
-      assert.equal(res.headers.get('location'), `${SITE}/chain/security.md?lang=python`);
+      assert.equal(res.headers.get('location'), '/chain/security.md?lang=python');
       assert.equal(res.headers.get('x-robots-tag'), 'noindex');
       assert.equal(res.body, null);
     }
@@ -210,7 +211,7 @@ describe('.md of redirected URLs', () => {
     site = createSite({}, { redirects: { '/staking.md': [308, '/trading/trading-fees.md?x=1#stake-dime'] } });
     const res = await get('/staking.md?lang=python');
     assert.equal(res.status, 308);
-    assert.equal(res.headers.get('location'), `${SITE}/trading/trading-fees.md?x=1#stake-dime`);
+    assert.equal(res.headers.get('location'), '/trading/trading-fees.md?x=1#stake-dime');
   });
 });
 
@@ -430,6 +431,42 @@ describe('/.well-known/api-catalog', () => {
     assertHeaders(res, HEADERS);
     assert.equal(res.body, null);
     assert.equal((await get('/.well-known/api-catalog', { method: 'POST' })).status, 405);
+  });
+});
+
+describe('security headers', () => {
+  test('every response the edge layer builds carries them', async () => {
+    site = createSite({}, { redirects: { '/docs/security.md': [301, '/chain/security.md'] } });
+    const responses = [
+      await get('/llms.txt'),
+      await get('/llms.txt', { method: 'HEAD' }),
+      await get('/api/llms-full.txt'),
+      await get('/nope/llms.txt'),
+      await get('/docs/getting-started/what-is-paradex.md'),
+      await get('/docs/security.md'),
+      await get('/nope.md'),
+      await get('/docs', { accept: 'text/markdown' }),
+      await get('/.well-known/api-catalog'),
+      await get('/_mcp/server'),
+    ];
+    for (const res of responses) {
+      for (const [name, value] of Object.entries(SECURITY_HEADERS)) assert.equal(res.headers.get(name), value, `${res.url} ${res.status} ${name}`);
+    }
+  });
+
+  test('are the ones static/_headers sets on the static assets', () => {
+    const file = fs.readFileSync(new URL('../static/_headers', import.meta.url), 'utf8');
+    const block = /^\/\*\n((?: {2}.+\n)+)/m.exec(file)?.[1] ?? '';
+    const headers = Object.fromEntries(block.trim().split('\n').map((line) => line.trim().split(/:\s(.*)/s).slice(0, 2)));
+    assert.deepEqual(headers, SECURITY_HEADERS);
+  });
+
+  test('a header the assets already sent is kept', async () => {
+    const res = await edge.handle(new Request(`${SITE}/x.md`), {
+      fetchAsset: async () => new Response('down', { status: 503, headers: { 'Referrer-Policy': 'no-referrer' } }),
+    });
+    assert.equal(res.headers.get('referrer-policy'), 'no-referrer');
+    assert.equal(res.headers.get('x-content-type-options'), 'nosniff');
   });
 });
 

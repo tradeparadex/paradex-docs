@@ -150,9 +150,9 @@ if (!fs.readdirSync(build).some((f) => /^search-index.*\.json$/.test(f))) fail('
   const bad = [];
   for (const file of fs.readdirSync(build, {recursive: true})) {
     if (!file.endsWith('.html')) continue;
-    const metas = fs.readFileSync(path.join(build, file), 'utf8').match(/<meta[^>]*\sname=["']?viewport\b[^>]*>/g) ?? [];
+    const metas = fs.readFileSync(path.join(build, file), 'utf8').match(/<meta[^>]*\sname=["']?viewport(?=["'\s/>])[^>]*>/g) ?? [];
     if (metas.length !== 1) bad.push(`${file} (${metas.length} viewport metas)`);
-    else if (!/minimum-scale=1(?![.\d])/.test(metas[0])) bad.push(`${file} (no minimum-scale=1)`);
+    else if (!/minimum-scale=1(\.0*)?(?![.\d])/.test(metas[0])) bad.push(`${file} (no minimum-scale=1)`);
   }
   if (bad.length) fail(`${bad.length} HTML pages need exactly one viewport meta with minimum-scale=1: ${bad.slice(0, 5).join(', ')}`);
 }

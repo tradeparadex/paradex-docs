@@ -2,13 +2,18 @@ name: Build Docs
 
 # Builds the site on every pull request. The build fails on broken internal
 # links, MDX errors or a bad navigation.yml, so this is the main docs check.
-# Pull requests from this repository also get a Cloudflare preview URL
-# (a Worker version that is uploaded but not deployed), posted as a comment.
+# The built site is attached to the run as an artifact. There are no
+# Cloudflare previews: a token that can upload a Worker version can also
+# deploy it, and a pull request can edit this workflow, so no deploy
+# credential may be reachable from pull request runs (see edge/README.md).
 on:
   pull_request:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
 
 concurrency:
   group: build-docs-${{ github.ref }}
@@ -51,69 +56,11 @@ jobs:
       - name: Check site structure
         run: yarn check
 
-      - name: Upload site preview
+      - name: Upload built site
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: docs-preview
+          name: docs-site
           path: build
           retention-days: 7
           include-hidden-files: true
-
-  preview:
-    needs: build
-    # Fork pull requests get no secrets, so no preview.
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Download site
-        uses: actions/download-artifact@v4
-        with:
-          name: docs-preview
-          path: build
-
-      # Uploads a version of the Worker without deploying it; production keeps
-      # serving main. Previews only work once main has been deployed once.
-      - name: Upload preview to Cloudflare
-        id: upload
-        # A failed preview must not block the pull request; it is reported
-        # as a warning instead.
-        continue-on-error: true
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          WRANGLER_OUTPUT_FILE_PATH: ${{ runner.temp }}/wrangler-output.json
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo "::notice::No Cloudflare secrets in this repository, so no preview."
-            exit 0
-          fi
-          if ! npx --yes "wrangler@${WRANGLER_VERSION}" versions upload \
-            --preview-alias "pr-${PR_NUMBER}" --message "PR #${PR_NUMBER} ${HEAD_SHA::12}"; then
-            echo "::warning::The Cloudflare preview upload failed; see this step's log."
-            exit 1
-          fi
-          url=$(jq -r 'select(.type == "version-upload") | .preview_alias_url // .preview_url // empty' "$WRANGLER_OUTPUT_FILE_PATH" | tail -n 1)
-          if [ -z "$url" ]; then
-            echo "::warning::No preview URL: preview_urls is off for the paradex-docs Worker."
-            exit 0
-          fi
-          echo "url=$url" >> "$GITHUB_OUTPUT"
-
-      - name: Comment the preview URL
-        if: steps.upload.outputs.url != ''
-        uses: thollander/actions-comment-pull-request@v3
-        with:
-          comment-tag: docs-preview
-          message: |
-            🚀 Docs preview: ${{ steps.upload.outputs.url }}
-
-            Built from ${{ github.event.pull_request.head.sha }}.

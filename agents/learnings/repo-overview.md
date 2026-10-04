@@ -24,7 +24,7 @@ The site is built with [Docusaurus](https://docusaurus.io) (open source) and hos
 | `src/head/` | Inline head scripts: Google Consent Mode defaults, Meta pixel |
 | `static/assets/` | Logos and favicon |
 | `scripts/` | Release-note scaffolding, OpenAPI sync, Swagger conversion, site check |
-| `.github/workflows/` | Build and Cloudflare preview (PRs), publish to Cloudflare (main), Vale, dead links, OpenAPI sync |
+| `.github/workflows/` | Build and checks (PRs), publish to Cloudflare (main, `production` environment), Vale, dead links, OpenAPI sync |
 | `edge/` | The Cloudflare Worker: MCP server, Markdown negotiation, `.md`/llms.txt headers. `edge/README.md` covers hosting, deploys, cutover and rollback |
 
 ## How the site is assembled

@@ -107,15 +107,15 @@ site"}`. Turn it off in both places together.
 CI deploys; nobody needs to run Wrangler by hand.
 
 - **Production**: `.github/workflows/publish-docs.yml` builds and runs
-  `wrangler deploy` on every push to `main`.
-- **Previews**: `.github/workflows/build-docs.yml` uploads every pull
-  request from this repository as a Worker version that is not deployed
-  (`wrangler versions upload --preview-alias pr-<number>`) and comments its
-  URL, `https://pr-<number>-paradex-docs.<subdomain>.workers.dev`, on the
-  pull request. Preview URLs are public, like Fern's were. A failed
-  preview is a warning, not a failed check.
-
-Both pin Wrangler with `WRANGLER_VERSION`.
+  `wrangler deploy` on every push to `main`. It pins Wrangler with
+  `WRANGLER_VERSION`.
+- **Pull requests**: `.github/workflows/build-docs.yml` builds and checks
+  the site and attaches the build to the run as the `docs-site` artifact
+  (serve it with `npx wrangler@4 dev`). There are no Cloudflare previews: a
+  token that can upload a Worker version can also deploy one, Cloudflare
+  tokens cannot be limited to a single Worker, and a pull request can edit
+  the workflow it runs. So no deploy credential may be readable from a pull
+  request run.
 
 ### One-time setup
 
@@ -124,8 +124,11 @@ Both pin Wrangler with `WRANGLER_VERSION`.
    Cloudflare; a CNAME from another DNS provider does not work.
 2. Create an API token from the "Edit Cloudflare Workers" template, limited
    to that account and the `paradex.trade` zone.
-3. Add the repository secrets `CLOUDFLARE_API_TOKEN` (the token) and
-   `CLOUDFLARE_ACCOUNT_ID`.
+3. In Settings > Environments, create (or edit) the `production`
+   environment: set "Deployment branches and tags" to `main` only, and add
+   the environment secrets `CLOUDFLARE_API_TOKEN` (the token) and
+   `CLOUDFLARE_ACCOUNT_ID`. Don't store them as repository secrets: those
+   are readable from any branch's workflow runs, including pull requests.
 4. Subscribe the account to the Workers Paid plan (see "CPU budget").
 
 ### Cutover from Fern
@@ -135,9 +138,6 @@ Worker (`routes` in `wrangler.toml`). Wrangler in CI replaces the
 hostname's existing DNS record, the CNAME to Fern (`cname.vercel-dns.com`),
 without asking, so the merge is the cutover. Without the secrets the deploy
 fails and docs.paradex.trade keeps serving the last Fern publish.
-
-Previews work only after that first deploy: it creates the Worker and turns
-on its preview URLs.
 
 To go back to Fern, point the `docs` record at `cname.vercel-dns.com` again
 (and remove the custom domain from the Worker). Fern keeps serving its last

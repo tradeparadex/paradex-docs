@@ -4,8 +4,9 @@ name: Publish Docs
 # `paradex-docs` Worker in wrangler.toml, which serves the build as static
 # assets on docs.paradex.trade.
 #
-# Needs the repository secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID
-# (see edge/README.md, "Deploying"). The first deploy attaches
+# Needs the secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID in the
+# `production` environment, which only main may deploy to (see edge/README.md,
+# "Deploying"). The first deploy attaches
 # docs.paradex.trade to the Worker and replaces the hostname's existing DNS
 # record.
 on:

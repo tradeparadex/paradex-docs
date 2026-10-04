@@ -13,9 +13,9 @@ compatibility_date = "2026-09-01"
 # be on Cloudflare, in the same account.
 routes = [{ pattern = "docs.paradex.trade", custom_domain = true }]
 workers_dev = false
-# Per-pull-request preview URLs (<alias>-paradex-docs.<subdomain>.workers.dev),
-# uploaded by build-docs.yml with `wrangler versions upload --preview-alias`.
-preview_urls = true
+# No preview URLs: pull requests are not uploaded to Cloudflare (see the
+# Deploying section of edge/README.md).
+preview_urls = false
 
 [assets]
 directory = "build"

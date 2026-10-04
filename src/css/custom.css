@@ -515,8 +515,9 @@ a.navbar-cta {
   line-height: 24px;
 }
 
-.fern-mobile-nav .menu__list-item.sidebar-section-heading:not(:first-child) {
-  margin-top: 20px;
+/* Rows run edge to edge here, the current one included. */
+.fern-mobile-nav__sidebar .menu__list-item-collapsible {
+  border-radius: 0 !important;
 }
 
 .fern-mobile-nav__links {
@@ -635,14 +636,27 @@ a.navbar-cta {
   transform: rotate(180deg);
 }
 
-/* Top-level sections render as headings. */
-.menu__list-item.sidebar-section-heading,
-.menu__list-item.sidebar-section-heading:not(:first-child) {
+/* Top-level sections render as headings, or as a semibold page row when the
+   section has its own page. */
+.menu__list-item:is(.sidebar-section-heading, .sidebar-section-page),
+.menu__list-item:is(.sidebar-section-heading, .sidebar-section-page):not(:first-child) {
   margin-top: 1.5rem;
 }
 
-.theme-doc-sidebar-menu > .sidebar-section-heading:first-child {
+.theme-doc-sidebar-menu > :is(.sidebar-section-heading, .sidebar-section-page):first-child {
   margin-top: 0;
+}
+
+/* A section's page row keeps white text, on its own page too; only that
+   page highlights it (the aria-current rule above), although Docusaurus
+   marks the link active while any page of the section is open. */
+.sidebar-section-page > .menu__list-item-collapsible {
+  border-radius: 8px;
+}
+
+.sidebar-section-page > .menu__list-item-collapsible > .menu__link {
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .sidebar-section-heading > .menu__list-item-collapsible,
@@ -664,18 +678,13 @@ a.navbar-cta {
   pointer-events: none;
 }
 
-.sidebar-section-heading > .menu__list-item-collapsible > a.menu__link[href] {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.sidebar-section-heading > .menu__list {
+:is(.sidebar-section-heading, .sidebar-section-page) > .menu__list {
   margin-top: 0;
   padding-left: 0;
 }
 
 /* Spacing between a section and the pages that follow it. */
-.menu__list-item.sidebar-section-heading + .theme-doc-sidebar-item-link {
+.menu__list-item:is(.sidebar-section-heading, .sidebar-section-page) + .theme-doc-sidebar-item-link {
   margin-top: 1.5rem;
 }
 

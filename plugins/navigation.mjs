@@ -121,10 +121,12 @@ export function loadNavigation({siteDir, contentDir, pagesDir, resolveApi}) {
           label: item.section,
           items: child.items,
           ...(link ? {link} : {}),
-          // Top-level sections render as headings, like Fern's sidebar.
+          // Top-level sections render as headings, like Fern's sidebar; one
+          // with its own page is a semibold page row instead, so it can show
+          // as the current page.
           collapsible: depth > 0,
           collapsed: depth > 0 ? item.collapsed !== false : false,
-          className: depth === 0 ? 'sidebar-section-heading' : undefined,
+          className: depth === 0 ? (link ? 'sidebar-section-page' : 'sidebar-section-heading') : undefined,
           ...(item.icon ? {customProps: {icon: item.icon}} : {}),
         });
       } else if (item.link !== undefined) {

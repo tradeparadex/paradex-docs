@@ -12,7 +12,7 @@ import React, {
 } from 'react';
 import clsx from 'clsx';
 import {useLocation} from '@docusaurus/router';
-import {useAnchorId} from './anchors';
+import {decodeHash, useAnchorId} from './anchors';
 
 type TabProps = {title: string; children?: ReactNode};
 
@@ -220,7 +220,7 @@ export function Tabs({children}: {children?: ReactNode}): React.JSX.Element {
   // follow the router location: a page load with a hash, links and search
   // results alike.
   useEffect(() => {
-    const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+    const target = hash ? document.getElementById(decodeHash(hash)) : null;
     if (!target || !root.current) return;
     const anchors = Array.from(root.current.querySelectorAll(':scope > .fern-tabs__bar > .fern-tabs__anchor'));
     const panels = Array.from(root.current.querySelectorAll<HTMLElement>(':scope > [role=tabpanel]'));

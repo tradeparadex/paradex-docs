@@ -27,12 +27,21 @@ export function useAnchorId(title: ReactNode): string | undefined {
   return id;
 }
 
+/** The id a URL hash names; a malformed escape (#100%) is kept as is instead of throwing. */
+export function decodeHash(hash: string): string {
+  try {
+    return decodeURIComponent(hash.slice(1));
+  } catch {
+    return hash.slice(1);
+  }
+}
+
 /** Calls `onMatch` when the URL hash targets `id` (on load and on change). */
 export function useHashTarget(id: string | undefined, onMatch: () => void): void {
   useEffect(() => {
     if (!id) return undefined;
     const check = () => {
-      if (decodeURIComponent(window.location.hash.slice(1)) === id) {
+      if (decodeHash(window.location.hash) === id) {
         onMatch();
         window.requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({block: 'start'}));
       }

@@ -9,6 +9,7 @@ import {useLocation} from '@docusaurus/router';
 import {ThemeClassNames} from '@docusaurus/theme-common';
 import TOCItems from '@theme/TOCItems';
 import type {TOCItem} from '@docusaurus/mdx-loader';
+import {decodeHash} from '@site/src/components/fern/anchors';
 
 const ACTIVE = 'table-of-contents__link--active';
 // A section becomes current once its heading is this close to the header,
@@ -113,8 +114,8 @@ function useVisibleRange(root: React.RefObject<HTMLDivElement | null>) {
     const container = root.current;
     const parts = container && hash ? tocParts(container) : null;
     if (!parts) return;
-    const target = decodeURIComponent(hash.slice(1));
-    const index = parts.links.findIndex((link) => decodeURIComponent(link.hash.slice(1)) === target);
+    const target = decodeHash(hash);
+    const index = parts.links.findIndex((link) => decodeHash(link.hash) === target);
     if (index < 0) return;
     paint(parts.list, parts.links, index, index, index);
     pinUntil.current = performance.now() + PIN_MS;

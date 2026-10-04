@@ -713,9 +713,9 @@ html.api-explorer-open {
 
 .api-explorer__menu {
   position: absolute;
+  top: calc(100% + 0.25rem);
   left: 0;
   right: 0;
-  bottom: calc(100% + 0.25rem);
   z-index: 2;
   max-height: 310px;
   overflow-y: auto;
@@ -724,6 +724,12 @@ html.api-explorer-open {
   border-radius: 8px;
   background: #0b0c0d;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Above the button when there is no room below it. */
+.api-explorer__menu--up {
+  top: auto;
+  bottom: calc(100% + 0.25rem);
 }
 
 .api-explorer__menu-item {
@@ -750,6 +756,24 @@ html.api-explorer-open {
   min-width: 0;
   display: flex;
   flex-direction: column;
+}
+
+.api-explorer__menu-separator {
+  height: 1px;
+  margin: 0.25rem 0.5rem;
+  background: var(--border-color-strong);
+}
+
+/* "Add all optional properties" */
+.api-explorer__menu-item--all {
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.api-explorer__menu-item--all svg {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
 }
 
 .api-explorer__menu-text code {

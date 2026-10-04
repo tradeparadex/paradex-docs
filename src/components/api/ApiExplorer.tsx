@@ -3,7 +3,7 @@
 // endpoint's schema, shows it as cURL/JavaScript/Python, and sends it
 // straight from the browser (Fern relayed it through its own proxy).
 
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import CodeBlock from '@theme/CodeBlock';
@@ -378,9 +378,35 @@ export function FieldValue({shape, value, onChange}: {shape: Shape; value: unkno
 
 const isBlock = (shape: Shape) => (shape.kind === 'object' && Boolean(shape.properties?.length)) || shape.kind === 'array';
 
-function OptionalProperties({properties, onAdd}: {properties: Property[]; onAdd: (p: Property) => void}) {
+/** The part of the window a menu can show in: its scrolling ancestor's box. */
+function visibleArea(el: HTMLElement): {top: number; bottom: number} {
+  for (let node = el.parentElement; node; node = node.parentElement) {
+    if (/auto|scroll/.test(getComputedStyle(node).overflowY)) {
+      const box = node.getBoundingClientRect();
+      return {top: Math.max(box.top, 0), bottom: Math.min(box.bottom, window.innerHeight)};
+    }
+  }
+  return {top: 0, bottom: window.innerHeight};
+}
+
+function OptionalProperties({
+  properties,
+  onAdd,
+  onAddAll,
+}: {
+  properties: Property[];
+  onAdd: (p: Property) => void;
+  onAddAll: () => void;
+}) {
   const [open, setOpen] = useState(false);
+  // Fern's menu opened below the button, and above it only when it did not
+  // fit there; either way it stays within the form.
+  const [place, setPlace] = useState<{up: boolean; maxHeight?: number}>({up: false});
   const ref = useRef<HTMLDivElement>(null);
+  const menu = useRef<HTMLDivElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const focusFirst = useRef(false);
+  const items = () => Array.from(menu.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]') ?? []);
   useEffect(() => {
     if (!open) return undefined;
     const close = (e: MouseEvent) => {
@@ -389,20 +415,66 @@ function OptionalProperties({properties, onAdd}: {properties: Property[]; onAdd:
     document.addEventListener('mousedown', close);
     return () => document.removeEventListener('mousedown', close);
   }, [open]);
+  const show = () => {
+    setPlace({up: false}); // placed afresh once it has rendered
+    setOpen(true);
+  };
+  useLayoutEffect(() => {
+    if (!open || !ref.current || !menu.current) return;
+    const area = visibleArea(ref.current);
+    const box = ref.current.getBoundingClientRect();
+    const below = area.bottom - box.bottom - 8;
+    const above = box.top - area.top - 8;
+    const height = menu.current.offsetHeight;
+    const up = height > below && above > below;
+    const room = up ? above : below;
+    setPlace({up, maxHeight: height > room ? Math.max(room, 96) : undefined});
+    if (focusFirst.current) items()[0]?.focus();
+    focusFirst.current = false;
+  }, [open]);
+  const choose = (add: () => void) => {
+    add();
+    setOpen(false);
+    trigger.current?.focus();
+  };
+  // Arrow keys move through the items, as in Fern's menu; Escape and Tab close it.
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape' && open) {
+      // Closes the menu only, not the explorer around it.
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(false);
+      trigger.current?.focus();
+    } else if (e.key === 'Tab') {
+      setOpen(false);
+    } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!open) {
+        focusFirst.current = true;
+        show();
+        return;
+      }
+      const list = items();
+      const i = list.indexOf(document.activeElement as HTMLButtonElement);
+      const next = e.key === 'ArrowDown' ? (i + 1) % list.length : (i <= 0 ? list.length : i) - 1;
+      list[next]?.focus();
+    }
+  };
   return (
-    <div className="api-explorer__optional-wrap" ref={ref}>
+    <div className="api-explorer__optional-wrap" ref={ref} onKeyDown={onKeyDown}>
       {open && (
-        <div className="api-explorer__menu" role="menu">
+        <div
+          className={clsx('api-explorer__menu', place.up && 'api-explorer__menu--up')}
+          role="menu"
+          ref={menu}
+          style={{maxHeight: place.maxHeight}}>
           {properties.map((p) => (
             <button
               type="button"
               role="menuitem"
               key={p.name}
               className="api-explorer__menu-item"
-              onClick={() => {
-                onAdd(p);
-                setOpen(false);
-              }}>
+              onClick={() => choose(() => onAdd(p))}>
               <span className="api-explorer__menu-text">
                 <code>{p.name}</code>
                 <span>
@@ -421,9 +493,20 @@ function OptionalProperties({properties, onAdd}: {properties: Property[]; onAdd:
               )}
             </button>
           ))}
+          <div className="api-explorer__menu-separator" role="separator" />
+          <button type="button" role="menuitem" className="api-explorer__menu-item api-explorer__menu-item--all" onClick={() => choose(onAddAll)}>
+            <span className="api-explorer__menu-text">Add all optional properties</span>
+            <PlusCircleIcon />
+          </button>
         </div>
       )}
-      <button type="button" className="api-explorer__more" aria-expanded={open} onClick={() => setOpen(!open)}>
+      <button
+        type="button"
+        className="api-explorer__more"
+        ref={trigger}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => (open ? setOpen(false) : show())}>
         <span className="api-explorer__more-count">
           {properties.length} more optional {properties.length === 1 ? 'property' : 'properties'}
         </span>
@@ -468,7 +551,13 @@ export function ObjectFields({
           </div>
         </div>
       ))}
-      {hidden.length > 0 && <OptionalProperties properties={hidden} onAdd={(p) => set(p.name, emptyValue(p.shape))} />}
+      {hidden.length > 0 && (
+        <OptionalProperties
+          properties={hidden}
+          onAdd={(p) => set(p.name, emptyValue(p.shape))}
+          onAddAll={() => onChange({...value, ...Object.fromEntries(hidden.map((p) => [p.name, emptyValue(p.shape)]))})}
+        />
+      )}
     </div>
   );
 }

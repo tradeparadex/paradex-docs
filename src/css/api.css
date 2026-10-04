@@ -745,8 +745,8 @@
   }
 }
 
-/* Below 997px the column has no gutter; nested rows still have room on
-   their left. */
+/* Below 997px the column's gutter, if any, has no room for the button;
+   nested rows still have room on their left. */
 @media (min-width: 768px) and (max-width: 996px) {
   .api-section__title > .api-anchor,
   .api-props:not(.api-props--nested) > .api-prop > .api-prop__header > .api-anchor {

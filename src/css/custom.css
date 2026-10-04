@@ -997,9 +997,23 @@ a.navbar-cta {
   border-bottom: 0;
 }
 
-/* Images */
+/* Images: centred blocks with 2em above and below (Fern's prose), which
+   collapse with the paragraph margins around them. */
 .theme-doc-markdown img {
-  border-radius: 8px;
+  display: block;
+  height: auto;
+  margin: 2em auto;
+}
+
+/* Click-to-zoom (src/components/fern/Image.tsx): Fern hides the library's
+   zoom buttons and dims the page with its background colour. */
+[data-rmiz-btn-zoom],
+[data-rmiz-btn-unzoom] {
+  display: none;
+}
+
+[data-rmiz-modal] [data-rmiz-modal-overlay='visible'] {
+  background-color: rgba(9, 10, 10, 0.7);
 }
 
 /* Blockquotes: teal bar, italic, muted (Fern's prose style). */

@@ -10,7 +10,8 @@
 //                       object, `class` becomes `className`, and relative
 //                       `src` paths are bundled with require(). A bare
 //                       `{Name}` that the page does not define renders as
-//                       literal text, as Fern did (e.g. `{Expiry}`).
+//                       literal text, as Fern did (e.g. `{Expiry}`). Raw
+//                       <img> renders through the MDX `img` component.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -127,6 +128,14 @@ export function remarkFernJsx() {
           attr.value = expressionValue(`require(${JSON.stringify(IMAGE_LOADER + attr.value)}).default`);
         }
       }
+    });
+    // MDX maps only Markdown images to the `img` component and leaves an
+    // explicit <img> tag alone; clearing its mark lets raw images zoom like
+    // Fern's. An image inside a link stays plain (Fern's /home cards).
+    const isJsx = (node) => node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement';
+    visitParents(tree, (node) => isJsx(node) && node.name === 'img', (node, ancestors) => {
+      if (ancestors.some((a) => a.type === 'link' || (isJsx(a) && a.name === 'a'))) return;
+      if (node.data) delete node.data._mdxExplicitJsx;
     });
   };
 }

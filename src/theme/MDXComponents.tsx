@@ -11,6 +11,7 @@ import {Accordion, AccordionGroup, Badge, Button, ChangelogTags, Frame, Step, St
 import {CodeBlock, CodeBlocks} from '@site/src/components/fern/CodeBlocks';
 import ApiEndpoint, {EndpointRequestSnippet, EndpointResponseSnippet} from '@site/src/components/api/ApiEndpoint';
 import MermaidDiagram from '@site/src/components/MermaidDiagram';
+import Image from '@site/src/components/fern/Image';
 
 /** Markdown tables sit in a bordered card that scrolls sideways, as on Fern. */
 function Table(props: React.ComponentProps<'table'>) {
@@ -24,6 +25,7 @@ function Table(props: React.ComponentProps<'table'>) {
 export default {
   ...MDXComponents,
   table: Table,
+  img: Image,
   Icon,
   Card,
   CardGroup,

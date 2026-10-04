@@ -394,7 +394,8 @@ a.navbar-cta {
 }
 
 /* Mobile menu (src/theme/Navbar/MobileSidebar), as on Fern: a panel from
-   the right under the header, leaving a strip of the page visible. */
+   the right under the header that leaves a 48px strip of the page in view
+   on phones, and is 288px wide from 640px. */
 .navbar__toggle {
   align-items: center;
   justify-content: center;
@@ -421,7 +422,7 @@ a.navbar-cta {
   right: 0;
   bottom: 0;
   left: auto;
-  width: calc(100vw - 49px);
+  width: calc(100vw - 48px);
   height: auto;
   max-width: none;
   background: var(--paradex-bg);
@@ -450,6 +451,16 @@ a.navbar-cta {
   html:has(.navbar-sidebar--show) :is(.main-wrapper, .footer) {
     transform: translateX(calc(49px - 100vw));
     opacity: 0.3;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 996px) {
+  .navbar-sidebar.fern-mobile-nav {
+    width: 288px;
+  }
+
+  html:has(.navbar-sidebar--show) :is(.main-wrapper, .footer) {
+    transform: translateX(-287px);
   }
 }
 

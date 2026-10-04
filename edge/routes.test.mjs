@@ -359,6 +359,17 @@ describe('llms.txt and llms-full.txt', () => {
     assert.equal(await res.text(), '# Page Not Found\n\nThis page does not exist.\n');
   });
 
+  test('an llms file under an old URL prefix is not found, not redirected (Fern ignored redirects there)', async () => {
+    site = createSite({}, { redirects: { '/overview/llms.txt': [301, '/docs/llms.txt'], '/overview/llms-full.txt': [301, '/docs/llms-full.txt'] } });
+    const res = await get('/overview/llms.txt');
+    assert.equal(res.status, 200);
+    assertHeaders(res, { 'content-type': 'text/plain; charset=utf-8', 'x-robots-tag': 'noindex', location: null });
+    assert.equal(await res.text(), '# Page Not Found\n\nThis page does not exist.\n');
+    const full = await get('/overview/llms-full.txt');
+    assert.equal(full.status, 301);
+    assert.equal(full.headers.get('location'), `${SITE}/overview/llms.txt`);
+  });
+
   test('HEAD, OPTIONS and other methods', async () => {
     const head = await get('/llms.txt', { method: 'HEAD', accept: 'text/markdown' });
     assertHeaders(head, { 'content-type': 'text/markdown; charset=utf-8', vary: 'Accept' });

@@ -245,7 +245,12 @@ export function createEdge() {
     const assetPath = collapseSlashes(url.pathname);
     const asset = await ctx.fetchAsset(assetPath);
     let response;
-    if (isMissing(asset, assetPath)) {
+    // Fern's llms.txt route looked the path up in the navigation and never
+    // applied the configured redirects, so an llms file under an old URL
+    // prefix was not found. Here Cloudflare answers such a path with the
+    // `_redirects` rule of its prefix (`/overview/* /docs/:splat`), and no
+    // llms file is ever written below a redirect source.
+    if (isMissing(asset, assetPath) || REDIRECT_STATUSES.has(asset.status)) {
       asset.body?.cancel?.().catch(() => {});
       if (full) {
         // Fern: <prefix>/llms-full.txt -> 301 <prefix>/llms.txt (query dropped).

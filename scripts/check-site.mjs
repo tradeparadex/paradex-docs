@@ -8,8 +8,9 @@
 //      page of the index in releases/changelog/anchors.json.
 //   4. Generated extras exist: llms.txt, specs, feeds, search index, 404.
 //   5. The build fits Cloudflare's limits (redirect rules, files, file size).
-//   6. Every splat rule in _redirects sends a deep path (and its .md and
-//      llms files) where the rules in docs/redirects.yml do.
+//   6. Every splat rule in _redirects sends a deep path (and its .md)
+//      where the rules in docs/redirects.yml do, and no rule covers an llms
+//      file of the build.
 //   7. Every HTML page has one viewport meta, with minimum-scale=1.
 
 import fs from 'node:fs';
@@ -17,7 +18,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import yaml from 'js-yaml';
 
-import {llmsUrl, markdownUrl, matchRedirect} from '../plugins/redirects.mjs';
+import {markdownUrl, matchRedirect} from '../plugins/redirects.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const build = path.resolve(root, process.env.BUILD_DIR ?? 'build');
@@ -130,35 +131,43 @@ if (fs.existsSync(path.join(build, '_redirects'))) {
   // splat rule that disagrees with matchRedirect() (which the redirect pages
   // and the 404 page use) is what visitors get. Match like Cloudflare: the
   // first line whose pattern matches, `*` greedy, `:splat` replaced.
-  const lines = rules.map((line) => line.split(/\s+/));
   const escapeRegex = (s) => s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const lines = rules.map((line) => {
+    const [from, to] = line.split(/\s+/);
+    return {from, to, pattern: new RegExp(`^${from.split('*').map(escapeRegex).join('(?<splat>.*)')}$`)};
+  });
   const answer = (pathname) => {
-    for (const [from, to] of lines) {
-      const m = new RegExp(`^${from.split('*').map(escapeRegex).join('(?<splat>.*)')}$`).exec(pathname);
+    for (const {pattern, to} of lines) {
+      const m = pattern.exec(pathname);
       if (m) return to.replaceAll(':splat', m.groups?.splat ?? '');
     }
   };
-  // Each splat line's prefix and a deep path below it are sampled as a page,
-  // its .md and its llms files, which follow the page's destination.
-  const formats = [
-    ['', (to) => to],
-    ['.md', markdownUrl],
-    ['/llms.txt', (to) => llmsUrl(to)],
-    ['/llms-full.txt', (to) => llmsUrl(to, 'llms-full.txt')],
-  ];
+  // Each splat line's prefix and a deep path below it are sampled as a page
+  // and as its .md, which follows the page's destination.
   const pages = new Set();
-  for (const [from] of lines.filter(([from]) => from.includes('*'))) {
+  for (const {from} of lines.filter(({from}) => from.includes('*'))) {
     pages.add(from.split('/*')[0]);
-    pages.add(from.replace('*', 'x/y').replace(/(\.md|\/llms(-full)?\.txt)$/, ''));
+    pages.add(from.replace('*', 'x/y').replace(/\.md$/, ''));
   }
   for (const page of pages) {
     const to = matchRedirect(redirects, page);
-    for (const [suffix, format] of formats) {
-      const url = page + suffix;
-      const expected = to && format(to);
+    for (const [url, expected] of [
+      [page, to],
+      [`${page}.md`, to && markdownUrl(to)],
+    ]) {
       const actual = answer(url);
       if (actual !== expected) fail(`_redirects sends ${url} to ${actual}; docs/redirects.yml sends it to ${expected}`);
     }
+  }
+
+  // The edge layer answers an llms file that a rule redirects with the agent
+  // not-found (Fern's llms.txt route ignored redirects), so no rule may cover
+  // one the build has.
+  for (const file of fs.readdirSync(build, {recursive: true})) {
+    if (!/(^|\/)llms(-full)?\.txt$/.test(file)) continue;
+    const url = `/${file.split(path.sep).join('/')}`;
+    const to = answer(url);
+    if (to !== undefined) fail(`_redirects sends ${url}, a file of the build, to ${to}`);
   }
 }
 

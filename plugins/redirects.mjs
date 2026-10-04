@@ -17,14 +17,14 @@
 //      gets a `.md` twin (`/old.md /new.md 308`) so agents fetching the
 //      Markdown of an old URL land on the new page's Markdown; wildcard
 //      rules carry the `.md` suffix through `:splat` already, and one whose
-//      destination has no `:slug*` gets a `/old/*.md /new.md 308` twin and
-//      `/old/*/llms.txt /new/llms.txt` lines (the same for llms-full.txt).
+//      destination has no `:slug*` gets a `/old/*.md /new.md 308` twin.
+//      llms files are not redirected: the edge layer answers an llms.txt
+//      that a rule matches with the agent not-found, as Fern did.
 
 import fs from 'node:fs';
 import yaml from 'js-yaml';
 
 const WILDCARD = /\/:slug\*$/;
-const LLMS_FILES = ['llms.txt', 'llms-full.txt'];
 
 export function loadRedirectRules(file) {
   const {redirects = []} = yaml.load(fs.readFileSync(file, 'utf8')) ?? {};
@@ -111,11 +111,6 @@ export function markdownUrl(url) {
   return `/${urlPath.replace(/^\/+|\/+$/g, '')}.md${hash}`;
 }
 
-/** A page URL's llms file: `/a/b#h` -> `/a/b/llms.txt`, `/` -> `/llms.txt`. */
-export function llmsUrl(url, file = 'llms.txt') {
-  return `${splitHash(url)[0].replace(/\/+$/, '')}/${file}`;
-}
-
 /**
  * The Markdown twin of a redirect: `/old.md /new.md 308`, as Fern answered
  * a configured redirect on its .md route (308 for permanent redirects,
@@ -154,16 +149,9 @@ export function toNetlifyRedirects(rules, implicit, extra = []) {
         entries.push({splat: src, line: `${src}/* ${dest}/:splat 301`});
       } else {
         // No `:slug*` in the destination: like Fern, drop the rest of the
-        // path, so every URL below the source goes to the destination. Its
-        // .md and llms files go to the destination's, as `:splat` keeps them
-        // for the other wildcard rules. These lines come first because
+        // path, so every URL below the source goes to the destination and
+        // its .md to the destination's .md. The .md line comes first because
         // Cloudflare applies the first splat rule that matches.
-        // The exact `/old/llms.txt` lines go before this rule's splat lines,
-        // which would otherwise drop them as already covered.
-        for (const file of LLMS_FILES) exact(`${src}/${file} ${llmsUrl(destination, file)} 301`);
-        for (const file of LLMS_FILES) {
-          entries.push({splat: src, line: `${src}/*/${file} ${llmsUrl(destination, file)} 301`});
-        }
         entries.push({splat: src, line: markdownRedirect(`${src}/*`, destination)});
         entries.push({splat: src, line: `${src}/* ${destination} 301`});
       }

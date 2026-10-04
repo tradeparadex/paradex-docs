@@ -1005,6 +1005,12 @@ a.navbar-cta {
   margin: 2em auto;
 }
 
+/* Fern keeps a closing image's 2em below it; the footer's top margin already
+   counts a closing paragraph's 20px, so the image adds the rest. */
+.theme-doc-markdown > [data-rmiz]:last-child img {
+  margin-bottom: 12px;
+}
+
 /* Click-to-zoom (src/components/fern/Image.tsx): Fern hides the library's
    zoom buttons and dims the page with its background colour. */
 [data-rmiz-btn-zoom],

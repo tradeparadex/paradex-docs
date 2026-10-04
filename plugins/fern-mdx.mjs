@@ -10,8 +10,9 @@
 //                       object, `class` becomes `className`, and relative
 //                       `src` paths are bundled with require(). A bare
 //                       `{Name}` that the page does not define renders as
-//                       literal text, as Fern did (e.g. `{Expiry}`). Raw
-//                       <img> renders through the MDX `img` component.
+//                       literal text, as Fern did (e.g. `{Expiry}`).
+//                       Images Fern zooms, raw <img> too, render through
+//                       the MDX `img` component; the others stay plain.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -98,7 +99,7 @@ function declaredNames(tree) {
 }
 
 export function remarkFernJsx() {
-  return (tree) => {
+  return (tree, file) => {
     const names = declaredNames(tree);
     visit(tree, ['mdxTextExpression', 'mdxFlowExpression'], (node, index, parent) => {
       const match = IDENTIFIER.exec(node.value ?? '');
@@ -129,13 +130,23 @@ export function remarkFernJsx() {
         }
       }
     });
-    // MDX maps only Markdown images to the `img` component and leaves an
-    // explicit <img> tag alone; clearing its mark lets raw images zoom like
-    // Fern's. An image inside a link stays plain (Fern's /home cards).
+    // MDX maps only Markdown images to the `img` component, which zooms, and
+    // leaves an explicit <img> tag alone; the mark picks one for every image
+    // (local Markdown images are <img> by now too). Fern's rule: no zoom in
+    // a link (the /home cards) or on a page with `no-image-zoom` (by default
+    // a `layout: custom` page) unless `enableZoom`, elsewhere unless `noZoom`.
+    const frontMatter = file.data.frontMatter ?? {};
+    const pageNoZoom = frontMatter['no-image-zoom'] ?? frontMatter.layout === 'custom';
     const isJsx = (node) => node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement';
     visitParents(tree, (node) => isJsx(node) && node.name === 'img', (node, ancestors) => {
-      if (ancestors.some((a) => a.type === 'link' || (isJsx(a) && a.name === 'a'))) return;
-      if (node.data) delete node.data._mdxExplicitJsx;
+      const flag = (name) => {
+        const attr = node.attributes.find((a) => a.type === 'mdxJsxAttribute' && a.name === name);
+        node.attributes = node.attributes.filter((a) => a !== attr);
+        return attr !== undefined && attr.value?.value !== 'false';
+      };
+      const [noZoom, enableZoom] = [flag('noZoom'), flag('enableZoom')];
+      const inLink = ancestors.some((a) => a.type === 'link' || (isJsx(a) && a.name === 'a'));
+      node.data = {...node.data, _mdxExplicitJsx: inLink || pageNoZoom ? !enableZoom : noZoom};
     });
   };
 }

@@ -80,15 +80,14 @@ export function CopyButton({getCode}: CodeSource): React.JSX.Element {
   );
 }
 
-// Fern's payload for both events: the block's language (Fern calls a fence
-// without one 'plaintext', Docusaurus 'text') and code, and in a tabbed group
-// the tab shown.
+// Fern's payload for both events: the block's language and code, and in a
+// tabbed group the tab shown. Fern's code keeps the fence's final line break,
+// which Docusaurus drops.
 function feedbackProperties({getCode, getLanguage, getTab}: CodeSource): Record<string, unknown> {
-  const language = getLanguage?.() ?? 'text';
   const tab = getTab?.();
   return {
-    language: language === 'text' ? 'plaintext' : language,
-    code: getCode(),
+    language: getLanguage?.() ?? 'plaintext',
+    code: `${getCode()}\n`,
     ...(tab && {activeTabTitle: tab.title, activeTabIndex: tab.index, ...(tab.language && {activeTabLanguage: tab.language})}),
   };
 }
@@ -98,7 +97,7 @@ function useIssueUrl(): (message: string, code: string, language: string) => str
   return (message, code, language) => {
     const page = window.location.origin + window.location.pathname;
     const snippet = code.length > 1500 ? `${code.slice(0, 1500)}\n…` : code;
-    const body = [`Page: ${page}`, '', message.trim(), '', '```' + (language === 'text' ? '' : language), snippet, '```'].join('\n');
+    const body = [`Page: ${page}`, '', message.trim(), '', '```' + (language === 'plaintext' ? '' : language), snippet, '```'].join('\n');
     const title = `Incorrect code example on ${window.location.pathname}`;
     return `https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
   };
@@ -168,7 +167,7 @@ export function FlagButton(source: CodeSource): React.JSX.Element {
     if (!text) return;
     // Fern sends the message as typed.
     track('code_block_feedback_submitted', {message, ...feedbackProperties(source)});
-    setSent(issueUrl(text, getCode(), getLanguage?.() ?? 'text'));
+    setSent(issueUrl(text, getCode(), getLanguage?.() ?? 'plaintext'));
   };
 
   return (

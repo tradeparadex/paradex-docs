@@ -1,13 +1,15 @@
 // Swizzled (ejected) from @docusaurus/theme-classic to read Fern's code fence
 // options from the metastring: `wordWrap` wraps long lines instead of
 // scrolling. The class lands on the code block container (metadata.className).
+// It also hands the fence's own language to the toolbar's code feedback.
 
 import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
 import {useThemeConfig} from '@docusaurus/theme-common';
-import {CodeBlockContextProvider, createCodeBlockMetadata, useCodeWordWrap} from '@docusaurus/theme-common/internal';
+import {CodeBlockContextProvider, createCodeBlockMetadata, parseLanguage, useCodeWordWrap} from '@docusaurus/theme-common/internal';
 import type {Props} from '@theme/CodeBlock/Content/String';
 import CodeBlockLayout from '@theme/CodeBlock/Layout';
+import {FenceLanguageContext} from '@site/src/components/code/context';
 
 function useCodeBlockMetadata(props: Props) {
   const {prism} = useThemeConfig();
@@ -29,7 +31,9 @@ export default function CodeBlockString(props: Props): ReactNode {
   const wordWrap = useCodeWordWrap();
   return (
     <CodeBlockContextProvider metadata={metadata} wordWrap={wordWrap}>
-      <CodeBlockLayout />
+      <FenceLanguageContext.Provider value={props.language ?? parseLanguage(props.className)}>
+        <CodeBlockLayout />
+      </FenceLanguageContext.Provider>
     </CodeBlockContextProvider>
   );
 }

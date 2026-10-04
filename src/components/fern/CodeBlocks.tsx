@@ -70,7 +70,7 @@ function CodeGroup({items}: {items: Item[]}): React.JSX.Element {
           {() => (
             <CodeActions
               getCode={() => codes.current[activeRef.current]?.code ?? ''}
-              getLanguage={() => codes.current[activeRef.current]?.language ?? 'text'}
+              getLanguage={() => codes.current[activeRef.current]?.language ?? 'plaintext'}
               getTab={() => ({
                 title: items[activeRef.current].title,
                 index: activeRef.current,

@@ -14,14 +14,15 @@ import Content from '@theme/CodeBlock/Content';
 import type {Props} from '@theme/CodeBlock/Layout';
 import CodeActions from '@site/src/components/code/CodeActions';
 import OverlayScrollbars from '@site/src/components/code/OverlayScrollbars';
-import {useCodeGroupPanel} from '@site/src/components/code/context';
-import {normalizeLanguage} from '@site/src/components/code/refine';
+import {useCodeGroupPanel, useFenceLanguage} from '@site/src/components/code/context';
 
 export default function CodeBlockLayout({className}: Props): ReactNode {
   const {metadata, wordWrap} = useCodeBlockContext();
   const group = useCodeGroupPanel();
   const body = useRef<HTMLDivElement>(null);
-  const language = normalizeLanguage(metadata.language);
+  // Reported with code feedback as Fern does: as written on the fence, or
+  // 'plaintext' for a fence without one.
+  const language = useFenceLanguage() ?? 'plaintext';
 
   useEffect(() => {
     group?.register(metadata.code, language);

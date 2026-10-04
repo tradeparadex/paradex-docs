@@ -732,6 +732,8 @@ a.navbar-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* 36px with the padding, as on Fern (Infima's reset skips ::before). */
+  box-sizing: border-box;
   min-width: 36px;
   height: 20px;
   padding: 0 6px;

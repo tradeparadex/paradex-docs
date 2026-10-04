@@ -25,6 +25,44 @@ function escapeUnknownTags(markdown) {
     .join('');
 }
 
+// Descriptions come from the live API's spec (the daily sync-openapi pull
+// request) and are rendered with dangerouslySetInnerHTML, so the HTML is
+// sanitized after Markdown: only HTML_TAGS (plus what micromark's GFM output
+// adds) stay elements, and they lose event handlers and URLs that can run
+// script.
+const OUTPUT_TAGS = new Set([...HTML_TAGS, 'input', 'section']);
+const URL_ATTRIBUTES = new Set(['href', 'src', 'srcset', 'cite', 'action', 'formaction', 'poster', 'background', 'xlink:href']);
+const ATTRIBUTE = /([^\s"'>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g;
+const NAMED_ENTITIES = {amp: '&', quot: '"', apos: "'", lt: '<', gt: '>', colon: ':', tab: '\t', newline: '\n'};
+
+/** True if a URL attribute value would run script (`javascript:`, also entity-encoded) or embed a `data:`/`vbscript:` document. */
+function isUnsafeUrl(value) {
+  const decoded = value.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);?/gi, (entity, ref) => {
+    if (ref[0] !== '#') return NAMED_ENTITIES[ref.toLowerCase()] ?? entity;
+    const hex = ref[1] === 'x' || ref[1] === 'X';
+    const code = Number.parseInt(ref.slice(hex ? 2 : 1), hex ? 16 : 10);
+    return code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : '';
+  });
+  // Browsers ignore control characters and whitespace inside the scheme.
+  return /(?:^|,)(?:javascript|vbscript|data):/i.test(decoded.replace(/[\u0000- \u007f]/g, ''));
+}
+
+export function sanitizeHtml(html) {
+  return html.replace(/<(\/?)([a-zA-Z][\w:-]*)((?:"[^"]*"|'[^']*'|[^'">])*)>/g, (tag, slash, name, rest) => {
+    if (!OUTPUT_TAGS.has(name.toLowerCase())) return escapeHtml(tag);
+    if (slash) return `</${name}>`;
+    const attributes = [];
+    for (const [, attribute, doubleQuoted, singleQuoted, unquoted] of rest.matchAll(ATTRIBUTE)) {
+      const key = attribute.toLowerCase();
+      const value = doubleQuoted ?? singleQuoted ?? unquoted;
+      if (key.startsWith('on')) continue;
+      if (URL_ATTRIBUTES.has(key) && value !== undefined && isUnsafeUrl(value)) continue;
+      attributes.push(value === undefined ? ` ${attribute}` : ` ${attribute}="${value.replace(/"/g, '&quot;')}"`);
+    }
+    return `<${name}${attributes.join('')}${/\/\s*$/.test(rest) ? ' /' : ''}>`;
+  });
+}
+
 const NO_TYPOGRAPHY = new Set(['code', 'pre', 'kbd', 'samp', 'script', 'style']);
 const OPENS_QUOTE = /[\s([{—–/-]/;
 
@@ -82,7 +120,7 @@ export function markdownToHtml(markdown) {
     extensions: [gfm()],
     htmlExtensions: [gfmHtml()],
   }).trim();
-  return smartQuotes(withHeadingIds(html));
+  return smartQuotes(withHeadingIds(sanitizeHtml(html)));
 }
 
 /** Give headings the slug ids Fern gave them ("### TWAP" -> id="twap"). */

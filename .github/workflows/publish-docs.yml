@@ -49,6 +49,9 @@ jobs:
       - name: Test edge layer (MCP server, Markdown routes)
         run: yarn test:edge
 
+      - name: Test API reference generator (description sanitizing)
+        run: yarn test:plugins
+
       - name: Build
         run: yarn build
 

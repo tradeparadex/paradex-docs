@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "check": "node scripts/check-site.mjs",
     "test:edge": "node --test edge/*.test.mjs",
+    "test:plugins": "node --test plugins/api-reference/*.test.mjs",
     "new-release-note": "node scripts/new-release-note.js",
     "sync-openapi": "node scripts/sync-openapi.mjs"
   },

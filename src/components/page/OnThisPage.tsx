@@ -60,8 +60,8 @@ function useVisibleRange(root: React.RefObject<HTMLDivElement | null>) {
     const update = () => {
       frame = 0;
       if (performance.now() < pinUntil.current) return;
-      // Hidden below the desktop breakpoint (the column is still rendered):
-      // nothing to paint. The resize listener repaints once it shows.
+      // Hidden below 1280px (the column is still rendered): nothing to
+      // paint. The resize listener repaints once it shows.
       if (container.offsetParent === null) return;
       const parts = tocParts(container);
       if (!parts) return;

@@ -659,17 +659,16 @@
 
 
 /* Full-width page without title, breadcrumbs or page actions. Like Fern,
-   the landing spans the whole viewport right under the header: drop the
-   no-sidebar main's `max-width: calc(100% - 30px)` and the container's
-   padding (the padding-*--md/lg utilities are !important). The 80px
-   bottom padding matches the space Fern leaves below the page for its
-   footer badge. */
-main:has(> .container > .doc-layout--custom) {
-  max-width: 100%;
-}
-
+   the landing spans the whole viewport right under the header, at every
+   width: no page gutters and no container padding (the padding-*--md/lg
+   utilities are !important). The 80px bottom padding matches the space
+   Fern leaves below the page for its footer badge. */
 .container:has(> .doc-layout--custom) {
   padding: 0 0 80px !important;
+}
+
+.doc-layout--custom .doc-layout__main {
+  padding-inline: 0;
 }
 
 .doc-layout--custom .doc-item-container {

@@ -8,7 +8,6 @@ import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
 import DocItemFooter from '@theme/DocItem/Footer';
-import DocItemTOCMobile from '@theme/DocItem/TOC/Mobile';
 import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
 import DocItemContent from '@theme/DocItem/Content';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';
@@ -34,12 +33,14 @@ export default function DocItemLayout({children}: Props): ReactNode {
   const {frontMatter, toc, metadata} = useDoc();
   const fm = frontMatter as FernFrontMatter;
   const layout = useFernLayout();
-  const showToc = layout === 'guide' && !fm.hide_table_of_contents && toc.length > 0;
   // Fern keeps the guide layout's TOC column even when the page has no
-  // headings, so the text column sits in the same place on every guide page.
-  // It is always rendered and CSS shows it from the desktop breakpoint: the
-  // server doesn't know the window size, so its HTML must suit every width.
-  const tocColumn = layout === 'guide';
+  // headings, so the text column sits in the same place on every guide page,
+  // but hides it with the sidebar in a single-page tab (the column is then
+  // centred in the window). It is always rendered and CSS shows it from
+  // 1280px: the server doesn't know the window size, so its HTML must suit
+  // every width. Narrower windows get no TOC at all, as on Fern.
+  const tocColumn = layout === 'guide' && !fm.fern_no_sidebar;
+  const showToc = tocColumn && !fm.hide_table_of_contents && toc.length > 0;
 
   return (
     <div
@@ -54,7 +55,6 @@ export default function DocItemLayout({children}: Props): ReactNode {
         <div className="doc-item-container">
           <article>
             {layout !== 'custom' && <DocBreadcrumbs />}
-            {showToc && <DocItemTOCMobile />}
             <DocItemContent>{children}</DocItemContent>
             {layout !== 'custom' && <DocItemFooter />}
           </article>

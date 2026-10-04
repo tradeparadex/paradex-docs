@@ -149,7 +149,11 @@ html[data-theme='dark'] {
   --ifm-footer-background-color: var(--paradex-bg);
   --ifm-breadcrumb-item-background-active: transparent;
   --docusaurus-highlighted-code-line-bg: rgba(27, 193, 207, 0.12);
-  --doc-sidebar-width: 288px !important;
+  /* Fern's page frame is 88rem plus 32px on each side. Beyond it the
+     sidebar and TOC columns grow outwards, and their contents, the header
+     and the tabs stay inside the frame. */
+  --fern-aside-offset: max(0px, (100vw - 1472px) / 2);
+  --doc-sidebar-width: calc(288px + var(--fern-aside-offset)) !important;
   --docusaurus-collapse-button-bg: transparent;
   color-scheme: dark;
 }
@@ -213,7 +217,10 @@ html {
 }
 
 .navbar__inner {
+  width: 100%;
+  max-width: calc(1408px + 2 * var(--ifm-navbar-padding-horizontal));
   height: var(--header-row-height);
+  margin: 0 auto;
   padding: 0 var(--ifm-navbar-padding-horizontal);
   display: grid;
   /* As on Fern, the logo and the links keep their width and the search box
@@ -307,7 +314,9 @@ a.navbar-cta {
   /* One extra pixel, overlapping the header border, for the active tab's
      underline (the strip scrolls sideways, which would clip it). */
   height: calc(var(--tabs-row-height) + 1px);
-  margin-bottom: -1px;
+  width: 100%;
+  max-width: calc(1408px + 2 * var(--ifm-navbar-padding-horizontal));
+  margin: 0 auto -1px;
   display: flex;
   align-items: stretch;
   gap: 0;
@@ -380,14 +389,23 @@ a.navbar-cta {
 
   .navbar__inner {
     gap: 16px;
-    padding: 0 16px;
+  }
+}
+
+/* Tablets: Fern's header is 72px tall with 24px gutters from 768px. */
+@media (min-width: 768px) and (max-width: 996px) {
+  :root,
+  html[data-theme='dark'] {
+    --ifm-navbar-height: 72px;
+    --header-row-height: 72px;
+    --ifm-navbar-padding-horizontal: 1.5rem;
   }
 
-  /* Docs pages keep a 16px gutter on small screens. */
-  html [class*='docMainContainer'] > .container {
-    padding: 0 16px !important;
+  /* The wordmark's link is no wider than the logo, so the search box stays
+     where Fern has it. */
+  .navbar__logo {
+    margin-right: 0;
   }
-
 }
 
 @media (max-width: 768px) {
@@ -619,9 +637,10 @@ a.navbar-cta {
 }
 
 /* Fern's sidebar: 24px gutters, 14px links on 34px rows. The right gutter
-   leaves room for a thin scrollbar (Fern's overlays the content). */
+   leaves room for a thin scrollbar (Fern's overlays the content). On wide
+   screens the links stay inside the page frame. */
 .theme-doc-sidebar-menu {
-  padding: 24px 11px 72px 24px;
+  padding: 24px 11px 72px calc(24px + var(--fern-aside-offset));
   font-size: 14px;
 }
 
@@ -1369,23 +1388,27 @@ hr {
   flex-shrink: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .page-actions {
     display: none;
   }
 }
 
 /* Layout widths: Fern's "guide" (640px column, TOC on the right) and
-   "reference" (896px column, no TOC) layouts. The TOC column is always in the
-   markup and only shown from the desktop breakpoint, so the server-rendered
-   page already fits phones before (or without) hydration. */
+   "reference" (896px column, no TOC) layouts, centred between Fern's page
+   gutters: 16px on phones, 24px from 768px and 32px beside the sidebar. The
+   TOC column is always in the markup and, as on Fern, only shown from
+   1280px, so the server-rendered page already fits every width before (or
+   without) hydration. */
 .doc-layout {
+  --page-padding: 16px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
 }
 
 .doc-layout__main {
   min-width: 0;
+  padding-inline: var(--page-padding);
 }
 
 .doc-layout__toc {
@@ -1393,33 +1416,58 @@ hr {
   min-width: 0;
 }
 
+.doc-layout--guide .doc-item-container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.doc-layout--reference .doc-item-container,
+.doc-layout--api .doc-item-container {
+  max-width: 896px;
+  margin: 0 auto;
+}
+
+/* Fern shows a REST endpoint in the guide's 640px column until it has room
+   for two columns (WebSocket channels keep the wide one). */
+@media (max-width: 799px) {
+  .doc-layout--api:not(:has(.api-endpoint--ws)) .doc-item-container {
+    max-width: 640px;
+  }
+}
+
+/* A single-page tab has no sidebar (and no TOC): its column is centred in
+   the whole window, as on Fern, without Docusaurus' strip for a collapsed
+   sidebar. */
+main:has(> .container > .doc-layout--no-sidebar) {
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .doc-layout {
+    --page-padding: 24px;
+  }
+}
+
 @media (min-width: 997px) {
+  .doc-layout {
+    --page-padding: 32px;
+  }
+
+  /* On wide screens a page without a TOC keeps its column where the page
+     frame centres it. */
+  .doc-layout:not(.doc-layout--with-toc, .doc-layout--no-sidebar) .doc-layout__main {
+    padding-right: calc(var(--page-padding) + var(--fern-aside-offset));
+  }
+}
+
+@media (min-width: 1280px) {
   .doc-layout--with-toc {
-    grid-template-columns: minmax(0, 1fr) 288px;
+    grid-template-columns: minmax(0, 1fr) calc(288px + var(--fern-aside-offset));
   }
 
   .doc-layout__toc {
     display: block;
-  }
-
-  .doc-layout--guide .doc-item-container {
-    max-width: 640px;
-    margin: 0 auto;
-  }
-
-  .doc-layout--reference .doc-item-container,
-  .doc-layout--api .doc-item-container {
-    max-width: 896px;
-    margin: 0 auto;
-  }
-
-  .doc-layout--api .doc-item-container {
-    max-width: 896px;
-  }
-
-  .doc-layout--no-sidebar .doc-item-container {
-    max-width: 640px;
-    margin: 0 auto;
+    padding-right: var(--fern-aside-offset);
   }
 }
 
@@ -1561,16 +1609,31 @@ hr {
 }
 
 /* Reference and API pages keep the footer in a centred 640px column,
-   further down. */
+   further down (on reference pages Fern's gap grows from phones to tablets
+   to the desktop layout). */
+.doc-layout--reference .theme-doc-footer,
+.doc-layout--api .theme-doc-footer {
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+.doc-layout--reference .theme-doc-footer {
+  margin-top: 184px;
+}
+
+@media (min-width: 768px) {
+  .doc-layout--reference .theme-doc-footer {
+    margin-top: 264px;
+  }
+}
+
 @media (min-width: 997px) {
   .doc-layout--reference .theme-doc-footer {
-    max-width: 640px;
-    margin: 280px auto 112px;
+    margin-top: 280px;
   }
 
   .doc-layout--api .theme-doc-footer {
-    max-width: 640px;
-    margin: 184px auto 112px;
+    margin-top: 184px;
   }
 }
 
@@ -2339,10 +2402,10 @@ html.mermaid-zoom-open {
 /* ---------- Changelog (release notes) ---------- */
 
 /* Same columns as docs pages: 288px sidebar, centred 640px column, 288px
-   "On this page". */
+   "On this page" (from 1280px, see below). */
 .changelog-layout {
   display: grid;
-  grid-template-columns: var(--doc-sidebar-width) minmax(0, 1fr) 288px;
+  grid-template-columns: var(--doc-sidebar-width) minmax(0, 1fr);
   min-height: calc(100vh - var(--ifm-navbar-height));
 }
 
@@ -2353,7 +2416,7 @@ html.mermaid-zoom-open {
 .changelog-sidebar nav.menu {
   position: sticky;
   top: var(--ifm-navbar-height);
-  padding: 24px 10px 32px 24px !important;
+  padding: 24px 10px 32px calc(24px + var(--fern-aside-offset)) !important;
 }
 
 .changelog-sidebar .menu__link {
@@ -2533,9 +2596,35 @@ html.mermaid-zoom-open {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .changelog-sidebar,
-  .changelog-toc {
+  .changelog-sidebar {
     display: none;
+  }
+}
+
+/* As on Fern: 64px gutters beside the sidebar, and "On this page" from
+   1280px. Until both fit, the column and the TOC shrink together, in
+   proportion to their widths (640:288). */
+@media (min-width: 997px) {
+  .changelog-main {
+    max-width: calc(640px + 2 * 64px);
+    padding-inline: 64px;
+  }
+}
+
+.changelog-toc {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .changelog-layout {
+    grid-template-columns:
+      var(--doc-sidebar-width) minmax(0, 1fr)
+      calc(min(288px, (100% - 288px - 2 * 64px) * 288 / 928) + var(--fern-aside-offset));
+  }
+
+  .changelog-toc {
+    display: block;
+    padding-right: var(--fern-aside-offset);
   }
 }
 

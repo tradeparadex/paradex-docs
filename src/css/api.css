@@ -714,8 +714,8 @@
   }
 }
 
-/* Up to 1255px the column has no gutter, or under 36px beside the sidebar;
-   nested rows still have room on their left. */
+/* Up to 1255px the column's gutter is mostly under 36px, too narrow for the
+   button; nested rows still have room on their left. */
 @media (min-width: 768px) and (max-width: 1255px) {
   .api-section__title > .api-anchor,
   .api-props:not(.api-props--nested) > .api-prop > .api-prop__header > .api-anchor {
@@ -773,13 +773,6 @@
 /* Nested rows keep 12px free on the right. */
 .api-props--nested > .api-prop--flash::before {
   margin-right: 4px;
-}
-
-/* Here the column runs from the sidebar to the right edge of the window. */
-@media (min-width: 997px) and (max-width: 1199px) {
-  .api-props:not(.api-props--nested) > .api-prop--flash::before {
-    margin-inline: 0;
-  }
 }
 
 @keyframes api-prop-flash {

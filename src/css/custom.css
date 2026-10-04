@@ -760,6 +760,25 @@ a.navbar-cta {
   text-overflow: ellipsis;
 }
 
+/* Hovering a cut-off label scrolls the rest into view, as on Fern
+   (DocSidebarItem/Link sets the distance and duration). */
+@media (prefers-reduced-motion: no-preference) {
+  .sidebar-item-label--marquee {
+    text-overflow: clip;
+  }
+
+  .sidebar-item-label--marquee > span {
+    display: inline-block;
+    animation: sidebar-label-marquee var(--marquee-duration) linear forwards;
+  }
+}
+
+@keyframes sidebar-label-marquee {
+  to {
+    transform: translateX(var(--marquee-translate));
+  }
+}
+
 /* API method badges in the sidebar (Fern's "small subtle" badges; solid
    on the current page). */
 .api-method > .menu__link {

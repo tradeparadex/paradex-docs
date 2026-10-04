@@ -213,7 +213,6 @@ export default async function createConfig(): Promise<Config> {
           src: 'assets/logo-light.svg',
           srcDark: 'assets/logo-dark.svg',
           href: SITE_URL,
-          target: '_self',
           height: 15,
         },
         items: [
@@ -229,7 +228,6 @@ export default async function createConfig(): Promise<Config> {
             label: link.text,
             position: 'right' as const,
             className: link.type === 'filled' ? 'navbar-cta' : 'navbar-link-minimal',
-            target: '_self',
           })),
         ],
       },

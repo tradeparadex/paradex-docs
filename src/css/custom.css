@@ -681,6 +681,11 @@ a.navbar-cta {
   font-weight: 600;
 }
 
+/* On its own page it gets the current page's heavier text as well. */
+.sidebar-section-page > .menu__list-item-collapsible > .menu__link[aria-current='page'] {
+  -webkit-text-stroke: 0.5px currentColor;
+}
+
 .sidebar-section-heading > .menu__list-item-collapsible,
 .sidebar-section-heading > .menu__list-item-collapsible:hover {
   background: none;

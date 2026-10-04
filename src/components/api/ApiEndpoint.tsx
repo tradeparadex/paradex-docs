@@ -6,11 +6,12 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import CodeBlock from '@theme/CodeBlock';
+import Link from '@docusaurus/Link';
 import {useHistory, useLocation} from '@docusaurus/router';
 import ApiExplorer from './ApiExplorer';
 import WebSocketExplorer from './WebSocketExplorer';
 import MethodBadge from './MethodBadge';
-import {ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, CloseIcon, PlayIcon, WifiIcon} from './icons';
+import {ArrowDownIcon, ArrowUpIcon, ArrowUpRightIcon, ChevronDownIcon, CloseIcon, PlayIcon, WifiIcon} from './icons';
 import {CodePanel, CopyButton, LanguageMenu, StatusBadge, StatusSelect, useLanguage, type StatusOption} from './panels';
 import {AnchorPart, AnchorTargets, BodySchema, Html, PropertyRow, Properties, Section} from './schema';
 import type {Endpoint, Property} from './types';
@@ -50,7 +51,16 @@ function TryItButton({onClick}: {onClick: () => void}) {
 
 /* ---------- REST panels ---------- */
 
-export function CodeSamplePanel({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt?: () => void}) {
+export function CodeSamplePanel({
+  endpoint,
+  onTryIt,
+  linked = false,
+}: {
+  endpoint: Endpoint;
+  onTryIt?: () => void;
+  /** Outside the endpoint's page: link to it, and "Try it" opens its explorer in a new tab (as on Fern). */
+  linked?: boolean;
+}) {
   const samples = endpoint.samples ?? [];
   const [sample, choose] = useLanguage(samples);
   if (!sample) return null;
@@ -65,12 +75,30 @@ export function CodeSamplePanel({endpoint, onTryIt}: {endpoint: Endpoint; onTryI
           </span>
         </>
       }
-      controls={<LanguageMenu samples={samples} value={sample} onChange={choose} />}
+      controls={
+        <>
+          <LanguageMenu samples={samples} value={sample} onChange={choose} />
+          {linked && (
+            <Link to={endpoint.url} className="api-icon-button api-panel__link" aria-label={`${endpoint.title} reference`}>
+              <ArrowUpRightIcon />
+            </Link>
+          )}
+        </>
+      }
       code={sample.code}
       language={sample.prism}
       // Fern numbered every sample but cURL (which gets a `$` prompt).
       lineNumbers={sample.language !== 'curl'}
-      footer={onTryIt ? <TryItButton onClick={onTryIt} /> : undefined}
+      footer={
+        onTryIt ? (
+          <TryItButton onClick={onTryIt} />
+        ) : linked ? (
+          <Link to={`${endpoint.url}?explorer=true`} target="_blank" className="api-try-it">
+            <PlayIcon />
+            Try it
+          </Link>
+        ) : undefined
+      }
     />
   );
 }
@@ -453,17 +481,24 @@ export function EndpointRequestSnippet({endpoint}: {endpoint: Endpoint | string}
   if (!endpoint || typeof endpoint === 'string') return null;
   return (
     <div className="api-snippet">
-      <CodeSamplePanel endpoint={endpoint} />
+      <CodeSamplePanel endpoint={endpoint} linked />
     </div>
   );
 }
 
-/** Fern `<EndpointResponseSnippet endpoint="GET /markets" />` */
+/** Fern `<EndpointResponseSnippet endpoint="GET /markets" />`: the first success example, titled "Response". */
 export function EndpointResponseSnippet({endpoint}: {endpoint: Endpoint | string}) {
   if (!endpoint || typeof endpoint === 'string') return null;
+  const example = endpoint.responses?.find((r) => r.example !== undefined)?.example;
+  if (example === undefined) return null;
   return (
     <div className="api-snippet">
-      <ResponsePanel endpoint={endpoint} />
+      <CodePanel
+        className="api-panel--response"
+        header={<span className="api-panel__title">Response</span>}
+        code={pretty(example)}
+        language="json"
+      />
     </div>
   );
 }

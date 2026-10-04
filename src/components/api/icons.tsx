@@ -100,6 +100,13 @@ export const ArrowDownIcon = (p: Props) => (
   </Svg>
 );
 
+export const ArrowUpRightIcon = (p: Props) => (
+  <Svg {...p}>
+    <path d="M7 7h10v10" />
+    <path d="M7 17 17 7" />
+  </Svg>
+);
+
 export const WifiIcon = (p: Props) => (
   <Svg strokeWidth={1.5} {...p}>
     <path d="M12 20h.01" />

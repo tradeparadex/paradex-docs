@@ -1394,6 +1394,30 @@
   height: 12px;
 }
 
+/* A snippet's link to its endpoint page (Fern's round arrow button). */
+.api-panel__link {
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  border-radius: 9999px;
+  color: var(--api-accent-a11);
+}
+
+.api-panel__link:hover {
+  background: var(--api-a3);
+  color: var(--api-accent-a11);
+}
+
+/* In a Markdown page these links would get the prose link style. */
+.api-panel a.api-try-it,
+.api-panel a.api-panel__link {
+  text-decoration: none !important;
+}
+
+.api-panel a.api-try-it {
+  color: var(--api-accent-contrast) !important;
+}
+
 /* ---------- Expanded code ---------- */
 
 html.api-code-modal-open {
@@ -1808,5 +1832,5 @@ html.api-code-modal-open {
 }
 
 .api-snippet .api-panel--response .api-panel__body {
-  max-height: 520px;
+  max-height: 500px;
 }

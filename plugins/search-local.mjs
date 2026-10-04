@@ -5,8 +5,9 @@
 // the section with the first tab shown and the matched text hidden.
 //
 // The plugin starts a section only at h1-h3 and has no option for this, so
-// this wraps its document parser (dist/server/server/utils/parseDocument.js,
-// which its own parse step calls through the module's exports).
+// this wraps its document parser (dist/server/server/utils/parseDocument.js)
+// and its document scan (scanDocuments.js), which it calls through the
+// modules' exports.
 
 import {createRequire} from 'node:module';
 
@@ -14,10 +15,29 @@ const require = createRequire(import.meta.url);
 const PACKAGE = '@easyops-cn/docusaurus-search-local';
 const plugin = require(PACKAGE);
 const parser = require(`${PACKAGE}/dist/server/server/utils/parseDocument.js`);
+const scanner = require(`${PACKAGE}/dist/server/server/utils/scanDocuments.js`);
 const {getCondensedText} = require(`${PACKAGE}/dist/server/server/utils/getCondensedText.js`);
 
 // Where the plugin starts a section.
 const HEADINGS = 'h1, h2, h3';
+
+// The tab sections ("title\n#hash"). Their title shows in a hit's path, but
+// they are not headings to search for: the plugin's heading records for them
+// are dropped.
+const tabSections = new Set();
+
+/**
+ * The heading whose section holds `el` in the plugin's split, where a heading
+ * runs to the next heading beside it: the nearest heading before `el` among
+ * its own and its ancestors' siblings.
+ */
+function headingAbove($, el) {
+  for (let $el = $(el); $el.length && !$el.is('article'); $el = $el.parent()) {
+    const $heading = $el.prevAll(HEADINGS).first();
+    if ($heading.length) return $heading.contents().not('a.hash-link').text().trim();
+  }
+  return '';
+}
 
 /**
  * The plugin's sections for a page, except that the text of each tab panel
@@ -31,7 +51,10 @@ function parseDocumentWithTabs(parseDocument, $) {
   const tabs = panels.map((panel) => {
     const $tabs = $(panel).parent();
     const index = $tabs.children('.fern-tabs__panel').index(panel);
-    const anchor = $tabs.children('.fern-tabs__bar').children('.fern-tabs__anchor').eq(index).attr('id');
+    const $bar = $tabs.children('.fern-tabs__bar');
+    const anchor = $bar.children('.fern-tabs__anchor').eq(index).attr('id');
+    // Shown as the hit's section: the heading the tabs are under, then the tab.
+    const title = [headingAbove($, $tabs), $bar.find('[role=tab]').eq(index).text().trim()].filter(Boolean).join(' › ');
     // The panel's own text: not that of tabs nested in it (sections of their
     // own) or what follows a heading in it (that heading's section).
     const $own = $(panel).clone();
@@ -40,7 +63,7 @@ function parseDocumentWithTabs(parseDocument, $) {
       $(heading).nextUntil(HEADINGS).remove();
       $(heading).remove();
     });
-    return {anchor, content: getCondensedText($own.contents().get(), $)};
+    return {anchor, title, content: getCondensedText($own.contents().get(), $)};
   });
 
   // Headings inside panels keep their sections from the whole page; every
@@ -51,9 +74,10 @@ function parseDocumentWithTabs(parseDocument, $) {
   const outside = parseDocument($).sections;
   const sections = whole.sections.map((section, i) => (inPanel[i] ? section : outside.shift()));
 
-  // Titled with the page title, so the plugin adds no heading record for them.
-  for (const {anchor, content} of tabs) {
-    if (anchor && content) sections.push({title: whole.pageTitle, hash: `#${anchor}`, content});
+  for (const {anchor, title, content} of tabs) {
+    if (!anchor || !content) continue;
+    sections.push({title: title || whole.pageTitle, hash: `#${anchor}`, content});
+    tabSections.add(`${title}\n#${anchor}`);
   }
   return {...whole, sections};
 }
@@ -61,6 +85,15 @@ function parseDocumentWithTabs(parseDocument, $) {
 export default function searchLocalPlugin(context, options) {
   const original = parser.parseDocument.original ?? parser.parseDocument;
   parser.parseDocument = Object.assign(($) => parseDocumentWithTabs(original, $), {original});
+  const scan = scanner.scanDocuments.original ?? scanner.scanDocuments;
+  scanner.scanDocuments = Object.assign(
+    async (...args) => {
+      // [titles, headings, descriptions, keywords, contents]
+      const [titles, headings, ...rest] = await scan(...args);
+      return [titles, headings.filter((doc) => !tabSections.has(`${doc.t}\n${doc.h}`)), ...rest];
+    },
+    {original: scan},
+  );
   return plugin.default(context, options);
 }
 

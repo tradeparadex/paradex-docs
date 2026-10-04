@@ -194,7 +194,8 @@ const searchIndex = fs.readdirSync(build).find((f) => /^search-index.*\.json$/.t
 if (!searchIndex) fail('missing search index');
 else {
   // plugins/search-local.mjs wraps the search plugin's parser to index each
-  // tab's text under the tab's anchor; check it still does after an upgrade.
+  // tab's text under the tab's anchor, without a heading record for the tab;
+  // check it still does after an upgrade.
   const tabAnchors = new Map();
   const anchorsOn = (url) => {
     if (!tabAnchors.has(url)) {
@@ -204,9 +205,13 @@ else {
     }
     return tabAnchors.get(url);
   };
-  const documents = JSON.parse(fs.readFileSync(path.join(build, searchIndex), 'utf8')).flatMap((part) => part.documents);
-  const tabHits = documents.filter((doc) => doc.h && anchorsOn(doc.u).has(doc.h.slice(1))).length;
+  // Parts: titles, headings, descriptions, keywords, contents.
+  const parts = JSON.parse(fs.readFileSync(path.join(build, searchIndex), 'utf8')).map((part) => part.documents);
+  const onTab = (doc) => doc.h && anchorsOn(doc.u).has(doc.h.slice(1));
+  const tabHits = parts.flat().filter(onTab).length;
   if (!tabHits && [...tabAnchors.values()].some((ids) => ids.size)) fail(`${searchIndex} has no hits under a tab's anchor (plugins/search-local.mjs)`);
+  const tabHeadings = parts[1].filter(onTab);
+  if (tabHeadings.length) fail(`${searchIndex} has heading records for tabs, e.g. "${tabHeadings[0].t}" (plugins/search-local.mjs)`);
 }
 
 // 7. Viewport meta. Without minimum-scale=1, content wider than a phone

@@ -1248,14 +1248,12 @@ hr {
 }
 
 /* Layout widths: Fern's "guide" (640px column, TOC on the right) and
-   "reference" (896px column, no TOC) layouts. */
+   "reference" (896px column, no TOC) layouts. The TOC column is always in the
+   markup and only shown from the desktop breakpoint, so the server-rendered
+   page already fits phones before (or without) hydration. */
 .doc-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-}
-
-.doc-layout--with-toc {
-  grid-template-columns: minmax(0, 1fr) 288px;
 }
 
 .doc-layout__main {
@@ -1263,10 +1261,19 @@ hr {
 }
 
 .doc-layout__toc {
+  display: none;
   min-width: 0;
 }
 
 @media (min-width: 997px) {
+  .doc-layout--with-toc {
+    grid-template-columns: minmax(0, 1fr) 288px;
+  }
+
+  .doc-layout__toc {
+    display: block;
+  }
+
   .doc-layout--guide .doc-item-container {
     max-width: 640px;
     margin: 0 auto;

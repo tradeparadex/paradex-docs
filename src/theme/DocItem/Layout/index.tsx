@@ -6,7 +6,6 @@
 
 import React, {type ReactNode} from 'react';
 import clsx from 'clsx';
-import {useWindowSize} from '@docusaurus/theme-common';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
 import DocItemFooter from '@theme/DocItem/Footer';
 import DocItemTOCMobile from '@theme/DocItem/TOC/Mobile';
@@ -35,11 +34,12 @@ export default function DocItemLayout({children}: Props): ReactNode {
   const {frontMatter, toc, metadata} = useDoc();
   const fm = frontMatter as FernFrontMatter;
   const layout = useFernLayout();
-  const windowSize = useWindowSize();
   const showToc = layout === 'guide' && !fm.hide_table_of_contents && toc.length > 0;
   // Fern keeps the guide layout's TOC column even when the page has no
   // headings, so the text column sits in the same place on every guide page.
-  const tocColumn = layout === 'guide' && (windowSize === 'desktop' || windowSize === 'ssr');
+  // It is always rendered and CSS shows it from the desktop breakpoint: the
+  // server doesn't know the window size, so its HTML must suit every width.
+  const tocColumn = layout === 'guide';
 
   return (
     <div

@@ -84,9 +84,15 @@ export default function WebSocketExplorer({endpoint}: {endpoint: Endpoint}): Rea
   const nextId = useRef(0);
   const logEnd = useRef<HTMLDivElement>(null);
 
-  const path = endpoint.path.replace(/\{([^}]+)\}/g, (_, name: string) => String(params[name] ?? '') || `{${name}}`).replace(/[[\]]/g, '');
+  const value = (name: string) => String(params[name] ?? '');
+  const filled = (part: string) => Array.from(part.matchAll(/\{([^}]+)\}/g)).every(([, name]) => value(name));
+  const path = endpoint.path
+    // An optional `[...]` part is only sent once its parameters are filled in.
+    .replace(/\[([^\]]*)\]/g, (_, part: string) => (filled(part) ? part : ''))
+    .replace(/\{([^}]+)\}/g, (_, name: string) => value(name) || `{${name}}`);
   const url = endpoint.server + path;
-  const parts = endpoint.path.replace(/[[\]]/g, '').split(/(\{[^}]+\})/g).filter(Boolean);
+  // The bar shows the address as Fern did, brackets included.
+  const parts = endpoint.path.split(/(\{[^}]+\})/g).filter(Boolean);
 
   const push = (direction: LogEntry['direction'], data: string) =>
     setLog((entries) => [...entries, {id: nextId.current++, direction, data, time: new Date()}]);

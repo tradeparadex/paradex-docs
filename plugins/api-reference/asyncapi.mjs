@@ -91,7 +91,8 @@ export function buildChannels(spec, {apiName}) {
         method: 'WSS',
         title: displayName,
         path,
-        displayPath: path.replace(/\{([^}]+)\}/g, ':$1').replace(/[[\]]/g, ''),
+        // Fern kept the `[...]` around optional parts (`/rfq[.:rfq_id]`).
+        displayPath: path.replace(/\{([^}]+)\}/g, ':$1'),
         server: serverBase,
         // Fern showed the server URL (with its query string) + the address.
         // Fern filled each parameter with its first allowed value (else its

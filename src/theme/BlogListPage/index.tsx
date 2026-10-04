@@ -23,15 +23,53 @@ const RssIcon = () => (
   </svg>
 );
 
-/** Fern paged the changelog with `#page-N`; those links open /page/N. */
+const pageUrl = (basePath: string, page: number) => (page > 1 ? `${basePath}/page/${page}` : basePath);
+
+// Heading id -> index page, from <changelog>/anchors.json (written after the
+// build by plugins/site-plugin.mjs). Fetched once, on first need.
+let anchorPages: Promise<Record<string, unknown>> | undefined;
+
+function loadAnchorPages(basePath: string): Promise<Record<string, unknown>> {
+  anchorPages ??= fetch(`${basePath}/anchors.json`)
+    .then((response) => (response.ok ? response.json() : {}))
+    .catch(() => {
+      anchorPages = undefined; // retry on the next link
+      return {};
+    });
+  return anchorPages;
+}
+
+/**
+ * Fern paged the changelog with `#page-N`, and opened a link to any entry's
+ * heading or date (`#<id>`) on the page that holds it. Both open /page/N.
+ */
 function useFernPageHash(basePath: string): void {
-  const {hash} = useLocation();
+  const {hash, pathname} = useLocation();
   const history = useHistory();
   useEffect(() => {
     const page = /^#page-(\d+)$/.exec(hash)?.[1];
-    if (!page) return;
-    history.replace(Number(page) > 1 ? `${basePath}/page/${page}` : basePath);
-  }, [hash, basePath, history]);
+    if (page) {
+      history.replace(pageUrl(basePath, Number(page)));
+      return undefined;
+    }
+    let id = '';
+    try {
+      id = decodeURIComponent(hash.slice(1));
+    } catch {
+      return undefined;
+    }
+    if (!id || document.getElementById(id)) return undefined;
+    let active = true;
+    loadAnchorPages(basePath).then((pages) => {
+      const target = pages[id];
+      if (!active || typeof target !== 'number' || pageUrl(basePath, target) === pathname) return;
+      // Docusaurus scrolls to the hash once the new page has rendered.
+      history.replace(`${pageUrl(basePath, target)}${hash}`);
+    });
+    return () => {
+      active = false;
+    };
+  }, [hash, pathname, basePath, history]);
 }
 
 export default function BlogListPage(props: Props): ReactNode {

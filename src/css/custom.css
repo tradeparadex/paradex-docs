@@ -866,7 +866,8 @@ a.navbar-cta {
 }
 
 /* Anchor jumps land 16px below the header, as on Fern. */
-.theme-doc-markdown :is(h2, h3, h4, h5, h6)[id] {
+.theme-doc-markdown :is(h2, h3, h4, h5, h6)[id],
+.changelog-main .markdown :is(h2, h3, h4, h5, h6)[id] {
   scroll-margin-top: var(--fern-anchor-offset);
 }
 

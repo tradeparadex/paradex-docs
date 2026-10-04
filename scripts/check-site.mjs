@@ -4,7 +4,8 @@
 //      (scripts/legacy-urls.txt) still resolves, to a page or a redirect
 //      whose target exists.
 //   2. Every redirect rule in docs/redirects.yml lands on a real page.
-//   3. Every release note has its /releases/changelog/YYYY/M/D page.
+//   3. Every release note has its /releases/changelog/YYYY/M/D page and a
+//      page of the index in releases/changelog/anchors.json.
 //   4. Generated extras exist: llms.txt, specs, feeds, search index, 404.
 //   5. The build fits Cloudflare's limits (redirect rules, files, file size).
 
@@ -67,8 +68,11 @@ for (const {source, destination} of redirects) {
   }
 }
 
-// 3. Changelog entries
+// 3. Changelog entries, each with its date id in the index's anchor map
+//    (/releases/changelog#<id> opens the page that holds the entry).
 const notesDir = path.join(root, 'docs', 'release-notes', 'prod');
+const anchorsFile = path.join(build, 'releases', 'changelog', 'anchors.json');
+const anchors = fs.existsSync(anchorsFile) ? JSON.parse(fs.readFileSync(anchorsFile, 'utf8')) : undefined;
 let entries = 0;
 for (const name of fs.readdirSync(notesDir)) {
   const m = /^(\d{2})-(\d{2})-(\d{4})\.mdx$/.exec(name);
@@ -76,6 +80,8 @@ for (const name of fs.readdirSync(notesDir)) {
   entries++;
   const url = `/releases/changelog/${Number(m[3])}/${Number(m[1])}/${Number(m[2])}`;
   if (!htmlFor(url)) fail(`missing changelog entry page ${url} (${name})`);
+  const dateId = `${m[3]}-${m[1]}-${m[2]}T00:00:00.000Z`;
+  if (anchors && !Number.isInteger(anchors[dateId])) fail(`releases/changelog/anchors.json has no page for #${dateId} (${name})`);
 }
 
 // 4. Generated extras
@@ -92,6 +98,7 @@ for (const file of [
   'releases/changelog/rss.xml',
   'releases/changelog/atom.xml',
   'releases/changelog/llms.txt',
+  'releases/changelog/anchors.json',
   'home.md',
   'api/prod/orders/new.md',
   '_headers',

@@ -4,14 +4,16 @@
 //     and the Meta pixel, injected in the same order Fern loaded them;
 //   - redirect rules for the 404 page's client-side fallback;
 //   - post-build artifacts: `_redirects` (with `.md` twins of the exact
-//     rules), the raw OpenAPI/AsyncAPI specs, and the agent outputs written
-//     by plugins/llms.mjs: a Markdown copy of every page, llms.txt indexes,
-//     llms-full.txt, /_mcp/search-index.json and /.well-known/api-catalog.
+//     rules), the raw OpenAPI/AsyncAPI specs, the changelog index's anchor
+//     map, and the agent outputs written by plugins/llms.mjs: a Markdown
+//     copy of every page, llms.txt indexes, llms-full.txt,
+//     /_mcp/search-index.json and /.well-known/api-catalog.
 
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import yaml from 'js-yaml';
+import {fromHtml} from 'hast-util-from-html';
 
 import {toNetlifyRedirects} from './redirects.mjs';
 import {writeLlmsFiles} from './llms.mjs';
@@ -73,6 +75,30 @@ function addTwitterTags(outDir) {
   walk(outDir);
 }
 
+/**
+ * Fern opened a link to any changelog heading, `/releases/changelog#<id>`, on
+ * the index page that holds its entry. Writes `<changelog>/anchors.json`:
+ * every id inside an entry on the paged index (the date and the headings),
+ * read from the built pages, mapped to its page number. The index fetches it
+ * for a hash it does not hold (src/theme/BlogListPage).
+ */
+function writeChangelogAnchors(outDir, changelogUrl) {
+  const anchors = {};
+  for (let page = 1; ; page++) {
+    const file = path.join(outDir, `${changelogUrl}${page > 1 ? `/page/${page}` : ''}.html`);
+    if (!fs.existsSync(file)) break;
+    const collect = (node, inEntry) => {
+      const entry = inEntry || node.tagName === 'article';
+      const id = node.properties?.id;
+      // The newest page wins if an id ever repeats.
+      if (entry && typeof id === 'string' && id) anchors[id] ??= page;
+      for (const child of node.children ?? []) collect(child, entry);
+    };
+    collect(fromHtml(fs.readFileSync(file, 'utf8')), false);
+  }
+  fs.writeFileSync(path.join(outDir, changelogUrl, 'anchors.json'), JSON.stringify(anchors));
+}
+
 function lazyOnload(code) {
   return `window.addEventListener('load',function(){(window.requestIdleCallback||function(f){setTimeout(f,1)})(function(){${code}})});`;
 }
@@ -132,6 +158,7 @@ export default function sitePlugin(context, {site}) {
 
     async postBuild({outDir}) {
       addTwitterTags(outDir);
+      writeChangelogAnchors(outDir, site.changelog.url);
       fs.writeFileSync(
         path.join(outDir, '_redirects'),
         toNetlifyRedirects(site.redirectRules, site.implicitRedirects, [

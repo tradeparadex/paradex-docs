@@ -3,6 +3,7 @@
 
 import React, {createContext, useContext, useEffect, useRef, useState} from 'react';
 import clsx from 'clsx';
+import CodeBlock from '@theme/CodeBlock';
 import {useHistory, useLocation} from '@docusaurus/router';
 import {CheckIcon, LinkIcon, MinusIcon, PlusIcon, SearchIcon, CloseIcon} from './icons';
 import {useCopy} from './panels';
@@ -97,9 +98,63 @@ function AnchorLink({id}: {id: string}) {
 /** Up to this many values are listed inline; more go behind a toggle. */
 const ENUM_INLINE_LIMIT = 5;
 
+type HtmlPart = {html: string} | {code: string; language?: string};
+
+const VOID_TAGS = new Set(['area', 'br', 'col', 'embed', 'hr', 'img', 'input', 'source', 'track', 'wbr']);
+
+const decodeEntities = (text: string) =>
+  text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&amp;/g, '&');
+
+/** The description's top-level code fences (`<pre><code>`), split from the HTML around them. */
+function splitCodeBlocks(html: string): HtmlPart[] {
+  const parts: HtmlPart[] = [];
+  const tags = /<(\/?)([a-zA-Z][\w-]*)[^>]*>/g;
+  let depth = 0;
+  let start = 0;
+  for (let tag = tags.exec(html); tag; tag = tags.exec(html)) {
+    const [text, closing, name] = tag;
+    if (VOID_TAGS.has(name.toLowerCase()) || text.endsWith('/>')) continue;
+    if (closing) {
+      depth -= 1;
+      continue;
+    }
+    const end = depth === 0 && name === 'pre' ? html.indexOf('</pre>', tags.lastIndex) : -1;
+    const fence = end === -1 ? null : /^<code(?: class="language-([^"]+)")?>([\s\S]*)<\/code>$/.exec(html.slice(tags.lastIndex, end));
+    if (fence) {
+      if (html.slice(start, tag.index).trim()) parts.push({html: html.slice(start, tag.index)});
+      parts.push({code: decodeEntities(fence[2]).replace(/\n$/, ''), language: fence[1]});
+      start = tags.lastIndex = end + '</pre>'.length;
+    } else {
+      depth += 1;
+    }
+  }
+  if (html.slice(start).trim()) parts.push({html: html.slice(start)});
+  return parts;
+}
+
+/**
+ * Description HTML from plugins/api-reference. Code fences render as the
+ * site's code blocks (highlighting, line numbers, copy), as on Fern.
+ */
 export function Html({html, className}: {html?: string; className?: string}) {
   if (!html) return null;
-  return <div className={clsx('api-markdown', className)} dangerouslySetInnerHTML={{__html: html}} />;
+  const parts = html.includes('<pre') ? splitCodeBlocks(html) : [];
+  if (!parts.some((part) => 'code' in part)) {
+    return <div className={clsx('api-markdown', className)} dangerouslySetInnerHTML={{__html: html}} />;
+  }
+  return (
+    <div className={clsx('api-markdown', className)}>
+      {parts.map((part, i) =>
+        'code' in part ? (
+          <CodeBlock key={i} language={part.language}>
+            {part.code}
+          </CodeBlock>
+        ) : (
+          <div key={i} className="api-markdown__html" dangerouslySetInnerHTML={{__html: part.html}} />
+        ),
+      )}
+    </div>
+  );
 }
 
 export function nestedProperties(shape: Shape): Property[] | undefined {

@@ -644,11 +644,6 @@
 
 /* ---------- Deep links ---------- */
 
-/* Anchor jumps land 16px below the header, as on Fern. */
-.api-endpoint [id] {
-  scroll-margin-top: var(--fern-anchor-offset);
-}
-
 /* Fern's link button: left of a hovered heading or property name, or after
    it where there is no room on the left; never on touch screens. */
 .api-endpoint .api-section__title,

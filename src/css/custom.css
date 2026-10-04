@@ -172,6 +172,12 @@ body {
 
 /* ---------- Header: logo / search / links, then tabs ---------- */
 
+/* Whatever is scrolled into view, by an anchor jump or by moving the
+   keyboard focus, stops 16px below the header (Fern's scroll padding). */
+html {
+  scroll-padding-top: calc(var(--ifm-navbar-height) + 16px);
+}
+
 .navbar {
   flex-direction: column;
   align-items: stretch;
@@ -949,10 +955,11 @@ a.navbar-cta {
   letter-spacing: -0.02em;
 }
 
-/* Anchor jumps land 16px below the header, as on Fern. */
-.theme-doc-markdown :is(h2, h3, h4, h5, h6)[id],
-.changelog-main .markdown :is(h2, h3, h4, h5, h6)[id] {
-  scroll-margin-top: var(--fern-anchor-offset);
+/* Docusaurus offsets headings below its navbar with a scroll margin; here
+   the page's scroll padding (see the header section) places every anchor
+   target. */
+:is(h1, h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: 0;
 }
 
 .markdown h5 {
@@ -2440,7 +2447,6 @@ html.mermaid-zoom-open {
   color: var(--grayscale-a11) !important;
   background: var(--grayscale-a3);
   text-decoration: none !important;
-  scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
 }
 
 .blog-post-page .changelog-date {

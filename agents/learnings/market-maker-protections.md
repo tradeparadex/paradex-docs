@@ -10,7 +10,7 @@ Page: `fern/pages/trading/market-maker-protections.mdx`, served at `/trading/mar
   - `interval_ms` range is 100 to 3600000; `0` is rejected. `DELETE` is the only way to remove a configuration.
   - `MMP_NOT_CONFIGURED` is a 400 only for reset. At order entry the order is accepted and then canceled with that reason.
   - Supported markets are perps and dated options (name only these; do not mention perpetual options on the page), and clients cannot set the MMP flag on block trade legs.
-  - Five cancel reasons, including `MMP_GREEKS_UNAVAILABLE` (cancels all MMP orders on the underlying, perps included).
+  - Five cancel reasons, including `MMP_GREEKS_UNAVAILABLE` (cancels MMP orders on the affected market only; the underlying's other markets, perps included, keep quoting).
   - RFQ/block trade coverage is a per account, per base asset opt in, `protect_block_trades` (default `false`), documented in the "RFQ and block trades" section. It is the exception to the full replace rule: omitting it keeps the stored value; only `false` turns it off. Clients cannot set the MMP flag on legs; the server sets it. Which legs get it depends on the path (this has been corrected several times, keep the split):
     - Creating a block directly: maker legs only, and never the requester of a block built from offers.
     - Submitting an offer: the offering account's own legs, on either side (maker or taker).

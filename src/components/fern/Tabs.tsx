@@ -9,17 +9,25 @@ export function Tab({children}: TabProps): React.JSX.Element {
   return <>{children}</>;
 }
 
-function TabButton({title, index, active, panelId, onSelect}: {title: string; index: number; active: boolean; panelId: string; onSelect: (i: number) => void}) {
-  const anchor = useAnchorId(title);
+/**
+ * A tab's link target (#closing-hours). It sits outside the scrolling tab row
+ * and cannot take focus, so the browser's own jump to it (on a page load, or
+ * a link to the hash already in the address bar) lands the row below the
+ * header and leaves focus on the page, as on Fern.
+ */
+function TabAnchor({title}: {title: string}) {
+  return <span id={useAnchorId(title)} className="fern-tabs__anchor" />;
+}
+
+function TabButton({title, active, panelId, onSelect}: {title: string; active: boolean; panelId: string; onSelect: () => void}) {
   return (
     <button
       type="button"
       role="tab"
-      id={anchor}
       aria-selected={active}
       aria-controls={panelId}
       className={clsx('fern-tabs__tab', active && 'fern-tabs__tab--active')}
-      onClick={() => onSelect(index)}>
+      onClick={onSelect}>
       {title}
     </button>
   );
@@ -44,16 +52,14 @@ export function Tabs({children}: {children?: ReactNode}): React.JSX.Element {
   // location: a page load with a hash, links and search results alike.
   useEffect(() => {
     const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
-    const [list, ...panels] = root.current ? Array.from(root.current.children) : [];
-    if (!target || !list) return;
-    const index = list.contains(target)
-      ? Array.from(list.children).indexOf(target)
-      : panels.findIndex((panel) => (panel as HTMLElement).hidden && panel.contains(target));
+    if (!target || !root.current) return;
+    const anchors = Array.from(root.current.querySelectorAll(':scope > .fern-tabs__bar > .fern-tabs__anchor'));
+    const panels = Array.from(root.current.querySelectorAll<HTMLElement>(':scope > [role=tabpanel]'));
+    let index = anchors.indexOf(target);
+    if (index < 0) index = panels.findIndex((panel) => panel.hidden && panel.contains(target));
     if (index < 0) return;
     setActive(index);
-    // A tab's own scroll-margin is clipped by the row's scroll box, so the row
-    // (also when it belongs to nested tabs) is what lands below the header.
-    setReveal({target: target.closest('.fern-tabs__list') ?? target});
+    setReveal({target});
   }, [hash, key]);
 
   // Scroll once the panel shows, and again as its images load (the roadmap's
@@ -75,10 +81,15 @@ export function Tabs({children}: {children?: ReactNode}): React.JSX.Element {
 
   return (
     <div className="fern-tabs" ref={root}>
-      <div className="fern-tabs__list" role="tablist">
+      <div className="fern-tabs__bar">
         {tabs.map((tab, i) => (
-          <TabButton key={i} title={tab.props.title} index={i} active={active === i} panelId={`${id}-panel-${i}`} onSelect={setActive} />
+          <TabAnchor key={i} title={tab.props.title} />
         ))}
+        <div className="fern-tabs__list" role="tablist">
+          {tabs.map((tab, i) => (
+            <TabButton key={i} title={tab.props.title} active={active === i} panelId={`${id}-panel-${i}`} onSelect={() => setActive(i)} />
+          ))}
+        </div>
       </div>
       {tabs.map((tab, i) => (
         <div key={i} role="tabpanel" id={`${id}-panel-${i}`} hidden={active !== i} className="fern-tabs__panel">

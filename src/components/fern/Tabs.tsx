@@ -99,10 +99,11 @@ const menuHeight = (items: number) => Math.min(300, items * 28 + 10);
 
 /**
  * Fern's "Show all tabs" menu at the end of an overflowing tab row: every tab,
- * a check on the selected one. Behaves like Fern's (Radix) menu: it opens below
- * the button or, without room there, above; arrow keys, Home and End move
- * through it, the pointer highlights, Escape and picking a tab close it and
- * return focus to the button.
+ * a check on the selected one. Behaves like Fern's (Radix, non-modal) menu: it
+ * opens below the button or, without room there, above; arrow keys, Home, End
+ * and typing a tab's first letters move through it (Tab does not leave it),
+ * the mouse highlights, Escape and picking a tab close it and return focus to
+ * the button, and a click elsewhere closes it and goes through.
  */
 function TabMenu({titles, active, onSelect}: {titles: string[]; active: number; onSelect: (index: number) => void}) {
   const [open, setOpen] = useState(false);
@@ -112,6 +113,8 @@ function TabMenu({titles, active, onSelect}: {titles: string[]; active: number; 
   const menu = useRef<HTMLDivElement>(null);
   // Opened with the keyboard: start on the first item, as Radix does.
   const fromKeyboard = useRef(false);
+  // Letters typed in the last second, for typeahead.
+  const typed = useRef({text: '', timer: 0});
   const buttonId = useId();
   const menuId = useId();
 
@@ -141,6 +144,21 @@ function TabMenu({titles, active, onSelect}: {titles: string[]; active: number; 
     button.current?.focus();
   };
 
+  // Radix's typeahead: the next tab after the highlighted one whose title
+  // starts with the letters typed; one letter typed again steps through the
+  // tabs starting with it.
+  const typeahead = (key: string, index: number) => {
+    const state = typed.current;
+    window.clearTimeout(state.timer);
+    state.text += key.toLowerCase();
+    state.timer = window.setTimeout(() => (state.text = ''), 1000);
+    const repeated = Array.from(state.text).every((char) => char === state.text[0]);
+    const search = repeated ? state.text[0] : state.text;
+    const start = index < 0 ? 0 : index + (search.length === 1 ? 1 : 0);
+    const order = titles.map((_, i) => (start + i) % titles.length);
+    return order.find((i) => titles[i].toLowerCase().startsWith(search));
+  };
+
   const onMenuKey = (event: KeyboardEvent<HTMLDivElement>) => {
     const items = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('[role=menuitemradio]'));
     const index = items.indexOf(document.activeElement as HTMLElement);
@@ -154,9 +172,17 @@ function TabMenu({titles, active, onSelect}: {titles: string[]; active: number; 
     if (event.key in moves) {
       event.preventDefault();
       items[moves[event.key]]?.focus();
-    } else if (event.key === 'Escape' || event.key === 'Tab') {
+    } else if (event.key === 'Escape') {
       event.preventDefault();
       close();
+    } else if (event.key === 'Tab') {
+      event.preventDefault();
+    } else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      // Space picks the highlighted tab, unless it is part of what is typed.
+      if (event.key === ' ' && !typed.current.text) return;
+      event.preventDefault();
+      const match = typeahead(event.key, index);
+      if (match !== undefined) items[match]?.focus();
     }
   };
 
@@ -197,8 +223,8 @@ function TabMenu({titles, active, onSelect}: {titles: string[]; active: number; 
               aria-checked={i === active}
               tabIndex={-1}
               className="fern-tabs__menu-item"
-              onPointerMove={(event) => event.currentTarget.focus({preventScroll: true})}
-              onPointerLeave={() => menu.current?.focus({preventScroll: true})}
+              onPointerMove={(event) => event.pointerType === 'mouse' && event.currentTarget.focus({preventScroll: true})}
+              onPointerLeave={(event) => event.pointerType === 'mouse' && menu.current?.focus({preventScroll: true})}
               onClick={() => {
                 onSelect(i);
                 close();

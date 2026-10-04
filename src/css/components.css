@@ -605,8 +605,11 @@ a.cyan-cards:hover {
   color: var(--grayscale-a11);
 }
 
-.fern-tabs__more-button:hover {
-  background: var(--grayscale-a3);
+/* Not on touch screens, where a tap would leave it on (as on Fern). */
+@media (hover: hover) {
+  .fern-tabs__more-button:hover {
+    background: var(--grayscale-a3);
+  }
 }
 
 .fern-tabs__more-button:focus-visible {

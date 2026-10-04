@@ -11,6 +11,7 @@
 import React, {useEffect, useState, type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
+import {useLocation} from '@docusaurus/router';
 import {usePluginData} from '@docusaurus/useGlobalData';
 import Heading from '@theme/Heading';
 import type {Props} from '@theme/NotFound/Content';
@@ -69,7 +70,7 @@ function WarningIcon(): ReactNode {
   );
 }
 
-export default function NotFoundContent({className}: Props): ReactNode {
+function NotFoundPage({className}: Props): ReactNode {
   const {redirectRules, implicitRedirects} = usePluginData('paradex-site') as SiteData;
   const [checked, setChecked] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[] | undefined>();
@@ -128,4 +129,11 @@ export default function NotFoundContent({className}: Props): ReactNode {
       )}
     </main>
   );
+}
+
+export default function NotFoundContent(props: Props): ReactNode {
+  // Going from one unknown URL to another keeps this route mounted: start
+  // over (redirect check, suggestions) for each.
+  const {pathname} = useLocation();
+  return <NotFoundPage key={pathname} {...props} />;
 }

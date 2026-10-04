@@ -145,7 +145,8 @@ export default async function createConfig(): Promise<Config> {
 
     plugins: [
       [
-        '@easyops-cn/docusaurus-search-local',
+        // @easyops-cn/docusaurus-search-local, indexing tab text under the tab.
+        path.resolve(__dirname, 'plugins/search-local.mjs'),
         {
           hashed: true,
           language: ['en'],

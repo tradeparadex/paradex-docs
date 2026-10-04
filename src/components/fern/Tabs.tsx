@@ -47,9 +47,11 @@ export function Tabs({children}: {children?: ReactNode}): React.JSX.Element {
   const {hash, key} = useLocation();
 
   // As on Fern, a link to a tab (#closing-hours) or to anything in a hidden
-  // panel (a heading in the search index) selects that tab. Docusaurus moves
-  // to an anchor with history.push (no hashchange event), so follow the router
-  // location: a page load with a hash, links and search results alike.
+  // panel (a heading) selects that tab; so does a search hit on a tab's text,
+  // which the index keys by the tab's anchor (plugins/search-local.mjs).
+  // Docusaurus moves to an anchor with history.push (no hashchange event), so
+  // follow the router location: a page load with a hash, links and search
+  // results alike.
   useEffect(() => {
     const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
     if (!target || !root.current) return;

@@ -6,7 +6,8 @@
 //   2. Every redirect rule in docs/redirects.yml lands on a real page.
 //   3. Every release note has its /releases/changelog/YYYY/M/D page and a
 //      page of the index in releases/changelog/anchors.json.
-//   4. Generated extras exist: llms.txt, specs, feeds, search index, 404.
+//   4. Generated extras exist: llms.txt, specs, feeds, search index (with
+//      tab text under the tab's anchor), 404.
 //   5. The build fits Cloudflare's limits (redirect rules, files, file size).
 //   6. Every splat rule in _redirects sends a deep path (and its .md)
 //      where the rules in docs/redirects.yml do, and no rule covers an llms
@@ -189,7 +190,24 @@ if (fs.existsSync(path.join(build, '_redirects'))) {
   walk(build);
   if (files > 20000) fail(`build has ${files} files (Cloudflare's Workers Free limit is 20,000)`);
 }
-if (!fs.readdirSync(build).some((f) => /^search-index.*\.json$/.test(f))) fail('missing search index');
+const searchIndex = fs.readdirSync(build).find((f) => /^search-index.*\.json$/.test(f));
+if (!searchIndex) fail('missing search index');
+else {
+  // plugins/search-local.mjs wraps the search plugin's parser to index each
+  // tab's text under the tab's anchor; check it still does after an upgrade.
+  const tabAnchors = new Map();
+  const anchorsOn = (url) => {
+    if (!tabAnchors.has(url)) {
+      const file = htmlFor(url);
+      const html = file ? fs.readFileSync(file, 'utf8') : '';
+      tabAnchors.set(url, new Set(Array.from(html.matchAll(/<span id="?([^"\s>]+)"? class="?fern-tabs__anchor/g), (m) => m[1])));
+    }
+    return tabAnchors.get(url);
+  };
+  const documents = JSON.parse(fs.readFileSync(path.join(build, searchIndex), 'utf8')).flatMap((part) => part.documents);
+  const tabHits = documents.filter((doc) => doc.h && anchorsOn(doc.u).has(doc.h.slice(1))).length;
+  if (!tabHits && [...tabAnchors.values()].some((ids) => ids.size)) fail(`${searchIndex} has no hits under a tab's anchor (plugins/search-local.mjs)`);
+}
 
 // 7. Viewport meta. Without minimum-scale=1, content wider than a phone
 // widens the layout viewport and the mobile drawer and search dialog open

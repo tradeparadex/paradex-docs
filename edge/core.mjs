@@ -10,7 +10,8 @@
 //   pages for unknown paths;
 // - llms.txt / llms-full.txt: Content-Type by Accept, Vary, cache headers and
 //   the agent not-found;
-// - /.well-known/api-catalog with RFC 9727 headers.
+// - /.well-known/api-catalog with RFC 9727 headers;
+// - /_similar-pages, the 404 page's similar-page suggestions.
 // Everything else goes to next() untouched.
 //
 // Entry point: edge/worker.mjs, a Cloudflare Worker whose static assets are
@@ -24,6 +25,8 @@ import { buildSearchIndex, searchIndex } from './search.mjs';
 export const DEFAULT_SITE_URL = 'https://docs.paradex.trade';
 export const SEARCH_INDEX_PATH = '/_mcp/search-index.json';
 export const HOME_PAGE = '/home';
+/** The 404 page's similar pages (Fern's /api/fern-docs/route-suggestions). */
+export const SIMILAR_PAGES_PATH = '/_similar-pages';
 
 const AGENT_CACHE_CONTROL = 'public, max-age=300, s-maxage=31536000, stale-while-revalidate=31536000';
 const CATALOG_CACHE_CONTROL = 'public, s-maxage=31536000, stale-while-revalidate=31536000';
@@ -118,6 +121,7 @@ export function isNegotiablePath(pathname) {
 export function needsEdge(request) {
   const { pathname } = new URL(request.url);
   if (isMcpPath(pathname) || isLegacyMcpPath(pathname)) return true;
+  if (pathname === SIMILAR_PAGES_PATH) return true;
   if (MARKDOWN_SUFFIX.test(pathname)) return true;
   if (pathname.endsWith('/llms.txt') || pathname.endsWith('/llms-full.txt')) return true;
   if (pathname.endsWith(API_CATALOG_PATH)) return true;
@@ -315,6 +319,35 @@ export function createEdge() {
     return request.method === 'HEAD' ? withoutBody(response) : response;
   }
 
+  /**
+   * GET /_similar-pages?path=/x/y: the 404 page's "Were you looking for one
+   * of these?" cards, like Fern's route-suggestions API. Up to three pages
+   * ranked as for the agent not-found, as [{title, href, subtitle}] with the
+   * sidebar title and the breadcrumbs as subtitle; [] when there are none.
+   */
+  async function serveSimilarPages(request, url, ctx) {
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { Allow: 'GET, HEAD, OPTIONS' } });
+    if (request.method !== 'GET' && request.method !== 'HEAD') return methodNotAllowed();
+    let pages = [];
+    try {
+      pages = (await loadIndexData(ctx)).pages;
+    } catch {
+      // No index, no suggestions: the 404 page shows none.
+    }
+    const breadcrumbs = new Map(pages.map((page) => [page.url, page.breadcrumbs]));
+    // Fern titled the cards as the sidebar does.
+    const candidates = pages.map((page) => ({ url: page.url, title: page.navTitle ?? page.title }));
+    const suggestions = suggestRoutes(safeDecode(url.searchParams.get('path') ?? ''), candidates).map(({ title, href }) => {
+      const crumbs = breadcrumbs.get(href);
+      return Array.isArray(crumbs) && crumbs.length > 0 ? { title, href, subtitle: crumbs.join(' › ') } : { title, href };
+    });
+    const response = new Response(JSON.stringify(suggestions), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300', 'X-Robots-Tag': 'noindex' },
+    });
+    return request.method === 'HEAD' ? withoutBody(response) : response;
+  }
+
   async function serveApiCatalog(request, ctx) {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { Allow: 'GET, HEAD, OPTIONS' } });
     if (request.method !== 'GET' && request.method !== 'HEAD') return methodNotAllowed();
@@ -397,6 +430,7 @@ export function createEdge() {
       return handleMcp(request, mcpDeps(ctx));
     }
     if (pathname.endsWith(API_CATALOG_PATH)) return serveApiCatalog(request, ctx);
+    if (pathname === SIMILAR_PAGES_PATH) return serveSimilarPages(request, url, ctx);
     if ((method === 'GET' || method === 'HEAD' || method === 'OPTIONS') && wantsMarkdown(request) && isNegotiablePath(pathname)) {
       const page = trimTrailingSlashes(pathname) || '/';
       return new Response(null, { status: 303, headers: { Location: `${url.origin}${page}.md${url.search}` } });

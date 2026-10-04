@@ -3,7 +3,8 @@
 // ids the pages really use.
 //
 //   {"version": 1, "site": "https://docs.paradex.trade",
-//    "pages": [{"url", "title", "kind": "page"|"api"|"changelog", "breadcrumbs": [...]}],
+//    "pages": [{"url", "title", "kind": "page"|"api"|"changelog", "breadcrumbs": [...],
+//               "navTitle"?: <the navigation's title, when it differs>}],
 //    "sections": [{"page": <index into pages>, "anchor": "<id>"|null,
 //                  "heading": "<text>"|null, "text": "<plain text, <= 4000 chars>"}]}
 //
@@ -143,7 +144,9 @@ export function buildSearchIndex({tree, outDir, siteUrl, titleOf, apiSections, i
       console.warn(`[paradex] search index: ${node.url}: ${error.message}`);
       continue;
     }
-    pages.push({url: node.url, title: titleOf(node), kind, breadcrumbs});
+    const title = titleOf(node);
+    // The 404 page's suggestions show the sidebar title, as Fern's did.
+    pages.push({url: node.url, title, kind, breadcrumbs, ...(node.title && node.title !== title ? {navTitle: node.title} : {})});
     for (const s of pageSections) sections.push({page: index, anchor: s.anchor ?? null, heading: s.heading ?? null, text: cleanText(s.text ?? '')});
   }
   if (failures) console.warn(`[paradex] search index: ${failures} page(s) skipped`);

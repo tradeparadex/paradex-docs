@@ -29,6 +29,7 @@ ES modules, no Node APIs, no dependencies).
 | A missing `.md` | `200 text/plain` "# Page Not Found" with up to three similar pages (Fern's agent not-found) |
 | `<path>/llms.txt` | `Content-Type` is `text/markdown` when `Accept` asks for it, otherwise `text/plain`; `Vary: Accept`. A missing one gets the agent not-found, and so does one under an old URL prefix that `_redirects` would redirect (Fern's llms.txt route ignored redirects) |
 | `/llms-full.txt` | Our full concatenation (kept on purpose). A missing `<section>/llms-full.txt` gets a `301` to `<section>/llms.txt`, as on Fern |
+| `GET /_similar-pages?path=<path>` | The 404 page's "Were you looking for one of these?" cards, as Fern's route-suggestions API gave them: up to three pages ranked like the agent not-found's, `[{"title","href","subtitle"}]` (sidebar title, breadcrumbs joined with ` › `), `X-Robots-Tag: noindex` |
 | `/.well-known/api-catalog` | RFC 9727 linkset with `Content-Type: application/linkset+json; profile=...` and `Link: <...>; rel="api-catalog"`. Uses the build's file if there is one, otherwise lists `/api/prod` and `/api/testnet` with their OpenAPI files |
 | Anything else | Passed to the static assets untouched |
 
@@ -89,9 +90,9 @@ site.
 - `<page>.md` and `<page>/llms.txt` for every page, section and tab URL, in
   Fern's agent format. `/home.md` is the home page.
 - `/_mcp/search-index.json`:
-  `{"version":1,"site":...,"pages":[{"url","title","kind","breadcrumbs"}],"sections":[{"page","anchor","heading","text"}]}`.
-  It is loaded on the first search in each isolate and kept for the isolate's
-  life (a deploy starts new isolates).
+  `{"version":1,"site":...,"pages":[{"url","title","kind","breadcrumbs","navTitle"?}],"sections":[{"page","anchor","heading","text"}]}`.
+  It is loaded on the first search (or not-found suggestion) in each isolate
+  and kept for the isolate's life (a deploy starts new isolates).
 - Endpoint pages written with the markers that `plugins/llms-api.mjs`
   documents: the `Reference: <url>` line, schema headings
   (`## Authentication` to `## Types`), `## Examples`, the `**Code Samples**`

@@ -434,6 +434,43 @@ describe('/.well-known/api-catalog', () => {
   });
 });
 
+describe('/_similar-pages (the 404 page\'s suggestions)', () => {
+  test('up to three pages ranked as for the agent not-found, with breadcrumbs as subtitle', async () => {
+    const res = await get('/_similar-pages?path=%2Ftrading%2Ftrading-feez');
+    assert.equal(res.status, 200);
+    assertHeaders(res, { 'content-type': 'application/json', 'cache-control': 'public, max-age=300', 'x-robots-tag': 'noindex' });
+    assert.deepEqual(await res.json(), [
+      { title: 'Trading Fees', href: '/trading/trading-fees', subtitle: 'Trading' },
+      { title: 'BTC-USD-PERP', href: '/trading/instruments-guide/futures/tier-1/btc-usd-perp', subtitle: 'Trading › Instruments Guide › Futures' },
+      { title: 'Rate Limits', href: '/api/general-information/rate-limits', subtitle: 'API' },
+    ]);
+  });
+
+  test('cards use the sidebar title; no subtitle without breadcrumbs', async () => {
+    const index = JSON.parse(site.files['/_mcp/search-index.json']);
+    index.pages.find((p) => p.url === '/home').navTitle = 'Home';
+    site = createSite({ '/_mcp/search-index.json': JSON.stringify(index) });
+    const [first] = await (await get('/_similar-pages?path=/homee')).json();
+    assert.deepEqual(first, { title: 'Home', href: '/home' });
+  });
+
+  test('nothing for the root, no path or a missing index', async () => {
+    assert.deepEqual(await (await get('/_similar-pages?path=/')).json(), []);
+    assert.deepEqual(await (await get('/_similar-pages')).json(), []);
+    edge = createEdge();
+    site = createSite({ '/_mcp/search-index.json': null });
+    assert.deepEqual(await (await get('/_similar-pages?path=/trading/x')).json(), []);
+  });
+
+  test('HEAD, OPTIONS and other methods; never negotiated to Markdown', async () => {
+    assert.equal((await get('/_similar-pages?path=/x', { method: 'HEAD' })).body, null);
+    assert.equal((await get('/_similar-pages', { method: 'OPTIONS' })).status, 204);
+    assert.equal((await get('/_similar-pages', { method: 'POST' })).status, 405);
+    assert.equal((await get('/_similar-pages?path=/x', { accept: 'text/plain' })).status, 200);
+    assert.equal(needsEdge(new Request(`${SITE}/_similar-pages?path=/x`)), true);
+  });
+});
+
 describe('security headers', () => {
   test('every response the edge layer builds carries them', async () => {
     site = createSite({}, { redirects: { '/docs/security.md': [301, '/chain/security.md'] } });
@@ -448,6 +485,7 @@ describe('security headers', () => {
       await get('/docs', { accept: 'text/markdown' }),
       await get('/.well-known/api-catalog'),
       await get('/_mcp/server'),
+      await get('/_similar-pages?path=/x'),
     ];
     for (const res of responses) {
       for (const [name, value] of Object.entries(SECURITY_HEADERS)) assert.equal(res.headers.get(name), value, `${res.url} ${res.status} ${name}`);

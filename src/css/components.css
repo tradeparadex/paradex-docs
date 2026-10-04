@@ -1,0 +1,936 @@
+/*
+ * Styles for the Fern-compatible MDX components in src/components/fern, plus
+ * the prose details those components share with the page body (lists, links,
+ * inline code in cards). Sizes and colors are Fern's (dark theme, Radix scales).
+ */
+
+:root,
+html[data-theme='dark'] {
+  /* Radix accent alpha steps Fern used for cards, buttons and callouts. */
+  --fern-accent-a2: rgba(80, 237, 251, 0.071);
+  --fern-accent-a3: rgba(0, 233, 252, 0.153);
+  --fern-accent-a5: rgba(0, 233, 255, 0.275);
+  --fern-accent-a6: rgba(0, 233, 253, 0.341);
+  --fern-accent-a9: rgba(31, 237, 254, 0.808);
+  --fern-accent-a10: rgba(25, 238, 255, 0.753);
+  --fern-accent-a12: rgba(186, 249, 255, 0.953);
+  --fern-card-shadow: 0 2px 4px var(--grayscale-a3);
+  /* Where in-page targets (tabs, accordions, steps) land below the sticky header. */
+  --fern-anchor-offset: calc(var(--ifm-navbar-height) + 16px);
+}
+
+.fern-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  overflow: visible;
+}
+
+/* <Icon> in MDX: 16px and muted unless the page sets a color, as on Fern. */
+.fern-mdx-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--grayscale-a11);
+}
+
+/* ---------- Lists ---------- */
+
+/* Fern draws its own '⦁' bullet: text sits 24px in, items 8px apart (docs
+   pages and changelog entries). */
+:is(.theme-doc-markdown, .changelog-main .markdown) ul:not([class]) {
+  list-style: none;
+  padding-left: 12px;
+  margin-bottom: 12px;
+}
+
+:is(.theme-doc-markdown, .changelog-main .markdown) ul:not([class]) > li {
+  position: relative;
+  padding-left: 12px;
+}
+
+:is(.theme-doc-markdown, .changelog-main .markdown) ul:not([class]) > li::before {
+  content: '⦁';
+  position: absolute;
+  margin: -1px 0 0 -22px;
+  color: var(--grayscale-a10);
+}
+
+:is(.theme-doc-markdown, .changelog-main .markdown) ol:not([class]) {
+  padding-left: 1.625em;
+  margin-bottom: 12px;
+}
+
+:is(.theme-doc-markdown, .changelog-main .markdown) ol:not([class]) > li {
+  padding-left: 0.375em;
+}
+
+:is(.theme-doc-markdown, .changelog-main .markdown) ol:not([class]) > li::marker {
+  color: var(--grayscale-a10);
+  font-weight: 400;
+}
+
+:is(.theme-doc-markdown, .changelog-main .markdown) :is(ul, ol):not([class]) > li,
+:is(.theme-doc-markdown, .changelog-main .markdown) :is(ul, ol):not([class]) > li + li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+:is(.theme-doc-markdown, .changelog-main .markdown) li > :is(ul, ol):not([class]) {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+/* As in Fern's prose, a block right under a heading drops its top margin. */
+:is(.theme-doc-markdown, .changelog-main .markdown) :is(h2, h3, h4) + :is(ul, ol, .fern-card-group, .fern-callout) {
+  margin-top: 0;
+}
+
+/* ---------- Links ---------- */
+
+.theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a) {
+  color: var(--accent-a11);
+  font-weight: 500;
+  text-decoration-line: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a):hover {
+  color: var(--accent-a11);
+  text-decoration-thickness: 2px;
+}
+
+/* Cards and the page subtitle are outside Fern's prose, where links are
+   semibold. */
+.theme-doc-markdown .fern-card a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a),
+.theme-doc-markdown .fern-page-header__subtitle a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a) {
+  font-weight: 600;
+}
+
+.theme-doc-markdown :is(h1, h2, h3, h4, h5, h6) a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a) {
+  font-weight: inherit;
+}
+
+/* Fern's external-link glyph: 14px, slightly faded. */
+.theme-doc-markdown a[href^='http']:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hide-external):not(.page-actions__item)::after {
+  width: 14px;
+  height: 14px;
+  margin-left: 2px;
+  vertical-align: -1px;
+  opacity: 0.7;
+}
+
+/* ---------- Cards ---------- */
+
+.fern-card-group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.fern-card-group:first-child {
+  margin-top: 0;
+}
+
+/* Fern: one column on phones, two from 640px, the full count from 1280px. */
+@media (min-width: 640px) {
+  .fern-card-group {
+    gap: 16px;
+  }
+
+  .fern-card-group:not(.fern-card-group--cols-1) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .fern-card-group:not(.fern-card-group--cols-1) {
+    grid-template-columns: repeat(var(--fern-cols, 2), minmax(0, 1fr));
+  }
+}
+
+.fern-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 24px;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 12px;
+  background: var(--paradex-card-bg);
+  box-shadow: var(--fern-card-shadow);
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 20px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  text-decoration: none !important;
+}
+
+.fern-card-group > .fern-card {
+  margin-bottom: 0;
+}
+
+/* The title link covers the whole card; links in the body sit above it. */
+.fern-card__link,
+.fern-card__link:hover {
+  color: inherit !important;
+  font-weight: inherit !important;
+  text-decoration: none !important;
+}
+
+.fern-card__link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.fern-card__link::after {
+  display: none !important;
+}
+
+.fern-card--link .fern-card__body a {
+  position: relative;
+  z-index: 1;
+}
+
+.fern-card--link:hover {
+  border-color: var(--fern-accent-a9);
+  box-shadow: 0 1px 2px var(--grayscale-a3), 0 3px 6px var(--grayscale-a3);
+  color: #ffffff;
+}
+
+.fern-card__icon {
+  display: flex;
+  color: var(--fern-accent-a10);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.fern-card__icon svg,
+.fern-card__icon img {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  border-radius: 0;
+}
+
+.fern-card__icon img {
+  height: auto;
+}
+
+.card-icon-w64 .fern-card__icon img,
+.card-icon-w64 .card-icon img {
+  width: 64px !important;
+}
+
+.fern-card__title {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.fern-card__body {
+  color: var(--grayscale-a11);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.fern-card__body li,
+.fern-card__body p {
+  color: var(--grayscale-a11) !important;
+}
+
+.fern-card__body p {
+  margin: 0;
+}
+
+.theme-doc-markdown .fern-card ul:not([class]) {
+  margin-top: 0;
+}
+
+.theme-doc-markdown .fern-card :is(ul, ol):not([class]) > li,
+.theme-doc-markdown .fern-card :is(ul, ol):not([class]) > li + li {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Inline code in cards is muted, unlike the accent chips in the body. */
+.theme-doc-markdown .fern-card :not(pre) > code:not([class]) {
+  color: var(--grayscale-a11);
+  font-weight: 400;
+  background: var(--paradex-card-bg);
+  border: 0;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--grayscale-a5);
+  padding: 2px 4px;
+}
+
+.white-cards .fern-card__body,
+.white-cards .fern-card__body p,
+.white-cards .fern-card__body li {
+  color: #ffffff !important;
+}
+
+.cyan-cards .fern-card__body,
+.cyan-cards .fern-card__body p,
+.cyan-cards .fern-card__body li {
+  color: var(--paradex-accent) !important;
+}
+
+a.white-cards:hover,
+a.cyan-cards:hover {
+  border-color: var(--paradex-accent);
+}
+
+/* ---------- Callouts ---------- */
+
+.fern-callout {
+  --callout-color: var(--grayscale-a11);
+  --callout-icon: var(--grayscale-a10);
+  --callout-bg: var(--grayscale-a2);
+  --callout-border: var(--grayscale-a6);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  margin: 16px 0 24px;
+  border: 1px solid var(--callout-border);
+  border-radius: 12px;
+  background: var(--callout-bg);
+  color: var(--callout-color);
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.fern-callout:first-child {
+  margin-top: 0;
+}
+
+.fern-callout--warning {
+  --callout-color: #ffca16;
+  --callout-icon: #ffd60a;
+  --callout-bg: rgba(253, 155, 0, 0.051);
+  --callout-border: rgba(253, 155, 0, 0.318);
+}
+
+.fern-callout--success,
+.fern-callout--check {
+  --callout-color: rgba(70, 254, 165, 0.831);
+  --callout-icon: rgba(67, 254, 164, 0.671);
+  --callout-bg: rgba(41, 249, 157, 0.043);
+  --callout-border: rgba(68, 255, 170, 0.294);
+}
+
+.fern-callout--error {
+  --callout-color: #ff9592;
+  --callout-icon: rgba(255, 100, 101, 0.922);
+  --callout-bg: rgba(242, 47, 62, 0.067);
+  --callout-border: rgba(255, 62, 86, 0.408);
+}
+
+.fern-callout--note {
+  --callout-color: #70b8ff;
+  --callout-icon: #3b9eff;
+  --callout-bg: rgba(17, 102, 251, 0.094);
+  --callout-border: rgba(15, 137, 253, 0.498);
+}
+
+.fern-callout--launch {
+  --callout-color: var(--accent-a11);
+  --callout-icon: var(--fern-accent-a10);
+  --callout-bg: var(--fern-accent-a2);
+  --callout-border: var(--fern-accent-a6);
+}
+
+/* Paradex styled tips in its accent, text and links included. */
+.fern-callout--tip {
+  --callout-color: var(--paradex-accent);
+  --callout-icon: var(--paradex-accent);
+  --callout-bg: rgba(27, 193, 207, 0.1);
+  --callout-border: var(--paradex-accent);
+}
+
+.fern-callout--tip *,
+.theme-doc-markdown .fern-callout--tip a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item) {
+  color: var(--paradex-accent) !important;
+}
+
+.fern-callout__icon {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 20px;
+  margin-top: 2px;
+  color: var(--callout-icon);
+}
+
+.fern-callout__icon svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  max-width: none;
+}
+
+/* The body is 14px/20px. The negative margin and the two empty blocks
+   reproduce Fern's spacing: the first and last children keep their own
+   margins, so a paragraph under a title sits ~18px below it. */
+.fern-callout__content {
+  flex: 1;
+  min-width: 0;
+  margin: -16px 0;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.fern-callout__content::before,
+.fern-callout__content::after {
+  content: '';
+  display: block;
+}
+
+.fern-callout__content::before {
+  margin-bottom: 16px;
+}
+
+.fern-callout__content::after {
+  margin-top: 16px;
+}
+
+.fern-callout__title {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.theme-doc-markdown .fern-callout__body p,
+.theme-doc-markdown .fern-callout__body li {
+  color: inherit;
+}
+
+.theme-doc-markdown .fern-callout__body p {
+  margin: 1.25em 0;
+}
+
+.theme-doc-markdown .fern-callout__body > :is(ul, ol):not([class]) {
+  margin-top: 1.25em;
+}
+
+/* ---------- Tabs ---------- */
+
+.fern-tabs {
+  margin: 0;
+}
+
+/* The row is pulled up by the tabs' 12px top padding. Its bottom line is an
+   inset shadow so the scroll container does not clip the active marker. */
+.fern-tabs__list {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin: -12px 0 24px;
+  box-shadow: inset 0 -1px 0 var(--grayscale-a5);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.fern-tabs__list::-webkit-scrollbar {
+  display: none;
+}
+
+.fern-tabs__tab {
+  position: relative;
+  flex: 0 0 auto;
+  background: none;
+  border: 0;
+  padding: 12px 0 11px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--grayscale-a11);
+  cursor: pointer;
+  white-space: nowrap;
+  scroll-margin-top: var(--fern-anchor-offset);
+}
+
+.fern-tabs__tab:hover {
+  box-shadow: inset 0 -1px 0 var(--grayscale-a5);
+}
+
+.fern-tabs__tab--active,
+.fern-tabs__tab--active:hover {
+  color: var(--accent-a11);
+}
+
+.fern-tabs__tab--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1px;
+  height: 1px;
+  background: var(--paradex-accent);
+}
+
+.fern-tabs__panel::before {
+  content: '';
+  display: block;
+  margin-bottom: 16px;
+}
+
+/* ---------- Accordion ---------- */
+
+/* A lone accordion and a group are both one card, as on Fern. */
+.fern-accordion,
+.fern-accordion-group {
+  margin: 16px 0 24px;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 12px;
+  background: var(--paradex-card-bg);
+  box-shadow: var(--fern-card-shadow);
+}
+
+.fern-accordion {
+  overflow: clip;
+  scroll-margin-top: var(--fern-anchor-offset);
+}
+
+.fern-accordion:first-child,
+.fern-accordion-group:first-child {
+  margin-top: 0;
+}
+
+.fern-accordion-group > .fern-accordion {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.fern-accordion-group > .fern-accordion:first-child {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.fern-accordion-group > .fern-accordion:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.fern-accordion-group > .fern-accordion + .fern-accordion {
+  border-top: 1px solid var(--grayscale-a5);
+}
+
+.fern-accordion__summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  list-style: none;
+  cursor: pointer;
+  border-radius: inherit;
+  color: #ffffff;
+}
+
+.fern-accordion[open] > .fern-accordion__summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.fern-accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.fern-accordion__summary:hover {
+  background: var(--grayscale-a2);
+}
+
+.fern-accordion__chevron {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--grayscale-a11);
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.fern-accordion[open] > .fern-accordion__summary .fern-accordion__chevron {
+  transform: rotate(90deg);
+}
+
+.fern-accordion__title {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: -1px;
+  text-align: left;
+}
+
+.fern-accordion__body {
+  padding: 12px 20px;
+}
+
+.theme-doc-markdown .fern-accordion__body > :is(ul, ol):not([class]):first-child {
+  margin-top: 1.25em;
+}
+
+/* ---------- Steps ---------- */
+
+/* One rail down the left; each title carries a numbered badge on it. */
+.fern-steps {
+  counter-reset: fern-step;
+  margin: 16px 0 48px 12px;
+  padding-left: 28px;
+  border-left: 1px solid var(--grayscale-a5);
+}
+
+.fern-step {
+  position: relative;
+}
+
+.fern-step__title,
+.fern-steps > h3 {
+  position: relative;
+  counter-increment: fern-step;
+  scroll-margin-top: var(--fern-anchor-offset);
+}
+
+/* Only a step's own title shows the badge (not headings nested deeper). */
+.fern-step__anchor {
+  display: none;
+}
+
+.fern-step__title > .fern-step__anchor,
+.fern-steps > h3 > .fern-step__anchor {
+  position: absolute;
+  left: -40px;
+  top: 4px;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 6px;
+  background: var(--paradex-card-bg);
+  color: var(--grayscale-a11);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  text-decoration: none;
+}
+
+.fern-step__anchor::before {
+  content: counter(fern-step);
+}
+
+.fern-step__anchor:hover {
+  color: var(--grayscale-a12);
+  text-decoration: none;
+}
+
+/* Fern's prose drops the top margin of whatever follows a heading. */
+.fern-step__body > :first-child,
+.fern-steps > h3 + * {
+  margin-top: 0;
+}
+
+/* ---------- Frame ---------- */
+
+/* Image and caption share one card. */
+.fern-frame {
+  position: relative;
+  margin: 16px 0 24px;
+  padding: 8px;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 12px;
+  background: var(--paradex-card-bg);
+  box-shadow: var(--fern-card-shadow);
+  overflow: hidden;
+}
+
+.fern-frame:first-child {
+  margin-top: 0;
+}
+
+.fern-frame__content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.fern-frame__content img,
+.theme-doc-markdown .fern-frame__content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 0;
+}
+
+.fern-frame__content > p,
+.theme-doc-markdown .fern-frame__content > p {
+  margin: 0;
+}
+
+.fern-frame__caption {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 0 32px 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--grayscale-a11);
+  text-align: center;
+}
+
+/* ---------- Badges, tags, buttons ---------- */
+
+.fern-docs-badge {
+  --badge-color: var(--grayscale-a11);
+  --badge-bg: var(--grayscale-a3);
+  --badge-border: var(--grayscale-a6);
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 24px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 600;
+  vertical-align: baseline;
+  white-space: nowrap;
+  color: var(--badge-color);
+  background: var(--badge-bg);
+}
+
+.fern-docs-badge.outlined,
+.fern-docs-badge.outlined-subtle {
+  border-color: var(--badge-border);
+}
+
+.fern-docs-badge.solid {
+  color: var(--paradex-dark);
+  background: var(--badge-color);
+}
+
+.fern-docs-badge.rounded {
+  border-radius: 999px;
+}
+
+.fern-docs-badge--note,
+.fern-docs-badge--info {
+  --badge-color: #70b8ff;
+  --badge-bg: rgba(0, 77, 242, 0.067);
+  --badge-border: rgba(15, 137, 253, 0.498);
+}
+
+/* Paradex shows "success" badges in its accent. */
+.fern-docs-badge--success,
+.fern-docs-badge--green {
+  --badge-color: var(--paradex-accent);
+  --badge-bg: rgba(0, 222, 69, 0.02);
+  --badge-border: rgba(68, 255, 170, 0.294);
+}
+
+.fern-docs-badge--warning {
+  --badge-color: #ffca16;
+  --badge-bg: rgba(253, 155, 0, 0.051);
+  --badge-border: rgba(253, 155, 0, 0.318);
+}
+
+.fern-docs-badge--error,
+.fern-docs-badge--danger {
+  --badge-color: #ff9592;
+  --badge-bg: rgba(242, 47, 62, 0.067);
+  --badge-border: rgba(255, 62, 86, 0.408);
+}
+
+.fern-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+}
+
+.fern-tag.green-subtle {
+  color: #3dd68c;
+  background: rgba(61, 214, 140, 0.12);
+}
+
+/* Fern's buttons: 14px on a 32px row, 16px on 40px when large. */
+.fern-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  text-decoration: none !important;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.fern-button.large {
+  height: 40px;
+  padding: 8px 12px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media (min-width: 1024px) {
+  .fern-button.large {
+    padding: 8px 16px;
+  }
+}
+
+.fern-button.small {
+  height: 24px;
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+@media (max-width: 639px) {
+  .fern-button {
+    height: 40px;
+  }
+
+  .fern-button.large {
+    height: 44px;
+  }
+
+  .fern-button.small {
+    height: 28px;
+  }
+}
+
+.fern-button.rounded {
+  border-radius: 9999px;
+}
+
+/* MDX wraps a label on its own line in <p>; it takes the button's color. */
+.fern-button > p,
+.fern-button-text > p,
+.theme-doc-markdown .fern-button > p,
+.theme-doc-markdown .fern-button-text > p {
+  display: inline;
+  margin: 0;
+  color: inherit;
+}
+
+.fern-button.filled {
+  background: var(--grayscale-12);
+  color: var(--grayscale-1) !important;
+}
+
+.fern-button.filled:hover {
+  background: var(--grayscale-11);
+}
+
+.fern-button.filled.primary {
+  background: var(--paradex-accent-bright);
+  color: var(--paradex-dark) !important;
+  font-weight: 500;
+}
+
+/* Paradex's pill CTA, as on paradex.trade. */
+.fern-button.filled.primary.rounded {
+  height: 40px;
+  padding: 0 16px;
+}
+
+.fern-button.filled.primary:hover {
+  background: var(--fern-accent-a10);
+}
+
+.fern-button.filled .fern-button-text {
+  color: inherit;
+}
+
+.fern-button.outlined {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--grayscale-a5);
+  color: #ffffff !important;
+}
+
+.fern-button.outlined:hover {
+  background: var(--grayscale-a3);
+}
+
+.fern-button.outlined.primary {
+  box-shadow: inset 0 0 0 1px var(--fern-accent-a5);
+  color: var(--accent-a11) !important;
+}
+
+.fern-button.outlined.primary:hover {
+  background: var(--fern-accent-a3);
+  color: var(--fern-accent-a12) !important;
+}
+
+.fern-button.minimal {
+  background: transparent;
+  color: var(--grayscale-a11) !important;
+}
+
+.fern-button.minimal:hover {
+  background: var(--grayscale-a3);
+  color: #ffffff !important;
+}
+
+.fern-button.minimal.primary {
+  color: var(--accent-a11) !important;
+}
+
+.fern-button.minimal.primary:hover {
+  background: var(--fern-accent-a3);
+}
+
+/* ---------- Changelog tags ---------- */
+
+.fern-changelog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 16px;
+}
+
+.fern-changelog-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  line-height: 20px;
+  color: var(--grayscale-a11);
+  background: var(--grayscale-a3);
+}

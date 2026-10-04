@@ -1,0 +1,40 @@
+# Cloudflare Worker for docs.paradex.trade: the static Docusaurus build
+# (`build/`) served as Workers static assets, with the edge layer
+# (edge/worker.mjs: MCP server at /_mcp/server, Markdown negotiation,
+# .md / llms.txt headers) in front of it. See edge/README.md.
+#
+#   yarn build && npx wrangler@4 dev        # local, http://localhost:8787
+#   npx wrangler@4 deploy                   # production (CI: publish-docs.yml)
+name = "paradex-docs"
+main = "edge/worker.mjs"
+compatibility_date = "2026-09-01"
+
+# Production is served on the custom domain only. The paradex.trade zone must
+# be on Cloudflare, in the same account.
+routes = [{ pattern = "docs.paradex.trade", custom_domain = true }]
+workers_dev = false
+# Per-pull-request preview URLs (<alias>-paradex-docs.<subdomain>.workers.dev),
+# uploaded by build-docs.yml with `wrangler versions upload --preview-alias`.
+preview_urls = true
+
+[assets]
+directory = "build"
+binding = "ASSETS"
+# `/x` serves x.html, `/x/` and `/x.html` redirect to `/x` (the build uses
+# trailingSlash: false, like Fern's URLs).
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+# The Worker sees every request except the hashed JS, CSS, images and fonts
+# under /assets/, which are served without invoking it (no Worker request or
+# CPU cost). It needs the rest: Accept negotiation applies to every page URL.
+run_worker_first = ["/*", "!/assets/*"]
+
+[vars]
+SITE_URL = "https://docs.paradex.trade"
+# Set to "off" to turn the MCP server off (it then answers 404 like Fern's
+# per-site switch). Build with DOCS_MCP_SERVER=off too, so llms.txt and the
+# .md preamble stop advertising it.
+# DOCS_MCP_SERVER = "off"
+
+[observability]
+enabled = true

@@ -1,0 +1,706 @@
+/*
+ * Home page (/home) landing layout. The markup lives in
+ * docs/pages/what-is-paradex.mdx; class names are prefixed `lp-`.
+ */
+
+
+.lp-container h1,
+.lp-container h2,
+.lp-container h3,
+.lp-container .lp-heading-h1,
+.lp-container .lp-heading-h2 {
+  font-weight: bold;
+}
+
+/* Span-based headings: replicate native heading styles so Fern does not add hover link buttons */
+.lp-heading-h1 {
+  display: block;
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+/* Hero heading: match paradex.trade 72px sizing */
+.lp-hero-heading .lp-heading-h1 {
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 4.5rem;
+}
+
+@media (max-width: 768px) {
+  .lp-hero-heading .lp-heading-h1 {
+    font-size: 3rem;
+    line-height: 3rem;
+  }
+}
+
+.lp-heading-h2 {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.lp-container p,
+.lp-container li,
+.lp-container a,
+.lp-container span {
+  font-weight: normal;
+}
+
+.lp-container {
+  min-height: 100vh;
+  position: relative;
+  /* Fern's body text is 16px/24px; Infima's .theme-doc-markdown uses 1.75. */
+  line-height: 1.5;
+  text-rendering: auto;
+}
+
+/* Landing h3s are 20px/25px with normal tracking on Fern; set them here so
+   the docs prose h3 rules (line-height, letter-spacing) don't apply. */
+.lp-container h3 {
+  line-height: 1.25;
+  letter-spacing: normal;
+}
+
+.lp-main {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  position: relative;
+}
+
+/* ── Shared helpers ── */
+.lp-btn {
+  text-decoration: none !important;
+  width: fit-content !important;
+}
+
+.lp-btn svg {
+  display: none !important;
+}
+
+.lp-container a::after {
+  display: none !important;
+}
+
+.lp-container a > svg {
+  display: none !important;
+}
+
+/* Hide heading anchor link icons on hover */
+.lp-container .hash-link,
+.lp-container h1 a,
+.lp-container h2 a,
+.lp-container h3 a,
+.lp-container .lp-heading-h1 a,
+.lp-container .lp-heading-h2 a {
+  pointer-events: none;
+}
+
+/* Re-enable pointer events on all clickable landing page elements */
+.lp-container .lp-value-card,
+.lp-container .lp-explore-card,
+.lp-container .lp-release-card,
+.lp-container .lp-pill,
+.lp-container .lp-audience-links a,
+.lp-container .lp-profile-links a,
+.lp-container .lp-profile-card,
+.lp-container .lp-hero-actions a,
+.lp-container .lp-release-cta a {
+  pointer-events: auto;
+}
+
+.lp-container h1 a svg,
+.lp-container h2 a svg,
+.lp-container h3 a svg,
+.lp-container .lp-heading-h1 a svg,
+.lp-container .lp-heading-h2 a svg,
+.lp-container .hash-link svg,
+.lp-container a svg {
+  display: none !important;
+}
+
+
+/* Classed <p>/<li> colours are scoped to .lp-container so they beat
+   `.theme-doc-markdown p, .theme-doc-markdown li` in custom.css. */
+.lp-container .lp-value-desc {
+  color: var(--grayscale-10);
+  margin: 0;
+}
+
+/* ── 1. Hero ── */
+.lp-hero {
+  text-align: center;
+  padding: 3rem 0 4rem;
+}
+
+.lp-hero-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.lp-hero-title {
+  color: var(--grayscale-12);
+  margin: 0;
+}
+
+/* Vertical text cycling marquee (matches paradex.trade hero) — JS-driven */
+.lp-marquee {
+  position: relative;
+  overflow: hidden;
+  height: 4.5rem;
+  width: 100%;
+}
+
+.lp-marquee-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.lp-marquee-item {
+  color: var(--paradex-accent);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 4.5rem;
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 4.5rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .lp-marquee {
+    height: 3rem;
+  }
+
+  .lp-marquee-item {
+    height: 3rem;
+    font-size: 3rem;
+    line-height: 3rem;
+  }
+}
+
+.lp-container .lp-hero-desc {
+  color: var(--grayscale-10);
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+}
+
+.lp-hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.lp-hero-actions .lp-btn {
+  height: 40px;
+  padding: 0 16px;
+}
+
+/* Landing buttons use Fern's button metrics: 14px/20px text, no border
+   (outlined buttons draw a 1px inset ring instead). */
+.lp-container .fern-button {
+  border: 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.lp-container .fern-button.filled.primary {
+  font-weight: 500;
+}
+
+/* Fern keeps the bright accent on hover. */
+.lp-container .fern-button.filled.primary:hover {
+  background: var(--paradex-accent-bright);
+}
+
+.lp-container .fern-button.outlined {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.133);
+}
+
+/* Minimal buttons (the "→" links under the lanes); components.css sets
+   their colour with !important. Like Fern's, they are 40px tall on narrow
+   screens and 32px from 640px up. */
+.lp-container .fern-button.minimal {
+  height: 40px;
+  padding: 4px 12px;
+  color: rgba(255, 255, 255, 0.686) !important;
+}
+
+@media (min-width: 40rem) {
+  .lp-container .fern-button.minimal {
+    height: 32px;
+  }
+}
+
+.lp-container .fern-button.minimal:hover {
+  color: #ffffff !important;
+}
+
+/* ── 2. Value prop grid ── */
+.lp-value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--grayscale-5);
+  border-bottom: 1px solid var(--grayscale-5);
+}
+
+.lp-value-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-decoration: none !important;
+  transition: background-color 0.15s;
+  border-left: 1px solid var(--grayscale-5);
+}
+
+.lp-value-card:first-child {
+  border-left: none;
+}
+
+.lp-value-card:hover {
+  background-color: var(--grayscale-a2);
+}
+
+
+.lp-value-icon {
+  color: var(--paradex-accent);
+  display: flex;
+  align-items: flex-start;
+  margin-left: 0;
+}
+
+.lp-value-icon img {
+  height: 32px;
+  width: auto;
+  margin: 0 !important;
+}
+
+.lp-value-icon svg,
+.lp-container .lp-value-icon svg,
+.lp-container .fern-mdx-link .lp-value-icon svg {
+  height: 32px !important;
+  width: auto !important;
+  fill: var(--paradex-accent) !important;
+  color: var(--paradex-accent) !important;
+  display: inline-block !important;
+}
+
+.lp-value-title {
+  color: var(--grayscale-12);
+  margin: 0;
+}
+
+/* ── 3. Sections (profile, explore, releases) ── */
+.lp-section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--grayscale-5);
+}
+
+.lp-section-last {
+  border-bottom: none;
+}
+
+.lp-section-header {
+  margin-bottom: 2rem;
+}
+
+.lp-section-title {
+  color: var(--grayscale-12);
+  margin: 0;
+}
+
+/* Profile grid */
+.lp-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+.lp-profile-card {
+  padding: 2rem;
+  border: 1px solid var(--grayscale-5);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-decoration: none !important;
+  transition: background-color 0.15s;
+}
+
+.lp-profile-card:hover {
+  background-color: var(--grayscale-a2);
+}
+
+.lp-profile-card:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+
+.lp-profile-card:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.lp-profile-name {
+  color: var(--grayscale-12);
+  margin: 0;
+}
+
+.lp-container .lp-profile-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--paradex-accent);
+  margin: 0;
+}
+
+.lp-profile-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.lp-container .lp-profile-list li {
+  color: var(--grayscale-10);
+  padding-left: 1.25rem;
+  position: relative;
+  /* The list's gap spaces items; drop Infima's `li + li` margin. */
+  margin: 0;
+}
+
+.lp-profile-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--paradex-accent);
+}
+
+.lp-container .lp-profile-shared {
+  color: var(--grayscale-10);
+  text-align: center;
+  margin: 1.5rem 0 0;
+}
+
+.lp-profile-shared .lp-shared-check {
+  color: var(--paradex-accent);
+  margin-right: 0.25rem;
+}
+
+.lp-profile-shared .lp-shared-item {
+  margin-left: 1rem;
+}
+
+.lp-profile-shared .lp-shared-item:first-of-type {
+  margin-left: 0.75rem;
+}
+
+.lp-profile-shared strong {
+  color: var(--grayscale-12);
+  font-weight: 600;
+}
+
+.lp-profile-links {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ── 4. Audience grid (Trade / Build) ── */
+.lp-audience-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--grayscale-5);
+  border-bottom: 1px solid var(--grayscale-5);
+}
+
+.lp-audience-card {
+  padding: 2rem 2rem 2rem 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.lp-audience-card-border {
+  border-left: 1px solid var(--grayscale-5);
+}
+
+.lp-audience-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.lp-audience-title {
+  color: var(--paradex-accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.lp-audience-title i {
+  color: var(--paradex-accent);
+}
+
+.lp-audience-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lp-pill {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--grayscale-5);
+  color: var(--grayscale-12);
+  text-decoration: none !important;
+  transition: border-color 0.15s, background-color 0.15s;
+  font-size: 14px;
+}
+
+.lp-pill:hover {
+  border-color: var(--paradex-accent);
+  background-color: rgba(27, 193, 207, 0.08);
+}
+
+.lp-audience-pills .lp-pill {
+  border-color: var(--paradex-accent);
+  color: var(--paradex-accent);
+  background-color: rgba(27, 193, 207, 0.08);
+}
+
+.lp-audience-pills .lp-pill:hover {
+  background-color: rgba(27, 193, 207, 0.2);
+}
+
+.lp-audience-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.lp-audience-links a {
+  color: var(--grayscale-10);
+  text-decoration: none !important;
+  transition: color 0.15s;
+}
+
+.lp-audience-links a:hover {
+  color: var(--paradex-accent);
+}
+
+/* ── 5. Explore grid ── */
+.lp-explore-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.lp-explore-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-decoration: none !important;
+  border: 1px solid var(--grayscale-5);
+  margin-top: -1px;
+  margin-left: -1px;
+  transition: background-color 0.15s;
+}
+
+.lp-explore-card:hover {
+  background-color: var(--grayscale-a2);
+}
+
+.lp-explore-card:hover .lp-explore-name {
+  color: var(--paradex-accent);
+}
+
+/* Regular weight, as on Fern (its `bold` lost to `.lp-container p`). */
+.lp-container .lp-explore-name {
+  color: var(--grayscale-12);
+  margin: 0;
+}
+
+/* ── 6. Release notes ── */
+.lp-release-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.lp-release-card {
+  padding: 1.5rem;
+  border: 1px solid var(--grayscale-5);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-decoration: none !important;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.lp-release-card:hover {
+  border-color: var(--paradex-accent);
+  background-color: rgba(27, 193, 207, 0.04);
+}
+
+.lp-release-version {
+  color: var(--grayscale-12);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lp-release-badge {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background-color: rgba(27, 193, 207, 0.15);
+  color: var(--paradex-accent);
+}
+
+.lp-release-cta {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .lp-hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lp-value-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lp-value-card:nth-child(odd) {
+    border-left: none;
+  }
+
+  .lp-value-card:nth-child(1),
+  .lp-value-card:nth-child(2) {
+    border-bottom: 1px solid var(--grayscale-5);
+  }
+
+  .lp-value-card:nth-child(3) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    border-left: none;
+  }
+
+  .lp-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-profile-card:first-child {
+    border-radius: 0.75rem 0.75rem 0 0;
+    border-right: 1px solid var(--grayscale-5);
+    border-bottom: none;
+  }
+
+  .lp-profile-card:last-child {
+    border-radius: 0 0 0.75rem 0.75rem;
+  }
+
+  .lp-audience-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-audience-card-border {
+    border-left: none;
+    border-top: 1px solid var(--grayscale-5);
+  }
+
+  .lp-explore-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lp-release-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-main {
+    padding: 2rem 1rem;
+  }
+
+  .lp-explore-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Full-width page without title, breadcrumbs or page actions. Like Fern,
+   the landing spans the whole viewport right under the header: drop the
+   no-sidebar main's `max-width: calc(100% - 30px)` and the container's
+   padding (the padding-*--md/lg utilities are !important). The 80px
+   bottom padding matches the space Fern leaves below the page for its
+   footer badge. */
+main:has(> .container > .doc-layout--custom) {
+  max-width: 100%;
+}
+
+.container:has(> .doc-layout--custom) {
+  padding: 0 0 80px !important;
+}
+
+.doc-layout--custom .doc-item-container {
+  max-width: none;
+  padding-top: 0;
+}
+
+.doc-layout--custom .theme-doc-markdown {
+  max-width: none;
+}
+
+.lp-container .lp-value-icon img {
+  border-radius: 0;
+}
+
+.lp-container a {
+  text-decoration: none;
+}
+
+.lp-container h3 {
+  margin: 0;
+}
+
+
+/* MDX wraps text that sits on its own line inside <a> in a <p>; it takes
+   the link's colour (e.g. dark text on the filled button). */
+.lp-container a > p,
+.fern-button > p {
+  margin: 0;
+}
+
+.lp-container a > p {
+  color: inherit;
+}

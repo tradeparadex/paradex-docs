@@ -4,7 +4,7 @@
 
 - The funding pipeline updates **every 1 second**, not every 5 seconds.
 - The old v1 page has been removed and v2 was renamed to the canonical `funding-mechanism` page. There is only one Funding Mechanism page now.
-- The Mark Price Calculation page (`fern/pages/risk-system/mark-price-calculation.mdx`) now uses the Fair Basis description from the former v1 page (median-of-medians with liquidity weight), which is the authoritative description for on-venue-based Fair Basis. The Funding Mechanism page uses the impact-premium-based approach for funding rate calculation.
+- The Mark Price Calculation page (`docs/pages/risk-system/mark-price-calculation.mdx`) now uses the Fair Basis description from the former v1 page (median-of-medians with liquidity weight), which is the authoritative description for on-venue-based Fair Basis. The Funding Mechanism page uses the impact-premium-based approach for funding rate calculation.
 - `funding-mechanism` uses an impact-premium-based approach (weighted median of per-venue VWAPs), not the Fair Basis median-of-medians approach from the former v1 page.
 - The Funding Index does **not** advance when the gap since the previous tick exceeds 30s (outage, oracle maintenance, market pause). Positions accrue no funding during a pause and there is no "next funding" countdown to backfill.
 

@@ -1636,7 +1636,15 @@ main:has(> .container > .doc-layout--no-sidebar) {
   margin-top: 184px;
 }
 
+/* At exactly 768px Fern still stacks the reference column; from 769px it is
+   a grid, which leaves 8px more before the footer. */
 @media (min-width: 768px) {
+  .doc-layout--reference .theme-doc-footer {
+    margin-top: 256px;
+  }
+}
+
+@media (min-width: 769px) {
   .doc-layout--reference .theme-doc-footer {
     margin-top: 264px;
   }

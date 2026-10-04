@@ -117,14 +117,26 @@ export default function PageActions({permalink}: {permalink: string}): React.JSX
     };
   }, [open]);
 
+  const pageText = async () => {
+    const response = await fetch(markdownPath);
+    // Only real Markdown: behind the edge layer a missing .md answers 200
+    // text/plain with the agent "Page Not Found" text.
+    const isMarkdown = response.ok && (response.headers.get('content-type') ?? '').includes('text/markdown');
+    return isMarkdown ? stripAgentPreamble(await response.text()) : document.querySelector('article')?.innerText ?? '';
+  };
+
   const copy = async () => {
+    const text = pageText();
     try {
-      const response = await fetch(markdownPath);
-      // Only real Markdown: behind the edge layer a missing .md answers 200
-      // text/plain with the agent "Page Not Found" text.
-      const isMarkdown = response.ok && (response.headers.get('content-type') ?? '').includes('text/markdown');
-      const text = isMarkdown ? stripAgentPreamble(await response.text()) : document.querySelector('article')?.innerText ?? '';
-      await navigator.clipboard.writeText(text);
+      // Start the write within the click: Safari rejects a clipboard write
+      // that begins after an awaited fetch (the click's user activation is
+      // spent), so the text goes in as a promise.
+      try {
+        await navigator.clipboard.write([new ClipboardItem({'text/plain': text.then((t) => new Blob([t], {type: 'text/plain'}))})]);
+      } catch {
+        // Browsers without promise support in ClipboardItem.
+        await navigator.clipboard.writeText(await text);
+      }
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {

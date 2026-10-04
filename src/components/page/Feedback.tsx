@@ -42,8 +42,9 @@ const REASONS: Record<Vote, {id: string; title: string; description?: string}[]>
 // Fern's track(): a 'fern-docs-track-analytics' event for page scripts, then
 // {event, properties} to GTM and the event to PostHog. Fern kept the email
 // out of both (only Fern saw it), so GTM still never gets it; PostHog does,
-// with the reader's consent, as the one place left to follow up from.
-function track(event: string, properties: Record<string, unknown>): void {
+// with the reader's consent, as the one place left to follow up from. Code
+// block reports (CodeActions.tsx) go out through it too.
+export function track(event: string, properties: Record<string, unknown>): void {
   window.dispatchEvent(new CustomEvent('fern-docs-track-analytics', {detail: {event, properties}}));
   window.posthog?.capture?.(event, properties);
   const {email, allowFollowUpViaEmail, ...withoutEmail} = properties;

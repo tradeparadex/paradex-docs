@@ -1,13 +1,19 @@
 // Fern's code block toolbar: borderless "Report incorrect code" (flag) and
 // "Copy to clipboard" icon buttons. The flag opens Fern's feedback popover;
-// a report is sent to the analytics the page feedback already uses (PostHog
-// and the GTM data layer) and offers a prefilled GitHub issue.
+// opening it and sending a report go out as Fern's code_block_feedback_opened
+// and code_block_feedback_submitted events, through the page feedback's
+// track() (PostHog and the GTM data layer), and a report offers a prefilled
+// GitHub issue.
 
 import React, {useCallback, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type SyntheticEvent} from 'react';
 import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import {track} from '@site/src/components/page/Feedback';
 
-type CodeSource = {getCode: () => string; getLanguage?: () => string};
+/** The tab of a tabbed group (Fern `<CodeBlocks>`) whose code is shown. */
+type CodeTab = {title: string; index: number; language?: string};
+
+type CodeSource = {getCode: () => string; getLanguage?: () => string; getTab?: () => CodeTab};
 
 // Fern's Radix tooltip is centred above the button and kept 6px inside the
 // viewport. The CSS (code.css) shifts ours by what the room between the
@@ -74,10 +80,18 @@ export function CopyButton({getCode}: CodeSource): React.JSX.Element {
   );
 }
 
-type Analytics = {
-  posthog?: {capture?: (event: string, properties?: Record<string, unknown>) => void};
-  dataLayer?: unknown[];
-};
+// Fern's payload for both events: the block's language (Fern calls a fence
+// without one 'plaintext', Docusaurus 'text') and code, and in a tabbed group
+// the tab shown.
+function feedbackProperties({getCode, getLanguage, getTab}: CodeSource): Record<string, unknown> {
+  const language = getLanguage?.() ?? 'text';
+  const tab = getTab?.();
+  return {
+    language: language === 'text' ? 'plaintext' : language,
+    code: getCode(),
+    ...(tab && {activeTabTitle: tab.title, activeTabIndex: tab.index, ...(tab.language && {activeTabLanguage: tab.language})}),
+  };
+}
 
 function useIssueUrl(): (message: string, code: string, language: string) => string {
   const {siteConfig} = useDocusaurusContext();
@@ -90,7 +104,8 @@ function useIssueUrl(): (message: string, code: string, language: string) => str
   };
 }
 
-export function FlagButton({getCode, getLanguage}: CodeSource): React.JSX.Element {
+export function FlagButton(source: CodeSource): React.JSX.Element {
+  const {getCode, getLanguage} = source;
   const [open, setOpen] = useState(false);
   const [side, setSide] = useState<'top' | 'bottom'>('top');
   const [message, setMessage] = useState('');
@@ -142,6 +157,7 @@ export function FlagButton({getCode, getLanguage}: CodeSource): React.JSX.Elemen
       setSide(top > 340 ? 'top' : 'bottom');
       setMessage('');
       setSent(null);
+      track('code_block_feedback_opened', feedbackProperties(source));
     }
     setOpen(!open);
   };
@@ -150,13 +166,9 @@ export function FlagButton({getCode, getLanguage}: CodeSource): React.JSX.Elemen
     event.preventDefault();
     const text = message.trim();
     if (!text) return;
-    const code = getCode();
-    const language = getLanguage?.() ?? 'text';
-    const properties = {path: window.location.pathname, message: text, language, code: code.slice(0, 1000)};
-    const w = window as unknown as Analytics;
-    w.posthog?.capture?.('docs_code_feedback', properties);
-    w.dataLayer?.push({event: 'docs_code_feedback', ...properties});
-    setSent(issueUrl(text, code, language));
+    // Fern sends the message as typed.
+    track('code_block_feedback_submitted', {message, ...feedbackProperties(source)});
+    setSent(issueUrl(text, getCode(), getLanguage?.() ?? 'text'));
   };
 
   return (
@@ -233,12 +245,13 @@ export function FlagButton({getCode, getLanguage}: CodeSource): React.JSX.Elemen
 export default function CodeActions({
   getCode,
   getLanguage,
+  getTab,
   className,
   flag = true,
 }: CodeSource & {className?: string; flag?: boolean}): React.JSX.Element {
   return (
     <div className={clsx('fern-code__actions', className)}>
-      {flag && <FlagButton getCode={getCode} getLanguage={getLanguage} />}
+      {flag && <FlagButton getCode={getCode} getLanguage={getLanguage} getTab={getTab} />}
       <CopyButton getCode={getCode} />
     </div>
   );

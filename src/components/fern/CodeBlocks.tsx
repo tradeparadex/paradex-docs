@@ -10,7 +10,7 @@ import CodeActions from '@site/src/components/code/CodeActions';
 import {CodeGroupContext, type CodeGroupPanel} from '@site/src/components/code/context';
 
 type CodeBlockProps = {title?: string; children?: ReactNode};
-type Item = {title: ReactNode; content: ReactNode};
+type Item = {title: string; content: ReactNode};
 
 function CodeGroup({items}: {items: Item[]}): React.JSX.Element {
   const id = useId();
@@ -71,6 +71,11 @@ function CodeGroup({items}: {items: Item[]}): React.JSX.Element {
             <CodeActions
               getCode={() => codes.current[activeRef.current]?.code ?? ''}
               getLanguage={() => codes.current[activeRef.current]?.language ?? 'text'}
+              getTab={() => ({
+                title: items[activeRef.current].title,
+                index: activeRef.current,
+                language: codes.current[activeRef.current]?.language,
+              })}
               className="fern-code__actions--header"
             />
           )}

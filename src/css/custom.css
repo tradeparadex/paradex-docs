@@ -495,11 +495,33 @@ a.navbar-cta {
 }
 
 .fern-mobile-nav__sidebar .menu__link {
-  padding: 6px 16px;
+  padding: 8px 16px;
   border-radius: 0;
   color: #ffffff;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 20px;
+}
+
+/* Nested groups indent 16px, with no padding around them, and keep the
+   drawer's full-size rows. */
+.fern-mobile-nav__sidebar :is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list {
+  margin-left: 16px;
+  padding: 0;
+}
+
+.fern-mobile-nav__sidebar :is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link {
+  padding: 8px 16px;
+}
+
+/* The current page's row covers its group's guide line and marks it along
+   its full height. */
+.fern-mobile-nav__sidebar :is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link--active:not(.menu__link--sublist) {
+  margin-left: -1px;
+  border-left: 1px solid rgba(0, 233, 253, 0.34);
+}
+
+.fern-mobile-nav__sidebar :is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link--active:not(.menu__link--sublist)::after {
+  content: none;
 }
 
 .fern-mobile-nav__sidebar .menu__link--active:not(.menu__link--sublist) {

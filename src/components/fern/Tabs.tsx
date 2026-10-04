@@ -56,6 +56,21 @@ function TabButton({title, active, panelId, onSelect}: {title: string; active: b
   );
 }
 
+/**
+ * The tab a URL hash points to in the tabs at `root`: the tab's anchor, or
+ * anything in a hidden panel (a heading; a search hit on a tab's text, which
+ * the index keys by the tab's anchor, plugins/search-local.mjs).
+ */
+function findTab(root: HTMLElement, hash: string): {index: number; target: Element} | undefined {
+  const target = hash ? document.getElementById(decodeHash(hash)) : null;
+  if (!target) return undefined;
+  const anchors = Array.from(root.querySelectorAll(':scope > .fern-tabs__bar > .fern-tabs__anchor'));
+  const panels = Array.from(root.querySelectorAll<HTMLElement>(':scope > [role=tabpanel]'));
+  let index = anchors.indexOf(target);
+  if (index < 0) index = panels.findIndex((panel) => panel.hidden && panel.contains(target));
+  return index < 0 ? undefined : {index, target};
+}
+
 /** Whether the tab row overflows, and which of its ends hold hidden tabs. */
 function useOverflow(list: RefObject<HTMLDivElement | null>) {
   const [state, setState] = useState({overflow: false, left: false, right: false});
@@ -214,22 +229,33 @@ export function Tabs({children}: {children?: ReactNode}): React.JSX.Element {
   const {hash, key} = useLocation();
 
   // As on Fern, a link to a tab (#closing-hours) or to anything in a hidden
-  // panel (a heading) selects that tab; so does a search hit on a tab's text,
-  // which the index keys by the tab's anchor (plugins/search-local.mjs).
-  // Docusaurus moves to an anchor with history.push (no hashchange event), so
-  // follow the router location: a page load with a hash, links and search
-  // results alike.
+  // panel selects that tab. Docusaurus moves to an anchor with history.push
+  // (no hashchange event), so follow the router location: a page load with a
+  // hash, links and search results alike.
   useEffect(() => {
-    const target = hash ? document.getElementById(decodeHash(hash)) : null;
-    if (!target || !root.current) return;
-    const anchors = Array.from(root.current.querySelectorAll(':scope > .fern-tabs__bar > .fern-tabs__anchor'));
-    const panels = Array.from(root.current.querySelectorAll<HTMLElement>(':scope > [role=tabpanel]'));
-    let index = anchors.indexOf(target);
-    if (index < 0) index = panels.findIndex((panel) => panel.hidden && panel.contains(target));
-    if (index < 0) return;
-    setActive(index);
-    setReveal({target});
+    const found = root.current ? findTab(root.current, hash) : undefined;
+    if (!found) return;
+    setActive(found.index);
+    setReveal({target: found.target});
   }, [hash, key]);
+
+  // A plain link to the hash already in the address bar changes no location
+  // (no hashchange, popstate or router update); the browser only scrolls.
+  // Select the tab for it too, in case the reader has picked another since.
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+      if (!(link instanceof HTMLAnchorElement) || !link.hash || link.href !== window.location.href) return;
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (link.target && link.target !== '_self') return;
+      const found = root.current ? findTab(root.current, link.hash) : undefined;
+      if (!found) return;
+      setActive(found.index);
+      setReveal({target: found.target});
+    };
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
+  }, []);
 
   // Scroll once the panel shows, and again as its images load (the roadmap's
   // banner images push the target ~500px down), unless the reader has

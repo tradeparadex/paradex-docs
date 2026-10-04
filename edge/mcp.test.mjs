@@ -653,6 +653,21 @@ describe('search index loading', () => {
     }
     assert.equal(cold.stats.indexBuilds, 1);
   });
+
+  test('a cold batch of searches fetches and parses the index once', async () => {
+    const cold = createEdge();
+    const fresh = createSite();
+    const fetchAsset = async (path) => {
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      return fresh.fetchAsset(path);
+    };
+    const batch = Array.from({ length: 20 }, (_, i) => ({ jsonrpc: '2.0', id: i + 1, method: 'tools/call', params: { name: 'searchDocs', arguments: { query: 'trading fees', topK: 1 } } }));
+    const messages = parseSse(await (await cold.handle(mcpRequest(batch), { fetchAsset })).text());
+    assert.equal(messages.length, 20);
+    for (const message of messages) assert.equal(message.result.structuredContent.results[0].url, `${SITE}/trading/trading-fees`);
+    assert.equal(fresh.calls.filter((p) => p === '/_mcp/search-index.json').length, 1);
+    assert.equal(cold.stats.indexBuilds, 1);
+  });
 });
 
 describe('fetchPage never leaves the site', () => {

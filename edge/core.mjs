@@ -153,23 +153,28 @@ export function createEdge() {
 
   // The index never changes under a running isolate: a deploy is a new
   // Worker version with its own assets and isolates.
-  async function loadIndexData(ctx) {
-    if (state.data !== null) return state.data;
-    const res = await ctx.fetchAsset(SEARCH_INDEX_PATH);
-    if (!res.ok || isMissing(res, SEARCH_INDEX_PATH)) {
-      res.body?.cancel?.().catch(() => {});
-      throw new Error(`Search index is unavailable (status ${res.status})`);
-    }
-    const data = await res.json();
-    if (!data || !Array.isArray(data.pages) || !Array.isArray(data.sections)) throw new Error('Search index is malformed');
-    // Requests that started loading together (a cold isolate) each fetch the
-    // file, but the first copy stored wins, so the index is built once.
-    if (state.data !== null) return state.data;
-    // Cache the parsed value only (never a promise), so concurrent requests
-    // in one isolate do not share request-bound I/O.
-    state.data = data;
-    state.index = null;
-    return data;
+  function loadIndexData(ctx) {
+    if (state.data !== null) return Promise.resolve(state.data);
+    // One load per request: a JSON-RPC batch of searchDocs calls on a cold
+    // isolate shares it instead of fetching and parsing the file per call.
+    // The promise lives on the request's ctx, never on `state`, so requests
+    // do not wait on each other's request-bound I/O.
+    return (ctx.indexLoad ??= (async () => {
+      const res = await ctx.fetchAsset(SEARCH_INDEX_PATH);
+      if (!res.ok || isMissing(res, SEARCH_INDEX_PATH)) {
+        res.body?.cancel?.().catch(() => {});
+        throw new Error(`Search index is unavailable (status ${res.status})`);
+      }
+      const data = await res.json();
+      if (!data || !Array.isArray(data.pages) || !Array.isArray(data.sections)) throw new Error('Search index is malformed');
+      // Requests that started loading together (a cold isolate) each fetch
+      // the file once, but the first copy stored wins, so the index is
+      // built once.
+      if (state.data !== null) return state.data;
+      state.data = data;
+      state.index = null;
+      return data;
+    })());
   }
 
   async function loadIndex(ctx) {

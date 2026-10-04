@@ -3,7 +3,7 @@
 // a report is sent to the analytics the page feedback already uses (PostHog
 // and the GTM data layer) and offers a prefilled GitHub issue.
 
-import React, {useCallback, useEffect, useRef, useState, type FormEvent, type SyntheticEvent} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type SyntheticEvent} from 'react';
 import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
@@ -97,7 +97,24 @@ export function FlagButton({getCode, getLanguage}: CodeSource): React.JSX.Elemen
   const [sent, setSent] = useState<string | null>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
+  const popover = useRef<HTMLDivElement>(null);
   const issueUrl = useIssueUrl();
+
+  // Right-aligned to the button like Fern's Radix popover (align end); where
+  // that would cut off its left side (phones), it moves right until it starts
+  // at the edge of the screen, as Fern's does.
+  useLayoutEffect(() => {
+    const el = popover.current;
+    if (!el) return undefined;
+    const place = () => {
+      el.style.translate = '';
+      const {left} = el.getBoundingClientRect();
+      if (left < 0) el.style.translate = `${-left}px`;
+    };
+    place();
+    window.addEventListener('resize', place);
+    return () => window.removeEventListener('resize', place);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -158,7 +175,11 @@ export function FlagButton({getCode, getLanguage}: CodeSource): React.JSX.Elemen
         <FlagIcon />
       </button>
       {open && (
-        <div role="dialog" aria-label="Report incorrect code" className={clsx('fern-code-feedback', `fern-code-feedback--${side}`)}>
+        <div
+          ref={popover}
+          role="dialog"
+          aria-label="Report incorrect code"
+          className={clsx('fern-code-feedback', `fern-code-feedback--${side}`)}>
           {sent ? (
             <>
               <h2 className="fern-code-feedback__title">Thank you for your feedback!</h2>

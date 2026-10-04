@@ -32,7 +32,7 @@ export default function DocSidebarItemLink({item, onItemClick, activePath, level
         {...(isInternalLink && {onClick: onItemClick ? () => onItemClick(item) : undefined})}
         {...props}>
         {icon && <Icon icon={icon} className="sidebar-item-icon" />}
-        <span className="sidebar-item-label">{label}</span>
+        <span className={clsx('sidebar-item-label', !/\s/.test(label) && 'sidebar-item-label--nowrap')}>{label}</span>
         {!isInternalLink && <IconExternalLink />}
       </Link>
     </li>

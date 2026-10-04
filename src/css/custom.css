@@ -719,6 +719,20 @@ a.navbar-cta {
   color: var(--paradex-accent);
 }
 
+/* As on Fern, labels with spaces wrap (breaking a word only if it cannot
+   fit); a one-word label, such as a long WebSocket channel name, stays on
+   one line and ends in an ellipsis. */
+.sidebar-item-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.sidebar-item-label--nowrap {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 /* API method badges in the sidebar (Fern's "small subtle" badges; solid
    on the current page). */
 .api-method > .menu__link {

@@ -1012,6 +1012,18 @@ a.navbar-cta {
   color: inherit;
 }
 
+/* In table cells Fern's inline code takes the cell's colour and weight, and
+   keeps identifiers whole: the column widens (or the table scrolls) rather
+   than breaking `frozen_time_ms` mid-word. Its line box (17.5px, on the
+   baseline) sets the row heights. */
+.theme-doc-markdown :is(td, th) code:not([class]) {
+  color: inherit;
+  font-weight: inherit;
+  line-height: calc(1.25 / 0.875);
+  vertical-align: baseline;
+  word-break: normal;
+}
+
 /* Tables: a bordered card with a tinted header row that scrolls sideways
    when the table is wider than the column, as on Fern. Changelog entries are
    listed apart, not in :is(), so the docs selectors keep a specificity the

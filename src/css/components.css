@@ -103,9 +103,10 @@ html[data-theme='dark'] {
 }
 
 /* Cards and the page subtitle are outside Fern's prose, where links are
-   semibold. */
+   semibold; so are links in table cells. */
 .theme-doc-markdown .fern-card a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item):not(.lp-container a),
-.theme-doc-markdown .fern-page-header__subtitle a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item):not(.lp-container a) {
+.theme-doc-markdown .fern-page-header__subtitle a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item):not(.lp-container a),
+.theme-doc-markdown td a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item):not(.lp-container a) {
   font-weight: 600;
 }
 

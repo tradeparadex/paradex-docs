@@ -326,10 +326,24 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
           <Address endpoint={endpoint} />
         </span>
       </div>
+      {/* Description, examples, then the reference, as on Fern's phone
+          layout; from 769px the examples sit in a right-hand column. */}
       <div className="api-endpoint__grid">
+        <Html html={endpoint.descriptionHtml} className="api-endpoint__description" />
+        <aside className="api-endpoint__aside">
+          <div className="api-endpoint__sticky">
+            {isWs ? (
+              <WebSocketPanels endpoint={endpoint} onTryIt={openExplorer} />
+            ) : (
+              <>
+                <CodeSamplePanel endpoint={endpoint} onTryIt={openExplorer} />
+                <ResponsePanel endpoint={endpoint} selected={selected} onSelect={setSelected} />
+              </>
+            )}
+          </div>
+        </aside>
         <div className="api-endpoint__main">
           <AnchorTargets>
-            <Html html={endpoint.descriptionHtml} className="api-endpoint__description" />
             {isWs ? (
               <>
                 <HandshakeCard endpoint={endpoint} onTryIt={openExplorer} />
@@ -427,18 +441,6 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
             )}
           </AnchorTargets>
         </div>
-        <aside className="api-endpoint__aside">
-          <div className="api-endpoint__sticky">
-            {isWs ? (
-              <WebSocketPanels endpoint={endpoint} onTryIt={openExplorer} />
-            ) : (
-              <>
-                <CodeSamplePanel endpoint={endpoint} onTryIt={openExplorer} />
-                <ResponsePanel endpoint={endpoint} selected={selected} onSelect={setSelected} />
-              </>
-            )}
-          </div>
-        </aside>
       </div>
       {exploring &&
         createPortal(isWs ? <WebSocketExplorer endpoint={endpoint} /> : <ApiExplorer endpoint={endpoint} />, document.body)}

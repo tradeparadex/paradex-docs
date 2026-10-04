@@ -139,48 +139,93 @@
 
 /* ---------- Two columns ---------- */
 
+/* Up to 768px one column: description, examples, reference, 48px apart (as
+   on Fern's phone layout). From 769px Fern put the examples in a second
+   column at a fixed width that overflowed the window up to 1215px; here
+   both columns share the width. */
 .api-endpoint__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 2rem;
 }
 
+.api-endpoint__aside {
+  margin-bottom: 48px;
+}
+
+/* Fern: the request sample takes at most 55% of the height below the
+   header and the response gets the rest of the column, which on phones is
+   the window's height less 160px. */
 .api-endpoint__sticky {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  max-height: calc(100vh - 160px);
 }
 
-@media (min-width: 1200px) {
+.api-endpoint__sticky > .api-panel {
+  min-height: 0;
+}
+
+.api-endpoint__sticky > .api-panel--request {
+  flex-shrink: 0;
+  max-height: calc((100vh - var(--ifm-navbar-height)) * 0.55);
+}
+
+.api-endpoint--ws .api-endpoint__sticky > .api-panel--handshake {
+  flex-shrink: 0;
+}
+
+@media (min-width: 769px) {
+  /* The examples span both rows; extra height goes to the second row, so
+     the reference stays right under the description. */
   .api-endpoint__grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 48px;
+    grid-template-rows: auto 1fr;
+    column-gap: 32px;
+  }
+
+  .api-endpoint__description {
+    grid-area: 1 / 1;
+  }
+
+  .api-endpoint__main {
+    grid-area: 2 / 1;
   }
 
   .api-endpoint__aside {
-    order: 2;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-bottom: 0;
   }
 
-  /* Fern: the column sticks 24px under the header and ends 24px above the
-     bottom of the window; the request sample takes at most 55% of the
-     height below the header and the response gets the rest. */
+  /* Fern: the column sticks under the header (32px below it here, 24px
+     from 1024px) and ends 24px above the bottom of the window. */
   .api-endpoint__sticky {
     position: sticky;
-    top: calc(var(--ifm-navbar-height) + 24px);
+    top: calc(var(--ifm-navbar-height) + 32px);
     max-height: calc(100vh - var(--ifm-navbar-height) - 48px);
   }
+}
 
-  .api-endpoint__sticky > .api-panel {
-    min-height: 0;
+@media (min-width: 1024px) {
+  .api-endpoint__grid {
+    column-gap: 48px;
   }
 
-  .api-endpoint__sticky > .api-panel--request {
-    flex-shrink: 0;
-    max-height: calc((100vh - var(--ifm-navbar-height)) * 0.55);
+  .api-endpoint__sticky {
+    top: calc(var(--ifm-navbar-height) + 24px);
+  }
+}
+
+/* Fern showed the method and URL under the title only from 1024px; the
+   content then starts 32px below the title. */
+@media (max-width: 1023px) {
+  .api-endpoint__url {
+    display: none;
   }
 
-  .api-endpoint--ws .api-endpoint__sticky > .api-panel--handshake {
-    flex-shrink: 0;
+  .api-endpoint {
+    padding-top: 24px;
   }
 }
 
@@ -196,6 +241,13 @@
 
 .api-endpoint .api-endpoint__description p {
   margin-bottom: 20px;
+}
+
+/* The description is a grid item, so the margin of its last block would add
+   to the 48px below it instead of collapsing into it. */
+.api-endpoint .api-endpoint__description > :last-child,
+.api-endpoint .api-endpoint__description > :last-child > :last-child {
+  margin-bottom: 0;
 }
 
 .api-section {
@@ -1757,14 +1809,4 @@ html.api-code-modal-open {
 
 .api-snippet .api-panel--response .api-panel__body {
   max-height: 520px;
-}
-
-@media (max-width: 1199px) {
-  .api-panel--request .api-panel__body {
-    max-height: 479px;
-  }
-
-  .api-panel--response .api-panel__body {
-    max-height: 520px;
-  }
 }

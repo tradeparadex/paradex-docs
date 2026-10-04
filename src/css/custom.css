@@ -966,7 +966,7 @@ a.navbar-cta {
   margin-top: 0;
 }
 
-.theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item),
+.theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item),
 .blog-post-content a {
   text-decoration: underline;
   text-underline-offset: 3px;

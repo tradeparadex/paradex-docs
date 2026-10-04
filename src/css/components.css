@@ -88,7 +88,7 @@ html[data-theme='dark'] {
 
 /* ---------- Links ---------- */
 
-.theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a) {
+.theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item):not(.lp-container a) {
   color: var(--accent-a11);
   font-weight: 500;
   text-decoration-line: underline;
@@ -97,19 +97,19 @@ html[data-theme='dark'] {
   text-underline-offset: 4px;
 }
 
-.theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a):hover {
+.theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item):not(.lp-container a):hover {
   color: var(--accent-a11);
   text-decoration-thickness: 2px;
 }
 
 /* Cards and the page subtitle are outside Fern's prose, where links are
    semibold. */
-.theme-doc-markdown .fern-card a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a),
-.theme-doc-markdown .fern-page-header__subtitle a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a) {
+.theme-doc-markdown .fern-card a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item):not(.lp-container a),
+.theme-doc-markdown .fern-page-header__subtitle a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item):not(.lp-container a) {
   font-weight: 600;
 }
 
-.theme-doc-markdown :is(h1, h2, h3, h4, h5, h6) a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item):not(.lp-container a) {
+.theme-doc-markdown :is(h1, h2, h3, h4, h5, h6) a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item):not(.lp-container a) {
   font-weight: inherit;
 }
 
@@ -120,6 +120,95 @@ html[data-theme='dark'] {
   margin-left: 2px;
   vertical-align: -1px;
   opacity: 0.7;
+}
+
+/* ---------- Anchor links ---------- */
+
+/* Fern's link button beside a heading, also the step number badge: a 24px
+   bordered square with a link icon (or the number), and a tick once a click
+   has copied the link. */
+.fern-anchor {
+  position: relative;
+  display: flex;
+  width: 24px;
+  height: 24px;
+}
+
+.fern-anchor-icon {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 6px;
+  background: var(--paradex-card-bg);
+  color: var(--grayscale-a11);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.fern-anchor-icon > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.fern-anchor--copied > .fern-anchor-icon {
+  border-color: rgba(0, 233, 255, 0.275);
+  background: rgba(0, 233, 252, 0.153);
+  color: var(--accent-a11);
+}
+
+/* Headings: the whole heading copies its link; the button shows in the left
+   gutter, centred on the heading, while it is hovered or has just copied. */
+.fern-heading {
+  position: relative;
+  cursor: pointer;
+}
+
+.fern-heading > .fern-anchor {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 12px);
+  display: none;
+  transform: translateY(-50%);
+}
+
+/* Spans the gap to the text, so the pointer can reach the button. */
+.fern-heading > .fern-anchor::after {
+  content: '';
+  position: absolute;
+  inset: 0 -12px;
+}
+
+@media (hover: hover) {
+  .fern-heading:hover > .fern-anchor:not(.fern-anchor--dismissed) {
+    display: flex;
+  }
+}
+
+.fern-heading > .fern-anchor--copied {
+  display: flex;
+}
+
+/* On phones Fern keeps 16px free after every heading, and the button sits
+   in it. */
+@media (max-width: 767px) {
+  .fern-heading {
+    padding-right: 16px;
+  }
+
+  .fern-heading > .fern-anchor {
+    right: auto;
+    left: calc(100% - 16px);
+  }
+
+  .fern-heading > .fern-anchor::after {
+    content: none;
+  }
 }
 
 /* ---------- Cards ---------- */
@@ -358,7 +447,7 @@ a.cyan-cards:hover {
 }
 
 .fern-callout--tip *,
-.theme-doc-markdown .fern-callout--tip a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hash-link):not(.page-actions__item) {
+.theme-doc-markdown .fern-callout--tip a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item) {
   color: var(--paradex-accent) !important;
 }
 
@@ -587,9 +676,9 @@ a.cyan-cards:hover {
 
 /* ---------- Steps ---------- */
 
-/* One rail down the left; each title carries a numbered badge on it. */
+/* One rail down the left; each step's number badge sits on it, level with
+   the title's first line. */
 .fern-steps {
-  counter-reset: fern-step;
   margin: 16px 0 48px 12px;
   padding-left: 28px;
   border-left: 1px solid var(--grayscale-a5);
@@ -599,52 +688,42 @@ a.cyan-cards:hover {
   position: relative;
 }
 
-.fern-step__title,
-.fern-steps > h3 {
-  position: relative;
-  counter-increment: fern-step;
+.fern-step > h3 {
   scroll-margin-top: var(--fern-anchor-offset);
 }
 
-/* Only a step's own title shows the badge (not headings nested deeper). */
-.fern-step__anchor {
-  display: none;
+.fern-step > .fern-anchor {
+  position: absolute;
+  top: 4px;
+  left: -40px;
 }
 
-.fern-step__title > .fern-step__anchor,
-.fern-steps > h3 > .fern-step__anchor {
-  position: absolute;
-  left: -40px;
-  top: 4px;
-  box-sizing: border-box;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--grayscale-a5);
-  border-radius: 6px;
-  background: var(--paradex-card-bg);
-  color: var(--grayscale-a11);
+.fern-step__number {
   font-size: 16px;
   font-weight: 500;
   line-height: 1;
-  letter-spacing: 0;
-  text-decoration: none;
 }
 
-.fern-step__anchor::before {
-  content: counter(fern-step);
+.fern-step__link-icon {
+  display: none;
 }
 
-.fern-step__anchor:hover {
-  color: var(--grayscale-a12);
-  text-decoration: none;
+/* The number turns into a link icon while the title or badge is hovered. */
+@media (hover: hover) {
+  .fern-step:has(> h3:hover) > .fern-anchor .fern-step__number,
+  .fern-step > .fern-anchor:hover .fern-step__number {
+    display: none;
+  }
+
+  .fern-step:has(> h3:hover) > .fern-anchor .fern-step__link-icon,
+  .fern-step > .fern-anchor:hover .fern-step__link-icon {
+    display: block;
+  }
 }
 
 /* Fern's prose drops the top margin of whatever follows a heading. */
 .fern-step__body > :first-child,
-.fern-steps > h3 + * {
+.fern-step > h3 + * {
   margin-top: 0;
 }
 

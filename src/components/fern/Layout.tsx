@@ -1,7 +1,9 @@
-import React, {createContext, useContext, useState, type ReactNode} from 'react';
+import React, {Children, createContext, isValidElement, useContext, useState, type ReactNode} from 'react';
 import clsx from 'clsx';
+import {useMDXComponents} from '@mdx-js/react';
 import Link from '@docusaurus/Link';
-import {useAnchorId, useHashTarget} from './anchors';
+import {CheckIcon, LinkIcon} from '@site/src/components/api/icons';
+import {isPlainClick, useAnchorId, useCopyLink, useHashTarget} from './anchors';
 
 export function Accordion({title, defaultOpen, children}: {title: ReactNode; defaultOpen?: boolean; children?: ReactNode}): React.JSX.Element {
   const id = useAnchorId(title);
@@ -40,40 +42,103 @@ export function AccordionGroup({children}: {children?: ReactNode}): React.JSX.El
   return <div className="fern-accordion-group">{children}</div>;
 }
 
-const InSteps = createContext(false);
+const InStepTitle = createContext(false);
+const StepNumber = createContext<number | undefined>(undefined);
 
-/** True for headings directly inside <Steps>, which carry the step number. */
-export function useInSteps(): boolean {
-  return useContext(InSteps);
+/** True inside a `###` step title, which links through its number badge. */
+export function useInStepTitle(): boolean {
+  return useContext(InStepTitle);
 }
 
-/** The step number badge; as on Fern it links to the step. */
-export function StepAnchor({id}: {id?: string}): React.JSX.Element {
-  return <a className="fern-step__anchor" href={id ? `#${id}` : undefined} aria-label="Link to this step" />;
+/**
+ * The step number badge, beside the title as on Fern: a link to the step
+ * (out of the tab order) that copies the link on click, showing a link icon
+ * while the title is hovered and a tick once copied.
+ */
+function StepAnchor({id, number}: {id?: string; number?: number}): React.JSX.Element {
+  const [copied, copy] = useCopyLink(id);
+  return (
+    <a
+      className={clsx('fern-anchor', copied && 'fern-anchor--copied')}
+      href={id ? `#${id}` : undefined}
+      tabIndex={-1}
+      onClick={(event) => {
+        if (!id || !isPlainClick(event)) return;
+        event.preventDefault();
+        copy();
+      }}>
+      <span className="fern-anchor-icon">
+        {copied ? (
+          <CheckIcon />
+        ) : (
+          <>
+            <span className="fern-step__number">{number}</span>
+            <LinkIcon className="fern-step__link-icon" />
+          </>
+        )}
+      </span>
+    </a>
+  );
 }
 
-/** Steps accept <Step title> children or plain `###` headings, as in Fern. */
+type HeadingStep = {heading: React.ReactElement<{id?: string}>; body: ReactNode[]};
+const isHeadingStep = (item: unknown): item is HeadingStep =>
+  typeof item === 'object' && item !== null && !isValidElement(item) && 'heading' in item;
+
+/**
+ * Steps take <Step title> children or plain `###` headings, as in Fern: a
+ * heading starts a step that runs to the next one. The steps are numbered
+ * here, so the number is text (read out, copied, found in the page).
+ */
 export function Steps({children}: {children?: ReactNode}): React.JSX.Element {
+  const {h3} = useMDXComponents();
+  const items: (ReactNode | HeadingStep)[] = [];
+  for (const child of Children.toArray(children)) {
+    const last = items[items.length - 1];
+    if (isValidElement<{id?: string}>(child) && child.type === h3) items.push({heading: child, body: []});
+    else if (isHeadingStep(last) && !(isValidElement(child) && child.type === Step)) last.body.push(child);
+    else items.push(child);
+  }
+  let number = 0;
   return (
     <div className="fern-steps">
-      <InSteps.Provider value>{children}</InSteps.Provider>
+      {items.map((item) => {
+        if (isHeadingStep(item)) {
+          number += 1;
+          return (
+            <div key={item.heading.key} className="fern-step">
+              <StepAnchor id={item.heading.props.id} number={number} />
+              <InStepTitle.Provider value>{item.heading}</InStepTitle.Provider>
+              {item.body}
+            </div>
+          );
+        }
+        if (isValidElement(item) && item.type === Step) {
+          number += 1;
+          return (
+            <StepNumber.Provider key={item.key} value={number}>
+              {item}
+            </StepNumber.Provider>
+          );
+        }
+        return item;
+      })}
     </div>
   );
 }
 
 export function Step({title, children}: {title?: ReactNode; children?: ReactNode}): React.JSX.Element {
   const id = useAnchorId(title);
+  const number = useContext(StepNumber);
   return (
     <div className="fern-step">
+      {title && <StepAnchor id={id} number={number} />}
       {title && (
         <h3 className="fern-step__title" id={id}>
-          <StepAnchor id={id} />
           {title}
         </h3>
       )}
-      <div className="fern-step__body">
-        <InSteps.Provider value={false}>{children}</InSteps.Provider>
-      </div>
+      <div className="fern-step__body">{children}</div>
     </div>
   );
 }

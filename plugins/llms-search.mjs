@@ -24,7 +24,7 @@ import {ancestorsOf, isApiLeaf} from './llms-nav.mjs';
 
 const MAX_TEXT = 4000;
 const SKIP_TAGS = new Set(['script', 'style', 'svg', 'button', 'nav', 'noscript', 'template', 'img', 'iframe']);
-const SKIP_CLASSES = ['hash-link', 'page-actions', 'theme-doc-toc-mobile', 'fern-page-header', 'theme-code-block__copy', 'clean-btn'];
+const SKIP_CLASSES = ['hash-link', 'fern-anchor', 'page-actions', 'theme-doc-toc-mobile', 'fern-page-header', 'theme-code-block__copy', 'clean-btn'];
 const BLOCK_TAGS = new Set(['p', 'div', 'section', 'article', 'li', 'ul', 'ol', 'tr', 'table', 'thead', 'tbody', 'pre', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'br', 'details', 'summary', 'header', 'footer', 'dl', 'dt', 'dd', 'figure', 'figcaption']);
 
 const classList = (node) => {

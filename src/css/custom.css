@@ -1466,10 +1466,350 @@ hr {
   color: var(--grayscale-12);
 }
 
+.doc-feedback button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--paradex-accent);
+}
+
+/* Fern's buttons grow on touch screens. */
+@media (pointer: coarse) {
+  .doc-feedback button {
+    height: 36px;
+  }
+}
+
+/* The chosen answer (Fern's outlineSuccess / outlineDanger: Radix green and
+   red, alpha steps 2, 4 and 6, step 11 text); 4 also while its popover is
+   open. */
+.doc-feedback button.doc-feedback__vote--yes {
+  color: #3dd68c;
+  background: rgba(41, 249, 157, 0.043);
+  border-color: rgba(68, 255, 170, 0.294);
+}
+
+.doc-feedback button.doc-feedback__vote--yes:hover,
+.doc-feedback button.doc-feedback__vote--yes[aria-expanded='true'] {
+  color: #3dd68c;
+  background: rgba(17, 255, 153, 0.176);
+}
+
+.doc-feedback button.doc-feedback__vote--no {
+  color: #ff9592;
+  background: rgba(242, 47, 62, 0.067);
+  border-color: rgba(255, 62, 86, 0.408);
+}
+
+.doc-feedback button.doc-feedback__vote--no:hover,
+.doc-feedback button.doc-feedback__vote--no[aria-expanded='true'] {
+  color: #ff9592;
+  background: rgba(254, 10, 59, 0.267);
+}
+
+.doc-feedback__vote--yes svg,
+.doc-feedback__vote--no svg {
+  animation: doc-feedback-thumb-rock 0.5s both;
+}
+
+@keyframes doc-feedback-thumb-rock {
+  30% {
+    transform: rotate(15deg);
+  }
+  80% {
+    transform: rotate(-10deg);
+  }
+}
+
+.doc-feedback--sent {
+  height: 24px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.doc-feedback--sent > span:focus {
+  outline: none;
+}
+
 .doc-feedback svg,
 .fern-footer-edit svg {
   width: 16px;
   height: 16px;
+}
+
+/* Follow-up form after a vote (Fern's popover, placed by Feedback.tsx). */
+.doc-feedback__popover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--ifm-z-index-fixed) + 5);
+  width: calc(100vw - 32px);
+  padding: 16px;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 8px;
+  background: var(--paradex-card-bg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(24px);
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+  outline: none;
+}
+
+.doc-feedback__popover[data-side='bottom'] {
+  animation: doc-feedback-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.doc-feedback__popover[data-side='top'] {
+  animation: doc-feedback-in-down 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes doc-feedback-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
+
+@keyframes doc-feedback-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+.doc-feedback__title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.doc-feedback__reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.doc-feedback__option {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.doc-feedback__option > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-feedback__option-title {
+  display: block;
+  font-weight: 600;
+}
+
+.doc-feedback__option-text {
+  display: block;
+  color: var(--grayscale-a11);
+}
+
+.doc-feedback__radio,
+.doc-feedback__checkbox {
+  appearance: none;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--grayscale-a5);
+}
+
+.doc-feedback__checkbox {
+  border-radius: 4px;
+}
+
+/* Fern's accent alpha steps 3 (hover, focus) and 5 (field focus). */
+.doc-feedback__radio:hover,
+.doc-feedback__checkbox:hover {
+  background: rgba(0, 233, 252, 0.153);
+}
+
+.doc-feedback__radio:focus-visible,
+.doc-feedback__checkbox:focus-visible {
+  outline: 4px solid rgba(0, 233, 252, 0.153);
+  outline-offset: 0;
+}
+
+.doc-feedback__radio:checked {
+  border: 4px solid var(--paradex-accent);
+  background: var(--paradex-bg);
+  box-shadow: none;
+}
+
+.doc-feedback__checkbox:checked {
+  background: var(--paradex-accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23070808' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+    center / 16px no-repeat;
+  box-shadow: none;
+}
+
+.doc-feedback__field {
+  display: block;
+  width: calc(100% - 24px);
+  margin: 8px 0 0 24px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--grayscale-a2);
+  box-shadow: inset 0 0 0 1px var(--grayscale-a5), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  color: #ffffff;
+  caret-color: var(--paradex-accent);
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  outline: none;
+  resize: none;
+}
+
+.doc-feedback__field:focus {
+  box-shadow: inset 0 0 0 2px rgba(0, 233, 255, 0.275), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.doc-feedback__field::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.doc-feedback__email {
+  height: 32px;
+  padding-block: 0;
+}
+
+.doc-feedback__rule {
+  height: 1px;
+  margin: 16px 0;
+  border: 0;
+  background: var(--grayscale-a5);
+}
+
+.doc-feedback__privacy {
+  margin: 4px 0 0;
+  color: var(--grayscale-a11);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.doc-feedback__privacy a,
+.doc-feedback__privacy a:hover {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.doc-feedback__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  margin-top: 16px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--paradex-accent);
+  color: var(--accent-contrast);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.doc-feedback__submit:hover,
+.doc-feedback__submit:focus-visible {
+  background: rgba(25, 238, 255, 0.753);
+  outline: none;
+}
+
+.doc-feedback__submit:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+  cursor: not-allowed;
+}
+
+/* Fern's popover, fields and button on screens under 640px. */
+@media (max-width: 639px) {
+  .doc-feedback__field {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .doc-feedback__email {
+    height: 40px;
+  }
+
+  .doc-feedback__submit {
+    height: 44px;
+    padding-inline: 12px;
+  }
+}
+
+@media (min-width: 640px) {
+  .doc-feedback__popover {
+    width: 384px;
+  }
+}
+
+/* Fern's (sonner) toast after submitting: bottom centre, gone after 4s. */
+.doc-feedback-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  z-index: 999999999;
+  display: flex;
+  align-items: flex-start;
+  width: 356px;
+  padding: 8px 8px 8px 12px;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 8px;
+  background: var(--paradex-bg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  font: 500 14px/21px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  translate: -50% 0;
+  animation: doc-feedback-toast 4.4s both;
+}
+
+.doc-feedback-toast svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 2px 5px 0 -4px;
+  color: var(--grayscale-a11);
+}
+
+@keyframes doc-feedback-toast {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  9%,
+  91% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .doc-feedback-toast {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    width: auto;
+    translate: none;
+  }
 }
 
 .fern-footer-edit {

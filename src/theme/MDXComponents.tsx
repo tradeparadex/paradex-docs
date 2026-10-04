@@ -22,9 +22,20 @@ function Table(props: React.ComponentProps<'table'>) {
   );
 }
 
+/**
+ * Raw <details> stay plain native disclosures, as on Fern, instead of the
+ * Docusaurus animated info box (which also hides closed content). The MDX
+ * loader renames <details> to <Details>, so both names are mapped.
+ */
+function Details(props: React.ComponentProps<'details'>) {
+  return <details {...props} />;
+}
+
 export default {
   ...MDXComponents,
   table: Table,
+  details: Details,
+  Details,
   img: Image,
   Icon,
   Card,

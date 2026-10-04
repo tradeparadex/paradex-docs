@@ -13,6 +13,7 @@
 //                       literal text, as Fern did (e.g. `{Expiry}`).
 //                       Images Fern zooms, raw <img> too, render through
 //                       the MDX `img` component; the others stay plain.
+//                       Raw <a> render through the MDX `a` component.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -147,6 +148,12 @@ export function remarkFernJsx() {
       const [noZoom, enableZoom] = [flag('noZoom'), flag('enableZoom')];
       const inLink = ancestors.some((a) => a.type === 'link' || (isJsx(a) && a.name === 'a'));
       node.data = {...node.data, _mdxExplicitJsx: inLink || pageNoZoom ? !enableZoom : noZoom};
+    });
+    // Raw <a> tags render through the MDX `a` component (Docusaurus' Link)
+    // like Markdown links, as Fern's went through its link component:
+    // external links open in a new tab, internal ones navigate client-side.
+    visit(tree, (node) => isJsx(node) && node.name === 'a', (node) => {
+      node.data = {...node.data, _mdxExplicitJsx: false};
     });
   };
 }

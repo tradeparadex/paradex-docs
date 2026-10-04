@@ -8,12 +8,16 @@
 //      page of the index in releases/changelog/anchors.json.
 //   4. Generated extras exist: llms.txt, specs, feeds, search index, 404.
 //   5. The build fits Cloudflare's limits (redirect rules, files, file size).
-//   6. Every HTML page has one viewport meta, with minimum-scale=1.
+//   6. Every splat rule in _redirects sends a deep path where the rules in
+//      docs/redirects.yml do.
+//   7. Every HTML page has one viewport meta, with minimum-scale=1.
 
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import yaml from 'js-yaml';
+
+import {markdownUrl, matchRedirect} from '../plugins/redirects.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const build = path.resolve(root, process.env.BUILD_DIR ?? 'build');
@@ -121,6 +125,28 @@ if (fs.existsSync(path.join(build, '_redirects'))) {
   const dynamic = firstSplat < 0 ? 0 : rules.length - firstSplat;
   if (dynamic > 100) fail(`_redirects has ${dynamic} lines from the first splat rule on (Cloudflare reads 100)`);
   if (rules.length - dynamic > 2000) fail(`_redirects has ${rules.length - dynamic} static rules (Cloudflare reads 2,000)`);
+
+  // Cloudflare answers _redirects before any redirect page is served, so a
+  // splat rule that disagrees with matchRedirect() (which the redirect pages
+  // and the 404 page use) is what visitors get. Match like Cloudflare: the
+  // first line whose pattern matches, `*` greedy, `:splat` replaced.
+  const lines = rules.map((line) => line.split(/\s+/));
+  const escapeRegex = (s) => s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const answer = (pathname) => {
+    for (const [from, to] of lines) {
+      const m = new RegExp(`^${from.split('*').map(escapeRegex).join('(?<splat>.*)')}$`).exec(pathname);
+      if (m) return to.replaceAll(':splat', m.groups?.splat ?? '');
+    }
+  };
+  for (const [from] of lines.filter(([from]) => from.includes('*'))) {
+    const sample = from.replace('*', 'x/y');
+    for (const url of sample.endsWith('.md') ? [sample] : [sample, `${sample}.md`]) {
+      const page = matchRedirect(redirects, url.replace(/\.md$/, ''));
+      const expected = page && url.endsWith('.md') ? markdownUrl(page) : page;
+      const actual = answer(url);
+      if (actual !== expected) fail(`_redirects sends ${url} to ${actual}; docs/redirects.yml sends it to ${expected}`);
+    }
+  }
 }
 
 // Cloudflare refuses to deploy more than 20,000 asset files (Workers Free;
@@ -143,7 +169,7 @@ if (fs.existsSync(path.join(build, '_redirects'))) {
 }
 if (!fs.readdirSync(build).some((f) => /^search-index.*\.json$/.test(f))) fail('missing search index');
 
-// 6. Viewport meta. Without minimum-scale=1, content wider than a phone
+// 7. Viewport meta. Without minimum-scale=1, content wider than a phone
 // widens the layout viewport and the mobile drawer and search dialog open
 // off-screen. docusaurus.config.ts replaces Docusaurus's default tag.
 {

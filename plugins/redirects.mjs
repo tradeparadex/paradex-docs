@@ -16,7 +16,8 @@
 //      rules answer first (real 301/308s). Each exact rule also
 //      gets a `.md` twin (`/old.md /new.md 308`) so agents fetching the
 //      Markdown of an old URL land on the new page's Markdown; wildcard
-//      rules carry the `.md` suffix through `:splat` already.
+//      rules carry the `.md` suffix through `:splat` already, and one whose
+//      destination has no `:slug*` gets a `/old/*.md /new.md 308` twin.
 
 import fs from 'node:fs';
 import yaml from 'js-yaml';
@@ -102,17 +103,19 @@ export function expandRedirects(rules, routes, implicit) {
   return result;
 }
 
+/** A page URL's Markdown URL: `/a/b/#h` -> `/a/b.md#h`, `/` -> `/.md`. */
+export function markdownUrl(url) {
+  const [urlPath, hash] = splitHash(url);
+  return `/${urlPath.replace(/^\/+|\/+$/g, '')}.md${hash}`;
+}
+
 /**
- * The Markdown twin of an exact redirect: `/old.md /new.md 308`, as Fern
- * answered a configured redirect on its .md route (308 for permanent
- * redirects, Location = destination + `.md`, before any #hash).
+ * The Markdown twin of a redirect: `/old.md /new.md 308`, as Fern answered
+ * a configured redirect on its .md route (308 for permanent redirects,
+ * Location = destination + `.md`, before any #hash).
  */
 function markdownRedirect(source, destination) {
-  const [destPath, hash] = splitHash(destination);
-  const md = (url) => `/${url.replace(/^\/+|\/+$/g, '')}.md`;
-  const from = md(source);
-  const to = `${md(destPath)}${hash}`;
-  return `${from} ${to} 308`;
+  return `${markdownUrl(source)} ${markdownUrl(destination)} 308`;
 }
 
 /**
@@ -140,7 +143,16 @@ export function toNetlifyRedirects(rules, implicit, extra = []) {
       const dest = destination.replace(WILDCARD, '');
       exact(`${src || '/'} ${dest || '/'} 301`);
       exact(markdownRedirect(src || '/', dest || '/'));
-      entries.push({splat: src, line: `${src}/* ${dest}/:splat 301`});
+      if (WILDCARD.test(destination)) {
+        entries.push({splat: src, line: `${src}/* ${dest}/:splat 301`});
+      } else {
+        // No `:slug*` in the destination: like Fern, drop the rest of the
+        // path, so every URL below the source goes to the destination and
+        // its .md to the destination's .md. The .md line comes first because
+        // Cloudflare applies the first splat rule that matches.
+        entries.push({splat: src, line: markdownRedirect(`${src}/*`, destination)});
+        entries.push({splat: src, line: `${src}/* ${destination} 301`});
+      }
     } else {
       exact(`${source} ${destination} 301`);
       exact(markdownRedirect(source, destination));

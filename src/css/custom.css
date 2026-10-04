@@ -968,11 +968,10 @@ a.navbar-cta {
   letter-spacing: -0.02em;
 }
 
-/* Docusaurus offsets headings below its navbar with a scroll margin; here
-   the page's scroll padding (see the header section) places every anchor
-   target. */
+/* Anchor jumps land 16px below the header, as on Fern: the page's scroll
+   padding places headings, without the scroll margin Docusaurus adds. */
 :is(h1, h2, h3, h4, h5, h6)[id] {
-  scroll-margin-top: 0;
+  scroll-margin-top: var(--fern-anchor-offset);
 }
 
 .markdown h5 {

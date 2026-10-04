@@ -15,6 +15,10 @@ html[data-theme='dark'] {
   --fern-accent-a10: rgba(25, 238, 255, 0.753);
   --fern-accent-a12: rgba(186, 249, 255, 0.953);
   --fern-card-shadow: 0 2px 4px var(--grayscale-a3);
+  /* Extra scroll margin for in-page targets (headings, tabs, accordions,
+     steps). The page's scroll padding already lands them 16px below the
+     header, as on Fern (custom.css), and a margin adds to it. */
+  --fern-anchor-offset: 0px;
 }
 
 .fern-icon {
@@ -752,6 +756,7 @@ a.cyan-cards:hover {
 
 .fern-accordion {
   overflow: clip;
+  scroll-margin-top: var(--fern-anchor-offset);
 }
 
 .fern-accordion:first-child,

@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.6.1
+    version: 1.7.0
     description: |
         Channels for real-time updates.
 
@@ -173,6 +173,20 @@ channels:
                 summary: Public websocket channel for updates of available markets
                 description: 'Subscribe to market summary messages for specific markets or all markets. Supports markets_summary (all markets) and markets_summary.{market_symbol} (specific market) dot-encoded patterns, plus a scoped mutable-filter mode: subscribe with a `markets` array (present, even empty) to filter to a specific set and change that set in place via modify_subscription without re-subscribing.'
         x-fern-display-name: markets_summary[.{market_symbol}]
+    /mmp:
+        subscribe:
+            summary: Private websocket channel to receive market maker protection events
+            message:
+                name: mmpeventresp
+                title: MmpEventResp
+                payload:
+                    $ref: '#/components/schemas/ResponsesMmpEventResp'
+                summary: Private websocket channel to receive market maker protection events
+                description: |-
+                    Subscribe to `mmp` for market maker protection state changes on the authenticated account, one event per base asset.
+                    TRIGGERED: a limit tripped. Open MMP orders on the base asset are cancelled with MMP_TRIGGERED, and new ones with MMP_FROZEN until `frozen_until`, or until a manual reset when it is 0. UNFROZEN and RESET end a freeze. CONFIG_UPDATED carries the new config.
+                    Authenticate the WebSocket session with the `auth` method before subscribing.
+        x-fern-display-name: mmp
     /modify_subscription:
         publish:
             summary: Modify a scoped subscription's market filter in place
@@ -402,10 +416,11 @@ channels:
                             example: my-order-001
                             type: string
                         flags:
-                            description: Order flags
-                            enum:
-                                - REDUCE_ONLY
+                            description: Order flags. MMP is for LIMIT orders on dated options and perpetual futures; only resting maker fills count
                             items:
+                                enum:
+                                    - REDUCE_ONLY
+                                    - MMP
                                 type: string
                             type: array
                         instruction:
@@ -620,10 +635,11 @@ channels:
                                         example: my-order-001
                                         type: string
                                     flags:
-                                        description: Order flags
-                                        enum:
-                                            - REDUCE_ONLY
+                                        description: Order flags. MMP is for LIMIT orders on dated options and perpetual futures; only resting maker fills count
                                         items:
+                                            enum:
+                                                - REDUCE_ONLY
+                                                - MMP
                                             type: string
                                         type: array
                                     instruction:
@@ -1910,6 +1926,114 @@ components:
                 - funding_rate
                 - price_change_rate_24h
             type: object
+        ResponsesMmpEventResp:
+            additionalProperties: false
+            properties:
+                account:
+                    description: Account the event belongs to
+                    type: string
+                base_asset:
+                    description: Base asset the event applies to
+                    example: BTC
+                    type: string
+                config:
+                    additionalProperties: false
+                    description: The new config, CONFIG_UPDATED only
+                    properties:
+                        base_asset:
+                            description: Base asset the config applies to, across its dated options and perpetual futures
+                            example: BTC
+                            type: string
+                        delta_limit:
+                            description: Delta limit in base asset units; 0 = check disabled
+                            example: "20"
+                            type: string
+                        frozen_time_ms:
+                            description: How long a trip freezes MMP orders, in milliseconds. 0 freezes until a manual reset
+                            example: "5000"
+                            type: integer
+                        interval_ms:
+                            description: Sliding window length in milliseconds. 0 when MMP was removed
+                            example: "1000"
+                            type: integer
+                        protect_block_trades:
+                            description: Whether block trade legs, RFQ executions included, are protected
+                            example: "true"
+                            type: boolean
+                        removed:
+                            description: True when MMP was removed for this base asset; the limits above are then zero
+                            example: "false"
+                            type: boolean
+                        size_limit:
+                            description: Size limit in base asset units; 0 = check disabled
+                            example: "60"
+                            type: string
+                        updated_at:
+                            description: Unix milliseconds the config was last written
+                            example: "1717171717000"
+                            type: integer
+                        vega_limit:
+                            description: Vega limit in USD; 0 = check disabled
+                            example: "5000"
+                            type: string
+                    required:
+                        - base_asset
+                        - interval_ms
+                        - frozen_time_ms
+                        - size_limit
+                        - delta_limit
+                        - vega_limit
+                        - protect_block_trades
+                        - updated_at
+                        - removed
+                    type: object
+                created_at:
+                    description: Unix milliseconds the event occurred
+                    example: "1717171717640"
+                    type: integer
+                frozen_until:
+                    description: Unix milliseconds the freeze ends on TRIGGERED, where 0 means until a manual reset. Always 0 on other kinds, which says nothing about freeze state
+                    example: "1717171722640"
+                    type: integer
+                kind:
+                    description: 'TRIGGERED: a limit tripped. UNFROZEN: the freeze expired. RESET: MMP was reset. CONFIG_UPDATED: the config changed'
+                    enum:
+                        - TRIGGERED
+                        - UNFROZEN
+                        - RESET
+                        - CONFIG_UPDATED
+                    type: string
+                trigger_market:
+                    description: Market of the fill that tripped, TRIGGERED only
+                    example: BTC-USD-26DEC26-105000-C
+                    type: string
+                trip_reason:
+                    description: Limit that tripped, TRIGGERED only
+                    enum:
+                        - SIZE
+                        - DELTA
+                        - VEGA
+                        - INVALID_FILL
+                    type: string
+                window_delta:
+                    description: Signed sum of fill delta in the window when the limit tripped, TRIGGERED only
+                    example: "-21.22"
+                    type: string
+                window_size:
+                    description: Sum of fill size in the window when the limit tripped, TRIGGERED only
+                    example: "53"
+                    type: string
+                window_vega:
+                    description: Signed sum of fill vega in USD in the window when the limit tripped, TRIGGERED only
+                    example: "-1450.5"
+                    type: string
+            required:
+                - account
+                - base_asset
+                - kind
+                - frozen_until
+                - created_at
+            type: object
         ResponsesOrderResp:
             additionalProperties: false
             properties:
@@ -1934,7 +2058,7 @@ components:
                     example: "1681493746016"
                     type: integer
                 flags:
-                    description: 'Order flags, allow flag: REDUCE_ONLY'
+                    description: Order flags
                     items:
                         type: string
                     type: array
@@ -2849,6 +2973,15 @@ components:
             description: 'Subscribe to market summary messages for specific markets or all markets. Supports markets_summary (all markets) and markets_summary.{market_symbol} (specific market) dot-encoded patterns, plus a scoped mutable-filter mode: subscribe with a `markets` array (present, even empty) to filter to a specific set and change that set in place via modify_subscription without re-subscribing.'
             tags:
                 - name: market
+        ResponsesMmpEventResp:
+            name: mmpeventresp
+            title: MmpEventResp
+            summary: Private websocket channel to receive market maker protection events
+            description: |-
+                Subscribe to `mmp` for market maker protection state changes on the authenticated account, one event per base asset.
+                TRIGGERED: a limit tripped. Open MMP orders on the base asset are cancelled with MMP_TRIGGERED, and new ones with MMP_FROZEN until `frozen_until`, or until a manual reset when it is 0. UNFROZEN and RESET end a freeze. CONFIG_UPDATED carries the new config.
+            tags:
+                - name: account
         ResponsesOrderResp:
             name: orderresp
             title: OrderResp

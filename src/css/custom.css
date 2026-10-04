@@ -2250,13 +2250,20 @@ html.mermaid-zoom-open {
   margin-right: 0;
 }
 
-/* A 640px column with Fern's 32px side gutter, which shows once the screen
-   is narrower than 704px. */
 .changelog-main {
   width: 100%;
-  max-width: 704px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 32px;
+  padding: 32px 0 32px;
+}
+
+/* Without the sidebar, Fern keeps a 32px gutter on each side of the 640px
+   column, so it shows once the screen is narrower than 704px. */
+@media (max-width: 996px) {
+  .changelog-main {
+    max-width: calc(640px + 2 * 32px);
+    padding-inline: 32px;
+  }
 }
 
 /* Entries and the intro use the prose rhythm (16px/28px). */
@@ -2299,6 +2306,13 @@ html.mermaid-zoom-open {
   width: 14px;
   height: 14px;
   color: var(--paradex-accent);
+}
+
+/* Fern shows "Subscribe via RSS" from 768px only. */
+@media (max-width: 767px) {
+  .changelog-rss {
+    display: none;
+  }
 }
 
 .changelog-description {
@@ -2405,13 +2419,6 @@ html.mermaid-zoom-open {
 
   .changelog-sidebar,
   .changelog-toc {
-    display: none;
-  }
-}
-
-/* Fern shows "Subscribe via RSS" from 768px only. */
-@media (max-width: 767px) {
-  .changelog-rss {
     display: none;
   }
 }

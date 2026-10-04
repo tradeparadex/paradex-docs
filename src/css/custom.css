@@ -473,7 +473,9 @@ a.navbar-cta {
   }
 }
 
-@media (min-width: 640px) and (max-width: 996px) {
+/* Fern keeps this panel up to 1023px, the last width before its desktop
+   layout (Docusaurus alone hides the menu from 997px). */
+@media (min-width: 640px) and (max-width: 1023px) {
   .navbar-sidebar.fern-mobile-nav {
     width: 288px;
   }

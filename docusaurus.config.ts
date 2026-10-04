@@ -132,7 +132,12 @@ export default async function createConfig(): Promise<Config> {
             lastmod: null,
             changefreq: null,
             priority: null,
-            ignorePatterns: ['/releases/changelog/page/**'],
+            ignorePatterns: [
+              '/releases/changelog/page/**',
+              // Like Fern's, the sitemap lists canonical URLs only: not the
+              // testnet endpoint pages that point at their production twin.
+              ...site.api.pages.filter((page) => page.canonicalUrl !== page.url).map((page) => page.url),
+            ],
           },
         } satisfies Preset.Options,
       ],

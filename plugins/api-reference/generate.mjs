@@ -18,6 +18,12 @@ export async function generateApiReference({contentDir, pagesDir, generatedDir})
   const pages = [];
   /** `${apiName} ${METHOD} ${path}` -> page */
   const byOperation = new Map();
+  /**
+   * `${kind} ${relativeUrl}` -> URL of the first page with it. As on Fern,
+   * an endpoint listed in two API sections (prod, testnet) has one canonical
+   * URL, the first one in navigation order (resolve() runs in that order).
+   */
+  const canonicalUrls = new Map();
 
   // Every spec is loaded up front: building the code samples is async, while
   // navigation resolves API sections synchronously.
@@ -57,6 +63,11 @@ export async function generateApiReference({contentDir, pagesDir, generatedDir})
       const jsonFile = path.join(pagesDir, `${relPath}.json`);
       const docId = relPath.replace(/\\/g, '/');
       const {data} = endpoint;
+      // The URL below the API section, e.g. "account/get".
+      const relativeUrl = [endpoint.groupSlug, endpoint.methodSlug].join('/');
+      const canonicalKey = `${data.kind ?? 'rest'} ${relativeUrl}`;
+      if (!canonicalUrls.has(canonicalKey)) canonicalUrls.set(canonicalKey, url);
+      const canonicalUrl = canonicalUrls.get(canonicalKey);
 
       fs.mkdirSync(path.dirname(mdxFile), {recursive: true});
       fs.writeFileSync(jsonFile, JSON.stringify({...data, url}));
@@ -74,6 +85,9 @@ export async function generateApiReference({contentDir, pagesDir, generatedDir})
           '---',
           '',
           `import endpoint from './${path.basename(jsonFile)}';`,
+          ...(canonicalUrl === url
+            ? []
+            : [`import CanonicalUrl from '@site/src/components/CanonicalUrl';`, '', `<CanonicalUrl url=${yamlString(canonicalUrl)} />`]),
           '',
           '<ApiEndpoint endpoint={endpoint} />',
           '',
@@ -89,8 +103,8 @@ export async function generateApiReference({contentDir, pagesDir, generatedDir})
         docId,
         api: apiName,
         group: endpoint.groupTitle,
-        // The URL below the API section, e.g. "account/get".
-        relativeUrl: [endpoint.groupSlug, endpoint.methodSlug].join('/'),
+        relativeUrl,
+        canonicalUrl,
         data,
       };
       pages.push(page);

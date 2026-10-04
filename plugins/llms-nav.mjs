@@ -11,7 +11,8 @@
 //   - <url>/llms.txt for a page resolves to the top-most ancestor with the
 //     same URL, if any (the Home tab for /home);
 //   - an endpoint listed in two API sections (prod, testnet) has one
-//     canonical URL, the first one in navigation order.
+//     canonical URL, the first one in navigation order (computed by the
+//     API generator, which also puts it in the testnet page's head).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -125,17 +126,10 @@ export function buildNavTree(site) {
   const nodes = [];
   const visit = (node) => {
     nodes.push(node);
+    if (isApiLeaf(node)) node.canonicalUrl = node.page.canonicalUrl;
     for (const child of node.children ?? []) visit(child);
   };
   visit(root);
-
-  const canonical = new Map();
-  for (const node of nodes) {
-    if (!isApiLeaf(node)) continue;
-    const key = `${node.type} ${node.page.relativeUrl}`;
-    if (!canonical.has(key)) canonical.set(key, node.url);
-    node.canonicalUrl = canonical.get(key);
-  }
 
   const slugMap = new Map();
   for (const node of nodes) {

@@ -1418,6 +1418,22 @@
   color: var(--api-accent-contrast) !important;
 }
 
+/* Fern's panel buttons grow on touch screens. */
+@media (pointer: coarse) {
+  .api-panel__header .api-icon-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .api-panel__header .api-panel__link {
+    height: 40px;
+  }
+
+  .api-panel__header .api-lang__button {
+    height: 28px;
+  }
+}
+
 /* ---------- Expanded code ---------- */
 
 html.api-code-modal-open {

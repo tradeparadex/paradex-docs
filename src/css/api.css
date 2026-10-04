@@ -14,6 +14,7 @@
   --api-accent: #1bc1cf;
   --api-accent-hover: #07d1e2;
   --api-accent-contrast: #070808;
+  --api-accent-a2: rgba(80, 237, 251, 0.07);
   --api-accent-a3: rgba(0, 233, 252, 0.153);
   --api-accent-a5: rgba(0, 226, 246, 0.3);
   --api-accent-a11: rgba(62, 239, 255, 0.867);
@@ -587,6 +588,144 @@
 .api-enum-search__clear svg {
   width: 16px;
   height: 16px;
+}
+
+/* ---------- Deep links ---------- */
+
+/* Anchor jumps land 16px below the header, as on Fern. */
+.api-endpoint [id] {
+  scroll-margin-top: var(--fern-anchor-offset);
+}
+
+/* Fern's link button: left of a hovered heading or property name, or after
+   it where there is no room on the left; never on touch screens. */
+.api-endpoint .api-section__title,
+.api-prop__header {
+  position: relative;
+  width: fit-content;
+}
+
+/* Centred on the name line (below the header's 5px top padding). */
+.api-anchor {
+  --api-anchor-gap: 6px;
+  position: absolute;
+  top: calc(50% + 2.5px);
+  right: calc(100% + var(--api-anchor-gap));
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--api-a5);
+  border-radius: 6px;
+  background: var(--api-card);
+  transform: translateY(-50%);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Spans the gap to the name, so the pointer can reach the button. */
+.api-anchor::after {
+  content: '';
+  position: absolute;
+  inset: 0 calc(-1 * var(--api-anchor-gap));
+}
+
+/* Fern centred it 22px below the top of a section heading. */
+.api-section__title > .api-anchor {
+  --api-anchor-gap: 12px;
+  top: 10px;
+  transform: none;
+}
+
+.api-anchor svg {
+  width: 16px;
+  height: 16px;
+  color: var(--api-a11);
+}
+
+/* After a click it stays a moment, with a tick, at the row it scrolled to. */
+.api-anchor--copied {
+  display: flex;
+  border-color: var(--api-accent-a5);
+  background: var(--api-accent-a3);
+}
+
+.api-anchor--copied svg {
+  color: var(--api-accent-a11);
+}
+
+@media (hover: hover) {
+  .api-prop__header:hover > .api-anchor,
+  .api-section__title:hover > .api-anchor {
+    display: flex;
+  }
+}
+
+/* Without the sidebar the column has no gutter; nested rows still have
+   room on their left. */
+@media (min-width: 768px) and (max-width: 996px) {
+  .api-section__title > .api-anchor,
+  .api-props:not(.api-props--nested) > .api-prop > .api-prop__header > .api-anchor {
+    right: auto;
+    left: calc(100% + var(--api-anchor-gap));
+  }
+}
+
+/* On phones Fern kept 16px free after every heading and name, and the
+   button sat in it. */
+@media (max-width: 767px) {
+  .api-endpoint .api-section__title,
+  .api-prop__header {
+    padding-right: 16px;
+  }
+
+  .api-anchor {
+    right: auto;
+    left: calc(100% - 16px);
+  }
+
+  .api-anchor::after {
+    content: none;
+  }
+}
+
+/* The row a link leads to is tinted for two seconds, then fades. Fern's tint
+   ran from 8px outside the row's content to 4px above its bottom: the box
+   below spans the row's padding box that way, and its own padding (the
+   row's) is left unpainted. */
+.api-prop--flash {
+  position: relative;
+  isolation: isolate;
+}
+
+.api-prop--flash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  margin: -8px -8px 4px;
+  padding: inherit;
+  background: var(--api-accent-a2);
+  background-clip: content-box;
+  pointer-events: none;
+  animation: api-prop-flash 2.7s ease-out forwards;
+}
+
+/* Nested rows keep 12px free on the right. */
+.api-props--nested > .api-prop--flash::before {
+  margin-right: 4px;
+}
+
+@keyframes api-prop-flash {
+  0%,
+  74% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ---------- Errors ---------- */

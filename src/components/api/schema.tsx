@@ -1,9 +1,10 @@
 // Schema tables of the API reference: property rows, allowed values and the
 // nested "Show N properties" groups, laid out as on Fern.
 
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import clsx from 'clsx';
-import {MinusIcon, PlusIcon, SearchIcon, CloseIcon} from './icons';
+import {useHistory, useLocation} from '@docusaurus/router';
+import {CheckIcon, LinkIcon, MinusIcon, PlusIcon, SearchIcon, CloseIcon} from './icons';
 import {useCopy} from './panels';
 import type {Property, Shape} from './types';
 
@@ -14,6 +15,73 @@ const AnchorParts = createContext<string[]>([]);
 export function AnchorPart({part, children}: {part: string; children: React.ReactNode}) {
   const parts = useContext(AnchorParts);
   return <AnchorParts.Provider value={[...parts, part.replaceAll(' ', '-')]}>{children}</AnchorParts.Provider>;
+}
+
+// The id the URL hash points at; a new object on every navigation to it.
+type Target = {id: string};
+const AnchorTarget = createContext<Target | null>(null);
+
+/** True when the target is the row at `parts` or anything inside it. */
+function targets(target: Target | null, parts: string[]): boolean {
+  const id = parts.join('.');
+  return !!target && !!id && (target.id === id || target.id.startsWith(`${id}.`));
+}
+
+function decodeHash(hash: string): string {
+  try {
+    return decodeURIComponent(hash.slice(1));
+  } catch {
+    return hash.slice(1);
+  }
+}
+
+/**
+ * Follows the URL hash as Fern did: the groups down to the target open (see
+ * Nesting), then the target scrolls under the header and a property row is
+ * tinted for a moment. Docusaurus moves to an anchor with history.push (no
+ * hashchange event), so this follows the router location. The hash applies
+ * after hydration: the server rendered every group closed.
+ */
+export function AnchorTargets({children}: {children: React.ReactNode}) {
+  const {hash, key} = useLocation();
+  const [target, setTarget] = useState<Target | null>(null);
+  useEffect(() => {
+    setTarget(hash.length > 1 ? {id: decodeHash(hash)} : null);
+  }, [hash, key]);
+  useEffect(() => {
+    const el = target && document.getElementById(target.id);
+    if (!el?.closest('.api-endpoint')) return;
+    el.scrollIntoView({block: 'start'});
+    if (el.classList.contains('api-prop')) {
+      el.classList.remove('api-prop--flash');
+      void el.offsetWidth; // restart the animation
+      el.classList.add('api-prop--flash');
+    }
+  }, [target]);
+  return <AnchorTarget.Provider value={target}>{children}</AnchorTarget.Provider>;
+}
+
+/** Fern's link button beside a heading or property name: links to it and copies the URL. */
+function AnchorLink({id}: {id: string}) {
+  const history = useHistory();
+  const [copied, copy] = useCopy();
+  return (
+    <a
+      href={`#${id}`}
+      className={clsx('api-anchor', copied && 'api-anchor--copied')}
+      // Out of the tab order, as on Fern: a page has hundreds of them.
+      tabIndex={-1}
+      aria-label={`Direct link to ${id}`}
+      onClick={(e) => {
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        copy(`${window.location.origin}${window.location.pathname}#${id}`);
+        // Fern replaced the history entry rather than adding one.
+        history.replace({pathname: history.location.pathname, search: history.location.search, hash: `#${id}`});
+      }}>
+      {copied ? <CheckIcon /> : <LinkIcon />}
+    </a>
+  );
 }
 
 /** Up to this many values are listed inline; more go behind a toggle. */
@@ -51,7 +119,16 @@ function EnumChip({value, large = false}: {value: string; large?: boolean}) {
 
 /** "Show N …" / "Hide N …" toggle with the indented rail Fern used. */
 function Nesting({label, children, defaultOpen = false}: {label: (open: boolean) => string; children: React.ReactNode; defaultOpen?: boolean}) {
-  const [open, setOpen] = useState(defaultOpen);
+  const target = useContext(AnchorTarget);
+  const parts = useContext(AnchorParts);
+  const [open, setOpen] = useState(() => defaultOpen || targets(target, parts));
+  // A deep link to this group's row or into it opens the group, in the same
+  // render, so the groups below open too before the target is scrolled to.
+  const [seen, setSeen] = useState(target);
+  if (target !== seen) {
+    setSeen(target);
+    if (targets(target, parts)) setOpen(true);
+  }
   return (
     <div className={clsx('api-nesting', open && 'api-nesting--open')}>
       <button type="button" className="api-nesting__trigger" aria-expanded={open} onClick={() => setOpen(!open)}>
@@ -172,9 +249,10 @@ export function PropertyRow({
 }: Property & {requiredLabel?: boolean}) {
   const parent = useContext(AnchorParts);
   const parts = name ? [...parent, name.replaceAll(' ', '-')] : parent;
+  const id = name ? parts.join('.') : undefined;
   return (
     <AnchorParts.Provider value={parts}>
-      <div className="api-prop" id={name ? parts.join('.') : undefined}>
+      <div className="api-prop" id={id}>
         <div className="api-prop__header">
           {name && <span className="api-prop__name">{name}</span>}
           <span className="api-prop__meta">
@@ -193,6 +271,7 @@ export function PropertyRow({
               </span>
             )}
           </span>
+          {id && <AnchorLink id={id} />}
         </div>
         <Html html={shape.description} className="api-prop__description" />
         <ShapeDetails shape={shape} />
@@ -225,11 +304,13 @@ export function Section({
   id?: string;
 }) {
   const parts = useContext(AnchorParts);
+  const anchor = id ?? (parts.length ? parts.join('.') : undefined);
   return (
-    <section className={clsx('api-section', className)} id={id ?? (parts.length ? parts.join('.') : undefined)}>
+    <section className={clsx('api-section', className)} id={anchor}>
       <h3 className="api-section__title">
         {title}
         {icon}
+        {anchor && <AnchorLink id={anchor} />}
       </h3>
       {children}
     </section>

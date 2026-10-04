@@ -163,6 +163,8 @@ export default async function createConfig(): Promise<Config> {
           searchBarShortcutHint: true,
           searchBarPosition: 'left',
           highlightSearchTermsOnTargetPage: false,
+          // Step number badges are text; keep the digits out of snippets.
+          ignoreCssSelectors: ['.fern-step > .fern-anchor'],
         },
       ],
       [path.resolve(__dirname, 'plugins/site-plugin.mjs'), {site}],

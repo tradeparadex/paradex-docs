@@ -57,7 +57,11 @@ export function sanitizeHtml(html) {
       const value = doubleQuoted ?? singleQuoted ?? unquoted;
       if (key.startsWith('on')) continue;
       if (URL_ATTRIBUTES.has(key) && value !== undefined && isUnsafeUrl(value)) continue;
-      attributes.push(value === undefined ? ` ${attribute}` : ` ${attribute}="${value.replace(/"/g, '&quot;')}"`);
+      // Nothing tag-shaped stays raw inside a value: the page splits this
+      // HTML at <pre><code> (src/components/api/schema.tsx), which must not
+      // find one inside an attribute.
+      const escaped = value?.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      attributes.push(value === undefined ? ` ${attribute}` : ` ${attribute}="${escaped}"`);
     }
     return `<${name}${attributes.join('')}${/\/\s*$/.test(rest) ? ' /' : ''}>`;
   });

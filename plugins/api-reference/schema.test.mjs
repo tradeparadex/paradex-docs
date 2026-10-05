@@ -33,6 +33,14 @@ describe('spec descriptions are sanitized', () => {
     assert.equal(sanitizeHtml('<iframe srcdoc="<script>alert(1)</script>">'), '&lt;iframe srcdoc="&lt;script&gt;alert(1)&lt;/script&gt;"&gt;');
   });
 
+  test('attribute values keep no raw tag characters', () => {
+    // The page splits description HTML at <pre><code>; one hidden in an
+    // attribute must not become markup.
+    const html = sanitizeHtml('<img alt="x>y<pre><code>c</code></pre><img src=x onerror=alert(1)>">');
+    assert.equal(html, '<img alt="x&gt;y&lt;pre&gt;&lt;code&gt;c&lt;/code&gt;&lt;/pre&gt;&lt;img src=x onerror=alert(1)&gt;">');
+    assert.doesNotMatch(html.slice(1), /<(?!\/?img\b)/);
+  });
+
   test('ordinary descriptions are unchanged', () => {
     const html = '<p>See <a href="https://docs.paradex.trade/api#x">the docs</a> and <code>GET /markets</code>.</p>\n<details><summary>More</summary><br />Text</details>';
     assert.equal(sanitizeHtml(html), html);

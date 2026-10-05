@@ -47,3 +47,13 @@ describe('spec descriptions are sanitized', () => {
     assert.equal(markdownToHtml('Use [markets](/api/prod/markets/get-markets) and `<T>`.'), '<p>Use <a href="/api/prod/markets/get-markets">markets</a> and <code>&lt;T&gt;</code>.</p>');
   });
 });
+
+describe('spec descriptions render like MDX', () => {
+  test('tables sit in the scrolling table card', () => {
+    assert.equal(
+      markdownToHtml('| Value | Meaning |\n|---|---|\n| `GTC` | Good till cancelled |'),
+      '<div class="fern-table"><table>\n<thead>\n<tr>\n<th>Value</th>\n<th>Meaning</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>GTC</code></td>\n<td>Good till cancelled</td>\n</tr>\n</tbody>\n</table></div>',
+    );
+    assert.equal(markdownToHtml('A <table><tr><td>x</td></tr></table> and `<table>`'), '<p>A <div class="fern-table"><table><tr><td>x</td></tr></table></div> and <code>&lt;table&gt;</code></p>');
+  });
+});

@@ -124,7 +124,15 @@ export function markdownToHtml(markdown) {
     extensions: [gfm()],
     htmlExtensions: [gfmHtml()],
   }).trim();
-  return smartQuotes(withHeadingIds(sanitizeHtml(html)));
+  return smartQuotes(withTableCards(withHeadingIds(sanitizeHtml(html))));
+}
+
+/**
+ * Tables sit in the scrolling table card that MDX tables get
+ * (src/theme/MDXComponents.tsx), as Fern rendered description tables.
+ */
+function withTableCards(html) {
+  return html.replace(/<table\b[^>]*>/g, '<div class="fern-table">$&').replace(/<\/table>/g, '$&</div>');
 }
 
 /** Give headings the slug ids Fern gave them ("### TWAP" -> id="twap"). */

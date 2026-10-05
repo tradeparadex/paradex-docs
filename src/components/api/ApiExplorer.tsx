@@ -493,11 +493,20 @@ function OptionalProperties({
               )}
             </button>
           ))}
-          <div className="api-explorer__menu-separator" role="separator" />
-          <button type="button" role="menuitem" className="api-explorer__menu-item api-explorer__menu-item--all" onClick={() => choose(onAddAll)}>
-            <span className="api-explorer__menu-text">Add all optional properties</span>
-            <PlusCircleIcon />
-          </button>
+          {/* Fern offered Add all only when there was more than one to add. */}
+          {properties.length > 1 && (
+            <>
+              <div className="api-explorer__menu-separator" role="separator" />
+              <button
+                type="button"
+                role="menuitem"
+                className="api-explorer__menu-item api-explorer__menu-item--all"
+                onClick={() => choose(onAddAll)}>
+                <span className="api-explorer__menu-text">Add all optional properties</span>
+                <PlusCircleIcon />
+              </button>
+            </>
+          )}
         </div>
       )}
       <button

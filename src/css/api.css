@@ -212,6 +212,13 @@
     margin-bottom: 0;
   }
 
+  /* Fern keeps 96px under the text inside the grid: the examples can slide
+     down to there, and the footer sits 88px below it or below taller
+     examples (custom.css). */
+  .api-endpoint__main {
+    padding-bottom: 96px;
+  }
+
   /* Fern: the column sticks under the header (32px below it here, 24px
      from 1024px) and ends 24px above the bottom of the window. */
   .api-endpoint__sticky {

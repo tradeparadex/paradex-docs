@@ -1698,8 +1698,10 @@ main:has(> .container > .doc-layout--no-sidebar) {
     margin-top: 216px;
   }
 
+  /* Still 184px below the text: 96px of it is inside the endpoint grid
+     (api.css), so taller example panels end 88px above the footer. */
   .doc-layout--api .theme-doc-footer {
-    margin-top: 184px;
+    margin-top: 88px;
   }
 }
 

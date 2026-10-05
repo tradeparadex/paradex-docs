@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.138.1"
+    "version": "1.139.0"
   },
   "paths": {
     "/account": {
@@ -847,6 +847,270 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/mmp": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Lists the account's market maker protection (MMP) configs, one per base asset, with live state (frozen, until when, window sums) when available. Filter with base_asset. A base asset with no entry has MMP off. Also works when MMP is not enabled for the account (`enabled` false), so enforced configs can be found and removed.",
+        "tags": [
+          "MarketMakerProtection"
+        ],
+        "summary": "List market maker protection configs",
+        "operationId": "get-account-mmp",
+        "parameters": [
+          {
+            "description": "Base asset - example: BTC",
+            "name": "base_asset",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.GetAccountMmpConfigsResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/mmp/reset": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Lifts the account's market maker protection (MMP) freeze and clears the window, keeping the config, for `base_asset` or else every base asset with MMP enabled. Refused with MMP_MIN_FREEZE_NOT_ELAPSED within 1 second of a trip; when resetting every base asset, that error's `data.refused` and `data.reset` say which were reset. Works after MMP is no longer enabled for the account. Limited per account by a token bucket of 60 resets refilling at 60 per minute, plus a shorter burst limit; either returns 429. Read-only tokens are rejected.",
+        "tags": [
+          "MarketMakerProtection"
+        ],
+        "summary": "Reset market maker protection",
+        "operationId": "reset-account-mmp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.AccountMmpResetRequest"
+              }
+            }
+          },
+          "description": "Base asset to reset; every base asset when omitted"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.AccountMmpResetResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/responses.ApiError"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/responses.AccountMmpResetRefusedData"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/mmp/{base_asset}": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Replaces the account's market maker protection (MMP) config for a base asset with dated option or perpetual futures markets. An omitted limit becomes 0, disabling that check; at least one limit must be above 0. `vega_limit` counts only dated option fills, so it cannot be the only limit where there are none. 403 MMP_NOT_ENABLED unless MMP is enabled for the account. Read-only tokens are rejected.",
+        "tags": [
+          "MarketMakerProtection"
+        ],
+        "summary": "Set market maker protection config",
+        "operationId": "upsert-account-mmp",
+        "parameters": [
+          {
+            "description": "Base asset - example: BTC",
+            "name": "base_asset",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.AccountMmpConfigRequest"
+              }
+            }
+          },
+          "description": "MMP configuration",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.AccountMmpConfigResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Removes the account's market maker protection (MMP) config for a base asset, cancelling its open MMP orders there with MMP_DISABLED. Succeeds when there is none, and works after MMP is no longer enabled for the account, since a stored config is still enforced. Read-only tokens are rejected.",
+        "tags": [
+          "MarketMakerProtection"
+        ],
+        "summary": "Remove market maker protection config",
+        "operationId": "delete-account-mmp",
+        "parameters": [
+          {
+            "description": "Base asset - example: BTC",
+            "name": "base_asset",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -7879,6 +8143,55 @@
           }
         }
       },
+      "requests.AccountMmpConfigRequest": {
+        "type": "object",
+        "required": [
+          "frozen_time_ms",
+          "interval_ms"
+        ],
+        "properties": {
+          "delta_limit": {
+            "description": "Trips when the absolute net delta of fills in the window exceeds this, in base asset units. Up to 4 decimal places; 0 or omitted disables the check",
+            "type": "string",
+            "example": "20"
+          },
+          "frozen_time_ms": {
+            "description": "How long a trip freezes MMP orders, in milliseconds, 0 to 3600000. 0 freezes until a manual reset",
+            "type": "integer",
+            "example": 5000
+          },
+          "interval_ms": {
+            "description": "Sliding window length in milliseconds, 100 to 3600000",
+            "type": "integer",
+            "example": 1000
+          },
+          "protect_block_trades": {
+            "description": "Protects this base asset's block trade legs, RFQ executions included,\nwhere the account is the maker: the desk that responds with a quote or\noffer. Omitting it keeps the stored value (false if never set).\nProtected block trades share the window with order book fills. A change\napplies to block trades and offers created afterwards.",
+            "type": "boolean",
+            "example": true
+          },
+          "size_limit": {
+            "description": "Trips when the sum of fill sizes in the window exceeds this, in base asset units. Up to 4 decimal places; 0 or omitted disables the check",
+            "type": "string",
+            "example": "60"
+          },
+          "vega_limit": {
+            "description": "Trips when the absolute net vega of fills in the window exceeds this, in USD. Up to 4 decimal places; 0 or omitted disables the check",
+            "type": "string",
+            "example": "5000"
+          }
+        }
+      },
+      "requests.AccountMmpResetRequest": {
+        "type": "object",
+        "properties": {
+          "base_asset": {
+            "description": "Base asset to reset; every base asset with MMP enabled when omitted",
+            "type": "string",
+            "example": "BTC"
+          }
+        }
+      },
       "requests.ActivateSubkey": {
         "type": "object",
         "required": [
@@ -8547,7 +8860,7 @@
             "type": "boolean"
           },
           "flags": {
-            "description": "Order flags, allow flag: REDUCE_ONLY",
+            "description": "Order flags: REDUCE_ONLY, MMP. MMP is for LIMIT orders on dated options and perpetual futures; only resting maker fills count",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/responses.OrderFlag"
@@ -9172,6 +9485,122 @@
           "market": {
             "description": "Market symbol",
             "type": "string"
+          }
+        }
+      },
+      "responses.AccountMmpConfigResp": {
+        "type": "object",
+        "properties": {
+          "base_asset": {
+            "description": "Base asset the config applies to, across its dated options and perpetual futures",
+            "type": "string",
+            "example": "BTC"
+          },
+          "delta_limit": {
+            "description": "Delta limit in base asset units; 0 = check disabled",
+            "type": "string",
+            "example": "20"
+          },
+          "frozen_time_ms": {
+            "description": "How long a trip freezes MMP orders, in milliseconds. 0 freezes until a manual reset",
+            "type": "integer",
+            "example": 5000
+          },
+          "frozen_until": {
+            "description": "Unix millis the freeze ends. 0 while frozen means until a manual reset; 0 when not frozen",
+            "type": "integer",
+            "example": 1717171722000
+          },
+          "interval_ms": {
+            "description": "Sliding window length in milliseconds. 0 when MMP was removed",
+            "type": "integer",
+            "example": 1000
+          },
+          "is_frozen": {
+            "description": "Whether MMP orders on the base asset are frozen",
+            "type": "boolean",
+            "example": true
+          },
+          "protect_block_trades": {
+            "description": "Whether block trade legs, RFQ executions included, are protected",
+            "type": "boolean",
+            "example": true
+          },
+          "size_limit": {
+            "description": "Size limit in base asset units; 0 = check disabled",
+            "type": "string",
+            "example": "60"
+          },
+          "updated_at": {
+            "description": "Unix milliseconds the config was last written",
+            "type": "integer",
+            "example": 1717171717000
+          },
+          "vega_limit": {
+            "description": "Vega limit in USD; 0 = check disabled",
+            "type": "string",
+            "example": "5000"
+          },
+          "window_delta": {
+            "description": "Net signed delta of fills in the current window, in base asset units",
+            "type": "string",
+            "example": "-3.2"
+          },
+          "window_size": {
+            "description": "Sum of fill sizes in the current window, in base asset units",
+            "type": "string",
+            "example": "12.5"
+          },
+          "window_vega": {
+            "description": "Net signed vega of fills in the current window, in USD",
+            "type": "string",
+            "example": "840"
+          }
+        }
+      },
+      "responses.AccountMmpResetRefusedData": {
+        "type": "object",
+        "properties": {
+          "refused": {
+            "description": "Base assets tripped less than 1 second ago, not reset",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reset": {
+            "description": "Base assets that were reset",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.AccountMmpResetResult"
+            }
+          }
+        }
+      },
+      "responses.AccountMmpResetResp": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "description": "Ordered by base asset. Empty when no base asset has MMP enabled",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.AccountMmpResetResult"
+            }
+          }
+        }
+      },
+      "responses.AccountMmpResetResult": {
+        "type": "object",
+        "properties": {
+          "base_asset": {
+            "description": "Base asset that was reset",
+            "type": "string",
+            "example": "BTC"
+          },
+          "reset_at": {
+            "description": "Unix millis the freeze and window were cleared",
+            "type": "integer",
+            "example": 1717171717000
           }
         }
       },
@@ -9974,7 +10403,7 @@
             "example": "order_123"
           },
           "flags": {
-            "description": "Order flags, allow flag: REDUCE_ONLY",
+            "description": "Order flags. Requests may set only REDUCE_ONLY; MMP is set from the owner's protect_block_trades config. Returned only to the leg's owner",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/responses.OrderFlag"
@@ -10822,6 +11251,26 @@
           "margin_methodology": {
             "description": "Margin methodology (cross_margin/portfolio_margin)",
             "type": "string"
+          }
+        }
+      },
+      "responses.GetAccountMmpConfigsResp": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "description": "Account ID",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "Whether MMP is enabled for the account. When false, configs can only be removed, and those listed are still enforced until they are",
+            "type": "boolean"
+          },
+          "results": {
+            "description": "Configs per base asset, ordered by base asset. A base asset with no entry has MMP off",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.AccountMmpConfigResp"
+            }
           }
         }
       },
@@ -11885,7 +12334,7 @@
             "example": 1681493746016
           },
           "flags": {
-            "description": "Order flags, allow flag: REDUCE_ONLY",
+            "description": "Order flags",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/responses.OrderFlag"

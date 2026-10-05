@@ -2,9 +2,9 @@
 
 ## Gotchas
 
-- The `/staking` redirect in `fern/docs.yml` points at a specific anchor on the Trading Fees page. Current target: `#stake-dime` (H3 `### Stake $DIME` under the `## Discounts` section). If the "Stake \$DIME" subheading is renamed, update the redirect in `docs.yml` to match.
+- The `/staking` redirect in `docs/redirects.yml` points at a specific anchor on the Trading Fees page. Current target: `#stake-dime` (H3 `### Stake $DIME` under the `## Discounts` section). If the "Stake \$DIME" subheading is renamed, update the redirect in `navigation.yml` to match.
 - Escape dollar signs as `\$` in MDX (e.g. `\$DIME`) to prevent MathJax-style parsing in prose and table cells.
-- `fern/pages/trading/trading-fees-v2.mdx` is an orphaned duplicate (not referenced in `docs.yml`, and the `/trading/trading-fees-v2` URL is already redirected to `/trading/trading-fees`). A previous deletion of the file was reverted by the team. Leave it in place and edit `trading-fees.mdx` as canonical.
+- `docs/pages/trading/trading-fees-v2.mdx` is an orphaned duplicate (not referenced in `navigation.yml`, and the `/trading/trading-fees-v2` URL is already redirected to `/trading/trading-fees`). A previous deletion of the file was reverted by the team. Leave it in place and edit `trading-fees.mdx` as canonical.
 
 ## Patterns
 

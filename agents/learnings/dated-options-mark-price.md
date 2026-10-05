@@ -1,6 +1,6 @@
 # Dated options Mark Price page
 
-Page: `fern/pages/dated-options/mark-price.mdx`
+Page: `docs/pages/dated-options/mark-price.mdx`
 
 ## Mark IV
 

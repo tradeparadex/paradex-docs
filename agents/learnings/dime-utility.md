@@ -1,6 +1,6 @@
 # DIME Utility page
 
-`fern/pages/trading/dime-utility.mdx` is served at `/dime/dime-utility` (the `dime` tab in `docs.yml`, slug `dime-utility`). Note there are two other `dime-utility.mdx` files (`introduction/` and `instruments-guide/spot/dime-usd.mdx`); the `dime` tab maps to the `trading/` one.
+`docs/pages/trading/dime-utility.mdx` is served at `/dime/dime-utility` (the `dime` tab in `navigation.yml`, slug `dime-utility`). Note there are two other `dime-utility.mdx` files (`introduction/` and `instruments-guide/spot/dime-usd.mdx`); the `dime` tab maps to the `trading/` one.
 
 ## Patterns
 

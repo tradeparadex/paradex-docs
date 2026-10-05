@@ -1,0 +1,97 @@
+/* Fern's 404 page (GradientErrorPage): everything centred in the viewport
+   below the header, with 6rem left over. */
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  min-height: calc(100svh - var(--ifm-navbar-height) - 6rem);
+}
+
+.icon {
+  width: 96px;
+  height: 96px;
+  overflow: visible;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 45px;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--grayscale-a9);
+}
+
+.finding {
+  color: var(--grayscale-a11);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 448px;
+  padding: 0 16px;
+}
+
+.lookingFor {
+  margin: 0;
+  color: var(--grayscale-a11);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border: 1px solid var(--grayscale-a6);
+  border-radius: 6px;
+  background: var(--grayscale-a2);
+  text-align: left;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  /* Radix gray a7, Fern's hover border. */
+  border-color: rgba(255, 255, 255, 0.233);
+  background: var(--grayscale-a3);
+}
+
+.cardTitle {
+  color: var(--grayscale-a12);
+  font-weight: 500;
+}
+
+.cardSubtitle {
+  color: var(--grayscale-a10);
+  font-size: 14px;
+  line-height: 20px;
+}

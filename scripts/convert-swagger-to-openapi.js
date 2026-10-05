@@ -49,8 +49,8 @@ async function convertSpec(filePath) {
 
 async function main() {
   const specs = [
-    'fern/apis/prod_rest/openapi/openapi.json',
-    'fern/apis/testnet_rest/openapi/openapi.json',
+    'docs/apis/prod_rest/openapi/openapi.json',
+    'docs/apis/testnet_rest/openapi/openapi.json',
   ];
   
   for (const spec of specs) {

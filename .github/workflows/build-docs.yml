@@ -1,0 +1,69 @@
+name: Build Docs
+
+# Builds the site on every pull request. The build fails on broken internal
+# links, MDX errors or a bad navigation.yml, so this is the main docs check.
+# The built site is attached to the run as an artifact. There are no
+# Cloudflare previews: a token that can upload a Worker version can also
+# deploy it, and a pull request can edit this workflow, so no deploy
+# credential may be reachable from pull request runs (see edge/README.md).
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-docs-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  WRANGLER_VERSION: 4.147.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      # Needs no build output, so it runs before (and independently of) the build.
+      - name: Test edge layer (MCP server, Markdown routes)
+        run: yarn test:edge
+
+      - name: Test API reference generator (description sanitizing)
+        run: yarn test:plugins
+
+      - name: Build
+        run: yarn build
+
+      # After the build: src/generated/icons.json, which src/ imports, is
+      # written by the build (plugins/site.mjs), so tsc cannot run on a clean
+      # checkout before it.
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Check site structure
+        run: yarn check
+
+      - name: Upload built site
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-site
+          path: build
+          retention-days: 7
+          include-hidden-files: true

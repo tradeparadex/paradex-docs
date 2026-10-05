@@ -15,4 +15,4 @@ jobs:
       - name: Install Vale
         run: sudo snap install vale
       - name: Check Vale
-        run: vale fern/
+        run: vale docs/pages docs/snippets docs/release-notes

@@ -1,6 +1,6 @@
 # Roadmap page conventions
 
-The roadmap page lives at `fern/pages/introduction/roadmap.mdx` and uses `<Tabs>` with one tab per year and `<CardGroup cols={3}>` per quarter, with one `<Card>` per month.
+The roadmap page lives at `docs/pages/introduction/roadmap.mdx` and uses `<Tabs>` with one tab per year and `<CardGroup cols={3}>` per quarter, with one `<Card>` per month.
 
 ## Monthly card format
 
@@ -24,7 +24,7 @@ Recent monthly cards typically include 2–3 categories with 2–6 bullets each.
 
 ## Mapping release notes to roadmap entries
 
-Source release notes for a given month live at `fern/pages/release-notes/v1.<n>.md`. Each `vX` file covers ~1 week, so a month spans 4–5 versions. Group the prod release-note bullets by theme, then condense into the roadmap card bullets:
+Source release notes live in `docs/release-notes/prod/`, one `MM-DD-YYYY.mdx` file per release date with a `## v1.<n>.<p>` heading per version. Group the prod release-note bullets by theme, then condense into the roadmap card bullets:
 
 - 🖥️ UI Updates → `**UX**`
 - ⚙️ API Updates → `**Performance & Infra**`

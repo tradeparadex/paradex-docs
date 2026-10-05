@@ -1,9 +1,12 @@
-name: Update OpenAPI Specification and Fern Version
+name: Update OpenAPI Specification
 
+# Pulls the latest REST specs from the API (scripts/sync-openapi.mjs) and
+# opens a pull request when they changed.
 on:
   pull_request:
     paths:
       - '.github/workflows/sync-openapi.yml'
+      - 'scripts/sync-openapi.mjs'
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 1-5"
@@ -16,7 +19,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Check existing PRs
         id: check-prs
@@ -35,32 +38,28 @@ jobs:
             echo "No PR found"
           fi
           echo "PR_ALREADY_EXISTS=${PR_ALREADY_EXISTS}" >> $GITHUB_OUTPUT
-      
-      - name: Debug outputs
-        run: |
-          echo "PR_ALREADY_EXISTS=${{ steps.check-prs.outputs.PR_ALREADY_EXISTS }}"
-          echo "github.event_name=${{ github.event_name }}"
-          echo "github.event_path=${{ github.event_path }}"
-      
-      - name: Install Fern CLI
-        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
-        run: |
-          npm install -g fern-api
 
-      - name: Check if there are changes to publish
+      - name: Setup Node
         if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
-        id: check-diff
-        run: |
-          changed=true
-          diff=$(git diff fern/apis)
-          echo "Checking diff: $diff"
-          echo "changed=${changed}" >> $GITHUB_OUTPUT
-
-      - name: Update OpenAPI Spec
-        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' && github.event_name != 'pull_request' && steps.check-diff.outputs.changed == 'true' }}
-        uses: fern-api/sync-openapi@v2
+        uses: actions/setup-node@v4
         with:
-          token: ${{ secrets.OPENAPI_SYNC_TOKEN }}
-          branch: 'update-openapi-spec'
-          update_from_source: true
-          add_timestamp: true
+          node-version: '22'
+
+      - name: Install dependencies
+        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
+        run: corepack enable && yarn install --immutable
+
+      - name: Sync specs
+        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' }}
+        run: yarn sync-openapi
+
+      - name: Open pull request
+        if: ${{ steps.check-prs.outputs.PR_ALREADY_EXISTS == 'false' && github.event_name != 'pull_request' }}
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.OPENAPI_SYNC_TOKEN || github.token }}
+          branch: update-openapi-spec
+          commit-message: Update API specifications
+          title: Update API specifications
+          body: Automated update of `docs/apis/*/openapi/openapi.json` from the live API (`yarn sync-openapi`).
+          add-paths: docs/apis/**

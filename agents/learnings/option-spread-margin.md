@@ -1,6 +1,6 @@
 # Option spread margin
 
-Page: `fern/pages/dated-options/margin-requirements.mdx`
+Page: `docs/pages/dated-options/margin-requirements.mdx`
 
 ## Patterns
 

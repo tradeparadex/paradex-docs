@@ -1,27 +1,44 @@
 name: Publish Docs
 
+# Builds the site and deploys it to Cloudflare on every push to main: the
+# `paradex-docs` Worker in wrangler.toml, which serves the build as static
+# assets on docs.paradex.trade.
+#
+# Needs the secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID in the
+# `production` environment, which only main may deploy to (see edge/README.md,
+# "Deploying"). The first deploy attaches
+# docs.paradex.trade to the Worker and replaces the hostname's existing DNS
+# record.
 on:
   push:
     branches:
       - main
-    paths:
-      - fern/**
-      - package.json
-      - yarn.lock
-      - scripts/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-docs
+  cancel-in-progress: false
+
+env:
+  WRANGLER_VERSION: 4.147.0
 
 jobs:
-  run:
+  deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && contains(github.ref, 'refs/heads/main') && github.run_number > 1 }}
+    environment:
+      name: production
+      url: https://docs.paradex.trade
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v5
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Enable Corepack
         run: corepack enable
@@ -29,10 +46,20 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Install Fern
-        run: npm install -g fern-api
+      - name: Test edge layer (MCP server, Markdown routes)
+        run: yarn test:edge
 
-      - name: Publish Docs
+      - name: Test API reference generator (description sanitizing)
+        run: yarn test:plugins
+
+      - name: Build
+        run: yarn build
+
+      - name: Check site structure
+        run: yarn check
+
+      - name: Deploy to Cloudflare
         env:
-          FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
-        run: fern generate --docs --instance https://paradex.docs.buildwithfern.com
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes "wrangler@${WRANGLER_VERSION}" deploy --message "${GITHUB_SHA::12}"

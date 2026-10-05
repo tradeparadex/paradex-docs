@@ -1,0 +1,2784 @@
+/*
+ * Paradex docs theme: site chrome and typography.
+ * Colors, fonts and layout follow the Fern site this replaced
+ * (dark only, HarmonyOS Sans, accent #1BC1CF).
+ */
+
+@font-face {
+  font-family: 'HarmonyOS';
+  src: url('./fonts/HarmonyOS_Sans_Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HarmonyOS';
+  src: url('./fonts/HarmonyOS_Sans_Light.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HarmonyOS';
+  src: url('./fonts/HarmonyOS_Sans_Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HarmonyOS';
+  src: url('./fonts/HarmonyOS_Sans_Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HarmonyOS';
+  src: url('./fonts/HarmonyOS_Sans_Bold.woff2') format('woff2');
+  font-weight: 600 700;
+  font-display: swap;
+}
+
+/* Infima's dark-mode tokens are scoped to html[data-theme='dark']; match that
+   selector so these win (the site is dark only). */
+:root,
+html[data-theme='dark'] {
+  --paradex-accent: #1bc1cf;
+  --paradex-accent-bright: #07d1e2;
+  --paradex-dark: #070808;
+  --paradex-bg: #090a0a;
+  --paradex-card-bg: #16191c;
+  --paradex-sidebar-active: #1e2124;
+  --accent-contrast: var(--paradex-dark);
+
+  /* Fern's Radix-based scales, used by the landing page markup. */
+  --grayscale-1: #111111;
+  --grayscale-2: #191919;
+  --grayscale-3: #222222;
+  --grayscale-4: #2a2a2a;
+  --grayscale-5: #313131;
+  --grayscale-6: #3a3a3a;
+  --grayscale-7: #484848;
+  --grayscale-8: #606060;
+  --grayscale-9: #6e6e6e;
+  --grayscale-10: #7b7b7b;
+  --grayscale-11: #b4b4b4;
+  --grayscale-12: #eeeeee;
+  /* Fern's accent alpha scale step 11, used inline by some pages. */
+  --accent-a11: rgba(62, 239, 255, 0.867);
+  /* Radix gray alpha (dark), as Fern used for text, borders and fills. */
+  --grayscale-a2: rgba(255, 255, 255, 0.035);
+  --grayscale-a3: rgba(255, 255, 255, 0.07);
+  --grayscale-a4: rgba(255, 255, 255, 0.106);
+  --grayscale-a5: rgba(255, 255, 255, 0.133);
+  --grayscale-a6: rgba(255, 255, 255, 0.173);
+  --grayscale-a9: rgba(255, 255, 255, 0.392);
+  --grayscale-a10: rgba(255, 255, 255, 0.447);
+  --grayscale-a11: rgba(255, 255, 255, 0.686);
+  --grayscale-a12: rgba(255, 255, 255, 0.93);
+  --accent-a3: rgba(27, 193, 207, 0.12);
+  --accent-a5: rgba(27, 193, 207, 0.22);
+
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color-strong: rgba(255, 255, 255, 0.16);
+  --text-default: #eeeeee;
+  --text-muted: #a1a7ac;
+  --text-faded: #6f7479;
+
+  --header-row-height: 72px;
+  --tabs-row-height: 44px;
+
+  /* Infima */
+  --ifm-color-primary: #1bc1cf;
+  --ifm-color-primary-dark: #18aebb;
+  --ifm-color-primary-darker: #17a4b0;
+  --ifm-color-primary-darkest: #138791;
+  --ifm-color-primary-light: #2bcfdc;
+  --ifm-color-primary-lighter: #36d2de;
+  --ifm-color-primary-lightest: #57dae4;
+  --ifm-background-color: var(--paradex-bg);
+  --ifm-background-surface-color: var(--paradex-bg);
+  --ifm-font-color-base: #ffffff;
+  --ifm-font-color-secondary: var(--text-muted);
+  --ifm-heading-color: #ffffff;
+  --ifm-font-family-base: 'HarmonyOS', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --ifm-heading-font-family: var(--ifm-font-family-base);
+  --ifm-font-family-monospace: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.5;
+  --ifm-heading-font-weight: 700;
+  --ifm-h1-font-size: 2.25rem;
+  --ifm-h2-font-size: 1.5rem;
+  --ifm-h3-font-size: 1.25rem;
+  --ifm-h4-font-size: 1.125rem;
+  --ifm-heading-line-height: 1.3;
+  --ifm-link-color: var(--paradex-accent);
+  --ifm-link-hover-color: var(--paradex-accent-bright);
+  --ifm-link-decoration: none;
+  --ifm-link-hover-decoration: none;
+  --ifm-code-font-size: 0.875em;
+  --ifm-code-background: rgba(27, 193, 207, 0.08);
+  --ifm-code-border-radius: 4px;
+  --ifm-code-padding-horizontal: 0.3rem;
+  --ifm-code-padding-vertical: 0.05rem;
+  --ifm-pre-background: #111416;
+  --ifm-pre-padding: 1rem;
+  --ifm-color-emphasis-100: #16191c;
+  --ifm-color-emphasis-200: #1e2124;
+  --ifm-color-emphasis-300: #2a2e32;
+  --ifm-toc-border-color: var(--border-color);
+  --ifm-hr-background-color: var(--border-color);
+  --ifm-hr-height: 1px;
+  --ifm-table-border-color: var(--border-color);
+  --ifm-table-head-background: transparent;
+  --ifm-table-stripe-background: transparent;
+  --ifm-table-cell-padding: 0.4rem 0.6rem;
+  --ifm-navbar-height: calc(var(--header-row-height) + var(--tabs-row-height));
+  --ifm-navbar-background-color: rgba(9, 10, 10, 0.7);
+  --ifm-navbar-padding-horizontal: 2rem;
+  --ifm-navbar-padding-vertical: 0;
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-link-color: var(--grayscale-a11);
+  --ifm-navbar-link-hover-color: #ffffff;
+  --ifm-menu-color: var(--text-default);
+  --ifm-menu-color-active: var(--paradex-accent);
+  --ifm-menu-color-background-active: rgba(27, 193, 207, 0.12);
+  --ifm-menu-color-background-hover: var(--grayscale-a3);
+  --ifm-menu-link-padding-horizontal: 0.5rem;
+  --ifm-menu-link-padding-vertical: 0.3rem;
+  --ifm-dropdown-background-color: var(--paradex-card-bg);
+  --ifm-card-background-color: var(--paradex-card-bg);
+  --ifm-global-radius: 8px;
+  --ifm-container-width-xl: 1440px;
+  --ifm-footer-background-color: var(--paradex-bg);
+  --ifm-breadcrumb-item-background-active: transparent;
+  --docusaurus-highlighted-code-line-bg: rgba(27, 193, 207, 0.12);
+  /* Fern's page frame is 88rem plus 32px on each side. Beyond it the
+     sidebar and TOC columns grow outwards, and their contents, the header
+     and the tabs stay inside the frame. */
+  --fern-aside-offset: max(0px, (100vw - 1472px) / 2);
+  --doc-sidebar-width: calc(288px + var(--fern-aside-offset)) !important;
+  --docusaurus-collapse-button-bg: transparent;
+  color-scheme: dark;
+}
+
+/* Fern renders with text-rendering: auto (Infima sets optimizeLegibility,
+   which spaces HarmonyOS more widely). */
+html {
+  text-rendering: auto;
+}
+
+body {
+  background-color: var(--paradex-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(27, 193, 207, 0.3);
+}
+
+/* ---------- Header: logo / search / links, then tabs ---------- */
+
+/* As on Fern, the header is fixed rather than sticky, so it stays in place
+   when a page wider than a phone is panned sideways. The page starts at the
+   header's height, under its 1px bottom border. */
+.navbar--fixed-top {
+  position: fixed;
+  right: 0;
+  left: 0;
+}
+
+@media screen {
+  #__docusaurus {
+    padding-top: var(--ifm-navbar-height);
+  }
+}
+
+/* Whatever is scrolled into view, by an anchor jump or by moving the
+   keyboard focus, stops 16px below the header (Fern's scroll padding). */
+html {
+  scroll-padding-top: calc(var(--ifm-navbar-height) + 16px);
+}
+
+.navbar {
+  flex-direction: column;
+  align-items: stretch;
+  height: calc(var(--ifm-navbar-height) + 1px);
+  padding: 0;
+  border-bottom: 1px solid var(--grayscale-a3);
+  /* Translucent glass, as on Fern. */
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+/* backdrop-filter would make the fixed mobile drawer relative to the bar. */
+.navbar-sidebar--show.navbar,
+.navbar-sidebar--show .navbar,
+.navbar.navbar-sidebar--show {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.navbar__inner {
+  width: 100%;
+  max-width: calc(1408px + 2 * var(--ifm-navbar-padding-horizontal));
+  height: var(--header-row-height);
+  margin: 0 auto;
+  padding: 0 var(--ifm-navbar-padding-horizontal);
+  display: grid;
+  /* As on Fern, the logo and the links keep their width and the search box
+     shrinks when the row is short of room. */
+  grid-template-columns: minmax(max-content, 1fr) minmax(0, 640px) minmax(max-content, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.navbar__brand {
+  margin-right: 0;
+}
+
+.navbar__logo {
+  height: 15px;
+}
+
+.navbar__logo img {
+  height: 15px;
+  display: block;
+}
+
+.navbar__brand {
+  margin-top: -2px;
+}
+
+.navbar-search-center {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.navbar-search-center .navbar__search,
+.navbar-search-center > div {
+  width: 100%;
+  padding: 0;
+}
+
+.navbar__items--right {
+  justify-content: flex-end;
+  gap: 0;
+}
+
+.navbar-link-minimal.navbar__link,
+.navbar__items--right .navbar-link-minimal {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  margin-right: 8px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  color: var(--grayscale-a11);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.navbar-link-minimal:hover {
+  color: var(--grayscale-a12);
+  background: var(--grayscale-a3);
+  text-decoration: none;
+}
+
+/* "Start Trading" — matches the paradex.trade CTA */
+.navbar__link.navbar-cta,
+a.navbar-cta {
+  background-color: var(--paradex-accent-bright);
+  color: var(--paradex-dark) !important;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  margin-left: 0;
+}
+
+.navbar__link.navbar-cta:hover {
+  background-color: var(--paradex-accent);
+  text-decoration: none;
+}
+
+.navbar__link.navbar-cta svg,
+.navbar__link.navbar-link-minimal svg {
+  display: none;
+}
+
+.navbar-tabs {
+  /* One extra pixel, overlapping the header border, for the active tab's
+     underline (the strip scrolls sideways, which would clip it). */
+  height: calc(var(--tabs-row-height) + 1px);
+  width: 100%;
+  max-width: calc(1408px + 2 * var(--ifm-navbar-padding-horizontal));
+  margin: 0 auto -1px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0 calc(var(--ifm-navbar-padding-horizontal) - 12px) 1px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.navbar-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar-tabs .navbar__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--grayscale-a11);
+  font-weight: 500;
+}
+
+.navbar-tabs .navbar__link:hover {
+  color: var(--grayscale-a12);
+  text-decoration: none;
+}
+
+.navbar-tabs .navbar__link--active,
+.navbar-tabs .navbar__link--active:hover {
+  color: var(--accent-a11);
+  /* Fern's faux-bold: a hairline stroke in the text colour. */
+  -webkit-text-stroke: 0.5px currentColor;
+}
+
+.navbar-tabs .navbar__link--active::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: -1px;
+  height: 2px;
+  background: var(--paradex-accent);
+}
+
+/* Mobile: hamburger + logo, tabs move into the drawer. As on Fern, up to
+   1023px (Docusaurus switches at 996px; see src/components/windowSize.ts).
+   The search box stops growing at 640px, the menu button stays right. */
+@media (max-width: 1023px) {
+  :root,
+  html[data-theme='dark'] {
+    --ifm-navbar-height: 64px;
+    --header-row-height: 64px;
+    --ifm-navbar-padding-horizontal: 1rem;
+  }
+
+  .navbar__inner {
+    grid-template-columns: auto minmax(0, 640px) minmax(max-content, 1fr);
+    gap: 0.75rem;
+  }
+
+  .navbar-tabs,
+  .navbar__items--right .navbar-link-minimal,
+  .navbar__items--right .navbar-cta {
+    display: none;
+  }
+
+  .navbar__toggle {
+    display: inline-flex;
+  }
+
+  .navbar__inner {
+    gap: 16px;
+  }
+}
+
+/* Tablets: Fern's header is 72px tall with 24px gutters from 768px. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root,
+  html[data-theme='dark'] {
+    --ifm-navbar-height: 72px;
+    --header-row-height: 72px;
+    --ifm-navbar-padding-horizontal: 1.5rem;
+  }
+
+  /* The wordmark's link is no wider than the logo, so the search box stays
+     where Fern has it. */
+  .navbar__logo {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Swap the full wordmark for the compact "P DOCS" mark. */
+  .navbar__logo {
+    margin-right: 0;
+  }
+
+  .navbar__logo img {
+    display: none !important;
+  }
+
+  .navbar__logo::before {
+    content: '';
+    display: block;
+    width: 67px;
+    height: 15px;
+    background-image: url('/assets/logo-small.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+/* Mobile menu (src/theme/Navbar/MobileSidebar), as on Fern: a panel from
+   the right under the header that leaves a 48px strip of the page in view
+   on phones, and is 288px wide from 640px. */
+.navbar__toggle {
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  border-radius: 8px;
+  color: var(--grayscale-a11);
+}
+
+.navbar__toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.navbar__toggle--open,
+.navbar__toggle--open:hover {
+  background: #15b5c2;
+  color: var(--accent-contrast);
+}
+
+.navbar-sidebar.fern-mobile-nav {
+  top: var(--ifm-navbar-height);
+  right: 0;
+  bottom: 0;
+  left: auto;
+  width: calc(100vw - 48px);
+  height: auto;
+  max-width: none;
+  background: var(--paradex-bg);
+  border-left: 1px solid var(--grayscale-a3);
+  box-shadow: none;
+  transform: translate3d(100%, 0, 0);
+}
+
+.navbar-sidebar--show .navbar-sidebar.fern-mobile-nav {
+  transform: translate3d(0, 0, 0);
+}
+
+.navbar-sidebar__backdrop {
+  top: var(--ifm-navbar-height);
+  background-color: transparent;
+}
+
+/* As on Fern, the page slides out to the left with the menu, dimmed, and
+   its right edge stays in view beside it. */
+@media (max-width: 1023px) {
+  .main-wrapper,
+  .footer {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  html:has(.navbar-sidebar--show) :is(.main-wrapper, .footer) {
+    transform: translateX(calc(49px - 100vw));
+    opacity: 0.3;
+  }
+}
+
+/* Fern keeps this panel up to 1023px, the last width before its desktop
+   layout (Docusaurus alone hides the menu from 997px). */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .navbar-sidebar.fern-mobile-nav {
+    width: 288px;
+  }
+
+  html:has(.navbar-sidebar--show) :is(.main-wrapper, .footer) {
+    transform: translateX(-287px);
+  }
+}
+
+.fern-mobile-nav__scroll {
+  height: 100%;
+  overflow-y: auto;
+  padding: 16px 0 32px !important;
+}
+
+.fern-mobile-nav .menu__list {
+  margin: 0;
+  padding: 0;
+}
+
+.fern-mobile-nav .menu__list-item:not(:first-child) {
+  margin-top: 0;
+}
+
+.fern-mobile-nav__tabs .menu__link {
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: 0;
+  background: none !important;
+  color: var(--grayscale-a11);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.fern-mobile-nav__tabs .menu__link {
+  font-weight: 500;
+}
+
+.fern-mobile-nav__tabs .menu__link.menu__link--active {
+  color: var(--accent-a11);
+  font-weight: 600;
+}
+
+.fern-mobile-nav__sidebar {
+  margin-top: 17px;
+}
+
+.fern-mobile-nav .theme-doc-sidebar-menu {
+  padding: 0;
+  font-size: 16px;
+}
+
+.fern-mobile-nav__sidebar .menu__link {
+  padding: 8px 16px;
+  border-radius: 0;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+/* Nested groups indent 16px, with no padding around them, and keep the
+   drawer's full-size rows. */
+.fern-mobile-nav__sidebar :is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list {
+  margin-left: 16px;
+  padding: 0;
+}
+
+.fern-mobile-nav__sidebar :is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link {
+  padding: 8px 16px;
+}
+
+/* The current page's row covers its group's guide line and marks it along
+   its full height. */
+.fern-mobile-nav__sidebar :is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link--active:not(.menu__link--sublist) {
+  margin-left: -1px;
+  border-left: 1px solid rgba(0, 233, 253, 0.34);
+}
+
+.fern-mobile-nav__sidebar :is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link--active:not(.menu__link--sublist)::after {
+  content: none;
+}
+
+.fern-mobile-nav__sidebar .menu__link--active:not(.menu__link--sublist) {
+  color: var(--accent-a11);
+}
+
+.fern-mobile-nav .sidebar-section-heading > .menu__list-item-collapsible > .menu__link,
+.fern-mobile-nav .sidebar-section-heading > .menu__link {
+  height: auto;
+  margin: 0 0 4px;
+  padding: 4px 16px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* Rows run edge to edge here, the current one included. */
+.fern-mobile-nav__sidebar .menu__list-item-collapsible {
+  border-radius: 0 !important;
+}
+
+.fern-mobile-nav__links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 24px 16px 0 !important;
+  padding-top: 24px !important;
+  border-top: 1px solid var(--grayscale-a5);
+}
+
+.fern-mobile-nav__links .menu__link {
+  justify-content: center;
+  height: 40px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.fern-mobile-nav__links .navbar-link-minimal {
+  color: var(--grayscale-a11);
+}
+
+.fern-mobile-nav__links .navbar-cta {
+  width: 100%;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--paradex-accent-bright);
+  color: var(--accent-contrast) !important;
+  font-weight: 500;
+}
+
+.fern-mobile-nav__links svg {
+  display: none;
+}
+
+/* ---------- Sidebar ---------- */
+
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--grayscale-a3) !important;
+}
+
+/* Fern's sidebar: 24px gutters, 14px links on 34px rows. The right gutter
+   leaves room for a thin scrollbar (Fern's overlays the content). On wide
+   screens the links stay inside the page frame. */
+.theme-doc-sidebar-menu {
+  padding: 24px 11px 72px calc(24px + var(--fern-aside-offset));
+  font-size: 14px;
+}
+
+.theme-doc-sidebar-container .menu {
+  padding: 0 !important;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--grayscale-a5) transparent;
+}
+
+.theme-doc-sidebar-menu .menu__list-item:not(:first-child) {
+  margin-top: 1px;
+}
+
+.menu__link {
+  gap: 12px;
+  border-radius: 8px;
+  color: var(--grayscale-a12);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17.5px;
+  padding: 8px;
+}
+
+.menu__link:hover {
+  color: var(--grayscale-a12);
+  background: var(--grayscale-a3);
+}
+
+.menu__link--active:not(.menu__link--sublist),
+.menu__link--active:not(.menu__link--sublist):hover {
+  background-color: rgba(0, 233, 252, 0.153);
+  color: var(--accent-a11);
+  font-weight: 400;
+}
+
+.menu__link--active:not(.menu__link--sublist) .sidebar-item-label {
+  -webkit-text-stroke: 0.5px currentColor;
+}
+
+/* A category that is itself the current page is marked like any other page
+   (Docusaurus also marks categories that merely contain the current page,
+   hence aria-current). Infima clears the link's own background inside a
+   collapsible row, so the row carries it. */
+.menu__list-item:not(.sidebar-section-heading) > .menu__list-item-collapsible > .menu__link--sublist[aria-current='page'] {
+  color: var(--accent-a11);
+  -webkit-text-stroke: 0.5px currentColor;
+}
+
+.menu__list-item:not(.sidebar-section-heading) > .menu__list-item-collapsible:has(> .menu__link[aria-current='page']),
+.menu__list-item:not(.sidebar-section-heading) > .menu__list-item-collapsible:has(> .menu__link[aria-current='page']):hover {
+  background-color: rgba(0, 233, 252, 0.153);
+  border-radius: 8px;
+}
+
+.menu__link--sublist-caret::after,
+.menu__caret::before {
+  background: var(--ifm-menu-link-sublist-icon) 50% / 16px 16px;
+  min-width: 16px;
+  width: 16px;
+  height: 16px;
+  filter: invert(70%);
+  transform: rotate(0deg);
+}
+
+.menu__list-item--collapsed .menu__link--sublist-caret::after,
+.menu__list-item--collapsed .menu__caret::before {
+  transform: rotate(180deg);
+}
+
+/* Top-level sections render as headings, or as a semibold page row when the
+   section has its own page. */
+.menu__list-item:is(.sidebar-section-heading, .sidebar-section-page),
+.menu__list-item:is(.sidebar-section-heading, .sidebar-section-page):not(:first-child) {
+  margin-top: 1.5rem;
+}
+
+.theme-doc-sidebar-menu > :is(.sidebar-section-heading, .sidebar-section-page):first-child {
+  margin-top: 0;
+}
+
+/* A section's page row keeps white text, on its own page too; only that
+   page highlights it (the aria-current rule above), although Docusaurus
+   marks the link active while any page of the section is open. */
+.sidebar-section-page > .menu__list-item-collapsible {
+  border-radius: 8px;
+}
+
+.sidebar-section-page > .menu__list-item-collapsible > .menu__link {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* On its own page it gets the current page's heavier text as well. */
+.sidebar-section-page > .menu__list-item-collapsible > .menu__link[aria-current='page'] {
+  -webkit-text-stroke: 0.5px currentColor;
+}
+
+.sidebar-section-heading > .menu__list-item-collapsible,
+.sidebar-section-heading > .menu__list-item-collapsible:hover {
+  background: none;
+}
+
+.sidebar-section-heading > .menu__list-item-collapsible > .menu__link,
+.sidebar-section-heading > .menu__link {
+  height: 36px;
+  margin-bottom: 4px;
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #ffffff;
+  cursor: default;
+  background: none !important;
+  pointer-events: none;
+}
+
+:is(.sidebar-section-heading, .sidebar-section-page) > .menu__list {
+  margin-top: 0;
+  padding-left: 0;
+}
+
+/* Spacing between a section and the pages that follow it. */
+.menu__list-item:is(.sidebar-section-heading, .sidebar-section-page) + .theme-doc-sidebar-item-link {
+  margin-top: 1.5rem;
+}
+
+.theme-doc-sidebar-item-category-level-2 > .menu__list,
+.theme-doc-sidebar-item-category-level-3 > .menu__list,
+.theme-doc-sidebar-item-category-level-4 > .menu__list {
+  padding: 4px 0 4px 4px;
+  border-left: 1px solid var(--grayscale-a3);
+  margin-left: 8px;
+}
+
+/* Nested pages sit on tighter 30px rows. */
+.theme-doc-sidebar-item-category-level-2 > .menu__list .menu__link,
+.theme-doc-sidebar-item-category-level-3 > .menu__list .menu__link,
+.theme-doc-sidebar-item-category-level-4 > .menu__list .menu__link {
+  padding: 6px 8px;
+}
+
+.menu__list .menu__list {
+  margin-top: 0;
+}
+
+.sidebar-item-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.menu__link--active .sidebar-item-icon {
+  color: var(--paradex-accent);
+}
+
+/* As on Fern, labels with spaces wrap (breaking a word only if it cannot
+   fit); a one-word label, such as a long WebSocket channel name, stays on
+   one line and ends in an ellipsis. */
+.sidebar-item-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.sidebar-item-label--nowrap {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Hovering a cut-off label scrolls the rest into view, as on Fern
+   (DocSidebarItem/Link sets the distance and duration). */
+@media (prefers-reduced-motion: no-preference) {
+  .sidebar-item-label--marquee {
+    text-overflow: clip;
+  }
+
+  .sidebar-item-label--marquee > span {
+    display: inline-block;
+    animation: sidebar-label-marquee var(--marquee-duration) linear forwards;
+  }
+}
+
+@keyframes sidebar-label-marquee {
+  to {
+    transform: translateX(var(--marquee-translate));
+  }
+}
+
+/* API method badges in the sidebar (Fern's "small subtle" badges; solid
+   on the current page). */
+.api-method > .menu__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.api-method > .menu__link::before {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 36px with the padding, as on Fern (Infima's reset skips ::before). */
+  box-sizing: border-box;
+  min-width: 36px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.api-method--get > .menu__link::before {
+  content: 'GET';
+  color: rgb(27, 193, 207);
+  background: rgba(27, 193, 207, 0.12);
+}
+
+.api-method--post > .menu__link::before {
+  content: 'POST';
+  color: rgb(112, 184, 255);
+  background: rgba(0, 119, 255, 0.227);
+}
+
+.api-method--put > .menu__link::before,
+.api-method--patch > .menu__link::before {
+  content: 'PUT';
+  color: rgb(255, 202, 22);
+  background: rgba(250, 130, 0, 0.133);
+}
+
+.api-method--patch > .menu__link::before {
+  content: 'PATCH';
+}
+
+.api-method--delete > .menu__link::before {
+  content: 'DEL';
+  color: rgb(255, 149, 146);
+  background: rgba(255, 23, 63, 0.176);
+}
+
+.api-method--wss > .menu__link::before {
+  content: 'WSS';
+  color: rgb(27, 193, 207);
+  background: rgba(27, 193, 207, 0.12);
+}
+
+.api-method--get > .menu__link--active::before,
+.api-method--wss > .menu__link--active::before {
+  color: var(--accent-contrast);
+  background: rgb(27, 193, 207);
+}
+
+.api-method--post > .menu__link--active::before {
+  color: #ffffff;
+  background: rgb(0, 144, 255);
+}
+
+.api-method--put > .menu__link--active::before,
+.api-method--patch > .menu__link--active::before {
+  color: var(--accent-contrast);
+  background: rgb(255, 197, 61);
+}
+
+.api-method--delete > .menu__link--active::before {
+  color: #ffffff;
+  background: rgb(229, 72, 77);
+}
+
+/* The current page is marked on its group's guide line (nested groups only;
+   pages directly under a section heading have no guide line). */
+:is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link {
+  position: relative;
+}
+
+:is(.theme-doc-sidebar-item-category-level-2, .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4) > .menu__list .menu__link--active:not(.menu__link--sublist)::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: -5px;
+  width: 1px;
+  background: var(--accent-a11);
+}
+
+/* ---------- Docs page ---------- */
+
+.main-wrapper {
+  min-height: calc(100vh - var(--ifm-navbar-height));
+  /* Fern's fixed background layer puts its page in a separate compositing
+     layer, so Chrome draws the text with grayscale antialiasing rather than
+     subpixel (coloured fringes, hinted spacing). Do the same. */
+  will-change: opacity;
+}
+
+/* Docs pages lay out their own columns (see .doc-layout); drop Infima's
+   container gutters so they line up with Fern's. */
+[class*='docMainContainer'] > .container {
+  max-width: none;
+  padding: 0 !important;
+}
+
+.theme-doc-markdown {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.theme-doc-markdown h1,
+.fern-page-header h1 {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 45px;
+  margin-bottom: 0;
+}
+
+.markdown > h2,
+.markdown h2 {
+  --ifm-h2-font-size: 24px;
+  margin: 48px 0 24px;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+}
+
+.markdown > h3,
+.markdown h3 {
+  --ifm-h3-font-size: 20px;
+  margin: 32px 0 12px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+}
+
+.markdown > h4,
+.markdown h4 {
+  --ifm-h4-font-size: 1.125rem;
+}
+
+.markdown h5,
+.markdown h6 {
+  margin-top: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Anchor jumps land 16px below the header, as on Fern: the page's scroll
+   padding places headings, without the scroll margin Docusaurus adds. */
+:is(h1, h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: var(--fern-anchor-offset);
+}
+
+.markdown h5 {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.markdown h6 {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.theme-doc-markdown p,
+.theme-doc-markdown li {
+  color: var(--ifm-font-color-base);
+}
+
+.theme-doc-markdown p {
+  margin: 20px 0;
+}
+
+/* Fern's prose: no top margin right after a heading. */
+.theme-doc-markdown :is(h2, h3, h4, h5, h6) + * {
+  margin-top: 0;
+}
+
+.theme-doc-markdown a:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.fern-anchor):not(.page-actions__item),
+.blog-post-content a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.theme-doc-markdown a[href^='http']:not(.fern-card):not(.fern-button):not([class*='lp-']):not(.hide-external):not(.page-actions__item)::after {
+  content: '';
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.2em;
+  vertical-align: baseline;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.hide-svg a::after {
+  display: none !important;
+}
+
+/* Inline code: bold accent text on a card-coloured chip with a thin ring,
+   as on Fern. */
+.theme-doc-markdown :not(pre) > code:not([class]),
+.blog-post-content :not(pre) > code:not([class]),
+.api-markdown :not(pre) > code:not([class]),
+.changelog-main .markdown :not(pre) > code:not([class]) {
+  color: var(--accent-a11);
+  background: var(--paradex-card-bg);
+  border: 0;
+  box-shadow: inset 0 0 0 1px var(--grayscale-a5);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.theme-doc-markdown a code:not([class]),
+.theme-doc-markdown thead th code:not([class]),
+.theme-doc-markdown blockquote code:not([class]),
+.theme-doc-markdown h4 code:not([class]) {
+  color: inherit;
+}
+
+/* In table cells Fern's inline code takes the cell's colour and weight, and
+   keeps identifiers whole: the column widens (or the table scrolls) rather
+   than breaking `frozen_time_ms` mid-word. Its line box (17.5px, on the
+   baseline) sets the row heights. */
+.theme-doc-markdown :is(td, th) code:not([class]) {
+  color: inherit;
+  font-weight: inherit;
+  line-height: calc(1.25 / 0.875);
+  vertical-align: baseline;
+  word-break: normal;
+}
+
+/* Tables: a bordered card with a tinted header row that scrolls sideways
+   when the table is wider than the column, as on Fern. Changelog entries are
+   listed apart, not in :is(), so the docs selectors keep a specificity the
+   API handshake table can override. */
+.fern-table {
+  margin: 16px 0 24px;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 6px;
+  background: var(--paradex-card-bg);
+  overflow-x: auto;
+}
+
+/* Fern's tables sit outside its prose, so they keep their top margin right
+   after a heading (16px below an h3). */
+.theme-doc-markdown :is(h2, h3, h4, h5, h6) + .fern-table {
+  margin-top: 16px;
+}
+
+.theme-doc-markdown table,
+.changelog-main .markdown table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.theme-doc-markdown table tr,
+.theme-doc-markdown table tr:nth-child(2n),
+.changelog-main .markdown table tr,
+.changelog-main .markdown table tr:nth-child(2n) {
+  background-color: transparent;
+}
+
+.theme-doc-markdown table thead tr,
+.changelog-main .markdown table thead tr {
+  background-color: var(--grayscale-a2);
+}
+
+.theme-doc-markdown table th,
+.changelog-main .markdown table th {
+  font-weight: 700;
+  text-align: left;
+  color: #ffffff;
+}
+
+.theme-doc-markdown table th,
+.theme-doc-markdown table td,
+.changelog-main .markdown table th,
+.changelog-main .markdown table td {
+  padding: 8px;
+  border: 0;
+  border-bottom: 1px solid var(--grayscale-a5);
+}
+
+/* An empty row (the blank header of a list of links) is as tall as a row of
+   text, as on Fern. */
+.fern-table th,
+.fern-table td {
+  height: 36px;
+}
+
+.theme-doc-markdown table tr:last-child td,
+.changelog-main .markdown table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Images: centred blocks with 2em above and below (Fern's prose), which
+   collapse with the paragraph margins around them. */
+.theme-doc-markdown img {
+  display: block;
+  height: auto;
+  margin: 2em auto;
+}
+
+/* Click-to-zoom (src/components/fern/Image.tsx): Fern hides the library's
+   zoom buttons and dims the page with its background colour. */
+[data-rmiz-btn-zoom],
+[data-rmiz-btn-unzoom] {
+  display: none;
+}
+
+[data-rmiz-modal] [data-rmiz-modal-overlay='visible'] {
+  background-color: rgba(9, 10, 10, 0.7);
+}
+
+/* Blockquotes: teal bar, italic, muted (Fern's prose style). */
+blockquote {
+  margin: 1.6em 0;
+  padding: 0 0 0 16px;
+  border-left: 4px solid rgba(0, 233, 253, 0.34);
+  color: var(--grayscale-a11);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.theme-doc-markdown blockquote p {
+  color: inherit;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--border-color);
+  margin: 2rem 0;
+}
+
+/* Code blocks: see code.css. */
+[class*='codeBlockTitle'] {
+  background: var(--paradex-card-bg) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* Breadcrumbs: section names in accent, no home icon (Fern style). */
+.theme-doc-breadcrumbs {
+  margin: -8px 0 8px;
+  line-height: 20px;
+}
+
+.breadcrumbs__item:last-child::after {
+  display: none;
+}
+
+.breadcrumbs__item:not(:last-child)::after {
+  content: '›';
+  background: none;
+  color: var(--text-faded);
+  margin: 0 0.4rem;
+  font-size: 1rem;
+  opacity: 1;
+  filter: none;
+  width: auto;
+  height: auto;
+}
+
+.breadcrumbs__link {
+  padding: 0;
+  color: var(--accent-a11) !important;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  background: none !important;
+  border-radius: 0;
+}
+
+/* Page header: title, subtitle and the "Copy page" menu. */
+.fern-page-header {
+  margin-bottom: 32px;
+}
+
+/* Fern's reference layout is a grid, so the first block's top margin adds
+   to the header's instead of collapsing into it (as it does in guides). */
+.doc-layout--reference .fern-page-header {
+  margin-bottom: 0;
+  padding-bottom: 32px;
+}
+
+.fern-page-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.fern-page-header__row h1 {
+  min-width: 0;
+}
+
+.theme-doc-markdown .fern-page-header__subtitle,
+.fern-page-header__subtitle {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 28px;
+  color: #ffffff;
+}
+
+/* Subtitles Fern rendered as Markdown (see DocItem/Content) are grey. */
+.theme-doc-markdown .fern-page-header__subtitle--prose {
+  color: var(--grayscale-a11);
+}
+
+.page-actions {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-top: 0;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--grayscale-a5);
+  overflow: visible;
+}
+
+.page-actions__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  background: transparent;
+  border: 0;
+  border-radius: 8px 0 0 8px;
+  color: var(--grayscale-a11);
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 4px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.page-actions__button:hover {
+  color: var(--grayscale-a12);
+  background: var(--grayscale-a3);
+}
+
+.page-actions__button + .page-actions__button {
+  border-left: 1px solid var(--grayscale-a5);
+  border-radius: 0 8px 8px 0;
+  padding: 4px 8px;
+}
+
+.page-actions__button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.page-actions__button[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+
+.page-actions__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 276px;
+  padding: 4px;
+  background: var(--paradex-bg);
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 8px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.page-actions__item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.page-actions__item:hover,
+.page-actions__item:focus-visible {
+  outline: 0;
+  background: var(--paradex-accent);
+  color: var(--accent-contrast) !important;
+}
+
+.page-actions__icon {
+  display: inline-flex;
+  align-self: center;
+}
+
+.page-actions__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.page-actions__text {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.page-actions__item small {
+  display: block;
+  font-size: 12px;
+  line-height: 16.5px;
+  opacity: 0.6;
+}
+
+.page-actions__external {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  margin-left: auto;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+  .page-actions {
+    display: none;
+  }
+}
+
+/* Layout widths: Fern's "guide" (640px column, TOC on the right) and
+   "reference" (896px column, no TOC) layouts, centred between Fern's page
+   gutters: 16px on phones, 24px from 768px and 32px beside the sidebar. The
+   TOC column is always in the markup and, as on Fern, only shown from
+   1280px, so the server-rendered page already fits every width before (or
+   without) hydration. */
+.doc-layout {
+  --page-padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.doc-layout__main {
+  min-width: 0;
+  padding-inline: var(--page-padding);
+}
+
+.doc-layout__toc {
+  display: none;
+  min-width: 0;
+}
+
+.doc-layout--guide .doc-item-container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.doc-layout--reference .doc-item-container,
+.doc-layout--api .doc-item-container {
+  max-width: 896px;
+  margin: 0 auto;
+}
+
+/* Up to 768px Fern sizes a REST endpoint's column to its content: a page
+   whose longest unwrapped line (description, parameters, code samples)
+   fits in 640px keeps the guide's centred 640px column, a longer one widens
+   it up to the full width. WebSocket channels always take the full width. */
+@media (max-width: 768px) {
+  .doc-layout--api:not(:has(.api-endpoint--ws)) .doc-item-container {
+    width: fit-content;
+    min-width: min(640px, 100%);
+    max-width: 100%;
+  }
+
+  /* The URL line under the title is cut short with an ellipsis (Fern hides
+     it here), so it never widens the column. */
+  .doc-layout--api .api-endpoint__url {
+    contain: inline-size;
+  }
+}
+
+/* A single-page tab has no sidebar (and no TOC): its column is centred in
+   the whole window, as on Fern, without Docusaurus' strip for a collapsed
+   sidebar. */
+main:has(> .container > .doc-layout--no-sidebar) {
+  max-width: 100%;
+}
+
+/* Fern shows the sidebar from 1024px, Docusaurus from 997px: until then the
+   page keeps the whole window and the sidebar is in the menu's drawer (see
+   src/theme/DocSidebar/Desktop). */
+@media (max-width: 1023px) {
+  aside.theme-doc-sidebar-container {
+    display: none;
+  }
+
+  main[class*='docMainContainer'] {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .doc-layout {
+    --page-padding: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .doc-layout {
+    --page-padding: 32px;
+  }
+
+  /* On wide screens a page without a TOC keeps its column where the page
+     frame centres it. */
+  .doc-layout:not(.doc-layout--with-toc, .doc-layout--no-sidebar) .doc-layout__main {
+    padding-right: calc(var(--page-padding) + var(--fern-aside-offset));
+  }
+}
+
+@media (min-width: 1280px) {
+  .doc-layout--with-toc {
+    grid-template-columns: minmax(0, 1fr) calc(288px + var(--fern-aside-offset));
+  }
+
+  .doc-layout__toc {
+    display: block;
+    padding-right: var(--fern-aside-offset);
+  }
+}
+
+.doc-item-container {
+  padding-top: 40px;
+}
+
+/* As on Fern, the column is at least a window tall below the header, so a
+   short page's footer sits at the bottom of the window; guide pages end
+   48px further down. */
+.doc-layout:not(.doc-layout--custom) .doc-item-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--ifm-navbar-height));
+}
+
+.doc-layout--guide .doc-item-container {
+  margin-bottom: 48px;
+}
+
+.doc-layout:not(.doc-layout--custom) .doc-item-container > article {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.doc-layout:not(.doc-layout--custom) .theme-doc-markdown {
+  flex-grow: 1;
+}
+
+.theme-doc-markdown > header.fern-page-header h1 {
+  margin-top: 0;
+}
+
+/* TOC ("On this page"), as on Fern. */
+.toc-desktop {
+  position: sticky;
+  top: var(--ifm-navbar-height);
+  max-height: calc(100vh - var(--ifm-navbar-height));
+  overflow-y: auto;
+  padding: 32px 20px 48px 16px;
+  scrollbar-width: none;
+}
+
+.toc-desktop__title {
+  margin-bottom: 12px;
+  color: var(--grayscale-a11);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.toc-desktop .theme-doc-toc-desktop {
+  position: static;
+  max-height: none;
+  overflow: visible;
+}
+
+.toc-desktop .table-of-contents {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 12px;
+  border-left: 2px solid transparent;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* The rail and its highlighted range. */
+.toc-desktop .table-of-contents::before,
+.toc-desktop .table-of-contents::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  width: 2px;
+  border-radius: 999px;
+}
+
+.toc-desktop .table-of-contents::before {
+  top: 0;
+  height: 100%;
+  background: var(--grayscale-a5);
+}
+
+.toc-desktop .table-of-contents::after {
+  top: var(--toc-range-top, 0);
+  height: var(--toc-range-height, 0);
+  background: rgba(14, 234, 253, 0.424);
+  transition: top 0.25s ease, height 0.25s ease;
+}
+
+.toc-desktop .table-of-contents li {
+  margin: 0 0 8px;
+}
+
+.toc-desktop .table-of-contents li:last-child {
+  margin-bottom: 0;
+}
+
+.toc-desktop .table-of-contents ul {
+  margin-top: 8px;
+  padding-left: 12px;
+}
+
+.table-of-contents__link {
+  display: block;
+  color: var(--grayscale-a11);
+  overflow-wrap: break-word;
+}
+
+.table-of-contents__link:hover {
+  color: var(--grayscale-a12);
+}
+
+/* The current section, or the first one at the top of the page. */
+.table-of-contents__link--active,
+.table-of-contents__link--active:hover,
+.toc-desktop .table-of-contents:not(:has(.table-of-contents__link--active)) > li:first-child > .table-of-contents__link {
+  color: rgba(31, 237, 254, 0.808);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.toc-desktop__back-to-top {
+  margin: 24px 0 0 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--grayscale-a5);
+  transition: opacity 0.2s;
+}
+
+.toc-desktop__back-to-top[data-visible='false'] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toc-desktop__back-to-top button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--grayscale-a11);
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.toc-desktop__back-to-top button:hover {
+  color: var(--grayscale-a12);
+}
+
+.toc-desktop__back-to-top svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Footer area: feedback, edit link, previous/next bar (Fern). Fern leaves
+   128px below the closing block's margin, and 128px below the pager (or the
+   line in its place): its 'Built with Fern' line (not ported) and the
+   footer's margin. */
+.theme-doc-footer {
+  margin-top: 128px;
+  margin-bottom: 128px;
+}
+
+/* Reference and API pages keep the footer in a centred 640px column,
+   further down (on reference pages Fern's gap grows from phones to tablets
+   to the desktop layout, and its content keeps at least 48px below the
+   closing block). */
+.doc-layout--reference .theme-doc-footer,
+.doc-layout--api .theme-doc-footer {
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+.doc-layout--reference .theme-doc-markdown__end {
+  margin-top: 48px;
+}
+
+.doc-layout--reference .theme-doc-footer {
+  margin-top: 136px;
+}
+
+.doc-layout--api .theme-doc-footer {
+  margin-top: 184px;
+}
+
+/* At exactly 768px Fern still stacks the reference column; from 769px it is
+   a grid, which leaves 8px more before the footer. An endpoint's example
+   panels then sit under its text, 88px above the footer, where ours stay
+   above it. */
+@media (min-width: 768px) {
+  .doc-layout--reference .theme-doc-footer {
+    margin-top: 208px;
+  }
+
+  .doc-layout--api .theme-doc-footer {
+    margin-top: 148px;
+  }
+}
+
+@media (min-width: 769px) {
+  .doc-layout--reference .theme-doc-footer {
+    margin-top: 216px;
+  }
+
+  /* Still 184px below the text: 96px of it is inside the endpoint grid
+     (api.css), so taller example panels end 88px above the footer. */
+  .doc-layout--api .theme-doc-footer {
+    margin-top: 88px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .doc-layout--reference .theme-doc-footer {
+    margin-top: 232px;
+  }
+}
+
+.fern-footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Below 640px Fern stacks the feedback and the edit link, 32px apart. */
+@media (max-width: 639px) {
+  .fern-footer-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+  }
+}
+
+.doc-feedback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  color: var(--grayscale-a11);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.doc-feedback > span {
+  margin-right: 0;
+}
+
+.doc-feedback button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px;
+  background: transparent;
+  color: var(--grayscale-11);
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.doc-feedback button + button {
+  margin-left: -8px;
+}
+
+.doc-feedback button:hover {
+  background: var(--grayscale-a4);
+  color: var(--grayscale-12);
+}
+
+.doc-feedback button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--paradex-accent);
+}
+
+/* Fern's buttons grow on touch screens. */
+@media (pointer: coarse) {
+  .doc-feedback button {
+    height: 36px;
+  }
+}
+
+/* The chosen answer (Fern's outlineSuccess / outlineDanger: Radix green and
+   red, alpha steps 2, 4 and 6, step 11 text); 4 also while its popover is
+   open. */
+.doc-feedback button.doc-feedback__vote--yes {
+  color: #3dd68c;
+  background: rgba(41, 249, 157, 0.043);
+  border-color: rgba(68, 255, 170, 0.294);
+}
+
+.doc-feedback button.doc-feedback__vote--yes:hover,
+.doc-feedback button.doc-feedback__vote--yes[aria-expanded='true'] {
+  color: #3dd68c;
+  background: rgba(17, 255, 153, 0.176);
+}
+
+.doc-feedback button.doc-feedback__vote--no {
+  color: #ff9592;
+  background: rgba(242, 47, 62, 0.067);
+  border-color: rgba(255, 62, 86, 0.408);
+}
+
+.doc-feedback button.doc-feedback__vote--no:hover,
+.doc-feedback button.doc-feedback__vote--no[aria-expanded='true'] {
+  color: #ff9592;
+  background: rgba(254, 10, 59, 0.267);
+}
+
+.doc-feedback__vote--yes svg,
+.doc-feedback__vote--no svg {
+  animation: doc-feedback-thumb-rock 0.5s both;
+}
+
+@keyframes doc-feedback-thumb-rock {
+  30% {
+    transform: rotate(15deg);
+  }
+  80% {
+    transform: rotate(-10deg);
+  }
+}
+
+.doc-feedback--sent {
+  height: 24px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.doc-feedback--sent > span:focus {
+  outline: none;
+}
+
+.doc-feedback svg,
+.fern-footer-edit svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Follow-up form after a vote (Fern's popover, placed by Feedback.tsx). */
+.doc-feedback__popover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--ifm-z-index-fixed) + 5);
+  width: calc(100vw - 32px);
+  padding: 16px;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 8px;
+  background: var(--paradex-card-bg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(24px);
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+  outline: none;
+}
+
+.doc-feedback__popover[data-side='bottom'] {
+  animation: doc-feedback-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.doc-feedback__popover[data-side='top'] {
+  animation: doc-feedback-in-down 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes doc-feedback-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
+
+@keyframes doc-feedback-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+.doc-feedback__title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.doc-feedback__reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.doc-feedback__option {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.doc-feedback__option > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-feedback__option-title {
+  display: block;
+  font-weight: 600;
+}
+
+.doc-feedback__option-text {
+  display: block;
+  color: var(--grayscale-a11);
+}
+
+.doc-feedback__radio,
+.doc-feedback__checkbox {
+  appearance: none;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--grayscale-a5);
+}
+
+.doc-feedback__checkbox {
+  border-radius: 4px;
+}
+
+/* Fern's accent alpha steps 3 (hover, focus) and 5 (field focus). */
+.doc-feedback__radio:hover,
+.doc-feedback__checkbox:hover {
+  background: rgba(0, 233, 252, 0.153);
+}
+
+.doc-feedback__radio:focus-visible,
+.doc-feedback__checkbox:focus-visible {
+  outline: 4px solid rgba(0, 233, 252, 0.153);
+  outline-offset: 0;
+}
+
+.doc-feedback__radio:checked {
+  border: 4px solid var(--paradex-accent);
+  background: var(--paradex-bg);
+  box-shadow: none;
+}
+
+.doc-feedback__checkbox:checked {
+  background: var(--paradex-accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23070808' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+    center / 16px no-repeat;
+  box-shadow: none;
+}
+
+.doc-feedback__field {
+  display: block;
+  width: calc(100% - 24px);
+  margin: 8px 0 0 24px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--grayscale-a2);
+  box-shadow: inset 0 0 0 1px var(--grayscale-a5), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  color: #ffffff;
+  caret-color: var(--paradex-accent);
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  outline: none;
+  resize: none;
+}
+
+.doc-feedback__field:focus {
+  box-shadow: inset 0 0 0 2px rgba(0, 233, 255, 0.275), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.doc-feedback__field::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.doc-feedback__email {
+  height: 32px;
+  padding-block: 0;
+}
+
+.doc-feedback__rule {
+  height: 1px;
+  margin: 16px 0;
+  border: 0;
+  background: var(--grayscale-a5);
+}
+
+.doc-feedback__privacy {
+  margin: 4px 0 0;
+  color: var(--grayscale-a11);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.doc-feedback__privacy a,
+.doc-feedback__privacy a:hover {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.doc-feedback__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  margin-top: 16px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--paradex-accent);
+  color: var(--accent-contrast);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.doc-feedback__submit:hover,
+.doc-feedback__submit:focus-visible {
+  background: rgba(25, 238, 255, 0.753);
+  outline: none;
+}
+
+.doc-feedback__submit:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+  cursor: not-allowed;
+}
+
+/* Fern's popover, fields and button on screens under 640px. */
+@media (max-width: 639px) {
+  .doc-feedback__field {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .doc-feedback__email {
+    height: 40px;
+  }
+
+  .doc-feedback__submit {
+    height: 44px;
+    padding-inline: 12px;
+  }
+}
+
+@media (min-width: 640px) {
+  .doc-feedback__popover {
+    width: 384px;
+  }
+}
+
+/* Fern's (sonner) toast after submitting: bottom centre, gone after 4s. */
+.doc-feedback-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  z-index: 999999999;
+  display: flex;
+  align-items: flex-start;
+  width: 356px;
+  padding: 8px 8px 8px 12px;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 8px;
+  background: var(--paradex-bg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  font: 500 14px/21px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  translate: -50% 0;
+  animation: doc-feedback-toast 4.4s both;
+}
+
+.doc-feedback-toast svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 2px 5px 0 -4px;
+  color: var(--grayscale-a11);
+}
+
+@keyframes doc-feedback-toast {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  9%,
+  91% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .doc-feedback-toast {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    width: auto;
+    translate: none;
+  }
+}
+
+.fern-footer-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--grayscale-a11);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.fern-footer-edit:hover {
+  color: var(--grayscale-a12);
+  background: var(--grayscale-a3);
+  text-decoration: none;
+}
+
+/* Like the feedback buttons, Fern's edit button grows on touch screens. */
+@media (pointer: coarse) {
+  .fern-footer-edit {
+    height: 36px;
+  }
+}
+
+.fern-footer-nav {
+  display: flex;
+  margin: 32px -4px 0;
+  padding: 4px;
+  border-radius: 16px;
+  background: var(--grayscale-a3);
+}
+
+.fern-footer-separator {
+  height: 1px;
+  margin-top: 32px;
+  background: var(--grayscale-a5);
+}
+
+.fern-footer-prev,
+.fern-footer-next {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 64px;
+  padding: 0 12px;
+  border-radius: 12px;
+  color: #ffffff;
+  text-decoration: none !important;
+}
+
+.fern-footer-next {
+  flex: 1;
+  min-width: 0;
+  justify-content: flex-end;
+  gap: 16px;
+  background: var(--paradex-card-bg);
+  border: 1px solid var(--grayscale-a5);
+}
+
+.fern-footer-prev svg,
+.fern-footer-next svg {
+  width: 16px;
+  height: 16px;
+  color: var(--grayscale-a9);
+}
+
+.fern-footer-nav__label {
+  color: var(--grayscale-a11);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.fern-footer-prev:hover .fern-footer-nav__label,
+.fern-footer-next:hover .fern-footer-nav__label {
+  color: var(--grayscale-a12);
+}
+
+.fern-footer-nav__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-left: 16px;
+  text-align: right;
+}
+
+.fern-footer-nav__title,
+.fern-footer-nav__subtitle {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fern-footer-nav__title {
+  color: var(--grayscale-a12);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.fern-footer-nav__subtitle {
+  color: var(--grayscale-a11);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.fern-footer-nav__divider {
+  flex: 0 0 1px;
+  width: 1px;
+  height: 32px;
+  background: var(--grayscale-a5);
+}
+
+.fern-footer-nav__direction {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 576px) {
+  .fern-footer-nav__divider,
+  .fern-footer-nav__label {
+    display: none;
+  }
+}
+
+/* No footer, as on Fern. */
+.footer {
+  display: none;
+}
+
+/* Search, as on Fern: a button in the header (src/components/SearchDialog)
+   that opens a dialog hosting docusaurus-search-local. */
+.search-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--grayscale-a5);
+  color: var(--grayscale-a11);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.search-trigger:hover {
+  box-shadow: inset 0 0 0 1px var(--grayscale-a6);
+  color: var(--grayscale-a12);
+}
+
+.search-trigger:focus-visible {
+  outline: 0;
+  box-shadow: inset 0 0 0 1px var(--accent-a11);
+}
+
+.search-trigger svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+.search-trigger__label {
+  flex: 1;
+}
+
+.search-trigger kbd,
+.search-dialog kbd {
+  height: 22px;
+  padding: 2px 6px;
+  border: 1px solid var(--grayscale-a6);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.05);
+  box-shadow: none;
+  color: var(--grayscale-a12);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+html.search-dialog-open {
+  overflow: hidden;
+}
+
+.search-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--ifm-z-index-fixed) + 20);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12vh 16px 16px;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.search-dialog__panel {
+  width: 100%;
+  max-width: 640px;
+  max-height: 76vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 12px;
+  background: var(--paradex-bg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* The plugin's search bar, laid out as the dialog's input and result list. */
+.search-dialog__panel > div,
+.search-dialog .navbar__search {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.search-dialog .navbar__search > span {
+  display: flex !important;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+.search-dialog .navbar__search-input {
+  width: 100% !important;
+  height: 52px;
+  padding: 0 16px 0 44px;
+  border: 0 !important;
+  border-bottom: 1px solid var(--grayscale-a5) !important;
+  border-radius: 0 !important;
+  background: transparent
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.686)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E")
+    no-repeat 16px center / 18px 18px !important;
+  color: #ffffff !important;
+  font: inherit;
+  font-size: 16px;
+  outline: 0;
+}
+
+.search-dialog .navbar__search-input::placeholder {
+  color: var(--grayscale-a11);
+}
+
+.search-dialog [class*='searchIcon'],
+.search-dialog [class*='searchHintContainer'],
+.search-dialog [class*='searchBarLoadingRing'] {
+  display: none !important;
+}
+
+.search-dialog [class*='dropdownMenu'] {
+  position: static !important;
+  width: 100% !important;
+  max-height: calc(76vh - 54px);
+  overflow-y: auto;
+  margin: 0 !important;
+  padding: 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.search-dialog [class*='suggestion'][class*='cursor'] {
+  background: rgba(0, 233, 252, 0.153) !important;
+}
+
+/* Scrollbars */
+* {
+  scrollbar-color: var(--paradex-sidebar-active) transparent;
+}
+
+/* Mermaid diagrams (pre-rendered, see plugins/mermaid.mjs) and the dialog
+   that shows one enlarged, as on Fern. */
+.mermaid-container {
+  margin: 16px 0 24px;
+  cursor: zoom-in;
+}
+
+.mermaid-container svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.mermaid-container:focus-visible {
+  outline: 2px solid var(--accent-a11);
+  outline-offset: 4px;
+}
+
+html.mermaid-zoom-open {
+  overflow: hidden;
+}
+
+/* Fern's backdrop dims the whole view, header included, and centres the
+   panel in the space below the header. */
+.mermaid-zoom {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  padding-top: var(--ifm-navbar-height);
+  z-index: calc(var(--ifm-z-index-fixed) + 10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(42, 43, 43, 0.5);
+  animation: mermaid-zoom-in 0.15s ease-out;
+}
+
+@keyframes mermaid-zoom-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.mermaid-zoom__panel {
+  position: relative;
+  display: flex;
+  width: 80vw;
+  height: min(80vh, 100% - 32px);
+  border-radius: 12px;
+  background: var(--paradex-card-bg);
+  overflow: auto;
+}
+
+.mermaid-zoom__body {
+  margin: auto;
+  padding: 48px;
+}
+
+.mermaid-zoom__body svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-zoom__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  padding: 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--grayscale-a12);
+  cursor: pointer;
+}
+
+.mermaid-zoom__close:hover {
+  background: var(--grayscale-a3);
+}
+
+.mermaid-zoom__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* KaTeX: wide display formulas run past the column, as on Fern. */
+.katex-display {
+  overflow: visible;
+}
+
+/* Fern has no floating back-to-top button ("Scroll to top" is in the TOC). */
+.theme-back-to-top-button {
+  display: none;
+}
+
+/* ---------- Changelog (release notes) ---------- */
+
+/* Same columns as docs pages: 288px sidebar, centred 640px column, 288px
+   "On this page" (from 1280px, see below). */
+.changelog-layout {
+  display: grid;
+  grid-template-columns: var(--doc-sidebar-width) minmax(0, 1fr);
+  min-height: calc(100vh - var(--ifm-navbar-height));
+}
+
+.changelog-sidebar {
+  border-right: 1px solid var(--grayscale-a3);
+}
+
+.changelog-sidebar nav.menu {
+  position: sticky;
+  top: var(--ifm-navbar-height);
+  padding: 24px 10px 32px calc(24px + var(--fern-aside-offset)) !important;
+}
+
+.changelog-sidebar .menu__link {
+  display: flex;
+  align-items: center;
+}
+
+.changelog-sidebar .sidebar-item-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 0;
+}
+
+.changelog-main {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 0 48px;
+}
+
+/* Without the sidebar, Fern keeps a 32px gutter on each side of the 640px
+   column, so it shows once the screen is narrower than 704px. */
+@media (max-width: 996px) {
+  .changelog-main {
+    max-width: calc(640px + 2 * 32px);
+    padding-inline: 32px;
+  }
+}
+
+/* Entries and the intro use the prose rhythm (16px/28px). */
+.changelog-main .markdown,
+.changelog-description {
+  line-height: 1.75;
+}
+
+.changelog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.changelog-header h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 45px;
+}
+
+.changelog-rss {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--grayscale-a5);
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  font-size: 14px;
+  color: var(--grayscale-a12);
+}
+
+.changelog-rss:hover {
+  background: var(--grayscale-a3);
+  color: #ffffff;
+}
+
+.changelog-rss svg {
+  width: 14px;
+  height: 14px;
+  color: var(--paradex-accent);
+}
+
+/* Fern shows "Subscribe via RSS" from 768px only. */
+@media (max-width: 767px) {
+  .changelog-rss {
+    display: none;
+  }
+}
+
+.changelog-description {
+  margin: 2rem 0 3rem;
+  color: #ffffff;
+}
+
+.blog-list-page article {
+  padding-bottom: 20px;
+  margin-bottom: 80px !important;
+  border-bottom: 1px solid var(--grayscale-a5);
+}
+
+.blog-list-page article:last-of-type {
+  border-bottom: 0;
+}
+
+.changelog-entry__header {
+  margin-bottom: 16px;
+}
+
+.changelog-date {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 1px 8px;
+  border-radius: 6px;
+  color: var(--grayscale-a11) !important;
+  background: var(--grayscale-a3);
+  text-decoration: none !important;
+}
+
+.blog-post-page .changelog-date {
+  background: transparent;
+  border: 1px solid var(--grayscale-a5);
+}
+
+.blog-post-page .fern-changelog-tags {
+  margin-bottom: 27px;
+}
+
+.changelog-back {
+  margin: 4px 0 70px;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 45px;
+}
+
+.changelog-back a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.changelog-back svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--grayscale-a11);
+}
+
+.blog-wrapper .markdown h2 {
+  font-size: 24px;
+  margin: 0 0 12px;
+}
+
+/* A second version under the same date starts a new section. */
+.blog-wrapper .markdown h2:not(:first-child) {
+  margin-top: 47px;
+}
+
+.blog-wrapper .markdown h4 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.blog-wrapper .markdown li {
+  color: #ffffff;
+}
+
+/* A table that opens its block (right under a list item's text) has no top
+   margin, as on Fern. */
+.changelog-main .markdown .fern-table:first-child {
+  margin-top: 0;
+}
+
+/* An entry's page, as on Fern: the feedback row 64px below the closing
+   list's margin (which Infima drops), the pager, then 176px to the end of
+   the page (Fern's 'Built with Fern' line, not ported, and its margins).
+   The column is at least a window tall below the header, so a short
+   entry's footer sits at the bottom of the window. */
+.blog-post-page .changelog-main {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--ifm-navbar-height) + 48px);
+}
+
+.blog-post-page .changelog-main > article {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.blog-post-page .changelog-main > article > .markdown {
+  flex-grow: 1;
+}
+
+.blog-post-page .changelog-main .markdown > :is(ul, ol):last-child {
+  margin-bottom: 12px !important;
+}
+
+.changelog-footer {
+  margin: 64px 0 0;
+}
+
+.blog-wrapper .fern-footer-nav {
+  margin-bottom: 128px;
+}
+
+@media (max-width: 1023px) {
+  .changelog-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .changelog-sidebar {
+    display: none;
+  }
+}
+
+/* As on Fern: 64px gutters beside the sidebar, and "On this page" from
+   1280px. Until both fit, the column and the TOC shrink together, in
+   proportion to their widths (640:288). */
+@media (min-width: 1024px) {
+  .changelog-main {
+    max-width: calc(640px + 2 * 64px);
+    padding-inline: 64px;
+  }
+}
+
+.changelog-toc {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .changelog-layout {
+    grid-template-columns:
+      var(--doc-sidebar-width) minmax(0, 1fr)
+      calc(min(288px, (100% - 288px - 2 * 64px) * 288 / 928) + var(--fern-aside-offset));
+  }
+
+  .changelog-toc {
+    display: block;
+    padding-right: var(--fern-aside-offset);
+  }
+}
+
+/* Title spacing as on Fern. */
+.fern-page-header h1,
+.theme-doc-markdown .fern-page-header h1 {
+  margin: 0 !important;
+}
+
+.markdown li::marker {
+  color: var(--text-faded);
+}
+
+/* Buttons inside markup copied from Fern (API quick start). */
+.theme-doc-markdown header:not(.fern-page-header) button,
+.theme-doc-markdown button[data-state] {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: default;
+}
+
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

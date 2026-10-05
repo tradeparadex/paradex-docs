@@ -1,0 +1,24 @@
+# Response headers for Cloudflare's static assets (wrangler.toml [assets]).
+
+# The security headers Fern's app sent on every response. The Worker adds the
+# same values to the responses it builds (SECURITY_HEADERS in edge/core.mjs);
+# keep the two in step. The CSP is Fern's without its CDN origin, and framing
+# is limited to the site itself (Fern also allowed https://*.buildwithfern.com).
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), microphone=(self), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http: blob:; style-src 'self' 'unsafe-inline' https: http:; img-src 'self' https: http: data: blob:; font-src 'self' https: http: data:; connect-src 'self' https: http: wss: ws: data: blob:; media-src 'self' https: http: data: blob:; object-src 'self' https: http: data: blob:; frame-src 'self' https: http: data: blob:; base-uri 'self'; form-action 'self' https: http:; frame-ancestors 'self'
+
+# Content-hashed build output: a file's name changes whenever its content does.
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/images/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/md/*
+  Cache-Control: public, max-age=31536000, immutable

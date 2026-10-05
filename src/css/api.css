@@ -1621,7 +1621,9 @@ html.api-code-modal-open {
   height: 16px;
 }
 
-@media (min-width: 997px) {
+/* From 768px the Handshake panel beside the card has Try it, so Fern hid
+   the title's copy. */
+@media (min-width: 768px) {
   .api-handshake-card__try {
     display: none;
   }

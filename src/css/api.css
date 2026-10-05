@@ -715,8 +715,8 @@
 }
 
 /* The Handshake card's title: hovering anywhere on its row shows the
-   button, beside the label. */
-.api-handshake-card__label {
+   button, placed against the whole row (Try it included). */
+.api-handshake-card__title {
   position: relative;
 }
 
@@ -750,18 +750,41 @@
   }
 }
 
-/* Below 997px the column's gutter, if any, has no room for the button;
-   nested rows still have room on their left. */
-@media (min-width: 768px) and (max-width: 996px) {
-  .api-section__title > .api-anchor,
-  .api-props:not(.api-props--nested) > .api-prop > .api-prop__header > .api-anchor {
+/* Fern put the button after a heading or name when on its left it would
+   come within 6px of the window's edge: below 980px for headings and 968px
+   for property rows, 2px less in the Handshake card, whose content sits 1px
+   further in. Rows in errors and nested lists always have room on the left. */
+@media (min-width: 768px) and (max-width: 979px) {
+  .api-endpoint__main > .api-section > .api-section__title > .api-anchor {
     right: auto;
     left: calc(100% + var(--api-anchor-gap));
   }
 }
 
-/* Nor is there room left of the Handshake card's title. */
-@media (max-width: 996px) {
+@media (min-width: 768px) and (max-width: 977px) {
+  .api-handshake-card .api-section__title > .api-anchor {
+    right: auto;
+    left: calc(100% + var(--api-anchor-gap));
+  }
+}
+
+@media (min-width: 768px) and (max-width: 967px) {
+  .api-endpoint__main > .api-section > .api-props > .api-prop > .api-prop__header > .api-anchor {
+    right: auto;
+    left: calc(100% + var(--api-anchor-gap));
+  }
+}
+
+@media (min-width: 768px) and (max-width: 965px) {
+  .api-handshake-card .api-section > .api-props > .api-prop > .api-prop__header > .api-anchor {
+    right: auto;
+    left: calc(100% + var(--api-anchor-gap));
+  }
+}
+
+/* The Handshake title spans the card, so the button goes after the whole
+   row. At 768px there is no room there either, and Fern kept it on the left. */
+@media (min-width: 769px) and (max-width: 977px) {
   .api-handshake-card__label > .api-anchor {
     right: auto;
     left: calc(100% + var(--api-anchor-gap));

@@ -1715,6 +1715,15 @@ main:has(> .container > .doc-layout--no-sidebar) {
   gap: 16px;
 }
 
+/* Below 640px Fern stacks the feedback and the edit link, 32px apart. */
+@media (max-width: 639px) {
+  .fern-footer-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+  }
+}
+
 .doc-feedback {
   display: flex;
   flex-wrap: wrap;
@@ -2117,6 +2126,13 @@ main:has(> .container > .doc-layout--no-sidebar) {
   color: var(--grayscale-a12);
   background: var(--grayscale-a3);
   text-decoration: none;
+}
+
+/* Like the feedback buttons, Fern's edit button grows on touch screens. */
+@media (pointer: coarse) {
+  .fern-footer-edit {
+    height: 36px;
+  }
 }
 
 .fern-footer-nav {

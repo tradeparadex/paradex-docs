@@ -56,4 +56,9 @@ describe('spec descriptions render like MDX', () => {
     );
     assert.equal(markdownToHtml('A <table><tr><td>x</td></tr></table> and `<table>`'), '<p>A <div class="fern-table"><table><tr><td>x</td></tr></table></div> and <code>&lt;table&gt;</code></p>');
   });
+
+  test('stray table tags add no unmatched div', () => {
+    assert.equal(markdownToHtml('x </table> y'), '<p>x </table> y</p>');
+    assert.equal(markdownToHtml('<table><tr><td>a</td></tr>'), '<table><tr><td>a</td></tr>');
+  });
 });

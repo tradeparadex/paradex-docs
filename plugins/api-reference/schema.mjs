@@ -130,9 +130,10 @@ export function markdownToHtml(markdown) {
 /**
  * Tables sit in the scrolling table card that MDX tables get
  * (src/theme/MDXComponents.tsx), as Fern rendered description tables.
+ * Only complete tables are wrapped, so a stray tag adds no unmatched div.
  */
 function withTableCards(html) {
-  return html.replace(/<table\b[^>]*>/g, '<div class="fern-table">$&').replace(/<\/table>/g, '$&</div>');
+  return html.replace(/<table\b[^>]*>(?:(?!<table\b)[\s\S])*?<\/table>/g, '<div class="fern-table">$&</div>');
 }
 
 /** Give headings the slug ids Fern gave them ("### TWAP" -> id="twap"). */

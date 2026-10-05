@@ -1137,6 +1137,13 @@ a.navbar-cta {
   border-bottom: 1px solid var(--grayscale-a5);
 }
 
+/* An empty row (the blank header of a list of links) is as tall as a row of
+   text, as on Fern. */
+.fern-table th,
+.fern-table td {
+  height: 36px;
+}
+
 .theme-doc-markdown table tr:last-child td,
 .changelog-main .markdown table tr:last-child td {
   border-bottom: 0;

@@ -219,11 +219,11 @@
     padding-bottom: 96px;
   }
 
-  /* Fern: the column sticks under the header (32px below it here, 24px
-     from 1024px) and ends 24px above the bottom of the window. */
+  /* Fern: the column sticks 24px under the header and ends 24px above the
+     bottom of the window. */
   .api-endpoint__sticky {
     position: sticky;
-    top: calc(var(--ifm-navbar-height) + 32px);
+    top: calc(var(--ifm-navbar-height) + 24px);
     max-height: calc(100vh - var(--ifm-navbar-height) - 48px);
   }
 }
@@ -231,10 +231,6 @@
 @media (min-width: 1024px) {
   .api-endpoint__grid {
     column-gap: 48px;
-  }
-
-  .api-endpoint__sticky {
-    top: calc(var(--ifm-navbar-height) + 24px);
   }
 }
 

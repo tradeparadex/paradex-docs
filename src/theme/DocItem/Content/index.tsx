@@ -37,6 +37,10 @@ export default function DocItemContent({children}: Props): ReactNode {
       <AnchorIdProvider seed={toc.map((item) => item.id)}>
         <MDXContent>{children}</MDXContent>
       </AnchorIdProvider>
+      {/* Infima zeroes the last child's bottom margin; Fern keeps the closing
+          block's margin (a list's 12px, Steps' 48px) above the footer, so an
+          empty block takes the last place. */}
+      <div className="theme-doc-markdown__end" />
     </div>
   );
 }

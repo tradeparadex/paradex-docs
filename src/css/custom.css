@@ -1157,12 +1157,6 @@ a.navbar-cta {
   margin: 2em auto;
 }
 
-/* Fern keeps a closing image's 2em below it; the footer's top margin already
-   counts a closing paragraph's 20px, so the image adds the rest. */
-.theme-doc-markdown > [data-rmiz]:last-child img {
-  margin-bottom: 12px;
-}
-
 /* Click-to-zoom (src/components/fern/Image.tsx): Fern hides the library's
    zoom buttons and dims the page with its background colour. */
 [data-rmiz-btn-zoom],
@@ -1503,6 +1497,29 @@ main:has(> .container > .doc-layout--no-sidebar) {
   padding-top: 40px;
 }
 
+/* As on Fern, the column is at least a window tall below the header, so a
+   short page's footer sits at the bottom of the window; guide pages end
+   48px further down. */
+.doc-layout:not(.doc-layout--custom) .doc-item-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--ifm-navbar-height));
+}
+
+.doc-layout--guide .doc-item-container {
+  margin-bottom: 48px;
+}
+
+.doc-layout:not(.doc-layout--custom) .doc-item-container > article {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.doc-layout:not(.doc-layout--custom) .theme-doc-markdown {
+  flex-grow: 1;
+}
+
 .theme-doc-markdown > header.fern-page-header h1 {
   margin-top: 0;
 }
@@ -1630,46 +1647,63 @@ main:has(> .container > .doc-layout--no-sidebar) {
   height: 16px;
 }
 
-/* Footer area: feedback, edit link, previous/next bar (Fern). */
+/* Footer area: feedback, edit link, previous/next bar (Fern). Fern leaves
+   128px below the closing block's margin, and 128px below the pager: its
+   'Built with Fern' line (not ported) and the footer's margin. */
 .theme-doc-footer {
-  margin-top: 148px;
-  margin-bottom: 112px;
+  margin-top: 128px;
+  margin-bottom: 128px;
 }
 
 /* Reference and API pages keep the footer in a centred 640px column,
    further down (on reference pages Fern's gap grows from phones to tablets
-   to the desktop layout). */
+   to the desktop layout, and its content keeps at least 48px below the
+   closing block). */
 .doc-layout--reference .theme-doc-footer,
 .doc-layout--api .theme-doc-footer {
   max-width: 640px;
   margin-inline: auto;
 }
 
+.doc-layout--reference .theme-doc-markdown__end {
+  margin-top: 48px;
+}
+
 .doc-layout--reference .theme-doc-footer {
+  margin-top: 136px;
+}
+
+.doc-layout--api .theme-doc-footer {
   margin-top: 184px;
 }
 
 /* At exactly 768px Fern still stacks the reference column; from 769px it is
-   a grid, which leaves 8px more before the footer. */
+   a grid, which leaves 8px more before the footer. An endpoint's example
+   panels then sit under its text, 88px above the footer, where ours stay
+   above it. */
 @media (min-width: 768px) {
   .doc-layout--reference .theme-doc-footer {
-    margin-top: 256px;
+    margin-top: 208px;
+  }
+
+  .doc-layout--api .theme-doc-footer {
+    margin-top: 148px;
   }
 }
 
 @media (min-width: 769px) {
   .doc-layout--reference .theme-doc-footer {
-    margin-top: 264px;
+    margin-top: 216px;
+  }
+
+  .doc-layout--api .theme-doc-footer {
+    margin-top: 184px;
   }
 }
 
 @media (min-width: 1024px) {
   .doc-layout--reference .theme-doc-footer {
-    margin-top: 280px;
-  }
-
-  .doc-layout--api .theme-doc-footer {
-    margin-top: 184px;
+    margin-top: 232px;
   }
 }
 

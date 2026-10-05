@@ -2504,7 +2504,7 @@ html.mermaid-zoom-open {
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  padding: 32px 0 32px;
+  padding: 32px 0 48px;
 }
 
 /* Without the sidebar, Fern keeps a 32px gutter on each side of the 640px
@@ -2653,12 +2653,37 @@ html.mermaid-zoom-open {
   margin-top: 0;
 }
 
+/* An entry's page, as on Fern: the feedback row 64px below the closing
+   list's margin (which Infima drops), the pager, then 176px to the end of
+   the page (Fern's 'Built with Fern' line, not ported, and its margins).
+   The column is at least a window tall below the header, so a short
+   entry's footer sits at the bottom of the window. */
+.blog-post-page .changelog-main {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--ifm-navbar-height) + 48px);
+}
+
+.blog-post-page .changelog-main > article {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.blog-post-page .changelog-main > article > .markdown {
+  flex-grow: 1;
+}
+
+.blog-post-page .changelog-main .markdown > :is(ul, ol):last-child {
+  margin-bottom: 12px !important;
+}
+
 .changelog-footer {
-  margin: 133px 0 32px;
+  margin: 64px 0 0;
 }
 
 .blog-wrapper .fern-footer-nav {
-  margin-bottom: 32px;
+  margin-bottom: 128px;
 }
 
 @media (max-width: 1023px) {

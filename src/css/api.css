@@ -169,6 +169,16 @@
   margin-bottom: 48px;
 }
 
+/* On phones an endpoint without parameters or response fields has nothing
+   below the examples: the footer's space starts right under them, as on
+   Fern. (At 768px Fern moves the examples under the text; see the API
+   footer in custom.css.) */
+@media (max-width: 767px) {
+  .api-endpoint__aside:has(~ .api-endpoint__main:empty) {
+    margin-bottom: 0;
+  }
+}
+
 .api-endpoint__main {
   grid-area: main;
 }

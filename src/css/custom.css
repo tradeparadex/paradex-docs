@@ -1648,8 +1648,9 @@ main:has(> .container > .doc-layout--no-sidebar) {
 }
 
 /* Footer area: feedback, edit link, previous/next bar (Fern). Fern leaves
-   128px below the closing block's margin, and 128px below the pager: its
-   'Built with Fern' line (not ported) and the footer's margin. */
+   128px below the closing block's margin, and 128px below the pager (or the
+   line in its place): its 'Built with Fern' line (not ported) and the
+   footer's margin. */
 .theme-doc-footer {
   margin-top: 128px;
   margin-bottom: 128px;
@@ -2142,6 +2143,12 @@ main:has(> .container > .doc-layout--no-sidebar) {
   padding: 4px;
   border-radius: 16px;
   background: var(--grayscale-a3);
+}
+
+.fern-footer-separator {
+  height: 1px;
+  margin-top: 32px;
+  background: var(--grayscale-a5);
 }
 
 .fern-footer-prev,

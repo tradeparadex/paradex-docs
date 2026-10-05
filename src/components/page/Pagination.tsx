@@ -26,7 +26,8 @@ function CardText({page}: {page: {title: string; permalink: string}}) {
 }
 
 export default function Pagination({previous, next}: {previous: NavLink; next: NavLink}) {
-  if (!previous && !next) return null;
+  // With nowhere to go, Fern draws a line where the bar would be.
+  if (!previous && !next) return <div className="fern-footer-separator" aria-hidden="true" />;
   return (
     <nav className="fern-footer-nav" aria-label="Up next">
       {previous && (

@@ -311,12 +311,13 @@ export function CodeModal({code, onClose}: {code: string; onClose: () => void}) 
 }
 
 /** True while the element's content is taller than the element. */
-function useOverflow(ref: React.RefObject<HTMLElement | null>, deps: unknown[]) {
+export function useOverflow(ref: React.RefObject<HTMLElement | null>, deps: unknown[], axis: 'x' | 'y' = 'y') {
   const [overflowing, setOverflowing] = useState(false);
   useIsoLayoutEffect(() => {
     const el = ref.current;
     if (!el) return undefined;
-    const check = () => setOverflowing(el.scrollHeight > el.clientHeight + 1);
+    const check = () =>
+      setOverflowing(axis === 'x' ? el.scrollWidth > el.clientWidth + 1 : el.scrollHeight > el.clientHeight + 1);
     check();
     if (typeof ResizeObserver === 'undefined') return undefined;
     const observer = new ResizeObserver(check);

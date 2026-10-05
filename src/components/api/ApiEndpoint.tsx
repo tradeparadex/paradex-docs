@@ -2,7 +2,7 @@
 // plugins/api-reference. Layout follows Fern's API reference: description and
 // schemas on the left, code samples and response examples on the right.
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import CodeBlock from '@theme/CodeBlock';
@@ -12,7 +12,7 @@ import ApiExplorer from './ApiExplorer';
 import WebSocketExplorer from './WebSocketExplorer';
 import MethodBadge from './MethodBadge';
 import {ArrowDownIcon, ArrowUpIcon, ArrowUpRightIcon, ChevronDownIcon, CloseIcon, PlayIcon, WifiIcon} from './icons';
-import {CodePanel, CopyButton, LanguageMenu, StatusBadge, StatusSelect, useLanguage, type StatusOption} from './panels';
+import {CodePanel, CopyButton, LanguageMenu, StatusBadge, StatusSelect, useLanguage, useOverflow, type StatusOption} from './panels';
 import {AnchorLink, AnchorPart, AnchorTargets, BodySchema, Html, PropertyRow, Properties, Section} from './schema';
 import type {Endpoint, Property} from './types';
 
@@ -285,6 +285,9 @@ function WebSocketPanels({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt: () =
 function HandshakeCard({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt: () => void}) {
   const url = endpoint.server + endpoint.displayPath;
   const params = endpoint.pathParams ?? [];
+  // Like Fern, fade the end of the address only when it is cut off.
+  const pill = useRef<HTMLDivElement>(null);
+  const cutOff = useOverflow(pill, [url], 'x');
   return (
     <section className="api-handshake-card" id="handshake">
       <div className="api-handshake-card__head">
@@ -301,7 +304,7 @@ function HandshakeCard({endpoint, onTryIt}: {endpoint: Endpoint; onTryIt: () => 
           </span>
         </h2>
         <div className="api-url-pill">
-          <div className="api-url-pill__scroll">
+          <div ref={pill} className={clsx('api-url-pill__scroll', cutOff && 'api-url-pill__scroll--cut')}>
             <MethodBadge method="WSS" />
             <Address endpoint={endpoint} />
           </div>

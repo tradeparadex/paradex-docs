@@ -1452,7 +1452,8 @@
 
 /* Fern's panel buttons grow on touch screens. */
 @media (pointer: coarse) {
-  .api-panel__header .api-icon-button {
+  .api-panel__header .api-icon-button,
+  .api-url-pill__copy {
     width: 36px;
     height: 36px;
   }
@@ -1597,7 +1598,7 @@ html.api-code-modal-open {
   }
 }
 
-/* Fern kept 16px free after the title on phones, so the bleed does not
+/* Below 997px Fern kept 16px free after the title, so the bleed does not
    carry Try it out to the card's edge. */
 @media (max-width: 996px) {
   .api-endpoint .api-handshake-card__title {
@@ -1643,6 +1644,10 @@ html.api-code-modal-open {
   font-family: var(--api-code-font);
   font-size: 14px;
   line-height: 20px;
+}
+
+/* An address too long for the pill fades out at its end (Fern's right-mask). */
+.api-url-pill__scroll--cut {
   -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
   mask-image: linear-gradient(to right, #000 85%, transparent);
 }

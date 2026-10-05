@@ -257,9 +257,10 @@
 }
 
 /* The description is a grid item, so the margin of its last block would add
-   to the 48px below it instead of collapsing into it. */
-.api-endpoint .api-endpoint__description > :last-child,
-.api-endpoint .api-endpoint__description > :last-child > :last-child {
+   to the 48px below it instead of collapsing into it. The grid class
+   outranks the docs' list margins. */
+.api-endpoint .api-endpoint__grid > .api-endpoint__description > :last-child,
+.api-endpoint .api-endpoint__grid > .api-endpoint__description > :last-child > :last-child {
   margin-bottom: 0;
 }
 

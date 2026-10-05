@@ -2,7 +2,7 @@
   "openrpc": "1.3.2",
   "info": {
     "title": "Paradex WebSocket RPC API",
-    "version": "1.6.1",
+    "version": "1.7.0",
     "description": "JSON-RPC 2.0 methods for the Paradex WebSocket API. All requests follow the envelope: {\"jsonrpc\":\"2.0\",\"method\":\"\u003cname\u003e\",\"params\":{...},\"id\":\u003cint\u003e}. Responses include usIn/usOut/usDiff nanosecond timing fields."
   },
   "servers": [
@@ -475,13 +475,14 @@
         },
         {
           "name": "flags",
-          "description": "Order flags",
+          "description": "Order flags. MMP is for LIMIT orders on dated options and perpetual futures; only resting maker fills count",
           "required": false,
           "schema": {
-            "enum": [
-              "REDUCE_ONLY"
-            ],
             "items": {
+              "enum": [
+                "REDUCE_ONLY",
+                "MMP"
+              ],
               "type": "string"
             },
             "type": "array"
@@ -722,11 +723,12 @@
                   "type": "string"
                 },
                 "flags": {
-                  "description": "Order flags",
-                  "enum": [
-                    "REDUCE_ONLY"
-                  ],
+                  "description": "Order flags. MMP is for LIMIT orders on dated options and perpetual futures; only resting maker fills count",
                   "items": {
+                    "enum": [
+                      "REDUCE_ONLY",
+                      "MMP"
+                    ],
                     "type": "string"
                   },
                   "type": "array"

@@ -151,14 +151,25 @@
 /* Up to 768px one column: description, examples, reference, 48px apart (as
    on Fern's phone layout). From 769px Fern put the examples in a second
    column at a fixed width that overflowed the window up to 1215px; here
-   both columns share the width. */
+   both columns share the width. The examples come first in the markup, so
+   grid areas place each part. */
 .api-endpoint__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'description' 'aside' 'main';
+}
+
+.api-endpoint__description {
+  grid-area: description;
 }
 
 .api-endpoint__aside {
+  grid-area: aside;
   margin-bottom: 48px;
+}
+
+.api-endpoint__main {
+  grid-area: main;
 }
 
 /* Fern: the request sample takes at most 55% of the height below the
@@ -190,20 +201,13 @@
   .api-endpoint__grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'description aside'
+      'main aside';
     column-gap: 32px;
   }
 
-  .api-endpoint__description {
-    grid-area: 1 / 1;
-  }
-
-  .api-endpoint__main {
-    grid-area: 2 / 1;
-  }
-
   .api-endpoint__aside {
-    grid-column: 2;
-    grid-row: 1 / span 2;
     margin-bottom: 0;
   }
 

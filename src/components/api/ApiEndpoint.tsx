@@ -358,10 +358,10 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
           <Address endpoint={endpoint} />
         </span>
       </div>
-      {/* Description, examples, then the reference, as on Fern's phone
-          layout; from 769px the examples sit in a right-hand column. */}
+      {/* The examples come first, as in Fern's markup, so keyboard and
+          screen-reader users reach them before the description; the grid
+          shows them after it on phones and in a right-hand column from 769px. */}
       <div className="api-endpoint__grid">
-        <Html html={endpoint.descriptionHtml} className="api-endpoint__description" />
         <aside className="api-endpoint__aside">
           <div className="api-endpoint__sticky">
             {isWs ? (
@@ -374,6 +374,7 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
             )}
           </div>
         </aside>
+        <Html html={endpoint.descriptionHtml} className="api-endpoint__description" />
         <div className="api-endpoint__main">
           <AnchorTargets>
             {isWs ? (

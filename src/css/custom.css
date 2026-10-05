@@ -1661,6 +1661,7 @@ main:has(> .container > .doc-layout--no-sidebar) {
    closing block). */
 .doc-layout--reference .theme-doc-footer,
 .doc-layout--api .theme-doc-footer {
+  width: 100%;
   max-width: 640px;
   margin-inline: auto;
 }

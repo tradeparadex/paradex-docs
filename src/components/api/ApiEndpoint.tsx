@@ -2,7 +2,7 @@
 // plugins/api-reference. Layout follows Fern's API reference: description and
 // schemas on the left, code samples and response examples on the right.
 
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState, useSyncExternalStore} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import CodeBlock from '@theme/CodeBlock';
@@ -156,6 +156,19 @@ function useExplorer(): [boolean, () => void] {
     setOpen(new URLSearchParams(location.search).get('explorer') === 'true');
   }, [location.search]);
   return [open, () => history.push(`${location.pathname}?explorer=true`)];
+}
+
+const PHONE = '(max-width: 767px)';
+
+function subscribePhone(onChange: () => void) {
+  const query = window.matchMedia(PHONE);
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
+}
+
+/** True below 768px; false when rendered on the server and while hydrating. */
+function usePhone() {
+  return useSyncExternalStore(subscribePhone, () => window.matchMedia(PHONE).matches, () => false);
 }
 
 /* ---------- Errors ---------- */
@@ -350,6 +363,22 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
     ['Query parameters', 'query', endpoint.queryParams],
     ['Headers', 'header', endpoint.headerParams],
   ];
+  const phone = usePhone();
+  const examples = (
+    <aside key="examples" className="api-endpoint__aside">
+      <div className="api-endpoint__sticky">
+        {isWs ? (
+          <WebSocketPanels endpoint={endpoint} onTryIt={openExplorer} />
+        ) : (
+          <>
+            <CodeSamplePanel endpoint={endpoint} onTryIt={openExplorer} />
+            <ResponsePanel endpoint={endpoint} selected={selected} onSelect={setSelected} />
+          </>
+        )}
+      </div>
+    </aside>
+  );
+  const description = <Html key="description" html={endpoint.descriptionHtml} className="api-endpoint__description" />;
   return (
     <div className={clsx('api-endpoint', isWs && 'api-endpoint--ws')}>
       <div className="api-endpoint__url">
@@ -358,23 +387,12 @@ export default function ApiEndpoint({endpoint}: {endpoint: Endpoint}): React.JSX
           <Address endpoint={endpoint} />
         </span>
       </div>
-      {/* The examples come first, as in Fern's markup, so keyboard and
-          screen-reader users reach them before the description; the grid
-          shows them after it on phones and in a right-hand column from 769px. */}
+      {/* Fern's markup has the examples before the description from 768px
+          and after it on phones; keyboard and screen-reader users follow that
+          order, while grid areas keep the layout. Keys move the examples
+          across the breakpoint rather than remount them. */}
       <div className="api-endpoint__grid">
-        <aside className="api-endpoint__aside">
-          <div className="api-endpoint__sticky">
-            {isWs ? (
-              <WebSocketPanels endpoint={endpoint} onTryIt={openExplorer} />
-            ) : (
-              <>
-                <CodeSamplePanel endpoint={endpoint} onTryIt={openExplorer} />
-                <ResponsePanel endpoint={endpoint} selected={selected} onSelect={setSelected} />
-              </>
-            )}
-          </div>
-        </aside>
-        <Html html={endpoint.descriptionHtml} className="api-endpoint__description" />
+        {phone ? [description, examples] : [examples, description]}
         <div className="api-endpoint__main">
           <AnchorTargets>
             {isWs ? (

@@ -151,8 +151,9 @@
 /* Up to 768px one column: description, examples, reference, 48px apart (as
    on Fern's phone layout). From 769px Fern put the examples in a second
    column at a fixed width that overflowed the window up to 1215px; here
-   both columns share the width. The examples come first in the markup, so
-   grid areas place each part. */
+   both columns share the width. The examples come before or after the
+   description in the markup depending on the width, so grid areas place
+   each part. */
 .api-endpoint__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

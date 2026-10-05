@@ -13,7 +13,10 @@ import ApiEndpoint, {EndpointRequestSnippet, EndpointResponseSnippet} from '@sit
 import MermaidDiagram from '@site/src/components/MermaidDiagram';
 import Image from '@site/src/components/fern/Image';
 
-/** Markdown tables sit in a bordered card that scrolls sideways, as on Fern. */
+/**
+ * Tables, Markdown and raw HTML alike (see remarkFernJsx), sit in a bordered
+ * card that scrolls sideways, as on Fern.
+ */
 function Table(props: React.ComponentProps<'table'>) {
   return (
     <div className="fern-table">

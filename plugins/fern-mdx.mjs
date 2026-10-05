@@ -13,7 +13,8 @@
 //                       literal text, as Fern did (e.g. `{Expiry}`).
 //                       Images Fern zooms, raw <img> too, render through
 //                       the MDX `img` component; the others stay plain.
-//                       Raw <a> render through the MDX `a` component.
+//                       Raw <a> and <table> render through the MDX `a`
+//                       and `table` components.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -152,7 +153,8 @@ export function remarkFernJsx() {
     // Raw <a> tags render through the MDX `a` component (Docusaurus' Link)
     // like Markdown links, as Fern's went through its link component:
     // external links open in a new tab, internal ones navigate client-side.
-    visit(tree, (node) => isJsx(node) && node.name === 'a', (node) => {
+    // Raw <table> tags get the Markdown table's scrolling card, as on Fern.
+    visit(tree, (node) => isJsx(node) && (node.name === 'a' || node.name === 'table'), (node) => {
       node.data = {...node.data, _mdxExplicitJsx: false};
     });
   };

@@ -1091,6 +1091,12 @@ a.navbar-cta {
   overflow-x: auto;
 }
 
+/* Fern's tables sit outside its prose, so they keep their top margin right
+   after a heading (16px below an h3). */
+.theme-doc-markdown :is(h2, h3, h4, h5, h6) + .fern-table {
+  margin-top: 16px;
+}
+
 .theme-doc-markdown table,
 .changelog-main .markdown table {
   display: table;
@@ -1101,16 +1107,6 @@ a.navbar-cta {
   border: 0;
   font-size: 14px;
   line-height: 20px;
-}
-
-/* Raw HTML tables (not wrapped) keep the card look. */
-.theme-doc-markdown table:not(.fern-table > table),
-.changelog-main .markdown table:not(.fern-table > table) {
-  margin: 16px 0 24px;
-  border: 1px solid var(--grayscale-a5);
-  border-radius: 6px;
-  overflow: hidden;
-  background: var(--paradex-card-bg);
 }
 
 .theme-doc-markdown table tr,

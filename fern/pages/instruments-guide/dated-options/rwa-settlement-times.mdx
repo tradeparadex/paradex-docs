@@ -1,0 +1,20 @@
+---
+title: RWA options settlement times
+description: Settlement times for RWA (TradFi) Dated Options, aligned with the reference exchange settlement for each underlying.
+---
+
+Crypto options settle at 08:00 UTC. RWA options settle at the official settlement time of their reference market instead. Times are fixed in exchange local time, so the UTC time moves by one hour when US daylight saving time starts or ends.
+
+| Base | Source | Settles (exchange time) | UTC, summer (EDT) | UTC, winter (EST) |
+|------|--------|-------------------------|:-----------------:|:-----------------:|
+| CL | CME | 13:30 CT | 18:30 | 19:30 |
+| XAU | CME | 12:30 CT | 17:30 | 18:30 |
+| US500, US100 (dailies, weeklies, month-ends) | CME | 15:00 CT (16:00 ET) | 20:00 | 21:00 |
+| US500, US100 (quarterlies) | CME, morning settlement | 08:30 CT (09:30 ET) | 13:30 | 14:30 |
+| Equities (META, MU, MSTR, SPCX) | OPRA | 16:00 ET | 20:00 | 21:00 |
+
+<Note>
+US daylight saving time (EDT) runs from the second Sunday in March to the first Sunday in November. Outside that period, the winter (EST) times apply.
+</Note>
+
+See [Settlement](/trading/dated-options#settlement) for how the settlement price and payoff are calculated.

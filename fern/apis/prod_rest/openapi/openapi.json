@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.139.1"
+    "version": "1.139.2"
   },
   "paths": {
     "/account": {
@@ -7038,7 +7038,12 @@
         }
       },
       "post": {
-        "description": "Create a new vault by providing deployment parameters.Current user will\nbe set as owner of the account and a new sub-account will be deployed as\nvault operator.\n",
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Create a new vault by providing deployment parameters.Current user will\nbe set as owner of the account and a new sub-account will be deployed as\nvault operator.\n\nTo create a Starknet vault operator, send the vault owner's main-key\nsession JWT as the bearer token. Subkey, readonly and RPC tokens do not\nprove ownership. A request without that token is rejected with\n`VAULT_OPERATOR_OWNER_PROOF_REQUIRED`.\n",
         "tags": [
           "Vaults"
         ],
@@ -10780,6 +10785,7 @@
           "PORTFOLIO_MARGIN_ONBOARDING_DISABLED",
           "PORTFOLIO_MARGIN_INVALID_ACCOUNT_KIND",
           "EVM_VAULT_OPERATORS_DISABLED",
+          "VAULT_OPERATOR_OWNER_PROOF_REQUIRED",
           "INVALID_EVM_SIGNATURE",
           "EVM_SIGNATURE_VERIFICATION_FAILED",
           "INVALID_SUBKEY",
@@ -10900,6 +10906,7 @@
           "ErrorCodeString_PortfolioMarginOnboardingDisabled",
           "ErrorCodeString_PortfolioMarginInvalidAccountKind",
           "ErrorCodeString_EvmVaultOperatorsDisabled",
+          "ErrorCodeString_VaultOperatorOwnerProofRequired",
           "ErrorCodeString_BadEvmSignature",
           "ErrorCodeString_EvmSigVerificationFailed",
           "ErrorCodeString_InvalidSubkey",

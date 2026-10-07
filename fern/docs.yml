@@ -276,6 +276,9 @@ navigation:
                 - page: ADA-USD-PERP
                   slug: ada-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/ada-usd-perp.mdx
+                - page: AERO-USD-PERP
+                  slug: aero-usd-perp
+                  path: ./pages/instruments-guide/futures/tier-2/aero-usd-perp.mdx
                 - page: AVAX-USD-PERP
                   slug: avax-usd-perp
                   path: ./pages/instruments-guide/futures/tier-2/avax-usd-perp.mdx

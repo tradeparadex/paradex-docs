@@ -51,15 +51,21 @@ When adding a new options underlying, update all four locations: instrument conf
 - MSTR: 0.001 USD tick, 1 MSTR size increment, 2,500 max order, 25,000 position limit. Cross margin 55/40/27.5%. Min-delta 0.5% / 0.25% (same as ZEC/CL). Strike steps $2.5/$2.5/$5, $2.5/$2.5/$5, $5/$5/$10, $10/$10/$20. Spot shocks ±38/28.5/19/9.5%.
 - On 2026-10-06 the US100 and XAU Scenario tabs had drifted again and were regenerated from the endpoint. Both now use the symmetric BTC/US500 ladder (±14/10.5/7/3.5%) with tails 10.61/21.21/14/7/1.75/0.78/0.44/0.28%. The asymmetric ladder recorded under SPCX on 2026-10-02 is out of date.
 
+## NEAR specifics (crypto dated option)
+
+- NEAR (`near-usd.mdx`, added 2026-10-07) copies the short crypto template (`sol-usd.mdx`/`hype-usd.mdx`/`zec-usd.mdx`): contract table plus margin links, no "Index and settlement price" section. NEAR sits alphabetically among the crypto tabs (after HYPE, before SOL) on every per-asset page and in `fern/docs.yml`.
+- NEAR values: 0.0001 USD tick, 10 NEAR size increment, 50,000 max order, 500,000 position limit, 50% spot and IV band factors. Cross margin IMR Long ITM/Short ITM/Short OTM 50/35/25% (same as META/SPCX). Min-delta 0.3% / 0.15%, `MIN_VOL_SHOCK_UP` 60% (HYPE/SOL bucket). Strike steps $0.1/$0.1/$0.2, $0.2/$0.2/$0.4, $0.2/$0.4/$1, $0.4/$1/$2. SCAN spot shocks ±32/24/16/8%, vol +64%/-35.2%, tails 24.24/48.48/32/16/4/1.78/1/0.64%.
+- NEAR was already on the live `portfolio-margin-config` endpoint when the docs were written, and it matched the SQL. On 2026-10-07 every existing Scenario tab and min-delta row matched the endpoint, with no drift.
+
 ## Gotchas
 
-- Portfolio Margin SCAN scenarios (spot shocks, vol shocks, tail weights) are sourced from the live endpoint `https://api.prod.paradex.trade/v1/system/portfolio-margin-config`. Each asset has its own spot-shock ladder and tail weights (e.g. BTC/US500 ±14/10.5/7/3.5%, ETH ±16/12/8/4%, SOL ±24/18/12/6%, HYPE/META ±28/21/14/7%); do not assume two assets match. Regenerate every tab from the JSON when updating. As of 2026-10-06 the endpoint returns BTC, CL, ETH, HYPE, META, MSTR, MU, SOL, SPCX, US100, US500, XAU and ZEC.
+- Portfolio Margin SCAN scenarios (spot shocks, vol shocks, tail weights) are sourced from the live endpoint `https://api.prod.paradex.trade/v1/system/portfolio-margin-config`. Each asset has its own spot-shock ladder and tail weights (e.g. BTC/US500 ±14/10.5/7/3.5%, ETH ±16/12/8/4%, SOL ±24/18/12/6%, HYPE/META ±28/21/14/7%); do not assume two assets match. Regenerate every tab from the JSON when updating. As of 2026-10-07 the endpoint returns BTC, CL, ETH, HYPE, META, MSTR, MU, NEAR, SOL, SPCX, US100, US500, XAU and ZEC.
 - SOL uses the same strike step sizes and SCAN vol shocks as HYPE, but its own spot shocks, tail weights, and cross-margin fractions (Long ITM 25%, Short ITM 18%, Short OTM 12%).
 - The Mark Price reference-exchange table (`fern/pages/dated-options/mark-price.mdx`) only lists BTC, ETH, and HYPE; SOL and US500 are not listed there.
 - The Portfolio Margin `Parameters` section at the bottom of `portfolio-margin.mdx` contains constants that are mostly shared across assets; `MIN_VOL_SHOCK_UP` and `HEDGED_MARGIN_FACTOR` are the exceptions (HYPE/SOL = 60% / 1.5% vs BTC/ETH/US500 = 40% / 1%).
-- Min-delta coefficients (Unhedged / Hedged Margin Factor) as of 2026-10-02: BTC, ETH, US500, US100, XAU 0.2% / 0.1%; HYPE, SOL, META, SPCX 0.3% / 0.15%; ZEC, CL, MSTR 0.5% / 0.25%; MU 5% / 2.5%. Raw config values convert ×100 (`0.002` → 0.2%). When changing them, also recompute the BTC example calculation below the table.
+- Min-delta coefficients (Unhedged / Hedged Margin Factor) as of 2026-10-02: BTC, ETH, US500, US100, XAU 0.2% / 0.1%; HYPE, NEAR, SOL, META, SPCX 0.3% / 0.15%; ZEC, CL, MSTR 0.5% / 0.25%; MU 5% / 2.5%. Raw config values convert ×100 (`0.002` → 0.2%). When changing them, also recompute the BTC example calculation below the table.
 - ZEC options are present on `main` as of 2026-09-22 (instrument page, sidebar entry, margin requirements tab, portfolio margin SCAN tab and min-delta row) even though an earlier note recorded their removal. Check the live files rather than trusting this file for ZEC status.
 
 ## Last updated
 
-2026-10-06
+2026-10-07

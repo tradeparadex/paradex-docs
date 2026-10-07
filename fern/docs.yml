@@ -484,6 +484,9 @@ navigation:
             - page: HYPE Options
               slug: hype-options
               path: ./pages/instruments-guide/dated-options/hype-usd.mdx
+            - page: NEAR Options
+              slug: near-options
+              path: ./pages/instruments-guide/dated-options/near-usd.mdx
             - page: SOL Options
               slug: sol-options
               path: ./pages/instruments-guide/dated-options/sol-usd.mdx

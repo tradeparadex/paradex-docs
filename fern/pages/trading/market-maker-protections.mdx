@@ -38,7 +38,7 @@ Because flagged orders that cross the book are not counted, they do not offset y
 MMP is enforced by the matching engine, so concurrent fills across markets share the same state. **At most one fill can take exposure beyond a configured limit before protection activates.**
 
 <Warning>
-MMP relies on up to date Greeks. If Greeks become stale or unavailable for a market, MMP orders on that market are canceled with reason `MMP_GREEKS_UNAVAILABLE`, and new MMP orders on it are rejected until its Greeks recover. MMP orders on the underlying's other markets, including perps, are not affected and keep counting toward the same limits. This check applies to MMP orders that can rest, so an MMP `IOC` order is not canceled for stale Greeks. A protected block trade leg on that market is rejected, which rejects the whole block trade.
+MMP relies on up to date Greeks. If Greeks become stale or unavailable for a market, MMP orders on that market are canceled with reason `MMP_GREEKS_UNAVAILABLE`, and new MMP orders on it are rejected until its Greeks recover. MMP orders on the underlying's other markets, including perps, are not affected and keep counting toward the same limits. This check applies to MMP orders that can rest, so an MMP `IOC` order is not canceled for stale Greeks. A protected block trade leg on that market is rejected unless it was quoted before the Greeks became stale, and a rejected leg rejects the whole block trade.
 </Warning>
 
 ## RFQ and block trades

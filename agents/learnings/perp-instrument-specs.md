@@ -9,3 +9,6 @@
 ## Log
 
 - 2026-10-07: AERO-USD-PERP added to tier-2 from the public API. `ewmaFactor` is 19%, from DB `oracle_ewma_alpha` 0.81196832 (1 − 0.812 = 18.8%, rounded). The first draft guessed 14%, so ask for the DB value before guessing.
+- 2026-10-08: TradFi (also called RWA) commodity and SPCX pages had `maxFundingRate` raised from 0.5% to 1%. "RWA" and "TradFi" mean the same thing. Check live caps with `curl -s https://api.prod.paradex.trade/v1/markets` (`max_funding_rate`). Prod markets carry `tags: ["RWA"]`, so filter on that. On this date every RWA tagged perp returned 0.01, so the stock and index pages (previously 5%) were also set to 1%.
+- 2026-10-08: EUR-USD-PERP delisted. Removed its page and `docs.yml` entry.
+- 2026-10-08: Deleted the orphaned `futures/rwa/` folder. Commit `b0bcd2b6` copied its pages to `futures/tradfi/` instead of moving them, and later edits (e.g. `717c2e66`) went to the dead copy by mistake. `futures/tradfi/` is the only folder for RWA/TradFi perp pages.

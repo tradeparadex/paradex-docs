@@ -408,9 +408,6 @@ navigation:
                 - page: DRAM-USD-PERP
                   slug: dram-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/dram-usd-perp.mdx
-                - page: EUR-USD-PERP
-                  slug: eur-usd-perp
-                  path: ./pages/instruments-guide/futures/tradfi/eur-usd-perp.mdx
                 - page: EWY-USD-PERP
                   slug: ewy-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/ewy-usd-perp.mdx

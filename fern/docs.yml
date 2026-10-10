@@ -475,6 +475,9 @@ navigation:
               path: ./pages/instruments-guide/spot/dime-usd.mdx
         - section: Options
           contents:
+            - page: RWA Settlement Times
+              slug: rwa-settlement-times
+              path: ./pages/instruments-guide/dated-options/rwa-settlement-times.mdx
             - page: BTC Options
               slug: btc-options
               path: ./pages/instruments-guide/dated-options/btc-usd.mdx

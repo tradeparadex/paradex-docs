@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.139.1"
+    "version": "1.142.1"
   },
   "paths": {
     "/account": {
@@ -154,6 +154,16 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requires the account's main key",
             "content": {
               "application/json": {
                 "schema": {
@@ -741,6 +751,95 @@
         }
       }
     },
+    "/account/keys/subkeys/{public_key}/block-trade-signing": {
+      "put": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Set whether an active subkey is enabled to sign block trades (create, offer and execute signatures) for the account. Subkeys start with it off. The Paradigm RFQ delegation key follows its delegation instead, and changing it is rejected with 400, as is a subkey that is not active yet. Only callable with the main account.",
+        "tags": [
+          "Subkey"
+        ],
+        "summary": "Set subkey block trade signing",
+        "operationId": "update-subkey-block-trade-signing",
+        "parameters": [
+          {
+            "description": "Subkey public key",
+            "name": "public_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.UpdateSubkeyBlockTradeSigning"
+              }
+            }
+          },
+          "description": "Block trade signing setting",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated subkey details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.Subkey"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/account/margin": {
       "get": {
         "security": [
@@ -1129,7 +1228,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Enables RFQ access for the authenticated account.\n\nCall this operation once before using the RFQ API. It has no request body and\nonly initializes the account associated with the Bearer token. The operation\nis idempotent, so calling it again safely returns the current enabled state.\n\nA successful response has status `ENABLED` and identifies the account and\ndelegated RFQ trading public key.\n",
+        "description": "Enables RFQ access for the authenticated account.\n\nCall this operation once before using the RFQ API. It has no request body and\nonly initializes the account associated with the Bearer token. The operation\nis idempotent, so calling it again safely returns the current enabled state.\n\nEnabling an account for the first time requires a Bearer token issued to the\naccount's main key; a token obtained with a subkey is rejected with `403`.\nOnce RFQ access is enabled, any token for the account, including a subkey\ntoken, receives the current enabled state.\n\nA successful response has status `ENABLED` and identifies the account and\ndelegated RFQ trading public key. If that delegated key was revoked on the\naccount, RFQ access is disabled until the operation is called again with a\nmain-key token: that call issues a new delegated key, leaves the revoked one\nrevoked, and returns the new public key. A subkey token is rejected with `403`\nuntil then. If the new key it would enable is itself already revoked, the\noperation returns `409` with error `SUBKEY_REVOKED` and RFQ access stays\ndisabled.\n\nThe delegated key counts toward the account's subkey limit. If the account\nalready holds the maximum number of subkeys when a new delegated key is\nneeded, the operation returns `400` with error `TOKEN_LIMIT_REACHED`, the\nsame error as subkey registration, and RFQ access stays disabled. Revoke a\nsubkey, then call the operation again with a main-key token.\n\nIf the RFQ venue refuses to enable the account, the operation returns `400`\nwith error `REQUEST_NOT_ALLOWED` and the venue's reason as the message, and\nRFQ access stays disabled. Calling the operation again does not change that\noutcome.\n",
         "tags": [
           "Rfqs"
         ],
@@ -1168,6 +1267,16 @@
           },
           "403": {
             "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1271,6 +1380,16 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requires the account's main key",
             "content": {
               "application/json": {
                 "schema": {
@@ -1490,6 +1609,16 @@
               }
             }
           },
+          "403": {
+            "description": "Requires the account's main key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
           "409": {
             "description": "Conflict",
             "content": {
@@ -1651,6 +1780,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "Requires the account's main key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
           }
         }
       }
@@ -1691,6 +1830,16 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requires the account's main key",
             "content": {
               "application/json": {
                 "schema": {
@@ -5349,7 +5498,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Creates an RFQ for the authenticated account.\n\nRFQ creation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A successful HTTP response is `202 Accepted`\nand contains a Paradex `request_id`; it confirms only that the command was\nqueued. The later WebSocket `RESULT` event with the same `request_id` reports\nwhether the venue accepted the command. On success, the event's top-level\n`rfq_id` is the venue-issued identifier used by the read, execute, cancel, and\nfiltered-subscription APIs.\n\nThe request accepts up to 25 legs. It must contain at least one strategy leg,\nrepresented by omitting `price`. At least one strategy leg must have\n`side=BUY`, and at least one must have `ratio=1`. A hedge leg is marked by\nany strictly positive `price`; the value is ignored and the leg is fixed at the\nmarket's mark price when the RFQ is created, rounded to the nearest price\nincrement. A mark below half an increment is rejected. All quantities and\nratios are positive decimal strings. Every leg market must exist on Paradex and\nbe available for RFQ. The strategy quantity must be at least the largest\nminimum block size among its strategy legs.\n\nThe optional `side` commits the RFQ to one direction of the strategy, `BUY`\nor `SELL`, read the same way as a leg's `side`. Omitting it leaves the RFQ\ntwo-way. Makers always quote both directions either way; what the commitment\nchanges is the taker's own side. A committed RFQ may only be executed in that\ndirection, an execute on the other one is rejected, and the collateral held\nagainst it covers that direction alone instead of the more expensive of the\ntwo. So committing is cheaper for a taker who already knows which way they are\ngoing.\n\nAn account may hold only one two-way RFQ open at a time, and any number of\ncommitted ones up to a total limit. An RFQ stays open until the venue closes\nit. Cancelling is what closes it, but the cancellation is asynchronous: an\naccount is normally free to create its next two-way RFQ once the WebSocket\n`RESULT` event for the cancel reports success, not when the cancel request is\nsent. A create issued before that, or immediately after it, may be rejected by\na `RESULT` event saying the account already has an RFQ open, and can be\nretried.\n\nThe platform selects eligible counterparties; a client-supplied\n`counterparties` value is ignored. The optional `strategy` field is a draft\nlabel and is not sent to the venue.\n\nThe optional `max_slippage` sets the collateral held against this RFQ while it\nis open, as a fraction of the underlying's spot price. It replaces the\nconfigured bound, must be greater than zero and at most 1, and applies to every\nunderlying the strategy touches; the market's own price band caps it, so a value\nbeyond the band holds no more. A wider value holds more collateral.\n\nIt does **not** limit the price this RFQ may execute at. A quote worse than it\nmay still be executed: what the execution actually costs is charged against the\naccount at that point, so it is accepted while the account meets its margin\nrequirement at the agreed price. The market's price band is what bounds the\nexecution, applied to the resulting trade.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event. Its `result.allowed_side` is the direction the RFQ\nwas accepted for: the committed `side` when the request carried one, `TWO_WAY`\nwhen it did not, and `BUY` or `SELL` when a two-way request was accepted for one\ndirection only because the account cannot sustain the other.\n\n`result.allowed_side` is what the commitment and the reserve above are stated\nin, so it, and not the `side` that was sent, is the answer to read. Where\nParadex does not risk-check the create it is empty, and a `side` sent with that\nrequest commits nothing: the RFQ is two-way, and either direction may be\nexecuted.\n",
+        "description": "Creates an RFQ for the authenticated account.\n\nRFQ creation is asynchronous. Subscribe to the private WebSocket channel\n`rfq` before sending the request. A successful HTTP response is `202 Accepted`\nand contains a Paradex `request_id`; it confirms only that the command was\nqueued. The later WebSocket `RESULT` event with the same `request_id` reports\nwhether the venue accepted the command. On success, the event's top-level\n`rfq_id` is the venue-issued identifier used by the read, execute, cancel, and\nfiltered-subscription APIs.\n\nThe request accepts up to 25 legs. It must contain at least one strategy leg,\nrepresented by omitting `price`. At least one strategy leg must have\n`side=BUY`, and at least one must have `ratio=1`. A hedge leg is marked by\nany strictly positive `price`; the value is ignored and the leg is fixed at the\nmarket's mark price when the RFQ is created, rounded to the nearest price\nincrement. A mark below half an increment is rejected. All quantities and\nratios are positive decimal strings. Every leg market must exist on Paradex and\nbe available for RFQ. The strategy quantity must be at least the largest\nminimum block size among its strategy legs.\n\nThe optional `side` commits the RFQ to one direction of the strategy, `BUY`\nor `SELL`, read the same way as a leg's `side`. Omitting it leaves the RFQ\ntwo-way. Makers always quote both directions either way; what the commitment\nchanges is the taker's own side. A committed RFQ may only be executed in that\ndirection, an execute on the other one is rejected, and the collateral held\nagainst it covers that direction alone instead of the more expensive of the\ntwo. So committing is cheaper for a taker who already knows which way they are\ngoing.\n\nAn account may hold only one two-way RFQ open at a time, and any number of\ncommitted ones up to a total limit. An RFQ stays open until the venue closes\nit. Cancelling is what closes it, but the cancellation is asynchronous: an\naccount is normally free to create its next two-way RFQ once the WebSocket\n`RESULT` event for the cancel reports success, not when the cancel request is\nsent. A create issued before that, or immediately after it, may be rejected by\na `RESULT` event saying the account already has an RFQ open, and can be\nretried.\n\nThe platform selects eligible counterparties; a client-supplied\n`counterparties` value is ignored. The optional `strategy` field is a draft\nlabel and is not sent to the venue.\n\nThe optional `max_slippage` sets the collateral held against this RFQ while it\nis open, as a fraction of the underlying's spot price. It replaces the\nconfigured bound, must be greater than zero and at most 1, and applies to every\nunderlying the strategy touches; the market's own price band caps it, so a value\nbeyond the band holds no more. A wider value holds more collateral.\n\nIt does **not** limit the price this RFQ may execute at. A quote worse than it\nmay still be executed: what the execution actually costs is charged against the\naccount at that point, so it is accepted while the account meets its margin\nrequirement at the agreed price. The market's price band is what bounds the\nexecution, applied to the resulting trade.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event. Its `result.allowed_side` is the direction the RFQ\nwas accepted for: the committed `side` when the request carried one, `TWO_WAY`\nwhen it did not, and `BUY` or `SELL` when a two-way request was accepted for one\ndirection only because the account cannot sustain the other.\n\n`result.allowed_side` is what the commitment and the reserve above are stated\nin, so it, and not the `side` that was sent, is the answer to read. Where\nParadex does not risk-check the create it is empty, and a `side` sent with that\nrequest commits nothing: the RFQ is two-way, and either direction may be\nexecuted.\n\nWhile the RFQ venue is `AVAILABLE_CANCEL_ONLY` or `UNAVAILABLE` for Paradex,\nthe request is rejected with `400` and error `RFQ_VENUE_UNAVAILABLE`. The\ncurrent state is readable at `GET /rfqs/platform-state`.\n",
         "tags": [
           "Rfqs"
         ],
@@ -5686,6 +5835,63 @@
         }
       }
     },
+    "/rfqs/platform-state": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Returns whether the RFQ venue currently accepts RFQs from Paradex.\n\n`state` is the one to act on. It is the more restrictive of two venue states,\nboth also returned:\n\n- `platform_state`, the venue's global state, with the scheduled next state\n  in `next_platform_state` taking effect at `next_platform_state_at` (unix\n  milliseconds, `0` when the state is unknown);\n- `venue_state`, the venue's maintenance state for Paradex markets.\n\n| `state` | Create | Execute | Cancel |\n| ------- | ------ | ------- | ------ |\n| `AVAILABLE` | yes | yes | yes |\n| `AVAILABLE_CANCEL_ONLY` | no | no | yes |\n| `UNAVAILABLE` | no | no | only when `platform_state` is not `UNAVAILABLE` |\n| `UNKNOWN` | sent to the venue | sent to the venue | sent to the venue |\n\nA create or an execute refused on the state is answered `400` with error\n`RFQ_VENUE_UNAVAILABLE`. A cancel is always sent to the venue; while\n`platform_state` is `UNAVAILABLE` the venue refuses it, and the WebSocket\n`RESULT` event reports the refusal. `UNKNOWN` means the state could not be\nread recently; requests are then sent to the venue, which answers them through\nthe WebSocket `RESULT` event.\n\nThe state is served from a snapshot refreshed every few seconds, so a change\non the venue appears here after up to one refresh.\n",
+        "tags": [
+          "Rfqs"
+        ],
+        "summary": "Get RFQ venue state",
+        "operationId": "rfq-platform-state",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.RfqPlatformStateResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rfqs/{rfq_id}": {
       "delete": {
         "security": [
@@ -5839,7 +6045,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Queues a taker limit Fill-or-Kill order against an RFQ.\n\nExecution is asynchronous. Subscribe to the private WebSocket channel `rfq`\nbefore sending the request. A `202 Accepted` response contains a Paradex\n`request_id` and confirms only that the command was queued. The later\nWebSocket `RESULT` event with the same `request_id` reports success or failure;\non success, `result.order_id` is the venue-issued order identifier.\n\n`quantity` must be a positive decimal string. `side` is `BUY` or `SELL`.\n`price` is the signed net strategy price, so zero and negative values are valid\nfor multi-leg credit strategies.\n\n`side` must be a direction the RFQ was accepted for, which its create result\nreports as `result.allowed_side`: the direction an RFQ created with a `side` was\ncommitted to, or either direction for a `TWO_WAY` one. An execute on any other\nside is rejected by the `RESULT` event, because the collateral held against the\nRFQ never covered it. An empty `result.allowed_side` is an RFQ Paradex did not\nrisk-check, which holds no such collateral and accepts either direction.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n",
+        "description": "Queues a taker limit Fill-or-Kill order against an RFQ.\n\nExecution is asynchronous. Subscribe to the private WebSocket channel `rfq`\nbefore sending the request. A `202 Accepted` response contains a Paradex\n`request_id` and confirms only that the command was queued. The later\nWebSocket `RESULT` event with the same `request_id` reports success or failure;\non success, `result.order_id` is the venue-issued order identifier.\n\n`quantity` must be a positive decimal string. `side` is `BUY` or `SELL`.\n`price` is the signed net strategy price, so zero and negative values are valid\nfor multi-leg credit strategies.\n\n`side` must be a direction the RFQ was accepted for, which its create result\nreports as `result.allowed_side`: the direction an RFQ created with a `side` was\ncommitted to, or either direction for a `TWO_WAY` one. An execute on any other\nside is rejected by the `RESULT` event, because the collateral held against the\nRFQ never covered it. An empty `result.allowed_side` is an RFQ Paradex did not\nrisk-check, which holds no such collateral and accepts either direction.\n\nValidation or risk-check failures that occur after queueing are reported by\nthe WebSocket `RESULT` event.\n\nWhile the RFQ venue is `AVAILABLE_CANCEL_ONLY` or `UNAVAILABLE` for Paradex,\nthe request is rejected with `400` and error `RFQ_VENUE_UNAVAILABLE`. The\ncurrent state is readable at `GET /rfqs/platform-state`.\n",
         "tags": [
           "Rfqs"
         ],
@@ -7038,7 +7244,12 @@
         }
       },
       "post": {
-        "description": "Create a new vault by providing deployment parameters.Current user will\nbe set as owner of the account and a new sub-account will be deployed as\nvault operator.\n",
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Create a new vault by providing deployment parameters.Current user will\nbe set as owner of the account and a new sub-account will be deployed as\nvault operator.\n\nTo create a Starknet vault operator, send the vault owner's main-key\nsession JWT as the bearer token. Subkey, readonly and RPC tokens do not\nprove ownership. A request without that token is rejected with\n`VAULT_OPERATOR_OWNER_PROOF_REQUIRED`.\n",
         "tags": [
           "Vaults"
         ],
@@ -8436,12 +8647,12 @@
             ]
           },
           "price": {
-            "description": "Agreed price for this trade (empty if requiring offers)",
+            "description": "Agreed price for this trade. Required when both maker_order and taker_order are set, may be empty on a trade requiring offers",
             "type": "string",
             "example": "30000.00"
           },
           "size": {
-            "description": "Agreed size for this trade (empty if requiring offers)",
+            "description": "Agreed size for this trade. Required when both maker_order and taker_order are set, may be empty on a trade requiring offers",
             "type": "string",
             "example": "10.5"
           },
@@ -9235,6 +9446,19 @@
             "description": "New name for the subkey.",
             "type": "string",
             "example": "My Updated Device Name"
+          }
+        }
+      },
+      "requests.UpdateSubkeyBlockTradeSigning": {
+        "type": "object",
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "description": "Whether the subkey may sign block trades for the account.",
+            "type": "boolean",
+            "example": true
           }
         }
       },
@@ -10762,6 +10986,7 @@
           "PROFILE_STATS_NOT_FOUND",
           "INVALID_CHAIN",
           "INVALID_LAYERSWAP_SWAP",
+          "INVALID_DEPOSIT_ADDRESS",
           "SOCIAL_USERNAME_IN_USE",
           "INVALID_OAUTH_REQUEST",
           "RPI_ACCOUNT_NOT_WHITELISTED",
@@ -10774,16 +10999,19 @@
           "ACCOUNT_ALREADY_REFERRED",
           "ONBOARDING_PERIOD_EXPIRED",
           "ONBOARDING_RATE_LIMITED",
+          "RFQ_CREATE_BUDGET_EXCEEDED",
           "SUBACCOUNTS_LIMIT_EXCEEDED",
           "INSUFFICIENT_MIN_CHAIN_BALANCE",
           "INSUFFICIENT_EVM_BALANCE",
           "PORTFOLIO_MARGIN_ONBOARDING_DISABLED",
           "PORTFOLIO_MARGIN_INVALID_ACCOUNT_KIND",
           "EVM_VAULT_OPERATORS_DISABLED",
+          "VAULT_OPERATOR_OWNER_PROOF_REQUIRED",
           "INVALID_EVM_SIGNATURE",
           "EVM_SIGNATURE_VERIFICATION_FAILED",
           "INVALID_SUBKEY",
           "SUBKEY_NOT_ACTIVATABLE",
+          "SUBKEY_REVOKED",
           "TOKEN_LIMIT_REACHED",
           "INVALID_TOKEN_SCOPE",
           "IP_NOT_ALLOWED",
@@ -10814,7 +11042,8 @@
           "MMP_CONFIG_INVALID",
           "MMP_NOT_ENABLED",
           "MMP_MIN_FREEZE_NOT_ELAPSED",
-          "MMP_NOT_CONFIGURED"
+          "MMP_NOT_CONFIGURED",
+          "RFQ_VENUE_UNAVAILABLE"
         ],
         "x-enum-comments": {
           "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -10882,6 +11111,7 @@
           "ErrorCodeString_ProfileStatsNotFound",
           "ErrorCodeString_InvalidChain",
           "ErrorCodeString_InvalidLayerswapSwap",
+          "ErrorCodeString_InvalidDepositAddress",
           "ErrorCodeString_SocialUsernameInUse",
           "ErrorCodeString_InvalidOAuthRequest",
           "ErrorCodeString_RPIAccountNotWhitelisted",
@@ -10894,16 +11124,19 @@
           "ErrorCodeString_AccountAlreadyReferred",
           "ErrorCodeString_OnboardingPeriodExpired",
           "ErrorCodeString_OnboardingRateLimited",
+          "ErrorCodeString_RfqCreateBudgetExceeded",
           "ErrorCodeString_SubaccountsLimitExceeded",
           "ErrorCodeString_InsufficientMinChainBalance",
           "ErrorCodeString_InsufficientEvmBalance",
           "ErrorCodeString_PortfolioMarginOnboardingDisabled",
           "ErrorCodeString_PortfolioMarginInvalidAccountKind",
           "ErrorCodeString_EvmVaultOperatorsDisabled",
+          "ErrorCodeString_VaultOperatorOwnerProofRequired",
           "ErrorCodeString_BadEvmSignature",
           "ErrorCodeString_EvmSigVerificationFailed",
           "ErrorCodeString_InvalidSubkey",
           "ErrorCodeString_SubkeyNotActivatable",
+          "ErrorCodeString_SubkeyRevoked",
           "ErrorCodeString_TokenLimitReached",
           "ErrorCodeString_InvalidTokenScope",
           "ErrorCodeString_IPNotAllowed",
@@ -10934,7 +11167,8 @@
           "ErrorCodeString_MmpConfigInvalid",
           "ErrorCodeString_MmpNotEnabled",
           "ErrorCodeString_MmpMinFreezeNotElapsed",
-          "ErrorCodeString_MmpNotConfigured"
+          "ErrorCodeString_MmpNotConfigured",
+          "ErrorCodeString_RfqVenueUnavailable"
         ]
       },
       "responses.ErrorResponse": {
@@ -13027,6 +13261,76 @@
           }
         }
       },
+      "responses.RfqPlatformStateResult": {
+        "type": "object",
+        "properties": {
+          "next_platform_state": {
+            "description": "The venue's scheduled next global state",
+            "enum": [
+              "AVAILABLE",
+              "AVAILABLE_CANCEL_ONLY",
+              "UNAVAILABLE",
+              "UNKNOWN"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.RfqVenueState"
+              }
+            ],
+            "example": "UNAVAILABLE"
+          },
+          "next_platform_state_at": {
+            "description": "When next_platform_state takes effect, unix milliseconds; 0 when the\nstate is unknown",
+            "type": "integer",
+            "example": 1640995200000
+          },
+          "platform_state": {
+            "description": "The venue's global state",
+            "enum": [
+              "AVAILABLE",
+              "AVAILABLE_CANCEL_ONLY",
+              "UNAVAILABLE",
+              "UNKNOWN"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.RfqVenueState"
+              }
+            ],
+            "example": "AVAILABLE"
+          },
+          "state": {
+            "description": "The state that applies to an RFQ create, execute or cancel: the more\nrestrictive of platform_state and venue_state",
+            "enum": [
+              "AVAILABLE",
+              "AVAILABLE_CANCEL_ONLY",
+              "UNAVAILABLE",
+              "UNKNOWN"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.RfqVenueState"
+              }
+            ],
+            "example": "AVAILABLE"
+          },
+          "venue_state": {
+            "description": "The venue's maintenance state for Paradex markets",
+            "enum": [
+              "AVAILABLE",
+              "AVAILABLE_CANCEL_ONLY",
+              "UNAVAILABLE",
+              "UNKNOWN"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.RfqVenueState"
+              }
+            ],
+            "example": "AVAILABLE"
+          }
+        }
+      },
       "responses.RfqResult": {
         "type": "object",
         "properties": {
@@ -13100,6 +13404,21 @@
             }
           }
         }
+      },
+      "responses.RfqVenueState": {
+        "type": "string",
+        "enum": [
+          "AVAILABLE",
+          "AVAILABLE_CANCEL_ONLY",
+          "UNAVAILABLE",
+          "UNKNOWN"
+        ],
+        "x-enum-varnames": [
+          "RfqVenueStateAvailable",
+          "RfqVenueStateCancelOnly",
+          "RfqVenueStateUnavailable",
+          "RfqVenueStateUnknown"
+        ]
       },
       "responses.RollingDetailsResp": {
         "type": "object",
@@ -13335,6 +13654,11 @@
             "example": [
               "[\"203.0.113.0/24\"]"
             ]
+          },
+          "block_trade_signing_enabled": {
+            "description": "Whether this subkey is enabled for block trade signing (create, offer\nand execute signatures) for its account: it is active, and either the\naccount owner enabled it with the main key or it is the Paradigm RFQ\ndelegation key, which follows its delegation. Always false for pending\nand revoked subkeys.",
+            "type": "boolean",
+            "example": false
           },
           "created_at": {
             "description": "Subkey creation timestamp (nanoseconds since epoch)",

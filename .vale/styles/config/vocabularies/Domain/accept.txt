@@ -77,3 +77,4 @@ margined
 Margined
 Nasdaq
 SNARKs
+Etherscan

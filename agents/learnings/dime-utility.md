@@ -9,5 +9,12 @@
 - Escape dollar signs as `\$DIME` in prose and table cells to avoid MathJax-style parsing.
 - Link to `/trading/trading-fees` for the full fee schedule rather than restating volume tiers here.
 
+## DIME Token page
+
+`fern/pages/dime/dime-token.mdx` is served at `/dime/dime-token` and is the first page in the `dime` tab (tab display name is "DIME"). It holds token facts (supply, decimals) and contract addresses.
+
+- Source of truth for addresses: `bridged_tokens` (DIME entry) and `dime_staking_contract_address` in `https://api.prod.paradex.trade/v1/system/config`. Total supply and decimals can be confirmed with `totalSupply()` / `decimals()` on the Ethereum token contract.
+- Link Ethereum addresses to Etherscan and Paradex Chain addresses to `https://app.paradex.trade/explorer/contract/<address>`.
+
 ## Last updated
-2026-07-07
+2026-10-11

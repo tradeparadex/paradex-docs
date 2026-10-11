@@ -13,6 +13,7 @@
 
 `fern/pages/dime/dime-token.mdx` is served at `/dime/dime-token` and is the first page in the `dime` tab (tab display name is "DIME"). It holds token facts (supply, decimals) and contract addresses.
 
+- Solana \$DIME (`3ywtR9qQH4BuA7LSfLvEuW1gh6ha7EK18XwLbHvhryPZ`, 9 decimals, Hyperlane warp route) comes from CoinGecko and is not in system config.
 - Source of truth for addresses: `bridged_tokens` (DIME entry) and `dime_staking_contract_address` in `https://api.prod.paradex.trade/v1/system/config`. Total supply and decimals can be confirmed with `totalSupply()` / `decimals()` on the Ethereum token contract.
 - Link Ethereum addresses to Etherscan and Paradex Chain addresses to `https://app.paradex.trade/explorer/contract/<address>`.
 

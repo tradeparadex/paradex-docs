@@ -66,7 +66,7 @@ navigation:
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
           - section: DIME
-            skip-slug: true
+            slug: ""
             contents:
               - page: DIME
                 slug: dime

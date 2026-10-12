@@ -11,7 +11,7 @@
 
 ## DIME section (Overview tab)
 
-The Overview tab has a `DIME` section (`skip-slug: true`) with two pages:
+The Overview tab has a `DIME` section with `slug: ""` with two pages. Use `slug: ""` (not `skip-slug: true`) to keep pages at the parent URL level: the CI internal link checker does not understand `skip-slug` and reports the pages as broken links.
 - `fern/pages/introduction/dime.mdx` ("DIME", `/docs/getting-started/dime`): general token info only (supply, decimals, networks, contract addresses).
 - `fern/pages/introduction/dime-utility.mdx` ("DIME Utility", `/docs/getting-started/dime-utility`): Buybacks, Fee Discounts, Gas. Keep in sync with `trading/dime-utility.mdx`.
 

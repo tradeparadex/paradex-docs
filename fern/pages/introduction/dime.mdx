@@ -1,7 +1,7 @@
 ---
 title: DIME
 subtitle: \$DIME is the native token of the Paradex ecosystem.
-description: \$DIME token details, official contract addresses on Ethereum, Paradex Chain, and Solana, and total supply.
+description: \$DIME token details, official contract addresses on Ethereum, Paradex Chain, Solana, and Hyperliquid, and total supply.
 ---
 
 ## Token Overview
@@ -12,8 +12,8 @@ description: \$DIME token details, official contract addresses on Ethereum, Para
 | Ticker | \$DIME |
 | Total supply | 1,000,000,000 \$DIME |
 | Circulating supply | See the [DIME overview](https://app.paradex.trade/dime/overview) for live data |
-| Decimals | 18 (Ethereum and Paradex Chain), 9 (Solana) |
-| Networks | Ethereum, Paradex Chain, Solana |
+| Decimals | 18 (Ethereum, Paradex Chain, and HyperEVM), 9 (Solana) |
+| Networks | Ethereum, Paradex Chain, Solana, Hyperliquid (HyperCore and HyperEVM) |
 
 \$DIME is natively issued on Ethereum and bridged to Paradex Chain and Solana. On Paradex Chain it is used for staking, fee payments, and trading on the [DIME-USD spot market](/trading/instruments-guide/spot/dime-usd). See [DIME Utility](/docs/getting-started/dime-utility) for how \$DIME is used across Paradex.
 
@@ -46,6 +46,15 @@ Only use the addresses listed on this page. Always verify a contract address bef
 | Contract | Address |
 |---|---|
 | \$DIME token | [`3ywtR9qQH4BuA7LSfLvEuW1gh6ha7EK18XwLbHvhryPZ`](https://solscan.io/token/3ywtR9qQH4BuA7LSfLvEuW1gh6ha7EK18XwLbHvhryPZ) |
+
+### Hyperliquid
+
+\$DIME is available on both HyperCore and HyperEVM. On HyperCore it uses 5 decimals.
+
+| Contract | Address |
+|---|---|
+| \$DIME token (HyperCore) | [`0xaa2cf8dba4f3869dd5f77002cabade48`](https://app.hyperliquid.xyz/explorer/token/0xaa2cf8dba4f3869dd5f77002cabade48) |
+| \$DIME token (HyperEVM) | [`0xa72ae85ca2340ff74cc45c423f2a85a062a4fb4c`](https://hyperevmscan.io/token/0xa72ae85ca2340ff74cc45c423f2a85a062a4fb4c) |
 
 <Tip title="Retrieve addresses programmatically" icon="fa-solid fa-code">
 The Ethereum and Paradex Chain token, bridge, and staking addresses are also listed on the [System configuration page](https://app.paradex.trade/system-config) and returned by `GET /system/config` under `bridged_tokens` and `dime_staking_contract_address`.

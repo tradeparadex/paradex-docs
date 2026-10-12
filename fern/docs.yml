@@ -65,9 +65,15 @@ navigation:
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
-          - page: DIME
-            slug: dime
-            path: ./pages/introduction/dime-utility.mdx
+          - section: DIME
+            skip-slug: true
+            contents:
+              - page: DIME
+                slug: dime
+                path: ./pages/introduction/dime.mdx
+              - page: DIME Utility
+                slug: dime-utility
+                path: ./pages/introduction/dime-utility.mdx
           - page: Bridges and On-Ramps
             slug: bridges
             path: ./pages/introduction/bridges-onramps.mdx
@@ -901,10 +907,6 @@ redirects:
   # Redirect root to Home tab landing
   - source: "/"
     destination: "/home"
-
-  # Redirect old Overview DIME Utility page to DIME page
-  - source: "/docs/getting-started/dime-utility"
-    destination: "/docs/getting-started/dime"
 
   # Redirects from old /overview/ prefix to new /docs/ tab
   - source: "/overview/getting-started/:slug*"

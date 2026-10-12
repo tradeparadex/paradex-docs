@@ -1,0 +1,52 @@
+---
+title: DIME
+subtitle: \$DIME is the native token of the Paradex ecosystem.
+description: \$DIME token details, official contract addresses on Ethereum, Paradex Chain, and Solana, and total supply.
+---
+
+## Token Overview
+
+| Property | Value |
+|---|---|
+| Name | DIME |
+| Ticker | \$DIME |
+| Total supply | 1,000,000,000 \$DIME |
+| Circulating supply | See the [DIME overview](https://app.paradex.trade/dime/overview) for live data |
+| Decimals | 18 (Ethereum and Paradex Chain), 9 (Solana) |
+| Networks | Ethereum, Paradex Chain, Solana |
+
+\$DIME is natively issued on Ethereum and bridged to Paradex Chain and Solana. On Paradex Chain it is used for staking, fee payments, and trading on the [DIME-USD spot market](/trading/instruments-guide/spot/dime-usd). See [DIME Utility](/docs/getting-started/dime-utility) for how \$DIME is used across Paradex.
+
+## Contract Addresses
+
+<Warning>
+Only use the addresses listed on this page. Always verify a contract address before sending, bridging, or approving \$DIME.
+</Warning>
+
+### Ethereum
+
+| Contract | Address |
+|---|---|
+| \$DIME token | [`0xb32e10022ffbedfe10bc818a1c7e67d9d87e0fa7`](https://etherscan.io/token/0xb32e10022ffbedfe10bc818a1c7e67d9d87e0fa7) |
+| Paradex Chain bridge | [`0xE3cbE3A636AB6A754e9e41B12b09d09Ce9E53Db3`](https://etherscan.io/address/0xE3cbE3A636AB6A754e9e41B12b09d09Ce9E53Db3) |
+
+### Paradex Chain
+
+| Contract | Address |
+|---|---|
+| \$DIME token | [`0x316cb56a8cc7c478ea7c9b22f33571330bc61ea0312f2222d182b4b6b3fa4b2`](https://app.paradex.trade/explorer/contract/0x316cb56a8cc7c478ea7c9b22f33571330bc61ea0312f2222d182b4b6b3fa4b2) |
+| \$DIME bridge | [`0x655842814fbfdbe22a1c1ad311d3706ce8a7d337bcb67cd53b0ed7b019c6353`](https://app.paradex.trade/explorer/contract/0x655842814fbfdbe22a1c1ad311d3706ce8a7d337bcb67cd53b0ed7b019c6353) |
+| \$DIME staking | [`0x1328a30ebfc021f8e75fa960d4bfd687f1d5522cd8c10547417c09053ca2243`](https://app.paradex.trade/explorer/contract/0x1328a30ebfc021f8e75fa960d4bfd687f1d5522cd8c10547417c09053ca2243) |
+| Buyback account | [`0x3f38009a58bfc930a399ef9670ee60b355d9d22ea79709f2243182989d16709`](https://app.paradex.trade/explorer/contract/0x3f38009a58bfc930a399ef9670ee60b355d9d22ea79709f2243182989d16709) |
+
+### Solana
+
+\$DIME on Solana is bridged through Hyperlane.
+
+| Contract | Address |
+|---|---|
+| \$DIME token | [`3ywtR9qQH4BuA7LSfLvEuW1gh6ha7EK18XwLbHvhryPZ`](https://solscan.io/token/3ywtR9qQH4BuA7LSfLvEuW1gh6ha7EK18XwLbHvhryPZ) |
+
+<Tip title="Retrieve addresses programmatically" icon="fa-solid fa-code">
+The Ethereum and Paradex Chain token, bridge, and staking addresses are also listed on the [System configuration page](https://app.paradex.trade/system-config) and returned by `GET /system/config` under `bridged_tokens` and `dime_staking_contract_address`.
+</Tip>

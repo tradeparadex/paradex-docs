@@ -23,3 +23,7 @@ The Overview tab has a `DIME` section with `slug: ""` with two pages. Use `slug:
 
 ## Last updated
 2026-10-11
+
+## DIME tab
+
+The `dime` tab is labeled `$DIME` and holds both pages: DIME (`/dime/dime`, reuses `introduction/dime.mdx`) and DIME Utility (`/dime/dime-utility`, `trading/dime-utility.mdx`). The live token-statistics link text is "\$DIME TAG Center".

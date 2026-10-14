@@ -17,7 +17,7 @@ tabs:
     display-name: Overview
     slug: docs
   dime:
-    display-name: DIME Utility
+    display-name: "$DIME"
     slug: dime
   trading:
     display-name: Trading
@@ -145,6 +145,9 @@ navigation:
 
   - tab: dime
     layout:
+      - page: DIME
+        slug: dime
+        path: ./pages/introduction/dime.mdx
       - page: DIME Utility
         slug: dime-utility
         path: ./pages/trading/dime-utility.mdx

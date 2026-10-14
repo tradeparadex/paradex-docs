@@ -146,10 +146,10 @@ navigation:
   - tab: dime
     layout:
       - page: DIME
-        slug: dime
+        slug: ""
         path: ./pages/introduction/dime.mdx
       - page: DIME Utility
-        slug: dime-utility
+        slug: utility
         path: ./pages/trading/dime-utility.mdx
 
   - tab: trading
@@ -1075,6 +1075,10 @@ redirects:
   # Redirect staking to Trading Fees staking section
   - source: "/staking"
     destination: "/trading/trading-fees#stake-dime"
+  - source: "/dime/dime-utility"
+    destination: "/dime/utility"
+  - source: "/dime/dime"
+    destination: "/dime"
   # Redirect old v2 URL to Trading Fees
   - source: "/trading/trading-fees-v2"
     destination: "/trading/trading-fees"

@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.7.1
+    version: 1.7.2
     description: |
         Channels for real-time updates.
 
@@ -1319,6 +1319,59 @@ components:
                     description: Account last updated time
                     example: "1681471234972"
                     type: integer
+                withdrawal_lock:
+                    additionalProperties: false
+                    description: Settlement asset amount reserved for a portfolio margin withdrawal, absent when there is none
+                    properties:
+                        amount:
+                            description: Settlement asset amount that can be withdrawn or transferred
+                            example: "1000"
+                            type: string
+                        expires_at:
+                            description: Unix seconds after which the lock can no longer be spent
+                            example: "1681471534"
+                            type: integer
+                        request_id:
+                            description: The request this lock answers, as returned by POST /account/withdrawal-lock
+                            example: "1681471234972000001"
+                            type: string
+                        status:
+                            description: PENDING until Paraclear holds the lock; withdraw only once ACTIVE
+                            enum:
+                                - PENDING
+                                - ACTIVE
+                            example: ACTIVE
+                            type: string
+                    required:
+                        - amount
+                        - expires_at
+                        - status
+                    type: object
+                withdrawal_lock_rejection:
+                    additionalProperties: false
+                    description: The last withdrawal lock request refused, absent once it is five minutes old
+                    properties:
+                        amount:
+                            description: Settlement asset amount requested
+                            example: "1000"
+                            type: string
+                        reason:
+                            description: Why the lock was refused
+                            example: insufficient free collateral
+                            type: string
+                        rejected_at:
+                            description: Unix seconds
+                            example: "1681471234"
+                            type: integer
+                        request_id:
+                            description: The request refused, as returned by POST /account/withdrawal-lock
+                            example: "1681471234972000001"
+                            type: string
+                    required:
+                        - amount
+                        - reason
+                        - rejected_at
+                    type: object
             required:
                 - account
                 - initial_margin_requirement

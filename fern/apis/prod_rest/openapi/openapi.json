@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.142.2"
+    "version": "1.144.0"
   },
   "paths": {
     "/account": {
@@ -3592,6 +3592,28 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dime/config": {
+      "get": {
+        "description": "Returns the DIME circulating and staked supply, and the wallets holding the DIME outside circulation",
+        "tags": [
+          "Dime"
+        ],
+        "summary": "Get DIME config",
+        "operationId": "get-dime-config",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.DimeConfigResponse"
                 }
               }
             }
@@ -9999,6 +10021,22 @@
             "description": "Account last updated time",
             "type": "integer",
             "example": 1681471234972
+          },
+          "withdrawal_lock": {
+            "description": "Settlement asset amount reserved for a portfolio margin withdrawal, absent when there is none",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.WithdrawalLockResponse"
+              }
+            ]
+          },
+          "withdrawal_lock_rejection": {
+            "description": "The last withdrawal lock request refused, absent once it is five minutes old",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.WithdrawalLockRejectionResponse"
+              }
+            ]
           }
         }
       },
@@ -10904,6 +10942,67 @@
             "description": "Maintenance Margin Factor",
             "type": "string",
             "example": "0.51"
+          }
+        }
+      },
+      "responses.DimeAllocationResp": {
+        "type": "object",
+        "properties": {
+          "addresses": {
+            "description": "Ethereum mainnet wallets holding it",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "0xF1f82188E7D3B54b8872986869D4207F8A78A4F1"
+            ]
+          },
+          "balance": {
+            "description": "Their DIME balance, each wallet floored to whole DIME. Omitted when unavailable",
+            "type": "string",
+            "example": "38000000"
+          },
+          "category": {
+            "description": "Allocation category",
+            "type": "string",
+            "enum": [
+              "DIME_ASSISTANCE_FUND",
+              "PARADIGM_BALANCE_SHEET_BUYBACKS",
+              "LIQUIDITY_PROGRAMS",
+              "TREASURY",
+              "PARADIGM_AND_STRATEGIC_INVESTORS",
+              "ONGOING_COMMUNITY_REWARDS",
+              "CORE_CONTRIBUTORS"
+            ],
+            "example": "TREASURY"
+          }
+        }
+      },
+      "responses.DimeConfigResponse": {
+        "type": "object",
+        "properties": {
+          "allocations": {
+            "description": "The DIME held outside circulation, by category.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.DimeAllocationResp"
+            }
+          },
+          "circulating_supply": {
+            "description": "DIME in circulation: total supply less the allocations' balances, in\nwhole DIME. Omitted when unavailable.",
+            "type": "string",
+            "example": "215000000"
+          },
+          "staked_supply": {
+            "description": "DIME held by the staking contract, including stakes in their unstake\ncooldown. Omitted when unavailable.",
+            "type": "string",
+            "example": "48000000.5"
+          },
+          "total_supply": {
+            "description": "Total DIME supply, in whole DIME.",
+            "type": "string",
+            "example": "1000000000"
           }
         }
       },
@@ -14867,6 +14966,60 @@
           },
           "window_all": {
             "type": "string"
+          }
+        }
+      },
+      "responses.WithdrawalLockRejectionResponse": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "description": "Settlement asset amount requested",
+            "type": "string",
+            "example": "1000"
+          },
+          "reason": {
+            "description": "Why the lock was refused",
+            "type": "string",
+            "example": "insufficient free collateral"
+          },
+          "rejected_at": {
+            "description": "Unix seconds",
+            "type": "integer",
+            "example": 1681471234
+          },
+          "request_id": {
+            "description": "The request refused, as returned by POST /account/withdrawal-lock",
+            "type": "string",
+            "example": "1681471234972000001"
+          }
+        }
+      },
+      "responses.WithdrawalLockResponse": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "description": "Settlement asset amount that can be withdrawn or transferred",
+            "type": "string",
+            "example": "1000"
+          },
+          "expires_at": {
+            "description": "Unix seconds after which the lock can no longer be spent",
+            "type": "integer",
+            "example": 1681471534
+          },
+          "request_id": {
+            "description": "The request this lock answers, as returned by POST /account/withdrawal-lock",
+            "type": "string",
+            "example": "1681471234972000001"
+          },
+          "status": {
+            "description": "PENDING until Paraclear holds the lock; withdraw only once ACTIVE",
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "ACTIVE"
+            ],
+            "example": "ACTIVE"
           }
         }
       },

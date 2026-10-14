@@ -17,7 +17,7 @@ tabs:
     display-name: Overview
     slug: docs
   dime:
-    display-name: DIME Utility
+    display-name: "$DIME"
     slug: dime
   trading:
     display-name: Trading
@@ -65,9 +65,15 @@ navigation:
           - page: Roadmap
             slug: roadmap
             path: ./pages/introduction/roadmap.mdx
-          - page: DIME Utility
-            slug: dime-utility
-            path: ./pages/introduction/dime-utility.mdx
+          - section: DIME
+            slug: ""
+            contents:
+              - page: DIME
+                slug: dime
+                path: ./pages/introduction/dime.mdx
+              - page: DIME Utility
+                slug: dime-utility
+                path: ./pages/introduction/dime-utility.mdx
           - page: Bridges and On-Ramps
             slug: bridges
             path: ./pages/introduction/bridges-onramps.mdx
@@ -139,6 +145,9 @@ navigation:
 
   - tab: dime
     layout:
+      - page: DIME
+        slug: ""
+        path: ./pages/introduction/dime.mdx
       - page: DIME Utility
         slug: dime-utility
         path: ./pages/trading/dime-utility.mdx
@@ -1066,6 +1075,8 @@ redirects:
   # Redirect staking to Trading Fees staking section
   - source: "/staking"
     destination: "/trading/trading-fees#stake-dime"
+  - source: "/dime/dime"
+    destination: "/dime"
   # Redirect old v2 URL to Trading Fees
   - source: "/trading/trading-fees-v2"
     destination: "/trading/trading-fees"

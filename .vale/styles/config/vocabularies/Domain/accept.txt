@@ -77,3 +77,6 @@ margined
 Margined
 Nasdaq
 SNARKs
+Etherscan
+HyperCore
+HyperEVM

@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.144.0"
+    "version": "1.144.1"
   },
   "paths": {
     "/account": {
@@ -5435,7 +5435,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Lists the authenticated account's RFQs, most recent first.\n\nThis is a synchronous read from the RFQ venue. It returns one page of RFQs\n(up to 100 by default, sized via `page_size`), optionally filtered by `state`.\nThe page is built from the RFQs the venue holds for the account and every\naccount sharing its RFQ registration, of which only the authenticated\naccount's are returned — a busy set of related accounts can therefore leave a\npage short. The response's `next` field carries the venue's cursor to the\nfollowing page; pass it back as `cursor` to continue, and stop only when it\nis null — an empty `results` with a non-null `next` is normal, since the\ncursor tracks the venue's page, not this account's records. Each\nresult includes the venue-issued RFQ identifier, lifecycle state, quantity,\nlegs, counterparties, timestamps, and optional close reason. Venue state and\nclose-reason strings are passed through. `mark_price`, when present, is the\nvenue's structure mark at the moment the RFQ was created — the reference the\ntaker was quoted against — recorded by Paradex at create. It is omitted when\nunknown: an RFQ created before that recording began, a structure the venue\nhad not priced at create, or a mark past its retention.\n",
+        "description": "Lists the authenticated account's RFQs, most recent first.\n\nThis is a synchronous read from the RFQ venue. It returns one page of RFQs\n(up to 100 by default, sized via `page_size`), optionally filtered by `state`.\nThe page is built from the RFQs the venue holds for the account and every\naccount sharing its RFQ registration, of which only the authenticated\naccount's are returned — a busy set of related accounts can therefore leave a\npage short. The response's `next` field carries the venue's cursor to the\nfollowing page; pass it back as `cursor` to continue, and stop only when it\nis null — an empty `results` with a non-null `next` is normal, since the\ncursor tracks the venue's page, not this account's records. Each\nresult includes the venue-issued RFQ identifier, lifecycle state, quantity,\nlegs, counterparties, timestamps, and optional close reason. Venue state and\nclose-reason strings are passed through. `mark_price`, when present, is the\nvenue's structure mark at the moment the RFQ was created — the reference the\ntaker was quoted against — recorded by Paradex at create. It is omitted when\nunknown: an RFQ created before that recording began, a structure the venue\nhad not priced at create, or a mark past its retention. `filled_quantity` is\nthe size that has settled: below `quantity` after a partial execution, and\n`0` for an RFQ that has not executed or is still settling. It is omitted\nwhile the venue does not report it.\n",
         "tags": [
           "Rfqs"
         ],
@@ -11142,7 +11142,12 @@
           "MMP_NOT_ENABLED",
           "MMP_MIN_FREEZE_NOT_ELAPSED",
           "MMP_NOT_CONFIGURED",
-          "RFQ_VENUE_UNAVAILABLE"
+          "RFQ_VENUE_UNAVAILABLE",
+          "ADDRESS_BOOK_ENTRY_NOT_FOUND",
+          "ADDRESS_BOOK_INVALID_LABEL",
+          "ADDRESS_BOOK_OWN_ACCOUNT",
+          "ADDRESS_BOOK_DUPLICATE_ADDRESS",
+          "ADDRESS_BOOK_LIMIT_REACHED"
         ],
         "x-enum-comments": {
           "ErrorCodeString_SignerMismatch": "#nosec G101"
@@ -11267,7 +11272,12 @@
           "ErrorCodeString_MmpNotEnabled",
           "ErrorCodeString_MmpMinFreezeNotElapsed",
           "ErrorCodeString_MmpNotConfigured",
-          "ErrorCodeString_RfqVenueUnavailable"
+          "ErrorCodeString_RfqVenueUnavailable",
+          "ErrorCodeString_AddressBookEntryNotFound",
+          "ErrorCodeString_AddressBookInvalidLabel",
+          "ErrorCodeString_AddressBookOwnAccount",
+          "ErrorCodeString_AddressBookDuplicateAddress",
+          "ErrorCodeString_AddressBookLimitReached"
         ]
       },
       "responses.ErrorResponse": {
@@ -13453,6 +13463,11 @@
           "expires_at": {
             "type": "integer",
             "example": 1640995500000
+          },
+          "filled_quantity": {
+            "description": "Settled size: below quantity after a partial execution, 0 until a trade settles",
+            "type": "string",
+            "example": "4"
           },
           "id": {
             "description": "Venue-issued RFQ id",

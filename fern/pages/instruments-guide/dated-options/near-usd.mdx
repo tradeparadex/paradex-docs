@@ -1,0 +1,26 @@
+---
+title: NEAR options configuration
+---
+
+The reference configuration for the NEAR Dated Options contract:
+
+| Parameter | Value |
+|-----------|-------|
+| Product type | Dated European Option |
+| Symbol format | NEAR-USD-{Expiry}-{Strike}-{Type} |
+| Base currency | NEAR |
+| Quote currency | USD |
+| Settlement currency | USDC |
+| Price tick size | 0.0001 USD |
+| Order size increment | 10 NEAR |
+| Minimum order value | 20 USD |
+| Maximum order size | 50,000 NEAR |
+| Maximum open orders | 150 |
+| Position limit | 500,000 NEAR |
+| Spot band factor | 50% |
+| IV band factor | 50% |
+
+## Margin Configuration
+
+- [Cross Margin Requirements](/trading/dated-options/margin-requirements) — cross-margin IMR/MMR parameters for trading options
+- [Portfolio Margin](/risk/portfolio-margin) — portfolio-level risk evaluation for reduced margin on hedged portfolios

@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.144.1"
+    "version": "1.144.2"
   },
   "paths": {
     "/account": {
@@ -4321,7 +4321,7 @@
                         "results": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/responses.MarketSummaryResp"
+                            "$ref": "#/components/schemas/responses.MarketSummaryRestResp"
                           }
                         }
                       }
@@ -12369,7 +12369,7 @@
           }
         }
       },
-      "responses.MarketSummaryResp": {
+      "responses.MarketSummaryRestResp": {
         "type": "object",
         "properties": {
           "ask": {
@@ -12421,6 +12421,11 @@
             "type": "string",
             "example": "0.05"
           },
+          "funding_interval_minutes": {
+            "description": "Period funding_rate is expressed over, in minutes (8h = 480), on the live summary only. Omitted for markets that do not accrue funding, such as spot and dated options.",
+            "type": "number",
+            "example": 480
+          },
           "funding_rate": {
             "description": "This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate.",
             "type": "string",
@@ -12463,6 +12468,16 @@
             "description": "Open interest in base currency",
             "type": "string",
             "example": "6100048.3"
+          },
+          "open_interest_long": {
+            "description": "Long-side open interest in base currency, always half of open_interest. Perpetual futures only, on the live summary only.",
+            "type": "string",
+            "example": "3050024.15"
+          },
+          "open_interest_short": {
+            "description": "Short-side open interest in base currency, always half of open_interest. Perpetual futures only, on the live summary only.",
+            "type": "string",
+            "example": "3050024.15"
           },
           "price_change_rate_24h": {
             "description": "Price change rate in the last 24 hours",

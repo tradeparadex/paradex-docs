@@ -93,7 +93,7 @@ The prices below are illustrative.
 ### Mark and settlement price
 
 - **Mark price**: the Spot Oracle Price is the spot input $S$ to the synthetic forward used by the [Black-76 mark price](/trading/dated-options/mark-price).
-- **Settlement price**: options settle at 08:00 UTC on the expiry date using a [30-minute TWAP](/trading/dated-options#settlement) of the Spot Oracle Price ending at expiry.
+- **Settlement price**: options settle on the expiry date at 15:00 CT (20:00 UTC in summer, 21:00 UTC in winter) for dailies, weeklies and month-ends, and 08:30 CT (13:30 UTC in summer, 14:30 UTC in winter) for quarterlies, in line with the CME settlements (see [RWA settlement times](/trading/instruments-guide/options/rwa-settlement-times)), using a [30-minute TWAP](/trading/dated-options#settlement) of the Spot Oracle Price ending at expiry.
 
 See [TradFi Price Oracle](/trading/tradfi-markets) for the methodology across all TradFi markets.
 

@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.144.2"
+    "version": "1.145.0"
   },
   "paths": {
     "/account": {
@@ -4060,7 +4060,7 @@
     },
     "/markets": {
       "get": {
-        "description": "Get markets static data component\n",
+        "description": "Get markets static data component\n\nMarkets are listed by symbol. Filter the list with `asset_kind` and\n`base_asset`, each a comma-separated list. Send the `ETag` of an unfiltered\nresponse back in `If-None-Match` to get `304 Not Modified` while the list is\nunchanged.\n",
         "tags": [
           "Markets"
         ],
@@ -4074,11 +4074,35 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Without market only: comma-separated asset kinds to list, out of PERP, PERP_OPTION, OPTION, SPOT and FUTURE - example: PERP,SPOT",
+            "name": "asset_kind",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Without market only: comma-separated base assets to list - example: BTC,ETH",
+            "name": "base_asset",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
+            "headers": {
+              "ETag": {
+                "description": "Without asset_kind and base_asset: weak validator of the response; send it back in If-None-Match to get 304 while it is unchanged",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -4098,6 +4122,19 @@
                       }
                     }
                   ]
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified: the ETag sent in If-None-Match is still current"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
                 }
               }
             }
@@ -4271,13 +4308,31 @@
     },
     "/markets/summary": {
       "get": {
-        "description": "Get markets dynamic data component\n",
+        "description": "Get markets dynamic data component\n\nWith `market=ALL`, filter the list with `asset_kind` and `base_asset`, each a\ncomma-separated list.\n",
         "tags": [
           "Markets"
         ],
         "summary": "List available markets summary",
         "operationId": "get-markets-summary",
         "parameters": [
+          {
+            "example": "PERP,SPOT",
+            "description": "With market=ALL only: comma-separated asset kinds to list, out of PERP, PERP_OPTION, OPTION, SPOT and FUTURE",
+            "name": "asset_kind",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "example": "BTC,ETH",
+            "description": "With market=ALL only: comma-separated base assets to list",
+            "name": "base_asset",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "End Time (unix time millisecond)",
             "name": "end",
@@ -4379,7 +4434,7 @@
             }
           },
           {
-            "description": "EVM vault operator index (eip191 only; requires EnableEvmVaultOperators)",
+            "description": "EVM vault operator index (eip191 only)",
             "name": "vault_operator_index",
             "in": "query",
             "schema": {
@@ -4411,7 +4466,7 @@
         }
       },
       "post": {
-        "description": "Onboarding verifies that the caller owns the StarkNet address and enters them\ninto the database. This call is idempotent.\n",
+        "description": "Onboarding verifies that the caller owns the StarkNet address and enters them\ninto the database. This call is idempotent.\n\nAn account onboarded under an Ethereum account can prove that the Ethereum\naccount agreed to the link by sending `PARADEX-PARENT-SIWE-MESSAGE` and\n`PARADEX-PARENT-SIGNATURE`. The message is a Sign-In with Ethereum\n(EIP-4361) message, base64 encoded, and the signature is the Ethereum\naccount's `personal_sign` over it, 0x-prefixed hex. The message must have:\n\n- statement: the line below, where `<account>` is the Paradex account\n  address in lowercase hex with the `0x` prefix and no leading zeros, and\n  `<chain>` is `starknet_chain_id` from `GET /system/config`;\n\n  ```text\n  Link this wallet as the parent of Paradex account <account> on <chain>\n  ```\n\n- address: the Ethereum account;\n- domain: the Paradex app domain, as for `/v2` onboarding;\n- chain ID: `l1_chain_id` from `GET /system/config`;\n- issued at within the last 5 minutes, and an expiration time at most 5\n  minutes after it (30 seconds when omitted).\n\nOnly an externally owned Ethereum account can produce this signature; a\nsmart contract wallet cannot.\n\nA retry of an onboarding whose deployment failed needs these headers too,\nsigned by the Ethereum account the account was first onboarded under. Calls\nfor an account that is already onboarded do not need them.\n",
         "tags": [
           "Authentication"
         ],
@@ -4441,6 +4496,22 @@
             "name": "PARADEX-STARKNET-SIGNATURE",
             "in": "header",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Base64 Sign-In with Ethereum message linking the Ethereum account as the parent of this account",
+            "name": "PARADEX-PARENT-SIWE-MESSAGE",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "EIP-191 personal_sign by the Ethereum account over PARADEX-PARENT-SIWE-MESSAGE, 0x-prefixed hex",
+            "name": "PARADEX-PARENT-SIGNATURE",
+            "in": "header",
             "schema": {
               "type": "string"
             }
@@ -5567,16 +5638,6 @@
                 }
               }
             }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ApiError"
-                }
-              }
-            }
           }
         }
       }
@@ -5632,16 +5693,6 @@
           },
           "401": {
             "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ApiError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -5705,16 +5756,6 @@
                 }
               }
             }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ApiError"
-                }
-              }
-            }
           }
         }
       }
@@ -5759,16 +5800,6 @@
           },
           "401": {
             "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ApiError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -5834,16 +5865,6 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ApiError"
-                }
-              }
-            }
-          },
           "503": {
             "description": "Service Unavailable",
             "content": {
@@ -5893,16 +5914,6 @@
           },
           "401": {
             "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ApiError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -5961,16 +5972,6 @@
           },
           "401": {
             "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ApiError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -6118,16 +6119,6 @@
           },
           "401": {
             "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ApiError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -11106,6 +11097,7 @@
           "PORTFOLIO_MARGIN_INVALID_ACCOUNT_KIND",
           "EVM_VAULT_OPERATORS_DISABLED",
           "VAULT_OPERATOR_OWNER_PROOF_REQUIRED",
+          "PARENT_PROOF_REQUIRED",
           "INVALID_EVM_SIGNATURE",
           "EVM_SIGNATURE_VERIFICATION_FAILED",
           "INVALID_SUBKEY",
@@ -11150,6 +11142,7 @@
           "ADDRESS_BOOK_LIMIT_REACHED"
         ],
         "x-enum-comments": {
+          "ErrorCodeString_EvmVaultOperatorsDisabled": "Deprecated: no longer returned",
           "ErrorCodeString_SignerMismatch": "#nosec G101"
         },
         "x-enum-varnames": [
@@ -11236,6 +11229,7 @@
           "ErrorCodeString_PortfolioMarginInvalidAccountKind",
           "ErrorCodeString_EvmVaultOperatorsDisabled",
           "ErrorCodeString_VaultOperatorOwnerProofRequired",
+          "ErrorCodeString_ParentProofRequired",
           "ErrorCodeString_BadEvmSignature",
           "ErrorCodeString_EvmSigVerificationFailed",
           "ErrorCodeString_InvalidSubkey",
@@ -11698,37 +11692,37 @@
         "type": "object",
         "properties": {
           "delta": {
-            "description": "Market Delta",
+            "description": "Market Delta, to 5 decimal places",
             "type": "string",
             "example": "1"
           },
           "gamma": {
-            "description": "Market Gamma",
+            "description": "Market Gamma, to 6 significant digits",
             "type": "string",
             "example": "0.2"
           },
           "rho": {
-            "description": "Market Rho",
+            "description": "Market Rho, to 6 significant digits",
             "type": "string",
             "example": "0.2"
           },
           "theta": {
-            "description": "Market Theta",
+            "description": "Market Theta, to 6 significant digits",
             "type": "string",
             "example": "-0.2"
           },
           "vanna": {
-            "description": "Market Vanna",
+            "description": "Market Vanna, to 6 significant digits",
             "type": "string",
             "example": "0.2"
           },
           "vega": {
-            "description": "Market Vega",
+            "description": "Market Vega, to 6 significant digits",
             "type": "string",
             "example": "0.2"
           },
           "volga": {
-            "description": "Market Volga",
+            "description": "Market Volga, to 6 significant digits",
             "type": "string",
             "example": "0.2"
           }
@@ -12378,7 +12372,7 @@
             "example": "30130.15"
           },
           "ask_iv": {
-            "description": "Ask implied volatility, for options",
+            "description": "Ask implied volatility, for options, to 5 decimal places",
             "type": "string",
             "example": "0.2"
           },
@@ -12393,7 +12387,7 @@
             "example": "30112.22"
           },
           "bid_iv": {
-            "description": "Bid implied volatility, for options",
+            "description": "Bid implied volatility, for options, to 5 decimal places",
             "type": "string",
             "example": "0.2"
           },
@@ -12417,7 +12411,7 @@
             "example": "29876.3"
           },
           "forward_rate": {
-            "description": "EWMA-smoothed annualized forward rate for dated options",
+            "description": "EWMA-smoothed annualized forward rate for dated options, to 6 decimal places",
             "type": "string",
             "example": "0.05"
           },
@@ -12427,7 +12421,7 @@
             "example": 480
           },
           "funding_rate": {
-            "description": "This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate.",
+            "description": "This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate. To 12 decimal places.",
             "type": "string",
             "example": "0.3"
           },
@@ -12445,7 +12439,7 @@
             ]
           },
           "last_iv": {
-            "description": "Last traded price implied volatility, for options",
+            "description": "Last traded price implied volatility, for options, to 5 decimal places",
             "type": "string",
             "example": "0.2"
           },
@@ -12455,7 +12449,7 @@
             "example": "30109.53"
           },
           "mark_iv": {
-            "description": "Mark implied volatility, for options",
+            "description": "Mark implied volatility, for options, to 5 decimal places",
             "type": "string",
             "example": "0.2"
           },
@@ -12480,7 +12474,7 @@
             "example": "3050024.15"
           },
           "price_change_rate_24h": {
-            "description": "Price change rate in the last 24 hours",
+            "description": "Price change rate in the last 24 hours, to 4 decimal places",
             "type": "string",
             "example": "0.05"
           },

@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.7.2
+    version: 1.7.3
     description: |
         Channels for real-time updates.
 
@@ -1812,7 +1812,7 @@ components:
                     example: "30130.15"
                     type: string
                 ask_iv:
-                    description: Ask implied volatility, for options
+                    description: Ask implied volatility, for options, to 5 decimal places
                     example: "0.2"
                     type: string
                 ask_size:
@@ -1824,7 +1824,7 @@ components:
                     example: "30112.22"
                     type: string
                 bid_iv:
-                    description: Bid implied volatility, for options
+                    description: Bid implied volatility, for options, to 5 decimal places
                     example: "0.2"
                     type: string
                 bid_size:
@@ -1843,11 +1843,11 @@ components:
                     example: "29876.3"
                     type: string
                 forward_rate:
-                    description: EWMA-smoothed annualized forward rate for dated options
+                    description: EWMA-smoothed annualized forward rate for dated options, to 6 decimal places
                     example: "0.05"
                     type: string
                 funding_rate:
-                    description: This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate.
+                    description: This raw funding rate corresponds to the actual funding period of the instrument itself. It is not a normalized 8h funding rate. To 12 decimal places.
                     example: "0.3"
                     type: string
                 future_funding_rate:
@@ -1859,31 +1859,31 @@ components:
                     description: Greeks (delta, gamma, vega). Partial for perpetual futures.
                     properties:
                         delta:
-                            description: Market Delta
+                            description: Market Delta, to 5 decimal places
                             example: "1"
                             type: string
                         gamma:
-                            description: Market Gamma
+                            description: Market Gamma, to 6 significant digits
                             example: "0.2"
                             type: string
                         rho:
-                            description: Market Rho
+                            description: Market Rho, to 6 significant digits
                             example: "0.2"
                             type: string
                         theta:
-                            description: Market Theta
+                            description: Market Theta, to 6 significant digits
                             example: "-0.2"
                             type: string
                         vanna:
-                            description: Market Vanna
+                            description: Market Vanna, to 6 significant digits
                             example: "0.2"
                             type: string
                         vega:
-                            description: Market Vega
+                            description: Market Vega, to 6 significant digits
                             example: "0.2"
                             type: string
                         volga:
-                            description: Market Volga
+                            description: Market Volga, to 6 significant digits
                             example: "0.2"
                             type: string
                     required:
@@ -1892,7 +1892,7 @@ components:
                         - vega
                     type: object
                 last_iv:
-                    description: Last traded price implied volatility, for options
+                    description: Last traded price implied volatility, for options, to 5 decimal places
                     example: "0.2"
                     type: string
                 last_traded_price:
@@ -1900,7 +1900,7 @@ components:
                     example: "30109.53"
                     type: string
                 mark_iv:
-                    description: Mark implied volatility, for options
+                    description: Mark implied volatility, for options, to 5 decimal places
                     example: "0.2"
                     type: string
                 mark_price:
@@ -1912,7 +1912,7 @@ components:
                     example: "6100048.3"
                     type: string
                 price_change_rate_24h:
-                    description: Price change rate in the last 24 hours
+                    description: Price change rate in the last 24 hours, to 4 decimal places
                     example: "0.05"
                     type: string
                 risk_free_rate:

@@ -57,6 +57,8 @@ When adding a new options underlying, update all four locations: instrument conf
 - NEAR values: 0.0001 USD tick, 10 NEAR size increment, 50,000 max order, 500,000 position limit, 50% spot and IV band factors. Cross margin IMR Long ITM/Short ITM/Short OTM 50/35/25% (same as META/SPCX). Min-delta 0.3% / 0.15%, `MIN_VOL_SHOCK_UP` 60% (HYPE/SOL bucket). Strike steps $0.1/$0.1/$0.2, $0.2/$0.2/$0.4, $0.2/$0.4/$1, $0.4/$1/$2. SCAN spot shocks ±32/24/16/8%, vol +64%/-35.2%, tails 24.24/48.48/32/16/4/1.78/1/0.64%.
 - NEAR was already on the live `portfolio-margin-config` endpoint when the docs were written, and it matched the SQL. On 2026-10-07 every existing Scenario tab and min-delta row matched the endpoint, with no drift.
 
+- The strike step tabs on `expiries-and-listing.mdx` were missing XAU until 2026-10-19 (it was the only live underlying without one). Source is the `strike_steps` JSON from `dated_option_market`: keys `1day`/`1week`/`1month`/`3month` map to the table rows 8h–7d / 7d–1m / 1m–3m / > 3 months. XAU: $10/$10/$20, $20/$20/$50, $20/$50/$100, $50/$100/$200 (ATM/Outer/Wings). When adding an underlying, check this page has its tab.
+
 ## Gotchas
 
 - Portfolio Margin SCAN scenarios (spot shocks, vol shocks, tail weights) are sourced from the live endpoint `https://api.prod.paradex.trade/v1/system/portfolio-margin-config`. Each asset has its own spot-shock ladder and tail weights (e.g. BTC/US500 ±14/10.5/7/3.5%, ETH ±16/12/8/4%, SOL ±24/18/12/6%, HYPE/META ±28/21/14/7%); do not assume two assets match. Regenerate every tab from the JSON when updating. As of 2026-10-07 the endpoint returns BTC, CL, ETH, HYPE, META, MSTR, MU, NEAR, SOL, SPCX, US100, US500, XAU and ZEC.
@@ -68,4 +70,4 @@ When adding a new options underlying, update all four locations: instrument conf
 
 ## Last updated
 
-2026-10-07
+2026-10-19

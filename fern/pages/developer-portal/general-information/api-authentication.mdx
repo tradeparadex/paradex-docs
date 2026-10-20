@@ -182,6 +182,10 @@ onboarding_signature = personal_sign(onboarding_message, evm_address)
 pedersen(PREFIX, deployer=0, salt=ethAddress, classHash, hash(calldata))
 ```
 
+<Note>
+Onboarding (`POST /v1/onboarding` or `POST /v2/onboarding`) does not deploy the account on chain. The account can authenticate and read private endpoints straight away, and is deployed by its first deposit or incoming transfer, usually within a minute. Fund the main account before creating sub-accounts or isolated market accounts under it, otherwise the request fails with `400 INVALID_PARENT_ACCOUNT`. See [Account deployment](/docs/accounts/wallet-integration#account-deployment).
+</Note>
+
 ### EVM Authentication (`POST /v2/auth`)
 
 Authenticates an existing EVM account and returns a JWT token.

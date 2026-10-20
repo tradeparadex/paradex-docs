@@ -10,6 +10,19 @@ Paradex, a [Starknet Appchain](/docs/getting-started/architecture-overview/stark
 3. **Starknet Wallets (Beta)**: We're extending our key generation flow to support wallets from Starknet, including [Argent X](https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb) and [Braavos](https://chrome.google.com/webstore/detail/braavos-wallet/jnlgamecbpmbajjfhmmmlhejkemejdma). This will allow users coming from the Starknet ecosystem to trade on Paradex. We're working on a deeper integration with our wallet partners to eventually store keys directly within the wallet itself, offering enhanced security compared to browser storage.
 4. **EVM Wallets**: EVM wallets (e.g., MetaMask) can onboard by signing a [SIWE (Sign-In with Ethereum)](https://eips.ethereum.org/EIPS/eip-4361) message instead of a Starknet typed data message. The Paradex account address is deterministically computed from the ETH address. EVM accounts use Argent v0.5.0 (Cairo 1) without a proxy wrapper. After onboarding, authentication also uses SIWE messages via the `/v2/auth` endpoint.
 
+## Account deployment
+
+Onboarding registers your Paradex account, but does not deploy its account contract on chain. The account is deployed automatically when it receives its first credit: a deposit through any bridge, or a transfer from another Paradex account. Deployment usually completes within a minute of that credit, and the account's referral code and referrer are set up at the same time.
+
+Until the account is deployed:
+
+- You can authenticate and call private read endpoints as usual.
+- Other Paradex accounts can transfer USDC to it. The first transfer deploys it.
+- Creating a [sub-account](/docs/accounts/sub-accounts) or an isolated market account under it fails with `400 INVALID_PARENT_ACCOUNT`. Fund the main account first.
+- Trading and withdrawals are not available.
+
+Portfolio margin accounts and accounts using the legacy proxy account class are still deployed at onboarding.
+
 ## Paradex internal wallet
 
 ### Why did we decide to build a Paradex wallet internal to our app?
@@ -87,19 +100,6 @@ The wallet you connect during onboarding is permanently linked to your Paradex L
 
 If you want to operate with a different wallet, you will need to create a new Paradex account.
 </Warning>
-
-## Account deployment
-
-Onboarding registers your Paradex account, but does not deploy its account contract on chain. The account is deployed automatically when it receives its first credit: a deposit through any bridge, or a transfer from another Paradex account. Deployment usually completes within a minute of that credit, and the account's referral code and referrer are set up at the same time.
-
-Until the account is deployed:
-
-- You can authenticate and call private read endpoints as usual.
-- Other Paradex accounts can transfer USDC to it. The first transfer deploys it.
-- Creating a [sub-account](/docs/accounts/sub-accounts) or an isolated market account under it fails with `400 INVALID_PARENT_ACCOUNT`. Fund the main account first.
-- Trading and withdrawals are not available. In practice, the first deposit deploys the account within seconds to a minute.
-
-Portfolio margin accounts and accounts using the legacy proxy account class are still deployed at onboarding.
 
 ### References
 

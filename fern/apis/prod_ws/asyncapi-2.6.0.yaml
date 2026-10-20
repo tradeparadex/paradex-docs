@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.7.3
+    version: 1.7.4
     description: |
         Channels for real-time updates.
 
@@ -112,7 +112,7 @@ channels:
                     $ref: '#/components/schemas/ResponsesFillResult'
                 summary: Private websocket channel to receive details of fills for specific account
                 description: |-
-                    Subscribe to fill messages for a market
+                    Subscribe to fill messages for a market. Note that `leverage` is carried by the JSON encoding only; the SBE binary encoding of this channel does not carry it.
                     Authenticate the WebSocket session with the `auth` method before subscribing.
         x-fern-display-name: fills.{market_symbol}
     /funding_data.{market_symbol}:
@@ -1544,6 +1544,10 @@ components:
                 id:
                     description: Unique string ID of fill per FillType
                     example: "8615262148007718462"
+                    type: string
+                leverage:
+                    description: Leverage of the account's position when the fill was processed; omitted for spot, options, liquidations and fills before it was recorded. Delivered on the JSON encoding only, not the SBE binary encoding.
+                    example: "20"
                     type: string
                 liquidity:
                     description: Maker or Taker
@@ -2994,7 +2998,7 @@ components:
             name: fillresult
             title: FillResult
             summary: Private websocket channel to receive details of fills for specific account
-            description: Subscribe to fill messages for a market
+            description: Subscribe to fill messages for a market. Note that `leverage` is carried by the JSON encoding only; the SBE binary encoding of this channel does not carry it.
             tags:
                 - name: trading
         ResponsesFundingDataResult:

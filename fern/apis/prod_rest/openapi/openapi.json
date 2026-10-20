@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.145.0"
+    "version": "1.145.2"
   },
   "paths": {
     "/account": {
@@ -11139,7 +11139,20 @@
           "ADDRESS_BOOK_INVALID_LABEL",
           "ADDRESS_BOOK_OWN_ACCOUNT",
           "ADDRESS_BOOK_DUPLICATE_ADDRESS",
-          "ADDRESS_BOOK_LIMIT_REACHED"
+          "ADDRESS_BOOK_LIMIT_REACHED",
+          "INVALID_SIGNATURE",
+          "GRANT_EXPIRED",
+          "INVALID_ENVIRONMENT",
+          "SCOPE_NOT_ALLOWED",
+          "LIMIT_INVALID",
+          "NONCE_REUSED",
+          "ACCOUNT_NOT_ELIGIBLE",
+          "INVALID_GRANT",
+          "SESSION_KEY_IN_USE",
+          "SESSION_LIMIT_REACHED",
+          "BUILDER_APPROVAL_LIMIT_REACHED",
+          "BUILDER_APPROVAL_STALE",
+          "SESSIONS_DISABLED"
         ],
         "x-enum-comments": {
           "ErrorCodeString_EvmVaultOperatorsDisabled": "Deprecated: no longer returned",
@@ -11271,7 +11284,20 @@
           "ErrorCodeString_AddressBookInvalidLabel",
           "ErrorCodeString_AddressBookOwnAccount",
           "ErrorCodeString_AddressBookDuplicateAddress",
-          "ErrorCodeString_AddressBookLimitReached"
+          "ErrorCodeString_AddressBookLimitReached",
+          "ErrorCodeString_InvalidSignature",
+          "ErrorCodeString_GrantExpired",
+          "ErrorCodeString_InvalidEnvironment",
+          "ErrorCodeString_ScopeNotAllowed",
+          "ErrorCodeString_LimitInvalid",
+          "ErrorCodeString_NonceReused",
+          "ErrorCodeString_AccountNotEligible",
+          "ErrorCodeString_InvalidGrant",
+          "ErrorCodeString_SessionKeyInUse",
+          "ErrorCodeString_SessionLimitReached",
+          "ErrorCodeString_BuilderApprovalLimitReached",
+          "ErrorCodeString_BuilderApprovalStale",
+          "ErrorCodeString_SessionsDisabled"
         ]
       },
       "responses.ErrorResponse": {
@@ -11422,6 +11448,11 @@
             "description": "Unique string ID of fill per FillType",
             "type": "string",
             "example": "8615262148007718462"
+          },
+          "leverage": {
+            "description": "Leverage of the account's position when the fill was processed; omitted for spot, options, liquidations and fills before it was recorded. Delivered on the JSON encoding only, not the SBE binary encoding.",
+            "type": "string",
+            "example": "20"
           },
           "liquidity": {
             "description": "Maker or Taker",

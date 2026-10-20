@@ -11,8 +11,10 @@ New main accounts are not deployed on chain at onboarding; their first credit (a
 | `fern/pages/accounts/transfers.mdx` | Transfers to an account not yet deployed are allowed |
 | `fern/pages/developer-portal/general-information/api-authentication.mdx` | Note after EVM onboarding, covers `/v1` and `/v2` onboarding |
 | `fern/pages/developer-portal/general-information/api-quick-start.mdx` | Fund before trading or creating sub-accounts |
+| `fern/pages/vaults/tutorials/create-a-vault.mdx` | VTF creation needs a deployed owner account (`INVALID_PARENT_ACCOUNT`) |
 
 ## Gotchas
+- Anything created under a main account (sub-accounts, isolated market accounts, VTF operators) needs that main account deployed first.
 - Exceptions that still deploy at onboarding: portfolio margin accounts and accounts on the legacy proxy account class.
 - The `POST /onboarding` description in the REST reference comes from the synced OpenAPI spec. Change it in the API source, not in `openapi.json`.
 - Vale flags the past tense of "onboard" as a spelling error; reword around it.

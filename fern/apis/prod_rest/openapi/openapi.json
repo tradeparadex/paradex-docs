@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.145.2"
+    "version": "1.145.4"
   },
   "paths": {
     "/account": {
@@ -4060,7 +4060,7 @@
     },
     "/markets": {
       "get": {
-        "description": "Get markets static data component\n\nMarkets are listed by symbol. Filter the list with `asset_kind` and\n`base_asset`, each a comma-separated list. Send the `ETag` of an unfiltered\nresponse back in `If-None-Match` to get `304 Not Modified` while the list is\nunchanged.\n",
+        "description": "Get markets static data component\n\nMarkets are listed by symbol. Filter the list with `asset_kind` and\n`base_asset`, each a comma-separated list. Send the `ETag` of an unfiltered\nresponse back in `If-None-Match` to get `304 Not Modified` while the list is\nunchanged.\n\nUnfiltered requests for every market draw on a per-client budget, except\nthose answered `304 Not Modified`. Past it the API answers\n`429 Too Many Requests` with a `Retry-After` header, so filter the list down\nto the markets you use.\n",
         "tags": [
           "Markets"
         ],
@@ -4141,6 +4141,16 @@
           },
           "404": {
             "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests for every market",
             "content": {
               "application/json": {
                 "schema": {
@@ -4308,7 +4318,7 @@
     },
     "/markets/summary": {
       "get": {
-        "description": "Get markets dynamic data component\n\nWith `market=ALL`, filter the list with `asset_kind` and `base_asset`, each a\ncomma-separated list.\n",
+        "description": "Get markets dynamic data component\n\nWith `market=ALL`, filter the list with `asset_kind` and `base_asset`, each a\ncomma-separated list.\n\nUnfiltered requests for every market's summary draw on a per-client budget.\nPast it the API answers `429 Too Many Requests` with a `Retry-After` header,\nso filter the list down to the markets you use.\n",
         "tags": [
           "Markets"
         ],
@@ -4388,6 +4398,16 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests for every market",
             "content": {
               "application/json": {
                 "schema": {
@@ -5305,6 +5325,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "REQUEST_NOT_ALLOWED: a session token modifying an order another session or key placed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
           }
         }
       },
@@ -5631,6 +5661,16 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "REQUEST_NOT_ALLOWED: a session token",
             "content": {
               "application/json": {
                 "schema": {
@@ -6119,6 +6159,16 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "REQUEST_NOT_ALLOWED: a session token",
             "content": {
               "application/json": {
                 "schema": {
@@ -11152,7 +11202,9 @@
           "SESSION_LIMIT_REACHED",
           "BUILDER_APPROVAL_LIMIT_REACHED",
           "BUILDER_APPROVAL_STALE",
-          "SESSIONS_DISABLED"
+          "SESSIONS_DISABLED",
+          "SESSION_REVOKED",
+          "SESSION_EXPIRED"
         ],
         "x-enum-comments": {
           "ErrorCodeString_EvmVaultOperatorsDisabled": "Deprecated: no longer returned",
@@ -11297,7 +11349,9 @@
           "ErrorCodeString_SessionLimitReached",
           "ErrorCodeString_BuilderApprovalLimitReached",
           "ErrorCodeString_BuilderApprovalStale",
-          "ErrorCodeString_SessionsDisabled"
+          "ErrorCodeString_SessionsDisabled",
+          "ErrorCodeString_SessionRevoked",
+          "ErrorCodeString_SessionExpired"
         ]
       },
       "responses.ErrorResponse": {

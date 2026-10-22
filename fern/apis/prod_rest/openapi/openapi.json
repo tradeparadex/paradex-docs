@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.145.4"
+    "version": "1.145.5"
   },
   "paths": {
     "/account": {
@@ -2943,7 +2943,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Get a paginated list of block trades with filtering.\n\nReturns block trades where user is initiator, required signer,\nor has submitted an offer.\n\n**Filters:**\n- Status: CREATED, OFFER_COLLECTION, READY_TO_EXECUTE, EXECUTING, COMPLETED, CANCELLED\n- Market: Specific market symbol (e.g., BTC-USD-PERP)\n\n**Returns:** Paginated list with block trade details and navigation metadata.\n",
+        "description": "Get a paginated list of block trades with filtering.\n\nReturns block trades where user is initiator, required signer,\nor has submitted an offer.\n\n**Filters:**\n- Status: CREATED, OFFER_COLLECTION, EXECUTING, PENDING_SETTLEMENT, COMPLETED,\n  FAILED, CANCELLED\n- Market: Specific market symbol (e.g., BTC-USD-PERP)\n\n**Returns:** Paginated list with block trade details and navigation metadata.\n",
         "tags": [
           "BlockTrades"
         ],
@@ -2959,9 +2959,10 @@
               "enum": [
                 "CREATED",
                 "OFFER_COLLECTION",
-                "READY_TO_EXECUTE",
                 "EXECUTING",
+                "PENDING_SETTLEMENT",
                 "COMPLETED",
+                "FAILED",
                 "CANCELLED"
               ]
             }
@@ -3067,7 +3068,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Retrieve a specific block trade by ID with full details.\n\nReturns complete block trade information including status, trade details,\nsignatures, and offers.\n\n**Access:** Available to initiator, required signers,\nor accounts with submitted offers.\n\n**Returns:**\n- Block ID and status\n(CREATED, OFFER_COLLECTION, READY_TO_EXECUTE, EXECUTING, COMPLETED, CANCELLED)\n- Market-specific trade details with orders and fill information\n- All collected signatures from required signers\n- Creation time, last update, expiration, and participant information\n",
+        "description": "Retrieve a specific block trade by ID with full details.\n\nReturns complete block trade information including status, trade details,\nsignatures, and offers.\n\n**Access:** Available to initiator, required signers,\nor accounts with submitted offers.\n\n**Returns:**\n- Block ID and status\n(CREATED, OFFER_COLLECTION, EXECUTING, PENDING_SETTLEMENT, COMPLETED, FAILED, CANCELLED)\n- Market-specific trade details with orders and fill information\n- All collected signatures from required signers\n- Creation time, last update, expiration, and participant information\n",
         "tags": [
           "BlockTrades"
         ],
@@ -3123,7 +3124,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Cancel a pending block trade.\n\nOnly the initiator can cancel a block trade in cancellable state\n(CREATED, OFFER_COLLECTION, READY_TO_EXECUTE).\nOnce cancelled,all associated offers become invalid.\n\n**Returns:** Success message confirming cancellation. Status updated to CANCELLED.\n",
+        "description": "Cancel a pending block trade.\n\nOnly the initiator can cancel a block trade in cancellable state\n(CREATED, OFFER_COLLECTION).\nOnce cancelled,all associated offers become invalid.\n\n**Returns:** Success message confirming cancellation. Status updated to CANCELLED.\n",
         "tags": [
           "BlockTrades"
         ],
@@ -3184,7 +3185,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Execute a block trade with selected offers.\n\nExecutes a parent block trade by selecting specific offers from required signers.\n\n**Requirements:**\n- Called by block trade initiator\n- All selected offers must have valid, unexpired signatures\n- Required signers must have submitted offers for all markets\n- Block trade must be in READY_TO_EXECUTE state\n\n**Execution Process:**\n- All trades processed together\n- Creates fills and updates balances upon success\n- Participants receive fill notifications\n\n**Returns:** Executed block trade with status (COMPLETED/FAILED), fill details,\ntimestamps, and settlement info.\n",
+        "description": "Execute a block trade with selected offers.\n\nExecutes a parent block trade by selecting specific offers from required signers.\n\n**Requirements:**\n- Called by block trade initiator\n- All selected offers must have valid, unexpired signatures\n- Required signers must have submitted offers for all markets\n- Block trade must be in CREATED or OFFER_COLLECTION state\n\n**Execution Process:**\n- All trades processed together\n- Creates fills and updates balances upon success\n- Participants receive fill notifications\n\n**Returns:** Executed block trade with status (COMPLETED/FAILED), fill details,\ntimestamps, and settlement info.\n",
         "tags": [
           "BlockTrades"
         ],
@@ -10821,7 +10822,6 @@
         "enum": [
           "CREATED",
           "OFFER_COLLECTION",
-          "READY_TO_EXECUTE",
           "EXECUTING",
           "PENDING_SETTLEMENT",
           "COMPLETED",
@@ -10831,7 +10831,6 @@
         "x-enum-varnames": [
           "BlockTradeStatusCreated",
           "BlockTradeStatusOfferCollection",
-          "BlockTradeStatusReadyToExecute",
           "BlockTradeStatusExecuting",
           "BlockTradeStatusPendingSettlement",
           "BlockTradeStatusCompleted",
@@ -14215,14 +14214,16 @@
           "STARKGATE",
           "LAYERSWAP",
           "RHINOFI",
-          "HYPERLANE"
+          "HYPERLANE",
+          "ORBITER"
         ],
         "x-enum-varnames": [
           "TransferBridgeUnspecified",
           "TransferBridgeStarkgate",
           "TransferBridgeLayerswap",
           "TransferBridgeRhinofi",
-          "TransferBridgeHyperlane"
+          "TransferBridgeHyperlane",
+          "TransferBridgeOrbiter"
         ]
       },
       "responses.TransferDirection": {

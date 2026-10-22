@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.7.4
+    version: 1.7.5
     description: |
         Channels for real-time updates.
 
@@ -2868,6 +2868,7 @@ components:
                         - LAYERSWAP
                         - RHINOFI
                         - HYPERLANE
+                        - ORBITER
                     example: STARKGATE
                     type: string
                 counterparty:

@@ -102,3 +102,7 @@ Two instances are configured:
 ## Last updated
 
 2026-03-16
+
+## Release note scaffolding without Yarn/Corepack
+
+- `yarn new-release-note` just runs `node scripts/new-release-note.js`. If `yarn` errors with the `packageManager` / Corepack message (global Yarn 1.x, or Corepack missing, e.g. on Node 25+ which no longer bundles it), skip Yarn and run the script directly: `node scripts/new-release-note.js 1.168.5 --tags UI --date 10-23-2026`.

@@ -13,6 +13,10 @@ Users could create a Sub-Account to trade on a separate account so that:
 
 ## How to create a sub-account
 
+<Note>
+Your main account must be deployed before you can create a sub-account. A new account is deployed by its first deposit, so fund the main account first. Via the API, creating a sub-account or isolated market account under a main account that is not yet deployed fails with `400 INVALID_PARENT_ACCOUNT`. See [Account deployment](/docs/accounts/wallet-integration#account-deployment).
+</Note>
+
 **Step 1:** Under the 'Account' button on the top right corner, click on 'Switch Account'.
 
 <img src="../../assets/accounts/subaccount_switch_menu.png" alt=""/>

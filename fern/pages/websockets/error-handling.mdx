@@ -50,12 +50,24 @@ Error codes from -32768 to -32000 are pre-defined errors per the JSON-RPC specif
 
 Other errors are specific to the Paradex WebSocket API:
 
-| Code | Description |
-|------|-------------|
-| 100 | Method error |
-| 40110 | Malformed Bearer Token |
-| 40111 | Invalid Bearer Token |
-| 40112 | Geo IP blocked |
+| Code | Message | Description |
+|------|---------|-------------|
+| 40110 | malformed bearer token | The JWT passed to `auth` could not be parsed |
+| 40111 | invalid bearer token | The JWT passed to `auth` is expired or not valid |
+| 40112 | service access restricted in your region | Access is blocked for the region of the connecting IP |
+| 40300 | permission denied | The session is not allowed to perform the request, for example an order method before `auth`, an order on an account the token does not cover, or a private channel without authentication. `data` gives the reason |
+| 40301 | SBE binary encoding required | The public channel requires SBE encoding. `data` gives the URL parameters to reconnect with. See [Binary Encoding (SBE)](/ws/general-information/binary-encoding-sbe) |
+| 42900 | max subscriptions per connection reached | The connection already holds the maximum number of subscriptions. See [Rate Limits](/ws/general-information/rate-limits) |
+| 42901 | message rate limit exceeded | The account exceeded its order rate limit on an `order.*` method. Retry after backing off. See [Rate Limits](/ws/general-information/rate-limits) |
+
+## Close Codes
+
+The server may close a connection with one of the following WebSocket close codes. The close reason is a JSON object with a `reason` field.
+
+| Code | Reason | Description |
+|------|--------|-------------|
+| 4031 | no active subscriptions | The connection held no subscriptions for 5 minutes. Keep at least one subscription open, for example `orders.ALL`, on connections used only for order entry |
+| 4032 | inbound queue full | The client sent messages far faster than the per connection message rate limit allows. Slow down before reconnecting |
 
 ## Common Error Scenarios
 

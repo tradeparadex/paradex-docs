@@ -5,3 +5,32 @@ title: Websocket Rate Limits
 ## Public Concurrent Connections
 
 For public concurrent connections via our Websocket, the rate limit is set to a maximum of _<span style={{color: '#1BC1CF'}}>20 connections per second or 600 connections per minute</span>_ per IP address.
+
+## Order Management
+
+Order methods (`order.create`, `order.create_batch`, `order.modify`, `order.cancel`, `order.cancel_batch`, `order.cancel_all`) are limited per account:
+
+| Methods | Rate Limit | Per |
+|---------|------------|-----|
+| `order.*` | 100 req/s OR 3600 req/m | Account |
+
+- A batch request counts as one request, whatever the number of orders in it.
+- Order requests sent through the REST API count toward this limit as well.
+- There is no IP based limit on order methods over WebSocket.
+- A request over the limit is rejected with error code `42901`. See [Error Handling](/ws/general-information/error-handling).
+
+<Note>
+The WebSocket order limit is lower than the [REST API order limit](/api/general-information/rate-limits/api). For high throughput order entry, prefer batch methods, for example `order.cancel_batch` followed by `order.create_batch` to update quotes on several levels at once.
+</Note>
+
+## Messages and Subscriptions
+
+| Limit | Value | Per |
+|-------|-------|-----|
+| Messages | 10 msg/s | Connection |
+| Subscriptions | 200 | Connection |
+
+- Messages over the message rate limit are delayed, not rejected. Authenticated `order.*` requests are not subject to it.
+- A client that runs too far ahead of the message rate limit is disconnected with close code `4032`.
+- A subscription request over the subscription limit is rejected with error code `42900`.
+- A connection that holds no subscriptions for 5 minutes is closed with close code `4031`.

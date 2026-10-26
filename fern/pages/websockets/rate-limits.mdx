@@ -10,10 +10,12 @@ For public concurrent connections via our Websocket, the rate limit is set to a 
 
 Order methods (`order.create`, `order.create_batch`, `order.modify`, `order.cancel`, `order.cancel_batch`, `order.cancel_all`) are limited per account:
 
-| Methods | Rate Limit | Per |
-|---------|------------|-----|
-| `order.*` | 100 req/s OR 3600 req/m | Account |
+| Orders | Methods | Rate Limit | Per |
+|--------|---------|------------|-----|
+| All orders | All methods above | 100 req/s OR 3600 req/m | Account |
+| Retail Orders, in addition | `order.create`, `order.create_batch`, `order.modify` | 10 req/s OR 10 req/m OR 100 req/h OR 2000 req/24h | Account |
 
+- Retail Orders are orders sent after authenticating with an interactive token. See [Retail vs Pro Orders](/trading/trader-profiles). Over WebSocket, a Retail Order over its limit is rejected rather than switched to Pro Order behavior.
 - A batch request counts as one request, whatever the number of orders in it.
 - Order requests sent through the REST API count toward this limit as well.
 - There is no IP based limit on order methods over WebSocket.
@@ -30,7 +32,7 @@ The WebSocket order limit is lower than the [REST API order limit](/api/general-
 | Messages | 10 msg/s | Connection |
 | Subscriptions | 200 | Connection |
 
-- Messages over the message rate limit are delayed, not rejected. Authenticated `order.*` requests are not subject to it.
-- A client that runs too far ahead of the message rate limit is disconnected with close code `4032`.
+- Messages over the message rate limit are delayed, not rejected. Authenticated `order.*` requests do not count toward it, but each connection processes messages in order, so an order request sent behind delayed messages waits for them. Use a separate connection for order entry.
+- A client that sends messages faster than the server can process them is disconnected with close code `4032`.
 - A subscription request over the subscription limit is rejected with error code `42900`.
 - A connection that holds no subscriptions for 5 minutes is closed with close code `4031`.

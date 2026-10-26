@@ -62,12 +62,14 @@ Other errors are specific to the Paradex WebSocket API:
 
 ## Close Codes
 
-The server may close a connection with one of the following WebSocket close codes. The close reason is a JSON object with a `reason` field.
+The server may close a connection with one of the following Paradex close codes. The close reason is a JSON object with a `reason` field.
 
 | Code | Reason | Description |
 |------|--------|-------------|
 | 4031 | no active subscriptions | The connection held no subscriptions for 5 minutes. Keep at least one subscription open, for example `orders.ALL`, on connections used only for order entry |
-| 4032 | inbound queue full | The client sent messages far faster than the per connection message rate limit allows. Slow down before reconnecting |
+| 4032 | inbound queue full | The client sent messages faster than the server could process them, for example several hundred requests in one burst. Slow down before reconnecting |
+
+The server may also close a connection with the standard close code `1001` (going away), for example during a deployment. Reconnect when this happens.
 
 ## Common Error Scenarios
 
@@ -80,7 +82,7 @@ Authentication errors occur when there are issues with the JWT token:
   "jsonrpc": "2.0",
   "error": { 
     "code": 40111, 
-    "message": "Invalid Bearer Token" 
+    "message": "invalid bearer token" 
   },
   "usIn": 1710522972729581,
   "usOut": 1710522972729618,
@@ -98,7 +100,7 @@ Subscription errors occur when there are issues with channel subscriptions:
   "jsonrpc": "2.0",
   "error": { 
     "code": -32602, 
-    "message": "Invalid parameters" 
+    "message": "invalid method parameters" 
   },
   "usIn": 1710522972729581,
   "usOut": 1710522972729618,

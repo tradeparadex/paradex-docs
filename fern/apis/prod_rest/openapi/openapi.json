@@ -1,10 +1,10 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "The following describe Paradex API.\n",
+    "description": "The following describe Paradex API.\n\n## Server errors\n\nAny endpoint can answer a 5xx that its reference does not list. An endpoint\nlists a server error only when it returns one for a reason of its own, and\nthen says what to do about it.\n\n- Branch on the HTTP status, not on the body. A 5xx body is usually the JSON\n  error object, but one from the infrastructure in front of the API may not\n  be JSON at all.\n- `503` with `SERVICE_UNAVAILABLE` means the request could not be served in\n  time or a service it needs is unavailable, and is worth retrying later.\n  Other 5xx are unexpected failures.\n- Retry a read that answers 5xx with backoff.\n- A write that answers 5xx, or times out, may or may not have been applied.\n  Read the result back before retrying it: an order sent with a `client_id`\n  can be looked up with `GET /orders/by_client_id/{client_id}`.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.146.1"
+    "version": "1.146.4"
   },
   "paths": {
     "/account": {
@@ -1071,7 +1071,7 @@
             }
           },
           "503": {
-            "description": "Service Unavailable",
+            "description": "MMP is temporarily unavailable; retry the reset",
             "content": {
               "application/json": {
                 "schema": {
@@ -1150,7 +1150,7 @@
             }
           },
           "503": {
-            "description": "Service Unavailable",
+            "description": "Markets are not loaded yet, so the config was not saved; retry later",
             "content": {
               "application/json": {
                 "schema": {
@@ -1209,7 +1209,7 @@
             }
           },
           "503": {
-            "description": "Service Unavailable",
+            "description": "Markets are not loaded yet and there was no config to remove; retry later",
             "content": {
               "application/json": {
                 "schema": {
@@ -6483,16 +6483,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ApiError"
-                }
-              }
-            }
           }
         }
       }
@@ -11141,6 +11131,7 @@
           "RFQ_CREATE_BUDGET_EXCEEDED",
           "SUBACCOUNTS_LIMIT_EXCEEDED",
           "INSUFFICIENT_MIN_CHAIN_BALANCE",
+          "CONTRACT_WALLET_NOT_SUPPORTED",
           "INSUFFICIENT_EVM_BALANCE",
           "PORTFOLIO_MARGIN_ONBOARDING_DISABLED",
           "PORTFOLIO_MARGIN_INVALID_ACCOUNT_KIND",
@@ -11188,8 +11179,11 @@
           "ADDRESS_BOOK_ENTRY_NOT_FOUND",
           "ADDRESS_BOOK_INVALID_LABEL",
           "ADDRESS_BOOK_OWN_ACCOUNT",
+          "ADDRESS_BOOK_PARADEX_ACCOUNT",
           "ADDRESS_BOOK_DUPLICATE_ADDRESS",
           "ADDRESS_BOOK_LIMIT_REACHED",
+          "ADDRESS_BOOK_INVALID_CHAIN",
+          "ADDRESS_BOOK_INVALID_ADDRESS",
           "ADDRESS_BOOK_NOT_PARADEX_ACCOUNT",
           "ADDRESS_BOOK_REPEATED_IN_IMPORT",
           "INVALID_SIGNATURE",
@@ -11291,6 +11285,7 @@
           "ErrorCodeString_RfqCreateBudgetExceeded",
           "ErrorCodeString_SubaccountsLimitExceeded",
           "ErrorCodeString_InsufficientMinChainBalance",
+          "ErrorCodeString_ContractWalletNotSupported",
           "ErrorCodeString_InsufficientEvmBalance",
           "ErrorCodeString_PortfolioMarginOnboardingDisabled",
           "ErrorCodeString_PortfolioMarginInvalidAccountKind",
@@ -11338,8 +11333,11 @@
           "ErrorCodeString_AddressBookEntryNotFound",
           "ErrorCodeString_AddressBookInvalidLabel",
           "ErrorCodeString_AddressBookOwnAccount",
+          "ErrorCodeString_AddressBookParadexAccount",
           "ErrorCodeString_AddressBookDuplicateAddress",
           "ErrorCodeString_AddressBookLimitReached",
+          "ErrorCodeString_AddressBookInvalidChain",
+          "ErrorCodeString_AddressBookInvalidAddress",
           "ErrorCodeString_AddressBookNotParadexAccount",
           "ErrorCodeString_AddressBookRepeatedInImport",
           "ErrorCodeString_InvalidSignature",

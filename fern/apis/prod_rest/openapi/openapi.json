@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n\n## Server errors\n\nAny endpoint can answer a 5xx that its reference does not list. An endpoint\nlists a server error only when it returns one for a reason of its own, and\nthen says what to do about it.\n\n- Branch on the HTTP status, not on the body. A 5xx body is usually the JSON\n  error object, but one from the infrastructure in front of the API may not\n  be JSON at all.\n- `503` with `SERVICE_UNAVAILABLE` means the request could not be served in\n  time or a service it needs is unavailable, and is worth retrying later.\n  Other 5xx are unexpected failures.\n- Retry a read that answers 5xx with backoff.\n- A write that answers 5xx, or times out, may or may not have been applied.\n  Read the result back before retrying it: an order sent with a `client_id`\n  can be looked up with `GET /orders/by_client_id/{client_id}`.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.146.4"
+    "version": "1.147.0"
   },
   "paths": {
     "/account": {
@@ -3529,7 +3529,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Execute a specific offer independently of the parent block trade.\n\nExecutes an individual offer without waiting for full block trade execution.\n\n**Requirements:**\n- Called by authorized account (initiator, offering account, or required signer)\n- Valid signatures from all required parties\n- Unexpired signatures and executable offer state\n\n**Independent Execution:**\n- Processes only the specific offer's trades\n- Does not require other offers to be ready\n- Executes all trades in the offer together\n\n**Returns:** Executed offer with status, fill details, timestamps, and updated balances.\n",
+        "description": "Execute a specific offer independently of the parent block trade.\n\nExecutes an individual offer without waiting for full block trade execution.\n\n**Requirements:**\n- Called by the parent block trade's initiator: the offering account and other\n  required signers are refused with `BLOCK_TRADE_UNAUTHORIZED`\n- Valid signatures from all required parties\n- Unexpired signatures and executable offer state\n\n**Independent Execution:**\n- Processes only the specific offer's trades\n- Does not require other offers to be ready\n- Executes all trades in the offer together\n\n**Returns:** Executed offer with status, fill details, timestamps, and updated balances.\n",
         "tags": [
           "BlockTrades"
         ],
@@ -8407,12 +8407,12 @@
             "example": 10
           },
           "margin_type": {
-            "description": "Margin type (CROSS or ISOLATED)",
+            "description": "Margin type: CROSS (ISOLATED is not supported)",
             "type": "string",
             "example": "CROSS"
           },
           "on_behalf_of_account": {
-            "description": "Specify sub-account ID to set margin for, if not provided, it will be the main account itself",
+            "description": "Existing isolated account whose leverage to set, at ISOLATED margin",
             "type": "string",
             "example": "0x1234567890abcdef"
           }

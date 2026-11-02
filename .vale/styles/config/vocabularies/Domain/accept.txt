@@ -80,3 +80,7 @@ SNARKs
 Etherscan
 HyperCore
 HyperEVM
+rfq
+RFQ
+algos
+Algos

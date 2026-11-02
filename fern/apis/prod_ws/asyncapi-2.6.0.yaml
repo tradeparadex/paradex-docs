@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.7.5
+    version: 1.7.6
     description: |
         Channels for real-time updates.
 
@@ -2632,6 +2632,9 @@ components:
                         message:
                             description: Human-readable error, empty on SUCCESS
                             type: string
+                        never_sent:
+                            description: 'FAILED only: refused before reaching the venue, so it cannot have taken effect there. Absent on a failed forward, including http_status 0, which the venue may still have received'
+                            type: boolean
                         operation:
                             description: REST command answered by this result
                             enum:

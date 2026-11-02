@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n\n## Server errors\n\nAny endpoint can answer a 5xx that its reference does not list. An endpoint\nlists a server error only when it returns one for a reason of its own, and\nthen says what to do about it.\n\n- Branch on the HTTP status, not on the body. A 5xx body is usually the JSON\n  error object, but one from the infrastructure in front of the API may not\n  be JSON at all.\n- `503` with `SERVICE_UNAVAILABLE` means the request could not be served in\n  time or a service it needs is unavailable, and is worth retrying later.\n  Other 5xx are unexpected failures.\n- Retry a read that answers 5xx with backoff.\n- A write that answers 5xx, or times out, may or may not have been applied.\n  Read the result back before retrying it: an order sent with a `client_id`\n  can be looked up with `GET /orders/by_client_id/{client_id}`.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.147.0"
+    "version": "1.149.0"
   },
   "paths": {
     "/account": {
@@ -1976,6 +1976,84 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/responses.GetSubAccountsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/subaccounts/{address}": {
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Archives one of the authenticated main account's sub-accounts.\n\nArchiving only marks the sub-account as archived so clients can hide it:\nnothing is deleted, its keys keep working and its on-chain account is\nuntouched. `GET /account/subaccounts` keeps listing it, with `archived_at`\nset. Only a session authenticated with the main account's own key is\naccepted.\n\n`address` must be a sub-account onboarded under the authenticated account,\nmatched regardless of case and leading zeros; any other address answers\n`404 ACCOUNT_NOT_FOUND`. Only an account of kind `subaccount` can be archived:\nan isolated or vault account answers `400 INVALID_REQUEST_PARAMETER`.\n\nThe sub-account must hold nothing: its account value and total collateral\nmust both be zero, every token balance must have a size of zero (a token\nwith no price adds nothing to the account value), it must hold no shares of\nany vault, and it must have no open position and no open order (stop orders\nincluded). Otherwise the request is refused with `400 SUBACCOUNT_HAS_FUNDS`,\nwhose message says which. When any of these cannot be read, the request\nfails rather than archiving a sub-account that may still hold something.\n\nAn archived sub-account frees its place in the main account's sub-account\nlimit (`SUBACCOUNTS_LIMIT_EXCEEDED` at onboarding), but archived sub-accounts\nstill count towards a total of twice that limit.\n\nArchiving is idempotent: archiving a sub-account already archived answers\n`200` with its first `archived_at`, without checking its funds again.\n\nResponds with the archived sub-account; `archived_at` is in milliseconds\nsince epoch.\n",
+        "tags": [
+          "Account"
+        ],
+        "summary": "Archive a sub-account",
+        "operationId": "archive-sub-account",
+        "parameters": [
+          {
+            "description": "Sub-account address",
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.AccountInfoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Requires the account's main key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
                 }
               }
             }
@@ -6644,6 +6722,27 @@
         }
       }
     },
+    "/system/stats": {
+      "get": {
+        "description": "Get exchange-wide stats for Paradex\n\n## Response\n\n```json\n{\"lifetime_volume\": \"238214593201.52\"}\n```\n\n- `lifetime_volume`: USD volume traded on every market ever listed, expired\n  and delisted markets included\n\nThe figure is refreshed about once an hour and cached for an hour on top of\nthat, so it can be up to two hours old; polling faster returns the same value.\n",
+        "tags": [
+          "System"
+        ],
+        "summary": "Get exchange stats",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.SystemStatsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/system/time": {
       "get": {
         "description": "Get the current time in the Paradex\n",
@@ -9682,6 +9781,11 @@
             "type": "string",
             "example": "0x495d2eb5236a12b8b4ad7d3849ce6a203ce21c43f473c248dfd5ce70d9454fa"
           },
+          "archived_at": {
+            "description": "Time the main account archived this sub-account, in unix milliseconds; absent when not archived",
+            "type": "integer",
+            "example": 1681471234972
+          },
           "created_at": {
             "description": "Account creation time",
             "type": "integer",
@@ -11186,6 +11290,7 @@
           "ADDRESS_BOOK_INVALID_ADDRESS",
           "ADDRESS_BOOK_NOT_PARADEX_ACCOUNT",
           "ADDRESS_BOOK_REPEATED_IN_IMPORT",
+          "SUBACCOUNT_HAS_FUNDS",
           "INVALID_SIGNATURE",
           "GRANT_EXPIRED",
           "INVALID_ENVIRONMENT",
@@ -11340,6 +11445,7 @@
           "ErrorCodeString_AddressBookInvalidAddress",
           "ErrorCodeString_AddressBookNotParadexAccount",
           "ErrorCodeString_AddressBookRepeatedInImport",
+          "ErrorCodeString_SubaccountHasFunds",
           "ErrorCodeString_InvalidSignature",
           "ErrorCodeString_GrantExpired",
           "ErrorCodeString_InvalidEnvironment",
@@ -14045,6 +14151,16 @@
               }
             ],
             "example": "ok"
+          }
+        }
+      },
+      "responses.SystemStatsResponse": {
+        "type": "object",
+        "properties": {
+          "lifetime_volume": {
+            "description": "USD volume traded on every market ever listed, refreshed hourly",
+            "type": "string",
+            "example": "238214593201.52"
           }
         }
       },

@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.7.6
+    version: 1.7.7
     description: |
         Channels for real-time updates.
 
@@ -171,7 +171,7 @@ channels:
                 payload:
                     $ref: '#/components/schemas/ResponsesMarketSummaryResp'
                 summary: Public websocket channel for updates of available markets
-                description: 'Subscribe to market summary messages for specific markets or all markets. Supports markets_summary (all markets) and markets_summary.{market_symbol} (specific market) dot-encoded patterns, plus a scoped mutable-filter mode: subscribe with a `markets` array (present, even empty) to filter to a specific set and change that set in place via modify_subscription without re-subscribing.'
+                description: 'Subscribe to market summary messages for specific markets or all markets. Supports markets_summary (all markets) and markets_summary.{market_symbol} (specific market) dot-encoded patterns, plus a scoped mutable-filter mode: subscribe with a `markets` array (present, even empty) to filter to a specific set and change that set in place via modify_subscription without re-subscribing. A scoped subscription is sent the current summary of each market as it names it, on subscribe and on modify_subscription, then the market''s updates.'
         x-fern-display-name: markets_summary[.{market_symbol}]
     /mmp:
         subscribe:
@@ -3031,7 +3031,7 @@ components:
             name: marketsummaryresp
             title: MarketSummaryResp
             summary: Public websocket channel for updates of available markets
-            description: 'Subscribe to market summary messages for specific markets or all markets. Supports markets_summary (all markets) and markets_summary.{market_symbol} (specific market) dot-encoded patterns, plus a scoped mutable-filter mode: subscribe with a `markets` array (present, even empty) to filter to a specific set and change that set in place via modify_subscription without re-subscribing.'
+            description: 'Subscribe to market summary messages for specific markets or all markets. Supports markets_summary (all markets) and markets_summary.{market_symbol} (specific market) dot-encoded patterns, plus a scoped mutable-filter mode: subscribe with a `markets` array (present, even empty) to filter to a specific set and change that set in place via modify_subscription without re-subscribing. A scoped subscription is sent the current summary of each market as it names it, on subscribe and on modify_subscription, then the market''s updates.'
             tags:
                 - name: market
         ResponsesMmpEventResp:

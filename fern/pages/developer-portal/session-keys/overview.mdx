@@ -1,0 +1,92 @@
+---
+title: Session Keys
+subtitle: Let a short lived key trade for an account without ever holding withdrawal rights
+---
+
+A session key is a Stark key pair your app generates and the account owner authorizes once, by signing a **session grant** with their wallet. Until the grant expires or is revoked, the session key can sign in, read the account and trade within the scopes the grant lists. It can never withdraw or transfer funds, and it can never manage keys, tokens, other sessions or passkeys.
+
+<Note>
+Session keys and passkeys are rolling out gradually, so access may be limited during rollout. A request from an account that does not have access yet returns `403 SESSIONS_DISABLED`.
+</Note>
+
+## When to use a session key
+
+| You want to | Use |
+| --- | --- |
+| Trade from a browser app with one wallet prompt, then no further prompts until the session ends | Session key |
+| Let a trading bot or script trade one or more of your accounts without holding your main private key | Session key |
+| Open a session on a device again later without a wallet, using Face ID, Touch ID or a security key | [Passkey](/api/session-keys/passkeys) |
+| Trade from a long running server process you manage yourself, with keys you rotate by hand | [Subkey](/api/general-information/api-authentication#subkeys) |
+| Read account data only | [Readonly token](/api/general-information/api-authentication#readonly-access) |
+
+Compared with a subkey, a session key:
+
+- is authorized by a signed message, not registered through a JWT session of the main key;
+- always expires, at a time the owner signs;
+- carries explicit scopes, so it can be held to trading only, or trading plus trading settings;
+- can cover the main account and a list of its subaccounts with one grant;
+- can be revoked by the owner, by the session itself on sign out, or all at once.
+
+## How it works
+
+<Steps>
+  <Step title="Generate a session key">
+    Your app generates a fresh Stark key pair. The private key never leaves your app.
+  </Step>
+  <Step title="The owner signs a grant">
+    You build a `SessionGrant` that names the account, the session public key, the scopes and the expiry. The account owner signs it once: EVM owned accounts sign it as EIP-712 typed data, Starknet owned accounts sign it as SNIP-12 typed data with the main key.
+  </Step>
+  <Step title="Open the session">
+    You send the grant and its signature to [`POST /v2/sessions`](/api/session-keys/create-a-session#open-the-session). The signature is the authentication, so no JWT is needed. The response returns the `grant_id` that names the session from then on.
+  </Step>
+  <Step title="Sign in with the session key">
+    The session key gets a JWT for each account the grant covers through `POST /v1/auth/{public_key}`, exactly as a subkey does, and signs orders the same way. Session JWTs are held to the grant's scopes on every request.
+  </Step>
+  <Step title="End the session">
+    The session ends at its expiry, or earlier when it is [revoked](/api/session-keys/manage-sessions#revoke-a-session). Clients that see their session JWT refused can [check its status](/api/session-keys/manage-sessions#check-a-sessions-status) without authenticating.
+  </Step>
+</Steps>
+
+## Key terms
+
+| Term | Meaning |
+| --- | --- |
+| Owner | The key that controls the account: the EVM wallet for EVM owned accounts, the main Stark key otherwise. Only the owner can sign a grant. |
+| Session grant | The `SessionGrant` typed data message the owner signs. It is stored exactly as signed. |
+| Session key | The Stark key pair the grant authorizes. Each grant needs a key that has never been used on the account before. |
+| Grant id | The hash of the signed grant, `0x` followed by 64 lowercase hex characters. It identifies the session in every `/v2/sessions` route. |
+| Scopes | What the session may do beyond reading. See [Scopes](/api/session-keys/scopes). |
+| Main key session | A JWT the account obtained with its own key, as opposed to a session key, subkey or API token. Some routes accept only this. |
+
+## What a session can never do
+
+Whatever its scopes, a session cannot:
+
+- withdraw, transfer or move funds in any form;
+- create, list or revoke subkeys, API tokens, other sessions or passkeys;
+- change the profile, username, referral settings or compliance answers;
+- create, offer, execute or cancel block trades;
+- act on behalf of another account with `on_behalf_of_account`;
+- use a JWT that authorizes accounts other than the one it was minted for.
+
+Any private route that does not declare a scope refuses session JWTs, so new private endpoints are closed to sessions until they opt in. See [Scopes](/api/session-keys/scopes) for the full table.
+
+## Pages in this section
+
+<CardGroup cols={2}>
+  <Card title="Create a Session" icon="key" href="/api/session-keys/create-a-session">
+    Build and sign a grant, open the session and sign in with the session key
+  </Card>
+  <Card title="Manage Sessions" icon="list" href="/api/session-keys/manage-sessions">
+    List, read, revoke and check the status of sessions
+  </Card>
+  <Card title="Passkeys" icon="fingerprint" href="/api/session-keys/passkeys">
+    Register a passkey and open sessions with it
+  </Card>
+  <Card title="Scopes" icon="shield" href="/api/session-keys/scopes">
+    Which scope each private route requires
+  </Card>
+  <Card title="SDK Examples" icon="code" href="/api/session-keys/sdk-examples">
+    TypeScript and Python examples
+  </Card>
+</CardGroup>

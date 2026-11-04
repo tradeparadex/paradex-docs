@@ -1,0 +1,277 @@
+---
+title: Passkeys
+subtitle: Open trading sessions with a passkey instead of a wallet prompt
+---
+
+A passkey lets a device open sessions on an account without asking the wallet each time. The owner signs once to register the passkey together with a **ceiling**, the most any session it opens may do. After that, the passkey alone can open sessions within the ceiling, using the device's own unlock such as Face ID, Touch ID, Windows Hello or a security key.
+
+A passkey is never the account's login or owner. Sessions it opens can trade within the ceiling, but can never withdraw or transfer funds, approve a builder, change the ceiling or register another passkey.
+
+<Note>
+Passkeys are rolling out gradually, so access may be limited during rollout. The challenge endpoint returns the relying party ID (`rp_id`) to use, and passkeys can only be registered under that relying party for now. A request from an account that does not have access yet returns `403 PASSKEYS_DISABLED` or `403 SESSIONS_DISABLED`.
+</Note>
+
+| Route | Authentication |
+| --- | --- |
+| [`POST /v2/passkeys/challenge`](#get-a-challenge) | Owner's main key session for `registration`; none for `session` |
+| [`POST /v2/passkeys`](#register-a-passkey) | The owner's signature on the `PasskeyGrant` |
+| [`POST /v2/passkeys/sessions`](#open-a-session-with-a-passkey) | The passkey's WebAuthn assertion |
+| [`GET /v2/passkeys`](#list-passkeys) | Owner's main key session, or a session the passkey opened |
+| [`DELETE /v2/passkeys/{id}`](#revoke-a-passkey) | Owner's main key session, or a session the passkey opened |
+
+## Get a challenge
+
+```http
+POST /v2/passkeys/challenge
+Content-Type: application/json
+
+{ "purpose": "registration" }
+```
+
+Every passkey ceremony starts with a single use challenge. It expires after two minutes and is consumed by the first request that uses it.
+
+| `purpose` | Use | Authentication |
+| --- | --- | --- |
+| `registration` | The challenge for `navigator.credentials.create` | A JWT the account obtained with its own key. Session keys, subkeys and API tokens are refused. |
+| `session` | The nonce to put in a `SessionMint` | None |
+
+**Response** `200`
+
+| Field | Description |
+| --- | --- |
+| `challenge` | For `registration`, the WebAuthn challenge, base64url. For `session`, the nonce for the `SessionMint`, as `0x` hex. |
+| `user_handle` | Registration only. The WebAuthn `user.id`, base64url. It is random and never the account address. |
+| `rp_id` | The relying party ID to register under, or to pass to `navigator.credentials.get` |
+| `expires_at` | When the challenge expires, in milliseconds |
+
+## Register a passkey
+
+<Steps>
+  <Step title="Create the credential">
+    Call `navigator.credentials.create` with the `registration` challenge, `user.id` set to `user_handle` and `rp.id` set to `rp_id`. Request a discoverable credential (`residentKey: "required"`), user verification, the ES256 algorithm and attestation `none`.
+  </Step>
+  <Step title="Build the PasskeyGrant">
+    Fill in the fields below with the new credential's id and public key, and the ceiling you want.
+  </Step>
+  <Step title="The owner signs it">
+    EVM owned accounts sign it as EIP-712 and Starknet owned accounts as SNIP-12, exactly as for a [session grant](/api/session-keys/create-a-session#3-sign-the-grant), with `PasskeyGrant` as the primary type.
+  </Step>
+  <Step title="Register it">
+    Send the grant, the signature and the credential to `POST /v2/passkeys`.
+  </Step>
+</Steps>
+
+### PasskeyGrant
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `paradexChain` | string | The Paradex chain id, `starknet_chain_id` from `GET /system/config` |
+| `environment` | string | `mainnet` or `testnet` |
+| `account` | string | The main account, as `0x` hex |
+| `passkey` | `Passkey` | The credential being registered |
+| `ceiling` | `Ceiling` | What every session the passkey opens is held to |
+| `builderAccount` | string | Always `0x0` |
+| `nonce` | string | A random nonzero value of at most 128 bits, as lowercase `0x` hex without leading zeros |
+| `issuedAt` | uint64 | Unix seconds, within the last 24 hours |
+| `expiresAt` | uint64 | When the passkey stops working, Unix seconds, at most 180 days ahead |
+
+`Passkey`:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `credentialId` | string | The WebAuthn credential id, base64url |
+| `pubkeyX` | string | The P-256 public key X coordinate, as `0x` and 64 hex characters |
+| `pubkeyY` | string | The P-256 public key Y coordinate, as `0x` and 64 hex characters |
+| `rpId` | string | The `rp_id` from the challenge |
+| `label` | string | A name for the passkey, at most 64 printable ASCII characters, such as the device name |
+
+`Ceiling`:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `scopes` | string[] | `["trade"]`. The ceiling allows no other scope. |
+| `limits` | `Limits` | As in a [session grant](/api/session-keys/create-a-session#limits): every amount `"none"` and `markets` `["*"]` |
+| `subaccounts` | string[] | `[]`. Passkeys cover the main account only. |
+| `includeFutureSubaccounts` | bool | `false` |
+| `maxSessionTtl` | uint64 | The longest session the passkey may open, in seconds, at most 604800 (7 days). 86400 (24 hours) is the recommended default. |
+| `maxConcurrentSessions` | uint64 | How many sessions the passkey may hold open at once, from 1 to 5 |
+
+<Accordion title="PasskeyGrant typed data types">
+
+EIP-712 field types, in signed order. SNIP-12 uses the same names and order, with `shortstring` for `paradexChain` and `environment`, `ContractAddress` for `account` and `builderAccount`, `felt` for `nonce`, `timestamp` for `issuedAt` and `expiresAt`, `u128` for `maxSessionTtl` and `maxConcurrentSessions`, `shortstring*` for `scopes` and `markets`, and `ContractAddress*` for `subaccounts`.
+
+```json
+{
+  "PasskeyGrant": [
+    { "name": "paradexChain", "type": "string" },
+    { "name": "environment", "type": "string" },
+    { "name": "account", "type": "string" },
+    { "name": "passkey", "type": "Passkey" },
+    { "name": "ceiling", "type": "Ceiling" },
+    { "name": "builderAccount", "type": "string" },
+    { "name": "nonce", "type": "string" },
+    { "name": "issuedAt", "type": "uint64" },
+    { "name": "expiresAt", "type": "uint64" }
+  ],
+  "Passkey": [
+    { "name": "credentialId", "type": "string" },
+    { "name": "pubkeyX", "type": "string" },
+    { "name": "pubkeyY", "type": "string" },
+    { "name": "rpId", "type": "string" },
+    { "name": "label", "type": "string" }
+  ],
+  "Ceiling": [
+    { "name": "scopes", "type": "string[]" },
+    { "name": "limits", "type": "Limits" },
+    { "name": "subaccounts", "type": "string[]" },
+    { "name": "includeFutureSubaccounts", "type": "bool" },
+    { "name": "maxSessionTtl", "type": "uint64" },
+    { "name": "maxConcurrentSessions", "type": "uint64" }
+  ],
+  "Limits": [
+    { "name": "maxOrderNotional", "type": "string" },
+    { "name": "maxOpenNotional", "type": "string" },
+    { "name": "dailyNotional", "type": "string" },
+    { "name": "maxLoss", "type": "string" },
+    { "name": "maxLeverage", "type": "string" },
+    { "name": "markets", "type": "string[]" }
+  ]
+}
+```
+
+</Accordion>
+
+### Request
+
+```http
+POST /v2/passkeys
+Content-Type: application/json
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `grant` | object | The `PasskeyGrant` message exactly as signed, with its camelCase field names |
+| `signature` | string | The owner's signature, in the same form as for [`POST /v2/sessions`](/api/session-keys/create-a-session#4-open-the-session) |
+| `signature_type` | string | `eip712` or `snip12` |
+| `signature_chain_id` | integer | The EIP-712 domain `chainId`. Required for `eip712`. |
+| `credential` | object | The `PublicKeyCredential` JSON from `navigator.credentials.create`. It must be the credential the grant names. |
+
+**Response** `200`: the [passkey object](#the-passkey-object).
+
+| Status | Error | Meaning |
+| --- | --- | --- |
+| 400 | `INVALID_SIGNATURE` | The signature is not the account owner's, or does not match `signature_type` |
+| 400 | `GRANT_EXPIRED` | `expiresAt` has passed, or `issuedAt` is outside the accepted window |
+| 400 | `INVALID_ENVIRONMENT`, `INVALID_CHAIN` | The grant is for another environment or chain |
+| 400 | `SCOPE_NOT_ALLOWED` | The ceiling lists a scope other than `trade` |
+| 400 | `LIMIT_INVALID` | A limit is malformed or not `none`, or the passkey expiry is too long |
+| 400 | `INVALID_GRANT` | The grant is malformed, or its session length or session count is out of range |
+| 400 | `ACCOUNT_NOT_ELIGIBLE` | The account is not a main account, or the ceiling lists subaccounts |
+| 400 | `INVALID_PASSKEY_CREDENTIAL` | The WebAuthn response is invalid or is not the credential the grant names |
+| 400 | `PASSKEY_ORIGIN_NOT_ALLOWED` | The page origin is not allowed for the `rpId` |
+| 400 | `PASSKEY_RP_ID_NOT_ALLOWED` | The `rpId` is not allowed |
+| 400 | `PASSKEY_CHALLENGE_INVALID` | The challenge is unknown, expired or already used |
+| 400 | `PASSKEY_ALREADY_REGISTERED` | The credential, or the grant's nonce, is already registered |
+| 403 | `PASSKEYS_DISABLED`, `SESSIONS_DISABLED` | Not available for this account yet |
+
+## Open a session with a passkey
+
+<Steps>
+  <Step title="Get a nonce">
+    Call `POST /v2/passkeys/challenge` with `{ "purpose": "session" }`. No JWT is needed.
+  </Step>
+  <Step title="Build the SessionMint">
+    Generate a fresh session key and fill in a `SessionMint` with the challenge as its `nonce`.
+  </Step>
+  <Step title="Sign it with the passkey">
+    Compute the SNIP-12 revision 1 message hash of the `SessionMint`, using the same domain as a session grant. Pass its 32 bytes, base64url encoded, as the `challenge` of `navigator.credentials.get`, with `rpId` set to the passkey's `rp_id`.
+  </Step>
+  <Step title="Open the session">
+    Send the mint and the assertion to `POST /v2/passkeys/sessions`.
+  </Step>
+</Steps>
+
+### SessionMint
+
+| Field | SNIP-12 type | Description |
+| --- | --- | --- |
+| `paradexChain` | shortstring | As in the passkey grant |
+| `environment` | shortstring | As in the passkey grant |
+| `account` | ContractAddress | The main account |
+| `credentialId` | string | The passkey's credential id, base64url |
+| `sessionKey` | felt | The new session's Stark public key |
+| `scopes` | shortstring* | Within the ceiling: `["trade"]` |
+| `limits` | Limits | Every amount `"none"` and `markets` `["*"]` |
+| `subaccounts` | ContractAddress* | `[]` |
+| `nonce` | felt | The `session` challenge |
+| `expiresAt` | timestamp | Unix seconds, no later than the passkey's own expiry and no more than the ceiling's `maxSessionTtl` from now |
+
+### Request
+
+```http
+POST /v2/passkeys/sessions
+Content-Type: application/json
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `mint` | object | The `SessionMint` exactly as signed, with its camelCase field names |
+| `assertion` | object | The `PublicKeyCredential` JSON from `navigator.credentials.get` |
+
+**Response** `200`: the same `grant_id`, `expires_at` and `accounts` as [`POST /v2/sessions`](/api/session-keys/create-a-session#4-open-the-session). The session key then signs in with `POST /v1/auth/{public_key}`, and the session appears in `GET /v2/sessions` with `source` set to `passkey`. Revoke it with [`DELETE /v2/sessions/{grant_id}`](/api/session-keys/manage-sessions#revoke-a-session) like any other session.
+
+| Status | Error | Meaning |
+| --- | --- | --- |
+| 400 | `MINT_EXCEEDS_CEILING` | A scope or the expiry is outside the passkey's ceiling |
+| 400 | `SESSION_LIMIT_REACHED` | The passkey already holds its ceiling's `maxConcurrentSessions` live sessions |
+| 400 | `LIMIT_INVALID` | A limit is empty, malformed or not `none`, or `markets` is not `["*"]` |
+| 400 | `ACCOUNT_NOT_ELIGIBLE` | The mint lists subaccounts, or the account cannot hold sessions |
+| 400 | `PASSKEY_NOT_ACTIVE` | The passkey is revoked or expired |
+| 400 | `INVALID_PASSKEY_CREDENTIAL` | The WebAuthn response is invalid |
+| 400 | `PASSKEY_ORIGIN_NOT_ALLOWED` | The page origin is not allowed for the passkey's `rpId` |
+| 400 | `PASSKEY_RP_ID_NOT_ALLOWED` | The assertion is for another `rpId` |
+| 400 | `PASSKEY_CHALLENGE_INVALID` | The nonce is unknown, expired or already used, or the assertion is not over this mint |
+| 400 | `PASSKEY_SIGN_COUNT_REGRESSION` | The authenticator's counter went backwards, which can mean a cloned authenticator |
+| 400 | `SESSION_KEY_IN_USE` | The session key is already registered on the account |
+| 403 | `PASSKEYS_DISABLED`, `SESSIONS_DISABLED` | Not available for this account yet |
+| 404 | `PASSKEY_NOT_FOUND` | No passkey with this credential id on the account |
+
+## List passkeys
+
+```http
+GET /v2/passkeys
+Authorization: Bearer <JWT>
+```
+
+Returns the account's passkeys, revoked ones included, newest first, as `{ "results": [ <passkey>, ... ] }`. The owner's main key session sees every passkey; a session a passkey opened sees only that passkey.
+
+### The passkey object
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | integer | The passkey id used by `DELETE /v2/passkeys/{id}` |
+| `credential_id` | string | The WebAuthn credential id, base64url |
+| `rp_id` | string | The relying party ID |
+| `label` | string | The label from the grant |
+| `state` | string | `active`, `revoked` or `expired` |
+| `ceiling` | object | `scopes`, `limits`, `max_session_ttl` (seconds) and `max_concurrent_sessions` |
+| `live_sessions` | integer | Sessions the passkey has open now |
+| `synced` | bool | Whether the passkey is synced across devices |
+| `backup_eligible` | bool | Whether the passkey can be synced |
+| `aaguid` | string | The authenticator model, for display. May be all zeros. |
+| `expires_at` | integer | When the passkey expires, in milliseconds |
+| `created_at` | integer | When it was registered, in milliseconds |
+| `last_used_at` | integer or null | When it last opened a session, in milliseconds |
+| `revoked_at` | integer or null | When it was revoked, in milliseconds |
+| `revoked_reason` | string | `owner` or `passkey`. Only present once revoked. |
+
+## Revoke a passkey
+
+```http
+DELETE /v2/passkeys/{id}
+Authorization: Bearer <JWT>
+```
+
+Revokes the passkey, then every session it opened. Resting orders are kept. The owner's main key session can revoke any passkey on the account, and a session a passkey opened can revoke that passkey. Revoking a passkey that is already revoked succeeds.
+
+**Response** `204` with no body. Returns `403` for any other caller on the account and `404` for an unknown id.

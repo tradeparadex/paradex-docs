@@ -1,0 +1,17 @@
+## v1.170.4
+
+<ChangelogTags tags={["UI", "API"]} />
+
+#### UI
+
+* Fixed `USDC transfers and withdrawals` failing with an authorization error on `portfolio margin` accounts.
+* Fixed the `withdraw modal` sometimes appearing blank right after reconnecting an external wallet.
+* `Option Monitor` date picker's Today preset is now `Last 24 Hours`, matching the live view.
+* `RFQ Notional` now sums every leg of a structure, matching the `trade tape`.
+
+#### API
+
+* `Perp` and `Spot` `pro maker fees rise to 0.5 bps`, and the `API taker discount against retail makers ends` everywhere.
+* `Reduce-only orders` no longer fail to settle beside a take-profit, which is now cancelled when it would overfill the position.
+* Scoped markets summary subscriptions now receive each market's current summary as soon as it is added.
+

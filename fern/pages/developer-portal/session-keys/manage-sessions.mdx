@@ -1,0 +1,140 @@
+---
+title: Manage Sessions
+subtitle: List, read, revoke and check the status of sessions
+---
+
+| Route | Who can call it |
+| --- | --- |
+| [`GET /v2/sessions`](#list-sessions) | The owner's main key session |
+| [`GET /v2/sessions/{grant_id}`](#get-a-session) | The owner's main key session, or the session itself |
+| [`DELETE /v2/sessions/{grant_id}`](#revoke-a-session) | The owner's main key session, or the session itself |
+| [`DELETE /v2/sessions`](#revoke-all-sessions) | The owner's main key session |
+| [`GET /v2/sessions/{grant_id}/status`](#check-a-sessions-status) | Anyone, no authentication |
+
+A main key session is a JWT the account obtained with its own key. JWTs from subkeys, readonly tokens and other sessions are refused on routes reserved for the owner.
+
+## The session object
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `grant_id` | string | The grant id |
+| `state` | string | `active`, `revoked` or `expired` |
+| `label` | string | The label from the grant |
+| `source` | string | What opened the session, such as `app`, `api` or `passkey` |
+| `passkey_credential_id` | string | The credential id of the passkey that opened the session. Only present when `source` is `passkey`. |
+| `builder` | object or null | The builder the grant approved, or `null` |
+| `scopes` | string[] | The scopes from the grant |
+| `limits` | object | The limits exactly as the grant states them: `max_order_notional`, `max_open_notional`, `daily_notional`, `max_loss`, `max_leverage` and `markets` |
+| `accounts` | string[] | Every account the session covers |
+| `issued_at` | integer | When the owner signed the grant, in milliseconds |
+| `expires_at` | integer | When the session expires, in milliseconds |
+| `revoked_at` | integer | When the session was revoked, in milliseconds, or `0` |
+
+```json
+{
+  "grant_id": "0x5f1c0a4e2b7d9e3f6a8c1b0d2e4f6a8c0b2d4e6f8a0c2e4b6d8f0a2c4e6b8d0f",
+  "state": "active",
+  "label": "My trading app",
+  "source": "app",
+  "builder": null,
+  "scopes": ["trade"],
+  "limits": {
+    "max_order_notional": "none",
+    "max_open_notional": "none",
+    "daily_notional": "none",
+    "max_loss": "none",
+    "max_leverage": "none",
+    "markets": ["*"]
+  },
+  "accounts": ["0x<account>"],
+  "issued_at": 1767225600000,
+  "expires_at": 1767830400000,
+  "revoked_at": 0
+}
+```
+
+## List sessions
+
+```http
+GET /v2/sessions
+Authorization: Bearer <main key JWT>
+```
+
+Returns the owner's sessions in every state, newest first, with cursor pagination.
+
+| Query parameter | Description |
+| --- | --- |
+| `state` | Only return sessions in this state: `active`, `revoked` or `expired` |
+| `page_size` | Results per page. Defaults to 50, at most 200. |
+| `cursor` | The `next` or `prev` cursor from a previous page |
+
+**Response** `200`: `{ "results": [ <session>, ... ], "next": "...", "prev": "..." }`
+
+Returns `403` when the caller is not the owner's main key session.
+
+## Get a session
+
+```http
+GET /v2/sessions/{grant_id}
+Authorization: Bearer <JWT>
+```
+
+Returns one [session object](#the-session-object). The owner's main key session can read any of its sessions, and a session can read itself. Any other caller gets `404`, whether or not the grant exists.
+
+## Revoke a session
+
+```http
+DELETE /v2/sessions/{grant_id}?cancel_orders=true
+Authorization: Bearer <JWT>
+```
+
+Revokes the session on every account it covers, and its JWTs stop working. The owner's main key session can revoke any of its sessions; a session can revoke itself, which is how an app signs out. Revoking a session that is already revoked succeeds.
+
+| Query parameter | Description |
+| --- | --- |
+| `cancel_orders` | `true` to also cancel the session's resting orders. Defaults to `false`. |
+
+What happens to the session's orders:
+
+| Revoked by | Resting orders | TWAPs and untriggered stops |
+| --- | --- | --- |
+| The owner | Kept, unless `cancel_orders=true` | Canceled |
+| The session itself | Kept, unless `cancel_orders=true` | Kept working, unless `cancel_orders=true` |
+
+**Response** `204` with no body.
+
+| Status | Meaning |
+| --- | --- |
+| 403 | The caller is another session or key on one of the session's accounts |
+| 404 | The grant id is malformed or unknown, or the caller has no relation to the session |
+
+## Revoke all sessions
+
+```http
+DELETE /v2/sessions?cancel_orders=true
+Authorization: Bearer <main key JWT>
+```
+
+Revokes every session the owner has opened, on every account each one covers. Each session's WebSocket connections are closed, and its TWAPs and untriggered stops are canceled. Pass `cancel_orders=true` to also cancel their resting orders.
+
+**Response** `204` with no body. Returns `403` when the caller is not the owner's main key session.
+
+## Check a session's status
+
+```http
+GET /v2/sessions/{grant_id}/status
+```
+
+Takes no JWT and returns only the session's state, nothing about the owner, the accounts or the grant's terms.
+
+**Response** `200`
+
+```json
+{ "state": "active" }
+```
+
+`state` is `active`, `revoked` or `expired`. An unknown or malformed grant id returns `404`, which a client should treat the same as `revoked`.
+
+Use it when a session JWT or `/auth` call is refused: if the state is `revoked` or `expired`, drop the session key and its JWTs for every account and stop reconnecting. Any other answer means the refusal was not caused by the session ending, so retry with a short backoff. A `403` on an ordinary call is a refused action, usually a missing [scope](/api/session-keys/scopes), and never means the session has ended. Both SDKs follow this rule.
+
+The route is rate limited per IP like other public endpoints, so call it on a refusal rather than polling it.

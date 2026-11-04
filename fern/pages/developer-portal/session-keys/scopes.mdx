@@ -1,0 +1,102 @@
+---
+title: Scopes
+subtitle: What a session may do, route by route
+---
+
+A grant's `scopes` list what the session may do beyond reading. Read access is always included and is never listed.
+
+| Scope | Grants |
+| --- | --- |
+| *(read, implied)* | Private reads: orders, fills, positions, balances, account data |
+| `trade` | Create, modify and cancel orders, batches and algo orders |
+| `account:settings` | Leverage and margin type, market maker protection, max slippage and display settings |
+| `trade:rfq` | RFQ routes. See the note below. |
+| `trade:block` | Reserved for block trades. See the note below. |
+
+A grant that lists `account:settings` or `trade:block` lasts at most 7 days.
+
+The scopes `withdraw:owner` and `trade:isolated` are reserved: a grant that lists either is refused with `SCOPE_NOT_ALLOWED`, as is any unknown or repeated scope.
+
+<Note>
+`trade:rfq` and `trade:block` can be granted, but RFQ endpoints refuse session JWTs for now with `403 REQUEST_NOT_ALLOWED`, and creating, offering, executing or canceling block trades is reserved for the owner. Sessions can still read block trades.
+</Note>
+
+## How scopes are enforced
+
+Every private route declares the scope a session JWT needs. A session JWT is refused with `403 INVALID_TOKEN_SCOPE` when:
+
+- the route requires a scope the grant does not list;
+- the route is reserved for the owner;
+- the route has not declared a scope. New private routes are closed to sessions until they do;
+- the request names `on_behalf_of_account`;
+- the JWT authorizes accounts other than the one it was minted for.
+
+A `403` is a refused action. It does not mean the session has ended. JWTs from main keys, subkeys and API tokens are not affected by scopes.
+
+## Routes by scope
+
+### Read (every session)
+
+| Method | Route |
+| --- | --- |
+| GET | `/v1/account`, `/v1/account/summary`, `/v1/account/info`, `/v1/account/subaccounts`, `/v1/account/history` |
+| GET | `/v1/account/profile`, `/v1/account/settings`, `/v1/account/compliance`, `/v1/account/margin`, `/v1/account/mmp` |
+| GET | `/v1/balance`, `/v1/positions`, `/v1/fills`, `/v1/tradebusts`, `/v1/transactions`, `/v1/liquidations`, `/v1/funding/payments`, `/v1/transfers` |
+| GET | `/v1/orders`, `/v1/orders-history`, `/v1/orders/{order_id}`, `/v1/orders/by_client_id/{client_id}` |
+| GET | `/v1/algo/orders`, `/v1/algo/orders-history`, `/v1/algo/orders/{algo_id}` |
+| GET | `/v1/block-trades`, `/v1/block-trades/{block_trade_id}`, `/v1/block-trades/{block_trade_id}/offers`, `/v1/block-trades/{block_trade_id}/offers/{offer_id}` |
+| GET | `/v1/vaults/account-summary`, `/v1/vaults/mine` |
+| GET | `/v1/staking/history`, `/v1/staking/summary`, `/v1/staking/balance/history` |
+| GET | `/v1/referrals/summary`, `/v1/xp/transfers`, `/v1/xp/account-balance` |
+| GET, DELETE | `/v2/sessions/{grant_id}`: the session itself only |
+| GET | `/v2/passkeys`: a passkey session sees its own passkey only |
+| DELETE | `/v2/passkeys/{id}`: a passkey session may revoke its own passkey only |
+
+### `trade`
+
+| Method | Route |
+| --- | --- |
+| POST | `/v1/orders`, `/v1/orders/batch` |
+| PUT | `/v1/orders/{order_id}` |
+| DELETE | `/v1/orders`, `/v1/orders/batch`, `/v1/orders/{order_id}`, `/v1/orders/by_client_id/{client_id}` |
+| POST | `/v1/algo/orders` |
+| DELETE | `/v1/algo/orders/{algo_id}` |
+
+A session may modify only the orders it placed itself.
+
+### `account:settings`
+
+| Method | Route |
+| --- | --- |
+| POST | `/v1/account/margin/{market}` |
+| POST | `/v1/account/mmp/{base_asset}`, `/v1/account/mmp/reset` |
+| DELETE | `/v1/account/mmp/{base_asset}` |
+| POST | `/v1/account/profile/market_max_slippage/{market}`, `/v1/account/profile/size_currency_display`, `/v1/account/profile/notifications/last_seen` |
+| POST | `/v1/account/settings/trading_value_display` |
+
+A session cannot use `/v1/account/margin/{market}` to set isolated margin.
+
+### `trade:rfq`
+
+| Method | Route |
+| --- | --- |
+| GET, POST | `/v1/rfqs`, `/v1/rfqs/drafts` |
+| GET | `/v1/rfqs/markets`, `/v1/rfqs/platform-state`, `/v1/rfqs/{rfq_id}/bbo` |
+| DELETE | `/v1/rfqs/drafts/{draft_id}`, `/v1/rfqs/{rfq_id}` |
+| POST | `/v1/rfqs/{rfq_id}/execute` |
+
+### Owner only (no session)
+
+| Method | Route |
+| --- | --- |
+| GET, DELETE | `/v2/sessions` |
+| POST, GET, PUT, DELETE | `/v1/account/keys/subkeys` and every route below it |
+| POST, GET, PUT, DELETE | `/v1/account/tokens` and every route below it |
+| POST | `/v2/passkeys/challenge` with `purpose` `registration` |
+| POST | `/v1/block-trades`, `/v1/block-trades/{block_trade_id}/offers`, `/v1/block-trades/{block_trade_id}/execute`, `/v1/block-trades/{block_trade_id}/offers/{offer_id}/execute` |
+| DELETE | `/v1/block-trades/{block_trade_id}`, `/v1/block-trades/{block_trade_id}/offers/{offer_id}` |
+| PUT | `/v1/account/profile` |
+| POST | `/v1/account/profile/username`, `/v1/account/profile/referral_code`, `/v1/account/profile/notifications`, `/v1/account/profile/refresh_inventory` |
+| POST | `/v1/account/referrer`, `/v1/account/compliance`, `/v1/xp/transfer` |
+
+Any private route not listed on this page also refuses session JWTs.

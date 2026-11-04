@@ -1,0 +1,304 @@
+---
+title: Create a Session
+subtitle: Build a session grant, have the owner sign it, open the session and sign in with the session key
+---
+
+Opening a session takes one owner signature and one unauthenticated request. The steps below describe the raw API. The [TypeScript and Python SDKs](/api/session-keys/sdk-examples) build, validate and sign the grant for you.
+
+## 1. Generate a session key
+
+Generate a new Stark key pair for every session. The public key goes into the grant as `sessionKey`; keep the private key in your app. A key that has ever belonged to the account, including the key of a revoked or expired session, is refused with `SESSION_KEY_IN_USE`.
+
+## 2. Build the grant
+
+A `SessionGrant` has these fields. Field names are camelCase and the order shown is the signed order.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `paradexChain` | string | The Paradex chain id, the `starknet_chain_id` value from `GET /system/config` |
+| `environment` | string | `mainnet` or `testnet` |
+| `account` | string | The main account the session is anchored to, as `0x` hex |
+| `sessionKey` | string | The session public key, as `0x` hex |
+| `label` | string | A name the owner sees for the session, at most 64 printable ASCII characters. May be empty. |
+| `scopes` | string[] | The [scopes](/api/session-keys/scopes) the session gets beyond reading. May be empty for a read only session. |
+| `limits` | `Limits` | Per session trading limits. See [Limits](#limits). |
+| `builder` | `Builder` | A builder fee approval. See [Builder](#builder). |
+| `subaccounts` | string[] | Subaccounts of `account` the session may also trade, as `0x` hex. May be empty. |
+| `nonce` | string | A random nonzero value of at most 128 bits, as lowercase `0x` hex without leading zeros |
+| `issuedAt` | uint64 | When the grant was created, in Unix seconds |
+| `expiresAt` | uint64 | When the session ends, in Unix seconds |
+
+### Lifetime
+
+`issuedAt` must be within the last 24 hours, which leaves time for multisig owners to collect signatures, and no more than 5 minutes ahead of server time. `expiresAt` must be in the future and at most 30 days after the earlier of `issuedAt` and the time the server receives the grant. A grant that lists `trade:block` or `account:settings` lasts at most 7 days. Seven days is a sensible default for a browser session.
+
+### Limits
+
+`Limits` is part of the signed message and every field must be present:
+
+| Field | Type |
+| --- | --- |
+| `maxOrderNotional` | string |
+| `maxOpenNotional` | string |
+| `dailyNotional` | string |
+| `maxLoss` | string |
+| `maxLeverage` | string |
+| `markets` | string[] |
+
+The server does not enforce session limits today, so it only accepts a grant that states no limit: every amount set to `"none"` and `markets` set to `["*"]`. Any other value returns `LIMIT_INVALID`. The fields exist so that grants keep the same shape if limits are introduced later. Until then a session can trade up to whatever the account itself can.
+
+```json
+{
+  "maxOrderNotional": "none",
+  "maxOpenNotional": "none",
+  "dailyNotional": "none",
+  "maxLoss": "none",
+  "maxLeverage": "none",
+  "markets": ["*"]
+}
+```
+
+### Builder
+
+`Builder` is also part of every grant. Grants that approve a builder are not accepted yet, so always send the empty builder:
+
+```json
+{ "account": "0x0", "maxFeeRate": "0", "expiresAt": 0 }
+```
+
+### Subaccounts
+
+A grant from an EVM owned account may list up to 32 of its subaccounts. The session can then sign in to and trade each of them, one JWT per account. Grants from Starknet owned accounts cannot list subaccounts. Only a main account can anchor a grant; a vault operator account can hold a session for itself alone, with no subaccounts.
+
+## 3. Sign the grant
+
+The owner signs the grant as typed data. Both encodings use the domain name `Paradex Session` and version `1`, which differ from the `Paradex` domain used for orders and auth, so a grant prompt never looks like an order.
+
+<Tabs>
+  <Tab title="EIP-712 (EVM owned accounts)">
+
+The domain `chainId` is the chain the wallet is currently connected to, so the wallet never needs to switch networks. The Paradex chain and environment are bound inside the message instead. Sign with `eth_signTypedData_v4`.
+
+```json
+{
+  "types": {
+    "EIP712Domain": [
+      { "name": "name", "type": "string" },
+      { "name": "version", "type": "string" },
+      { "name": "chainId", "type": "uint256" }
+    ],
+    "SessionGrant": [
+      { "name": "paradexChain", "type": "string" },
+      { "name": "environment", "type": "string" },
+      { "name": "account", "type": "string" },
+      { "name": "sessionKey", "type": "string" },
+      { "name": "label", "type": "string" },
+      { "name": "scopes", "type": "string[]" },
+      { "name": "limits", "type": "Limits" },
+      { "name": "builder", "type": "Builder" },
+      { "name": "subaccounts", "type": "string[]" },
+      { "name": "nonce", "type": "string" },
+      { "name": "issuedAt", "type": "uint64" },
+      { "name": "expiresAt", "type": "uint64" }
+    ],
+    "Limits": [
+      { "name": "maxOrderNotional", "type": "string" },
+      { "name": "maxOpenNotional", "type": "string" },
+      { "name": "dailyNotional", "type": "string" },
+      { "name": "maxLoss", "type": "string" },
+      { "name": "maxLeverage", "type": "string" },
+      { "name": "markets", "type": "string[]" }
+    ],
+    "Builder": [
+      { "name": "account", "type": "string" },
+      { "name": "maxFeeRate", "type": "string" },
+      { "name": "expiresAt", "type": "uint64" }
+    ]
+  },
+  "primaryType": "SessionGrant",
+  "domain": { "name": "Paradex Session", "version": "1", "chainId": 1 },
+  "message": {
+    "paradexChain": "<starknet_chain_id>",
+    "environment": "mainnet",
+    "account": "0x<account>",
+    "sessionKey": "0x<session public key>",
+    "label": "My trading app",
+    "scopes": ["trade"],
+    "limits": {
+      "maxOrderNotional": "none",
+      "maxOpenNotional": "none",
+      "dailyNotional": "none",
+      "maxLoss": "none",
+      "maxLeverage": "none",
+      "markets": ["*"]
+    },
+    "builder": { "account": "0x0", "maxFeeRate": "0", "expiresAt": 0 },
+    "subaccounts": [],
+    "nonce": "0x<random nonce>",
+    "issuedAt": 1767225600,
+    "expiresAt": 1767830400
+  }
+}
+```
+
+Only signatures from externally owned accounts are accepted: a 65 byte `r || s || v` signature with a canonical (low) `s`. Smart contract wallet signatures are refused.
+
+  </Tab>
+  <Tab title="SNIP-12 (Starknet owned accounts)">
+
+SNIP-12 revision 1, signed with the account's main Stark key. The domain `chainId` is the Paradex chain. Integer fields are written as decimal strings.
+
+```json
+{
+  "types": {
+    "StarknetDomain": [
+      { "name": "name", "type": "shortstring" },
+      { "name": "version", "type": "shortstring" },
+      { "name": "chainId", "type": "shortstring" },
+      { "name": "revision", "type": "shortstring" }
+    ],
+    "SessionGrant": [
+      { "name": "paradexChain", "type": "shortstring" },
+      { "name": "environment", "type": "shortstring" },
+      { "name": "account", "type": "ContractAddress" },
+      { "name": "sessionKey", "type": "felt" },
+      { "name": "label", "type": "string" },
+      { "name": "scopes", "type": "shortstring*" },
+      { "name": "limits", "type": "Limits" },
+      { "name": "builder", "type": "Builder" },
+      { "name": "subaccounts", "type": "ContractAddress*" },
+      { "name": "nonce", "type": "felt" },
+      { "name": "issuedAt", "type": "timestamp" },
+      { "name": "expiresAt", "type": "timestamp" }
+    ],
+    "Limits": [
+      { "name": "maxOrderNotional", "type": "string" },
+      { "name": "maxOpenNotional", "type": "string" },
+      { "name": "dailyNotional", "type": "string" },
+      { "name": "maxLoss", "type": "string" },
+      { "name": "maxLeverage", "type": "string" },
+      { "name": "markets", "type": "shortstring*" }
+    ],
+    "Builder": [
+      { "name": "account", "type": "ContractAddress" },
+      { "name": "maxFeeRate", "type": "string" },
+      { "name": "expiresAt", "type": "timestamp" }
+    ]
+  },
+  "primaryType": "SessionGrant",
+  "domain": {
+    "name": "Paradex Session",
+    "version": "1",
+    "chainId": "<starknet_chain_id>",
+    "revision": "1"
+  },
+  "message": {
+    "paradexChain": "<starknet_chain_id>",
+    "environment": "mainnet",
+    "account": "0x<account>",
+    "sessionKey": "0x<session public key>",
+    "label": "My trading bot",
+    "scopes": ["trade"],
+    "limits": {
+      "maxOrderNotional": "none",
+      "maxOpenNotional": "none",
+      "dailyNotional": "none",
+      "maxLoss": "none",
+      "maxLeverage": "none",
+      "markets": ["*"]
+    },
+    "builder": { "account": "0x0", "maxFeeRate": "0", "expiresAt": "0" },
+    "subaccounts": [],
+    "nonce": "0x<random nonce>",
+    "issuedAt": "1767225600",
+    "expiresAt": "1767830400"
+  }
+}
+```
+
+  </Tab>
+</Tabs>
+
+<Note>
+Addresses, keys and the nonce must be `0x` hex. Labels and other string fields must be printable ASCII. These rules keep a grant's meaning identical in both encodings.
+</Note>
+
+### The grant id
+
+The grant id identifies the session in every later request. `POST /v2/sessions` returns it, and you can compute it yourself:
+
+- for an EVM owned account, the EIP-712 struct hash of the `SessionGrant` message. It does not include the domain, so it does not depend on the chain the wallet signed on;
+- for a Starknet owned account, the SNIP-12 message hash.
+
+Either way it is written as `0x` followed by 64 lowercase hex characters.
+
+## 4. Open the session
+
+`POST /v2/sessions` needs no JWT: the owner's signature is the authentication.
+
+```http
+POST /v2/sessions
+Content-Type: application/json
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `grant` | object | The `SessionGrant` message exactly as signed, with its camelCase field names. Each field must appear once. |
+| `signature` | string | For `eip712`, the `0x` hex `r || s || v` signature. For `snip12`, the string `'["0xr","0xs"]'`, as orders carry it. A bare `["0xr", "0xs"]` array is also accepted. |
+| `signature_type` | string | `eip712` for EVM owned accounts, `snip12` for Starknet owned accounts |
+| `signature_chain_id` | integer | The EIP-712 domain `chainId` the wallet signed with. Required for `eip712`, ignored for `snip12`. |
+
+```json
+{
+  "grant": { "paradexChain": "...", "environment": "mainnet", "...": "..." },
+  "signature": "0x<130 hex characters>",
+  "signature_type": "eip712",
+  "signature_chain_id": 1
+}
+```
+
+**Response** `200`
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `grant_id` | string | The grant id |
+| `expires_at` | integer | When the session expires, in milliseconds |
+| `accounts` | string[] | Every account the session can trade: the anchor account, then each listed subaccount |
+
+```json
+{
+  "grant_id": "0x5f1c0a4e2b7d9e3f6a8c1b0d2e4f6a8c0b2d4e6f8a0c2e4b6d8f0a2c4e6b8d0f",
+  "expires_at": 1767830400000,
+  "accounts": ["0x<account>"]
+}
+```
+
+Check that `grant_id`, `accounts` and `expires_at` match the grant you signed before you rely on the session.
+
+Each grant can be used once. Sending the same grant again, or another grant with the same nonce, returns `NONCE_REUSED`.
+
+### Errors
+
+| Status | Error | Meaning |
+| --- | --- | --- |
+| 400 | `INVALID_SIGNATURE` | The signature is not the account owner's, does not match `signature_type`, or names an account that cannot be verified |
+| 400 | `GRANT_EXPIRED` | `expiresAt` has passed, or `issuedAt` is outside the accepted window |
+| 400 | `INVALID_ENVIRONMENT` | The grant is for another environment |
+| 400 | `INVALID_CHAIN` | The grant is for another Paradex chain |
+| 400 | `SCOPE_NOT_ALLOWED` | A scope is unknown or reserved |
+| 400 | `LIMIT_INVALID` | A limit is missing, malformed or not `none`, `markets` is not `["*"]`, the grant names a builder, or the expiry is longer than allowed |
+| 400 | `NONCE_REUSED` | The grant or its nonce was already used |
+| 400 | `ACCOUNT_NOT_ELIGIBLE` | The account or a listed subaccount cannot hold sessions |
+| 400 | `INVALID_GRANT` | The grant does not match the `SessionGrant` schema |
+| 400 | `SESSION_KEY_IN_USE` | The session key is, or was, a key of a listed account |
+| 403 | `SESSIONS_DISABLED` | Sessions are not available for this account yet |
+
+## 5. Sign in with the session key
+
+The session key signs in like a [subkey](/api/general-information/api-authentication#generating-auth-tokens): call `POST /v1/auth/{public_key}` with the session public key in the path, the account address in `PARADEX-STARKNET-ACCOUNT`, and `PARADEX-STARKNET-SIGNATURE` signed by the session private key. Repeat for each account in `accounts` to get one JWT per account.
+
+- A session JWT never outlives its session.
+- Refresh it as you would any JWT. The SDKs request tokens that last at most 15 minutes.
+- Once the session is revoked or expired, `/auth` returns `SESSION_REVOKED` or `SESSION_EXPIRED`.
+
+Use the JWT and the session key for REST and WebSocket calls exactly as you would a subkey's: send the JWT as the bearer token, and sign orders with the session private key. Every request is held to the grant's [scopes](/api/session-keys/scopes).

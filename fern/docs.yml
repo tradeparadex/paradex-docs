@@ -700,6 +700,25 @@ navigation:
           - page: API Best Practices
             slug: api-best-practices
             path: ./pages/developer-portal/general-information/api-best-practices.mdx
+      - section: Session Keys
+        slug: session-keys
+        path: ./pages/developer-portal/session-keys/overview.mdx
+        contents:
+          - page: Create a Session
+            slug: create-a-session
+            path: ./pages/developer-portal/session-keys/create-a-session.mdx
+          - page: Manage Sessions
+            slug: manage-sessions
+            path: ./pages/developer-portal/session-keys/manage-sessions.mdx
+          - page: Passkeys
+            slug: passkeys
+            path: ./pages/developer-portal/session-keys/passkeys.mdx
+          - page: Scopes
+            slug: scopes
+            path: ./pages/developer-portal/session-keys/scopes.mdx
+          - page: SDK Examples
+            slug: sdk-examples
+            path: ./pages/developer-portal/session-keys/sdk-examples.mdx
       - section: Production API Reference
         contents:
           - api: REST Endpoints

@@ -2,7 +2,9 @@
 
 ## Pattern
 
-Options instrument config pages live in `fern/pages/instruments-guide/dated-options/` with one `.mdx` file per asset (e.g. `btc-usd.mdx`, `eth-usd.mdx`, `hype-usd.mdx`, `sol-usd.mdx`, `zec-usd.mdx`, `us500-usd.mdx`). Each page follows the same table layout — product type, symbol format, base/quote/settlement currencies, tick sizes, order limits, band factors.
+Options instrument config pages live in `fern/pages/instruments-guide/dated-options/` with one `.mdx` file per asset (e.g. `btc-usd.mdx`, `eth-usd.mdx`, `hype-usd.mdx`, `sol-usd.mdx`, `zec-usd.mdx`, `us500-usd.mdx`). Each page follows the same table layout — product type, symbol format, base/quote/settlement currencies, settlement time, tick sizes, order limits, band factors.
+
+The `Settlement time` row sits right after `Settlement currency`: `08:00 UTC` for crypto underlyings (BTC, ETH, HYPE, NEAR, SOL, ZEC) and `16:00 UTC` for TradFi (CL, META, MSTR, MU, SPCX, US100, US500, XAU). This matches the expiry times in `fern/pages/dated-options/overview.mdx` and `expiries-and-listing.mdx`; add the row when creating a new options page.
 
 Sidebar entries for options are under `- section: Options` inside the Instruments Guide in `fern/docs.yml`.
 
@@ -70,4 +72,4 @@ When adding a new options underlying, update all four locations: instrument conf
 
 ## Last updated
 
-2026-10-19
+2026-11-05

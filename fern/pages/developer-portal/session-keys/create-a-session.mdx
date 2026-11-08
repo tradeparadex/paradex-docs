@@ -15,7 +15,7 @@ A `SessionGrant` has these fields. Field names are camelCase and the order shown
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `paradexChain` | string | The Paradex chain id, the `starknet_chain_id` value from `GET /system/config` |
+| `paradexChain` | string | The Paradex chain id, the `starknet_chain_id` value from `GET /v1/system/config` |
 | `environment` | string | `mainnet` or `testnet` |
 | `account` | string | The main account the session is anchored to, as `0x` hex |
 | `sessionKey` | string | The session public key, as `0x` hex |
@@ -23,7 +23,7 @@ A `SessionGrant` has these fields. Field names are camelCase and the order shown
 | `scopes` | string[] | The [scopes](/api/session-keys/scopes) the session gets beyond reading. May be empty for a read only session. |
 | `limits` | `Limits` | Per session trading limits. See [Limits](#limits). |
 | `builder` | `Builder` | A builder fee approval. See [Builder](#builder). |
-| `subaccounts` | string[] | Subaccounts of `account` the session may also trade, as `0x` hex. May be empty. |
+| `subaccounts` | string[] | Subaccounts of `account` the session may also trade, as `0x` hex. See [Subaccounts](#subaccounts). |
 | `nonce` | string | A random nonzero value of at most 128 bits, as lowercase `0x` hex without leading zeros |
 | `issuedAt` | uint64 | When the grant was created, in Unix seconds |
 | `expiresAt` | uint64 | When the session ends, in Unix seconds |
@@ -68,7 +68,7 @@ The server does not enforce session limits today, so it only accepts a grant tha
 
 ### Subaccounts
 
-A grant from an EVM owned account may list up to 32 of its subaccounts. The session can then sign in to and trade each of them, one JWT per account. Grants from Starknet owned accounts cannot list subaccounts. Only a main account can anchor a grant; a vault operator account can hold a session for itself alone, with no subaccounts.
+The grant format lets an EVM owned account list up to 32 subaccounts, one JWT per account, but no existing subaccount is eligible today: listing one returns `ACCOUNT_NOT_ELIGIBLE`, after the owner has signed. Send an empty list. Grants from Starknet owned accounts cannot list subaccounts. Only a main account can anchor a grant; a vault operator account can hold a session for itself alone, with no subaccounts.
 
 ## 3. Sign the grant
 
@@ -243,8 +243,8 @@ Content-Type: application/json
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `grant` | object | The `SessionGrant` message exactly as signed, with its camelCase field names. Each field must appear once. |
-| `signature` | string | For `eip712`, the `0x` hex `r || s || v` signature. For `snip12`, the string `'["0xr","0xs"]'`, as orders carry it. A bare `["0xr", "0xs"]` array is also accepted. |
+| `grant` | object | The `SessionGrant` message as signed, with its camelCase field names. Each field must appear once. Send `issuedAt`, `expiresAt` and `builder.expiresAt` as JSON integers, including for `snip12`, where the signed message writes them as decimal strings. |
+| `signature` | string | For `eip712`, the `0x` hex signature: `r`, `s` and `v` concatenated. For `snip12`, the string `'["0xr","0xs"]'`, as orders carry it. A bare `["0xr", "0xs"]` array is also accepted. |
 | `signature_type` | string | `eip712` for EVM owned accounts, `snip12` for Starknet owned accounts |
 | `signature_chain_id` | integer | The EIP-712 domain `chainId` the wallet signed with. Required for `eip712`, ignored for `snip12`. |
 
@@ -297,8 +297,10 @@ Each grant can be used once. Sending the same grant again, or another grant with
 
 The session key signs in like a [subkey](/api/general-information/api-authentication#generating-auth-tokens): call `POST /v1/auth/{public_key}` with the session public key in the path, the account address in `PARADEX-STARKNET-ACCOUNT`, and `PARADEX-STARKNET-SIGNATURE` signed by the session private key. Repeat for each account in `accounts` to get one JWT per account.
 
-- A session JWT never outlives its session.
-- Refresh it as you would any JWT. The SDKs request tokens that last at most 15 minutes.
+The public key in the path is required. `POST /v1/auth` without it checks the signature against the account's main key, so it refuses a session key's signature.
+
+- Sign and send both `PARADEX-TIMESTAMP` and `PARADEX-SIGNATURE-EXPIRATION`. The expiration must be at most 15 minutes after the timestamp and no later than the session's expiry.
+- A session JWT lasts at most 15 minutes and never outlives its session. Sign in again to refresh it.
 - Once the session is revoked or expired, `/auth` returns `SESSION_REVOKED` or `SESSION_EXPIRED`.
 
 Use the JWT and the session key for REST and WebSocket calls exactly as you would a subkey's: send the JWT as the bearer token, and sign orders with the session private key. Every request is held to the grant's [scopes](/api/session-keys/scopes).

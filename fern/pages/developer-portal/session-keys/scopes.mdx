@@ -10,15 +10,15 @@ A grant's `scopes` list what the session may do beyond reading. Read access is a
 | *(read, implied)* | Private reads: orders, fills, positions, balances, account data |
 | `trade` | Create, modify and cancel orders, batches and algo orders |
 | `account:settings` | Leverage and margin type, market maker protection, max slippage and display settings |
-| `trade:rfq` | RFQ routes. See the note below. |
-| `trade:block` | Reserved for block trades. See the note below. |
+| `trade:rfq` | Not usable to trade yet. See the note below. |
+| `trade:block` | Not usable yet. See the note below. |
 
 A grant that lists `account:settings` or `trade:block` lasts at most 7 days.
 
 The scopes `withdraw:owner` and `trade:isolated` are reserved: a grant that lists either is refused with `SCOPE_NOT_ALLOWED`, as is any unknown or repeated scope.
 
 <Note>
-`trade:rfq` and `trade:block` can be granted, but RFQ endpoints refuse session JWTs for now with `403 REQUEST_NOT_ALLOWED`, and creating, offering, executing or canceling block trades is reserved for the owner. Sessions can still read block trades.
+A grant can list `trade:rfq` and `trade:block`, but neither lets a session trade today. A session cannot create or execute RFQs or use RFQ drafts, and creating, offering, executing or canceling block trades is reserved for the owner. Every session can read block trades, and `trade:rfq` lets a session read RFQs and delete one.
 </Note>
 
 ## How scopes are enforced
@@ -80,10 +80,16 @@ A session cannot use `/v1/account/margin/{market}` to set isolated margin.
 
 | Method | Route |
 | --- | --- |
-| GET, POST | `/v1/rfqs`, `/v1/rfqs/drafts` |
-| GET | `/v1/rfqs/markets`, `/v1/rfqs/platform-state`, `/v1/rfqs/{rfq_id}/bbo` |
-| DELETE | `/v1/rfqs/drafts/{draft_id}`, `/v1/rfqs/{rfq_id}` |
-| POST | `/v1/rfqs/{rfq_id}/execute` |
+| GET | `/v1/rfqs`, `/v1/rfqs/markets`, `/v1/rfqs/platform-state`, `/v1/rfqs/{rfq_id}/bbo` |
+| DELETE | `/v1/rfqs/{rfq_id}` |
+
+These routes also require `trade:rfq`, but refuse every session JWT today with `403 REQUEST_NOT_ALLOWED`:
+
+| Method | Route |
+| --- | --- |
+| POST | `/v1/rfqs`, `/v1/rfqs/{rfq_id}/execute` |
+| GET, POST | `/v1/rfqs/drafts` |
+| DELETE | `/v1/rfqs/drafts/{draft_id}` |
 
 ### Owner only (no session)
 
@@ -92,11 +98,11 @@ A session cannot use `/v1/account/margin/{market}` to set isolated margin.
 | GET, DELETE | `/v2/sessions` |
 | POST, GET, PUT, DELETE | `/v1/account/keys/subkeys` and every route below it |
 | POST, GET, PUT, DELETE | `/v1/account/tokens` and every route below it |
-| POST | `/v2/passkeys/challenge` with `purpose` `registration` |
+| POST | `/v2/passkeys/challenge` with `purpose` `registration`. A session JWT gets `403 UNAUTHORIZED_ERROR` here. |
 | POST | `/v1/block-trades`, `/v1/block-trades/{block_trade_id}/offers`, `/v1/block-trades/{block_trade_id}/execute`, `/v1/block-trades/{block_trade_id}/offers/{offer_id}/execute` |
 | DELETE | `/v1/block-trades/{block_trade_id}`, `/v1/block-trades/{block_trade_id}/offers/{offer_id}` |
 | PUT | `/v1/account/profile` |
 | POST | `/v1/account/profile/username`, `/v1/account/profile/referral_code`, `/v1/account/profile/notifications`, `/v1/account/profile/refresh_inventory` |
 | POST | `/v1/account/referrer`, `/v1/account/compliance`, `/v1/xp/transfer` |
 
-Any private route not listed on this page also refuses session JWTs.
+A few read routes outside the public API reference also accept any session. Every other private route not listed on this page refuses session JWTs.

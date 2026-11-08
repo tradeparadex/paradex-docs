@@ -8,7 +8,9 @@ A passkey lets a device open sessions on an account without asking the wallet ea
 A passkey is never the account's login or owner. Sessions it opens can trade within the ceiling, but can never withdraw or transfer funds, approve a builder, change the ceiling or register another passkey.
 
 <Note>
-Passkeys are rolling out gradually, so access may be limited during rollout. The challenge endpoint returns the relying party ID (`rp_id`) to use, and passkeys can only be registered under that relying party for now. A request from an account that does not have access yet returns `403 PASSKEYS_DISABLED` or `403 SESSIONS_DISABLED`.
+Passkeys are rolling out gradually, so access may be limited during rollout. A request from an account that does not have access yet returns `403 PASSKEYS_DISABLED` or `403 SESSIONS_DISABLED`.
+
+Passkeys are currently first party only. The challenge endpoint returns the one relying party ID (`rp_id`) a passkey can use, and WebAuthn ties a passkey to that domain, so apps on other domains cannot register or use passkeys.
 </Note>
 
 | Route | Authentication |
@@ -28,7 +30,7 @@ Content-Type: application/json
 { "purpose": "registration" }
 ```
 
-Every passkey ceremony starts with a single use challenge. It expires after two minutes and is consumed by the first request that uses it.
+Every passkey ceremony starts with a single use challenge, consumed by the first request that uses it. A `registration` challenge expires after five minutes and a `session` challenge after two.
 
 | `purpose` | Use | Authentication |
 | --- | --- | --- |
@@ -65,7 +67,7 @@ Every passkey ceremony starts with a single use challenge. It expires after two 
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `paradexChain` | string | The Paradex chain id, `starknet_chain_id` from `GET /system/config` |
+| `paradexChain` | string | The Paradex chain id, `starknet_chain_id` from `GET /v1/system/config` |
 | `environment` | string | `mainnet` or `testnet` |
 | `account` | string | The main account, as `0x` hex |
 | `passkey` | `Passkey` | The credential being registered |
@@ -80,8 +82,8 @@ Every passkey ceremony starts with a single use challenge. It expires after two 
 | Field | Type | Description |
 | --- | --- | --- |
 | `credentialId` | string | The WebAuthn credential id, base64url |
-| `pubkeyX` | string | The P-256 public key X coordinate, as `0x` and 64 hex characters |
-| `pubkeyY` | string | The P-256 public key Y coordinate, as `0x` and 64 hex characters |
+| `pubkeyX` | string | The P-256 public key X coordinate, as `0x` and 64 lowercase hex characters |
+| `pubkeyY` | string | The P-256 public key Y coordinate, as `0x` and 64 lowercase hex characters |
 | `rpId` | string | The `rp_id` from the challenge |
 | `label` | string | A name for the passkey, at most 64 printable ASCII characters, such as the device name |
 
@@ -150,7 +152,7 @@ Content-Type: application/json
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `grant` | object | The `PasskeyGrant` message exactly as signed, with its camelCase field names |
+| `grant` | object | The `PasskeyGrant` message as signed, with its camelCase field names. Send `issuedAt`, `expiresAt`, `maxSessionTtl` and `maxConcurrentSessions` as JSON integers, including for `snip12`. |
 | `signature` | string | The owner's signature, in the same form as for [`POST /v2/sessions`](/api/session-keys/create-a-session#4-open-the-session) |
 | `signature_type` | string | `eip712` or `snip12` |
 | `signature_chain_id` | integer | The EIP-712 domain `chainId`. Required for `eip712`. |
@@ -215,15 +217,18 @@ Content-Type: application/json
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `mint` | object | The `SessionMint` exactly as signed, with its camelCase field names |
+| `mint` | object | The `SessionMint` as signed, with its camelCase field names. Send `expiresAt` as a JSON integer. |
 | `assertion` | object | The `PublicKeyCredential` JSON from `navigator.credentials.get` |
 
 **Response** `200`: the same `grant_id`, `expires_at` and `accounts` as [`POST /v2/sessions`](/api/session-keys/create-a-session#4-open-the-session). The session key then signs in with `POST /v1/auth/{public_key}`, and the session appears in `GET /v2/sessions` with `source` set to `passkey`. Revoke it with [`DELETE /v2/sessions/{grant_id}`](/api/session-keys/manage-sessions#revoke-a-session) like any other session.
 
 | Status | Error | Meaning |
 | --- | --- | --- |
+| 400 | `INVALID_GRANT` | The mint is malformed, or does not match the passkey's chain, environment, account or credential |
+| 400 | `INVALID_ENVIRONMENT`, `INVALID_CHAIN` | The mint is for another environment or chain |
+| 400 | `GRANT_EXPIRED` | `expiresAt` has passed |
+| 400 | `NONCE_REUSED` | The mint's nonce was already used |
 | 400 | `MINT_EXCEEDS_CEILING` | A scope or the expiry is outside the passkey's ceiling |
-| 400 | `SESSION_LIMIT_REACHED` | The passkey already holds its ceiling's `maxConcurrentSessions` live sessions |
 | 400 | `LIMIT_INVALID` | A limit is empty, malformed or not `none`, or `markets` is not `["*"]` |
 | 400 | `ACCOUNT_NOT_ELIGIBLE` | The mint lists subaccounts, or the account cannot hold sessions |
 | 400 | `PASSKEY_NOT_ACTIVE` | The passkey is revoked or expired |
@@ -274,4 +279,4 @@ Authorization: Bearer <JWT>
 
 Revokes the passkey, then every session it opened. Resting orders are kept. The owner's main key session can revoke any passkey on the account, and a session a passkey opened can revoke that passkey. Revoking a passkey that is already revoked succeeds.
 
-**Response** `204` with no body. Returns `403` for any other caller on the account and `404` for an unknown id.
+**Response** `204` with no body. Returns `403` for a caller that is neither the owner's main key session nor a passkey's session, and `404` for an unknown id or a session opened by a different passkey.

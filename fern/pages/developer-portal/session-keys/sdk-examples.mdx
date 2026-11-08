@@ -3,13 +3,13 @@ title: SDK Examples
 subtitle: Open and use sessions with the TypeScript and Python SDKs
 ---
 
-Both SDKs build and validate session grants before anything is signed, refusing what the server would refuse, and manage one JWT and one WebSocket per account the session covers.
+Both SDKs build and validate session grants before anything is signed, and manage one JWT and one WebSocket per account the session covers.
 
 <Warning>
 Session support in the SDKs is experimental. Method names and options may change before they are marked stable.
 </Warning>
 
-Read the Paradex chain id from the `starknet_chain_id` field of `GET /system/config` for the environment you use.
+Read the Paradex chain id from the `starknet_chain_id` field of `GET /v1/system/config` for the environment you use.
 
 ## Open a session and trade
 
@@ -23,7 +23,7 @@ import * as Paradex from '@paradex/sdk';
 
 const connector = new Paradex.SessionConnector({
   environment: 'testnet',
-  paradexChain: starknetChainId, // starknet_chain_id from GET /system/config
+  paradexChain: starknetChainId, // starknet_chain_id from GET /v1/system/config
   // The injected wallet signs the grant with eth_signTypedData_v4.
   // For MPC or other external signers use Paradex.Session.ownerSignerFromExternal.
   owner: Paradex.Session.ownerSignerFromEip1193({ provider: window.ethereum }),
@@ -36,7 +36,6 @@ const session =
   existing ??
   (await connector.open({
     account: '0x<main account>',
-    subaccounts: ['0x<subaccount>'],
     scopes: ['trade'],
   }));
 
@@ -48,7 +47,7 @@ const accounts = new Paradex.SessionAccounts({
 });
 await accounts.start();
 
-await accounts.placeOrder('0x<subaccount>', {
+await accounts.placeOrder('0x<main account>', {
   market: 'BTC-USD-PERP',
   side: 'BUY',
   type: 'LIMIT',
@@ -72,10 +71,9 @@ from paradex_py.session_accounts import LocalOwnerSigner, new_session_key, regis
 session_private_key, session_public_key = new_session_key()
 
 grant = SessionGrant.new(
-    paradex_chain=starknet_chain_id,  # starknet_chain_id from GET /system/config
+    paradex_chain=starknet_chain_id,  # starknet_chain_id from GET /v1/system/config
     environment="testnet",
     account="0x<main account>",
-    subaccounts=["0x<subaccount>"],
     session_key=session_public_key,
     label="my bot",
     scopes=["trade"],
@@ -91,7 +89,7 @@ session = SessionAccounts(
     session_private_key=session_private_key,
     grant_id=grant_id,
 )
-session.submit_order("0x<subaccount>", order)
+session.submit_order("0x<main account>", order)
 await session.connect_ws()
 ```
 
@@ -113,7 +111,7 @@ const accounts = new Paradex.SessionAccounts({
   environment: 'testnet',
   paradexChain: starknetChainId,
   onDropped: (reason) => {
-    // reason.code says why: revoked, expired, and so on.
+    // reason.code says why, such as GRANT_REVOKED or GRANT_EXPIRED.
     showSignInAgain();
   },
 });
@@ -141,6 +139,8 @@ except SessionDroppedError:
 ## Revoke the session
 
 Revoking from the SDK calls [`DELETE /v2/sessions/{grant_id}`](/api/session-keys/manage-sessions#revoke-a-session) with the session's own JWT, which is how an app signs out, then drops every account.
+
+The two SDKs differ on orders. The TypeScript `revoke()` sends no `cancel_orders`, so the session's orders keep working. The Python `revoke()` defaults to `cancel_orders=True`, which also cancels its resting orders, TWAPs and untriggered stops on every account; pass `cancel_orders=False` to keep them.
 
 <Tabs>
   <Tab title="TypeScript">
@@ -189,7 +189,7 @@ const snip12 = Paradex.SessionTypedData.buildGrantSnip12(grant);
 // Show the owner what they approve before they sign
 console.log(Paradex.SessionTypedData.summarizeGrant(grant));
 
-// Passkey: the WebAuthn challenge for a SessionMint
+// Passkey: the WebAuthn challenge for a SessionMint you built (see the Passkeys page)
 const challenge = Paradex.SessionTypedData.mintChallenge(mint);
 ```
 
@@ -197,19 +197,20 @@ const challenge = Paradex.SessionTypedData.mintChallenge(mint);
   <Tab title="Python">
 
 ```python
-from paradex_py.message.session import SessionGrant, SessionMint
+from paradex_py.message.session import SessionGrant
 
 grant = SessionGrant.new(
     paradex_chain=starknet_chain_id,
     environment="mainnet",
     account="0x<main account>",
     session_key="0x<session public key>",
+    label="",
     scopes=["trade"],
     ttl_seconds=7 * 24 * 3600,
 )
 eip712 = grant.eip712_typed_data(signature_chain_id=1)  # EVM owner, the wallet chain id
 
-# Passkey: the WebAuthn challenge (base64url) for a SessionMint
+# Passkey: the WebAuthn challenge (base64url) for a SessionMint you built (see the Passkeys page)
 challenge = mint.webauthn_challenge()
 ```
 

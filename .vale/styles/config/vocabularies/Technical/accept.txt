@@ -70,3 +70,6 @@ shortstring
 subaccount
 TWAPs
 untriggered
+allowlist
+CIDRs
+onboarded

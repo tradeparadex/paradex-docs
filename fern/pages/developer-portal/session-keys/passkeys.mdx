@@ -91,12 +91,14 @@ Every passkey ceremony starts with a single use challenge, consumed by the first
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `scopes` | string[] | `["trade"]`. The ceiling allows no other scope. |
+| `scopes` | string[] | Any of `trade`, `trade:rfq` and `account:settings`. `trade:block` is not allowed. |
 | `limits` | `Limits` | As in a [session grant](/api/session-keys/create-a-session#limits): every amount `"none"` and `markets` `["*"]` |
-| `subaccounts` | string[] | `[]`. Passkeys cover the main account only. |
+| `subaccounts` | string[] | `[]`. Passkeys cover the main account only, so their sessions never cover sub-accounts. |
 | `includeFutureSubaccounts` | bool | `false` |
-| `maxSessionTtl` | uint64 | The longest session the passkey may open, in seconds, at most 604800 (7 days). 86400 (24 hours) is the recommended default. |
+| `maxSessionTtl` | uint64 | The longest session the passkey may open, in seconds, at most 604800 (7 days) whatever the scopes. 86400 (24 hours) is the recommended default. |
 | `maxConcurrentSessions` | uint64 | How many sessions the passkey may hold open at once, from 1 to 5 |
+
+A registered ceiling cannot be changed. To widen it, for example to add `trade:rfq`, register a new passkey. A passkey session that lists `trade:rfq` uses RFQs under the same conditions as any other session, described in [Scopes](/api/session-keys/scopes).
 
 <Accordion title="PasskeyGrant typed data types">
 
@@ -165,10 +167,11 @@ Content-Type: application/json
 | 400 | `INVALID_SIGNATURE` | The signature is not the account owner's, or does not match `signature_type` |
 | 400 | `GRANT_EXPIRED` | `expiresAt` has passed, or `issuedAt` is outside the accepted window |
 | 400 | `INVALID_ENVIRONMENT`, `INVALID_CHAIN` | The grant is for another environment or chain |
-| 400 | `SCOPE_NOT_ALLOWED` | The ceiling lists a scope other than `trade` |
+| 400 | `SCOPE_NOT_ALLOWED` | The ceiling lists a scope a passkey cannot carry, such as `trade:block` |
 | 400 | `LIMIT_INVALID` | A limit is malformed or not `none`, or the passkey expiry is too long |
 | 400 | `INVALID_GRANT` | The grant is malformed, or its session length or session count is out of range |
 | 400 | `ACCOUNT_NOT_ELIGIBLE` | The account is not a main account, or the ceiling lists subaccounts |
+| 400 | `ETHEREUM_ADDRESS_BLOCKED` | The account is blocked |
 | 400 | `INVALID_PASSKEY_CREDENTIAL` | The WebAuthn response is invalid or is not the credential the grant names |
 | 400 | `PASSKEY_ORIGIN_NOT_ALLOWED` | The page origin is not allowed for the `rpId` |
 | 400 | `PASSKEY_RP_ID_NOT_ALLOWED` | The `rpId` is not allowed |
@@ -202,7 +205,7 @@ Content-Type: application/json
 | `account` | ContractAddress | The main account |
 | `credentialId` | string | The passkey's credential id, base64url |
 | `sessionKey` | felt | The new session's Stark public key |
-| `scopes` | shortstring* | Within the ceiling: `["trade"]` |
+| `scopes` | shortstring* | Any of the ceiling's scopes |
 | `limits` | Limits | Every amount `"none"` and `markets` `["*"]` |
 | `subaccounts` | ContractAddress* | `[]` |
 | `nonce` | felt | The `session` challenge |
@@ -229,8 +232,10 @@ Content-Type: application/json
 | 400 | `GRANT_EXPIRED` | `expiresAt` has passed |
 | 400 | `NONCE_REUSED` | The mint's nonce was already used |
 | 400 | `MINT_EXCEEDS_CEILING` | A scope or the expiry is outside the passkey's ceiling |
+| 400 | `SESSION_LIMIT_REACHED` | The passkey already holds its ceiling's `maxConcurrentSessions` live sessions |
 | 400 | `LIMIT_INVALID` | A limit is empty, malformed or not `none`, or `markets` is not `["*"]` |
 | 400 | `ACCOUNT_NOT_ELIGIBLE` | The mint lists subaccounts, or the account cannot hold sessions |
+| 400 | `ETHEREUM_ADDRESS_BLOCKED` | The account is blocked |
 | 400 | `PASSKEY_NOT_ACTIVE` | The passkey is revoked or expired |
 | 400 | `INVALID_PASSKEY_CREDENTIAL` | The WebAuthn response is invalid |
 | 400 | `PASSKEY_ORIGIN_NOT_ALLOWED` | The page origin is not allowed for the passkey's `rpId` |

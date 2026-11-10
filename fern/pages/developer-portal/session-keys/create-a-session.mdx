@@ -45,7 +45,7 @@ A `SessionGrant` has these fields. Field names are camelCase and the order shown
 | `maxLeverage` | string |
 | `markets` | string[] |
 
-The server does not enforce session limits today, so it only accepts a grant that states no limit: every amount set to `"none"` and `markets` set to `["*"]`. Any other value returns `LIMIT_INVALID`. The fields exist so that grants keep the same shape if limits are introduced later. Until then a session can trade up to whatever the account itself can.
+Session limits are not enforced at launch, so the server only accepts a grant that states no limit: every amount set to `"none"` and `markets` set to `["*"]`. Any other value returns `LIMIT_INVALID`. The fields exist so that grants keep the same shape if limits are introduced later. Until then a session can trade up to whatever the account itself can.
 
 ```json
 {
@@ -68,7 +68,12 @@ The server does not enforce session limits today, so it only accepts a grant tha
 
 ### Subaccounts
 
-The grant format lets an EVM owned account list up to 32 subaccounts, one JWT per account, but no existing subaccount is eligible today: listing one returns `ACCOUNT_NOT_ELIGIBLE`, after the owner has signed. Send an empty list. Grants from Starknet owned accounts cannot list subaccounts. Only a main account can anchor a grant; a vault operator account can hold a session for itself alone, with no subaccounts.
+An EVM owned account can list up to 32 of its EVM sub-accounts, and the session key then signs in to each one separately. A listed address must be an onboarded sub-account that the owner's wallet created under `account`. Any other address, including a Starknet sub-account, returns `ACCOUNT_NOT_ELIGIBLE` after the owner has signed, so check the list first.
+
+- The owner's main key session creates an EVM sub-account with `POST /v2/account/subaccounts`, which takes no body and returns its `address` and `index`. Access may be limited during rollout.
+- `GET /v2/onboarding/subaccounts?eth_address=<wallet>` lists a wallet's EVM sub-accounts, lowest index first, without a JWT, so an app can fill in the grant before it signs in.
+
+Grants from Starknet owned accounts cannot list subaccounts, and neither can a grant that [opens a new account](#open-a-new-account-with-the-first-grant). Only a main account can anchor a grant; a vault operator account can hold a session for itself alone, with no subaccounts.
 
 ## 3. Sign the grant
 
@@ -247,6 +252,9 @@ Content-Type: application/json
 | `signature` | string | For `eip712`, the `0x` hex signature: `r`, `s` and `v` concatenated. For `snip12`, the string `'["0xr","0xs"]'`, as orders carry it. A bare `["0xr", "0xs"]` array is also accepted. |
 | `signature_type` | string | `eip712` for EVM owned accounts, `snip12` for Starknet owned accounts |
 | `signature_chain_id` | integer | The EIP-712 domain `chainId` the wallet signed with. Required for `eip712`, ignored for `snip12`. |
+| `referral_code` | string | Optional. Read only when the grant [opens a new account](#open-a-new-account-with-the-first-grant). |
+| `marketing_code` | string | Optional. Read only when the grant opens a new account. |
+| `utm` | object | Optional `source`, `campaign` and `type`. Read only when the grant opens a new account. |
 
 ```json
 {
@@ -277,11 +285,21 @@ Check that `grant_id`, `accounts` and `expires_at` match the grant you signed be
 
 Each grant can be used once. Sending the same grant again, or another grant with the same nonce, returns `NONCE_REUSED`.
 
+### Open a new account with the first grant
+
+An EVM wallet that has no Paradex account yet can open one with its first session grant, with no separate onboarding call. Sign the grant as usual, with `account` set to the address the wallet's [EVM onboarding](/api/general-information/api-authentication) would create, and send it to `POST /v2/sessions`. The server opens the account and the session together.
+
+- The account is deployed on chain when it is first funded. Until then, RFQ requests return `400 NOT_ONBOARDED`.
+- `referral_code`, `marketing_code` and `utm` work as they do for `POST /v2/onboarding`. They are not part of what the wallet signs, and are ignored for an account that already exists.
+- The grant cannot list subaccounts.
+- The wallet must be an externally owned account. Smart contract wallets cannot sign a grant, so they onboard the usual way.
+- The request runs the same checks as onboarding, so it can also return the onboarding errors below.
+
 ### Errors
 
 | Status | Error | Meaning |
 | --- | --- | --- |
-| 400 | `INVALID_SIGNATURE` | The signature is not the account owner's, does not match `signature_type`, or names an account that cannot be verified |
+| 400 | `INVALID_SIGNATURE` | The signature is not the account owner's (a smart contract wallet's never is), does not match `signature_type`, or names an account that cannot be verified |
 | 400 | `GRANT_EXPIRED` | `expiresAt` has passed, or `issuedAt` is outside the accepted window |
 | 400 | `INVALID_ENVIRONMENT` | The grant is for another environment |
 | 400 | `INVALID_CHAIN` | The grant is for another Paradex chain |
@@ -291,7 +309,20 @@ Each grant can be used once. Sending the same grant again, or another grant with
 | 400 | `ACCOUNT_NOT_ELIGIBLE` | The account or a listed subaccount cannot hold sessions |
 | 400 | `INVALID_GRANT` | The grant does not match the `SessionGrant` schema |
 | 400 | `SESSION_KEY_IN_USE` | The session key is, or was, a key of a listed account |
+| 400 | `SESSION_LIMIT_REACHED` | The account holds the most active sessions it may. Revoke one first. |
 | 403 | `SESSIONS_DISABLED` | Sessions are not available for this account yet |
+
+When the grant opens a new account it can also return:
+
+| Status | Error | Meaning |
+| --- | --- | --- |
+| 400 | `INVALID_MARKETING_CODE` | `marketing_code` is not a known code |
+| 400 | `INVALID_REQUEST_PARAMETER` | `marketing_code` is not in the form `campaign:code`, or `utm` lacks `source` or `campaign` |
+| 400 | `INSUFFICIENT_MIN_CHAIN_BALANCE` | The wallet does not hold the minimum balance onboarding requires |
+| 400 | `ETHEREUM_ADDRESS_BLOCKED` | The wallet failed screening. Also returned for an existing account that is blocked. |
+| 400 | `PARENT_ADDRESS_ALREADY_ONBOARDED` | The wallet already owns a different account |
+| 400 | `ACCOUNT_NOT_ELIGIBLE` | The grant lists subaccounts, or a new account cannot be opened with a grant |
+| 429 | `ONBOARDING_RATE_LIMITED` | Too many new accounts from this IP address. Try again later. |
 
 ## 5. Sign in with the session key
 
@@ -302,5 +333,6 @@ The public key in the path is required. `POST /v1/auth` without it checks the si
 - Sign and send both `PARADEX-TIMESTAMP` and `PARADEX-SIGNATURE-EXPIRATION`. The expiration must be at most 15 minutes after the timestamp and no later than the session's expiry.
 - A session JWT lasts at most 15 minutes and never outlives its session. Sign in again to refresh it.
 - Once the session is revoked or expired, `/auth` returns `SESSION_REVOKED` or `SESSION_EXPIRED`.
+- If the owner has set an [IP allowlist](/api/session-keys/manage-sessions#set-a-sessions-ip-allowlist) for the session, sign in and every later request must come from an allowed IP, or they return `403 IP_NOT_ALLOWED`.
 
 Use the JWT and the session key for REST and WebSocket calls exactly as you would a subkey's: send the JWT as the bearer token, and sign orders with the session private key. Every request is held to the grant's [scopes](/api/session-keys/scopes).

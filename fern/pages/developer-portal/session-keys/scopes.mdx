@@ -7,18 +7,18 @@ A grant's `scopes` list what the session may do beyond reading. Read access is a
 
 | Scope | Grants |
 | --- | --- |
-| *(read, implied)* | Private reads: orders, fills, positions, balances, account data |
+| *(read, implied)* | Private reads: orders, fills, positions, balances, account data. Also deposits into the session's own account. |
 | `trade` | Create, modify and cancel orders, batches and algo orders |
 | `account:settings` | Leverage and margin type, market maker protection, max slippage and display settings |
-| `trade:rfq` | Not usable to trade yet. See the note below. |
-| `trade:block` | Not usable yet. See the note below. |
+| `trade:rfq` | Create, execute and cancel RFQs, use RFQ drafts and read RFQs, under the conditions below |
+| `trade:block` | Accepted in a grant, but grants nothing yet: block trade writes are owner only |
 
 A grant that lists `account:settings` or `trade:block` lasts at most 7 days.
 
 The scopes `withdraw:owner` and `trade:isolated` are reserved: a grant that lists either is refused with `SCOPE_NOT_ALLOWED`, as is any unknown or repeated scope.
 
 <Note>
-A grant can list `trade:rfq` and `trade:block`, but neither lets a session trade today. A session cannot create or execute RFQs or use RFQ drafts, and creating, offering, executing or canceling block trades is reserved for the owner. Every session can read block trades, and `trade:rfq` lets a session read RFQs and delete one.
+Creating, offering, executing or canceling block trades is reserved for the owner, so `trade:block` does not let a session trade today. Every session can read block trades.
 </Note>
 
 ## How scopes are enforced
@@ -48,9 +48,19 @@ A `403` is a refused action. It does not mean the session has ended. JWTs from m
 | GET | `/v1/vaults/account-summary`, `/v1/vaults/mine` |
 | GET | `/v1/staking/history`, `/v1/staking/summary`, `/v1/staking/balance/history` |
 | GET | `/v1/referrals/summary`, `/v1/xp/transfers`, `/v1/xp/account-balance` |
+| GET | `/v1/deposit-addresses/{id}`, `/v1/bridges/layerswap/swaps/{swap_id}` |
 | GET, DELETE | `/v2/sessions/{grant_id}`: the session itself only |
 | GET | `/v2/passkeys`: a passkey session sees its own passkey only |
 | DELETE | `/v2/passkeys/{id}`: a passkey session may revoke its own passkey only |
+
+### Deposits (every session)
+
+| Method | Route |
+| --- | --- |
+| POST | `/v1/deposit-addresses` |
+| POST | `/v1/bridges/layerswap/swaps`: deposits only |
+
+A session can pay into the account it signed in to, and nothing else that moves value. It can create a deposit address, or a Layerswap swap into the account with `use_deposit_address` set to `true` and no `source_address`. A swap out of Paradex, or one without `use_deposit_address`, returns `403 INVALID_TOKEN_SCOPE`. Withdrawals and transfers stay with the owner. Each session has its own deposit rate limit, separate from the owner's and other sessions'.
 
 ### `trade`
 
@@ -78,24 +88,38 @@ A session cannot use `/v1/account/margin/{market}` to set isolated margin.
 
 ### `trade:rfq`
 
+Any session whose grant lists `trade:rfq` can use these routes:
+
 | Method | Route |
 | --- | --- |
 | GET | `/v1/rfqs`, `/v1/rfqs/markets`, `/v1/rfqs/platform-state`, `/v1/rfqs/{rfq_id}/bbo` |
 | DELETE | `/v1/rfqs/{rfq_id}` |
 
-These routes also require `trade:rfq`, but refuse every session JWT today with `403 REQUEST_NOT_ALLOWED`:
+These routes also require `trade:rfq`, and more besides:
 
 | Method | Route |
 | --- | --- |
 | POST | `/v1/rfqs`, `/v1/rfqs/{rfq_id}/execute` |
 | GET, POST | `/v1/rfqs/drafts` |
 | DELETE | `/v1/rfqs/drafts/{draft_id}` |
+| POST | `/v1/account/paradigm/enable` |
+
+An RFQ execution settles as a block trade, which session limits could not bound, so a session can use these routes only when:
+
+- its grant names no builder and caps nothing, with every limit `"none"` and `markets` `["*"]`. Every grant the server accepts today meets this;
+- RFQ for sessions is available for the account. Access may be limited during rollout.
+
+Otherwise they return `403 INVALID_TOKEN_SCOPE`. An account that is not deployed on chain yet, such as one [opened by its first grant](/api/session-keys/create-a-session#open-a-new-account-with-the-first-grant) and not funded, gets `400 NOT_ONBOARDED` on every RFQ route.
+
+A session cannot enable RFQ on an account: `POST /v1/account/paradigm/enable` only tells it whether the owner already has. The owner's main key session makes the first call. A revoked session can no longer execute an RFQ, even one it created.
 
 ### Owner only (no session)
 
 | Method | Route |
 | --- | --- |
 | GET, DELETE | `/v2/sessions` |
+| PUT | `/v2/sessions/{grant_id}/ip-allowlist` |
+| POST | `/v2/account/subaccounts` |
 | POST, GET, PUT, DELETE | `/v1/account/keys/subkeys` and every route below it |
 | POST, GET, PUT, DELETE | `/v1/account/tokens` and every route below it |
 | POST | `/v2/passkeys/challenge` with `purpose` `registration`. A session JWT gets `403 UNAUTHORIZED_ERROR` here. |

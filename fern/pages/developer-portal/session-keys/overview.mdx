@@ -3,7 +3,7 @@ title: Session Keys
 subtitle: Let a short lived key trade for an account without ever holding withdrawal rights
 ---
 
-A session key is a Stark key pair your app generates and the account owner authorizes once, by signing a **session grant** with their wallet. Until the grant expires or is revoked, the session key can sign in, read the account and trade within the scopes the grant lists. It can never withdraw or transfer funds, and it can never manage keys, tokens or other sessions, or register passkeys.
+A session key is a Stark key pair your app generates and the account owner authorizes once, by signing a **session grant** with their wallet. Until the grant expires or is revoked, the session key can sign in, read the account, deposit into it and trade within the scopes the grant lists. It can never withdraw or transfer funds, and it can never manage keys, tokens or other sessions, or register passkeys.
 
 <Note>
 Session keys and passkeys are rolling out gradually, so access may be limited during rollout. A request from an account that does not have access yet returns `403 SESSIONS_DISABLED`.
@@ -24,7 +24,8 @@ Compared with a subkey, a session key:
 - is authorized by a signed message, not registered through a JWT session of the main key;
 - always expires, at a time the owner signs;
 - carries explicit scopes, so it can be held to trading only, or trading plus trading settings;
-- can be revoked by the owner, by the session itself on sign out, or all at once.
+- can be revoked by the owner, by the session itself on sign out, or all at once;
+- can be held by the owner to an [IP allowlist](/api/session-keys/manage-sessions#set-a-sessions-ip-allowlist) that the session cannot change.
 
 ## How it works
 
@@ -36,7 +37,7 @@ Compared with a subkey, a session key:
     You build a `SessionGrant` that names the account, the session public key, the scopes and the expiry. The account owner signs it once: EVM owned accounts sign it as EIP-712 typed data, Starknet owned accounts sign it as SNIP-12 typed data with the main key.
   </Step>
   <Step title="Open the session">
-    You send the grant and its signature to [`POST /v2/sessions`](/api/session-keys/create-a-session#4-open-the-session). The signature is the authentication, so no JWT is needed. The response returns the `grant_id` that names the session from then on.
+    You send the grant and its signature to [`POST /v2/sessions`](/api/session-keys/create-a-session#4-open-the-session). The signature is the authentication, so no JWT is needed. The response returns the `grant_id` that names the session from then on. For an EVM wallet with no Paradex account yet, this first grant [opens the account](/api/session-keys/create-a-session#open-a-new-account-with-the-first-grant) too.
   </Step>
   <Step title="Sign in with the session key">
     The session key gets a JWT for each account the grant covers through `POST /v1/auth/{public_key}`, exactly as a subkey does, and signs orders the same way. Session JWTs are held to the grant's scopes on every request.
@@ -61,14 +62,15 @@ Compared with a subkey, a session key:
 
 Whatever its scopes, a session cannot:
 
-- withdraw, transfer or move funds in any form;
-- create, list or revoke subkeys, API tokens or other sessions;
+- withdraw or transfer funds, or move funds out of the account in any form;
+- create, list or revoke subkeys, API tokens or other sessions, or change any session's IP allowlist;
+- create sub-accounts;
 - register a passkey, or list or revoke any passkey other than the one that opened it;
 - change the profile, username, referral settings or compliance answers;
 - act on behalf of another account with `on_behalf_of_account`;
 - use a JWT that authorizes accounts other than the one it was minted for.
 
-Any private route that does not declare a scope refuses session JWTs, so new private endpoints are closed to sessions until they opt in. See [Scopes](/api/session-keys/scopes) for the full table, including what sessions cannot do with RFQs and block trades today.
+Any private route that does not declare a scope refuses session JWTs, so new private endpoints are closed to sessions until they opt in. A session can deposit into its own account, but nothing else that moves value. See [Scopes](/api/session-keys/scopes) for the full table, including the rules for RFQs and block trades.
 
 ## Pages in this section
 

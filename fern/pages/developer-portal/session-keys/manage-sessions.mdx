@@ -9,6 +9,7 @@ subtitle: List, read, revoke and check the status of sessions
 | [`GET /v2/sessions/{grant_id}`](#get-a-session) | The owner's main key session, or the session itself |
 | [`DELETE /v2/sessions/{grant_id}`](#revoke-a-session) | The owner's main key session, or the session itself |
 | [`DELETE /v2/sessions`](#revoke-all-sessions) | The owner's main key session |
+| [`PUT /v2/sessions/{grant_id}/ip-allowlist`](#set-a-sessions-ip-allowlist) | The owner's main key session |
 | [`GET /v2/sessions/{grant_id}/status`](#check-a-sessions-status) | Anyone, no authentication |
 
 A main key session is a JWT the account obtained with its own key. JWTs from subkeys, readonly tokens and other sessions are refused on routes reserved for the owner.
@@ -26,6 +27,7 @@ A main key session is a JWT the account obtained with its own key. JWTs from sub
 | `scopes` | string[] | The scopes from the grant |
 | `limits` | object | The limits exactly as the grant states them: `max_order_notional`, `max_open_notional`, `daily_notional`, `max_loss`, `max_leverage` and `markets` |
 | `accounts` | string[] | Every account the session covers |
+| `allowed_cidrs` | string[] | The owner's [IP allowlist](#set-a-sessions-ip-allowlist) for the session. Empty means any IP. It is not part of the signed grant. |
 | `issued_at` | integer | When the owner signed the grant, in milliseconds |
 | `expires_at` | integer | When the session expires, in milliseconds |
 | `revoked_at` | integer | When the session was revoked, in milliseconds, or `0` |
@@ -47,6 +49,7 @@ A main key session is a JWT the account obtained with its own key. JWTs from sub
     "markets": ["*"]
   },
   "accounts": ["0x<account>"],
+  "allowed_cidrs": [],
   "issued_at": 1767225600000,
   "expires_at": 1767830400000,
   "revoked_at": 0
@@ -101,6 +104,8 @@ What happens to the session's orders:
 | The owner | Kept, unless `cancel_orders=true` | Canceled |
 | The session itself | Kept, unless `cancel_orders=true` | Kept working, unless `cancel_orders=true` |
 
+A revoke leaves open any RFQs the session created. The revoked session can no longer execute them, but the owner can, so cancel them with `DELETE /v1/rfqs/{rfq_id}` if you no longer want them.
+
 **Response** `204` with no body.
 
 | Status | Meaning |
@@ -118,6 +123,38 @@ Authorization: Bearer <main key JWT>
 Revokes every session the owner has opened, on every account each one covers. Each session's WebSocket connections are closed, and its TWAPs and untriggered stops are canceled. Pass `cancel_orders=true` to also cancel their resting orders.
 
 **Response** `204` with no body. Returns `403` when the caller is not the owner's main key session.
+
+## Set a session's IP allowlist
+
+```http
+PUT /v2/sessions/{grant_id}/ip-allowlist
+Authorization: Bearer <main key JWT>
+Content-Type: application/json
+
+{ "allowed_cidrs": ["203.0.113.0/24", "198.51.100.42/32"] }
+```
+
+Replaces the session's IP allowlist on every account it covers. Once the list is non-empty, sign in and every request made with the session must come from an IP inside it:
+
+- REST requests and `POST /v1/auth/{public_key}` from any other IP return `403 IP_NOT_ALLOWED`;
+- over WebSocket, sign in and order requests from any other IP are refused, and open connections from outside the new list are closed with code `4035`, which triggers cancel on disconnect for those connections.
+
+The change takes effect within seconds. Only the owner's main key session can set the list, so a session can never widen its own.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `allowed_cidrs` | string[] | Required. The full replacement list of IPv4 or IPv6 CIDRs, at most 50. Send `[]` to lift the restriction. |
+
+**Response** `200`: the updated [session object](#the-session-object).
+
+| Status | Error | Meaning |
+| --- | --- | --- |
+| 400 | `INVALID_REQUEST_PARAMETER` | `allowed_cidrs` is missing, has more than 50 entries, or holds an invalid CIDR |
+| 403 | `UNAUTHORIZED_ERROR` | The caller is not the owner's main key session |
+| 404 | `NOT_FOUND` | The grant id is unknown or belongs to another owner |
+| 409 | `SESSION_REVOKED` | The session is revoked |
+
+A `5xx` response means the list may have been stored without taking effect everywhere. Send the same request again.
 
 ## Check a session's status
 

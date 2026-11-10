@@ -109,7 +109,7 @@ An RFQ execution settles as a block trade, which session limits could not bound,
 - its grant names no builder and caps nothing, with every limit `"none"` and `markets` `["*"]`. Every grant the server accepts today meets this;
 - RFQ for sessions is available for the account. Access may be limited during rollout.
 
-Otherwise they return `403 INVALID_TOKEN_SCOPE`. An account that is not deployed on chain yet, such as one [opened by its first grant](/api/session-keys/create-a-session#open-a-new-account-with-the-first-grant) and not funded, gets `400 NOT_ONBOARDED` on every RFQ route.
+Otherwise RFQ create, execute and drafts return `403 REQUEST_NOT_ALLOWED`, and `POST /v1/account/paradigm/enable` returns `403 INVALID_TOKEN_SCOPE`. An account that is not deployed on chain yet, such as one [opened by its first grant](/api/session-keys/create-a-session#open-a-new-account-with-the-first-grant) and not funded, gets `400 NOT_ONBOARDED` on every RFQ route.
 
 A session cannot enable RFQ on an account: `POST /v1/account/paradigm/enable` only tells it whether the owner already has. The owner's main key session makes the first call. A revoked session can no longer execute an RFQ, even one it created.
 

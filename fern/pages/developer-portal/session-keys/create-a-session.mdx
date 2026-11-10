@@ -68,10 +68,10 @@ Session limits are not enforced at launch, so the server only accepts a grant th
 
 ### Subaccounts
 
-An EVM owned account can list up to 32 of its EVM sub-accounts, and the session key then signs in to each one separately. A listed address must be an onboarded sub-account that the owner's wallet created under `account`. Any other address, including a Starknet sub-account, returns `ACCOUNT_NOT_ELIGIBLE` after the owner has signed, so check the list first.
+An EVM owned account can list up to 32 of its EVM subaccounts, and the session key then signs in to each one separately. A listed address must be an onboarded subaccount that the owner's wallet created under `account`. Any other address, including a Starknet subaccount, returns `ACCOUNT_NOT_ELIGIBLE` after the owner has signed, so check the list first.
 
-- The owner's main key session creates an EVM sub-account with `POST /v2/account/subaccounts`, which takes no body and returns its `address` and `index`. Access may be limited during rollout.
-- `GET /v2/onboarding/subaccounts?eth_address=<wallet>` lists a wallet's EVM sub-accounts, lowest index first, without a JWT, so an app can fill in the grant before it signs in.
+- The owner's main key session creates an EVM subaccount with `POST /v2/account/subaccounts`, which takes no body and returns its `address` and `index`. Access may be limited during rollout.
+- `GET /v2/onboarding/subaccounts?eth_address=<wallet>` lists a wallet's EVM subaccounts, lowest index first, without a JWT, so an app can fill in the grant before it signs in.
 
 Grants from Starknet owned accounts cannot list subaccounts, and neither can a grant that [opens a new account](#open-a-new-account-with-the-first-grant). Only a main account can anchor a grant; a vault operator account can hold a session for itself alone, with no subaccounts.
 

@@ -93,7 +93,7 @@ Every passkey ceremony starts with a single use challenge, consumed by the first
 | --- | --- | --- |
 | `scopes` | string[] | Any of `trade`, `trade:rfq` and `account:settings`. `trade:block` is not allowed. |
 | `limits` | `Limits` | As in a [session grant](/api/session-keys/create-a-session#limits): every amount `"none"` and `markets` `["*"]` |
-| `subaccounts` | string[] | `[]`. Passkeys cover the main account only, so their sessions never cover sub-accounts. |
+| `subaccounts` | string[] | `[]`. Passkeys cover the main account only, so their sessions never cover subaccounts. |
 | `includeFutureSubaccounts` | bool | `false` |
 | `maxSessionTtl` | uint64 | The longest session the passkey may open, in seconds, at most 604800 (7 days) whatever the scopes. 86400 (24 hours) is the recommended default. |
 | `maxConcurrentSessions` | uint64 | How many sessions the passkey may hold open at once, from 1 to 5 |

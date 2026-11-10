@@ -95,7 +95,7 @@ Revokes the session on every account it covers, and its JWTs stop working. The o
 
 | Query parameter | Description |
 | --- | --- |
-| `cancel_orders` | `true` to also cancel the session's resting orders. Defaults to `false`. |
+| `cancel_orders` | `true` to also cancel the session's resting orders and the open RFQs it created. Defaults to `false`. |
 
 What happens to the session's orders:
 
@@ -104,7 +104,7 @@ What happens to the session's orders:
 | The owner | Kept, unless `cancel_orders=true` | Canceled |
 | The session itself | Kept, unless `cancel_orders=true` | Kept working, unless `cancel_orders=true` |
 
-A revoke leaves open any RFQs the session created. The revoked session can no longer execute them, but the owner can, so cancel them with `DELETE /v1/rfqs/{rfq_id}` if you no longer want them.
+Without `cancel_orders`, the RFQs the session created stay open. The revoked session can no longer execute them, but the owner can, and can cancel them with `DELETE /v1/rfqs/{rfq_id}`.
 
 **Response** `204` with no body.
 
@@ -134,7 +134,7 @@ Content-Type: application/json
 { "allowed_cidrs": ["203.0.113.0/24", "198.51.100.42/32"] }
 ```
 
-Replaces the session's IP allowlist on every account it covers. Once the list is non-empty, sign in and every request made with the session must come from an IP inside it:
+Replaces the session's IP allowlist on every account it covers. Once the list has any entries, sign in and every request made with the session must come from an IP inside it:
 
 - REST requests and `POST /v1/auth/{public_key}` from any other IP return `403 IP_NOT_ALLOWED`;
 - over WebSocket, sign in and order requests from any other IP are refused, and open connections from outside the new list are closed with code `4035`, which triggers cancel on disconnect for those connections.
@@ -150,7 +150,9 @@ The change takes effect within seconds. Only the owner's main key session can se
 | Status | Error | Meaning |
 | --- | --- | --- |
 | 400 | `INVALID_REQUEST_PARAMETER` | `allowed_cidrs` is missing, has more than 50 entries, or holds an invalid CIDR |
-| 403 | `UNAUTHORIZED_ERROR` | The caller is not the owner's main key session |
+| 403 | `INVALID_TOKEN_SCOPE` | The caller is a session |
+| 403 | `UNAUTHORIZED_ERROR` | The caller is a subkey, readonly token or other JWT that is not the owner's main key session |
+| 403 | `SESSIONS_DISABLED` | Sessions are not available for this account yet |
 | 404 | `NOT_FOUND` | The grant id is unknown or belongs to another owner |
 | 409 | `SESSION_REVOKED` | The session is revoked |
 

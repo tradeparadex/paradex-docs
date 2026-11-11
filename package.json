@@ -19,5 +19,8 @@
     "vanilla-cookieconsent@3.0.1": {
       "unplugged": true
     }
+  },
+  "dependencies": {
+    "yarn": "^1.22.22"
   }
 }

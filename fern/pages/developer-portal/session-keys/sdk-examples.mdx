@@ -6,7 +6,7 @@ subtitle: Open and use sessions with the TypeScript and Python SDKs
 Both SDKs build and validate session grants before anything is signed, and manage one JWT and one WebSocket per account the session covers.
 
 <Warning>
-Session support in the SDKs is experimental. Method names and options may change before they are marked stable.
+Session support ships in `@paradex/sdk` 0.9.0 and `paradex-py` 0.9.0, and is experimental. Method names and options may change before they are marked stable.
 </Warning>
 
 Read the Paradex chain id from the `starknet_chain_id` field of `GET /v1/system/config` for the environment you use.
@@ -98,6 +98,53 @@ await session.connect_ws()
   </Tab>
 </Tabs>
 
+## Open a new account with the first grant
+
+A wallet with no Paradex account can open one with its first grant, as described in [Create a Session](/api/session-keys/create-a-session#open-a-new-account-with-the-first-grant). Name the address the server derives for the wallet, list no subaccounts, and pass any referral or marketing codes. They are sent with the grant but not signed.
+
+<Tabs>
+  <Tab title="TypeScript">
+
+```typescript
+const { address } = await Paradex.Onboarding.fetch({
+  apiUrl: 'https://api.testnet.paradex.trade/v1',
+  ethAddress: '0x<owner wallet>',
+});
+
+const session = await connector.open({
+  account: address,
+  scopes: ['trade'],
+  onboarding: { referralCode: 'cryptofox8' },
+});
+```
+
+  </Tab>
+  <Tab title="Python">
+
+```python
+from paradex_py.api.api_client import ParadexApiClient
+
+address = ParadexApiClient(env="testnet").fetch_onboarding(
+    {"account_signer_type": "eip191", "eth_address": "0x<owner wallet>"}
+)["address"]
+
+grant = SessionGrant.new(
+    paradex_chain=starknet_chain_id,
+    environment="testnet",
+    account=address,
+    session_key=session_public_key,
+    label="my bot",
+    scopes=["trade"],
+    ttl_seconds=7 * 24 * 3600,
+)
+grant_id = register_session("testnet", grant, owner, referral_code="cryptofox8")["grant_id"]
+```
+
+  </Tab>
+</Tabs>
+
+Refusals, including the onboarding ones, come back as a `SessionApiError` with a typed `code` in TypeScript, and as an exception naming the code in Python.
+
 ## Handle the end of a session
 
 Both SDKs follow the rule described in [Check a session's status](/api/session-keys/manage-sessions#check-a-sessions-status): when a sign in or a request is refused for authentication, they call `GET /v2/sessions/{grant_id}/status` once. If the session is `revoked`, `expired` or unknown, every account is dropped together, JWTs are cleared and sockets are closed. Any other answer is treated as transient. A `403` from a missing scope never drops the session.
@@ -138,15 +185,17 @@ except SessionDroppedError:
 
 ## Revoke the session
 
-Revoking from the SDK calls [`DELETE /v2/sessions/{grant_id}`](/api/session-keys/manage-sessions#revoke-a-session) with the session's own JWT, which is how an app signs out, then drops every account.
+Revoking from the SDK calls [`DELETE /v2/sessions/{grant_id}`](/api/session-keys/manage-sessions#revoke-a-session) with the session's own JWT, then drops every account.
 
-The two SDKs differ on orders. The TypeScript `revoke()` sends no `cancel_orders`, so the session's orders keep working. The Python `revoke()` defaults to `cancel_orders=True`, which also cancels its resting orders, TWAPs and untriggered stops on every account; pass `cancel_orders=False` to keep them.
+Both SDKs send `cancel_orders=true` by default, which also cancels the session's resting orders, TWAPs and untriggered stops on every account. Once revoked, the session key can no longer cancel them itself. To sign out and leave the orders working, as the Paradex app does, pass `{ cancelOrders: false }` in TypeScript or `cancel_orders=False` in Python.
+
+The session is dropped only once the server confirms the revoke, or answers `404` because it no longer has the grant. Any other error is raised and the session stays live, so the call can be retried.
 
 <Tabs>
   <Tab title="TypeScript">
 
 ```typescript
-await accounts.revoke();
+await accounts.revoke(); // or accounts.revoke({ cancelOrders: false })
 accounts.close();
 ```
 
@@ -154,7 +203,7 @@ accounts.close();
   <Tab title="Python">
 
 ```python
-session.revoke()  # call before close(); a dropped session can no longer sign in
+session.revoke()  # or session.revoke(cancel_orders=False); call before close()
 await session.close()
 ```
 

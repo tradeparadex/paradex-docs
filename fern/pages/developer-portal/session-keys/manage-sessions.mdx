@@ -106,6 +106,8 @@ What happens to the session's orders:
 
 Without `cancel_orders`, the RFQs the session created stay open. The revoked session can no longer execute them, but the owner can, and can cancel them with `DELETE /v1/rfqs/{rfq_id}`.
 
+The Paradex app's own sign out sends no `cancel_orders`, so orders placed from the app keep working after you sign out. Both [SDKs](/api/session-keys/sdk-examples#revoke-the-session) send `cancel_orders=true` by default, since a revoked session key can no longer cancel its own orders.
+
 **Response** `204` with no body.
 
 | Status | Meaning |

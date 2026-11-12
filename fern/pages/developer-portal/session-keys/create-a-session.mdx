@@ -68,10 +68,10 @@ Session limits are not enforced at launch, so the server only accepts a grant th
 
 ### Subaccounts
 
-An EVM owned account can list up to 32 of its EVM subaccounts, and the session key then signs in to each one separately. A listed address must be an onboarded subaccount that the owner's wallet created under `account`. Any other address, including a Starknet subaccount, returns `ACCOUNT_NOT_ELIGIBLE` after the owner has signed, so check the list first.
+An EVM owned account can list up to 32 of its EVM subaccounts, and the session key then signs in to each one separately. A listed address must be an onboarded subaccount that the owner's wallet created under `account` and has not archived. Any other address, including a Starknet subaccount, returns `ACCOUNT_NOT_ELIGIBLE` after the owner has signed, so check the list first. Archiving a subaccount does not end sessions that already cover it.
 
 - The owner's main key session creates an EVM subaccount with `POST /v2/account/subaccounts`, which takes no body and returns its `address` and `index`. Access may be limited during rollout.
-- `GET /v2/onboarding/subaccounts?eth_address=<wallet>` lists a wallet's EVM subaccounts, lowest index first, without a JWT, so an app can fill in the grant before it signs in.
+- `GET /v2/onboarding/subaccounts?eth_address=<wallet>` lists a wallet's EVM subaccounts, lowest index first, without a JWT, so an app can fill in the grant before it signs in. Archived subaccounts are left out.
 
 Grants from Starknet owned accounts cannot list subaccounts, and neither can a grant that [opens a new account](#open-a-new-account-with-the-first-grant). Only a main account can anchor a grant; a vault operator account can hold a session for itself alone, with no subaccounts.
 
@@ -287,7 +287,7 @@ Each grant can be used once. Sending the same grant again, or another grant with
 
 ### Open a new account with the first grant
 
-An EVM wallet that has no Paradex account yet can open one with its first session grant, with no separate onboarding call. Sign the grant as usual, with `account` set to the address the wallet's [EVM onboarding](/api/general-information/api-authentication) would create, and send it to `POST /v2/sessions`. The server opens the account and the session together.
+An EVM wallet that has no Paradex account yet can open one with its first session grant, with no separate onboarding call. Sign the grant as usual, with `account` set to the address the server derives for the wallet, and send it to `POST /v2/sessions`. `GET /v1/onboarding?account_signer_type=eip191&eth_address=<wallet>` returns that address, without a JWT. Any other address returns `INVALID_SIGNATURE` after the wallet has signed. The server opens the account and the session together.
 
 - The account is deployed on chain when it is first funded. Until then, RFQ requests return `400 NOT_ONBOARDED`.
 - `referral_code`, `marketing_code` and `utm` work as they do for `POST /v2/onboarding`. They are not part of what the wallet signs, and are ignored for an account that already exists.

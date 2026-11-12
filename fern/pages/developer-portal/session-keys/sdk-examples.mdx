@@ -187,9 +187,9 @@ except SessionDroppedError:
 
 Revoking from the SDK calls [`DELETE /v2/sessions/{grant_id}`](/api/session-keys/manage-sessions#revoke-a-session) with the session's own JWT, then drops every account.
 
-Both SDKs send `cancel_orders=true` by default, which also cancels the session's resting orders, TWAPs and untriggered stops on every account. Once revoked, the session key can no longer cancel them itself. To sign out and leave the orders working, as the Paradex app does, pass `{ cancelOrders: false }` in TypeScript or `cancel_orders=False` in Python.
+Both SDKs send `cancel_orders=true` by default, which also cancels the session's resting orders, TWAPs, untriggered stops and the open RFQs it created, on every account. Once revoked, the session key can no longer cancel them itself. To sign out and leave the orders working, as the Paradex app does, pass `{ cancelOrders: false }` in TypeScript or `cancel_orders=False` in Python.
 
-The session is dropped only once the server confirms the revoke, or answers `404` because it no longer has the grant. Any other error is raised and the session stays live, so the call can be retried.
+The session is dropped only once the server confirms the revoke, or answers `404` because it no longer has the grant. If the session key itself is refused, the status check above decides: a revoked or expired grant drops the session. Any other error is raised and the session stays live, so the call can be retried.
 
 <Tabs>
   <Tab title="TypeScript">

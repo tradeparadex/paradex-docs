@@ -24,7 +24,9 @@ The REST API tab has a "Session Keys" section (`fern/pages/developer-portal/sess
 - The owner sets a per-session IP allowlist with `PUT /v2/sessions/{grant_id}/ip-allowlist`; it is not signed and shows as `allowed_cidrs`.
 - A session key must sign in through `POST /v1/auth/{public_key}`. Without the key in the path the server verifies against the main key. The signed expiration must be within 15 minutes of the timestamp.
 - Passkeys are documented as first party only, as a current limitation. First-party ceilings allow `trade`, `trade:rfq` and `account:settings`; builder ceilings allow `trade` only and are refused while `maxLoss` is unenforced.
-- Only EVM sub-accounts created by `POST /v2/account/subaccounts` can be listed in a grant (up to 32); everything else returns `ACCOUNT_NOT_ELIGIBLE`. Keep examples without subaccounts.
+- Only unarchived EVM sub-accounts created by `POST /v2/account/subaccounts` can be listed in a grant (up to 32); everything else returns `ACCOUNT_NOT_ELIGIBLE`. Keep examples without subaccounts.
+- Both SDKs' `revoke()` send `cancel_orders=true` by default (0.9.0); the Paradex app's own sign out sends none, so its orders keep working. Session support first ships in SDK 0.9.0.
+- A first grant's `account` is the address `GET /v1/onboarding?account_signer_type=eip191&eth_address=` returns.
 - Anchors are not checked by the link check, and Fern's slug for a heading with a code span such as `` `trade:rfq` `` is uncertain: link to the page instead.
 - SNIP-12 grants are signed with integer fields as decimal strings, but the request body must carry them as JSON integers.
 - `||` inside a Markdown table splits the row, even within a code span.
@@ -33,4 +35,4 @@ The REST API tab has a "Session Keys" section (`fern/pages/developer-portal/sess
 Check the server repo's route scope table, grant validation code and endpoint descriptions. Do not name server paths or services in this repo.
 
 ## Last updated
-2026-11-10
+2026-11-12

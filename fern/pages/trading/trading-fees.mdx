@@ -12,6 +12,7 @@ Retail trading stays at 0 fees across Perps, Spot, and Options.
 </Note>
 
 - Retail Takers and Makers have 0% fees on all products: Perps, Spot and Options
+- RFQ takers pay 0% fees on all products. See [RFQ Fees](#rfq-fees)
 - Pro fees follow fee schedule outlined below
 
 ## Perps & Spot Fees
@@ -122,6 +123,17 @@ Fees are capped at 12.5% of the option price (premium). The FastFills 30% discou
 | Maker Fee (RPI & API) | Taker Fee |
 |---|---|
 | 0.01% | 0.01% |
+
+## RFQ Fees
+
+RFQ takers pay 0% fees on Perps, Spot and Options, whether the order classification is Retail or Pro. The taker is the account that requests quotes and executes. This applies to every leg of the RFQ.
+
+| | Perps | Spot | Options |
+|---|---|---|---|
+| RFQ Taker | 0% | 0% | 0% |
+| RFQ Maker | Standard maker fee | Standard maker fee | Standard maker fee |
+
+RFQ makers, the accounts that submit quotes, pay the standard maker fee for each leg's product as listed above. Multi-leg RFQs can also receive the [Multi-leg Fee Discount](#multi-leg-fee-discount).
 
 ## Multi-leg Fee Discount
 

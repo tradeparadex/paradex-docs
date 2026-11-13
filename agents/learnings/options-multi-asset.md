@@ -53,6 +53,14 @@ When adding a new options underlying, update all four locations: instrument conf
 - MSTR: 0.001 USD tick, 1 MSTR size increment, 2,500 max order, 25,000 position limit. Cross margin 55/40/27.5%. Min-delta 0.5% / 0.25% (same as ZEC/CL). Strike steps $2.5/$2.5/$5, $2.5/$2.5/$5, $5/$5/$10, $10/$10/$20. Spot shocks ±38/28.5/19/9.5%.
 - On 2026-10-06 the US100 and XAU Scenario tabs had drifted again and were regenerated from the endpoint. Both now use the symmetric BTC/US500 ladder (±14/10.5/7/3.5%) with tails 10.61/21.21/14/7/1.75/0.78/0.44/0.28%. The asymmetric ladder recorded under SPCX on 2026-10-02 is out of date.
 
+## NVDA specifics (fifth single-stock dated option)
+
+- NVDA (`nvda-usd.mdx`, added 2026-11-13) copies `meta-usd.mdx`: generic single-stock source table (9.7 open / 4.7 closing), equities 24/5 session, 16:00 UTC settlement. All seven external sources verified for NVDA on 2026-11-13 (Pyth Hermes, Stork, Binance/Bybit `NVDAUSDT`, OKX `NVDA-USDT-SWAP`, Hyperliquid `xyz:NVDA`, Lighter). NVDA trades around $167.
+- NVDA values: 0.001 USD tick, 1 NVDA size increment, 20 USD min order, 2,000 max order, 20,000 position limit, 150 open orders, 50% spot/IV bands. Cross margin 50/35/25% (same as META/SPCX). Min-delta 0.3% / 0.15%, `MIN_VOL_SHOCK_UP` 60%. SCAN spot shocks ±33/24.75/16.5/8.25% (a 1.1x scale of the HYPE/META ladder), vol +64%/-35.2%, tails 25/50/33/16.5/4.13/1.83/1.03/0.66%.
+- The listing SQL had `strike_steps = '{}'` (the market uses `delta_strikes` and an eSSVI publisher with autolist), so NVDA has **no strike step tab** in `expiries-and-listing.mdx` yet. Add it once the team confirms the values.
+- NVDA wasn't on the live `portfolio-margin-config` endpoint at writing, so its SCAN tab comes from the SQL; re-check after launch.
+- The `.claude/skills/add-dated-option` skill captures this workflow.
+
 ## NEAR specifics (crypto dated option)
 
 - NEAR (`near-usd.mdx`, added 2026-10-07) copies the short crypto template (`sol-usd.mdx`/`hype-usd.mdx`/`zec-usd.mdx`): contract table plus margin links, no "Index and settlement price" section. NEAR sits alphabetically among the crypto tabs (after HYPE, before SOL) on every per-asset page and in `fern/docs.yml`.
@@ -72,4 +80,4 @@ When adding a new options underlying, update all four locations: instrument conf
 
 ## Last updated
 
-2026-11-05
+2026-11-13

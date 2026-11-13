@@ -517,6 +517,9 @@ navigation:
             - page: MSTR Options
               slug: mstr-options
               path: ./pages/instruments-guide/dated-options/mstr-usd.mdx
+            - page: NVDA Options
+              slug: nvda-options
+              path: ./pages/instruments-guide/dated-options/nvda-usd.mdx
             - page: US500 Options
               slug: us500-options
               path: ./pages/instruments-guide/dated-options/us500-usd.mdx

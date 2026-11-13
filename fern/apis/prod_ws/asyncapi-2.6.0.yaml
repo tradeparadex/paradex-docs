@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.7.7
+    version: 1.8.0
     description: |
         Channels for real-time updates.
 
@@ -1131,6 +1131,17 @@ channels:
                             type: string
                     type: object
         x-fern-display-name: subscribe
+    /system_status:
+        subscribe:
+            summary: Public websocket channel to receive the system status
+            message:
+                name: systemstate
+                title: SystemStateResponse
+                payload:
+                    $ref: '#/components/schemas/ResponsesSystemStateResponse'
+                summary: Public websocket channel to receive the system status
+                description: Sends the current system status on subscribe, then again each time it changes. Payload shape mirrors GET /system/state. Delivered as JSON whatever encoding the session negotiated.
+        x-fern-display-name: system_status
     /tradebusts:
         subscribe:
             summary: Private websocket channel to receive fills that are busted by a blockchain
@@ -2733,6 +2744,21 @@ components:
                 - seq
                 - created_at
             type: object
+        ResponsesSystemStateResponse:
+            additionalProperties: false
+            properties:
+                status:
+                    description: Status of the system
+                    enum:
+                        - ok
+                        - maintenance
+                        - cancel_only
+                        - post_only
+                    example: ok
+                    type: string
+            required:
+                - status
+            type: object
         ResponsesTradeResult:
             additionalProperties: false
             properties:
@@ -3074,6 +3100,13 @@ components:
                 DERIBIT_COST is a reference figure, not an event: it repeats on a timer while the RFQ is open, carries what the same structure would cost crossing Deribit's public book, and is not executable. Read `deribit_cost.last_updated_at` to tell a live figure from a frozen feed, bearing in mind it is absent whenever no venue tick backs the figure, and the per-direction `status` for why a direction has none: NO_SIZE and INSUFFICIENT_SIZE are answers about Deribit's book, NOT_LISTED says it does not list the instrument, and NO_DATA says no price for it has reached us yet, so do not render that one as an empty book.
             tags:
                 - name: trading
+        ResponsesSystemStateResponse:
+            name: systemstate
+            title: SystemStateResponse
+            summary: Public websocket channel to receive the system status
+            description: Sends the current system status on subscribe, then again each time it changes. Payload shape mirrors GET /system/state. Delivered as JSON whatever encoding the session negotiated.
+            tags:
+                - name: system
         ResponsesTradeResult:
             name: traderesult
             title: TradeResult

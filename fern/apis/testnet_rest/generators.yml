@@ -13,3 +13,4 @@ api:
         coerce-optional-schemas-to-nullable: true
         inline-path-parameters: false
         coerce-enums-to-literals: true
+        disambiguate-request-names: false

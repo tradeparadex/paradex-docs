@@ -447,9 +447,6 @@ navigation:
                 - page: NVDA-USD-PERP
                   slug: nvda-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/nvda-usd-perp.mdx
-                - page: SNDK-USD-PERP
-                  slug: sndk-usd-perp
-                  path: ./pages/instruments-guide/futures/tradfi/sndk-usd-perp.mdx
                 - page: SPCX-USD-PERP
                   slug: spcx-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/spcx-usd-perp.mdx

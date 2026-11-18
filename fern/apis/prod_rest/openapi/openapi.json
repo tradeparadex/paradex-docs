@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n\n## Server errors\n\nAny endpoint can answer a 5xx that its reference does not list. An endpoint\nlists a server error only when it returns one for a reason of its own, and\nthen says what to do about it.\n\n- Branch on the HTTP status, not on the body. A 5xx body is usually the JSON\n  error object, but one from the infrastructure in front of the API may not\n  be JSON at all.\n- `503` with `SERVICE_UNAVAILABLE` means the request could not be served in\n  time or a service it needs is unavailable, and is worth retrying later.\n  Other 5xx are unexpected failures.\n- Retry a read that answers 5xx with backoff.\n- A write that answers 5xx, or times out, may or may not have been applied.\n  Read the result back before retrying it: an order sent with a `client_id`\n  can be looked up with `GET /orders/by_client_id/{client_id}`.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.150.3"
+    "version": "1.151.1"
   },
   "paths": {
     "/account": {
@@ -2244,7 +2244,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Create a new authentication token for the authenticated account with custom\nname and expiration duration.\n",
+        "description": "Create a new authentication token for the authenticated account with custom\nname and expiration duration.\n\nAn account holds at most a fixed number of active tokens of each kind. Past\nthat limit the operation returns `400` with error `TOKEN_LIMIT_REACHED` and\ncreates no token. Revoke a token of that kind, then call the operation again.\n",
         "tags": [
           "Token"
         ],
@@ -11316,7 +11316,8 @@
           "BUILDER_APPROVAL_STALE",
           "SESSIONS_DISABLED",
           "SESSION_REVOKED",
-          "SESSION_EXPIRED"
+          "SESSION_EXPIRED",
+          "LAYERSWAP_ROUTE_UNAVAILABLE"
         ],
         "x-enum-comments": {
           "ErrorCodeString_EvmVaultOperatorsDisabled": "Deprecated: no longer returned",
@@ -11472,7 +11473,8 @@
           "ErrorCodeString_BuilderApprovalStale",
           "ErrorCodeString_SessionsDisabled",
           "ErrorCodeString_SessionRevoked",
-          "ErrorCodeString_SessionExpired"
+          "ErrorCodeString_SessionExpired",
+          "ErrorCodeString_LayerswapRouteUnavailable"
         ]
       },
       "responses.ErrorResponse": {

@@ -405,6 +405,9 @@ navigation:
             - section: TradFi
               slug: trad-fi
               contents:
+                - page: ANT-USD-PERP
+                  slug: ant-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/ant-usd-perp.mdx
                 - page: BZ-USD-PERP
                   slug: bz-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/bz-usd-perp.mdx

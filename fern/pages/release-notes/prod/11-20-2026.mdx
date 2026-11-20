@@ -1,0 +1,17 @@
+## v1.172.5
+
+<ChangelogTags tags={["UI", "API"]} />
+
+#### UI
+
+* `Deposit` appears right after `sign-in` instead of waiting for sub-accounts to load.
+* `Portfolio margin` accounts now see margin requirements and liquidation prices closer to what the exchange applies.
+* Available to Trade no longer overstates buying power for accounts holding options.
+* The futures chart opens at its saved zoom instead of redrawing from a squeezed view.
+
+
+#### API
+
+* A WebSocket `order.modify` whose size is at or below the filled size returns an invalid params error with the reason, not an internal error.
+* `RFQ margin` estimates for assets other than BTC and ETH no longer overstate the margin required.
+* `Vault` withdrawals no longer stay pending after the funds have reached your account.

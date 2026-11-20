@@ -13,3 +13,4 @@
 - 2026-10-08: EUR-USD-PERP delisted. Removed its page and `docs.yml` entry.
 - 2026-11-13: SNDK-USD-PERP delisted. Removed its `futures/tradfi/` page and `docs.yml` entry; no other references existed. Use the `delist-perp` skill for this.
 - 2026-10-08: Deleted the orphaned `futures/rwa/` folder. Commit `b0bcd2b6` copied its pages to `futures/tradfi/` instead of moving them, and later edits (e.g. `717c2e66`) went to the dead copy by mistake. `futures/tradfi/` is the only folder for RWA/TradFi perp pages.
+- 2026-11-20: ANT-USD-PERP added to `futures/tradfi/` (testnet tags it `RWA`) from `https://api.testnet.paradex.trade/v1/markets?market=ANT-USD-PERP`, since it isn't on prod yet. Testnet returned `max_funding_rate` 0.05, but the page uses 1% to match the prod TradFi pages (user decision). `ewmaFactor` is 14%, matching the majority of TradFi pages (17 at 14%, 6 at 15%), since no EWMA alpha is public. New TradFi pages go in alphabetical order in `docs.yml`.

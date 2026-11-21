@@ -60,11 +60,19 @@ Session limits are not enforced at launch, so the server only accepts a grant th
 
 ### Builder
 
-`Builder` is also part of every grant. Grants that approve a builder are not accepted yet, so always send the empty builder:
+`Builder` is also part of every grant. A grant that approves no builder sends the empty builder:
 
 ```json
 { "account": "0x0", "maxFeeRate": "0", "expiresAt": 0 }
 ```
+
+An EVM owned account can instead approve a builder, a front end that may add its own fee to the orders the session places. Builder approvals may be limited during rollout.
+
+- `account` is the builder's Paradex account, which cannot be the granting account.
+- `maxFeeRate` is the highest fee the builder may charge, as a decimal fraction above `0` with at most 8 decimal places, and at most `0.0025`.
+- `expiresAt` is `0` to end the approval with the session, or a future time no later than the grant's `expiresAt`.
+- The grant cannot list `trade:block` or `account:settings`.
+- The approval is recorded on every account the grant covers, and outlives the session: revoking the session does not revoke it.
 
 ### Subaccounts
 
@@ -73,7 +81,7 @@ An EVM owned account can list up to 32 of its EVM subaccounts, and the session k
 - The owner's main key session creates an EVM subaccount with `POST /v2/account/subaccounts`, which takes no body and returns its `address` and `index`. Access may be limited during rollout.
 - `GET /v2/onboarding/subaccounts?eth_address=<wallet>` lists a wallet's EVM subaccounts, lowest index first, without a JWT, so an app can fill in the grant before it signs in. Archived subaccounts are left out.
 
-Grants from Starknet owned accounts cannot list subaccounts, and neither can a grant that [opens a new account](#open-a-new-account-with-the-first-grant). Only a main account can anchor a grant; a vault operator account can hold a session for itself alone, with no subaccounts.
+Grants from Starknet owned accounts cannot list subaccounts, and neither can a grant that [opens a new account](#open-a-new-account-with-the-first-grant). Only a main account can anchor a grant; a vault operator account can hold a session for itself alone, from a grant with no subaccounts and no builder.
 
 ## 3. Sign the grant
 
@@ -290,7 +298,7 @@ Each grant can be used once. Sending the same grant again, or another grant with
 An EVM wallet that has no Paradex account yet can open one with its first session grant, with no separate onboarding call. Sign the grant as usual, with `account` set to the address the server derives for the wallet, and send it to `POST /v2/sessions`. `GET /v1/onboarding?account_signer_type=eip191&eth_address=<wallet>` returns that address, without a JWT. Any other address returns `INVALID_SIGNATURE` after the wallet has signed. The server opens the account and the session together.
 
 - The account is deployed on chain when it is first funded. Until then, RFQ requests return `400 NOT_ONBOARDED`.
-- `referral_code`, `marketing_code` and `utm` work as they do for `POST /v2/onboarding`. They are not part of what the wallet signs, and are ignored for an account that already exists.
+- `referral_code`, `marketing_code` and `utm` work as they do for `POST /v2/onboarding`. They are not part of what the wallet signs, and are ignored for an account that already exists and for a grant that approves a builder.
 - The grant cannot list subaccounts.
 - The wallet must be an externally owned account. Smart contract wallets cannot sign a grant, so they onboard the usual way.
 - The request runs the same checks as onboarding, so it can also return the onboarding errors below.
@@ -303,14 +311,16 @@ An EVM wallet that has no Paradex account yet can open one with its first sessio
 | 400 | `GRANT_EXPIRED` | `expiresAt` has passed, or `issuedAt` is outside the accepted window |
 | 400 | `INVALID_ENVIRONMENT` | The grant is for another environment |
 | 400 | `INVALID_CHAIN` | The grant is for another Paradex chain |
-| 400 | `SCOPE_NOT_ALLOWED` | A scope is unknown or reserved |
-| 400 | `LIMIT_INVALID` | A limit is missing, malformed or not `none`, `markets` is not `["*"]`, the grant names a builder, or the expiry is longer than allowed |
+| 400 | `SCOPE_NOT_ALLOWED` | A scope is unknown, reserved or repeated, or not allowed on a grant that approves a builder |
+| 400 | `LIMIT_INVALID` | A limit is missing, malformed or not `none`, `markets` is not `["*"]`, or the expiry is longer than allowed |
 | 400 | `NONCE_REUSED` | The grant or its nonce was already used |
-| 400 | `ACCOUNT_NOT_ELIGIBLE` | The account or a listed subaccount cannot hold sessions |
-| 400 | `INVALID_GRANT` | The grant does not match the `SessionGrant` schema |
+| 400 | `ACCOUNT_NOT_ELIGIBLE` | The account or a listed subaccount cannot hold sessions, or a Starknet owned account approves a builder |
+| 400 | `INVALID_GRANT` | The grant does not match the `SessionGrant` schema, or its builder is invalid |
 | 400 | `SESSION_KEY_IN_USE` | The session key is, or was, a key of a listed account |
 | 400 | `SESSION_LIMIT_REACHED` | The account holds the most active sessions it may. Revoke one first. |
-| 403 | `SESSIONS_DISABLED` | Sessions are not available for this account yet |
+| 400 | `BUILDER_APPROVAL_LIMIT_REACHED` | A covered account already holds the most live builder approvals it may |
+| 400 | `BUILDER_APPROVAL_STALE` | The builder's approval was revoked after the grant was signed, or a live approval for the same builder has other terms. Sign a new grant. |
+| 403 | `SESSIONS_DISABLED` | Sessions, or builder approvals for a grant that approves a builder, are not available for this account yet |
 
 When the grant opens a new account it can also return:
 

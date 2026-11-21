@@ -6,7 +6,7 @@ subtitle: Open and use sessions with the TypeScript and Python SDKs
 Both SDKs build and validate session grants before anything is signed, and manage one JWT and one WebSocket per account the session covers.
 
 <Warning>
-Session support ships in `@paradex/sdk` 0.9.0 and `paradex-py` 0.9.0, and is experimental. Method names and options may change before they are marked stable.
+Session support ships in `@paradex/sdk` 0.10.0 and `paradex-py` 0.10.0, and is experimental. Earlier versions sign a passkey `SessionMint` the server no longer accepts. Method names and options may change before they are marked stable.
 </Warning>
 
 Read the Paradex chain id from the `starknet_chain_id` field of `GET /v1/system/config` for the environment you use.
@@ -43,7 +43,10 @@ const accounts = new Paradex.SessionAccounts({
   session,
   environment: 'testnet',
   paradexChain: starknetChainId,
-  onDropped: (reason) => console.warn('Session ended:', reason.code),
+  onDropped: (reason) => {
+    console.warn('Session ended:', reason.code);
+    void connector.forget(session); // or restore() keeps returning the ended session
+  },
 });
 await accounts.start();
 
@@ -171,12 +174,15 @@ const { state } = await accounts.status();
   <Tab title="Python">
 
 ```python
-from paradex_py.session_accounts import SessionDroppedError
+from paradex_py.session_accounts import SessionDroppedError, SessionRejectedError
 
 try:
     session.submit_order("0x<main account>", order)
 except SessionDroppedError:
     # The session was revoked or expired; every account is closed.
+    ...
+except SessionRejectedError:
+    # The server refused this action, such as for a missing scope. The session is still live.
     ...
 ```
 
@@ -189,7 +195,7 @@ Revoking from the SDK calls [`DELETE /v2/sessions/{grant_id}`](/api/session-keys
 
 Both SDKs send `cancel_orders=true` by default, which also cancels the session's resting orders, TWAPs, untriggered stops and the open RFQs it created, on every account. Once revoked, the session key can no longer cancel them itself. To sign out and leave the orders working, as the Paradex app does, pass `{ cancelOrders: false }` in TypeScript or `cancel_orders=False` in Python.
 
-The session is dropped only once the server confirms the revoke, or answers `404` because it no longer has the grant. If the session key itself is refused, the status check above decides: a revoked or expired grant drops the session. Any other error is raised and the session stays live, so the call can be retried.
+The session is dropped only once the server confirms the revoke, or answers `404` because it no longer has the grant. If the session key itself is refused, the status check above decides: a revoked, expired or unknown grant drops the session, and the call raises the drop error (`SessionGrantError` in TypeScript, `SessionDroppedError` in Python). Any other error is raised and the session stays live, so the call can be retried.
 
 <Tabs>
   <Tab title="TypeScript">
@@ -238,7 +244,8 @@ const snip12 = Paradex.SessionTypedData.buildGrantSnip12(grant);
 // Show the owner what they approve before they sign
 console.log(Paradex.SessionTypedData.summarizeGrant(grant));
 
-// Passkey: the WebAuthn challenge for a SessionMint you built (see the Passkeys page)
+// Passkey: the WebAuthn challenge for a SessionMint you built (see the Passkeys page).
+// Paradex.CEILING_LIMITS takes the passkey's ceiling; expiresAt: Paradex.LONGEST_SESSION its longest session.
 const challenge = Paradex.SessionTypedData.mintChallenge(mint);
 ```
 
@@ -259,7 +266,8 @@ grant = SessionGrant.new(
 )
 eip712 = grant.eip712_typed_data(signature_chain_id=1)  # EVM owner, the wallet chain id
 
-# Passkey: the WebAuthn challenge (base64url) for a SessionMint you built (see the Passkeys page)
+# Passkey: the WebAuthn challenge (base64url) for a SessionMint you built (see the Passkeys page).
+# limits=None takes the passkey's ceiling; expires_at=LONGEST_SESSION its longest session.
 challenge = mint.webauthn_challenge()
 ```
 

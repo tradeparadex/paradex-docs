@@ -21,9 +21,9 @@ A main key session is a JWT the account obtained with its own key. JWTs from sub
 | `grant_id` | string | The grant id |
 | `state` | string | `active`, `revoked` or `expired` |
 | `label` | string | The label from the grant |
-| `source` | string | What opened the session, such as `app`, `api` or `passkey` |
+| `source` | string | What opened the session: `app`, `builder` (a grant that approves a builder), `passkey` or `api` |
 | `passkey_credential_id` | string | The credential id of the passkey that opened the session. Only present when `source` is `passkey`. |
-| `builder` | object or null | The builder the grant approved, or `null` |
+| `builder` | object or null | `{ "account", "name", "max_fee_rate" }` for a grant that approves a builder, otherwise `null`. `name` may be `null`. |
 | `scopes` | string[] | The scopes from the grant |
 | `limits` | object | The limits exactly as the grant states them: `max_order_notional`, `max_open_notional`, `daily_notional`, `max_loss`, `max_leverage` and `markets` |
 | `accounts` | string[] | Every account the session covers |
@@ -31,6 +31,7 @@ A main key session is a JWT the account obtained with its own key. JWTs from sub
 | `issued_at` | integer | When the owner signed the grant, in milliseconds |
 | `expires_at` | integer | When the session expires, in milliseconds |
 | `revoked_at` | integer | When the session was revoked, in milliseconds, or `0` |
+| `open_order_count` | integer | The session's resting orders and untriggered stops, for display. Only on the first page of `GET /v2/sessions`, and absent when unknown. May be limited during rollout. |
 
 ```json
 {
@@ -102,7 +103,9 @@ What happens to the session's orders:
 | Revoked by | Resting orders | TWAPs and untriggered stops |
 | --- | --- | --- |
 | The owner | Kept, unless `cancel_orders=true` | Canceled |
-| The session itself | Kept, unless `cancel_orders=true` | Kept working, unless `cancel_orders=true` |
+| The session itself | Kept, unless `cancel_orders=true` | Kept working, unless `cancel_orders=true`. A session whose grant approves a builder cancels them. |
+
+Revoking a session does not revoke the builder approval its grant carried.
 
 Without `cancel_orders`, the RFQs the session created stay open. The revoked session can no longer execute them, but the owner can, and can cancel them with `DELETE /v1/rfqs/{rfq_id}`.
 

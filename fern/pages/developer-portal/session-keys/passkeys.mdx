@@ -91,7 +91,7 @@ Every passkey ceremony starts with a single use challenge, consumed by the first
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `scopes` | string[] | Any of `trade`, `trade:rfq` and `account:settings`. `trade:block` is not allowed. |
+| `scopes` | string[] | At least one of `trade`, `trade:rfq` and `account:settings`. `trade:block` is not allowed. |
 | `limits` | `Limits` | As in a [session grant](/api/session-keys/create-a-session#limits): every amount `"none"` and `markets` `["*"]` |
 | `subaccounts` | string[] | `[]`. Passkeys cover the main account only, so their sessions never cover subaccounts. |
 | `includeFutureSubaccounts` | bool | `false` |
@@ -189,7 +189,7 @@ Content-Type: application/json
     Generate a fresh session key and fill in a `SessionMint` with the challenge as its `nonce`.
   </Step>
   <Step title="Sign it with the passkey">
-    Compute the SNIP-12 revision 1 message hash of the `SessionMint`, using the same domain as a session grant. Pass its 32 bytes, base64url encoded, as the `challenge` of `navigator.credentials.get`, with `rpId` set to the passkey's `rp_id`.
+    Compute the SNIP-12 revision 1 message hash of the `SessionMint`, using the same domain as a session grant and `0x0` as the account, since a mint names no account. Pass its 32 bytes, base64url encoded, as the `challenge` of `navigator.credentials.get`, with `rpId` set to the passkey's `rp_id`. Leave `allowCredentials` empty to let the user pick any passkey they hold for the site, or set it to one credential id to require that passkey.
   </Step>
   <Step title="Open the session">
     Send the mint and the assertion to `POST /v2/passkeys/sessions`.
@@ -198,18 +198,18 @@ Content-Type: application/json
 
 ### SessionMint
 
+A `SessionMint` names neither the account nor the passkey. The server finds the passkey from the assertion's credential id, and the account from that passkey's grant.
+
 | Field | SNIP-12 type | Description |
 | --- | --- | --- |
 | `paradexChain` | shortstring | As in the passkey grant |
 | `environment` | shortstring | As in the passkey grant |
-| `account` | ContractAddress | The main account |
-| `credentialId` | string | The passkey's credential id, base64url |
 | `sessionKey` | felt | The new session's Stark public key |
-| `scopes` | shortstring* | Any of the ceiling's scopes |
-| `limits` | Limits | Every amount `"none"` and `markets` `["*"]` |
+| `scopes` | shortstring* | At least one of the ceiling's scopes |
+| `limits` | Limits | Every amount `"none"` and `markets` `["*"]`, or every amount `""` and `markets` `[]` to take the ceiling's |
 | `subaccounts` | ContractAddress* | `[]` |
 | `nonce` | felt | The `session` challenge |
-| `expiresAt` | timestamp | Unix seconds, no later than the passkey's own expiry and no more than the ceiling's `maxSessionTtl` from now |
+| `expiresAt` | timestamp | Unix seconds, no more than the ceiling's `maxSessionTtl` from now, or `0` for the longest session the passkey allows. A session that would outlive the passkey ends when the passkey expires. |
 
 ### Request
 
@@ -223,28 +223,28 @@ Content-Type: application/json
 | `mint` | object | The `SessionMint` as signed, with its camelCase field names. Send `expiresAt` as a JSON integer. |
 | `assertion` | object | The `PublicKeyCredential` JSON from `navigator.credentials.get` |
 
-**Response** `200`: the same `grant_id`, `expires_at` and `accounts` as [`POST /v2/sessions`](/api/session-keys/create-a-session#4-open-the-session). The session key then signs in with `POST /v1/auth/{public_key}`, and the session appears in `GET /v2/sessions` with `source` set to `passkey`. Revoke it with [`DELETE /v2/sessions/{grant_id}`](/api/session-keys/manage-sessions#revoke-a-session) like any other session.
+**Response** `200`: the same `grant_id`, `expires_at` and `accounts` as [`POST /v2/sessions`](/api/session-keys/create-a-session#4-open-the-session), plus `account` (the account the passkey opens sessions for), `credential_id`, `owner_signer_type` (`stark` or `eip191`), `owner_wallet`, `passkey_expires_at` in milliseconds, and the session's `limits`. A client that let the user pick any passkey learns the account here. The session key then signs in with `POST /v1/auth/{public_key}`, and the session appears in `GET /v2/sessions` with `source` set to `passkey`. Revoke it with [`DELETE /v2/sessions/{grant_id}`](/api/session-keys/manage-sessions#revoke-a-session) like any other session.
 
 | Status | Error | Meaning |
 | --- | --- | --- |
-| 400 | `INVALID_GRANT` | The mint is malformed, or does not match the passkey's chain, environment, account or credential |
+| 400 | `INVALID_GRANT` | The mint is malformed, lists no scopes, or does not match the passkey's chain or environment |
 | 400 | `INVALID_ENVIRONMENT`, `INVALID_CHAIN` | The mint is for another environment or chain |
 | 400 | `GRANT_EXPIRED` | `expiresAt` has passed |
 | 400 | `NONCE_REUSED` | The mint's nonce was already used |
 | 400 | `MINT_EXCEEDS_CEILING` | A scope or the expiry is outside the passkey's ceiling |
 | 400 | `SESSION_LIMIT_REACHED` | The passkey already holds its ceiling's `maxConcurrentSessions` live sessions |
-| 400 | `LIMIT_INVALID` | A limit is empty, malformed or not `none`, or `markets` is not `["*"]` |
+| 400 | `LIMIT_INVALID` | A limit is malformed or only partly stated, is not `none`, or `markets` is not `["*"]` |
 | 400 | `ACCOUNT_NOT_ELIGIBLE` | The mint lists subaccounts, or the account cannot hold sessions |
 | 400 | `ETHEREUM_ADDRESS_BLOCKED` | The account is blocked |
 | 400 | `PASSKEY_NOT_ACTIVE` | The passkey is revoked or expired |
-| 400 | `INVALID_PASSKEY_CREDENTIAL` | The WebAuthn response is invalid |
+| 400 | `INVALID_PASSKEY_CREDENTIAL` | The WebAuthn response is malformed |
 | 400 | `PASSKEY_ORIGIN_NOT_ALLOWED` | The page origin is not allowed for the passkey's `rpId` |
 | 400 | `PASSKEY_RP_ID_NOT_ALLOWED` | The assertion is for another `rpId` |
 | 400 | `PASSKEY_CHALLENGE_INVALID` | The nonce is unknown, expired or already used, or the assertion is not over this mint |
 | 400 | `PASSKEY_SIGN_COUNT_REGRESSION` | The authenticator's counter went backwards, which can mean a cloned authenticator |
 | 400 | `SESSION_KEY_IN_USE` | The session key is already registered on the account |
 | 403 | `PASSKEYS_DISABLED`, `SESSIONS_DISABLED` | Not available for this account yet |
-| 404 | `PASSKEY_NOT_FOUND` | No passkey with this credential id on the account |
+| 404 | `PASSKEY_NOT_FOUND` | No passkey has this credential id, or the assertion does not verify against it |
 
 ## List passkeys
 

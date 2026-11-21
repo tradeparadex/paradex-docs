@@ -28,5 +28,7 @@
 - Don't re-list the NFT threshold as a separate "discount." It's part of the Retail base-rate eligibility, so it belongs inline in the Retail tab table.
 - Don't split Retail and Pro into two stacked tables without a `Tabs` switcher. Readers have to scroll past a table that doesn't apply to them.
 
+- Pro maker fee for Perps & Spot is a flat 0.5 bps (0.005%) as of 2026-11 (previously 0.3 bps from July 3, 2026). The rate appears only in `#### Maker fees` on `trading-fees.mdx`; `agents/learnings/dime-utility.md` also references it.
+
 ## Last updated
 2026-11-13

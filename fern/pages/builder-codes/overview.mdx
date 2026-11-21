@@ -1,0 +1,91 @@
+---
+title: Builder Codes
+subtitle: Earn a fee in USDC on every fill your users make through your app
+---
+
+## Overview
+
+Builder Codes let an app, wallet, bot or other front end that sends orders to Paradex (a **builder**) add its own fee to its users' orders. The fee is charged on every fill and paid to the builder in USDC as part of the same settlement. There is nothing to invoice and nothing to claim: the fee lands in the builder's Paradex account balance.
+
+A builder is an ordinary Paradex account that has completed onboarding. Its account address is its builder code.
+
+Builder Codes work in three steps:
+
+1. **The user approves the builder.** The account owner signs an approval that names the builder, the highest fee rate it may charge (the **ceiling**) and an expiry. See [Builder approvals](/api/builder-codes/approvals).
+2. **The builder attaches itself to the user's orders.** Each order names the `builder` and a `builder_fee_rate` at or below the ceiling, and is signed with the builder fields included. See [Attaching a builder to orders](/api/builder-codes/orders).
+3. **Every fill pays the builder.** When an order fills, the builder fee is debited from the user and credited to the builder in USDC, in the same settlement as the trade.
+
+Builders can follow their earnings with the public [stats and leaderboard](/api/builder-codes/stats-and-leaderboard) endpoints.
+
+## How a builder gets paid
+
+{/* TODO: Planned behavior. Confirm this section once builder fees settle on chain, then remove this note. */}
+
+| Rule | Behavior |
+| --- | --- |
+| **Currency** | Always USDC, whatever the market or the fee currency of the order. Builder fees are never paid in \$DIME and are not affected by \$DIME fee discounts. |
+| **When** | On every fill of an order that names a builder, in the same settlement as the trade. Partial fills each pay their share. |
+| **Who pays** | The account that placed the order. Maker and taker each pay the builder named on their own order, so the two sides of a fill can pay different builders, or one side can pay a builder while the other pays none. |
+| **Where it goes** | Credited to the builder account's USDC balance. |
+| **On top of trading fees** | The builder fee is separate from, and in addition to, the [Paradex trading fees](/trading/trading-fees). |
+| **Margin** | The fee is charged before the post trade margin check, so a fill the account cannot pay for, including its builder fee, is rejected like any other fill that would leave the account below its margin requirement. |
+| **Rounding** | Computed per fill and per side, in 8 decimal fixed point, rounding down. A fee that rounds down to zero is not charged. |
+
+## Fee rates and caps
+
+`builder_fee_rate` is a decimal fraction of the fill's notional: `"0.0005"` is 5 bps (0.05%). It must be above zero and have at most 8 decimal places.
+
+{/* TODO: Planned behavior. Confirm the per market caps and the reject behavior once cap enforcement is live, then remove this note. */}
+
+Each market kind has a cap. A rate above the cap is rejected, never reduced to the cap.
+
+| Market kind | Highest `builder_fee_rate` | Notes |
+| --- | --- | --- |
+| Perpetual futures and dated futures | `0.001` (10 bps) | |
+| Options (dated and perpetual) | `0.0005` (5 bps) | The fee per contract is also capped at 12.5% of the option's premium. |
+| Spot | `0.0025` (25 bps) | |
+
+The rate on an order must also be at or below the ceiling the user approved for that builder. A ceiling is at most `0.0025` (25 bps).
+
+### How the fee is calculated
+
+{/* TODO: Planned behavior. Confirm the formulas and the USDC conversion once builder fees settle on chain, then remove this note. */}
+
+For perpetuals, futures and spot:
+
+```text
+builder_fee = size × price × builder_fee_rate
+```
+
+For options, the fee base is the spot price of the underlying asset, as with option trading fees, and the result is capped at 12.5% of the premium:
+
+```text
+builder_fee = size × min(spot_price × builder_fee_rate, price × 0.125)
+```
+
+`size` and `price` are the fill's size and price. Amounts quoted in USD are converted to USDC at the USDC oracle price.
+
+**Example.** A user buys 0.5 BTC-USD-PERP at 100,000 USD through a builder at `"0.0005"` (5 bps). The fill notional is 50,000 USD, so the fee is 25 USD: 25 USDC at a USDC price of 1 USD, debited from the user and credited to the builder in the same settlement.
+
+## Where builder fees appear
+
+| Surface | Fields |
+| --- | --- |
+| Orders (REST and the `orders` WebSocket channel) | `builder`, `builder_fee_rate` |
+| Fills (REST and the `fills` WebSocket channel) | `builder`, `builder_fee_rate`, `builder_fee` (USDC) |
+| Public trades | None. Builder fields are visible only to the account that placed the order. |
+
+All three fields are omitted when the order names no builder, and `builder_fee` is also omitted when the fee rounds to zero. See [Order and fill responses](/api/builder-codes/orders#order-and-fill-responses).
+
+## Lifecycle at a glance
+
+{/* TODO: The automatic cancel of resting orders after a revoke, an expiry or a lowered ceiling is planned. Confirm those rows once it is live, then remove this note. */}
+
+| Event | Effect |
+| --- | --- |
+| User approves a builder | Orders may name the builder at rates up to the ceiling, until the approval expires or is revoked. |
+| User approves again with a lower ceiling | Resting orders above the new ceiling are canceled. |
+| User revokes the approval | New orders naming the builder are refused within seconds. Resting orders naming the builder are canceled. |
+| Approval expires | Same as a revoke. |
+
+See [What cancels resting orders](/api/builder-codes/approvals#what-cancels-resting-orders).

@@ -703,6 +703,21 @@ navigation:
           - page: API Best Practices
             slug: api-best-practices
             path: ./pages/developer-portal/general-information/api-best-practices.mdx
+      - section: Builder Codes
+        slug: builder-codes
+        contents:
+          - page: Overview
+            slug: overview
+            path: ./pages/builder-codes/overview.mdx
+          - page: Builder Approvals
+            slug: approvals
+            path: ./pages/builder-codes/approvals.mdx
+          - page: Attaching a Builder to Orders
+            slug: orders
+            path: ./pages/builder-codes/orders.mdx
+          - page: Stats and Leaderboard
+            slug: stats-and-leaderboard
+            path: ./pages/builder-codes/stats-and-leaderboard.mdx
       - section: Production API Reference
         contents:
           - api: REST Endpoints

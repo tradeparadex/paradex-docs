@@ -1,0 +1,83 @@
+---
+title: Stats and Leaderboard
+subtitle: Public builder fees, volume and users for every builder
+---
+
+## Overview
+
+Two public endpoints report the builder fees traders paid each builder. They need no authentication and are not wrapped by the SDKs; call them directly.
+
+Stats are computed periodically from settled fills that paid a builder fee, so they lag recent fills. Each result's `as_of` says when it was computed.
+
+## Builder stats
+
+```http
+GET /v1/builders/{builder_account}/stats
+```
+
+Returns one builder's totals over each window: `24h`, `7d`, `30d` and `all`, shortest first. A window with no paid fill, or with fewer than 3 paying users, is returned with zeros. A builder with no paid fill at all returns `404`.
+
+```json
+{
+  "results": [
+    {
+      "builder": { "account": "0x5f2c...a91", "name": null },
+      "window": "24h",
+      "fees_paid": "125.5",
+      "volume": "2500000",
+      "users": 42,
+      "fills": 1800,
+      "as_of": 1764633600000
+    }
+  ]
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `builder.account` | The builder's account address. |
+| `builder.name` | The builder's display name, or `null` when it has none. |
+| `window` | `24h`, `7d`, `30d` or `all`. |
+| `fees_paid` | Builder fees traders paid this builder in the window, in USDC. |
+| `volume` | USD notional of the fills that paid this builder a fee. When both sides of a fill paid the same builder, both sides count. |
+| `users` | Distinct accounts that paid the builder a fee. |
+| `fills` | Fills that paid the builder a fee. |
+| `as_of` | When the stats were computed, in Unix milliseconds. This is the end of the window. |
+
+## Leaderboard
+
+```http
+GET /v1/builders/leaderboard?window=7d
+```
+
+Returns up to the top 100 builders over a window, ranked by fees paid, then by volume. Only builders with at least 3 paying users in the window are ranked.
+
+| Query parameter | Values | Default |
+| --- | --- | --- |
+| `window` | `24h`, `7d`, `30d`, `all` | `7d` |
+
+Each result has the same fields as builder stats, plus `rank`, starting at `1` for the builder that was paid the most.
+
+```json
+{
+  "results": [
+    {
+      "rank": 1,
+      "builder": { "account": "0x5f2c...a91", "name": null },
+      "window": "7d",
+      "fees_paid": "980.25",
+      "volume": "19605000",
+      "users": 311,
+      "fills": 12044,
+      "as_of": 1764633600000
+    }
+  ]
+}
+```
+
+## Errors
+
+| HTTP | Meaning |
+| --- | --- |
+| `400` | The builder address or the `window` value is invalid. |
+| `404` | The builder has no stats, or stats have not been computed yet. |

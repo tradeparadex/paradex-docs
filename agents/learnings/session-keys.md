@@ -24,7 +24,7 @@ The REST API tab has a "Session Keys" section (`fern/pages/developer-portal/sess
 - `POST /v2/sessions` opens a new EVM account from its first grant; `referral_code`, `marketing_code` and `utm` are unsigned and read only then. It returns the `/v2/onboarding` error codes.
 - The owner sets a per-session IP allowlist with `PUT /v2/sessions/{grant_id}/ip-allowlist`; it is not signed and shows as `allowed_cidrs`.
 - A session key must sign in through `POST /v1/auth/{public_key}`. Without the key in the path the server verifies against the main key. The signed expiration must be within 15 minutes of the timestamp.
-- Passkeys are documented as first party only, as a current limitation. First-party ceilings allow `trade`, `trade:rfq` and `account:settings`; builder ceilings allow `trade` only and are refused while `maxLoss` is unenforced.
+- Passkeys are documented as first party only, as a current limitation. First-party ceilings allow `trade`, `trade:rfq` and `account:settings`; the server also accepts builder passkeys tied to a builder's verified domains (rollout gated), but the docs still describe first party only.
 - Only unarchived EVM sub-accounts created by `POST /v2/account/subaccounts` can be listed in a grant (up to 32); everything else returns `ACCOUNT_NOT_ELIGIBLE`. Keep examples without subaccounts.
 - Both SDKs' `revoke()` send `cancel_orders=true` by default; the Paradex app's own sign out sends none, so its orders keep working. Document SDK 0.10.0: 0.9.0 signs the old passkey `SessionMint`.
 - A `SessionMint` names no account or credential id; its SNIP-12 hash uses account `0x0`, `expiresAt` `0` asks for the longest session, and empty limits take the ceiling's. A failed assertion answers `404 PASSKEY_NOT_FOUND`.

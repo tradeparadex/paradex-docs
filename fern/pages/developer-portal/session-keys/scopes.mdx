@@ -127,6 +127,6 @@ A session cannot enable RFQ on an account: `POST /v1/account/paradigm/enable` on
 | DELETE | `/v1/block-trades/{block_trade_id}`, `/v1/block-trades/{block_trade_id}/offers/{offer_id}` |
 | PUT | `/v1/account/profile` |
 | POST | `/v1/account/profile/username`, `/v1/account/profile/referral_code`, `/v1/account/profile/notifications`, `/v1/account/profile/refresh_inventory` |
-| POST | `/v1/account/referrer`, `/v1/account/compliance`, `/v1/xp/transfer`, `/v1/account/withdrawal-lock` |
+| POST | `/v1/account/referrer`, `/v1/account/compliance`, `/v1/xp/transfer` |
 
 A few read routes outside the public API reference also accept any session. Every other private route not listed on this page refuses session JWTs.

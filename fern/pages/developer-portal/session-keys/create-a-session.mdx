@@ -70,7 +70,7 @@ An EVM owned account can instead approve a builder, a front end that may add its
 
 - `account` is the builder's Paradex account, which cannot be the granting account.
 - `maxFeeRate` is the highest fee the builder may charge, as a decimal fraction above `0` with at most 8 decimal places, and at most `0.0025`.
-- `expiresAt` is `0` to end the approval with the session, or a future time no later than the grant's `expiresAt`.
+- `expiresAt` is `0` for the approval to expire when the session would, or a future time no later than the grant's `expiresAt`.
 - The grant cannot list `trade:block` or `account:settings`.
 - The approval is recorded on every account the grant covers, and outlives the session: revoking the session does not revoke it.
 

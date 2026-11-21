@@ -31,7 +31,7 @@ A main key session is a JWT the account obtained with its own key. JWTs from sub
 | `issued_at` | integer | When the owner signed the grant, in milliseconds |
 | `expires_at` | integer | When the session expires, in milliseconds |
 | `revoked_at` | integer | When the session was revoked, in milliseconds, or `0` |
-| `open_order_count` | integer | The session's resting orders and untriggered stops, for display. Only on the first page of `GET /v2/sessions`, and absent when unknown. May be limited during rollout. |
+| `open_order_count` | integer | The session's resting orders and untriggered stops, for display. Only on the first page of `GET /v2/sessions`, for an active or revoked session, and absent when unknown. May be limited during rollout. |
 
 ```json
 {

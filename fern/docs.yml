@@ -405,6 +405,9 @@ navigation:
             - section: TradFi
               slug: trad-fi
               contents:
+                - page: ANT-USD-PERP
+                  slug: ant-usd-perp
+                  path: ./pages/instruments-guide/futures/tradfi/ant-usd-perp.mdx
                 - page: BZ-USD-PERP
                   slug: bz-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/bz-usd-perp.mdx
@@ -447,9 +450,6 @@ navigation:
                 - page: NVDA-USD-PERP
                   slug: nvda-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/nvda-usd-perp.mdx
-                - page: SNDK-USD-PERP
-                  slug: sndk-usd-perp
-                  path: ./pages/instruments-guide/futures/tradfi/sndk-usd-perp.mdx
                 - page: SPCX-USD-PERP
                   slug: spcx-usd-perp
                   path: ./pages/instruments-guide/futures/tradfi/spcx-usd-perp.mdx

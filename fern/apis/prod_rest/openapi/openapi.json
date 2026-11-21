@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n\n## Server errors\n\nAny endpoint can answer a 5xx that its reference does not list. An endpoint\nlists a server error only when it returns one for a reason of its own, and\nthen says what to do about it.\n\n- Branch on the HTTP status, not on the body. A 5xx body is usually the JSON\n  error object, but one from the infrastructure in front of the API may not\n  be JSON at all.\n- `503` with `SERVICE_UNAVAILABLE` means the request could not be served in\n  time or a service it needs is unavailable, and is worth retrying later.\n  Other 5xx are unexpected failures.\n- Retry a read that answers 5xx with backoff.\n- A write that answers 5xx, or times out, may or may not have been applied.\n  Read the result back before retrying it: an order sent with a `client_id`\n  can be looked up with `GET /orders/by_client_id/{client_id}`.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.149.1"
+    "version": "1.151.3"
   },
   "paths": {
     "/account": {
@@ -2244,7 +2244,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Create a new authentication token for the authenticated account with custom\nname and expiration duration.\n",
+        "description": "Create a new authentication token for the authenticated account with custom\nname and expiration duration.\n\nAn account holds at most a fixed number of active tokens of each kind. Past\nthat limit the operation returns `400` with error `TOKEN_LIMIT_REACHED` and\ncreates no token. Revoke a token of that kind, then call the operation again.\n",
         "tags": [
           "Token"
         ],
@@ -4348,6 +4348,16 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
           }
         }
       }
@@ -5947,7 +5957,7 @@
             "BearerToken": []
           }
         ],
-        "description": "Returns the market symbols currently available for RFQ.\n\nNot every listed Paradex market can be quoted as an RFQ: the venue quotes only\nthe instruments it lists for the Paradex venue, and a create naming any other\nmarket is rejected with a validation error. This endpoint is that set, so a\nclient can stop offering markets a create would reject on their name instead of\ndiscovering the difference after the user has already sized a structure.\n\nMembership is necessary but not sufficient. A create additionally checks that a\nhedge leg's price sits on the instrument's tick and that the strategy quantity\nmeets its minimum block size, so a market listed here can still be rejected on\nthose grounds.\n\n`markets_info` carries one record per market: its `symbol` and the venue's\nown `venue_size_increment`, the step the RFQ quantity must be a multiple of,\nso a client can size on the right grid as the user types. On an RFQ whose legs\nspan products, each leg's size (the quantity times its ratio) is held to its\nown `venue_size_increment`, not to the coarsest step across the RFQ. These\nare the venue instrument's grids, not the Paradex market's own increments:\nthe two differ, and quantities are validated against the venue's.\nA quantity has to satisfy both grids, so combine them with their least\ncommon multiple rather than by taking the larger: the two coincide only when\none divides the other, which holds for the powers of ten Paradex lists today\nbut is not guaranteed of venue data. Neither grid is reliably the coarser\none. Where they are coprime the combined step can exceed both (0.001 and\n0.0025 give 0.005), which is correct: a quantity off either grid is\nrejected by one side or the other.\n\nThe combined step and the minimum block size constrain different things and\nboth always apply, so neither overrides the other. The step says which\nquantities are legal, the block size sets a floor, and the smallest quotable\nsize is simply the first step at or above that floor. There is always one, so\nthe two can never be mutually unsatisfiable.\n\n`venue_size_increment` is empty when the venue reports no usable grid for\nthat market, or while an older service is still deployed. Read an empty one\nas \"unknown\" and do not fall back to the market's own increment alone, since\na size legal on the order book can still be rejected by the venue.\n`POST /rfqs` validates the quantity against the venue grid and rejects an\noff-grid size before the RFQ is created, so that check remains the authority\nwhatever a client sizes on.\n\n`markets` repeats the same symbols in the same order and is **deprecated**:\nit stays only until every client reads `markets_info`, and new integrations\nshould ignore it.\n\nThe set is served from a periodically refreshed snapshot, so a market listed by\nthe venue moments ago may take up to one refresh interval to appear here.\n\n`markets` is never an empty list: a caller cannot tell \"the venue quotes\nnothing\" from \"this read is unavailable\", so a degraded or empty snapshot is\nreported as `503` instead. (`venue_size_increments` may legitimately be\n`{}` — an older service reports no grids at all.) Treat any failure as\n\"unknown\" and fall back to offering every market — the create remains\nauthoritative.\n",
+        "description": "Returns the market symbols currently available for RFQ.\n\nNot every listed Paradex market can be quoted as an RFQ: the venue quotes only\nthe instruments it lists for the Paradex venue, and a create naming any other\nmarket is rejected with a validation error. This endpoint is that set, so a\nclient can stop offering markets a create would reject on their name instead of\ndiscovering the difference after the user has already sized a structure.\n\nMembership is necessary but not sufficient. A create additionally checks that a\nhedge leg's price sits on the instrument's tick and that the strategy quantity\nmeets its minimum block size, so a market listed here can still be rejected on\nthose grounds.\n\n`markets_info` carries one record per market: its `symbol` and the venue's\nown `venue_size_increment`, the step the RFQ quantity must be a multiple of,\nso a client can size on the right grid as the user types. On an RFQ whose legs\nspan products, each leg's size (the quantity times its ratio) is held to its\nown `venue_size_increment`, not to the coarsest step across the RFQ. These\nare the venue instrument's grids, not the Paradex market's own increments:\nthe two differ, and quantities are validated against the venue's.\nA quantity has to satisfy both grids, so combine them with their least\ncommon multiple rather than by taking the larger: the two coincide only when\none divides the other, which holds for the powers of ten Paradex lists today\nbut is not guaranteed of venue data. Neither grid is reliably the coarser\none. Where they are coprime the combined step can exceed both (0.001 and\n0.0025 give 0.005), which is correct: a quantity off either grid is\nrejected by one side or the other.\n\nThe combined step and the minimum block size constrain different things and\nboth always apply, so neither overrides the other. The step says which\nquantities are legal, the block size sets a floor, and the smallest quotable\nsize is simply the first step at or above that floor. There is always one, so\nthe two can never be mutually unsatisfiable.\n\n`venue_size_increment` is empty when the venue reports no usable grid for\nthat market. Read an empty one\nas \"unknown\" and do not fall back to the market's own increment alone, since\na size legal on the order book can still be rejected by the venue.\n`POST /rfqs` validates the quantity against the venue grid and rejects an\noff-grid size before the RFQ is created, so that check remains the authority\nwhatever a client sizes on.\n\n`markets` repeats the same symbols in the same order and is **deprecated**:\nit stays only until every client reads `markets_info`, and new integrations\nshould ignore it.\n\nThe set is served from a periodically refreshed snapshot, so a market listed by\nthe venue moments ago may take up to one refresh interval to appear here.\n\n`markets` is never an empty list: a caller cannot tell \"the venue quotes\nnothing\" from \"this read is unavailable\", so a degraded or empty snapshot is\nreported as `503` instead. Treat any failure as\n\"unknown\" and fall back to offering every market — the create remains\nauthoritative.\n",
         "tags": [
           "Rfqs"
         ],
@@ -7706,7 +7716,7 @@
     },
     "/vaults/history": {
       "get": {
-        "description": "Get PnL and Account value historical timeseries for the given vault.\n",
+        "description": "Get PnL and Account value historical timeseries for the given vault.\n\n`type=price` is the vault's share price, so it is refused with a 400 when\n`strategy` is set.\n",
         "tags": [
           "Vaults"
         ],
@@ -11291,6 +11301,7 @@
           "ADDRESS_BOOK_NOT_PARADEX_ACCOUNT",
           "ADDRESS_BOOK_REPEATED_IN_IMPORT",
           "SUBACCOUNT_HAS_FUNDS",
+          "PARENT_ACCOUNT_DEPLOY_FAILED",
           "INVALID_SIGNATURE",
           "GRANT_EXPIRED",
           "INVALID_ENVIRONMENT",
@@ -11303,9 +11314,14 @@
           "SESSION_LIMIT_REACHED",
           "BUILDER_APPROVAL_LIMIT_REACHED",
           "BUILDER_APPROVAL_STALE",
+          "BUILDER_CODES_NOT_ENABLED",
+          "BUILDER_NOT_APPROVED",
+          "BUILDER_FEE_RATE_OVER_APPROVAL",
+          "BUILDER_NOT_ONBOARDED",
           "SESSIONS_DISABLED",
           "SESSION_REVOKED",
-          "SESSION_EXPIRED"
+          "SESSION_EXPIRED",
+          "LAYERSWAP_ROUTE_UNAVAILABLE"
         ],
         "x-enum-comments": {
           "ErrorCodeString_EvmVaultOperatorsDisabled": "Deprecated: no longer returned",
@@ -11446,6 +11462,7 @@
           "ErrorCodeString_AddressBookNotParadexAccount",
           "ErrorCodeString_AddressBookRepeatedInImport",
           "ErrorCodeString_SubaccountHasFunds",
+          "ErrorCodeString_ParentAccountDeployFailed",
           "ErrorCodeString_InvalidSignature",
           "ErrorCodeString_GrantExpired",
           "ErrorCodeString_InvalidEnvironment",
@@ -11458,9 +11475,14 @@
           "ErrorCodeString_SessionLimitReached",
           "ErrorCodeString_BuilderApprovalLimitReached",
           "ErrorCodeString_BuilderApprovalStale",
+          "ErrorCodeString_BuilderCodesNotEnabled",
+          "ErrorCodeString_BuilderNotApproved",
+          "ErrorCodeString_BuilderFeeRateOverApproval",
+          "ErrorCodeString_BuilderNotOnboarded",
           "ErrorCodeString_SessionsDisabled",
           "ErrorCodeString_SessionRevoked",
-          "ErrorCodeString_SessionExpired"
+          "ErrorCodeString_SessionExpired",
+          "ErrorCodeString_LayerswapRouteUnavailable"
         ]
       },
       "responses.ErrorResponse": {
@@ -12357,6 +12379,11 @@
                 "$ref": "#/components/schemas/responses.MarketFeeConfig"
               }
             ]
+          },
+          "fee_provision_rate": {
+            "description": "The rate initial and maintenance margin provision this market's\ntrading fees at, as a fraction of notional. It is the exchange's\nprovisioning ceiling and can be above every rate in fee_config, which\nit overrides for this purpose. Set on every market that is not an\noption; options provision at fee_config's highest rate, with its cap.",
+            "type": "string",
+            "example": "0.00045"
           },
           "funding_multiplier": {
             "description": "Funding multiplier",

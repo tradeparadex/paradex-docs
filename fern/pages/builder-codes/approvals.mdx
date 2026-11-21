@@ -1,0 +1,226 @@
+---
+title: Builder Approvals
+subtitle: How a user approves a builder, and how the approval ends
+---
+
+## Overview
+
+A builder can charge a fee on an account's orders only while that account holds a live **approval** of the builder. The approval is signed by the account owner and states:
+
+| Term | Meaning |
+| --- | --- |
+| **Builder** | The builder's Paradex account address. |
+| **Ceiling** (`maxFeeRate`) | The highest `builder_fee_rate` any order may name for this builder, as a decimal fraction (`"0.0005"` = 5 bps). |
+| **Expiry** (`expiresAt`) | When the approval ends. |
+
+Approvals are per account and per builder. An account can hold live approvals for up to 10 builders at once.
+
+## Approving a builder
+
+The account owner approves a builder in one of two ways:
+
+- **In a session grant**, when a builder's app opens a trading session for the user. The grant carries the approval.
+- **As a standalone approval**, when the owner trades with the account's own key and opens no session.
+
+Both routes write the same approval. It is listed, revoked and enforced the same way whichever route created it.
+
+### The `builder` object
+
+Both routes carry the terms in a `builder` object:
+
+```json
+"builder": {
+  "account": "0x5f2c...a91",
+  "maxFeeRate": "0.0005",
+  "expiresAt": 1767225600
+}
+```
+
+| Field | Type | Rules |
+| --- | --- | --- |
+| `account` | Address | The builder's account address. Must not be the approving account. |
+| `maxFeeRate` | Decimal string | Above `0`, at most 8 decimal places, and at most `0.0025` (25 bps). The per market [caps](/api/builder-codes/overview#fee-rates-and-caps) still apply to each order. |
+| `expiresAt` | Unix seconds | In the future. In a session grant, no later than the grant's own `expiresAt`, and `0` makes the approval end when the session would expire. In a standalone approval, required and at most 180 days after `issuedAt`. |
+
+In the signed typed data, `Builder` is a struct with the fields `account`, `maxFeeRate` and `expiresAt`, in that order. With EIP-712 their types are `string`, `string` and `uint64`.
+
+### In a session grant
+
+A builder approval can be part of the owner signed **session grant** a builder's app uses to open a trading session for the user. The grant's `builder` member is the `builder` object above, and the owner's signature over the grant covers it. A grant that approves no builder carries `{"account": "0x0", "maxFeeRate": "0", "expiresAt": 0}`.
+
+A grant that approves a builder cannot include the `trade:block` or `account:settings` scopes. Approving a builder adds no other requirement to the grant.
+
+Both SDKs build and sign the approval as part of a session grant. In the Python SDK, pass `builder=Builder(account="0x5f2c...a91", max_fee_rate="0.0005", expires_at=0)` to `SessionGrant` (both from `paradex_py.message.session`). In the TypeScript SDK, set the grant's `builder: { account, maxFeeRate, expiresAt }`. The SDKs do not cover listing and revoking approvals; call those REST endpoints directly.
+
+### Standalone approval
+
+An owner who trades with the account's own key can approve a builder without opening a session:
+
+```http
+POST /v2/builders/approvals
+```
+
+The request takes no JWT. The owner's EIP-712 signature over the approval authenticates it.
+
+```json
+{
+  "approval": {
+    "paradexChain": "PRIVATE_SN_PARACLEAR_MAINNET",
+    "environment": "mainnet",
+    "account": "0x62cf...14f",
+    "builder": {
+      "account": "0x5f2c...a91",
+      "maxFeeRate": "0.0005",
+      "expiresAt": 1775001600
+    },
+    "subaccounts": [],
+    "nonce": "0x88888888888888888888888888888888",
+    "issuedAt": 1767225600
+  },
+  "signature": "0x<r><s><v>",
+  "signature_type": "eip712",
+  "signature_chain_id": 42161
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `approval` | The signed `BuilderApproval` message, exactly as signed. |
+| `signature` | The owner's EIP-712 signature, as one `0x` hex string of `r`, `s` and `v`. |
+| `signature_type` | Always `eip712`. |
+| `signature_chain_id` | The EVM chain ID in the EIP-712 domain the wallet signed with. |
+
+The approval is EIP-712 typed data with `primaryType` `BuilderApproval` and the domain `{name: "Paradex Session", version: "1", chainId: <signature_chain_id>}`. Its fields, in order:
+
+| Field | EIP-712 type | Rules |
+| --- | --- | --- |
+| `paradexChain` | `string` | The Paradex chain ID, `starknet_chain_id` in `GET /v1/system/config`. |
+| `environment` | `string` | `mainnet` or `testnet`, matching the server. |
+| `account` | `string` | The approving account. It must be a main account whose owner is an EVM wallet. |
+| `builder` | `Builder` | The [`builder` object](#the-builder-object). `expiresAt` is required. |
+| `subaccounts` | `string[]` | Up to 32 sub-accounts of `account` that the approval also covers. Each must be an active EVM sub-account of `account`. Can be empty. |
+| `nonce` | `string` | A random `0x` lowercase hex value of up to 32 digits, with no leading zero. |
+| `issuedAt` | `uint64` | When the approval was signed, in Unix seconds. Take it from server time (`GET /v1/system/time`): it must not be in the future, or more than 24 hours in the past. |
+
+The approval sets no session limits: there is no session for them to bound.
+
+A successful request returns `200` with the accounts that now hold the approval and its terms:
+
+```json
+{
+  "accounts": ["0x62cf...14f"],
+  "approval": {
+    "builder": { "account": "0x5f2c...a91", "name": null },
+    "max_fee_rate": "0.0005",
+    "expires_at": 1775001600000,
+    "approved_at": 1767225600000
+  }
+}
+```
+
+`builder.name` is the builder's display name, or `null` when it has none. `expires_at` and `approved_at` are Unix milliseconds, and `approved_at` is the approval's `issuedAt`. To end a standalone approval, [revoke it](#revoking-an-approval).
+
+Both SDKs can build and sign a standalone approval. In the Python SDK, build a `BuilderApproval` (from `paradex_py.message.session`) and submit it with `register_builder_approval` (from `paradex_py.session_accounts`). In the TypeScript SDK, use `SessionTypedData.createBuilderApproval` and `SessionTypedData.buildBuilderApprovalEip712`, then send the request above.
+
+### Requirements
+
+- **Owner signature.** Only the account owner can approve a builder, and the owner must be an EVM (Ethereum) wallet. Accounts owned by a Starknet key cannot approve builders.
+- **Accounts covered.** The approval applies to the approving account and to every sub-account the grant or approval lists, because the fee is paid by whichever account places the order.
+
+### Approving again
+
+Signing a new grant or standalone approval for a builder the account has already approved updates the approval:
+
+- A newer approval replaces the ceiling and expiry. If the new ceiling is lower, resting orders above it are canceled (planned; see [What cancels resting orders](#what-cancels-resting-orders)).
+- An approval that is not newer than the live one must state the same terms, or it is refused with `BUILDER_APPROVAL_STALE`. The same applies to a newer grant with `expiresAt` `0` whose session ends before the live approval does: it cannot raise the ceiling, and the live approval keeps its expiry.
+- An approval signed before the builder was revoked is refused with `BUILDER_APPROVAL_STALE`, so a revoked approval cannot be brought back by replaying an older grant or approval. Sign a new one instead.
+
+### Approval errors
+
+These are returned when the session grant or the standalone approval is submitted.
+
+| Code | HTTP | Meaning |
+| --- | --- | --- |
+| `INVALID_SIGNATURE` | 400 | The signature is not the account owner's. A standalone approval also gets this code when the account does not exist or its owner is not an EVM wallet. |
+| `VALIDATION_ERROR` | 400 | The standalone request body is malformed, for example `approval` is missing, `signature_type` is not `eip712` or `signature_chain_id` is `0`. |
+| `INVALID_GRANT` | 400 | The grant or approval does not match its schema, or the `builder` object breaks one of the field rules above, including a `builder.expiresAt` that has passed. |
+| `GRANT_EXPIRED` | 400 | `issuedAt` is more than 24 hours old, or ahead of server time (a session grant allows up to 5 minutes ahead; a standalone approval allows none), or the session grant's own `expiresAt` has passed. |
+| `LIMIT_INVALID` | 400 | A standalone approval's `expiresAt` is more than 180 days ahead. |
+| `INVALID_ENVIRONMENT`, `INVALID_CHAIN` | 400 | `environment` or `paradexChain` does not match the server. |
+| `ACCOUNT_NOT_ELIGIBLE` | 400 | The account is not a main account, a listed sub-account is not an eligible EVM sub-account of it, or, on a session grant, the owner is not an EVM wallet. |
+| `ETH_ADDRESS_BLOCKED` | 400 | The account cannot approve builders. |
+| `SCOPE_NOT_ALLOWED` | 400 | A grant approves a builder and includes `trade:block` or `account:settings`. |
+| `BUILDER_APPROVAL_LIMIT_REACHED` | 400 | The account already holds live approvals for 10 other builders. Revoke one first. |
+| `BUILDER_APPROVAL_STALE` | 400 | The builder's approval was revoked after this grant or approval was signed, for example when an approval is replayed after a revoke, or a newer approval with other terms is already live. Sign a new one. |
+| `BUILDER_CODES_NOT_ENABLED` | 403 | Standalone approval only: builder codes are not enabled for this account. |
+
+## Listing approvals
+
+```http
+GET /v2/builders/approvals
+```
+
+Returns the main account's approvals, newest first. By default only active approvals are listed. Set `include_inactive=true` to also list revoked and expired ones, which gives the account's approval history. It requires a JWT from the account's main key; session and subkey tokens are refused.
+
+| Query parameter | Values | Default |
+| --- | --- | --- |
+| `include_inactive` | `true`, `false` | `false` |
+
+```json
+{
+  "results": [
+    {
+      "builder": { "account": "0x5f2c...a91", "name": null },
+      "status": "active",
+      "max_fee_rate": "0.0005",
+      "expires_at": 1767225600000,
+      "approved_at": 1764633600000,
+      "revoked_at": 0
+    }
+  ]
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `builder.account` | The builder's account address. |
+| `builder.name` | The builder's display name, or `null` when it has none. |
+| `status` | `active`, `revoked` or `expired`. |
+| `max_fee_rate` | The ceiling, as a decimal fraction. |
+| `expires_at` | Expiry in Unix milliseconds. For an approval that follows its session, the session's expiry. |
+| `approved_at` | When the approval took effect, in Unix milliseconds. |
+| `revoked_at` | When the approval was revoked, in Unix milliseconds, or `0` if it was not. |
+
+The request returns `400` for an invalid `include_inactive` value, and `403` when the account cannot use sessions.
+
+## Revoking an approval
+
+```http
+DELETE /v2/builders/approvals/{builder_account}
+```
+
+Revokes the account's approval of the builder, on the account and on its sub-accounts. It requires a JWT from the account's main key.
+
+| Response | Meaning |
+| --- | --- |
+| `204` | Revoked. |
+| `400` | The builder address is invalid. |
+| `404` | The account has no approval of this builder that is not already revoked. Revoking an expired approval returns `204`. |
+
+A revoke takes effect for new orders within a few seconds. Orders that name the builder are then refused with `BUILDER_NOT_APPROVED`. A revoked approval stays revoked: only a grant or standalone approval signed after the revoke can approve the builder again.
+
+Revoking a session does not revoke the builder approval its grant carried, and revoking the approval does not end the session. An approval signed with `expiresAt` `0` still ends at the session's original expiry.
+
+## What cancels resting orders
+
+{/* TODO: Planned behavior. Confirm this section, and the matching lines in the overview and orders pages, once resting orders are canceled automatically after a revoke, an expiry or a lowered ceiling. Then remove this note. */}
+
+When an approval ends or its ceiling is lowered, Paradex cancels the resting orders it no longer covers, including stop orders that have not triggered yet. Cancellation is automatic and happens shortly after the change, usually within a minute. A resting order that fills before it is canceled still pays the builder fee at the rate it was placed with.
+
+| Event | Orders canceled | Cancel reason |
+| --- | --- | --- |
+| The user revokes the approval | Every resting order of the account that names the builder | `BUILDER_APPROVAL_REVOKED` |
+| The approval expires | Every resting order of the account that names the builder | `BUILDER_APPROVAL_EXPIRED` |
+| A new approval lowers the ceiling | Resting orders whose `builder_fee_rate` is above the new ceiling | `BUILDER_FEE_RATE_OVER_APPROVAL` |
+
+Resting orders at or below a raised ceiling, or under an approval whose expiry was extended, are kept with the rate they were placed at.

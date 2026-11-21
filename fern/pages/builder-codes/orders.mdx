@@ -1,0 +1,162 @@
+---
+title: Attaching a Builder to Orders
+subtitle: Name a builder and a fee rate on an order, and sign it as a BuilderOrder
+---
+
+## Order fields
+
+Two optional fields on an order attribute it to a builder:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `builder` | string | The builder's account address. |
+| `builder_fee_rate` | string | The builder fee as a decimal fraction of each fill's notional, for example `"0.0005"` for 5 bps. Above `0`, at most 8 decimal places. |
+
+Send both or neither. An order without them has no builder and pays no builder fee.
+
+The fields are accepted on:
+
+| API | Method |
+| --- | --- |
+| REST | `POST /v1/orders` and `POST /v1/orders/batch` |
+| WebSocket | `order.create` and `order.create_batch` |
+
+TWAP and other algo orders cannot carry a builder: a request that includes the builder fields is rejected. Block trades and RFQ executions do not take builder fields: fields sent there are ignored, and no builder fee is charged.
+
+```json
+{
+  "market": "BTC-USD-PERP",
+  "side": "BUY",
+  "type": "LIMIT",
+  "size": "0.5",
+  "price": "100000",
+  "instruction": "GTC",
+  "signature_timestamp": 1764633600000,
+  "signature": "[\"0x1a2b...\",\"0x3c4d...\"]",
+  "builder": "0x5f2c...a91",
+  "builder_fee_rate": "0.0005"
+}
+```
+
+### Rules
+
+An order naming a builder is accepted only if all of the following hold:
+
+- `builder` is a valid Paradex account that has completed onboarding, and is not the account placing the order.
+- `builder_fee_rate` is at or below the [cap for the market's kind](/api/builder-codes/overview#fee-rates-and-caps).
+- The account the order is placed for holds a live [approval](/api/builder-codes/approvals) of the builder, and `builder_fee_rate` is at or below its ceiling. When the order uses `on_behalf_of_account`, that account must hold the approval.
+- The order is signed as a `BuilderOrder` (see below).
+
+The approval is checked when the order is placed. A resting order keeps the rate it was accepted with until it fills or is canceled, including when it is [canceled because the approval ended or its ceiling was lowered](/api/builder-codes/approvals#what-cancels-resting-orders).
+
+### Modifying an order
+
+Modifying an order keeps its builder and rate unchanged. The modify request does not take the builder fields and is signed as usual. To change the builder or the rate, cancel the order and place a new one.
+
+## Signing a BuilderOrder
+
+An order that names a builder is signed as the `BuilderOrder` typed data instead of `Order`. `BuilderOrder` has the same domain as `Order` (`name` `"Paradex"`, `version` `"1"`, and the Paradex chain id) and the same fields in the same order, followed by `builder` and `builderFeeRate`:
+
+```json
+{
+  "types": {
+    "StarkNetDomain": [
+      { "name": "name", "type": "felt" },
+      { "name": "chainId", "type": "felt" },
+      { "name": "version", "type": "felt" }
+    ],
+    "BuilderOrder": [
+      { "name": "timestamp", "type": "felt" },
+      { "name": "market", "type": "felt" },
+      { "name": "side", "type": "felt" },
+      { "name": "orderType", "type": "felt" },
+      { "name": "size", "type": "felt" },
+      { "name": "price", "type": "felt" },
+      { "name": "builder", "type": "felt" },
+      { "name": "builderFeeRate", "type": "felt" }
+    ]
+  },
+  "primaryType": "BuilderOrder"
+}
+```
+
+| Field | Value |
+| --- | --- |
+| `timestamp`, `market`, `side`, `orderType`, `size`, `price` | Exactly as for `Order`. |
+| `builder` | The builder's account address, as sent in `builder`. |
+| `builderFeeRate` | `builder_fee_rate` scaled by 10<sup>8</sup>, as an integer: `"0.0005"` signs as `50000`, `"0.001"` as `100000`. |
+
+Because the primary type differs, an `Order` signature is never valid for an order with a builder, and a `BuilderOrder` signature is never valid without one. The user's signature commits to the builder and the rate, so neither can be changed after signing. Orders without a builder keep using `Order` and their signatures are unchanged.
+
+## SDK examples
+
+The [Python SDK](https://tradeparadex.github.io/paradex-py/) (`paradex-py`) and the TypeScript SDK (`@paradex/sdk`) support builders from the first releases after `paradex-py` 0.9.0 and `@paradex/sdk` 0.9.0. Both sign the order as `BuilderOrder` when a builder is set. Set both builder fields or neither.
+
+<CodeBlocks>
+```python Python
+from decimal import Decimal
+from paradex_py.common.order import Order, OrderSide, OrderType
+
+order = Order(
+    market="BTC-USD-PERP",
+    order_type=OrderType.Limit,
+    order_side=OrderSide.Buy,
+    size=Decimal("0.01"),
+    limit_price=Decimal("60000"),
+    builder="0x5f2c...a91",              # builder's account address
+    builder_fee_rate=Decimal("0.0005"),  # 5 bps
+)
+paradex.api_client.submit_order(order)
+```
+
+```typescript TypeScript
+await accounts.placeOrder("0x<account>", {
+  market: "BTC-USD-PERP",
+  side: "BUY",
+  type: "LIMIT",
+  size: "0.01",
+  price: "60000",
+  builder: "0x5f2c...a91",  // builder's account address
+  builderFeeRate: "0.0005", // 5 bps
+});
+```
+</CodeBlocks>
+
+The TypeScript example uses the session accounts client, so it signs with the session key of a session the user opened for the builder's app.
+
+## Order and fill responses
+
+{/* TODO: `builder_fee` on fills is planned. Confirm it once builder fees settle on chain, then remove this note. */}
+
+Orders and fills that name a builder include the builder fields. They are omitted when there is no builder, and they are only returned to the account that placed the order.
+
+| Response | Fields |
+| --- | --- |
+| Orders: `GET /v1/orders`, `GET /v1/orders-history`, the `orders` WebSocket channel | `builder`, `builder_fee_rate` |
+| Fills: `GET /v1/fills`, the `fills` WebSocket channel | `builder`, `builder_fee_rate`, `builder_fee` |
+
+`builder` is returned as the builder's account address, which may be spelled differently from the address sent (for example, without leading zeros). `builder_fee` is the fee the fill paid, in USDC, and is omitted when the fee rounds to zero. Builder fields are not included in binary (SBE) WebSocket encodings, and public trades never show them.
+
+## Errors
+
+{/* TODO: The per market cap check in `VALIDATION_ERROR` is planned. Confirm it once cap enforcement is live, then remove this note. */}
+
+| Code | HTTP | Meaning |
+| --- | --- | --- |
+| `VALIDATION_ERROR` | 400 | A builder field is malformed: only one of the two is set, the address is invalid, the rate has more than 8 decimal places or is not above `0`, the rate is above the market's cap, or the builder is the account placing the order. Also returned when the signature does not verify: an order with a builder must be signed as `BuilderOrder` with the builder fields included. |
+| `BUILDER_NOT_ONBOARDED` | 400 | The builder address is not a Paradex account that has completed onboarding. |
+| `BUILDER_FEE_RATE_OVER_APPROVAL` | 400 | `builder_fee_rate` is above the ceiling of the account's approval. |
+| `BUILDER_NOT_APPROVED` | 403 | The account has no live approval of the builder: it never approved it, or the approval was revoked or has expired. |
+| `BUILDER_CODES_NOT_ENABLED` | 403 | Builder codes are not enabled for this account. |
+
+In a batch, a builder error on any order rejects the request, and the message names the order by its position in the batch.
+
+### Cancel reasons
+
+{/* TODO: Planned behavior. Confirm these reasons once resting orders are canceled automatically after a revoke, an expiry or a lowered ceiling. Add `BUILDER_FEE_INVALID` (settlement refused the order's builder or rate) once builder fees settle on chain. Then remove this note. */}
+
+| Reason | Meaning |
+| --- | --- |
+| `BUILDER_APPROVAL_REVOKED` | The account revoked its approval of the builder. |
+| `BUILDER_APPROVAL_EXPIRED` | The account's approval of the builder expired. |
+| `BUILDER_FEE_RATE_OVER_APPROVAL` | A new approval lowered the ceiling below the order's rate. |

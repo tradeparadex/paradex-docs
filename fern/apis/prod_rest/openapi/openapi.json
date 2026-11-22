@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n\n## Server errors\n\nAny endpoint can answer a 5xx that its reference does not list. An endpoint\nlists a server error only when it returns one for a reason of its own, and\nthen says what to do about it.\n\n- Branch on the HTTP status, not on the body. A 5xx body is usually the JSON\n  error object, but one from the infrastructure in front of the API may not\n  be JSON at all.\n- `503` with `SERVICE_UNAVAILABLE` means the request could not be served in\n  time or a service it needs is unavailable, and is worth retrying later.\n  Other 5xx are unexpected failures.\n- Retry a read that answers 5xx with backoff.\n- A write that answers 5xx, or times out, may or may not have been applied.\n  Read the result back before retrying it: an order sent with a `client_id`\n  can be looked up with `GET /orders/by_client_id/{client_id}`.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.151.3"
+    "version": "1.152.1"
   },
   "paths": {
     "/account": {
@@ -1517,6 +1517,16 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "push sent with a key delegated to a third party",
             "content": {
               "application/json": {
                 "schema": {
@@ -9515,6 +9525,14 @@
             "type": "boolean",
             "example": true
           },
+          "push": {
+            "description": "Native push preferences; only the fields sent change.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/requests.UpdatePushPreferencesRequest"
+              }
+            ]
+          },
           "referral_code": {
             "type": "string",
             "example": "referral_code"
@@ -9579,6 +9597,44 @@
             "example": true
           },
           "orders": {
+            "type": "boolean",
+            "example": true
+          },
+          "push": {
+            "description": "Native push preferences; only the fields sent change.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/requests.UpdatePushPreferencesRequest"
+              }
+            ]
+          },
+          "transfers": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "requests.UpdatePushPreferencesRequest": {
+        "type": "object",
+        "properties": {
+          "block_trades": {
+            "type": "boolean",
+            "example": true
+          },
+          "fills": {
+            "type": "boolean",
+            "example": true
+          },
+          "liquidations": {
+            "type": "boolean",
+            "example": true
+          },
+          "margin": {
+            "type": "boolean",
+            "example": true
+          },
+          "show_amounts": {
+            "description": "Whether alerts may show sizes, prices and amounts on the lock screen.",
             "type": "boolean",
             "example": true
           },
@@ -10737,7 +10793,7 @@
             "example": "0x123...abc"
           },
           "maker_fill": {
-            "description": "Execution details (if executed)",
+            "description": "Execution details (if executed). Whole only for the fill's owner; anyone else gets id, side, liquidity, market, price, size, created_at, fill_type, account, underlying_price and orderbook_seq_no, with every other field empty",
             "allOf": [
               {
                 "$ref": "#/components/schemas/responses.FillResult"
@@ -10773,7 +10829,7 @@
             "example": "0x456...def"
           },
           "taker_fill": {
-            "description": "Execution details (if executed)",
+            "description": "Execution details (if executed). Whole only for the fill's owner; anyone else gets id, side, liquidity, market, price, size, created_at, fill_type, account, underlying_price and orderbook_seq_no, with every other field empty",
             "allOf": [
               {
                 "$ref": "#/components/schemas/responses.FillResult"
@@ -11296,6 +11352,7 @@
           "ADDRESS_BOOK_PARADEX_ACCOUNT",
           "ADDRESS_BOOK_DUPLICATE_ADDRESS",
           "ADDRESS_BOOK_LIMIT_REACHED",
+          "MARKET_REQUEST_LIMIT_REACHED",
           "ADDRESS_BOOK_INVALID_CHAIN",
           "ADDRESS_BOOK_INVALID_ADDRESS",
           "ADDRESS_BOOK_NOT_PARADEX_ACCOUNT",
@@ -11457,6 +11514,7 @@
           "ErrorCodeString_AddressBookParadexAccount",
           "ErrorCodeString_AddressBookDuplicateAddress",
           "ErrorCodeString_AddressBookLimitReached",
+          "ErrorCodeString_MarketRequestLimitReached",
           "ErrorCodeString_AddressBookInvalidChain",
           "ErrorCodeString_AddressBookInvalidAddress",
           "ErrorCodeString_AddressBookNotParadexAccount",
@@ -12781,6 +12839,14 @@
             "type": "boolean",
             "example": true
           },
+          "push": {
+            "description": "Native push preferences with their defaults applied.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.PushPreferencesResp"
+              }
+            ]
+          },
           "transfers": {
             "type": "boolean",
             "example": true
@@ -13258,6 +13324,36 @@
             "description": "Unrealized P&L of the position in the quote asset. Includes the unrealized running funding P&L.",
             "type": "string",
             "example": "-123.23"
+          }
+        }
+      },
+      "responses.PushPreferencesResp": {
+        "type": "object",
+        "properties": {
+          "block_trades": {
+            "type": "boolean",
+            "example": true
+          },
+          "fills": {
+            "type": "boolean",
+            "example": true
+          },
+          "liquidations": {
+            "type": "boolean",
+            "example": true
+          },
+          "margin": {
+            "type": "boolean",
+            "example": true
+          },
+          "show_amounts": {
+            "description": "Whether alerts may show sizes, prices and amounts on the lock screen.",
+            "type": "boolean",
+            "example": true
+          },
+          "transfers": {
+            "type": "boolean",
+            "example": true
           }
         }
       },

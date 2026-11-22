@@ -27,8 +27,10 @@ As of v1.143 (April 2025), Vaults have been rebranded to Vault Traded Funds (VTF
 - Asset images in `fern/assets/vaults/` still use `vault_` prefixed filenames. These are screenshot files and do not need renaming.
 - API endpoint names in the MCP docs (`paradex_vaults`, `paradex_vault_balance`, etc.) use the original naming. These reflect actual API identifiers and should not be renamed in docs.
 - Historical references in release notes and past roadmap sections should not be updated (they are records of what happened at that time).
-- Profit share range is 0% to 30% (not the old 0% to 20%).
+- Profit share range is 0% to 20%. The cap is set on chain by the vault factory; check
+  `max_profit_share_percentage` from `GET /v1/vaults/config` (prod), not blog posts, before
+  changing it. The Vaults launch blog post says 0-30%, which does not match the contract.
 
 ## Last updated
 
-2026-06-04
+2026-11-22

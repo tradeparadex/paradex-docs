@@ -70,7 +70,7 @@ Whatever its scopes, a session cannot:
 - act on behalf of another account with `on_behalf_of_account`;
 - use a JWT that authorizes accounts other than the one it was minted for.
 
-Any private route that does not declare a scope refuses session JWTs, so new private endpoints are closed to sessions until they opt in. A session can deposit into its own account, but nothing else that moves value. See [Scopes](/api/session-keys/scopes) for the full table, including the rules for RFQs and block trades.
+A session can deposit into its own account, but nothing else that moves value. See [Scopes](/api/session-keys/scopes) for the full table, including the rules for RFQs and block trades.
 
 ## Pages in this section
 

@@ -329,7 +329,7 @@ When the grant opens a new account it can also return:
 | 400 | `INVALID_MARKETING_CODE` | `marketing_code` is not a known code |
 | 400 | `INVALID_REQUEST_PARAMETER` | `marketing_code` is not in the form `campaign:code`, or `utm` lacks `source` or `campaign` |
 | 400 | `INSUFFICIENT_MIN_CHAIN_BALANCE` | The wallet does not hold the minimum balance onboarding requires |
-| 400 | `ETHEREUM_ADDRESS_BLOCKED` | The wallet failed screening. Also returned for an existing account that is blocked. |
+| 400 | `ETHEREUM_ADDRESS_BLOCKED` | The wallet or account is blocked. |
 | 400 | `PARENT_ADDRESS_ALREADY_ONBOARDED` | The wallet already owns a different account |
 | 400 | `ACCOUNT_NOT_ELIGIBLE` | The grant lists subaccounts, or a new account cannot be opened with a grant |
 | 429 | `ONBOARDING_RATE_LIMITED` | Too many new accounts from this IP address. Try again later. |

@@ -39,7 +39,7 @@ Both routes carry the terms in a `builder` object:
 | Field | Type | Rules |
 | --- | --- | --- |
 | `account` | Address | The builder's account address. Must not be the approving account. |
-| `maxFeeRate` | Decimal string | Above `0`, at most 8 decimal places, and at most `0.0025` (25 bps). The per market [caps](/api/builder-codes/overview#fee-rates-and-caps) still apply to each order. |
+| `maxFeeRate` | Decimal string | Above `0`, at most 8 decimal places, and at most `0.01` (100 bps). Each order is also held to its market's [cap](/api/builder-codes/overview#fee-rates-and-caps), which can be lower. |
 | `expiresAt` | Unix seconds | In the future. In a session grant, no later than the grant's own `expiresAt`, and `0` makes the approval end when the session would expire. In a standalone approval, required and at most 180 days after `issuedAt`. |
 
 In the signed typed data, `Builder` is a struct with the fields `account`, `maxFeeRate` and `expiresAt`, in that order. With EIP-712 their types are `string`, `string` and `uint64`.
@@ -152,6 +152,7 @@ These are returned when the session grant or the standalone approval is submitte
 | `SCOPE_NOT_ALLOWED` | 400 | A grant approves a builder and includes `trade:block` or `account:settings`. |
 | `BUILDER_APPROVAL_LIMIT_REACHED` | 400 | The account already holds live approvals for 10 other builders. Revoke one first. |
 | `BUILDER_APPROVAL_STALE` | 400 | The builder's approval was revoked after this grant or approval was signed, for example when an approval is replayed after a revoke, or a newer approval with other terms is already live. Sign a new one. |
+| `SESSIONS_DISABLED` | 403 | Session grant only: sessions, or builder approvals, are not enabled for this account. |
 | `BUILDER_CODES_NOT_ENABLED` | 403 | Standalone approval only: builder codes are not enabled for this account. |
 
 ## Listing approvals

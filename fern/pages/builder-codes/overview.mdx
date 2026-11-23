@@ -35,17 +35,11 @@ Builders can follow their earnings with the public [stats and leaderboard](/api/
 
 `builder_fee_rate` is a decimal fraction of the fill's notional: `"0.0005"` is 5 bps (0.05%). It must be above zero and have at most 8 decimal places.
 
-{/* TODO: Planned behavior. Confirm the per market caps and the reject behavior once cap enforcement is live, then remove this note. */}
+{/* TODO: Planned behavior. Confirm the cap behavior once caps are set on chain, then remove this note. */}
 
-Each market kind has a cap. A rate above the cap is rejected, never reduced to the cap.
+Fees are also capped per market type, at a level Paradex sets on chain. An order whose `builder_fee_rate` is above its market's cap is rejected, never reduced to the cap.
 
-| Market kind | Highest `builder_fee_rate` | Notes |
-| --- | --- | --- |
-| Perpetual futures and dated futures | `0.001` (10 bps) | |
-| Options (dated and perpetual) | `0.0005` (5 bps) | The fee per contract is also capped at 12.5% of the option's premium. |
-| Spot | `0.0025` (25 bps) | |
-
-The rate on an order must also be at or below the ceiling the user approved for that builder. A ceiling is at most `0.0025` (25 bps).
+The rate on an order must also be at or below the ceiling the user approved for that builder. A ceiling is at most `0.01` (100 bps).
 
 ### How the fee is calculated
 
@@ -57,13 +51,13 @@ For perpetuals, futures and spot:
 builder_fee = size × price × builder_fee_rate
 ```
 
-For options, the fee base is the spot price of the underlying asset, as with option trading fees, and the result is capped at 12.5% of the premium:
+For options, the fee base is the spot price of the underlying asset, as with option trading fees, and the result is also capped at a share of the option's premium that Paradex sets on chain:
 
 ```text
-builder_fee = size × min(spot_price × builder_fee_rate, price × 0.125)
+builder_fee = size × min(spot_price × builder_fee_rate, price × premium_cap)
 ```
 
-`size` and `price` are the fill's size and price. Amounts quoted in USD are converted to USDC at the USDC oracle price.
+`size` and `price` are the fill's size and price, and `premium_cap` is that share of the premium. Amounts quoted in USD are converted to USDC at the USDC oracle price.
 
 **Example.** A user buys 0.5 BTC-USD-PERP at 100,000 USD through a builder at `"0.0005"` (5 bps). The fill notional is 50,000 USD, so the fee is 25 USD: 25 USDC at a USDC price of 1 USD, debited from the user and credited to the builder in the same settlement.
 

@@ -118,6 +118,8 @@ The Paradex app's own sign out sends no `cancel_orders`, so orders placed from t
 | 403 | The caller is another session or key on one of the session's accounts |
 | 404 | The grant id is malformed or unknown, or the caller has no relation to the session |
 
+A `5xx` can come after the grant is already revoked, before the server cancels its orders. The session key can no longer retry, so the owner retries with `cancel_orders=true`, which cancels the orders even though the grant is already revoked.
+
 ## Revoke all sessions
 
 ```http

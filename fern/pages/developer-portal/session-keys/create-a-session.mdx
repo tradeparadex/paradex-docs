@@ -69,7 +69,7 @@ Session limits are not enforced at launch, so the server only accepts a grant th
 An EVM owned account can instead approve a builder, a front end that may add its own fee to the orders the session places. Builder approvals may be limited during rollout.
 
 - `account` is the builder's Paradex account, which cannot be the granting account.
-- `maxFeeRate` is the highest fee the builder may charge, as a decimal fraction above `0` with at most 8 decimal places, and at most `0.0025`.
+- `maxFeeRate` is the highest fee the builder may charge, as a decimal fraction above `0` with at most 8 decimal places, and at most `0.01`. Each order's builder fee is also held to the cap Paradex sets for its market kind, which can be lower.
 - `expiresAt` is `0` for the approval to expire when the session would, or a future time no later than the grant's `expiresAt`.
 - The grant cannot list `trade:block` or `account:settings`.
 - The approval is recorded on every account the grant covers, and outlives the session: revoking the session does not revoke it.

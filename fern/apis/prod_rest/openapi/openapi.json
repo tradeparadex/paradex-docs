@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n\n## Server errors\n\nAny endpoint can answer a 5xx that its reference does not list. An endpoint\nlists a server error only when it returns one for a reason of its own, and\nthen says what to do about it.\n\n- Branch on the HTTP status, not on the body. A 5xx body is usually the JSON\n  error object, but one from the infrastructure in front of the API may not\n  be JSON at all.\n- `503` with `SERVICE_UNAVAILABLE` means the request could not be served in\n  time or a service it needs is unavailable, and is worth retrying later.\n  Other 5xx are unexpected failures.\n- Retry a read that answers 5xx with backoff.\n- A write that answers 5xx, or times out, may or may not have been applied.\n  Read the result back before retrying it: an order sent with a `client_id`\n  can be looked up with `GET /orders/by_client_id/{client_id}`.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.152.1"
+    "version": "1.153.1"
   },
   "paths": {
     "/account": {
@@ -10198,6 +10198,11 @@
             "description": "Acc value in excess of maintenance margin required",
             "type": "string",
             "example": "104687.8167956"
+          },
+          "resync_pause_until": {
+            "description": "System accounts only: Unix ms until which their trader should send nothing, so a reset from chain can apply. Absent otherwise",
+            "type": "integer",
+            "example": 1681471294972
           },
           "seq_no": {
             "description": "Unique increasing number (non-sequential) that is assigned to this account update. Can be used to deduplicate multiple feeds",

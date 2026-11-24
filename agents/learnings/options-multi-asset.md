@@ -61,6 +61,12 @@ When adding a new options underlying, update all four locations: instrument conf
 - NVDA wasn't on the live `portfolio-margin-config` endpoint at writing, so its SCAN tab comes from the SQL; re-check after launch.
 - The `.claude/skills/add-dated-option` skill captures this workflow.
 
+## ANT specifics (sixth single-stock dated option)
+
+- ANT (Anthropic, `ant-usd.mdx`, added 2026-11-24) copies `nvda-usd.mdx` with **OKX dropped**: OKX has no `ANT-USDT-SWAP`. Pyth (`Equity.US.ANT/USD`), Stork, Binance/Bybit `ANTUSDT`, Hyperliquid `xyz:ANT` and Lighter all list it. Totals are therefore **8.7 open / 3.7 closing**, not the generic 9.7 / 4.7. ANT trades around $85.6. The ANT perp page already existed.
+- Values: 0.001 USD tick, 1 ANT increment, 20 USD min order, 5,000 max order, 50,000 position limit, 150 open orders, 50% bands. Cross margin 50/35/25% (IMR), min-delta 0.3% / 0.15%, `MIN_VOL_SHOCK_UP` 60%. SCAN uses the NEAR ladder (±32/24/16/8%, tails 24.24/48.48/32/16/4/1.78/1/0.64%); ANT was already on the live endpoint and matched the SQL.
+- The SQL had `strike_steps = '{}'` and the user said to skip strikes, so ANT has no strike step tab in `expiries-and-listing.mdx`.
+
 ## NEAR specifics (crypto dated option)
 
 - NEAR (`near-usd.mdx`, added 2026-10-07) copies the short crypto template (`sol-usd.mdx`/`hype-usd.mdx`/`zec-usd.mdx`): contract table plus margin links, no "Index and settlement price" section. NEAR sits alphabetically among the crypto tabs (after HYPE, before SOL) on every per-asset page and in `fern/docs.yml`.
@@ -80,4 +86,4 @@ When adding a new options underlying, update all four locations: instrument conf
 
 ## Last updated
 
-2026-11-13
+2026-11-24

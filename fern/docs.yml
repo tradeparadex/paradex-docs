@@ -520,6 +520,9 @@ navigation:
             - page: NVDA Options
               slug: nvda-options
               path: ./pages/instruments-guide/dated-options/nvda-usd.mdx
+            - page: ANT Options
+              slug: ant-options
+              path: ./pages/instruments-guide/dated-options/ant-usd.mdx
             - page: US500 Options
               slug: us500-options
               path: ./pages/instruments-guide/dated-options/us500-usd.mdx

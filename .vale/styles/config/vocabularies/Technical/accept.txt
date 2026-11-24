@@ -62,3 +62,14 @@ webapp
 Websocket
 wscat
 Algo
+authenticator
+bool
+camelCase
+SDKs
+shortstring
+subaccount
+TWAPs
+untriggered
+allowlist
+CIDRs
+onboarded

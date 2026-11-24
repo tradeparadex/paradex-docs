@@ -1,0 +1,277 @@
+---
+title: SDK Examples
+subtitle: Open and use sessions with the TypeScript and Python SDKs
+---
+
+Both SDKs build and validate session grants before anything is signed, and manage one JWT and one WebSocket per account the session covers.
+
+<Warning>
+Session support ships in `@paradex/sdk` 0.10.0 and `paradex-py` 0.10.0, and is experimental. Earlier versions sign a passkey `SessionMint` the server no longer accepts. Method names and options may change before they are marked stable.
+</Warning>
+
+Read the Paradex chain id from the `starknet_chain_id` field of `GET /v1/system/config` for the environment you use.
+
+## Open a session and trade
+
+<Tabs>
+  <Tab title="TypeScript">
+
+[paradex.js](https://github.com/tradeparadex/paradex.js) runs in the browser. `SessionConnector` generates the session key in the page, keeps it encrypted at rest under a WebCrypto key that cannot be exported, asks the wallet for one signature and registers the grant with `POST /v2/sessions`. `SessionAccounts` then signs in for each account and routes requests by account.
+
+```typescript
+import * as Paradex from '@paradex/sdk';
+
+const connector = new Paradex.SessionConnector({
+  environment: 'testnet',
+  paradexChain: starknetChainId, // starknet_chain_id from GET /v1/system/config
+  // The injected wallet signs the grant with eth_signTypedData_v4.
+  // For MPC or other external signers use Paradex.Session.ownerSignerFromExternal.
+  owner: Paradex.Session.ownerSignerFromEip1193({ provider: window.ethereum }),
+  storage: Paradex.Session.indexedDbStorage(),
+});
+
+// Reuse an unexpired session from an earlier visit, or open a new one.
+const [existing] = await connector.restore();
+const session =
+  existing ??
+  (await connector.open({
+    account: '0x<main account>',
+    scopes: ['trade'],
+  }));
+
+const accounts = new Paradex.SessionAccounts({
+  session,
+  environment: 'testnet',
+  paradexChain: starknetChainId,
+  onDropped: (reason) => {
+    console.warn('Session ended:', reason.code);
+    void connector.forget(session); // or restore() keeps returning the ended session
+  },
+});
+await accounts.start();
+
+await accounts.placeOrder('0x<main account>', {
+  market: 'BTC-USD-PERP',
+  side: 'BUY',
+  type: 'LIMIT',
+  size: '0.01',
+  price: '60000',
+});
+
+await accounts.subscribe('0x<main account>', 'orders.ALL', (data) => console.log(data));
+```
+
+  </Tab>
+  <Tab title="Python">
+
+[paradex-py](https://github.com/tradeparadex/paradex-py) suits bots and scripts. `register_session` has an EVM owner sign the grant as EIP-712 and registers it. Any object that implements `OwnerSigner` can sign, so the owner key can stay in a hardware wallet or a signing service.
+
+```python
+from paradex_py import SessionAccounts
+from paradex_py.message.session import SessionGrant
+from paradex_py.session_accounts import LocalOwnerSigner, new_session_key, register_session
+
+session_private_key, session_public_key = new_session_key()
+
+grant = SessionGrant.new(
+    paradex_chain=starknet_chain_id,  # starknet_chain_id from GET /v1/system/config
+    environment="testnet",
+    account="0x<main account>",
+    session_key=session_public_key,
+    label="my bot",
+    scopes=["trade"],
+    ttl_seconds=7 * 24 * 3600,
+)
+
+owner = LocalOwnerSigner("0x<owner EVM private key>")
+grant_id = register_session("testnet", grant, owner)["grant_id"]
+
+session = SessionAccounts(
+    env="testnet",
+    grant=grant,
+    session_private_key=session_private_key,
+    grant_id=grant_id,
+)
+session.submit_order("0x<main account>", order)
+await session.connect_ws()
+```
+
+`SessionAccounts` also provides `submit_orders_batch`, `modify_order`, `cancel_order` and `cancel_all_orders`, each taking the account first, plus `api(account)` and `ws(account)` for the underlying clients.
+
+  </Tab>
+</Tabs>
+
+## Open a new account with the first grant
+
+A wallet with no Paradex account can open one with its first grant, as described in [Create a Session](/api/session-keys/create-a-session#open-a-new-account-with-the-first-grant). Name the address the server derives for the wallet, list no subaccounts, and pass any referral or marketing codes. They are sent with the grant but not signed.
+
+<Tabs>
+  <Tab title="TypeScript">
+
+```typescript
+const { address } = await Paradex.Onboarding.fetch({
+  apiUrl: 'https://api.testnet.paradex.trade/v1',
+  ethAddress: '0x<owner wallet>',
+});
+
+const session = await connector.open({
+  account: address,
+  scopes: ['trade'],
+  onboarding: { referralCode: 'cryptofox8' },
+});
+```
+
+  </Tab>
+  <Tab title="Python">
+
+```python
+from paradex_py.api.api_client import ParadexApiClient
+
+address = ParadexApiClient(env="testnet").fetch_onboarding(
+    {"account_signer_type": "eip191", "eth_address": "0x<owner wallet>"}
+)["address"]
+
+grant = SessionGrant.new(
+    paradex_chain=starknet_chain_id,
+    environment="testnet",
+    account=address,
+    session_key=session_public_key,
+    label="my bot",
+    scopes=["trade"],
+    ttl_seconds=7 * 24 * 3600,
+)
+grant_id = register_session("testnet", grant, owner, referral_code="cryptofox8")["grant_id"]
+```
+
+  </Tab>
+</Tabs>
+
+Refusals, including the onboarding ones, come back as a `SessionApiError` with a typed `code` in TypeScript, and as an exception naming the code in Python.
+
+## Handle the end of a session
+
+Both SDKs follow the rule described in [Check a session's status](/api/session-keys/manage-sessions#check-a-sessions-status): when a sign in or a request is refused for authentication, they call `GET /v2/sessions/{grant_id}/status` once. If the session is `revoked`, `expired` or unknown, every account is dropped together, JWTs are cleared and sockets are closed. Any other answer is treated as transient. A `403` from a missing scope never drops the session.
+
+<Tabs>
+  <Tab title="TypeScript">
+
+```typescript
+const accounts = new Paradex.SessionAccounts({
+  session,
+  environment: 'testnet',
+  paradexChain: starknetChainId,
+  onDropped: (reason) => {
+    // reason.code says why, such as GRANT_REVOKED or GRANT_EXPIRED.
+    showSignInAgain();
+  },
+});
+
+// The session object from GET /v2/sessions/{grant_id}
+const { state } = await accounts.status();
+```
+
+  </Tab>
+  <Tab title="Python">
+
+```python
+from paradex_py.session_accounts import SessionDroppedError, SessionRejectedError
+
+try:
+    session.submit_order("0x<main account>", order)
+except SessionDroppedError:
+    # The session was revoked or expired; every account is closed.
+    ...
+except SessionRejectedError:
+    # The server refused this action, such as for a missing scope. The session is still live.
+    ...
+```
+
+  </Tab>
+</Tabs>
+
+## Revoke the session
+
+Revoking from the SDK calls [`DELETE /v2/sessions/{grant_id}`](/api/session-keys/manage-sessions#revoke-a-session) with the session's own JWT, then drops every account.
+
+Both SDKs send `cancel_orders=true` by default, which also cancels the session's resting orders, TWAPs, untriggered stops and the open RFQs it created, on every account. Once revoked, the session key can no longer cancel them itself. To sign out and leave the orders working, as the Paradex app does, pass `{ cancelOrders: false }` in TypeScript or `cancel_orders=False` in Python. A session whose grant approves a builder still cancels its TWAPs and untriggered stops.
+
+The session is dropped only once the server confirms the revoke, or answers `404` because it no longer has the grant. If the session key itself is refused, the status check above decides: a revoked, expired or unknown grant drops the session, and the call raises the drop error (`SessionGrantError` in TypeScript, `SessionDroppedError` in Python). Any other error is raised and the session stays live. After a `5xx` the grant may already be revoked with its orders still working: a retry then drops the session, and only the owner's `DELETE /v2/sessions/{grant_id}?cancel_orders=true` cancels them.
+
+<Tabs>
+  <Tab title="TypeScript">
+
+```typescript
+await accounts.revoke(); // or accounts.revoke({ cancelOrders: false })
+accounts.close();
+```
+
+  </Tab>
+  <Tab title="Python">
+
+```python
+session.revoke()  # or session.revoke(cancel_orders=False); call before close()
+await session.close()
+```
+
+  </Tab>
+</Tabs>
+
+To revoke every session on the account at once, call [`DELETE /v2/sessions`](/api/session-keys/manage-sessions#revoke-all-sessions) with a JWT from the account's own key.
+
+## Typed data only
+
+Both SDKs also expose the typed data on its own, for apps that sign with their own tooling or open sessions with a [passkey](/api/session-keys/passkeys).
+
+<Tabs>
+  <Tab title="TypeScript">
+
+```typescript
+const grant = Paradex.SessionTypedData.createGrant({
+  paradexChain: starknetChainId,
+  environment: 'mainnet',
+  account: '0x<main account>',
+  sessionKey: '0x<session public key>',
+  scopes: ['trade'],
+});
+
+// EVM owner: EIP-712 on the wallet's current chain
+const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+const eip712 = Paradex.SessionTypedData.buildGrantEip712(grant, chainId);
+
+// Starknet owner: SNIP-12 revision 1
+const snip12 = Paradex.SessionTypedData.buildGrantSnip12(grant);
+
+// Show the owner what they approve before they sign
+console.log(Paradex.SessionTypedData.summarizeGrant(grant));
+
+// Passkey: the WebAuthn challenge for a SessionMint you built (see the Passkeys page).
+// Paradex.CEILING_LIMITS takes the passkey's ceiling; expiresAt: Paradex.LONGEST_SESSION its longest session.
+const challenge = Paradex.SessionTypedData.mintChallenge(mint);
+```
+
+  </Tab>
+  <Tab title="Python">
+
+```python
+from paradex_py.message.session import SessionGrant
+
+grant = SessionGrant.new(
+    paradex_chain=starknet_chain_id,
+    environment="mainnet",
+    account="0x<main account>",
+    session_key="0x<session public key>",
+    label="",
+    scopes=["trade"],
+    ttl_seconds=7 * 24 * 3600,
+)
+eip712 = grant.eip712_typed_data(signature_chain_id=1)  # EVM owner, the wallet chain id
+
+# Passkey: the WebAuthn challenge (base64url) for a SessionMint you built (see the Passkeys page).
+# limits=None takes the passkey's ceiling; expires_at=LONGEST_SESSION its longest session.
+challenge = mint.webauthn_challenge()
+```
+
+  </Tab>
+</Tabs>
+
+The default limits in both SDKs are the only form the server accepts today: every amount `"none"` and `markets` `["*"]`.

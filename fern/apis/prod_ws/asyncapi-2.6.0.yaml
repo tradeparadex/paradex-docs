@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.8.0
+    version: 1.8.1
     description: |
         Channels for real-time updates.
 
@@ -1310,6 +1310,10 @@ components:
                     description: Acc value in excess of maintenance margin required
                     example: "104687.8167956"
                     type: string
+                resync_pause_until:
+                    description: 'System accounts only: Unix ms until which their trader should send nothing, so a reset from chain can apply. Absent otherwise'
+                    example: "1681471294972"
+                    type: integer
                 seq_no:
                     description: Unique increasing number (non-sequential) that is assigned to this account update. Can be used to deduplicate multiple feeds
                     example: "1681471234972000000"

@@ -1,3 +1,26 @@
+## v1.173.2
+
+<ChangelogTags tags={["UI", "API"]} />
+
+#### UI
+
+* `Transfer` names your sub accounts and vault accounts the same way the account menu does.
+* The `Deposit` form now opens without reloading and enables `Deposit` sooner.
+* `Hyperlane` deposits now stop before any wallet prompt when the source chain balance is too low.
+* Accounts with empty isolated margin sub accounts can now trade on a session and add `passkeys`.
+* The options order builder stays on `Market` or `Limit` when you click a different strike.
+* Fixed trading sessions failing to open when the device clock runs slightly fast.
+* `Withdraw` and `Transfer` show your available amount sooner and never show 0 while it loads.
+* Fixed the order size changing by one unit after switching between buy and sell.
+* `Deposit` now shows your wallet balances faster, and at once when reopened.
+* The trade page downloads less JavaScript before it can render.
+
+#### API
+
+* Revoking a `builder approval` now cancels that builder's open orders right away.
+* `Deposit` and `Withdraw` fee quotes load faster when reopening the funding modals or editing the amount.
+* Requests that cannot sign for an account no longer use up that account's `RPC` rate limit.
+
 ## v1.173.0
 
 <ChangelogTags tags={["UI"]} />

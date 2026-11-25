@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
     title: WebSocket channels
-    version: 1.8.1
+    version: 1.9.0
     description: |
         Channels for real-time updates.
 
@@ -289,7 +289,7 @@ channels:
     /order.cancel_all:
         publish:
             summary: Cancel all open orders
-            description: Cancels all open orders for the authenticated account. If market is provided only orders in that market are cancelled.
+            description: Cancels all open orders for the authenticated account. If market is provided only orders in that market are cancelled; if base_asset is provided only orders in the markets of that base asset are cancelled.
             tags:
                 - name: Order Management
             message:
@@ -297,6 +297,10 @@ channels:
                 title: OrderCancel_allRequest
                 payload:
                     properties:
+                        base_asset:
+                            description: If set, only cancel orders in the markets of this base asset (e.g. BTC for the BTC perpetual and all BTC options). Mutually exclusive with market
+                            example: BTC
+                            type: string
                         market:
                             description: If set, only cancel orders in this market; omit to cancel all open orders
                             example: BTC-USD-PERP

@@ -2,7 +2,7 @@
   "openrpc": "1.3.2",
   "info": {
     "title": "Paradex WebSocket RPC API",
-    "version": "1.8.1",
+    "version": "1.9.0",
     "description": "JSON-RPC 2.0 methods for the Paradex WebSocket API. All requests follow the envelope: {\"jsonrpc\":\"2.0\",\"method\":\"\u003cname\u003e\",\"params\":{...},\"id\":\u003cint\u003e}. Responses include usIn/usOut/usDiff nanosecond timing fields."
   },
   "servers": [
@@ -1535,7 +1535,7 @@
     {
       "name": "order.cancel_all",
       "summary": "Cancel all open orders",
-      "description": "Cancels all open orders for the authenticated account. If market is provided only orders in that market are cancelled.",
+      "description": "Cancels all open orders for the authenticated account. If market is provided only orders in that market are cancelled; if base_asset is provided only orders in the markets of that base asset are cancelled.",
       "tags": [
         {
           "name": "Order Management"
@@ -1549,6 +1549,15 @@
           "required": false,
           "schema": {
             "example": "BTC-USD-PERP",
+            "type": "string"
+          }
+        },
+        {
+          "name": "base_asset",
+          "description": "If set, only cancel orders in the markets of this base asset (e.g. BTC for the BTC perpetual and all BTC options). Mutually exclusive with market",
+          "required": false,
+          "schema": {
+            "example": "BTC",
             "type": "string"
           }
         }

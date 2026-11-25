@@ -4,7 +4,7 @@
     "description": "The following describe Paradex API.\n\n## Server errors\n\nAny endpoint can answer a 5xx that its reference does not list. An endpoint\nlists a server error only when it returns one for a reason of its own, and\nthen says what to do about it.\n\n- Branch on the HTTP status, not on the body. A 5xx body is usually the JSON\n  error object, but one from the infrastructure in front of the API may not\n  be JSON at all.\n- `503` with `SERVICE_UNAVAILABLE` means the request could not be served in\n  time or a service it needs is unavailable, and is worth retrying later.\n  Other 5xx are unexpected failures.\n- Retry a read that answers 5xx with backoff.\n- A write that answers 5xx, or times out, may or may not have been applied.\n  Read the result back before retrying it: an order sent with a `client_id`\n  can be looked up with `GET /orders/by_client_id/{client_id}`.\n",
     "title": "Paradex REST API",
     "contact": {},
-    "version": "1.153.1"
+    "version": "1.155.0"
   },
   "paths": {
     "/account": {
@@ -3688,6 +3688,154 @@
         }
       }
     },
+    "/deposit-addresses": {
+      "post": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Returns an address on the requested network for one transfer of the token. It is bridged to the authenticated account on Paradex, including an account that has not deposited before. If nothing arrives before expires_at the address expires. Request a new address for each deposit.",
+        "tags": [
+          "DepositAddresses"
+        ],
+        "summary": "Create a deposit address",
+        "operationId": "createDepositAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.CreateDepositAddressReq"
+              }
+            }
+          },
+          "description": "Deposit address request",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.DepositAddressResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deposit-addresses/networks": {
+      "get": {
+        "description": "Networks a deposit address can be requested for, with the token each accepts and the smallest and largest amount to send. The minimum covers bridging fees.",
+        "tags": [
+          "DepositAddresses"
+        ],
+        "summary": "List deposit networks",
+        "operationId": "listDepositNetworks",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.DepositNetworksResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deposit-addresses/{id}": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Status of a deposit address and of the deposit sent to it. Only the account the address credits can read it.",
+        "tags": [
+          "DepositAddresses"
+        ],
+        "summary": "Get a deposit address",
+        "operationId": "getDepositAddress",
+        "parameters": [
+          {
+            "description": "Deposit address ID",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.DepositAddressDetailsResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/dime/config": {
       "get": {
         "description": "Returns the DIME circulating and staked supply, and the wallets holding the DIME outside circulation",
@@ -4950,6 +5098,7 @@
             "BearerToken": []
           }
         ],
+        "description": "Queues cancellation of the open orders of the authenticated account and of\nthe isolated-margin accounts its token covers.\n\n- No parameter: every open order, in every market.\n- `market`: every open order in that market.\n- `base_asset`: every open order in every market of that base asset, for\n  example `BTC` for the BTC perpetual and all BTC options. Mutually exclusive\n  with `market`.\n\nWith no parameter or with `base_asset`, the response lists the IDs of the\norders queued for cancellation. These are the orders open when the request is\nprocessed: an order placed at the same time may stay open.\n\nWith `market`, the response reports that the cancellation was queued.\n",
         "tags": [
           "Orders"
         ],
@@ -4959,6 +5108,14 @@
           {
             "description": "Market to cancel orders for",
             "name": "market",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Base asset to cancel orders for, across all its markets (e.g. BTC). Mutually exclusive with market",
+            "name": "base_asset",
             "in": "query",
             "schema": {
               "type": "string"
@@ -7290,7 +7447,13 @@
               }
             }
           }
-        }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
       }
     },
     "/v2/onboarding": {
@@ -7357,7 +7520,899 @@
               }
             }
           }
-        }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      }
+    },
+    "/v2/passkeys": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "The account's passkeys, revoked ones included, newest first. The owner's main-key session sees every passkey; a session a passkey opened sees that passkey only.",
+        "tags": [
+          "Passkeys"
+        ],
+        "summary": "List passkeys",
+        "operationId": "passkeys-list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/responses.APIResults"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/responses.PasskeyResp"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      },
+      "post": {
+        "description": "Registers a passkey that can open trading sessions on the account without a\nwallet, within a ceiling the account owner signs once. A passkey is never the\naccount's login or owner: its sessions can trade within the ceiling but can\nnever withdraw or transfer funds, approve a builder, change the ceiling or\nregister another passkey.\n\n`grant` is the `PasskeyGrant` message exactly as signed, with its camelCase\nfield names. EVM-owned accounts sign it as EIP-712 (`signature_type`\n`eip712`, with the wallet's current chain as `signature_chain_id`);\nStark-owned accounts sign it as SNIP-12 (`snip12`) with their main key.\n`credential` is the `navigator.credentials.create` response to a\n`registration` challenge, and must be the credential the grant names.\n\nPasskeys cover the main account only. A passkey's ceiling allows the\n`trade`, `trade:rfq` and `account:settings` scopes, sessions of at most 7\ndays (24 hours by default) and at most 5 live sessions at once; the passkey\nitself expires after at most 180 days. Every ceiling limit is stated, as a positive\nnumber or `none`, and `markets` lists symbols or is `[\"*\"]`. A number is\naccepted only for the limits the server enforces; every other limit must be\n`none`, and `markets` `[\"*\"]`. Limits are shared by every session the passkey\nopens.\n\n| Error | Meaning |\n| --- | --- |\n| `INVALID_SIGNATURE` | The signature is not the account owner's, or does not match `signature_type`. |\n| `GRANT_EXPIRED` | `expiresAt` has passed, or `issuedAt` is outside the accepted window. |\n| `INVALID_ENVIRONMENT` | The grant is for another environment. |\n| `INVALID_CHAIN` | The grant is for another Paradex chain. |\n| `SCOPE_NOT_ALLOWED` | The ceiling lists a scope a passkey may not carry. |\n| `LIMIT_INVALID` | A limit is malformed, not `none` where the server does not enforce it, or over the server ceiling, or the passkey expiry is too long. |\n| `INVALID_GRANT` | The grant is malformed, or its session length or session count is over the cap. |\n| `ACCOUNT_NOT_ELIGIBLE` | The account is not a main account, or the ceiling lists subaccounts. |\n| `ETHEREUM_ADDRESS_BLOCKED` | The account is blocked. |\n| `INVALID_PASSKEY_CREDENTIAL` | The WebAuthn response is invalid or is not the credential the grant names. |\n| `PASSKEY_ORIGIN_NOT_ALLOWED` | The page origin is not allowed for the rpId. |\n| `PASSKEY_RP_ID_NOT_ALLOWED` | The rpId is not allowed. |\n| `PASSKEY_CHALLENGE_INVALID` | The challenge is unknown, expired or already used. |\n| `PASSKEY_ALREADY_REGISTERED` | The credential, or the grant's nonce, is already registered. |\n| `PASSKEYS_DISABLED` | Passkeys are not enabled for this account. |\n| `SESSIONS_DISABLED` | Sessions are not enabled for this account. |\n",
+        "tags": [
+          "Passkeys"
+        ],
+        "summary": "Register a passkey",
+        "operationId": "passkeys-register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.RegisterPasskeyRequest"
+              }
+            }
+          },
+          "description": "The signed PasskeyGrant and the WebAuthn registration",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.PasskeyResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_SIGNATURE, GRANT_EXPIRED, INVALID_ENVIRONMENT, INVALID_CHAIN, SCOPE_NOT_ALLOWED, LIMIT_INVALID, ACCOUNT_NOT_ELIGIBLE, ETHEREUM_ADDRESS_BLOCKED, INVALID_GRANT, INVALID_PASSKEY_CREDENTIAL, PASSKEY_ORIGIN_NOT_ALLOWED, PASSKEY_RP_ID_NOT_ALLOWED, PASSKEY_CHALLENGE_INVALID, PASSKEY_ALREADY_REGISTERED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PASSKEYS_DISABLED, SESSIONS_DISABLED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE: passkey challenges are temporarily unavailable; retry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      }
+    },
+    "/v2/passkeys/challenge": {
+      "post": {
+        "description": "Issues a single-use challenge for a passkey ceremony. It expires after two\nminutes and is consumed by the first request that uses it.\n\n- `registration`: the challenge for `navigator.credentials.create`, with a\n  new `user_handle` to pass as `user.id` and the `rp_id` to register under.\n  It needs a token the account signed in with its own key (not a session\n  key, subkey or API token), and only registers a passkey on that account.\n  Request a discoverable credential (`residentKey: \"required\"`), user\n  verification, ES256 and attestation `none`.\n- `session`: the nonce to put in a `SessionMint` before signing it with the\n  passkey, and the `rp_id` to pass to `navigator.credentials.get`. It needs\n  no token.\n\n| Error | Meaning |\n| --- | --- |\n| `PASSKEYS_DISABLED` | Passkeys are not enabled for this account (registration). |\n| `SESSIONS_DISABLED` | Sessions are not enabled for this account (registration). |\n",
+        "tags": [
+          "Passkeys"
+        ],
+        "summary": "Get a passkey challenge",
+        "operationId": "passkeys-challenge",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.PasskeyChallengeRequest"
+              }
+            }
+          },
+          "description": "What the challenge is for",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.PasskeyChallengeResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "registration without a session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PASSKEYS_DISABLED, SESSIONS_DISABLED, or a registration from a session other than the owner's",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE: passkey challenges are temporarily unavailable; retry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      }
+    },
+    "/v2/passkeys/sessions": {
+      "post": {
+        "description": "Opens a trading session with a passkey. No token is needed: the passkey's\nWebAuthn assertion is the authentication.\n\n`mint` is the `SessionMint` message exactly as signed, with its camelCase\nfield names; its `nonce` is a `session` challenge. It names neither the\naccount nor the passkey, so a client can call `navigator.credentials.get`\nwith an empty `allowCredentials` and let the user pick any of their\npasskeys. `assertion` is the `navigator.credentials.get` response whose\nchallenge is the SNIP-12 hash of the `SessionMint`, base64url-encoded. Its\ncredential id finds the passkey, the stored public key verifies it, and the\npasskey's grant names the account. Nothing about the account is checked or\nanswered until the assertion verifies; after that the nonce is spent, so a\nrefused mint needs a new challenge.\n\nThe session gets exactly the limits the mint states, each a positive number\nor `none`. A mint stating no limits (every amount `\"\"` and `markets` `[]`)\ngets the ceiling's: its value for each limit the server enforces, and\n`none` (`markets` `[\"*\"]`) for the rest. A number is accepted only for the\nlimits the server enforces; every other limit must be `none`, and `markets`\n`[\"*\"]`, and is not compared with the ceiling. An enforced limit must fit\nthe ceiling the owner granted the passkey: a number at or below a numeric\nceiling or anything under a `none` one, markets within the ceiling's. The\nmint must also stay within the ceiling's scopes and have an expiry no\nlonger than the ceiling's session length. A session that would outlive the\npasskey ends when the passkey expires, and `expires_at` says so. The\npasskey can hold at most its ceiling's number of live sessions. An\n`expiresAt` of `0` asks for the longest session the passkey allows: until\nthe passkey expires or for the ceiling's session length, whichever is\nsooner. The session key can then sign in with `POST /v1/auth`, and the\nsession is revoked with `DELETE /v2/sessions/{grant_id}`. The response\nnames the account, the passkey, who signed its grant\n(`owner_signer_type`, `stark` or `eip191`), the wallet the account was\nopened from (`owner_wallet`, Ethereum or Starknet, empty for none) and\nthe session's limits, which a client that did not know the account can\nremember for its next sign-in.\n\n| Error | Meaning |\n| --- | --- |\n| `MINT_EXCEEDS_CEILING` | A scope, limit or the expiry is outside the passkey's ceiling. |\n| `SESSION_LIMIT_REACHED` | The passkey has its maximum number of live sessions. |\n| `LIMIT_INVALID` | A limit is empty or malformed, not `none` where the server does not enforce it, or `markets` is empty. |\n| `ACCOUNT_NOT_ELIGIBLE` | The mint lists subaccounts, or the account cannot hold sessions. |\n| `ETHEREUM_ADDRESS_BLOCKED` | The account is blocked. |\n| `PASSKEY_NOT_FOUND` | No passkey with this credential id, or the assertion does not verify against it. |\n| `PASSKEY_NOT_ACTIVE` | The passkey is revoked or expired. |\n| `INVALID_PASSKEY_CREDENTIAL` | The WebAuthn response is invalid. |\n| `PASSKEY_ORIGIN_NOT_ALLOWED` | The page origin is not allowed for the passkey's rpId. |\n| `PASSKEY_RP_ID_NOT_ALLOWED` | The assertion is for another rpId. |\n| `PASSKEY_CHALLENGE_INVALID` | The nonce is unknown, expired or already used, or the assertion is not over this mint. |\n| `PASSKEY_SIGN_COUNT_REGRESSION` | The authenticator's counter went backwards, which can mean a cloned authenticator. |\n| `SESSION_KEY_IN_USE` | The session key is already registered on the account. |\n| `PASSKEYS_DISABLED` | Passkeys are not enabled for this account. |\n| `SESSIONS_DISABLED` | Sessions are not enabled for this account. |\n",
+        "tags": [
+          "Passkeys"
+        ],
+        "summary": "Open a session with a passkey",
+        "operationId": "passkeys-sessions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.MintPasskeySessionRequest"
+              }
+            }
+          },
+          "description": "The SessionMint and the WebAuthn assertion over it",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.PasskeySessionResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_GRANT, INVALID_ENVIRONMENT, INVALID_CHAIN, SCOPE_NOT_ALLOWED, LIMIT_INVALID, ACCOUNT_NOT_ELIGIBLE, ETHEREUM_ADDRESS_BLOCKED, MINT_EXCEEDS_CEILING, SESSION_LIMIT_REACHED, SESSION_KEY_IN_USE, NONCE_REUSED, PASSKEY_NOT_ACTIVE, INVALID_PASSKEY_CREDENTIAL, PASSKEY_ORIGIN_NOT_ALLOWED, PASSKEY_RP_ID_NOT_ALLOWED, PASSKEY_CHALLENGE_INVALID, PASSKEY_SIGN_COUNT_REGRESSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PASSKEYS_DISABLED, SESSIONS_DISABLED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PASSKEY_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE: passkey challenges are temporarily unavailable; retry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      }
+    },
+    "/v2/passkeys/{id}": {
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Revokes the passkey, then every session it opened. Callable by the owner's main-key session, or by a session the passkey itself opened. Revoking an already revoked passkey succeeds. Resting orders are kept.",
+        "tags": [
+          "Passkeys"
+        ],
+        "summary": "Revoke a passkey",
+        "operationId": "passkeys-revoke",
+        "parameters": [
+          {
+            "description": "Passkey id",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      }
+    },
+    "/v2/sessions": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "The owner's sessions in every state, newest first, cursor-paginated. Owner's main-key session only.",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "List sessions",
+        "operationId": "sessions-list",
+        "parameters": [
+          {
+            "description": "Returns the ‘next’ paginated page.",
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Results per page",
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          {
+            "description": "Only sessions in this state",
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "revoked",
+                "expired"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/responses.PaginatedAPIResults"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/responses.SessionResp"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "INVALID_TOKEN_SCOPE (a session), UNAUTHORIZED_ERROR, SESSIONS_DISABLED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      },
+      "post": {
+        "description": "Opens a session from a grant signed by the account owner. The grant's\nsignature is the authentication, so no token is needed.\n\nThe session key named in the grant can then sign in with `POST /v1/auth`\nfor the granting account and for each listed subaccount, one token per\naccount. A session can trade within its scopes and limits but can never\nwithdraw or transfer funds.\n\n`grant` is the `SessionGrant` message exactly as signed, with its camelCase\nfield names. EVM-owned accounts sign it as EIP-712 (`signature_type`\n`eip712`, with the wallet's current chain as `signature_chain_id`);\nStark-owned accounts sign it as SNIP-12 (`snip12`) with their main key.\nGrants naming a builder are accepted from EVM-owned accounts only.\n\nEvery limit is stated in the grant: a positive decimal, or `none` for no cap.\n`markets` lists at least one market, `*` meaning every permitted market. The\nlimits are stored exactly as signed, with no server defaults. The server\naccepts a number only for the limits it enforces: every other limit must be\n`none`, and `markets` `[\"*\"]`, or the request returns `LIMIT_INVALID`.\nBuilder grants follow the same rules. Where the server caps a limit, a value over\nthe cap, or `none`, returns `LIMIT_INVALID`. A builder `maxFeeRate` of zero,\nwith more than 8 decimal places, or over the server cap returns\n`INVALID_GRANT`. A grant naming a builder from an account that cannot\napprove builders yet returns `SESSIONS_DISABLED`.\n\nA grant from a wallet with no Paradex account opens the account and its first\nsession in one call. The account is deployed when it is first funded. It takes\nthe checks onboarding takes, so it can also answer the onboarding errors below,\nand it lists no subaccounts. `referral_code`, `marketing_code` and `utm` work\nas on `POST /v2/onboarding` and are read only for such a request; they are not\npart of what the wallet signs, so a grant naming a builder ignores them. A\n`PARADEX-PRIVY-ACCESS-TOKEN` header skips the balance check for a verified Privy\nuser's wallet. Contract wallets cannot open an account this way.\n\nEach grant can be used once: resubmitting it, or another grant with the same\nnonce, returns `NONCE_REUSED`. Every grant needs a fresh session key: a key\nonce used by a session, even one revoked or expired, returns\n`SESSION_KEY_IN_USE`. The grant must use the field names exactly as defined,\neach once per object, or it returns `INVALID_GRANT`. A grant that names a\nbuilder also records the builder approval for every listed account; revoking\nthe session later does not revoke that approval.\n\n| Error | Meaning |\n| --- | --- |\n| `INVALID_SIGNATURE` | The signature is not the account owner's (a contract wallet's never is), does not match `signature_type`, or names an account that cannot be verified. |\n| `GRANT_EXPIRED` | `expiresAt` has passed, or `issuedAt` is outside the accepted window. |\n| `INVALID_ENVIRONMENT` | The grant is for another environment. |\n| `INVALID_CHAIN` | The grant is for another Paradex chain. |\n| `SCOPE_NOT_ALLOWED` | A scope is unknown, reserved, or not allowed with a builder. |\n| `LIMIT_INVALID` | A limit is malformed, missing, not `none` where the server does not enforce it, over the server ceiling, or the expiry is longer than allowed. |\n| `NONCE_REUSED` | The grant or its nonce was already used. |\n| `ACCOUNT_NOT_ELIGIBLE` | The account or a listed subaccount cannot hold sessions. |\n| `INVALID_GRANT` | The grant does not match the `SessionGrant` schema, or its builder `maxFeeRate` is zero, has more than 8 decimal places or is over the cap. |\n| `SESSION_KEY_IN_USE` | The session key is, or was, a key of a listed account. |\n| `SESSION_LIMIT_REACHED` | The account holds the maximum number of active sessions; revoke one first. |\n| `BUILDER_APPROVAL_LIMIT_REACHED` | A listed account holds the maximum number of live builder approvals. |\n| `BUILDER_APPROVAL_STALE` | The builder approval was revoked after this grant was signed, or the grant would change the terms a live session with this builder runs on; revoke the approval first or sign a new grant. |\n| `SESSIONS_DISABLED` | Sessions, or builder approvals for a grant that names a builder, are not enabled for this account. |\n| `INVALID_MARKETING_CODE` | The grant would open an account and `marketing_code` is not a known code. |\n| `INVALID_REQUEST_PARAMETER` | The grant would open an account and `marketing_code` is not `campaign:code`, or `utm` lacks `source` or `campaign`. |\n| `INSUFFICIENT_MIN_CHAIN_BALANCE` | The grant would open an account and the wallet does not hold the minimum balance. |\n| `ETHEREUM_ADDRESS_BLOCKED` | The account is blocked, or the grant would open an account and the wallet failed screening. |\n| `PARENT_ADDRESS_ALREADY_ONBOARDED` | The wallet that signed already owns a different account. |\n| `ONBOARDING_RATE_LIMITED` | 429: too many new accounts; try again later. |\n",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Open a session",
+        "operationId": "sessions-create",
+        "parameters": [
+          {
+            "description": "Used only when the grant opens a new account: a Privy token for the signing wallet skips the balance check",
+            "name": "PARADEX-PRIVY-ACCESS-TOKEN",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requests.CreateSessionRequest"
+              }
+            }
+          },
+          "description": "The signed grant",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.CreateSessionResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_SIGNATURE, GRANT_EXPIRED, INVALID_ENVIRONMENT, INVALID_CHAIN, SCOPE_NOT_ALLOWED, LIMIT_INVALID, NONCE_REUSED, ACCOUNT_NOT_ELIGIBLE, INVALID_GRANT, SESSION_KEY_IN_USE, SESSION_LIMIT_REACHED, BUILDER_APPROVAL_LIMIT_REACHED, BUILDER_APPROVAL_STALE, and when the grant opens a new account INVALID_MARKETING_CODE, INVALID_REQUEST_PARAMETER, INSUFFICIENT_MIN_CHAIN_BALANCE, ETHEREUM_ADDRESS_BLOCKED, PARENT_ADDRESS_ALREADY_ONBOARDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SESSIONS_DISABLED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "ONBOARDING_RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      },
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Owner's main-key session only. Each session's websocket connections are closed, and its TWAPs and untriggered stops cancelled.",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Revoke all sessions",
+        "operationId": "sessions-revoke-all",
+        "parameters": [
+          {
+            "description": "Also cancel the sessions' resting orders.",
+            "name": "cancel_orders",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "INVALID_TOKEN_SCOPE (a session), UNAUTHORIZED_ERROR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      }
+    },
+    "/v2/sessions/{grant_id}": {
+      "get": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Readable by the owner's main-key session or by the session's own tokens.",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Get a session",
+        "operationId": "sessions-get",
+        "parameters": [
+          {
+            "description": "Grant id",
+            "name": "grant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.SessionResp"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      },
+      "delete": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Callable by the owner's main-key session or by the session itself (sign-out). Another session on one of its accounts gets 403; any other caller 404. Revoking an already revoked session succeeds.",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Revoke a session",
+        "operationId": "sessions-revoke",
+        "parameters": [
+          {
+            "description": "Grant id",
+            "name": "grant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Also cancel the session's resting orders. Its TWAPs and untriggered stops are cancelled on an owner revoke; a session without a builder revoking itself (sign-out) leaves them working unless this is set.",
+            "name": "cancel_orders",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      }
+    },
+    "/v2/sessions/{grant_id}/ip-allowlist": {
+      "put": {
+        "security": [
+          {
+            "BearerToken": []
+          }
+        ],
+        "description": "Owner's main-key session only. Replaces the list on every account the session covers; allowed_cidrs is required, and an empty list lifts the restriction. Requests made with the session, and its sign-ins, from an IP outside a non-empty list are refused: 403 IP_NOT_ALLOWED over REST, permission denied over the websocket. Takes effect within seconds. Open websockets from an IP outside a non-empty list are closed with code 4035, which runs their cancel-on-disconnect. A 5xx means the list may be stored but not announced; repeat the request.",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Set a session's IP allowlist",
+        "operationId": "sessions-set-ip-allowlist",
+        "parameters": [
+          {
+            "description": "Grant id",
+            "name": "grant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/requests.UpdateAllowedCIDRs"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.SessionResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_REQUEST_PARAMETER",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "INVALID_TOKEN_SCOPE (a session), UNAUTHORIZED_ERROR, SESSIONS_DISABLED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SESSION_REVOKED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
+      }
+    },
+    "/v2/sessions/{grant_id}/status": {
+      "get": {
+        "description": "No authentication. Answers only whether the session is active, revoked or expired.",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Get a session's state",
+        "operationId": "sessions-status",
+        "parameters": [
+          {
+            "description": "Grant id",
+            "name": "grant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.SessionStatusResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ApiError"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.prod.paradex.trade",
+            "x-fern-server-name": "v2"
+          }
+        ]
       }
     },
     "/vaults": {
@@ -8917,6 +9972,73 @@
           }
         }
       },
+      "requests.CreateDepositAddressReq": {
+        "type": "object",
+        "required": [
+          "network"
+        ],
+        "properties": {
+          "network": {
+            "description": "Source network, from GET /deposit-addresses/networks",
+            "type": "string",
+            "example": "base"
+          },
+          "token": {
+            "description": "Token to deposit. Defaults to USDC, the only token accepted",
+            "type": "string",
+            "example": "USDC"
+          }
+        }
+      },
+      "requests.CreateSessionRequest": {
+        "type": "object",
+        "required": [
+          "grant",
+          "signature",
+          "signature_type"
+        ],
+        "properties": {
+          "grant": {
+            "description": "The signed SessionGrant exactly as signed, with its camelCase field names.",
+            "type": "object"
+          },
+          "marketing_code": {
+            "description": "Marketing code of the campaign the owner came through. Used only when this grant opens a new account; not signed.",
+            "type": "string",
+            "example": "abcd:code1"
+          },
+          "referral_code": {
+            "description": "Referral code of the user who referred the owner. Used only when this grant opens a new account; not signed.",
+            "type": "string",
+            "example": "cryptofox8"
+          },
+          "signature": {
+            "description": "The owner's signature: one 0x-hex r||s||v string for eip712; for snip12 the\nstring '[\"0xr\",\"0xs\"]', as orders carry it (a bare [r, s] array is also accepted).",
+            "type": "string"
+          },
+          "signature_chain_id": {
+            "description": "The EIP-712 domain chainId the wallet signed with. Required for eip712, ignored for snip12.",
+            "type": "integer",
+            "example": 1
+          },
+          "signature_type": {
+            "description": "eip712 for EIP-191 (EVM-owned) accounts, snip12 for Stark-owned accounts.",
+            "type": "string",
+            "enum": [
+              "eip712",
+              "snip12"
+            ]
+          },
+          "utm": {
+            "description": "UTM tracking parameters. Used only when this grant opens a new account; not signed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/requests.Utm"
+              }
+            ]
+          }
+        }
+      },
       "requests.CreateSubkey": {
         "type": "object",
         "required": [
@@ -9136,6 +10258,23 @@
           }
         }
       },
+      "requests.MintPasskeySessionRequest": {
+        "type": "object",
+        "required": [
+          "assertion",
+          "mint"
+        ],
+        "properties": {
+          "assertion": {
+            "description": "The PublicKeyCredential JSON from navigator.credentials.get, whose\nchallenge is the SessionMint's SNIP-12 hash.",
+            "type": "object"
+          },
+          "mint": {
+            "description": "The SessionMint exactly as signed, with its camelCase field names. Its\nnonce is a session challenge from POST /v2/passkeys/challenge. It names\nno account or passkey: the assertion's credential id finds the passkey.",
+            "type": "object"
+          }
+        }
+      },
       "requests.ModifyOrderRequest": {
         "type": "object",
         "required": [
@@ -9330,6 +10469,22 @@
           }
         }
       },
+      "requests.PasskeyChallengeRequest": {
+        "type": "object",
+        "required": [
+          "purpose"
+        ],
+        "properties": {
+          "purpose": {
+            "description": "registration, to register a passkey (needs the owner's session, whose\naccount it is for), or session, to sign a SessionMint with one.",
+            "type": "string",
+            "enum": [
+              "registration",
+              "session"
+            ]
+          }
+        }
+      },
       "requests.PriceKind": {
         "type": "string",
         "enum": [
@@ -9355,6 +10510,42 @@
           },
           "action_version": {
             "type": "string"
+          }
+        }
+      },
+      "requests.RegisterPasskeyRequest": {
+        "type": "object",
+        "required": [
+          "credential",
+          "grant",
+          "signature",
+          "signature_type"
+        ],
+        "properties": {
+          "credential": {
+            "description": "The PublicKeyCredential JSON from navigator.credentials.create.",
+            "type": "object"
+          },
+          "grant": {
+            "description": "The signed PasskeyGrant exactly as signed, with its camelCase field names.",
+            "type": "object"
+          },
+          "signature": {
+            "description": "The owner's signature: one 0x-hex r||s||v string for eip712; for snip12 the\nstring '[\"0xr\",\"0xs\"]', as orders carry it (a bare [r, s] array is also accepted).",
+            "type": "string"
+          },
+          "signature_chain_id": {
+            "description": "The EIP-712 domain chainId the wallet signed with. Required for eip712, ignored for snip12.",
+            "type": "integer",
+            "example": 1
+          },
+          "signature_type": {
+            "description": "eip712 for EIP-191 (EVM-owned) accounts, snip12 for Stark-owned accounts.",
+            "type": "string",
+            "enum": [
+              "eip712",
+              "snip12"
+            ]
           }
         }
       },
@@ -11094,6 +12285,28 @@
           }
         }
       },
+      "responses.CreateSessionResp": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "description": "Every account the session can trade: the granting account, then its listed subaccounts.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expires_at": {
+            "description": "When the session expires, in milliseconds.",
+            "type": "integer",
+            "example": 1760572800000
+          },
+          "grant_id": {
+            "description": "The grant id: the grant's hash, 0x and 64 hex characters.",
+            "type": "string",
+            "example": "0x5f1c0a4e2b7d9e3f6a8c1b0d2e4f6a8c0b2d4e6f8a0c2e4b6d8f0a2c4e6b8d0f"
+          }
+        }
+      },
       "responses.CreateTokenResponse": {
         "type": "object",
         "properties": {
@@ -11147,6 +12360,207 @@
             "description": "Maintenance Margin Factor",
             "type": "string",
             "example": "0.51"
+          }
+        }
+      },
+      "responses.DepositAddressDetailsResp": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "description": "Paradex account the deposit is credited to",
+            "type": "string",
+            "example": "0x4638e3041366aa71720be63e32e53e1223316c7f"
+          },
+          "address": {
+            "description": "Address on the source network to send the token to",
+            "type": "string",
+            "example": "0x11d88800d97b26212ebab1fe6172f09a7da2982b"
+          },
+          "amount_credited": {
+            "description": "Amount credited to the Paradex account",
+            "type": "string",
+            "example": "99.5"
+          },
+          "amount_received": {
+            "description": "Amount that arrived at the address",
+            "type": "string",
+            "example": "100"
+          },
+          "created_at": {
+            "description": "Creation time in milliseconds",
+            "type": "integer",
+            "example": 1718611654000
+          },
+          "destination_tx_hash": {
+            "description": "Credit on Paradex",
+            "type": "string",
+            "example": "0xdef456"
+          },
+          "expires_at": {
+            "description": "Time in milliseconds at which the address expires if nothing has arrived",
+            "type": "integer",
+            "example": 1718633254000
+          },
+          "fail_reason": {
+            "description": "Why the deposit failed, when it did",
+            "type": "string",
+            "example": "insufficient_funds"
+          },
+          "fee": {
+            "description": "Bridging fee",
+            "type": "string",
+            "example": "0.5"
+          },
+          "id": {
+            "description": "Deposit address ID",
+            "type": "string",
+            "example": "a8d2fe80-ec8c-42f6-9013-3bab21960b69"
+          },
+          "network": {
+            "description": "Source network",
+            "type": "string",
+            "example": "base"
+          },
+          "source_tx_hash": {
+            "description": "Transfer to the address on the source network",
+            "type": "string",
+            "example": "0xabc123"
+          },
+          "status": {
+            "description": "Deposit status",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.DepositAddressStatus"
+              }
+            ],
+            "example": "CREDITED"
+          },
+          "token": {
+            "description": "Token sent",
+            "type": "string",
+            "example": "USDC"
+          }
+        }
+      },
+      "responses.DepositAddressResp": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "description": "Paradex account the deposit is credited to",
+            "type": "string",
+            "example": "0x4638e3041366aa71720be63e32e53e1223316c7f"
+          },
+          "address": {
+            "description": "Address on the source network to send the token to",
+            "type": "string",
+            "example": "0x11d88800d97b26212ebab1fe6172f09a7da2982b"
+          },
+          "avg_completion_time": {
+            "description": "Typical time from sending to credit",
+            "type": "string",
+            "example": "00:01:00"
+          },
+          "created_at": {
+            "description": "Creation time in milliseconds",
+            "type": "integer",
+            "example": 1718611654000
+          },
+          "expires_at": {
+            "description": "Time in milliseconds at which the address expires if nothing has arrived",
+            "type": "integer",
+            "example": 1718633254000
+          },
+          "id": {
+            "description": "Deposit address ID, used to read its status",
+            "type": "string",
+            "example": "a8d2fe80-ec8c-42f6-9013-3bab21960b69"
+          },
+          "max_amount": {
+            "description": "Largest amount accepted in one transfer",
+            "type": "string",
+            "example": "100000"
+          },
+          "min_amount": {
+            "description": "Smallest amount to send. Less may not be credited",
+            "type": "string",
+            "example": "5.27"
+          },
+          "network": {
+            "description": "Source network",
+            "type": "string",
+            "example": "base"
+          },
+          "status": {
+            "description": "Deposit status",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.DepositAddressStatus"
+              }
+            ],
+            "example": "AWAITING_DEPOSIT"
+          },
+          "token": {
+            "description": "Token to send",
+            "type": "string",
+            "example": "USDC"
+          }
+        }
+      },
+      "responses.DepositAddressStatus": {
+        "type": "string",
+        "enum": [
+          "AWAITING_DEPOSIT",
+          "DETECTED",
+          "BRIDGING",
+          "CREDITED",
+          "FAILED",
+          "EXPIRED",
+          "REFUNDED"
+        ],
+        "x-enum-varnames": [
+          "DepositAddressStatusAwaitingDeposit",
+          "DepositAddressStatusDetected",
+          "DepositAddressStatusBridging",
+          "DepositAddressStatusCredited",
+          "DepositAddressStatusFailed",
+          "DepositAddressStatusExpired",
+          "DepositAddressStatusRefunded"
+        ]
+      },
+      "responses.DepositNetwork": {
+        "type": "object",
+        "properties": {
+          "max_amount": {
+            "description": "Largest amount accepted in one transfer",
+            "type": "string",
+            "example": "100000"
+          },
+          "min_amount": {
+            "description": "Smallest amount to send",
+            "type": "string",
+            "example": "5.27"
+          },
+          "network": {
+            "description": "Source network, as passed to POST /deposit-addresses",
+            "type": "string",
+            "example": "base"
+          },
+          "token": {
+            "description": "Token accepted on the network",
+            "type": "string",
+            "example": "USDC"
+          }
+        }
+      },
+      "responses.DepositNetworksResp": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "description": "Networks a deposit address can be requested for",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/responses.DepositNetwork"
+            }
           }
         }
       },
@@ -13192,6 +14606,199 @@
           }
         }
       },
+      "responses.PasskeyCeilingResp": {
+        "type": "object",
+        "properties": {
+          "limits": {
+            "description": "The ceiling's limits as the owner signed them (USD decimal strings).",
+            "type": "object"
+          },
+          "max_concurrent_sessions": {
+            "description": "Most live sessions the passkey may hold at once.",
+            "type": "integer",
+            "example": 5
+          },
+          "max_session_ttl": {
+            "description": "Longest session the passkey may open, in seconds.",
+            "type": "integer",
+            "example": 86400
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "trade"
+            ]
+          }
+        }
+      },
+      "responses.PasskeyChallengeResp": {
+        "type": "object",
+        "properties": {
+          "challenge": {
+            "description": "The single-use challenge. For registration it is the WebAuthn\nchallenge (base64url); for a session it is the nonce to put in the\nSessionMint (0x hex).",
+            "type": "string",
+            "example": "3q2-7w"
+          },
+          "expires_at": {
+            "description": "When the challenge expires, in milliseconds.",
+            "type": "integer",
+            "example": 1760000120000
+          },
+          "rp_id": {
+            "description": "The rpId: the one to register the passkey under, or the one to pass to\nnavigator.credentials.get for a session.",
+            "type": "string",
+            "example": "paradex.trade"
+          },
+          "user_handle": {
+            "description": "Registration only: the WebAuthn user.id to pass to\nnavigator.credentials.create, base64url. It is random, never the\naccount address.",
+            "type": "string",
+            "example": "q83vEjRWeJA"
+          }
+        }
+      },
+      "responses.PasskeyResp": {
+        "type": "object",
+        "properties": {
+          "aaguid": {
+            "description": "Authenticator model, for display; may be all zeros.",
+            "type": "string",
+            "example": "fbfc3007-154e-4ecc-8c0b-6e020557d7bd"
+          },
+          "backup_eligible": {
+            "description": "Whether the passkey can be synced (WebAuthn backup eligibility).",
+            "type": "boolean",
+            "example": true
+          },
+          "ceiling": {
+            "$ref": "#/components/schemas/responses.PasskeyCeilingResp"
+          },
+          "created_at": {
+            "description": "Registration time in milliseconds.",
+            "type": "integer",
+            "example": 1760000000000
+          },
+          "credential_id": {
+            "description": "WebAuthn credential id, base64url.",
+            "type": "string",
+            "example": "q83vEjRWeJA"
+          },
+          "expires_at": {
+            "description": "Passkey expiry in milliseconds.",
+            "type": "integer",
+            "example": 1775552000000
+          },
+          "id": {
+            "type": "integer",
+            "example": 42
+          },
+          "label": {
+            "type": "string",
+            "example": "MacBook"
+          },
+          "last_used_at": {
+            "description": "Last session mint in milliseconds; null before the first.",
+            "type": "integer"
+          },
+          "live_sessions": {
+            "description": "Live sessions the passkey has open.",
+            "type": "integer",
+            "example": 1
+          },
+          "revoked_at": {
+            "description": "Revocation time in milliseconds; null while not revoked.",
+            "type": "integer"
+          },
+          "revoked_reason": {
+            "description": "Why the passkey was revoked; omitted while not revoked.",
+            "type": "string",
+            "enum": [
+              "owner",
+              "passkey"
+            ],
+            "example": "owner"
+          },
+          "rp_id": {
+            "type": "string",
+            "example": "paradex.trade"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "revoked",
+              "expired"
+            ],
+            "example": "active"
+          },
+          "synced": {
+            "description": "Whether the passkey is synced across devices (WebAuthn backup state).",
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "responses.PasskeySessionResp": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "description": "The account the passkey opens sessions for, as stored.",
+            "type": "string",
+            "example": "0x1a2b3c"
+          },
+          "accounts": {
+            "description": "Every account the session can trade: the granting account, then its listed subaccounts.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "credential_id": {
+            "description": "The passkey's WebAuthn credential id, base64url.",
+            "type": "string",
+            "example": "q83vEjRWeJA"
+          },
+          "expires_at": {
+            "description": "When the session expires, in milliseconds.",
+            "type": "integer",
+            "example": 1760572800000
+          },
+          "grant_id": {
+            "description": "The grant id: the grant's hash, 0x and 64 hex characters.",
+            "type": "string",
+            "example": "0x5f1c0a4e2b7d9e3f6a8c1b0d2e4f6a8c0b2d4e6f8a0c2e4b6d8f0a2c4e6b8d0f"
+          },
+          "limits": {
+            "description": "The session's limits: the mint's, or the ceiling's when the mint stated none.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.SessionLimitsResp"
+              }
+            ]
+          },
+          "owner_signer_type": {
+            "description": "Who signed the passkey's grant: the account's main Stark key or its\nEVM wallet.",
+            "type": "string",
+            "enum": [
+              "stark",
+              "eip191"
+            ],
+            "example": "eip191"
+          },
+          "owner_wallet": {
+            "description": "The wallet the account was opened from, Ethereum or Starknet: an EVM\nowner signs with it, and a Stark account's key is derived from its\nsignature. Empty for an account with no parent wallet.",
+            "type": "string",
+            "example": "0x5b38da6a701c568545dcfcb03fcb875f56beddc4"
+          },
+          "passkey_expires_at": {
+            "description": "When the passkey itself expires, in milliseconds.",
+            "type": "integer",
+            "example": 1775000000000
+          }
+        }
+      },
       "responses.PortfolioMarginScenarioResp": {
         "type": "object",
         "properties": {
@@ -13912,6 +15519,167 @@
           "STPModeExpireTaker",
           "STPModeExpireBoth"
         ]
+      },
+      "responses.SessionBuilderResp": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string",
+            "example": "0x4f3a9c1"
+          },
+          "max_fee_rate": {
+            "description": "Highest fee rate the builder may charge, as a decimal fraction (\"0.0005\" = 5 bps).",
+            "type": "string",
+            "example": "0.0005"
+          },
+          "name": {
+            "description": "The builder's registered name; null when it has none.",
+            "type": "string"
+          }
+        }
+      },
+      "responses.SessionLimitsResp": {
+        "type": "object",
+        "properties": {
+          "daily_notional": {
+            "type": "string",
+            "example": "500000"
+          },
+          "markets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "BTC-USD-PERP"
+            ]
+          },
+          "max_leverage": {
+            "type": "string",
+            "example": "10"
+          },
+          "max_loss": {
+            "type": "string",
+            "example": "5000"
+          },
+          "max_open_notional": {
+            "type": "string",
+            "example": "100000"
+          },
+          "max_order_notional": {
+            "type": "string",
+            "example": "25000"
+          }
+        }
+      },
+      "responses.SessionResp": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "allowed_cidrs": {
+            "description": "The owner-set IP allowlist (CIDRs). Requests made with the session,\nand its sign-ins, from any other IP are refused with IP_NOT_ALLOWED.\nEmpty means no restriction. Not part of the signed grant.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "203.0.113.0/24"
+            ]
+          },
+          "builder": {
+            "description": "The approved builder; null for a grant without one.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/responses.SessionBuilderResp"
+              }
+            ]
+          },
+          "expires_at": {
+            "description": "Expiry in milliseconds.",
+            "type": "integer",
+            "example": 1760572800000
+          },
+          "grant_id": {
+            "type": "string",
+            "example": "0x5f1c0a4e2b7d9e3f6a8c1b0d2e4f6a8c0b2d4e6f8a0c2e4b6d8f0a2c4e6b8d0f"
+          },
+          "issued_at": {
+            "description": "When the owner signed the grant, in milliseconds.",
+            "type": "integer",
+            "example": 1760000000000
+          },
+          "label": {
+            "description": "The label the front end chose when it asked for the grant.",
+            "type": "string",
+            "example": "My trading app"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/responses.SessionLimitsResp"
+          },
+          "open_order_count": {
+            "description": "Resting orders and untriggered stops this session placed, for display\nonly: a revoke with cancel_orders also ends its TWAPs and open RFQs,\nwhich this leaves out. On the first page of GET /v2/sessions only, for\nan active or revoked session. Omitted for an expired session, on a\nlater page, and whenever the count is unknown (the feature is off for\nthe account, or the orders could not all be read), so a missing count\nnever reads as zero.",
+            "type": "integer",
+            "example": 3
+          },
+          "passkey_credential_id": {
+            "description": "The WebAuthn credential id of the passkey that opened the session, as\nGET /v2/passkeys lists it; omitted for any other source. Revoking that\npasskey revokes the session and stops it opening another.",
+            "type": "string",
+            "example": "q83vEjRWeJA"
+          },
+          "revoked_at": {
+            "description": "Revocation time in milliseconds; 0 while not revoked.",
+            "type": "integer",
+            "example": 0
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "trade"
+            ]
+          },
+          "source": {
+            "description": "What opened the session: an app, a builder, an API client or a passkey.",
+            "type": "string",
+            "enum": [
+              "app",
+              "builder",
+              "api",
+              "passkey"
+            ],
+            "example": "app"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "revoked",
+              "expired"
+            ],
+            "example": "active"
+          }
+        }
+      },
+      "responses.SessionStatusResp": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "revoked",
+              "expired"
+            ],
+            "example": "active"
+          }
+        }
       },
       "responses.ShareRateResp": {
         "type": "object",

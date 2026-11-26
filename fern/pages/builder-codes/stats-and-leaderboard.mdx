@@ -5,7 +5,7 @@ subtitle: Public builder fees, volume and users for every builder
 
 ## Overview
 
-Two public endpoints report the builder fees traders paid each builder. They need no authentication and are not wrapped by the SDKs; call them directly.
+Two public endpoints report the builder fees traders paid each builder. They need no authentication. The Python SDK wraps them as `fetch_builder_stats` and `fetch_builder_leaderboard` on its API client, and the TypeScript SDK as `fetchStats` and `fetchLeaderboard` on `BuilderCodesClient`.
 
 Stats are computed periodically from settled fills that paid a builder fee, so they lag recent fills. Each result's `as_of` says when it was computed.
 

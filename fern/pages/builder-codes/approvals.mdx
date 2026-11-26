@@ -50,7 +50,7 @@ A builder approval can be part of the owner signed **session grant** a builder's
 
 A grant that approves a builder cannot include the `trade:block` or `account:settings` scopes. Approving a builder adds no other requirement to the grant.
 
-Both SDKs build and sign the approval as part of a session grant. In the Python SDK, pass `builder=Builder(account="0x5f2c...a91", max_fee_rate="0.0005", expires_at=0)` to `SessionGrant` (both from `paradex_py.message.session`). In the TypeScript SDK, set the grant's `builder: { account, maxFeeRate, expiresAt }`. The SDKs do not cover listing and revoking approvals; call those REST endpoints directly.
+Both SDKs build and sign the approval as part of a session grant. In the Python SDK, pass `builder=Builder(account="0x5f2c...a91", max_fee_rate="0.0005", expires_at=0)` to `SessionGrant` (both from `paradex_py.message.session`). In the TypeScript SDK, set the grant's `builder: { account, maxFeeRate, expiresAt }`. To list and revoke approvals, use `fetch_builder_approvals` and `revoke_builder_approval` on the API client in the Python SDK, or `listApprovals` and `revokeApproval` on `BuilderCodesClient` in the TypeScript SDK.
 
 ### Standalone approval
 

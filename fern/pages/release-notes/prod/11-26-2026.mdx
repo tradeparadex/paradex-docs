@@ -1,0 +1,16 @@
+## v1.173.7
+
+<ChangelogTags tags={["UI"]} />
+
+#### UI
+
+* `Withdraw` and `Deposit` forms no longer show or use a fee quoted for an earlier amount or route.
+* Fixed a blank page showing instead of the crash message when the app hits an unexpected error.
+* Order notifications for option markets the page has not loaded no longer go missing.
+* Trading sessions now open with a fast device clock, and a refused session no longer blocks wallet login.
+* `Fordefi` wallets now log in with an EVM account only.
+* Market names drop the `USD` suffix and show a `perp`, `spot` or `option` tag instead.
+* The `Vaults` and `Portfolio` pages download much less data while open.
+* The `Portfolio`, `Vaults` and `Markets` pages load faster and use less memory.
+* `Hyperlane` deposits now stop before any wallet prompt when the wallet cannot pay the bridge fee.
+* Switch options instruments straight from the order panel header with a searchable dropdown.
